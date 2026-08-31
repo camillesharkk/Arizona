@@ -3,9 +3,15 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { getStore } from "@/lib/store";
 import { setSessionCookie } from "@/lib/session";
-import { newToken, sendMail, verifyUrl } from "@/lib/email";
+import {
+  allowDevEmailTokens,
+  newToken,
+  sendMail,
+  verificationEmailHtml,
+  VERIFY_SUBJECT,
+  verifyUrl,
+} from "@/lib/email";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
-import { site } from "@/lib/site";
 
 const schema = z.object({
   email: z.string().email(),
@@ -25,11 +31,10 @@ export async function POST(req: Request) {
   const user = await store.createUser({ email, passwordHash, name: body.data.name || null });
   const token = newToken();
   await store.putToken({ token, type: "verify", userId: user.id, expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString() });
-  const mail = await sendMail(
-    email,
-    "Verify your Arizona Exam account",
-    `<p>Confirm your email for ${site.name}.</p><p><a href="${verifyUrl(token)}">Verify email</a></p>`
-  );
+  const mail = await sendMail(email, VERIFY_SUBJECT, verificationEmailHtml(verifyUrl(token)));
+  if (!mail.ok) {
+    return NextResponse.json({ error: mail.error }, { status: 502 });
+  }
   await setSessionCookie({
     id: user.id,
     email: user.email,
@@ -38,5 +43,8 @@ export async function POST(req: Request) {
     emailVerified: user.emailVerified,
     name: user.name,
   });
-  return NextResponse.json({ ok: true, mockedEmail: mail.mocked, verifyToken: mail.mocked ? token : undefined });
+  return NextResponse.json({
+    ok: true,
+    ...(allowDevEmailTokens() ? { mockedEmail: true, verifyToken: token } : {}),
+  });
 }

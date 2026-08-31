@@ -4,11 +4,17 @@ import { useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
 
-export function AuthForm({ mode }: { mode: "login" | "register" | "forgot" | "reset" }) {
+export function AuthForm({
+  mode,
+  initialToken = "",
+}: {
+  mode: "login" | "register" | "forgot" | "reset";
+  initialToken?: string;
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(initialToken);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
@@ -40,9 +46,18 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "forgot" | "re
       return;
     }
     if (data.verifyToken) setInfo(`Dev verify link token: ${data.verifyToken}`);
-    if (data.resetToken) setInfo(`Dev reset token: ${data.resetToken}`);
-    if (mode === "login" || mode === "register") window.location.href = paths.dashboard;
-    else setInfo((info) => info || "Check your email. In development the token is shown here if Resend is not configured.");
+    else if (data.resetToken) setInfo(`Dev reset token: ${data.resetToken}`);
+    else if (mode === "forgot") setInfo("If that email is registered, a reset link is on the way.");
+    if (mode === "login") {
+      window.location.href = paths.dashboard;
+      return;
+    }
+    if (mode === "register") {
+      if (data.verifyToken) return;
+      window.location.href = `${paths.dashboard}?checkEmail=1`;
+      return;
+    }
+    if (mode === "reset") setInfo("Password updated. You can sign in.");
   }
 
   return (
@@ -59,12 +74,13 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "forgot" | "re
           <input value={name} onChange={(e) => setName(e.target.value)} />
         </label>
       )}
-      {mode === "reset" && (
+      {mode === "reset" && !initialToken && (
         <label className="field">
           Reset token
           <input value={token} onChange={(e) => setToken(e.target.value)} required />
         </label>
       )}
+      {mode === "reset" && initialToken && <input type="hidden" value={token} readOnly />}
       {(mode === "login" || mode === "register" || mode === "reset") && (
         <label className="field">
           Password

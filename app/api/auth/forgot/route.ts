@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getStore } from "@/lib/store";
-import { newToken, resetUrl, sendMail } from "@/lib/email";
+import { allowDevEmailTokens, newToken, resetEmailHtml, RESET_SUBJECT, resetUrl, sendMail } from "@/lib/email";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
@@ -14,8 +14,14 @@ export async function POST(req: Request) {
   if (user) {
     const token = newToken();
     await store.putToken({ token, type: "reset", userId: user.id, expiresAt: new Date(Date.now() + 1000 * 60 * 30).toISOString() });
-    const mail = await sendMail(user.email, "Reset your Arizona Exam password", `<p><a href="${resetUrl(token)}">Reset password</a></p>`);
-    return NextResponse.json({ ok: true, mockedEmail: mail.mocked, resetToken: mail.mocked ? token : undefined });
+    const mail = await sendMail(user.email, RESET_SUBJECT, resetEmailHtml(resetUrl(token)));
+    if (!mail.ok) {
+      return NextResponse.json({ error: mail.error }, { status: 502 });
+    }
+    return NextResponse.json({
+      ok: true,
+      ...(allowDevEmailTokens() ? { mockedEmail: true, resetToken: token } : {}),
+    });
   }
   return NextResponse.json({ ok: true });
 }

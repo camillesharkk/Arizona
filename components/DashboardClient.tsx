@@ -10,7 +10,9 @@ import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 
 export function DashboardClient() {
   const [data, setData] = useState<{ stats: QuestionStat[]; exams: ExamRow[]; user: UserRow | null } | null>(null);
+  const [checkEmail, setCheckEmail] = useState(false);
   useEffect(() => {
+    setCheckEmail(new URLSearchParams(window.location.search).get("checkEmail") === "1");
     fetch("/api/progress/")
       .then((r) => r.json())
       .then(setData)
@@ -40,6 +42,7 @@ export function DashboardClient() {
   const ready = readinessScore(data.stats, data.exams);
   return (
     <div className="grid">
+      {checkEmail && <p className="notice">Check your inbox for a verification email, then click the link.</p>}
       <div className="grid grid-4 stats-mobile">
         <div className="stat"><b>{answered}</b><span>Answers</span></div>
         <div className="stat"><b>{acc}%</b><span>Accuracy</span></div>
