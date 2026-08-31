@@ -12,6 +12,9 @@ export async function POST() {
 export async function GET(req: Request) {
   const url = new URL(req.url);
   if (url.searchParams.get("mock") !== "success") return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (process.env.NODE_ENV === "production") {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   await applyBillingEvent({

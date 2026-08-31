@@ -118,7 +118,7 @@ export const fileStore: Store = {
     return mutate((db) => {
       const i = db.stats.findIndex((s) => s.userId === stat.userId && s.questionId === stat.questionId);
       if (i < 0) db.stats.push(stat);
-      else db.stats[i] = stat;
+      else db.stats[i] = { ...stat, userId: db.stats[i].userId };
       return stat;
     });
   },

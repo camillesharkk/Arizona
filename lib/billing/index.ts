@@ -16,6 +16,7 @@ function provider() {
 
 export function verifyMorSignature(raw: string, header: string | null) {
   const secret = process.env.MOR_WEBHOOK_SECRET;
+  if (process.env.NODE_ENV === "production" && !secret) return false;
   if (!secret) return provider() === "mock";
   if (!header) return false;
   const digest = createHmac("sha256", secret).update(raw).digest("hex");
@@ -50,7 +51,9 @@ export async function applyBillingEvent(event: BillingEvent) {
 
   let user: UserRow | null = null;
   if (event.userId) user = await store.getUserById(event.userId);
-  if (!user && "email" in event && event.email) user = await store.getUserByEmail(event.email.toLowerCase());
+  if (!user && event.type === "purchase_completed" && event.email) {
+    user = await store.getUserByEmail(event.email.toLowerCase());
+  }
 
   if (!user) return { ok: false, error: "user_not_found" };
 

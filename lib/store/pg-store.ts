@@ -14,79 +14,30 @@ function db() {
   return client;
 }
 
-let migrated = false;
+let schemaReady = false;
 
-async function migrate() {
-  if (migrated) return;
+async function assertSchema() {
+  if (schemaReady) return;
   const sql = db();
-  await sql.unsafe(`
-    create table if not exists users (
-      id text primary key,
-      email text unique not null,
-      password_hash text not null,
-      name text,
-      email_verified boolean not null default false,
-      plan text not null default 'free',
-      plan_status text not null default 'active',
-      plan_expires_at text,
-      billing_customer_id text,
-      billing_subscription_id text,
-      email_daily boolean not null default false,
-      email_weekly boolean not null default false,
-      email_exam boolean not null default false,
-      created_at text not null,
-      last_login_at text,
-      last_study_at text,
-      streak_days integer not null default 0,
-      last_study_date text,
-      best_score integer
-    );
-    create table if not exists tokens (
-      token text primary key,
-      type text not null,
-      user_id text not null,
-      expires_at text not null
-    );
-    create table if not exists question_stats (
-      user_id text not null,
-      question_id text not null,
-      topic text not null,
-      bank text not null,
-      chapter text not null,
-      first_correct boolean,
-      last_correct boolean,
-      wrong_count integer not null default 0,
-      right_count integer not null default 0,
-      last_selected text,
-      last_correct_option text,
-      first_at text,
-      last_at text,
-      mastered boolean not null default false,
-      favorited boolean not null default false,
-      primary key (user_id, question_id)
-    );
-    create table if not exists exams (
-      id text primary key,
-      user_id text not null,
-      mode text not null,
-      score integer not null,
-      correct_count integer not null,
-      total integer not null,
-      at text not null
-    );
-    create table if not exists ai_usage (
-      user_id text not null,
-      day text not null,
-      n integer not null,
-      primary key (user_id, day)
-    );
-    create table if not exists webhooks (
-      id text primary key,
-      provider text not null,
-      at text not null
-    );
-  `);
-  migrated = true;
+  try {
+    const rows = await sql`select id from schema_migrations where id = '001_init' limit 1`;
+    if (!rows[0]) throw new Error("missing");
+  } catch {
+    throw new Error("Postgres schema is missing. Set DATABASE_URL and run: npm run db:migrate");
+  }
+  schemaReady = true;
+}
+
+function iso(v: unknown) {
+  if (v == null) return null;
+  if (v instanceof Date) return v.toISOString();
+  return String(v);
+}
+
+function dayStr(v: unknown) {
+  if (v == null) return null;
+  if (v instanceof Date) return v.toISOString().slice(0, 10);
+  return String(v).slice(0, 10);
 }
 
 function mapUser(r: Record<string, unknown>): UserRow {
@@ -98,17 +49,17 @@ function mapUser(r: Record<string, unknown>): UserRow {
     emailVerified: Boolean(r.email_verified),
     plan: r.plan === "pro" ? "pro" : "free",
     planStatus: String(r.plan_status),
-    planExpiresAt: r.plan_expires_at ? String(r.plan_expires_at) : null,
+    planExpiresAt: iso(r.plan_expires_at),
     billingCustomerId: r.billing_customer_id ? String(r.billing_customer_id) : null,
     billingSubscriptionId: r.billing_subscription_id ? String(r.billing_subscription_id) : null,
     emailDaily: Boolean(r.email_daily),
     emailWeekly: Boolean(r.email_weekly),
     emailExam: Boolean(r.email_exam),
-    createdAt: String(r.created_at),
-    lastLoginAt: r.last_login_at ? String(r.last_login_at) : null,
-    lastStudyAt: r.last_study_at ? String(r.last_study_at) : null,
+    createdAt: iso(r.created_at) as string,
+    lastLoginAt: iso(r.last_login_at),
+    lastStudyAt: iso(r.last_study_at),
     streakDays: Number(r.streak_days || 0),
-    lastStudyDate: r.last_study_date ? String(r.last_study_date) : null,
+    lastStudyDate: dayStr(r.last_study_date),
     bestScore: r.best_score == null ? null : Number(r.best_score),
   };
 }
@@ -126,8 +77,8 @@ function mapStat(r: Record<string, unknown>): QuestionStat {
     rightCount: Number(r.right_count),
     lastSelected: r.last_selected ? String(r.last_selected) : null,
     lastCorrectOption: r.last_correct_option ? String(r.last_correct_option) : null,
-    firstAt: r.first_at ? String(r.first_at) : null,
-    lastAt: r.last_at ? String(r.last_at) : null,
+    firstAt: iso(r.first_at),
+    lastAt: iso(r.last_at),
     mastered: Boolean(r.mastered),
     favorited: Boolean(r.favorited),
   };
@@ -135,17 +86,17 @@ function mapStat(r: Record<string, unknown>): QuestionStat {
 
 export const pgStore: Store = {
   async getUserByEmail(email) {
-    await migrate();
+    await assertSchema();
     const rows = await db()`select * from users where email = ${email} limit 1`;
     return rows[0] ? mapUser(rows[0] as Record<string, unknown>) : null;
   },
   async getUserById(id) {
-    await migrate();
+    await assertSchema();
     const rows = await db()`select * from users where id = ${id} limit 1`;
     return rows[0] ? mapUser(rows[0] as Record<string, unknown>) : null;
   },
   async createUser(data) {
-    await migrate();
+    await assertSchema();
     const id = randomUUID();
     const createdAt = new Date().toISOString();
     await db()`insert into users (id, email, password_hash, name, created_at)
@@ -173,27 +124,28 @@ export const pgStore: Store = {
       last_study_at = ${next.lastStudyAt},
       streak_days = ${next.streakDays},
       last_study_date = ${next.lastStudyDate},
-      best_score = ${next.bestScore}
+      best_score = ${next.bestScore},
+      updated_at = ${new Date().toISOString()}
       where id = ${id}`;
     return next;
   },
   async putToken(row) {
-    await migrate();
+    await assertSchema();
     await db()`delete from tokens where user_id = ${row.userId} and type = ${row.type}`;
     await db()`insert into tokens (token, type, user_id, expires_at)
       values (${row.token}, ${row.type}, ${row.userId}, ${row.expiresAt})`;
   },
   async takeToken(token, type) {
-    await migrate();
+    await assertSchema();
     const rows = await db()`select * from tokens where token = ${token} and type = ${type} limit 1`;
     if (!rows[0]) return null;
     await db()`delete from tokens where token = ${token}`;
     const r = rows[0] as Record<string, unknown>;
-    if (new Date(String(r.expires_at)) < new Date()) return null;
-    return { token, type, userId: String(r.user_id), expiresAt: String(r.expires_at) };
+    if (new Date(String(iso(r.expires_at))) < new Date()) return null;
+    return { token, type, userId: String(r.user_id), expiresAt: iso(r.expires_at) as string };
   },
   async upsertStat(stat) {
-    await migrate();
+    await assertSchema();
     await db()`insert into question_stats (
       user_id, question_id, topic, bank, chapter, first_correct, last_correct, wrong_count, right_count,
       last_selected, last_correct_option, first_at, last_at, mastered, favorited
@@ -209,26 +161,28 @@ export const pgStore: Store = {
       last_correct_option = excluded.last_correct_option,
       last_at = excluded.last_at,
       mastered = excluded.mastered,
-      favorited = excluded.favorited`;
+      favorited = excluded.favorited,
+      updated_at = now()
+      where question_stats.user_id = excluded.user_id`;
     return stat;
   },
   async getStat(userId, questionId) {
-    await migrate();
+    await assertSchema();
     const rows = await db()`select * from question_stats where user_id = ${userId} and question_id = ${questionId} limit 1`;
     return rows[0] ? mapStat(rows[0] as Record<string, unknown>) : null;
   },
   async listStats(userId) {
-    await migrate();
+    await assertSchema();
     const rows = await db()`select * from question_stats where user_id = ${userId}`;
     return rows.map((r) => mapStat(r as Record<string, unknown>));
   },
   async addExam(row: ExamRow) {
-    await migrate();
+    await assertSchema();
     await db()`insert into exams (id, user_id, mode, score, correct_count, total, at)
       values (${row.id}, ${row.userId}, ${row.mode}, ${row.score}, ${row.correctCount}, ${row.total}, ${row.at})`;
   },
   async listExams(userId) {
-    await migrate();
+    await assertSchema();
     const rows = await db()`select * from exams where user_id = ${userId} order by at desc`;
     return rows.map((r) => {
       const row = r as Record<string, unknown>;
@@ -239,26 +193,30 @@ export const pgStore: Store = {
         score: Number(row.score),
         correctCount: Number(row.correct_count),
         total: Number(row.total),
-        at: String(row.at),
+        at: iso(row.at) as string,
       };
     });
   },
   async aiCount(userId, day) {
-    await migrate();
+    await assertSchema();
     const rows = await db()`select n from ai_usage where user_id = ${userId} and day = ${day} limit 1`;
     return rows[0] ? Number((rows[0] as { n: number }).n) : 0;
   },
   async bumpAi(userId, day) {
-    await migrate();
+    await assertSchema();
     await db()`insert into ai_usage (user_id, day, n) values (${userId}, ${day}, 1)
-      on conflict (user_id, day) do update set n = ai_usage.n + 1`;
+      on conflict (user_id, day) do update set n = ai_usage.n + 1, updated_at = now()
+      where ai_usage.user_id = excluded.user_id`;
     return this.aiCount(userId, day);
   },
   async seenWebhook(id, provider) {
-    await migrate();
-    const rows = await db()`select id from webhooks where id = ${id} limit 1`;
-    if (rows[0]) return true;
-    await db()`insert into webhooks (id, provider, at) values (${id}, ${provider}, ${new Date().toISOString()})`;
-    return false;
+    await assertSchema();
+    const inserted = await db()`
+      insert into webhooks (id, provider, at)
+      values (${id}, ${provider}, ${new Date().toISOString()})
+      on conflict (provider, id) do nothing
+      returning id
+    `;
+    return inserted.length === 0;
   },
 };

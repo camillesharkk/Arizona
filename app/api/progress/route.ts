@@ -5,6 +5,7 @@ import { canAccessQuestion } from "@/lib/entitlements";
 import { publishedQuestions } from "@/data/questions";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
+import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 
 const answerSchema = z.object({
   questionId: z.string(),
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
       .object({ mode: z.string(), score: z.number(), correctCount: z.number(), total: z.number() })
       .safeParse(body);
     if (!exam.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
-    await recordExam({ userId: session.id, ...exam.data });
+    await recordExam({ ...exam.data, userId: session.id });
     return NextResponse.json({ ok: true });
   }
   const parsed = answerSchema.safeParse(body);
@@ -35,7 +36,7 @@ export async function POST(req: Request) {
     selected: parsed.data.selected,
     correct,
   });
-  return NextResponse.json({ ok: true, correct, stat });
+  return NextResponse.json({ ok: true, correct, stat: toClientStat(stat) });
 }
 
 export async function GET() {
@@ -47,5 +48,40 @@ export async function GET() {
     store.listExams(session.id),
     store.getUserById(session.id),
   ]);
-  return NextResponse.json({ stats, exams, user });
+  return NextResponse.json({
+    stats: stats.map(toClientStat),
+    exams: exams.map(toClientExam),
+    user: user ? toClientUser(user) : null,
+  });
+}
+
+function toClientUser(user: UserRow) {
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    emailVerified: user.emailVerified,
+    plan: user.plan,
+    planStatus: user.planStatus,
+    planExpiresAt: user.planExpiresAt,
+    emailDaily: user.emailDaily,
+    emailWeekly: user.emailWeekly,
+    emailExam: user.emailExam,
+    createdAt: user.createdAt,
+    lastLoginAt: user.lastLoginAt,
+    lastStudyAt: user.lastStudyAt,
+    streakDays: user.streakDays,
+    lastStudyDate: user.lastStudyDate,
+    bestScore: user.bestScore,
+  };
+}
+
+function toClientStat(stat: QuestionStat) {
+  const { userId: _owner, ...rest } = stat;
+  return rest;
+}
+
+function toClientExam(exam: ExamRow) {
+  const { userId: _owner, ...rest } = exam;
+  return rest;
 }

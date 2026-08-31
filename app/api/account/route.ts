@@ -16,7 +16,12 @@ export async function POST(req: Request) {
     .safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
   const store = await getStore();
-  const user = await store.updateUser(session.id, body.data);
+  const user = await store.updateUser(session.id, {
+    ...(body.data.name !== undefined ? { name: body.data.name } : {}),
+    ...(body.data.emailDaily !== undefined ? { emailDaily: body.data.emailDaily } : {}),
+    ...(body.data.emailWeekly !== undefined ? { emailWeekly: body.data.emailWeekly } : {}),
+    ...(body.data.emailExam !== undefined ? { emailExam: body.data.emailExam } : {}),
+  });
   await setSessionCookie({
     id: user.id,
     email: user.email,
