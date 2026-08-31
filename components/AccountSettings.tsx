@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AuthForm } from "@/components/AuthForm";
 
 export function AccountSettings() {
   const [daily, setDaily] = useState(false);
   const [weekly, setWeekly] = useState(false);
   const [exam, setExam] = useState(false);
+  const [examDate, setExamDate] = useState("");
   const [name, setName] = useState("");
   const [currentPassword, setCurrent] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +20,7 @@ export function AccountSettings() {
           setDaily(!!d.user.emailDaily);
           setWeekly(!!d.user.emailWeekly);
           setExam(!!d.user.emailExam);
+          setExamDate(d.user.examDate || "");
           setName(d.user.name || "");
         }
       });
@@ -27,7 +28,11 @@ export function AccountSettings() {
 
   async function savePrefs(e: React.FormEvent) {
     e.preventDefault();
-    await fetch("/api/account/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, emailDaily: daily, emailWeekly: weekly, emailExam: exam }) });
+    await fetch("/api/account/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, emailDaily: daily, emailWeekly: weekly, emailExam: exam, examDate }),
+    });
     setMsg("Preferences saved");
   }
 
@@ -45,6 +50,11 @@ export function AccountSettings() {
         <label><input type="checkbox" checked={daily} onChange={(e) => setDaily(e.target.checked)} /> Daily reminder</label>
         <label><input type="checkbox" checked={weekly} onChange={(e) => setWeekly(e.target.checked)} /> Weekly progress</label>
         <label><input type="checkbox" checked={exam} onChange={(e) => setExam(e.target.checked)} /> Exam reminder</label>
+        <p className="notice">Turn these off anytime. Verification and password emails are not affected.</p>
+        <label className="field">
+          My exam date
+          <input type="date" value={examDate} onChange={(e) => setExamDate(e.target.value)} />
+        </label>
         <button className="btn btn-primary" type="submit">Save</button>
       </form>
       <form className="card" onSubmit={changePass}>

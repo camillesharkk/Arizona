@@ -9,7 +9,7 @@ export function mailFrom() {
   return configured || TEST_FROM;
 }
 
-function publicSiteUrl() {
+export function mailSiteUrl() {
   const explicit = (process.env.NEXT_PUBLIC_SITE_URL || "").trim().replace(/\/$/, "");
   if (explicit) return explicit;
   const vercel = (process.env.VERCEL_URL || "").trim().replace(/\/$/, "");
@@ -25,11 +25,11 @@ export function newToken() {
 }
 
 export function verifyUrl(token: string) {
-  return `${publicSiteUrl()}${paths.verify}?token=${encodeURIComponent(token)}`;
+  return `${mailSiteUrl()}${paths.verify}?token=${encodeURIComponent(token)}`;
 }
 
 export function resetUrl(token: string) {
-  return `${publicSiteUrl()}${paths.reset}?token=${encodeURIComponent(token)}`;
+  return `${mailSiteUrl()}${paths.reset}?token=${encodeURIComponent(token)}`;
 }
 
 export const VERIFY_SUBJECT = "Verify your Arizona Notary Prep account";
@@ -55,7 +55,11 @@ export function allowDevEmailTokens() {
   return process.env.NODE_ENV !== "production" && !process.env.RESEND_API_KEY;
 }
 
-export async function sendMail(to: string, subject: string, html: string): Promise<{ ok: true; mocked: boolean } | { ok: false; error: string }> {
+export async function sendMail(
+  to: string,
+  subject: string,
+  html: string
+): Promise<{ ok: true; mocked: boolean; messageId?: string } | { ok: false; error: string }> {
   const key = process.env.RESEND_API_KEY;
   const from = mailFrom();
 
@@ -65,7 +69,7 @@ export async function sendMail(to: string, subject: string, html: string): Promi
       return { ok: false, error: "Email service is not configured" };
     }
     console.info("[email:dev] skipped Resend (no API key)", { to, subject, from });
-    return { ok: true, mocked: true };
+    return { ok: true, mocked: true, messageId: "dev-mock" };
   }
 
   try {
@@ -81,8 +85,9 @@ export async function sendMail(to: string, subject: string, html: string): Promi
       console.error("[email] Resend send failed", { status: res.status, to, subject, from });
       return { ok: false, error: "Could not send email. Please try again." };
     }
+    const json = (await res.json().catch(() => ({}))) as { id?: string };
     console.info("[email] Resend send ok", { to, subject, from });
-    return { ok: true, mocked: false };
+    return { ok: true, mocked: false, messageId: json.id };
   } catch {
     console.error("[email] Resend request failed", { to, subject });
     return { ok: false, error: "Could not send email. Please try again." };

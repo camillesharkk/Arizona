@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
-import type { ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
+import type { EmailType, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
 
 type FileDb = {
   users: UserRow[];
@@ -10,6 +10,7 @@ type FileDb = {
   exams: ExamRow[];
   ai: { userId: string; day: string; n: number }[];
   webhooks: string[];
+  emailLogs: { userId: string; emailType: EmailType; periodKey: string; status: string; messageId?: string | null }[];
 };
 
 const empty = (): FileDb => ({
@@ -19,6 +20,7 @@ const empty = (): FileDb => ({
   exams: [],
   ai: [],
   webhooks: [],
+  emailLogs: [],
 });
 
 const filePath = () => path.join(process.cwd(), ".data", "store.json");
@@ -70,6 +72,7 @@ function freshUser(email: string, passwordHash: string, name: string | null): Us
     streakDays: 0,
     lastStudyDate: null,
     bestScore: null,
+    examDate: null,
   };
 }
 
@@ -160,6 +163,34 @@ export const fileStore: Store = {
       if (db.webhooks.includes(key)) return true;
       db.webhooks.push(key);
       return false;
+    });
+  },
+  async listMailUsers() {
+    const db = await load();
+    return db.users.filter((u) => u.emailVerified && (u.emailDaily || u.emailWeekly || u.emailExam));
+  },
+  claimEmailSend(userId, emailType, periodKey) {
+    return mutate((db) => {
+      const exists = db.emailLogs.some(
+        (l) => l.userId === userId && l.emailType === emailType && l.periodKey === periodKey
+      );
+      if (exists) return false;
+      db.emailLogs.push({ userId, emailType, periodKey, status: "sending" });
+      return true;
+    });
+  },
+  finalizeEmailSend(userId, emailType, periodKey, result) {
+    return mutate((db) => {
+      const i = db.emailLogs.findIndex(
+        (l) => l.userId === userId && l.emailType === emailType && l.periodKey === periodKey
+      );
+      if (i < 0) return;
+      if (result.status === "failed") {
+        db.emailLogs.splice(i, 1);
+        return;
+      }
+      db.emailLogs[i].status = "sent";
+      db.emailLogs[i].messageId = result.messageId || null;
     });
   },
 };

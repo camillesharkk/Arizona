@@ -12,6 +12,7 @@ export async function POST(req: Request) {
       emailDaily: z.boolean().optional(),
       emailWeekly: z.boolean().optional(),
       emailExam: z.boolean().optional(),
+      examDate: z.union([z.string().regex(/^\d{4}-\d{2}-\d{2}$/), z.literal(""), z.null()]).optional(),
     })
     .safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
@@ -21,6 +22,7 @@ export async function POST(req: Request) {
     ...(body.data.emailDaily !== undefined ? { emailDaily: body.data.emailDaily } : {}),
     ...(body.data.emailWeekly !== undefined ? { emailWeekly: body.data.emailWeekly } : {}),
     ...(body.data.emailExam !== undefined ? { emailExam: body.data.emailExam } : {}),
+    ...(body.data.examDate !== undefined ? { examDate: body.data.examDate ? body.data.examDate : null } : {}),
   });
   await setSessionCookie({
     id: user.id,

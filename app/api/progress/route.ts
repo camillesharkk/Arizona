@@ -73,6 +73,7 @@ function toClientUser(user: UserRow) {
     streakDays: user.streakDays,
     lastStudyDate: user.lastStudyDate,
     bestScore: user.bestScore,
+    examDate: user.examDate,
   };
 }
 

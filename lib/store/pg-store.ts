@@ -20,8 +20,8 @@ async function assertSchema() {
   if (schemaReady) return;
   const sql = db();
   try {
-    const rows = await sql`select id from schema_migrations where id = '001_init' limit 1`;
-    if (!rows[0]) throw new Error("missing");
+    const rows = await sql`select id from schema_migrations where id in ('001_init', '002_email_reminders')`;
+    if (rows.length < 2) throw new Error("missing");
   } catch {
     throw new Error("Postgres schema is missing. Set DATABASE_URL and run: npm run db:migrate");
   }
@@ -61,6 +61,7 @@ function mapUser(r: Record<string, unknown>): UserRow {
     streakDays: Number(r.streak_days || 0),
     lastStudyDate: dayStr(r.last_study_date),
     bestScore: r.best_score == null ? null : Number(r.best_score),
+    examDate: dayStr(r.exam_date),
   };
 }
 
@@ -125,6 +126,7 @@ export const pgStore: Store = {
       streak_days = ${next.streakDays},
       last_study_date = ${next.lastStudyDate},
       best_score = ${next.bestScore},
+      exam_date = ${next.examDate},
       updated_at = ${new Date().toISOString()}
       where id = ${id}`;
     return next;
@@ -218,5 +220,42 @@ export const pgStore: Store = {
       returning id
     `;
     return inserted.length === 0;
+  },
+  async listMailUsers() {
+    await assertSchema();
+    const rows = await db()`
+      select * from users
+      where email_verified = true
+        and (email_daily = true or email_weekly = true or email_exam = true)
+    `;
+    return rows.map((r) => mapUser(r as Record<string, unknown>));
+  },
+  async claimEmailSend(userId, emailType, periodKey) {
+    await assertSchema();
+    const id = randomUUID();
+    const inserted = await db()`
+      insert into email_logs (id, user_id, email_type, period_key, status)
+      values (${id}, ${userId}, ${emailType}, ${periodKey}, 'sending')
+      on conflict (user_id, email_type, period_key) do nothing
+      returning id
+    `;
+    return inserted.length > 0;
+  },
+  async finalizeEmailSend(userId, emailType, periodKey, result) {
+    await assertSchema();
+    if (result.status === "failed") {
+      await db()`
+        delete from email_logs
+        where user_id = ${userId} and email_type = ${emailType} and period_key = ${periodKey} and status = 'sending'
+      `;
+      return;
+    }
+    await db()`
+      update email_logs
+      set status = 'sent',
+          resend_message_id = ${result.messageId || null},
+          sent_at = ${new Date().toISOString()}
+      where user_id = ${userId} and email_type = ${emailType} and period_key = ${periodKey}
+    `;
   },
 };

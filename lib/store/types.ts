@@ -20,6 +20,7 @@ export type UserRow = {
   streakDays: number;
   lastStudyDate: string | null;
   bestScore: number | null;
+  examDate: string | null;
 };
 
 export type TokenRow = {
@@ -63,6 +64,8 @@ export type WebhookRow = {
   at: string;
 };
 
+export type EmailType = "daily" | "weekly" | "exam";
+
 export type Store = {
   getUserByEmail(email: string): Promise<UserRow | null>;
   getUserById(id: string): Promise<UserRow | null>;
@@ -78,4 +81,12 @@ export type Store = {
   aiCount(userId: string, day: string): Promise<number>;
   bumpAi(userId: string, day: string): Promise<number>;
   seenWebhook(id: string, provider: string): Promise<boolean>;
+  listMailUsers(): Promise<UserRow[]>;
+  claimEmailSend(userId: string, emailType: EmailType, periodKey: string): Promise<boolean>;
+  finalizeEmailSend(
+    userId: string,
+    emailType: EmailType,
+    periodKey: string,
+    result: { status: "sent" | "failed"; messageId?: string | null }
+  ): Promise<void>;
 };
