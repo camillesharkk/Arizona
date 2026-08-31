@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { examConfig, topics } from "@/data/exam-config";
 import { OfficialBadge } from "@/components/Chrome";
-import { publishedQuestions } from "@/data/questions";
 
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
@@ -93,8 +92,7 @@ export default function ArizonaHub() {
       <section style={{ marginTop: 28 }}>
         <h2>Practice by topic</h2>
         <p className="lede">
-          {publishedQuestions().length} published items in this build. Drill the rule, then take the
-          full exam.
+          Drill the rule, then take the full exam.
         </p>
         <div className="grid grid-2">
           {topics.map((t) => (

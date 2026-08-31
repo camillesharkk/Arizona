@@ -45,7 +45,7 @@ export default function PricingPage() {
           <p className="kicker">$19.99 · 60-Day Full Access</p>
           <p>One-time payment. No subscription. No automatic renewal.</p>
           <ul>
-            <li>Full question bank (200+)</li>
+            <li>Access the complete Arizona question bank</li>
             <li>Unlimited full-length exams</li>
             <li>Weak-area training</li>
             <li>Smart wrong-answer review</li>
