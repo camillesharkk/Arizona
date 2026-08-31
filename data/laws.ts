@@ -1,5 +1,5 @@
-import type { LawChange } from "@/lib/types";
-import { examConfig } from "@/data/exam-config";
+import type { LawChange } from "../lib/types.ts";
+import { examConfig } from "./exam-config.ts";
 
 export const lawChanges: LawChange[] = [
   {

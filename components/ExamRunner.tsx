@@ -1,10 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
 import { examConfig } from "@/data/exam-config";
-import { pickExamSet, scorePercent, topicLabel, weakTopics } from "@/lib/quiz";
+import {
+  pickExamSet,
+  pickFullExam,
+  pickQuickExam,
+  scorePercent,
+  shuffleQuestionOptions,
+  topicLabel,
+  weakTopics,
+  type Letter,
+} from "@/lib/quiz";
 import { recordAnswer, saveProgress, toggleFlag, loadProgress } from "@/lib/storage";
 import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
@@ -24,17 +33,46 @@ export function ExamRunner({
   preset?: Question[];
   isPro?: boolean;
 }) {
+  const sessionSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
+  const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const count = mode === "quick" ? 10 : mode === "full" ? examConfig.questionCount : 10;
   const questions = useMemo(() => {
-    if (preset?.length) return preset;
+    const applyShuffle = (list: Question[]) => {
+      const maps: Record<string, Record<Letter, Letter>> = {};
+      const out = list.map((item) => {
+        const { question, toOriginal } = shuffleQuestionOptions(item, sessionSeed);
+        maps[item.question_id] = toOriginal;
+        return question;
+      });
+      toOriginalRef.current = maps;
+      return out;
+    };
+    if (preset?.length) return applyShuffle(preset);
+    if (mode === "full") {
+      const picked = pickFullExam(sessionSeed);
+      if (picked.length !== examConfig.questionCount) {
+        console.error("[exam] Full exam requires", examConfig.questionCount, "questions; pool returned", picked.length);
+        return [];
+      }
+      return applyShuffle(picked);
+    }
+    if (mode === "quick") {
+      const picked = pickQuickExam(sessionSeed, false);
+      if (picked.length !== 10) {
+        console.error("[exam] Quick exam requires 10 questions; pool returned", picked.length);
+        return [];
+      }
+      return applyShuffle(picked);
+    }
     if (mode === "weak") {
       const ids = loadProgress().wrongIds;
-      const pool = pickExamSet(200, { freeOnly: !isPro }).filter((q) => ids.includes(q.question_id));
+      const pool = pickExamSet(200, { seed: sessionSeed }).filter((q) => ids.includes(q.question_id));
       const preview = isPro ? 10 : 5;
-      if (pool.length >= 3) return pool.slice(0, preview);
+      if (pool.length >= 3) return applyShuffle(pool.slice(0, preview));
+      return [];
     }
-    return pickExamSet(count, { freeOnly: !isPro });
-  }, [count, mode, preset, isPro]);
+    return applyShuffle(pickExamSet(count, { seed: sessionSeed }));
+  }, [count, mode, preset, isPro, sessionSeed]);
 
   const timed = mode === "full" && !practice;
   const [idx, setIdx] = useState(0);
@@ -69,7 +107,17 @@ export function ExamRunner({
   if (!q) {
     return (
       <div className="card">
-        <p>Not enough questions in this set. Try Full 45 or open Exam Questions.</p>
+        {mode === "full" ? (
+          <>
+            <h2>Full 45 is not available</h2>
+            <p>
+              A full practice test must contain exactly {examConfig.questionCount} unique published questions. The current
+              eligible bank does not, so the exam was not started. This is not a shortened 45-question test.
+            </p>
+          </>
+        ) : (
+          <p>Not enough questions in this set. Try Full 45 or open Exam Questions.</p>
+        )}
         <Link className="btn btn-primary" href="/arizona/exam-questions/">
           Start Questions
         </Link>
@@ -77,18 +125,19 @@ export function ExamRunner({
     );
   }
 
+  function originalLetter(questionId: string, display: Letter): Letter {
+    return toOriginalRef.current[questionId]?.[display] ?? display;
+  }
+
   function choose(letter: "A" | "B" | "C" | "D") {
     if (!practice && timed && done) return;
-    if (answers[q.question_id] && (practice || !timed)) {
-      // allow change before lock in practice; in exam before submit
-    }
     setAnswers((a) => ({ ...a, [q.question_id]: letter }));
     if (practice) {
       recordAnswer(q.question_id, letter === q.correct_option);
       fetch("/api/progress/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ questionId: q.question_id, selected: letter }),
+        body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(q.question_id, letter) }),
       }).catch(() => undefined);
     }
   }
@@ -113,7 +162,7 @@ export function ExamRunner({
         fetch("/api/progress/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ questionId: r.question.question_id, selected: letter }),
+          body: JSON.stringify({ questionId: r.question.question_id, selected: originalLetter(r.question.question_id, letter) }),
         }).catch(() => undefined);
       }
     });
@@ -213,6 +262,7 @@ export function ExamRunner({
             selected={answers[r.question.question_id]}
             reveal
             isPro={isPro}
+            lockPaid={false}
           />
         ))}
       </div>
@@ -226,7 +276,7 @@ export function ExamRunner({
     <div className="exam-pad">
       <div className="row space">
         <span className="notice">
-          Question {idx + 1} / {questions.length}
+          Question {idx + 1} of {questions.length}
         </span>
         {timed ? (
           <span className="badge">{formatTime(remain)}</span>
@@ -243,6 +293,7 @@ export function ExamRunner({
         selected={selected}
         reveal={!!selected && (practice || showExplain)}
         onChoose={choose}
+        lockPaid={false}
         isPro={isPro}
         marked={marked.includes(q.question_id)}
         onMark={() => {
@@ -252,6 +303,11 @@ export function ExamRunner({
           );
         }}
       />
+      {selected && !showExplain && !done && (
+        <p className="notice" aria-live="polite">
+          You selected {selected}.
+        </p>
+      )}
       {!!selected && (practice || showExplain) && <TutorPanel q={q} selected={selected} />}
       <p className="notice">
         {source.title} · {q.source_reference} · Last verified {q.last_verified_at}
@@ -291,6 +347,7 @@ export function QuestionBlock({
   marked,
   onMark,
   isPro,
+  lockPaid = true,
 }: {
   q: Question;
   index: number;
@@ -300,10 +357,11 @@ export function QuestionBlock({
   marked?: boolean;
   onMark?: () => void;
   isPro?: boolean;
+  lockPaid?: boolean;
 }) {
   const letters = ["A", "B", "C", "D"] as const;
   const map = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
-  const locked = !q.is_free && !isPro;
+  const locked = lockPaid && !q.is_free && !isPro;
   return (
     <div className="card">
       <div className="row space">
@@ -332,7 +390,7 @@ export function QuestionBlock({
       <div className="q-options">
         {letters.map((l) => {
           let cls = "q-option";
-          if (selected === l) cls += " locked";
+          if (selected === l) cls += " selected";
           if (reveal && selected) {
             if (l === q.correct_option) cls += " correct";
             else if (selected === l) cls += " wrong";
@@ -342,6 +400,7 @@ export function QuestionBlock({
               key={l}
               className={cls}
               type="button"
+              aria-pressed={selected === l}
               disabled={!onChoose || locked}
               onClick={() => onChoose?.(l)}
             >

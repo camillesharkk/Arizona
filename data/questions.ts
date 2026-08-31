@@ -1,4 +1,5 @@
-import type { Question, TopicId } from "@/lib/types";
+import type { Question, TopicId } from "../lib/types.ts";
+import { isActiveQuestion } from "../lib/question-status.ts";
 
 type Draft = Omit<
   Question,
@@ -10,8 +11,37 @@ type Draft = Omit<
   | "last_verified_at"
 >;
 
+type Letter = "A" | "B" | "C" | "D";
+
+function remapCorrectLetter(q: Draft, dest: Letter): Draft {
+  const src = q.correct_option;
+  if (src === dest) return q;
+  const texts: Record<Letter, string> = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
+  const fbs = { ...q.option_feedback };
+  const swappedText = { ...texts, [dest]: texts[src], [src]: texts[dest] };
+  const swappedFb = { ...fbs, [dest]: fbs[src], [src]: fbs[dest] };
+  const explanation = q.explanation
+    .replace(new RegExp(`\\boption ${src}\\b`, "gi"), `option ${dest}`)
+    .replace(new RegExp(`\\bOption ${src}\\b`, "g"), `Option ${dest}`);
+  return {
+    ...q,
+    option_a: swappedText.A,
+    option_b: swappedText.B,
+    option_c: swappedText.C,
+    option_d: swappedText.D,
+    option_feedback: swappedFb,
+    correct_option: dest,
+    explanation,
+  };
+}
+
+function balanceCorrectLetters(items: Draft[]): Draft[] {
+  const cycle: Letter[] = ["A", "B", "C", "D"];
+  return items.map((q, i) => remapCorrectLetter(q, cycle[i % 4]));
+}
+
 function publish(drafts: Draft[]): Question[] {
-  return drafts.map((q) => ({
+  return balanceCorrectLetters(drafts).map((q) => ({
     ...q,
     state: "AZ",
     status: "published",
@@ -1036,7 +1066,7 @@ const drafts: Draft[] = [
 export const questions: Question[] = publish(drafts);
 
 export function publishedQuestions(): Question[] {
-  return questions.filter((q) => q.status === "published");
+  return questions.filter((q) => isActiveQuestion(q));
 }
 
 export function freeQuestions(): Question[] {

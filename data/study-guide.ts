@@ -1,4 +1,4 @@
-import type { StudyChapter } from "@/lib/types";
+import type { StudyChapter } from "../lib/types.ts";
 
 export const chapters: StudyChapter[] = [
   {

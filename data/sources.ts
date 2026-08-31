@@ -1,4 +1,4 @@
-import type { Source } from "@/lib/types";
+import type { Source } from "../lib/types.ts";
 
 export const sources: Record<string, Source> = {
   sos_handbook: {

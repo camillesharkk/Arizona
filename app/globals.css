@@ -162,11 +162,19 @@ h2 { font-size: 1.55rem; }
   text-align: left; min-height: 48px; padding: 12px 14px;
   border-radius: 12px; border: 1px solid var(--line);
   background: white; cursor: pointer; font-size: 1rem; font-family: inherit;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 .q-option:hover { border-color: var(--brand); }
+.q-option:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.q-option.selected {
+  border-color: var(--brand);
+  background: var(--brand-soft, #eef6f2);
+  box-shadow: 0 0 0 2px rgba(27, 94, 62, 0.18);
+}
 .q-option.correct { border-color: var(--sage); background: var(--sage-soft); }
 .q-option.wrong { border-color: var(--danger); background: #fdecec; }
 .q-option.locked { cursor: default; }
+.q-option:disabled { cursor: default; }
 
 .progress-bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
 .progress-bar > span { display: block; height: 100%; background: var(--brand); }

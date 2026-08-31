@@ -12,6 +12,8 @@ export function PracticeLaunch() {
   const [fullExamCount, setFullExamCount] = useState(0);
   const [signedIn, setSignedIn] = useState(false);
 
+  const [authReady, setAuthReady] = useState(false);
+
   useEffect(() => {
     const q = new URLSearchParams(window.location.search).get("mode");
     if (q === "quick" || q === "full" || q === "weak") setMode(q);
@@ -22,10 +24,15 @@ export function PracticeLaunch() {
         setFullExamCount(Number(d.user?.fullExamCount || 0));
         setSignedIn(Boolean(d.user));
       })
-      .catch(() => undefined);
+      .catch(() => undefined)
+      .finally(() => setAuthReady(true));
   }, []);
 
   const fullLocked = !isPro && signedIn && fullExamCount >= FREE_FULL_EXAMS;
+
+  if (mode !== "pick" && !authReady) {
+    return <p className="notice">Loading exam…</p>;
+  }
 
   if (mode === "pick") {
     return (
