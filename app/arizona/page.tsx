@@ -7,6 +7,7 @@ import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
 import { JsonLd, quizJson } from "@/components/JsonLd";
 import { Breadcrumb } from "@/components/Breadcrumb";
+import { HomeProCta } from "@/components/HomeProCta";
 
 export const metadata = pageMeta({
   title: "Arizona Notary Exam 2026",
@@ -120,6 +121,8 @@ export default function ArizonaHub() {
           See the full path
         </Link>
       </section>
+
+      <HomeProCta />
     </main>
   );
 }
