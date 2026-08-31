@@ -24,7 +24,7 @@ export const paths = {
   profile: "/account/profile/",
   mistakes: "/wrong-answers/",
   pricing: "/pricing/",
-  contact: "/legal/contact/",
+  contact: "/contact/",
   privacy: "/legal/privacy/",
   terms: "/legal/terms/",
   cookies: "/legal/cookies/",

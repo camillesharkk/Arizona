@@ -55,10 +55,49 @@ export function allowDevEmailTokens() {
   return process.env.NODE_ENV !== "production" && !process.env.RESEND_API_KEY;
 }
 
+export function contactToEmail() {
+  return (process.env.CONTACT_TO_EMAIL || "").trim();
+}
+
+/** Reserved. Do not render in the UI until a real domain mailbox exists. */
+export function publicSupportEmail() {
+  return (process.env.PUBLIC_SUPPORT_EMAIL || "").trim();
+}
+
+function escapeHtml(s: string) {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+export function contactNoticeHtml(data: {
+  name: string;
+  email: string;
+  phone: string;
+  preferred: string;
+  message: string;
+  submittedAt: string;
+  pageUrl: string;
+}) {
+  return `<p>New contact form submission.</p>
+<p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
+<p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
+<p><strong>Phone:</strong> ${escapeHtml(data.phone || "(none)")}</p>
+<p><strong>Preferred contact:</strong> ${escapeHtml(data.preferred)}</p>
+<p><strong>Message:</strong></p>
+<p>${escapeHtml(data.message).replace(/\n/g, "<br>")}</p>
+<p><strong>Submitted at:</strong> ${escapeHtml(data.submittedAt)}</p>
+<p><strong>Page URL:</strong> ${escapeHtml(data.pageUrl)}</p>`;
+}
+
 export async function sendMail(
   to: string,
   subject: string,
-  html: string
+  html: string,
+  opts?: { replyTo?: string }
 ): Promise<{ ok: true; mocked: boolean; messageId?: string } | { ok: false; error: string }> {
   const key = process.env.RESEND_API_KEY;
   const from = mailFrom();
@@ -73,13 +112,15 @@ export async function sendMail(
   }
 
   try {
+    const payload: Record<string, unknown> = { from, to, subject, html };
+    if (opts?.replyTo) payload.reply_to = opts.replyTo;
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${key}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ from, to, subject, html }),
+      body: JSON.stringify(payload),
     });
     if (!res.ok) {
       console.error("[email] Resend send failed", { status: res.status, to, subject, from });

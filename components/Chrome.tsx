@@ -172,10 +172,10 @@ export function SiteFooter() {
         </div>
         <div>
           <strong>Company</strong>
-          <p><Link href={paths.pricing}>Pricing</Link></p>
-          <p><Link href={paths.courses}>Course comparison</Link></p>
           <p><Link href={paths.privacy}>Privacy</Link></p>
           <p><Link href={paths.terms}>Terms</Link></p>
+          <p><Link href={paths.affiliate}>Affiliate Disclosure</Link></p>
+          <p><Link href={paths.disclaimer}>Disclaimer</Link></p>
           <p><Link href={paths.contact}>Contact</Link></p>
         </div>
       </div>

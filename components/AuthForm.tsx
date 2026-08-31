@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
+import { PasswordField } from "@/components/PasswordField";
 
 export function AuthForm({
   mode,
@@ -13,6 +14,7 @@ export function AuthForm({
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [token, setToken] = useState(initialToken);
   const [error, setError] = useState("");
@@ -21,6 +23,10 @@ export function AuthForm({
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if ((mode === "register" || mode === "reset") && password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
     setBusy(true);
     setError("");
     setInfo("");
@@ -81,11 +87,38 @@ export function AuthForm({
         </label>
       )}
       {mode === "reset" && initialToken && <input type="hidden" value={token} readOnly />}
-      {(mode === "login" || mode === "register" || mode === "reset") && (
-        <label className="field">
-          Password
-          <input type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
-        </label>
+      {mode === "login" && (
+        <PasswordField
+          label="Password"
+          name="password"
+          value={password}
+          onChange={setPassword}
+          autoComplete="current-password"
+          showLabel="Show password"
+          hideLabel="Hide password"
+        />
+      )}
+      {(mode === "register" || mode === "reset") && (
+        <>
+          <PasswordField
+            label="Password"
+            name="password"
+            value={password}
+            onChange={setPassword}
+            autoComplete="new-password"
+            showLabel="Show password"
+            hideLabel="Hide password"
+          />
+          <PasswordField
+            label="Confirm Password"
+            name="password_confirm"
+            value={confirmPassword}
+            onChange={setConfirmPassword}
+            autoComplete="new-password"
+            showLabel="Show confirm password"
+            hideLabel="Hide confirm password"
+          />
+        </>
       )}
       {error && <p className="form-error">{error}</p>}
       {info && <p className="notice">{info}</p>}

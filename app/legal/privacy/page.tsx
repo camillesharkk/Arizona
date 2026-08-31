@@ -10,7 +10,7 @@ export default function Page() {
     <LegalCopy title="Privacy Policy">
       <p>{site.independent}</p>
       <p>We store email, hashed passwords, study attempts, and optional reminder preferences. We do not sell notarial records. Analytics, email (Resend), and MoR payment providers process data only to run the service.</p>
-      <p>Contact: use the contact page. You may request deletion of your account data.</p>
+      <p>You may request deletion of your account data through the site contact form.</p>
     </LegalCopy>
   );
 }

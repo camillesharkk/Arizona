@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
       { source: "/arizona/wrong-answers/", destination: "/wrong-answers/", permanent: true },
       { source: "/arizona/account", destination: "/account/", permanent: true },
       { source: "/arizona/account/", destination: "/account/", permanent: true },
+      { source: "/legal/contact", destination: "/contact/", permanent: true },
+      { source: "/legal/contact/", destination: "/contact/", permanent: true },
     ];
   },
 };
