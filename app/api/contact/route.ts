@@ -1,25 +1,9 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import { contactNoticeHtml, contactToEmail, sendMail } from "@/lib/email";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { validateContactInput } from "@/lib/contact-validation";
 
 export const runtime = "nodejs";
-
-const schema = z
-  .object({
-    name: z.string().trim().min(1).max(100),
-    email: z.string().trim().email().max(254),
-    phone: z.string().trim().max(40).optional().default(""),
-    preferred: z.enum(["Email", "Phone"]),
-    message: z.string().trim().min(1).max(4000),
-    website: z.string().optional().default(""),
-    pageUrl: z.string().trim().max(500).optional().default(""),
-  })
-  .superRefine((data, ctx) => {
-    if (data.preferred === "Phone" && !data.phone) {
-      ctx.addIssue({ code: "custom", message: "Phone is required when Phone is the preferred contact method.", path: ["phone"] });
-    }
-  });
 
 export async function POST(req: Request) {
   const limited = rateLimit(`contact:${clientIp(req)}`, 5, 10 * 60_000);
@@ -38,10 +22,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Request too large" }, { status: 413 });
   }
 
-  const parsed = schema.safeParse(raw);
-  if (!parsed.success) return NextResponse.json({ error: "Please check the form and try again." }, { status: 400 });
+  const body = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
+  const parsed = validateContactInput({
+    name: body.name,
+    email: body.email,
+    phone: body.phone,
+    preferred: body.preferred ?? body.preferredContact,
+    message: body.message,
+  });
+  if (!parsed.ok) {
+    return NextResponse.json(
+      { error: "Please check the form and try again.", fields: parsed.errors },
+      { status: 400 }
+    );
+  }
 
-  if (parsed.data.website) {
+  if (String(body.website ?? "").trim()) {
     return NextResponse.json({ ok: true });
   }
 
@@ -62,7 +58,7 @@ export async function POST(req: Request) {
       preferred: parsed.data.preferred,
       message: parsed.data.message,
       submittedAt,
-      pageUrl: parsed.data.pageUrl || "",
+      pageUrl: String(body.pageUrl ?? "").trim().slice(0, 500),
     }),
     { replyTo: parsed.data.email }
   );

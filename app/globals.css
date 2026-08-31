@@ -99,6 +99,7 @@ a:hover { text-decoration: underline; }
 .pw-toggle:hover, .pw-toggle:focus-visible { color: var(--ink); }
 .pw-toggle:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
 .form-error { color: var(--danger); font-weight: 700; }
+.field-error { display: block; color: var(--danger); font-size: 0.82rem; font-weight: 600; }
 .account-invite { margin-top: 16px; background: #fff8ef; }
 .logo {
   display: flex; align-items: center; gap: 10px;
