@@ -6,9 +6,6 @@ import { validateContactInput } from "@/lib/contact-validation";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  const limited = rateLimit(`contact:${clientIp(req)}`, 5, 10 * 60_000);
-  if (!limited.ok) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
-
   const length = Number(req.headers.get("content-length") || "0");
   if (length > 20_000) return NextResponse.json({ error: "Request too large" }, { status: 413 });
 
@@ -23,11 +20,13 @@ export async function POST(req: Request) {
   }
 
   const body = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
+
   const parsed = validateContactInput({
     name: body.name,
     email: body.email,
     phone: body.phone,
-    preferred: body.preferred ?? body.preferredContact,
+    preferred: body.preferred,
+    preferredContact: body.preferredContact,
     message: body.message,
   });
   if (!parsed.ok) {
@@ -40,6 +39,9 @@ export async function POST(req: Request) {
   if (String(body.website ?? "").trim()) {
     return NextResponse.json({ ok: true });
   }
+
+  const limited = rateLimit(`contact:${clientIp(req)}`, 5, 10 * 60_000);
+  if (!limited.ok) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
 
   const to = contactToEmail();
   if (!to) {

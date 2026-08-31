@@ -102,10 +102,11 @@ export function ContactForm() {
         {fields.email && <span className="field-error">{fields.email}</span>}
       </label>
       <label className="field">
-        Phone
+        Phone *
         <input
+          required
           type="tel"
-          maxLength={40}
+          maxLength={30}
           value={phone}
           onChange={(e) => {
             setPhone(e.target.value);
