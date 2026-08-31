@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
-import { freeMistakeCap, isPro } from "@/lib/entitlements";
 import type { QuestionStat } from "@/lib/store/types";
 
 export async function POST(req: Request) {
@@ -40,10 +39,9 @@ export async function GET() {
   const store = await getStore();
   const stats = await store.listStats(session.id);
   const mistakes = stats.filter((s) => s.wrongCount > 0 && !s.mastered);
-  const capped = isPro(session) ? mistakes : mistakes.slice(0, freeMistakeCap());
   return NextResponse.json({
-    mistakes: capped.map(toClientStat),
-    truncated: mistakes.length > capped.length,
+    mistakes: mistakes.map(toClientStat),
+    truncated: false,
     favorites: stats.filter((s) => s.favorited).map(toClientStat),
   });
 }

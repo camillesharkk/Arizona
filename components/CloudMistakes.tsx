@@ -21,7 +21,7 @@ export function CloudMistakes() {
       setNeedAuth(true);
       return;
     }
-    setIsPro(me.user.plan === "pro");
+    setIsPro(Boolean(me.user.arizonaPro || me.user.plan === "pro"));
     const data = await fetch("/api/mistakes/").then((r) => r.json());
     setStats(data.mistakes || []);
   }

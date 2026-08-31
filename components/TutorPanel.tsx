@@ -28,7 +28,7 @@ export function TutorPanel({ q, selected }: { q: Question; selected?: "A" | "B" 
   return (
     <div className="explain">
       <strong>AI Tutor</strong>
-      <p className="notice">Grounded in this site&apos;s handbook notes and {getSource(q.source_id).reference}. Free accounts have a daily cap.</p>
+      <p className="notice">Grounded in this site&apos;s handbook notes and {getSource(q.source_id).reference}. Click a button to ask — explanations above are shown first. Free: 3/day. Pro: 15/day.</p>
       <div className="row">
         <button className="chip" type="button" disabled={busy} onClick={() => ask("explain")}>Explain this question</button>
         <button className="chip" type="button" disabled={busy} onClick={() => ask("why-correct")}>Why is this correct?</button>

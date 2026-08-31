@@ -1,6 +1,6 @@
 import postgres from "postgres";
 import { randomUUID } from "crypto";
-import type { ExamRow, QuestionStat, Store, UserRow } from "./types";
+import type { EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, UserRow } from "./types";
 
 let client: ReturnType<typeof postgres> | null = null;
 
@@ -20,8 +20,8 @@ async function assertSchema() {
   if (schemaReady) return;
   const sql = db();
   try {
-    const rows = await sql`select id from schema_migrations where id in ('001_init', '002_email_reminders')`;
-    if (rows.length < 2) throw new Error("missing");
+    const rows = await sql`select id from schema_migrations where id in ('001_init', '002_email_reminders', '003_entitlements')`;
+    if (rows.length < 3) throw new Error("missing");
   } catch {
     throw new Error("Postgres schema is missing. Set DATABASE_URL and run: npm run db:migrate");
   }
@@ -258,4 +258,80 @@ export const pgStore: Store = {
       where user_id = ${userId} and email_type = ${emailType} and period_key = ${periodKey}
     `;
   },
+  async getArizonaEntitlement(userId) {
+    await assertSchema();
+    const rows = await db()`
+      select * from entitlements
+      where user_id = ${userId}
+        and state = 'AZ'
+        and status = 'active'
+        and starts_at <= now()
+        and expires_at > now()
+      order by expires_at desc
+      limit 1
+    `;
+    return rows[0] ? mapEntitlement(rows[0] as Record<string, unknown>) : null;
+  },
+  async getLatestArizonaExpiry(userId) {
+    await assertSchema();
+    const rows = await db()`
+      select max(expires_at) as expires_at
+      from entitlements
+      where user_id = ${userId} and state = 'AZ' and status = 'active'
+    `;
+    const v = rows[0]?.expires_at;
+    if (!v) return null;
+    return v instanceof Date ? v : new Date(String(v));
+  },
+  async getEntitlementByProviderOrder(provider, providerOrderId) {
+    await assertSchema();
+    const rows = await db()`
+      select * from entitlements
+      where provider = ${provider} and provider_order_id = ${providerOrderId}
+      limit 1
+    `;
+    return rows[0] ? mapEntitlement(rows[0] as Record<string, unknown>) : null;
+  },
+  async insertEntitlement(row) {
+    await assertSchema();
+    const id = randomUUID();
+    const now = new Date().toISOString();
+    await db()`
+      insert into entitlements (
+        id, user_id, product_code, state, status, starts_at, expires_at,
+        provider, provider_order_id, provider_customer_id, created_at, updated_at
+      ) values (
+        ${id}, ${row.userId}, ${row.productCode}, ${row.state}, ${row.status},
+        ${row.startsAt}, ${row.expiresAt}, ${row.provider}, ${row.providerOrderId},
+        ${row.providerCustomerId}, ${now}, ${now}
+      )
+    `;
+    const created = await db()`select * from entitlements where id = ${id} limit 1`;
+    return mapEntitlement(created[0] as Record<string, unknown>);
+  },
+  async setEntitlementStatus(userId, provider, providerOrderId, status) {
+    await assertSchema();
+    await db()`
+      update entitlements
+      set status = ${status}, updated_at = ${new Date().toISOString()}
+      where user_id = ${userId} and provider = ${provider} and provider_order_id = ${providerOrderId}
+    `;
+  },
 };
+
+function mapEntitlement(r: Record<string, unknown>): EntitlementRow {
+  return {
+    id: String(r.id),
+    userId: String(r.user_id),
+    productCode: String(r.product_code),
+    state: String(r.state),
+    status: r.status as EntitlementRow["status"],
+    startsAt: iso(r.starts_at) as string,
+    expiresAt: iso(r.expires_at) as string,
+    provider: String(r.provider),
+    providerOrderId: String(r.provider_order_id),
+    providerCustomerId: r.provider_customer_id ? String(r.provider_customer_id) : null,
+    createdAt: iso(r.created_at) as string,
+    updatedAt: iso(r.updated_at) as string,
+  };
+}

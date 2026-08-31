@@ -25,7 +25,7 @@ export function CheckoutButton() {
   return (
     <div>
       <button className="btn btn-primary" type="button" onClick={go}>
-        Continue to checkout
+        Get 60-Day Pro — $19.99
       </button>
       {err && (
         <p className="notice">

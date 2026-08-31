@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
 import { examConfig } from "@/data/exam-config";
-import { pickExamSet, scorePercent, weakTopics } from "@/lib/quiz";
+import { pickExamSet, scorePercent, topicLabel, weakTopics } from "@/lib/quiz";
 import { recordAnswer, saveProgress, toggleFlag, loadProgress } from "@/lib/storage";
 import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
@@ -30,7 +30,8 @@ export function ExamRunner({
     if (mode === "weak") {
       const ids = loadProgress().wrongIds;
       const pool = pickExamSet(200, { freeOnly: !isPro }).filter((q) => ids.includes(q.question_id));
-      if (pool.length >= 5) return pool.slice(0, 10);
+      const preview = isPro ? 10 : 5;
+      if (pool.length >= 3) return pool.slice(0, preview);
     }
     return pickExamSet(count, { freeOnly: !isPro });
   }, [count, mode, preset, isPro]);
@@ -131,7 +132,15 @@ export function ExamRunner({
     const correct = results.filter((r) => r.correct).length;
     const pct = scorePercent(correct, questions.length);
     const pass = pct >= examConfig.passingScorePercent;
-    const weak = weakTopics(results, 2);
+    const weak = weakTopics(results, 4).filter((w) => w.wrong > 0);
+    const topicAcc = new Map<string, { right: number; total: number; label: string }>();
+    results.forEach((r) => {
+      const cur = topicAcc.get(r.question.topic) || { right: 0, total: 0, label: topicLabel(r.question.topic) };
+      cur.total += 1;
+      if (r.correct) cur.right += 1;
+      topicAcc.set(r.question.topic, cur);
+    });
+    const sources = [...new Set(results.map((r) => r.question.source_reference))];
     return (
       <div className="grid">
         <div className="card">
@@ -143,39 +152,58 @@ export function ExamRunner({
             {correct} of {questions.length} correct. Official passing score modeled at{" "}
             {examConfig.passingScorePercent}%. This is practice, not an SOS result.
           </p>
-          <div className="grid grid-2 stats-mobile">
-            {weak.map((w) => (
-              <div className="stat" key={w.topic}>
-                <b>{w.label}</b>
-                <span>
-                  {w.wrong} missed in this set —{" "}
-                  <Link href={`/arizona/questions/${w.topic}/`}>Practice this topic</Link>
-                </span>
-              </div>
+          <h3>Topic accuracy</h3>
+          {[...topicAcc.entries()].map(([id, v]) => (
+            <p key={id}>
+              {v.label}: {Math.round((v.right / v.total) * 100)}% ({v.total - v.right} missed)
+            </p>
+          ))}
+          {weak.length > 0 && (
+            <div style={{ marginTop: 16 }}>
+              <p>
+                <strong>Your weakest areas are:</strong>
+              </p>
+              <ul>
+                {weak.map((w) => (
+                  <li key={w.topic}>{w.label}</li>
+                ))}
+              </ul>
+              <p>Review those chapters in the free study guide, then drill the missed items.</p>
+            </div>
+          )}
+          <h3>Official sources</h3>
+          <ul>
+            {sources.map((s) => (
+              <li key={s}>{s}</li>
             ))}
-          </div>
+          </ul>
           <div className="row" style={{ marginTop: 16 }}>
-            <Link className="btn btn-primary" href={paths.questions}>
-              Continue Practice
-            </Link>
+            {weak.length > 0 ? (
+              <Link className="btn btn-primary" href={`${paths.practice}?mode=weak`}>
+                Fix My Weak Areas
+              </Link>
+            ) : (
+              <Link className="btn btn-primary" href={paths.questions}>
+                Continue Practice
+              </Link>
+            )}
             <Link className="btn btn-ghost" href={paths.mistakes}>
-              Review Weak Areas
+              Review Wrong Answers
             </Link>
             <Link className="btn btn-ghost" href={paths.study}>
               Review Study Guide
             </Link>
-            <Link className="btn btn-sage" href={paths.become}>
-              After the exam
-            </Link>
           </div>
           <AccountInvite />
-          <div className="card" style={{ marginTop: 16, background: "#fff8ef" }}>
-            <strong>Unlock Pro</strong>
-            <p>Full question bank, unlimited full exams, full notebook, AI Tutor, and readiness analytics.</p>
-            <Link className="btn btn-primary" href={paths.pricing}>
-              Unlock Pro
-            </Link>
-          </div>
+          {mode === "weak" && !isPro && (
+            <div className="card" style={{ marginTop: 16, background: "#fff8ef" }}>
+              <strong>Turn your weak topics into passing scores.</strong>
+              <p>Know exactly what to study next with weak-area training, smart review, and exam readiness.</p>
+              <Link className="btn btn-primary" href={paths.pricing}>
+                Unlock Pro
+              </Link>
+            </div>
+          )}
         </div>
         {results.map((r, i) => (
           <QuestionBlock
@@ -295,7 +323,7 @@ export function QuestionBlock({
       {locked ? (
         <div className="explain">
           <strong>Pro question</strong>
-          <p>This item is in the paid set. Upgrade to open the full bank. Free items remain available.</p>
+          <p>This item is in the full question bank. Unlock Pro to turn weak topics into passing scores.</p>
           <Link className="btn btn-primary" href={paths.pricing}>
             Unlock Pro
           </Link>

@@ -1,9 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { flashcards } from "@/data/flashcards";
 import { getSource } from "@/data/sources";
 import { loadProgress, saveProgress } from "@/lib/storage";
+import { paths } from "@/lib/paths";
+import { FREE_FLASHCARD_PREVIEW } from "@/lib/product";
 
 const cats = ["all", "fees", "dates", "definitions", "acts"] as const;
 
@@ -11,10 +14,20 @@ export function FlashcardsClient() {
   const [cat, setCat] = useState<(typeof cats)[number]>("all");
   const [i, setI] = useState(0);
   const [flipped, setFlipped] = useState(false);
-  const deck = useMemo(
+  const [isPro, setIsPro] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/auth/me/")
+      .then((r) => r.json())
+      .then((d) => setIsPro(Boolean(d.user?.arizonaPro || d.user?.plan === "pro")))
+      .catch(() => undefined);
+  }, []);
+
+  const full = useMemo(
     () => (cat === "all" ? flashcards : flashcards.filter((c) => c.category === cat)),
     [cat]
   );
+  const deck = isPro ? full : full.slice(0, FREE_FLASHCARD_PREVIEW);
   const card = deck[i % Math.max(deck.length, 1)];
   if (!card) return <p>No cards in this set.</p>;
   const p = loadProgress();
@@ -40,6 +53,7 @@ export function FlashcardsClient() {
       </div>
       <p className="notice">
         Mastered {known} · Review pile {p.reviewCards.length}
+        {!isPro ? ` · Free preview ${deck.length} of ${full.length} cards` : ""}
       </p>
       <div className="card flash-card" onClick={() => setFlipped(!flipped)} role="button" tabIndex={0}>
         <div>
@@ -77,6 +91,15 @@ export function FlashcardsClient() {
           Review Again
         </button>
       </div>
+      {!isPro && (
+        <div className="card" style={{ marginTop: 16 }}>
+          <strong>Know exactly what to study next.</strong>
+          <p>Full flashcards are included with 60-day Pro.</p>
+          <Link className="btn btn-primary" href={paths.pricing}>
+            Unlock Pro
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

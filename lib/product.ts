@@ -1,0 +1,9 @@
+export const AZ_PRO_PRODUCT = "az_exam_pro_60d";
+export const AZ_STATE = "AZ";
+export const PRO_DURATION_DAYS = 60;
+export const AI_LIMIT_FREE = 3;
+export const AI_LIMIT_PRO = 15;
+export const FREE_FULL_EXAMS = 1;
+export const FREE_WEAK_PREVIEW = 5;
+export const FREE_FLASHCARD_PREVIEW = 8;
+export const PRO_PRICE = "19.99";

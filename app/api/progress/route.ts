@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
-import { canAccessQuestion } from "@/lib/entitlements";
+import { canAccessQuestion, canTakeFullExam, canUseAdvancedAnalytics, hasArizonaPro } from "@/lib/entitlements";
 import { publishedQuestions } from "@/data/questions";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
@@ -21,6 +21,9 @@ export async function POST(req: Request) {
       .object({ mode: z.string(), score: z.number(), correctCount: z.number(), total: z.number() })
       .safeParse(body);
     if (!exam.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
+    if (exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
+      return NextResponse.json({ error: "Pro required for additional full exams" }, { status: 402 });
+    }
     await recordExam({ ...exam.data, userId: session.id });
     return NextResponse.json({ ok: true });
   }
@@ -28,7 +31,7 @@ export async function POST(req: Request) {
   if (!parsed.success) return NextResponse.json({ error: "Invalid answer" }, { status: 400 });
   const q = publishedQuestions().find((x) => x.question_id === parsed.data.questionId);
   if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
-  if (!canAccessQuestion(session, q)) return NextResponse.json({ error: "Pro required" }, { status: 402 });
+  if (!(await canAccessQuestion(session.id, q))) return NextResponse.json({ error: "Pro required" }, { status: 402 });
   const correct = parsed.data.selected === q.correct_option;
   const stat = await recordQuestionAnswer({
     userId: session.id,
@@ -43,25 +46,29 @@ export async function GET() {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const store = await getStore();
-  const [stats, exams, user] = await Promise.all([
+  const [stats, exams, user, arizonaPro] = await Promise.all([
     store.listStats(session.id),
     store.listExams(session.id),
     store.getUserById(session.id),
+    hasArizonaPro(session.id),
   ]);
+  const advanced = await canUseAdvancedAnalytics(session.id);
   return NextResponse.json({
     stats: stats.map(toClientStat),
     exams: exams.map(toClientExam),
-    user: user ? toClientUser(user) : null,
+    user: user ? toClientUser(user, arizonaPro) : null,
+    arizonaPro,
+    advancedAnalytics: advanced,
   });
 }
 
-function toClientUser(user: UserRow) {
+function toClientUser(user: UserRow, arizonaPro: boolean) {
   return {
     id: user.id,
     email: user.email,
     name: user.name,
     emailVerified: user.emailVerified,
-    plan: user.plan,
+    plan: arizonaPro ? "pro" : "free",
     planStatus: user.planStatus,
     planExpiresAt: user.planExpiresAt,
     emailDaily: user.emailDaily,

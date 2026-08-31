@@ -87,15 +87,7 @@ async function planForUser(
 
   if (wantWeekly && (opts.force || isArizonaMonday())) {
     const report = weeklyReport(stats, exams, today);
-    const sessionUser = {
-      id: user.id,
-      email: user.email,
-      plan: user.plan,
-      planStatus: user.planStatus,
-      emailVerified: user.emailVerified,
-      name: user.name,
-    };
-    const readiness = canUseAdvancedAnalytics(sessionUser) ? readinessScore(stats, exams) : null;
+    const readiness = (await canUseAdvancedAnalytics(user.id)) ? readinessScore(stats, exams) : null;
     out.push({
       user,
       type: "weekly",

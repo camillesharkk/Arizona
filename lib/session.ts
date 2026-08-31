@@ -1,7 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import type { SessionUser } from "@/lib/entitlements";
-import { isPro } from "@/lib/entitlements";
 
 const COOKIE = "az_session";
 
@@ -46,10 +45,8 @@ export async function getSession(): Promise<SessionUser | null> {
   const jar = await cookies();
   const token = jar.get(COOKIE)?.value;
   if (!token) return null;
-  const user = await readSessionToken(token);
-  if (!user) return null;
-  if (!isPro(user) && user.plan === "pro") return { ...user, plan: "free" };
-  return user;
+  if (!token) return null;
+  return readSessionToken(token);
 }
 
 export async function setSessionCookie(user: SessionUser) {

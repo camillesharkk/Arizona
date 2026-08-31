@@ -3,6 +3,7 @@ import type { UserRow } from "@/lib/store/types";
 import { getStore } from "@/lib/store";
 import { siteUrl } from "@/lib/site";
 import { paths } from "@/lib/paths";
+import { grantArizonaPro60d, refundArizonaOrder } from "@/lib/entitlements";
 
 export type BillingEvent =
   | { type: "purchase_completed"; eventId: string; email?: string; userId?: string; customerId?: string; subscriptionId?: string }
@@ -12,6 +13,10 @@ export type BillingEvent =
 
 function provider() {
   return (process.env.MOR_PROVIDER || "mock").toLowerCase();
+}
+
+function entitlementProvider(): "mock" | "lemon_squeezy" {
+  return provider() === "lemonsqueezy" ? "lemon_squeezy" : "mock";
 }
 
 export function verifyMorSignature(raw: string, header: string | null) {
@@ -57,19 +62,28 @@ export async function applyBillingEvent(event: BillingEvent) {
 
   if (!user) return { ok: false, error: "user_not_found" };
 
-  if (event.type === "purchase_completed") {
-    await store.updateUser(user.id, {
-      plan: "pro",
-      planStatus: "active",
-      billingCustomerId: event.customerId || user.billingCustomerId,
-      billingSubscriptionId: event.subscriptionId || user.billingSubscriptionId,
-    });
-  }
-  if (event.type === "subscription_cancelled") {
-    await store.updateUser(user.id, { planStatus: "canceled", plan: "free" });
-  }
-  if (event.type === "subscription_expired" || event.type === "refund") {
-    await store.updateUser(user.id, { plan: "free", planStatus: event.type === "refund" ? "refunded" : "expired" });
+  try {
+    if (event.type === "purchase_completed") {
+      await grantArizonaPro60d({
+        userId: user.id,
+        provider: entitlementProvider(),
+        providerOrderId: event.eventId,
+        providerCustomerId: event.customerId || null,
+      });
+      await store.updateUser(user.id, {
+        billingCustomerId: event.customerId || user.billingCustomerId,
+        billingSubscriptionId: event.subscriptionId || user.billingSubscriptionId,
+      });
+    }
+    if (event.type === "subscription_cancelled") {
+      await store.updateUser(user.id, { planStatus: "canceled" });
+    }
+    if (event.type === "subscription_expired" || event.type === "refund") {
+      await refundArizonaOrder(user.id, entitlementProvider(), event.eventId);
+    }
+  } catch {
+    console.error("[billing] entitlement update failed");
+    return { ok: false, error: "entitlement_failed" };
   }
   return { ok: true, duplicate: false };
 }

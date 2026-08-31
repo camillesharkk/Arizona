@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getSession, setSessionCookie } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { checkoutUrl, applyBillingEvent } from "@/lib/billing";
+import { hasArizonaPro } from "@/lib/entitlements";
 
 export async function POST() {
   const session = await getSession();
@@ -29,7 +30,7 @@ export async function GET(req: Request) {
     await setSessionCookie({
       id: user.id,
       email: user.email,
-      plan: "pro",
+      plan: (await hasArizonaPro(user.id)) ? "pro" : "free",
       planStatus: "active",
       emailVerified: user.emailVerified,
       name: user.name,

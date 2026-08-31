@@ -66,6 +66,23 @@ export type WebhookRow = {
 
 export type EmailType = "daily" | "weekly" | "exam";
 
+export type EntitlementStatus = "active" | "expired" | "refunded" | "revoked";
+
+export type EntitlementRow = {
+  id: string;
+  userId: string;
+  productCode: string;
+  state: string;
+  status: EntitlementStatus;
+  startsAt: string;
+  expiresAt: string;
+  provider: string;
+  providerOrderId: string;
+  providerCustomerId: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type Store = {
   getUserByEmail(email: string): Promise<UserRow | null>;
   getUserById(id: string): Promise<UserRow | null>;
@@ -88,5 +105,17 @@ export type Store = {
     emailType: EmailType,
     periodKey: string,
     result: { status: "sent" | "failed"; messageId?: string | null }
+  ): Promise<void>;
+  getArizonaEntitlement(userId: string): Promise<EntitlementRow | null>;
+  getLatestArizonaExpiry(userId: string): Promise<Date | null>;
+  getEntitlementByProviderOrder(provider: string, providerOrderId: string): Promise<EntitlementRow | null>;
+  insertEntitlement(
+    row: Omit<EntitlementRow, "id" | "createdAt" | "updatedAt">
+  ): Promise<EntitlementRow>;
+  setEntitlementStatus(
+    userId: string,
+    provider: string,
+    providerOrderId: string,
+    status: EntitlementStatus
   ): Promise<void>;
 };

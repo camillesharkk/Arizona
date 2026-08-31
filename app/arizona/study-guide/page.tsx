@@ -2,9 +2,6 @@ import Link from "next/link";
 import { chapters } from "@/data/study-guide";
 import { getSource } from "@/data/sources";
 import { ChapterProgress, Readiness } from "@/components/StudyProgress";
-
-import { getSession } from "@/lib/session";
-import { studyChapterLocked } from "@/lib/entitlements";
 import { paths } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
 
@@ -15,13 +12,12 @@ export const metadata = pageMeta({
 });
 
 export default async function StudyGuidePage() {
-  const user = await getSession();
   return (
     <main className="wrap hero">
       <p className="kicker">Study Guide</p>
       <h1>Arizona Notary Study Guide 2026 — Everything You Need to Know</h1>
       <p className="lede">
-        Reorganized for study, not copied from the official handbook. Each chapter ends in practice.
+        Reorganized for study, not copied from the official handbook. Each chapter ends in practice. The full guide is free.
       </p>
       <div className="row">
         <Link className="btn btn-primary" href={paths.practice}>
@@ -41,22 +37,12 @@ export default async function StudyGuidePage() {
       </div>
       {chapters.map((c) => {
         const src = getSource(c.source_id);
-        const locked = studyChapterLocked(user, c.id);
         return (
           <article key={c.id} id={c.id} className="card" style={{ marginTop: 18 }}>
             <div className="row space">
               <h2>{c.title}</h2>
               <ChapterProgress id={c.id} />
             </div>
-            {locked ? (
-              <div>
-                <p>This advanced chapter is included with Pro.</p>
-                <Link className="btn btn-primary" href={paths.pricing}>
-                  Unlock Pro
-                </Link>
-              </div>
-            ) : (
-              <>
             <p className="lede">{c.summary}</p>
             {c.sections.map((s) => (
               <div key={s.heading}>
@@ -78,8 +64,6 @@ export default async function StudyGuidePage() {
             <Link className="btn btn-primary" href={`/arizona/questions/${c.topic}/`}>
               Practice This Topic
             </Link>
-              </>
-            )}
           </article>
         );
       })}

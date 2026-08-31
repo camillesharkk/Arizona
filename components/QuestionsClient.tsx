@@ -23,7 +23,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   useEffect(() => {
     fetch("/api/auth/me/")
       .then((r) => r.json())
-      .then((d) => setIsPro(d.user?.plan === "pro"))
+      .then((d) => setIsPro(Boolean(d.user?.arizonaPro || d.user?.plan === "pro")))
       .catch(() => undefined);
   }, []);
 

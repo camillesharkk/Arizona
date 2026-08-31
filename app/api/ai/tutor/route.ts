@@ -23,11 +23,11 @@ export async function POST(req: Request) {
   if (!body.success) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   const q = publishedQuestions().find((x) => x.question_id === body.data.questionId);
   if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
-  if (!canAccessQuestion(session, q)) return NextResponse.json({ error: "Pro required" }, { status: 402 });
+  if (!(await canAccessQuestion(session.id, q))) return NextResponse.json({ error: "Pro required" }, { status: 402 });
   const store = await getStore();
   const day = new Date().toISOString().slice(0, 10);
   const used = await store.aiCount(session.id, day);
-  const limit = aiDailyLimit(session);
+  const limit = await aiDailyLimit(session.id);
   if (used >= limit) return NextResponse.json({ error: "Daily AI limit reached", remaining: 0 }, { status: 429 });
   await store.bumpAi(session.id, day);
   const src = getSource(q.source_id);

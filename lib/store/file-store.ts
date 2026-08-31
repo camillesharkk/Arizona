@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
-import type { EmailType, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
+import type { EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
 
 type FileDb = {
   users: UserRow[];
@@ -11,6 +11,7 @@ type FileDb = {
   ai: { userId: string; day: string; n: number }[];
   webhooks: string[];
   emailLogs: { userId: string; emailType: EmailType; periodKey: string; status: string; messageId?: string | null }[];
+  entitlements: EntitlementRow[];
 };
 
 const empty = (): FileDb => ({
@@ -21,6 +22,7 @@ const empty = (): FileDb => ({
   ai: [],
   webhooks: [],
   emailLogs: [],
+  entitlements: [],
 });
 
 const filePath = () => path.join(process.cwd(), ".data", "store.json");
@@ -191,6 +193,60 @@ export const fileStore: Store = {
       }
       db.emailLogs[i].status = "sent";
       db.emailLogs[i].messageId = result.messageId || null;
+    });
+  },
+  async getArizonaEntitlement(userId) {
+    const db = await load();
+    const now = Date.now();
+    return (
+      db.entitlements.find(
+        (e) =>
+          e.userId === userId &&
+          e.state === "AZ" &&
+          e.status === "active" &&
+          new Date(e.startsAt).getTime() <= now &&
+          new Date(e.expiresAt).getTime() > now
+      ) ?? null
+    );
+  },
+  async getLatestArizonaExpiry(userId) {
+    const db = await load();
+    const times = db.entitlements
+      .filter((e) => e.userId === userId && e.state === "AZ" && e.status === "active")
+      .map((e) => new Date(e.expiresAt).getTime());
+    if (!times.length) return null;
+    return new Date(Math.max(...times));
+  },
+  async getEntitlementByProviderOrder(provider, providerOrderId) {
+    const db = await load();
+    return db.entitlements.find((e) => e.provider === provider && e.providerOrderId === providerOrderId) ?? null;
+  },
+  insertEntitlement(row) {
+    return mutate((db) => {
+      const dup = db.entitlements.find(
+        (e) => e.provider === row.provider && e.providerOrderId === row.providerOrderId
+      );
+      if (dup) return dup;
+      const now = new Date().toISOString();
+      const next: EntitlementRow = {
+        ...row,
+        id: randomUUID(),
+        createdAt: now,
+        updatedAt: now,
+      };
+      db.entitlements.push(next);
+      return next;
+    });
+  },
+  setEntitlementStatus(userId, provider, providerOrderId, status: EntitlementStatus) {
+    return mutate((db) => {
+      const e = db.entitlements.find(
+        (x) => x.userId === userId && x.provider === provider && x.providerOrderId === providerOrderId
+      );
+      if (e) {
+        e.status = status;
+        e.updatedAt = new Date().toISOString();
+      }
     });
   },
 };
