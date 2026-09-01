@@ -1,5 +1,5 @@
 export type Difficulty = "easy" | "medium" | "hard";
-export type SourceType = "Manual" | "Statute" | "SOS";
+export type SourceType = "Manual" | "Statute" | "SOS" | "Rule";
 export type QuestionStatus = "draft" | "reviewed" | "published" | "retired";
 
 export type TopicId =
@@ -19,6 +19,10 @@ export type Source = {
   reference: string;
   url: string;
   last_verified_at: string;
+  /** When this registry entry was last opened against the official page — not a per-question legal review. */
+  last_checked_at?: string;
+  document_url?: string;
+  version?: string;
 };
 
 export type Question = {
