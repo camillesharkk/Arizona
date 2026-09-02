@@ -45,6 +45,15 @@ a:hover { text-decoration: underline; }
   gap: 16px; min-height: 68px;
 }
 .header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.header-right {
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.header-signin {
+  color: var(--muted); font-size: 0.95rem; font-weight: 600; text-decoration: none;
+  white-space: nowrap;
+}
+.header-signin:hover, .header-signin.active { color: var(--ink); text-decoration: none; }
+.header-cta { white-space: nowrap; }
 .menu-btn {
   display: none;
   width: 44px; height: 44px; padding: 0;
@@ -111,8 +120,8 @@ a:hover { text-decoration: underline; }
   color: white; display: grid; place-items: center;
   font-family: var(--serif); font-weight: 700;
 }
-.nav { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
-.nav a { color: var(--muted); font-size: 0.95rem; font-weight: 600; text-decoration: none; }
+.nav { display: flex; gap: 18px; align-items: center; flex-wrap: nowrap; min-width: 0; }
+.nav a { color: var(--muted); font-size: 0.95rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .nav a:hover, .nav a.active { color: var(--ink); }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -230,13 +239,82 @@ details.explain summary { cursor: pointer; font-weight: 700; }
 .toc a { display: block; padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--ink); }
 .notice { font-size: 0.85rem; color: var(--muted); }
 .breadcrumb { font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
+
+.account-menu { position: relative; }
+.avatar-btn {
+  width: 38px; height: 38px; padding: 0; border-radius: 50%;
+  border: 1px solid var(--line);
+  background: linear-gradient(145deg, #d9783a, #c45c26);
+  color: white; font-weight: 700; font-size: 0.95rem; font-family: inherit;
+  cursor: pointer; display: grid; place-items: center; line-height: 1;
+}
+.avatar-btn:hover { filter: brightness(1.05); }
+.avatar-btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.account-dropdown {
+  position: absolute; right: 0; top: calc(100% + 8px);
+  width: 264px; max-width: calc(100vw - 24px);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  z-index: 40;
+  padding: 8px;
+}
+.account-dropdown-id { padding: 10px 12px 12px; }
+.account-menu-name {
+  margin: 0; font-weight: 700; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.account-dropdown-email {
+  margin: 2px 0 0;
+  color: var(--muted); font-size: 0.82rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.account-plan-row { margin: 8px 0 0; }
+.account-menu-sep {
+  height: 1px; background: var(--line); margin: 6px 4px;
+}
+.account-dropdown a,
+.account-dropdown button.account-signout {
+  display: block; width: 100%; text-align: left;
+  padding: 10px 12px; min-height: 40px;
+  border: 0; border-radius: 10px;
+  background: transparent; color: var(--ink);
+  font: inherit; font-weight: 600; font-size: 0.92rem;
+  text-decoration: none; cursor: pointer;
+}
+.account-dropdown a:hover,
+.account-dropdown button.account-signout:hover {
+  background: var(--brand-soft); text-decoration: none;
+}
+.account-dropdown a:focus-visible,
+.account-dropdown button.account-signout:focus-visible,
+.account-signout:focus-visible {
+  outline: 2px solid var(--brand); outline-offset: 2px;
+}
+.account-signout { color: var(--danger) !important; }
+.drawer-account {
+  padding: 8px 10px 12px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 8px;
+}
+.drawer-account-name {
+  margin: 0; font-weight: 700; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.drawer-account-email {
+  margin: 2px 0 8px;
+  color: var(--muted); font-size: 0.85rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
 .compare { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .compare th, .compare td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; vertical-align: top; }
 
 @media (max-width: 900px) {
   .grid-4, .grid-3 { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
-  .nav-desktop { display: none; }
+  .nav-desktop, .header-cta, .header-signin, .account-menu { display: none; }
   .menu-btn { display: inline-flex; }
   .hero-secondary-cta { display: none; }
 }
@@ -248,6 +326,15 @@ details.explain summary { cursor: pointer; font-weight: 700; }
 @media (min-width: 901px) {
   .nav-mobile { display: none; }
   .nav-drawer, .nav-backdrop { display: none !important; }
+  .header-inner { flex-wrap: nowrap; }
+  .nav-desktop { gap: 14px; }
+}
+@media (min-width: 901px) and (max-width: 1100px) {
+  .header-inner { gap: 10px; }
+  .nav-desktop { gap: 10px; }
+  .nav a { font-size: 0.88rem; }
+  .header-cta { padding: 10px 14px; font-size: 0.88rem; }
+  .header-right { gap: 8px; }
 }
 
 .bar { display: none; }

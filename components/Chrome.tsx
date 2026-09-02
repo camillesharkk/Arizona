@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { paths } from "@/lib/paths";
+import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
 
-type Me = { email: string; plan: "free" | "pro"; name: string | null } | null;
+type Me = HeaderUser | null;
 
 function active(pathname: string, href: string) {
   if (href === paths.home || href === paths.hub) return pathname === paths.home || pathname === paths.hub || pathname === "/arizona";
@@ -88,27 +89,33 @@ export function SiteHeader() {
           <Link href={paths.become} className={active(pathname, paths.become) ? "active" : ""}>
             Become a Notary
           </Link>
-          {me ? (
-            <Link href={paths.dashboard} className={active(pathname, paths.dashboard) ? "active" : ""}>
-              {me.plan === "pro" ? "Pro Dashboard" : "Account"}
-            </Link>
-          ) : (
-            <Link href={paths.login} className={active(pathname, paths.login) ? "active" : ""}>
+        </nav>
+        <div className="header-right">
+          {!me && (
+            <Link href={paths.login} className={`header-signin ${active(pathname, paths.login) ? "active" : ""}`}>
               Sign in
             </Link>
           )}
-          {me?.plan === "pro" && <span className="badge">Pro</span>}
-          <Link className="btn btn-primary" href={paths.practice}>
+          <Link className="btn btn-primary header-cta" href={paths.practice}>
             Start Free Test
           </Link>
-        </nav>
-        <Link className="btn btn-primary bar" href={paths.practice}>
-          Practice Test
-        </Link>
+          {me && <AccountMenu me={me} onLogout={logout} />}
+          <Link className="btn btn-primary bar" href={paths.practice}>
+            Practice Test
+          </Link>
+        </div>
       </div>
       {open && <div className="nav-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />}
       <nav id="mobile-nav" className={open ? "nav-drawer open" : "nav-drawer"} aria-label="Mobile">
-        <p className="kicker">{me ? me.email : "Guest"}{me?.plan === "pro" ? " · Pro" : ""}</p>
+        {me ? (
+          <div className="drawer-account">
+            <p className="drawer-account-name">{me.name?.trim() || me.email}</p>
+            {me.name?.trim() ? <p className="drawer-account-email">{me.email}</p> : null}
+            <span className={me.plan === "pro" ? "badge badge-pro" : "badge"}>{me.plan === "pro" ? "Pro" : "Free"}</span>
+          </div>
+        ) : (
+          <p className="kicker">Guest</p>
+        )}
         <button className="chip" type="button" onClick={() => setStudyOpen((v) => !v)}>
           Study {studyOpen ? "▾" : "▸"}
         </button>
@@ -132,9 +139,9 @@ export function SiteHeader() {
           <>
             <Link href={paths.dashboard}>Dashboard</Link>
             <Link href={paths.mistakes}>Wrong Answers</Link>
-            <Link href={paths.account}>Account</Link>
-            <Link href={paths.pricing}>{me.plan === "pro" ? "Billing" : "Upgrade Pro"}</Link>
-            <button className="btn btn-ghost btn-wide" type="button" onClick={logout}>
+            <Link href={paths.account}>Account Settings</Link>
+            <Link href={paths.pricing}>{me.plan === "pro" ? "Pro Access" : "Upgrade to Pro"}</Link>
+            <button className="btn btn-ghost btn-wide account-signout" type="button" onClick={logout}>
               Sign out
             </button>
           </>
