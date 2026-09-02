@@ -8,8 +8,8 @@ import {
   pickExamSet,
   pickFullExam,
   pickQuickExam,
+  presentExamQuestions,
   scorePercent,
-  shuffleQuestionOptions,
   topicLabel,
   weakTopics,
   type Letter,
@@ -37,24 +37,19 @@ export function ExamRunner({
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const count = mode === "quick" ? 10 : mode === "full" ? examConfig.questionCount : 10;
   const questions = useMemo(() => {
-    const applyShuffle = (list: Question[]) => {
-      const maps: Record<string, Record<Letter, Letter>> = {};
-      const out = list.map((item) => {
-        const { question, toOriginal } = shuffleQuestionOptions(item, sessionSeed);
-        maps[item.question_id] = toOriginal;
-        return question;
-      });
+    const present = (list: Question[]) => {
+      const { questions: out, maps } = presentExamQuestions(list, sessionSeed);
       toOriginalRef.current = maps;
       return out;
     };
-    if (preset?.length) return applyShuffle(preset);
+    if (preset?.length) return present(preset);
     if (mode === "full") {
       const picked = pickFullExam(sessionSeed);
       if (picked.length !== examConfig.questionCount) {
         console.error("[exam] Full exam requires", examConfig.questionCount, "questions; pool returned", picked.length);
         return [];
       }
-      return applyShuffle(picked);
+      return present(picked);
     }
     if (mode === "quick") {
       const picked = pickQuickExam(sessionSeed, false);
@@ -62,16 +57,16 @@ export function ExamRunner({
         console.error("[exam] Quick exam requires 10 questions; pool returned", picked.length);
         return [];
       }
-      return applyShuffle(picked);
+      return present(picked);
     }
     if (mode === "weak") {
       const ids = loadProgress().wrongIds;
       const pool = pickExamSet(200, { seed: sessionSeed }).filter((q) => ids.includes(q.question_id));
       const preview = isPro ? 10 : 5;
-      if (pool.length >= 3) return applyShuffle(pool.slice(0, preview));
+      if (pool.length >= 3) return present(pool.slice(0, preview));
       return [];
     }
-    return applyShuffle(pickExamSet(count, { seed: sessionSeed }));
+    return present(pickExamSet(count, { seed: sessionSeed }));
   }, [count, mode, preset, isPro, sessionSeed]);
 
   const timed = mode === "full" && !practice;
@@ -308,7 +303,9 @@ export function ExamRunner({
           You selected {selected}.
         </p>
       )}
-      {!!selected && (practice || showExplain) && <TutorPanel q={q} selected={selected} />}
+      {!!selected && (practice || showExplain) && (
+        <TutorPanel q={q} selected={originalLetter(q.question_id, selected)} />
+      )}
       <p className="notice">
         {source.title} · {q.source_reference} · Last verified {q.last_verified_at}
       </p>

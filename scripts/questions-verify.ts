@@ -125,13 +125,10 @@ if (leaked.length) {
 const dist: Record<Letter, number> = { A: 0, B: 0, C: 0, D: 0 };
 for (const q of published) dist[q.correct_option] += 1;
 const n = published.length || 1;
-info("Correct-option distribution (published + active, bank letters before session shuffle):");
+info("Correct-option distribution (author-canonical bank letters; session display is balanced separately):");
 for (const l of LETTERS) {
   const pct = ((dist[l] / n) * 100).toFixed(1);
   info(`  ${l}: ${dist[l]} (${pct}%)`);
-  if (dist[l] / n < 0.15 || dist[l] / n > 0.4) {
-    warn(`correct_option ${l} is ${pct}% of published bank (target roughly 20–30%)`);
-  }
 }
 
 const freeCount = published.filter((q) => q.is_free).length;

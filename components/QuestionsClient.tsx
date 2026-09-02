@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import type { Difficulty, TopicId } from "@/lib/types";
 import { QuestionBlock } from "@/components/ExamRunner";
 import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
+import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress, toggleFlag } from "@/lib/storage";
 
 export function QuestionsClient({ topic }: { topic?: TopicId }) {
@@ -18,6 +19,8 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [explainOpen, setExplainOpen] = useState(false);
   const [resumed, setResumed] = useState(false);
   const [isPro, setIsPro] = useState(false);
+  const sessionSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
+  const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
 
   useEffect(() => subscribeProgress(() => setProgress(loadProgress())), []);
   useEffect(() => {
@@ -27,7 +30,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       .catch(() => undefined);
   }, []);
 
-  const pool = useMemo(() => {
+  const rawPool = useMemo(() => {
     let list = publishedQuestions().filter((q) => q.is_free || isPro);
     if (topic) list = list.filter((q) => q.topic === topic);
     else if (filter !== "all" && filter !== "wrong" && filter !== "unanswered") {
@@ -38,6 +41,17 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     if (difficulty !== "all") list = list.filter((q) => q.difficulty === difficulty);
     return list;
   }, [filter, difficulty, topic, progress.wrongIds, progress.answeredIds, isPro]);
+
+  const pool = useMemo(() => {
+    const maps: Record<string, Record<Letter, Letter>> = {};
+    const out = rawPool.map((item) => {
+      const { question, toOriginal } = shuffleQuestionOptions(item, sessionSeed);
+      maps[item.question_id] = toOriginal;
+      return question;
+    });
+    toOriginalRef.current = maps;
+    return out;
+  }, [rawPool, sessionSeed]);
 
   useEffect(() => {
     if (resumed || topic) return;
@@ -55,7 +69,12 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const q = pool[safeIdx];
   const selected = q ? answers[q.question_id] : undefined;
   const answered = progress.answeredIds.length;
-  const correctSession = publishedQuestions().filter((item) => answers[item.question_id] === item.correct_option).length;
+  const correctSession = pool.filter((item) => answers[item.question_id] === item.correct_option).length;
+
+  function originalLetter(display: Letter): Letter {
+    if (!q) return display;
+    return toOriginalRef.current[q.question_id]?.[display] ?? display;
+  }
 
   if (!q) {
     return <p>No questions match these filters.</p>;
@@ -108,7 +127,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
           fetch("/api/progress/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ questionId: q.question_id, selected: l }),
+            body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l) }),
           }).catch(() => undefined);
           setExplainOpen(true);
         }}
@@ -116,7 +135,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
         onMark={() => toggleFlag(q.question_id)}
         isPro={isPro}
       />
-      {selected && <TutorPanel q={q} selected={selected} />}
+      {selected && <TutorPanel q={q} selected={originalLetter(selected)} />}
       {selected && (
         <details className="explain" open={explainOpen}>
           <summary>Why this option is right or wrong</summary>
