@@ -26,6 +26,8 @@ export const topics = [
   { id: "seals-fees", label: "Seal, Stamp & Fees", short: "Fees" },
   { id: "prohibited-acts", label: "Prohibited Acts", short: "Prohibited" },
   { id: "new-laws", label: "2026 Law Updates", short: "New Laws" },
+  { id: "copy-certification", label: "Copy Certification", short: "Copies" },
+  { id: "electronic-ron", label: "Electronic & RON", short: "RON" },
 ] as const;
 
 export type TopicId = (typeof topics)[number]["id"];

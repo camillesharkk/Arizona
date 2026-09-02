@@ -1,5 +1,6 @@
 import type { Question, TopicId } from "../lib/types.ts";
 import { isActiveQuestion } from "../lib/question-status.ts";
+import { expansionDrafts } from "./question-bank-expansion.ts";
 
 type Draft = Omit<
   Question,
@@ -11,6 +12,7 @@ type Draft = Omit<
   | "last_verified_at"
 > & {
   last_verified_at?: string;
+  effective_from?: string;
 };
 
 type Letter = "A" | "B" | "C" | "D";
@@ -48,7 +50,7 @@ function publish(drafts: Draft[]): Question[] {
     state: "AZ",
     status: "published",
     version: 1,
-    effective_from: "2024-01-01",
+    effective_from: q.effective_from ?? "2024-01-01",
     effective_to: null,
     last_verified_at: q.last_verified_at ?? "2026-08-01",
   }));
@@ -1208,7 +1210,7 @@ const drafts: Draft[] = [
   },
 ];
 
-export const questions: Question[] = publish(drafts);
+export const questions: Question[] = publish([...drafts, ...expansionDrafts]);
 
 export function publishedQuestions(): Question[] {
   return questions.filter((q) => isActiveQuestion(q));

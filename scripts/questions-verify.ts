@@ -106,7 +106,14 @@ for (const q of all) {
     else if (!sources[q.source_id]) warn(`${q.question_id}: source_id "${q.source_id}" not in registry`);
     if (!q.source_reference?.trim()) fail(`${q.question_id}: published but missing source_reference`);
     if (!q.last_verified_at?.trim()) fail(`${q.question_id}: published but unverified (no last_verified_at)`);
-    if (!isActiveQuestion(q)) warn(`${q.question_id}: status published but not active (dates)`);
+    if (!isActiveQuestion(q)) {
+      const now = new Date();
+      if (!Number.isNaN(from.getTime()) && now < from) {
+        info(`${q.question_id}: published but not yet active (effective_from ${q.effective_from})`);
+      } else {
+        warn(`${q.question_id}: status published but not active (dates)`);
+      }
+    }
   }
 }
 

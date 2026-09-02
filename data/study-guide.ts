@@ -210,6 +210,58 @@ export const chapters: StudyChapter[] = [
     source_id: "sos_exam",
   },
   {
+    id: "copy-certification",
+    title: "Copy Certification",
+    topic: "copy-certification",
+    summary: "Certifying a copy is a distinct notarial act. Compare the copy to the original and do not certify Arizona public records except as the journal statute requires.",
+    sections: [
+      {
+        heading: "What the officer must determine",
+        body: "A.R.S. § 41-253(D) requires the officer who certifies or attests a copy to determine that the copy is a full, true, and accurate transcription or reproduction of the record or item. Guessing from memory is not that determination.",
+      },
+      {
+        heading: "Arizona public records",
+        body: "Except as required under A.R.S. § 41-319, a notarial officer may not certify or attest a copy of a public record of this state. Journal public-record entries are the statutory exception when a certified copy of the journal is requested.",
+      },
+      {
+        heading: "Electronic records on paper",
+        body: "A.R.S. § 41-252(C) separately allows a notarial officer to certify that a tangible copy of an electronic record is an accurate copy of that electronic record. That is not a license to certify an Arizona public record.",
+      },
+    ],
+    keyFacts: [
+      "Copy certification is a listed notarial act in A.R.S. § 41-251(6).",
+      "Full, true, and accurate comparison is required.",
+      "Do not certify a copy of an Arizona public record except as § 41-319 requires.",
+    ],
+    source_id: "ars_41_253",
+  },
+  {
+    id: "electronic-ron",
+    title: "Electronic Notarization & RON",
+    topic: "electronic-ron",
+    summary: "In-person electronic notarization and remote online notarization are different processes. Do not improvise a video chat.",
+    sections: [
+      {
+        heading: "Electronic notarization",
+        body: "Arizona SOS Remote & eNotary describes electronic notarization as an electronic record signed with electronic signatures while the signer still physically appears before the notary. Traditional identification rules still apply. It is not the same as remote appearance.",
+      },
+      {
+        heading: "Remote online notarization",
+        body: "A.R.S. § 41-263 allows a notary public located in this state to perform a notarial act using communication technology for a remotely located individual. Identity must be established as the statute provides, an audiovisual recording must be created, and the certificate must indicate that communication technology was used.",
+      },
+      {
+        heading: "Before the first remote act",
+        body: "A.R.S. § 41-263(F) requires the notary to notify the Secretary of State before the first such act and to identify the technologies the notary intends to use. A casual video app is not a substitute for that notice and the statutory recording and identification rules.",
+      },
+    ],
+    keyFacts: [
+      "The notary must be located in Arizona for a remote act under § 41-263(B).",
+      "RON identity may use personal knowledge, a credible witness, or at least two types of identity proofing.",
+      "Keep the audiovisual recording at least five years unless a different rule period applies.",
+    ],
+    source_id: "ars_41_263",
+  },
+  {
     id: "exam-day",
     title: "Exam-Day Strategy",
     topic: "commission",

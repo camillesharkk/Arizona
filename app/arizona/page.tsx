@@ -62,7 +62,7 @@ export default function ArizonaHub() {
         </Link>
         <Link href={paths.study} className="card">
           <h3>Study Guide</h3>
-          <p>Ten chapters that send you back to the questions.</p>
+          <p>Study chapters that send you back to the questions.</p>
         </Link>
         <Link href={paths.examPrep} className="card">
           <h3>Exam Guide</h3>

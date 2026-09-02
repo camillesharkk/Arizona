@@ -10,7 +10,9 @@ export type TopicId =
   | "journals"
   | "seals-fees"
   | "prohibited-acts"
-  | "new-laws";
+  | "new-laws"
+  | "copy-certification"
+  | "electronic-ron";
 
 export type Source = {
   source_id: string;
