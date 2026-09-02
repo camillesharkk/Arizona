@@ -1,0 +1,69 @@
+---
+description: Arizona Notary working style, question-bank accuracy, auth, high-risk modules, and git safety
+alwaysApply: true
+---
+
+# Arizona Notary Project Rule
+
+## Working style
+
+- After a development task, inspect existing code and related files first. Do not rewrite from scratch.
+- Prefer the smallest change. Do not refactor unrelated to the current task.
+- Search the project, edit files, run local commands, debug, and re-test autonomously.
+- On ordinary build or test failures, keep locating and fixing. Do not wait for the user to say “continue” at every step.
+- Before finishing, review `git diff` so unrelated files are not changed.
+- Final report: what changed, why, which files, which verifications ran, and remaining risk.
+
+## Arizona Notary question bank
+
+- Question-bank correctness has the highest priority.
+- For Arizona law, exam questions, Study Guide, Laws, or answer explanations: do not change legal facts from model memory.
+- Prefer official sources already registered in this project and the existing source registry.
+- Do not change a correct answer or official legal meaning just to make tests pass.
+- After question-bank edits, run `npm run questions:verify`.
+- After related edits, run `npm run build`.
+- If verification fails, keep fixing until it passes, or report clearly why it cannot be solved safely.
+
+## Security and auth
+
+- Current user identity must come from the server Session/JWT. Do not trust `userId` from URL, query, or body to choose whose data to access.
+- Arizona Pro access must continue to be decided by server-side entitlement logic.
+- Do not bypass production auth for easier testing.
+- Do not expose mock-checkout development logic in production.
+
+## High-risk modules
+
+Do not change these unless the user explicitly asks:
+
+- Pricing
+- Billing
+- Checkout
+- Webhook
+- Entitlements
+- Contact
+- Resend email configuration
+- Neon production database
+- Vercel Production configuration
+- API secrets / `.env` / `.env.local`
+
+If the task truly requires changing them:
+
+- First say what will change and the risk.
+- For real production data, payments, secrets, production deploys, or irreversible operations, ask the user for approval first.
+
+## Git
+
+- `git status`, `git diff`, and `git log` may run automatically.
+- Do not `git push` automatically.
+- Do not force-push automatically.
+- Do not run `git reset --hard` automatically.
+- Do not delete branches unless the user explicitly asks.
+- Do not create a commit unless the user explicitly asks.
+
+## Change principles
+
+- Keep existing APIs and features unless the task explicitly requires a change.
+- Do not “optimize while you’re there” on unrelated pages.
+- Do not delete files at large scale.
+- Do not change real secrets.
+- Do not print sensitive keys into chat, logs, or source.

@@ -2,14 +2,15 @@
   "name": "arizona-notary",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "db:migrate": "node db/migrate.mjs",
     "db:verify": "node db/verify.mjs",
-    "questions:verify": "node --experimental-strip-types --experimental-default-type=module scripts/questions-verify.ts",
-    "contact:verify": "node --experimental-strip-types --experimental-default-type=module scripts/contact-verify.ts"
+    "questions:verify": "node --experimental-strip-types scripts/questions-verify.ts",
+    "contact:verify": "node --experimental-strip-types scripts/contact-verify.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
