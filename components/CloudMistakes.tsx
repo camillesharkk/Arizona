@@ -5,6 +5,7 @@ import Link from "next/link";
 import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import { ExamRunner } from "@/components/ExamRunner";
+import { topicLabel } from "@/lib/quiz";
 import { paths } from "@/lib/paths";
 import type { QuestionStat } from "@/lib/store/types";
 
@@ -78,7 +79,7 @@ export function CloudMistakes() {
         return (
           <article className="card" key={s.questionId} style={{ marginTop: 12 }}>
             <span className="kicker">
-              {s.topic} · bank {s.bank} · chapter {s.chapter}
+              {topicLabel(q.topic)} · bank {s.bank} · chapter {s.chapter}
             </span>
             <h3>{q.question_text}</h3>
             <p>

@@ -10,7 +10,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ topic: string }> }) {
   const { topic } = await params;
   const t = topics.find((x) => x.id === topic);
-  return { title: t ? `${t.label} Practice` : "Topic Practice" };
+  if (!t) return { title: "Topic Practice" };
+  return {
+    title: `${t.label} Practice`,
+    description: `Arizona notary practice questions on ${t.label}, with explanations and official sources.`,
+  };
 }
 
 export default async function TopicPage({ params }: { params: Promise<{ topic: string }> }) {

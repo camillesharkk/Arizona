@@ -366,7 +366,7 @@ export function QuestionBlock({
     <div className="card">
       <div className="row space">
         <span className="kicker">
-          {q.topic} · {q.difficulty}
+          {topicLabel(q.topic)} · {q.difficulty}
           {!q.is_free ? " · Pro" : ""}
         </span>
         {onMark && (
