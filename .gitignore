@@ -6,4 +6,6 @@ out
 .tools
 .data
 .env
+.env.local
+.env.*.local
 tsconfig.tsbuildinfo
