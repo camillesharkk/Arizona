@@ -8,10 +8,24 @@ export type AccountDeletionTombstone = {
   hadPaidOrder: boolean;
 };
 
-function tombstoneSecret() {
-  return process.env.AUTH_SECRET || "dev-only-change-AUTH_SECRET-before-production-32ch";
+export class TombstoneSecretError extends Error {
+  constructor() {
+    super("Account tombstone secret is not configured");
+    this.name = "TombstoneSecretError";
+  }
 }
 
-export function emailHmac(email: string) {
+function tombstoneSecret() {
+  const secret = (process.env.ACCOUNT_TOMBSTONE_SECRET || "").trim();
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      console.error("[tombstone] ACCOUNT_TOMBSTONE_SECRET is not configured");
+    }
+    throw new TombstoneSecretError();
+  }
+  return secret;
+}
+
+export function emailTombstoneHash(email: string) {
   return createHmac("sha256", tombstoneSecret()).update(email.trim().toLowerCase()).digest("hex");
 }

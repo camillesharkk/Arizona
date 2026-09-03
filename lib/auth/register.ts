@@ -5,7 +5,7 @@ import type { CommerceRepo } from "../commerce/repo.ts";
 import { bindReferral, validateReferralCode } from "../commerce/service.ts";
 import { issueVerificationEmail, type MailSender } from "./verify-mail.ts";
 import { maskEmail } from "./guards.ts";
-import { emailHmac } from "./tombstone.ts";
+import { emailTombstoneHash, TombstoneSecretError } from "./tombstone.ts";
 
 export type RegisterOk = {
   ok: true;
@@ -23,7 +23,8 @@ export type RegisterFail = {
     | "ACCOUNT_EXISTS_UNVERIFIED"
     | "VERIFICATION_EMAIL_FAILED"
     | "INVALID_REFERRAL"
-    | "INVALID_INPUT";
+    | "INVALID_INPUT"
+    | "TOMBSTONE_UNAVAILABLE";
   error: string;
   accountCreated?: boolean;
   emailMasked?: string;
@@ -59,7 +60,20 @@ export async function registerAccount(opts: {
   }
 
   const referralCode = opts.referralCode?.trim();
-  const tombstone = await opts.store.getTombstone(emailHmac(email));
+  let tombstone;
+  try {
+    tombstone = await opts.store.getTombstone(emailTombstoneHash(email));
+  } catch (err) {
+    if (err instanceof TombstoneSecretError) {
+      return {
+        ok: false,
+        status: 503,
+        code: "TOMBSTONE_UNAVAILABLE",
+        error: "Could not complete registration.",
+      };
+    }
+    throw err;
+  }
   if (referralCode && !tombstone?.referralDiscountUsedOrIneligible) {
     const valid = await validateReferralCode(opts.commerce, referralCode);
     if (!valid.valid) {

@@ -5,7 +5,7 @@ import type { CommerceRepo } from "../commerce/repo.ts";
 import type { DeviceRepo } from "../devices/repo.ts";
 import { forfeitReferralOnAccountDeletion } from "../commerce/service.ts";
 import { revokeAllDevices } from "../devices/service.ts";
-import { emailHmac } from "./tombstone.ts";
+import { emailTombstoneHash, TombstoneSecretError } from "./tombstone.ts";
 
 export async function deleteUserAccount(opts: {
   store: Store;
@@ -20,9 +20,15 @@ export async function deleteUserAccount(opts: {
   if (!user || user.deletedAt) return { ok: false as const, error: "not_found" };
 
   const originalEmail = user.email;
+  let hmac: string;
+  try {
+    hmac = emailTombstoneHash(originalEmail);
+  } catch (err) {
+    if (err instanceof TombstoneSecretError) return { ok: false as const, error: "unavailable" };
+    throw err;
+  }
   const rel = await opts.commerce.getRelationshipByReferred(user.id);
   const hadPaid = await opts.commerce.hasQualifyingPaidOrder(user.id);
-  const hmac = emailHmac(originalEmail);
 
   await forfeitReferralOnAccountDeletion(opts.commerce, { userId: user.id, now });
   await opts.store.revokeActiveArizonaEntitlements(user.id);
@@ -91,6 +97,12 @@ export async function confirmAndDeleteAccount(opts: {
     userId: opts.sessionUserId,
     now: opts.now,
   });
-  if (!result.ok) return { ok: false as const, status: 400, error: "Could not delete account" };
+  if (!result.ok) {
+    return {
+      ok: false as const,
+      status: result.error === "unavailable" ? 503 : 400,
+      error: "Could not delete account",
+    };
+  }
   return { ok: true as const };
 }

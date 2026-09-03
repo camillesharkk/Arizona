@@ -12,7 +12,7 @@ import { checkLoginCredentials } from "../lib/auth/login.ts";
 import { resendVerification } from "../lib/auth/resend.ts";
 import { confirmAndDeleteAccount } from "../lib/auth/deletion.ts";
 import { issueVerificationEmail } from "../lib/auth/verify-mail.ts";
-import { emailHmac } from "../lib/auth/tombstone.ts";
+import { emailTombstoneHash, TombstoneSecretError } from "../lib/auth/tombstone.ts";
 import { resetRateLimit, resetRateLimits } from "../lib/rate-limit.ts";
 import {
   bindReferral,
@@ -48,13 +48,98 @@ function hoursFrom(base: Date, hours: number) {
   return new Date(base.getTime() + hours * 3600000);
 }
 
+function setNodeEnv(value: string) {
+  (process.env as Record<string, string | undefined>).NODE_ENV = value;
+}
+
 async function run() {
   resetRateLimits();
+  const verifySecret = "auth-verify-tombstone-secret-not-for-production";
+  process.env.ACCOUNT_TOMBSTONE_SECRET = verifySecret;
+
+  const hashEmail = "tombstone@example.com";
+  const hashA = emailTombstoneHash(hashEmail);
+  const hashA2 = emailTombstoneHash(hashEmail);
+  if (hashA !== hashA2) fail("same email + same secret should be deterministic");
+  else ok("same email + same secret → deterministic same HMAC");
+  if (emailTombstoneHash("other@example.com") === hashA) fail("different emails produced the same HMAC");
+  else ok("different email → different HMAC");
+  process.env.ACCOUNT_TOMBSTONE_SECRET = "a-different-tombstone-secret-value";
+  if (emailTombstoneHash(hashEmail) === hashA) fail("different secret produced the same HMAC");
+  else ok("different secret → different HMAC");
+  process.env.ACCOUNT_TOMBSTONE_SECRET = verifySecret;
+
+  const prevNodeEnv = process.env.NODE_ENV || "test";
+  const prevTombstoneSecret = process.env.ACCOUNT_TOMBSTONE_SECRET;
+  setNodeEnv("production");
+  delete process.env.ACCOUNT_TOMBSTONE_SECRET;
+  let missingThrew = false;
+  try {
+    emailTombstoneHash(hashEmail);
+  } catch (err) {
+    missingThrew = err instanceof TombstoneSecretError;
+  }
+  setNodeEnv(prevNodeEnv);
+  process.env.ACCOUNT_TOMBSTONE_SECRET = prevTombstoneSecret;
+  if (!missingThrew) fail("missing secret in production should fail closed");
+  else ok("missing secret in production → safe failure");
+
   const store = createMemoryStore();
   const commerce = createMemoryCommerceRepo();
   const devices = createMemoryDeviceRepo();
   const password = "password12";
   const email = "new@example.com";
+
+  const missStore = createMemoryStore();
+  const missCommerce = createMemoryCommerceRepo();
+  const missDevices = createMemoryDeviceRepo();
+  const missEmail = "keep-on-fail@example.com";
+  const missCreated = await registerAccount({
+    store: missStore,
+    commerce: missCommerce,
+    email: missEmail,
+    password,
+    send: okSend,
+  });
+  setNodeEnv("production");
+  delete process.env.ACCOUNT_TOMBSTONE_SECRET;
+  const blockedReg = await registerAccount({
+    store: missStore,
+    commerce: missCommerce,
+    email: "fresh-blocked@example.com",
+    password,
+    send: okSend,
+  });
+  if (
+    !blockedReg.ok &&
+    blockedReg.status === 503 &&
+    !(await missStore.getUserByEmail("fresh-blocked@example.com"))
+  ) {
+    ok("production register without tombstone secret → safe failure");
+  } else fail("production register without tombstone secret should not create a user");
+  const blockedDel =
+    missCreated.ok &&
+    (await confirmAndDeleteAccount({
+      store: missStore,
+      commerce: missCommerce,
+      devices: missDevices,
+      sessionUserId: missCreated.user.id,
+      password,
+      confirmation: "DELETE",
+    }));
+  const stillThere = missCreated.ok ? await missStore.getUserById(missCreated.user.id) : null;
+  if (
+    blockedDel &&
+    !blockedDel.ok &&
+    blockedDel.status === 503 &&
+    stillThere &&
+    !stillThere.deletedAt &&
+    stillThere.email === missEmail
+  ) {
+    ok("production delete without tombstone secret → safe failure");
+  } else fail("production delete without tombstone secret should not mutate the account");
+  setNodeEnv(prevNodeEnv);
+  process.env.ACCOUNT_TOMBSTONE_SECRET = verifySecret;
 
   const created = await registerAccount({
     store,
@@ -534,9 +619,12 @@ async function run() {
   if ((await delStore.listStats(delReg.user.id)).length || (await delStore.listExams(delReg.user.id)).length) {
     fail("study data remained");
   } else ok("study data removed/anonymized");
-  const tomb = await delStore.getTombstone(emailHmac(delEmail));
+  const tomb = await delStore.getTombstone(emailTombstoneHash(delEmail));
   if (!tomb?.newcomerUsedOrIneligible) fail("tombstone missing");
   else ok("tombstone stored keyed email hmac");
+  const tombRaw = JSON.stringify(tomb);
+  if (tombRaw.toLowerCase().includes(delEmail.toLowerCase())) fail("raw email stored in tombstone");
+  else ok("original email does not appear in tombstone data");
 
   resetRateLimits();
   const reReg = await registerAccount({
