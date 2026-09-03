@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
-import type { EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
+import type { AccountDeletionTombstone, EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
 
 type FileDb = {
   users: UserRow[];
@@ -12,6 +12,7 @@ type FileDb = {
   webhooks: string[];
   emailLogs: { userId: string; emailType: EmailType; periodKey: string; status: string; messageId?: string | null }[];
   entitlements: EntitlementRow[];
+  tombstones: AccountDeletionTombstone[];
 };
 
 const empty = (): FileDb => ({
@@ -23,6 +24,7 @@ const empty = (): FileDb => ({
   webhooks: [],
   emailLogs: [],
   entitlements: [],
+  tombstones: [],
 });
 
 const filePath = () => path.join(process.cwd(), ".data", "store.json");
@@ -53,6 +55,14 @@ function mutate<T>(fn: (db: FileDb) => Promise<T> | T): Promise<T> {
   return run;
 }
 
+function normalizeUser(u: UserRow): UserRow {
+  return {
+    ...u,
+    emailVerifiedAt: u.emailVerifiedAt ?? null,
+    deletedAt: u.deletedAt ?? null,
+  };
+}
+
 function freshUser(email: string, passwordHash: string, name: string | null): UserRow {
   return {
     id: randomUUID(),
@@ -60,6 +70,8 @@ function freshUser(email: string, passwordHash: string, name: string | null): Us
     passwordHash,
     name,
     emailVerified: false,
+    emailVerifiedAt: null,
+    deletedAt: null,
     plan: "free",
     planStatus: "active",
     planExpiresAt: null,
@@ -81,15 +93,17 @@ function freshUser(email: string, passwordHash: string, name: string | null): Us
 export const fileStore: Store = {
   async getUserByEmail(email) {
     const db = await load();
-    return db.users.find((u) => u.email === email) ?? null;
+    const user = db.users.find((u) => u.email === email && !u.deletedAt);
+    return user ? normalizeUser(user) : null;
   },
   async getUserById(id) {
     const db = await load();
-    return db.users.find((u) => u.id === id) ?? null;
+    const user = db.users.find((u) => u.id === id);
+    return user ? normalizeUser(user) : null;
   },
   createUser(data) {
     return mutate((db) => {
-      if (db.users.some((u) => u.email === data.email)) throw new Error("email_taken");
+      if (db.users.some((u) => u.email === data.email && !u.deletedAt)) throw new Error("email_taken");
       const user = freshUser(data.email, data.passwordHash, data.name);
       db.users.push(user);
       return user;
@@ -99,7 +113,7 @@ export const fileStore: Store = {
     return mutate((db) => {
       const i = db.users.findIndex((u) => u.id === id);
       if (i < 0) throw new Error("not_found");
-      db.users[i] = { ...db.users[i], ...patch, id };
+      db.users[i] = normalizeUser({ ...db.users[i], ...patch, id });
       return db.users[i];
     });
   },
@@ -169,7 +183,9 @@ export const fileStore: Store = {
   },
   async listMailUsers() {
     const db = await load();
-    return db.users.filter((u) => u.emailVerified && (u.emailDaily || u.emailWeekly || u.emailExam));
+    return db.users
+      .filter((u) => !u.deletedAt && u.emailVerified && (u.emailDaily || u.emailWeekly || u.emailExam))
+      .map(normalizeUser);
   },
   claimEmailSend(userId, emailType, periodKey) {
     return mutate((db) => {
@@ -258,6 +274,52 @@ export const fileStore: Store = {
       if (e) {
         e.status = status;
         e.updatedAt = new Date().toISOString();
+      }
+    });
+  },
+  revokeActiveArizonaEntitlements(userId) {
+    return mutate((db) => {
+      const at = new Date().toISOString();
+      let n = 0;
+      for (const e of db.entitlements) {
+        if (e.userId === userId && e.state === "AZ" && e.status === "active") {
+          e.status = "revoked";
+          e.updatedAt = at;
+          n += 1;
+        }
+      }
+      return n;
+    });
+  },
+  deleteTokensForUser(userId, type) {
+    return mutate((db) => {
+      db.tokens = db.tokens.filter((t) => t.userId !== userId || (type && t.type !== type));
+    });
+  },
+  clearLearningData(userId) {
+    return mutate((db) => {
+      db.stats = db.stats.filter((s) => s.userId !== userId);
+      db.exams = db.exams.filter((e) => e.userId !== userId);
+      db.ai = db.ai.filter((a) => a.userId !== userId);
+      db.emailLogs = db.emailLogs.filter((l) => l.userId !== userId);
+    });
+  },
+  async getTombstone(emailHmac) {
+    const db = await load();
+    return db.tombstones.find((t) => t.emailHmac === emailHmac) ?? null;
+  },
+  upsertTombstone(row) {
+    return mutate((db) => {
+      const i = db.tombstones.findIndex((t) => t.emailHmac === row.emailHmac);
+      if (i < 0) db.tombstones.push(row);
+      else {
+        db.tombstones[i] = {
+          ...row,
+          newcomerUsedOrIneligible: true,
+          referralDiscountUsedOrIneligible:
+            db.tombstones[i].referralDiscountUsedOrIneligible || row.referralDiscountUsedOrIneligible,
+          hadPaidOrder: db.tombstones[i].hadPaidOrder || row.hadPaidOrder,
+        };
       }
     });
   },

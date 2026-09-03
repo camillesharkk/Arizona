@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   if (!body.success) return NextResponse.json({ error: "Invalid email" }, { status: 400 });
   const store = await getStore();
   const user = await store.getUserByEmail(body.data.email.trim().toLowerCase());
-  if (user) {
+  if (user && !user.deletedAt) {
     const token = newToken();
     await store.putToken({ token, type: "reset", userId: user.id, expiresAt: new Date(Date.now() + 1000 * 60 * 30).toISOString() });
     const mail = await sendMail(user.email, RESET_SUBJECT, resetEmailHtml(resetUrl(token)));

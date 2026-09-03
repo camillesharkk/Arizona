@@ -152,6 +152,9 @@ export function SiteHeader() {
             <button className="btn btn-ghost btn-wide account-signout" type="button" onClick={logout}>
               Sign out
             </button>
+            <Link href={paths.accountDelete} className="account-delete-link">
+              Delete Account
+            </Link>
           </>
         ) : (
           <>

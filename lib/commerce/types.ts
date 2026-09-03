@@ -17,6 +17,7 @@ export type ReferralCodeRow = {
   userId: string;
   code: string;
   createdAt: string;
+  disabledAt?: string | null;
 };
 
 export type ReferralRelationshipRow = {
@@ -156,4 +157,5 @@ export type RefundRequestRow = {
 export type ClockUser = {
   id: string;
   createdAt: string;
+  emailVerifiedAt?: string | null;
 };

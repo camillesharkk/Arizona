@@ -11,7 +11,7 @@ try {
     order by table_name
   `;
   const names = tables.map((t) => t.table_name);
-  const required = ["users", "tokens", "question_stats", "exams", "ai_usage", "webhooks", "email_logs", "entitlements", "referral_codes", "referral_relationships", "promotion_redemptions", "referral_rewards", "referral_credits", "pricing_quotes", "commerce_orders", "pro_usage_events", "refund_requests", "device_sessions", "device_activations", "referral_credit_debts", "schema_migrations"];
+  const required = ["users", "tokens", "question_stats", "exams", "ai_usage", "webhooks", "email_logs", "entitlements", "referral_codes", "referral_relationships", "promotion_redemptions", "referral_rewards", "referral_credits", "pricing_quotes", "commerce_orders", "pro_usage_events", "refund_requests", "device_sessions", "device_activations", "referral_credit_debts", "account_deletion_tombstones", "schema_migrations"];
   const missing = required.filter((n) => !names.includes(n));
   if (missing.length) {
     throw new Error(`Missing tables: ${missing.join(", ")}. Run npm run db:migrate`);

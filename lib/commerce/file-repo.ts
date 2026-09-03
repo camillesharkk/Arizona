@@ -38,6 +38,7 @@ function persistWrap(inner: CommerceRepo & { snapshot: () => unknown }): Commerc
     getCodeByUser: inner.getCodeByUser.bind(inner),
     getCode: inner.getCode.bind(inner),
     insertCode: wrap(inner.insertCode.bind(inner)),
+    disableReferralCode: wrap(inner.disableReferralCode.bind(inner)),
     getRelationshipByReferred: inner.getRelationshipByReferred.bind(inner),
     insertRelationship: wrap(inner.insertRelationship.bind(inner)),
     markReferralDiscountRedeemed: wrap(inner.markReferralDiscountRedeemed.bind(inner)),
@@ -100,7 +101,9 @@ export async function createFileCommerceRepo(): Promise<CommerceRepo> {
     ...repo,
     async getUser(id): Promise<ClockUser | null> {
       const user = await fileStore.getUserById(id);
-      return user ? { id: user.id, createdAt: user.createdAt } : inner.getUser(id);
+      return user
+        ? { id: user.id, createdAt: user.createdAt, emailVerifiedAt: user.emailVerifiedAt ?? null }
+        : inner.getUser(id);
     },
   };
 }

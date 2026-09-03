@@ -29,7 +29,12 @@ function num(v: unknown) {
 }
 
 function mapCode(r: Record<string, unknown>): ReferralCodeRow {
-  return { userId: String(r.user_id), code: String(r.code), createdAt: iso(r.created_at) as string };
+  return {
+    userId: String(r.user_id),
+    code: String(r.code),
+    createdAt: iso(r.created_at) as string,
+    disabledAt: iso(r.disabled_at),
+  };
 }
 
 function mapRel(r: Record<string, unknown>): ReferralRelationshipRow {
@@ -196,10 +201,14 @@ function isUniqueViolation(err: unknown) {
 export function createPgCommerceRepo(sql: any): CommerceRepo {
   return {
     async getUser(id) {
-      const rows = await sql`select id, created_at from users where id = ${id} limit 1`;
+      const rows = await sql`select id, created_at, email_verified_at from users where id = ${id} limit 1`;
       const r = rows[0];
       if (!r) return null;
-      return { id: String(r.id), createdAt: iso(r.created_at) as string } satisfies ClockUser;
+      return {
+        id: String(r.id),
+        createdAt: iso(r.created_at) as string,
+        emailVerifiedAt: iso(r.email_verified_at),
+      } satisfies ClockUser;
     },
     async putUser() {
       /* users live in the primary store */
@@ -213,8 +222,17 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
       return rows[0] ? mapCode(rows[0]) : null;
     },
     async insertCode(row) {
-      await sql`insert into referral_codes (user_id, code, created_at)
-        values (${row.userId}, ${row.code}, ${row.createdAt})`;
+      await sql`insert into referral_codes (user_id, code, created_at, disabled_at)
+        values (${row.userId}, ${row.code}, ${row.createdAt}, ${row.disabledAt})`;
+    },
+    async disableReferralCode(userId, at) {
+      const rows = await sql`
+        update referral_codes
+        set disabled_at = ${at}
+        where user_id = ${userId} and disabled_at is null
+        returning user_id
+      `;
+      return rows.length > 0;
     },
     async getRelationshipByReferred(referredUserId) {
       const rows = await sql`select * from referral_relationships where referred_user_id = ${referredUserId} limit 1`;

@@ -23,6 +23,13 @@ export async function getSession(): Promise<SessionUser | null> {
       return null;
     }
     await touchIfNeeded(repo, user.deviceSessionId!);
+    const { getStore } = await import("@/lib/store");
+    const store = await getStore();
+    const row = await store.getUserById(user.id);
+    if (!row || row.deletedAt || !row.emailVerified) {
+      jar.delete(SESSION_COOKIE);
+      return null;
+    }
     return user;
   } catch {
     jar.delete(SESSION_COOKIE);

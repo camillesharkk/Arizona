@@ -21,6 +21,7 @@ export type CommerceRepo = {
   getCodeByUser(userId: string): Promise<ReferralCodeRow | null>;
   getCode(code: string): Promise<ReferralCodeRow | null>;
   insertCode(row: ReferralCodeRow): Promise<void>;
+  disableReferralCode(userId: string, at: string): Promise<boolean>;
 
   getRelationshipByReferred(referredUserId: string): Promise<ReferralRelationshipRow | null>;
   insertRelationship(row: ReferralRelationshipRow): Promise<{ ok: true } | { ok: false; error: "already_bound" }>;
@@ -129,8 +130,15 @@ function hydrate(raw?: Record<string, unknown> | Mem): Mem {
   const base = empty();
   if (!raw) return base;
   return {
-    users: Array.isArray(raw.users) ? (raw.users as Mem["users"]) : [],
-    codes: Array.isArray(raw.codes) ? (raw.codes as Mem["codes"]) : [],
+    users: Array.isArray(raw.users)
+      ? (raw.users as ClockUser[]).map((u) => ({
+          ...u,
+          emailVerifiedAt: u.emailVerifiedAt ?? null,
+        }))
+      : [],
+    codes: Array.isArray(raw.codes)
+      ? (raw.codes as ReferralCodeRow[]).map((c) => ({ ...c, disabledAt: c.disabledAt ?? null }))
+      : [],
     relationships: Array.isArray(raw.relationships) ? (raw.relationships as Mem["relationships"]) : [],
     redemptions: Array.isArray(raw.redemptions) ? (raw.redemptions as Mem["redemptions"]) : [],
     credits: Array.isArray(raw.credits)
@@ -196,7 +204,13 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
     },
     async insertCode(row) {
       if (db.codes.some((c) => c.code === row.code || c.userId === row.userId)) throw new Error("code_conflict");
-      db.codes.push(row);
+      db.codes.push({ ...row, disabledAt: row.disabledAt ?? null });
+    },
+    async disableReferralCode(userId, at) {
+      const c = db.codes.find((x) => x.userId === userId);
+      if (!c || c.disabledAt) return false;
+      c.disabledAt = at;
+      return true;
     },
     async getRelationshipByReferred(referredUserId) {
       return db.relationships.find((r) => r.referredUserId === referredUserId) ?? null;

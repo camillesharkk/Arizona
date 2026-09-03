@@ -99,6 +99,9 @@ export function AccountMenu({ me, onLogout }: { me: HeaderUser; onLogout: () => 
           <button className="account-signout" type="button" role="menuitem" onClick={onLogout}>
             Sign out
           </button>
+          <Link role="menuitem" className="account-delete-link" href={paths.accountDelete} onClick={() => setOpen(false)}>
+            Delete Account
+          </Link>
         </div>
       )}
     </div>

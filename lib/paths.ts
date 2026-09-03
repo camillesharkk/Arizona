@@ -24,6 +24,7 @@ export const paths = {
   profile: "/account/profile/",
   referrals: "/account/referrals/",
   billing: "/account/billing/",
+  accountDelete: "/account/delete/",
   mistakes: "/wrong-answers/",
   pricing: "/pricing/",
   contact: "/contact/",

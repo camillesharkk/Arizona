@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { PERSONAL_USE_NOTICE } from "@/lib/pricing/copy";
+import { paths } from "@/lib/paths";
 
 type Device = {
   id: string;
@@ -146,6 +148,13 @@ export function AccountSettings() {
             Sign out of all other devices
           </button>
           {deviceMsg && <p className="notice">{deviceMsg}</p>}
+        </section>
+        <section className="card danger-zone">
+          <h2>Danger zone</h2>
+          <p>Permanently delete your account and learning data. This does not issue a refund.</p>
+          <Link className="account-delete-link" href={paths.accountDelete}>
+            Delete account
+          </Link>
         </section>
       </div>
     </div>

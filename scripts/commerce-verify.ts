@@ -54,8 +54,12 @@ function hoursFrom(base: Date, hours: number) {
   return new Date(base.getTime() + hours * 3600000);
 }
 
-async function user(repo: CommerceRepo, id: string, createdAt: Date) {
-  await repo.putUser({ id, createdAt: createdAt.toISOString() });
+async function user(repo: CommerceRepo, id: string, createdAt: Date, emailVerifiedAt: Date | null = createdAt) {
+  await repo.putUser({
+    id,
+    createdAt: createdAt.toISOString(),
+    emailVerifiedAt: emailVerifiedAt ? emailVerifiedAt.toISOString() : null,
+  });
 }
 
 async function addCredit(repo: CommerceRepo, userId: string, now: Date, status: "available" | "redeemed" = "available") {
@@ -166,15 +170,18 @@ async function run() {
 
   const t0 = new Date("2026-09-01T12:00:00.000Z");
   const created = t0;
-  if (!isNewcomerEligible({ createdAt: created.toISOString(), redeemed: false, now: hoursFrom(t0, 71.99) })) {
+  if (!isNewcomerEligible({ emailVerifiedAt: created.toISOString(), redeemed: false, now: hoursFrom(t0, 71.99) })) {
     fail("71h59m should be eligible");
   } else ok("71h59m newcomer eligible");
-  if (isNewcomerEligible({ createdAt: created.toISOString(), redeemed: false, now: hoursFrom(t0, NEWCOMER_HOURS) })) {
+  if (isNewcomerEligible({ emailVerifiedAt: created.toISOString(), redeemed: false, now: hoursFrom(t0, NEWCOMER_HOURS) })) {
     fail("exactly 72h should be expired");
   } else ok("72h newcomer expired");
-  if (isNewcomerEligible({ createdAt: created.toISOString(), redeemed: true, now: hoursFrom(t0, 1) })) {
+  if (isNewcomerEligible({ emailVerifiedAt: created.toISOString(), redeemed: true, now: hoursFrom(t0, 1) })) {
     fail("redeemed should not be eligible");
   } else ok("redeemed newcomer not eligible");
+  if (isNewcomerEligible({ emailVerifiedAt: null, redeemed: false, now: hoursFrom(t0, 1) })) {
+    fail("historical verified user without emailVerifiedAt must not be newcomer");
+  } else ok("legacy verified user without emailVerifiedAt is not a newcomer");
 
   const repo = createMemoryCommerceRepo();
   const alice = "alice";
@@ -213,6 +220,19 @@ async function run() {
   const newbie72 = await previewPrice(repo, newbie, false, hoursFrom(t0, NEWCOMER_HOURS));
   if (newbie72.breakdown.finalPriceCents !== 2221 || newbie72.breakdown.newcomerApplied) fail("exact 72h should be 2221");
   else ok("exact 72h → 2221");
+  const lateVerified = "latev";
+  await user(repo, lateVerified, hoursAgo(t0, 200), t0);
+  const verifiedLateSnap = await eligibilitySnapshot(repo, lateVerified, hoursFrom(t0, 1));
+  if (!verifiedLateSnap.newcomerEligible) fail("newcomer window should start at emailVerifiedAt");
+  else ok("newcomer 72h starts at emailVerifiedAt, not createdAt");
+  const verifiedLateGone = await eligibilitySnapshot(repo, lateVerified, hoursFrom(t0, NEWCOMER_HOURS));
+  if (verifiedLateGone.newcomerEligible) fail("72h after emailVerifiedAt should expire");
+  else ok("newcomer expires 72h after emailVerifiedAt");
+  const legacyUser = "legacyv";
+  await user(repo, legacyUser, t0, null);
+  const legacySnap = await eligibilitySnapshot(repo, legacyUser, hoursFrom(t0, 1));
+  if (legacySnap.newcomerEligible) fail("legacy verified without emailVerifiedAt became newcomer");
+  else ok("legacy verified user without emailVerifiedAt is not newcomer eligible");
   const alicePreview = await previewPrice(repo, alice, false, t0);
   if (alicePreview.breakdown.finalPriceCents !== 2221) fail("old user should be 2221");
   else ok("old registered user >72h no referral no credit → 2221");

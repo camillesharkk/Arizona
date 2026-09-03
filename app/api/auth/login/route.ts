@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { getStore } from "@/lib/store";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { issueUserSession } from "@/lib/devices/http";
 import { MAX_ACTIVE_DEVICES } from "@/lib/devices/policy";
+import { checkLoginCredentials } from "@/lib/auth/login";
 
 const schema = z.object({
   email: z.string().email(),
@@ -18,10 +18,19 @@ export async function POST(req: Request) {
   const body = schema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid credentials" }, { status: 400 });
   const store = await getStore();
-  const user = await store.getUserByEmail(body.data.email.trim().toLowerCase());
-  if (!user || !(await bcrypt.compare(body.data.password, user.passwordHash))) {
-    return NextResponse.json({ error: "Email or password does not match" }, { status: 401 });
+  const checked = await checkLoginCredentials(store, body.data.email, body.data.password);
+  if (!checked.ok) {
+    return NextResponse.json(
+      {
+        error: checked.error,
+        ...(checked.code
+          ? { code: checked.code, message: checked.error }
+          : {}),
+      },
+      { status: checked.status }
+    );
   }
+  const user = checked.user;
   await store.updateUser(user.id, { lastLoginAt: new Date().toISOString() });
   const issued = await issueUserSession(
     {

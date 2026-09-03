@@ -1,6 +1,6 @@
 import postgres from "postgres";
 import { randomUUID } from "crypto";
-import type { EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, UserRow } from "./types";
+import type { AccountDeletionTombstone, EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
 
 let client: ReturnType<typeof postgres> | null = null;
 
@@ -28,8 +28,8 @@ async function assertSchema() {
   if (schemaReady) return;
   const sql = db();
   try {
-    const rows = await sql`select id from schema_migrations where id in ('001_init', '002_email_reminders', '003_entitlements', '004_commerce', '005_credits_devices', '006_referral_reversals')`;
-    if (rows.length < 6) throw new Error("missing");
+    const rows = await sql`select id from schema_migrations where id in ('001_init', '002_email_reminders', '003_entitlements', '004_commerce', '005_credits_devices', '006_referral_reversals', '007_account_lifecycle')`;
+    if (rows.length < 7) throw new Error("missing");
   } catch {
     throw new Error("Postgres schema is missing. Set DATABASE_URL and run: npm run db:migrate");
   }
@@ -55,6 +55,8 @@ function mapUser(r: Record<string, unknown>): UserRow {
     passwordHash: String(r.password_hash),
     name: r.name ? String(r.name) : null,
     emailVerified: Boolean(r.email_verified),
+    emailVerifiedAt: iso(r.email_verified_at),
+    deletedAt: iso(r.deleted_at),
     plan: r.plan === "pro" ? "pro" : "free",
     planStatus: String(r.plan_status),
     planExpiresAt: iso(r.plan_expires_at),
@@ -96,7 +98,7 @@ function mapStat(r: Record<string, unknown>): QuestionStat {
 export const pgStore: Store = {
   async getUserByEmail(email) {
     await assertSchema();
-    const rows = await db()`select * from users where email = ${email} limit 1`;
+    const rows = await db()`select * from users where email = ${email} and deleted_at is null limit 1`;
     return rows[0] ? mapUser(rows[0] as Record<string, unknown>) : null;
   },
   async getUserById(id) {
@@ -121,6 +123,8 @@ export const pgStore: Store = {
       password_hash = ${next.passwordHash},
       name = ${next.name},
       email_verified = ${next.emailVerified},
+      email_verified_at = ${next.emailVerifiedAt},
+      deleted_at = ${next.deletedAt},
       plan = ${next.plan},
       plan_status = ${next.planStatus},
       plan_expires_at = ${next.planExpiresAt},
@@ -234,6 +238,7 @@ export const pgStore: Store = {
     const rows = await db()`
       select * from users
       where email_verified = true
+        and deleted_at is null
         and (email_daily = true or email_weekly = true or email_exam = true)
     `;
     return rows.map((r) => mapUser(r as Record<string, unknown>));
@@ -336,6 +341,56 @@ export const pgStore: Store = {
       update entitlements
       set status = ${status}, updated_at = ${new Date().toISOString()}
       where user_id = ${userId} and provider = ${provider} and provider_order_id = ${providerOrderId}
+    `;
+  },
+  async revokeActiveArizonaEntitlements(userId) {
+    await assertSchema();
+    const rows = await db()`
+      update entitlements
+      set status = 'revoked', updated_at = ${new Date().toISOString()}
+      where user_id = ${userId} and state = 'AZ' and status = 'active'
+      returning id
+    `;
+    return rows.length;
+  },
+  async deleteTokensForUser(userId, type) {
+    await assertSchema();
+    if (type) await db()`delete from tokens where user_id = ${userId} and type = ${type}`;
+    else await db()`delete from tokens where user_id = ${userId}`;
+  },
+  async clearLearningData(userId) {
+    await assertSchema();
+    await db()`delete from question_stats where user_id = ${userId}`;
+    await db()`delete from exams where user_id = ${userId}`;
+    await db()`delete from ai_usage where user_id = ${userId}`;
+    await db()`delete from email_logs where user_id = ${userId}`;
+  },
+  async getTombstone(emailHmac) {
+    await assertSchema();
+    const rows = await db()`select * from account_deletion_tombstones where email_hmac = ${emailHmac} limit 1`;
+    const r = rows[0] as Record<string, unknown> | undefined;
+    if (!r) return null;
+    return {
+      emailHmac: String(r.email_hmac),
+      deletedAt: iso(r.deleted_at) as string,
+      newcomerUsedOrIneligible: Boolean(r.newcomer_used_or_ineligible),
+      referralDiscountUsedOrIneligible: Boolean(r.referral_discount_used_or_ineligible),
+      hadPaidOrder: Boolean(r.had_paid_order),
+    };
+  },
+  async upsertTombstone(row: AccountDeletionTombstone) {
+    await assertSchema();
+    await db()`
+      insert into account_deletion_tombstones (
+        email_hmac, deleted_at, newcomer_used_or_ineligible, referral_discount_used_or_ineligible, had_paid_order
+      ) values (
+        ${row.emailHmac}, ${row.deletedAt}, ${row.newcomerUsedOrIneligible}, ${row.referralDiscountUsedOrIneligible}, ${row.hadPaidOrder}
+      )
+      on conflict (email_hmac) do update set
+        deleted_at = excluded.deleted_at,
+        newcomer_used_or_ineligible = true,
+        referral_discount_used_or_ineligible = account_deletion_tombstones.referral_discount_used_or_ineligible or excluded.referral_discount_used_or_ineligible,
+        had_paid_order = account_deletion_tombstones.had_paid_order or excluded.had_paid_order
     `;
   },
 };

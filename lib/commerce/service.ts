@@ -39,18 +39,19 @@ export type RefundEntitlementFn = (opts: {
   providerOrderId: string;
 }) => Promise<void>;
 
-export function newcomerWindow(createdAt: string): { expiresAt: Date; hours: number } {
-  const expiresAt = addHours(createdAt, NEWCOMER_HOURS);
+export function newcomerWindow(emailVerifiedAt: string): { expiresAt: Date; hours: number } {
+  const expiresAt = addHours(emailVerifiedAt, NEWCOMER_HOURS);
   return { expiresAt, hours: NEWCOMER_HOURS };
 }
 
 export function isNewcomerEligible(opts: {
-  createdAt: string;
+  emailVerifiedAt: string | null | undefined;
   redeemed: boolean;
   now: Date;
 }): boolean {
   if (opts.redeemed) return false;
-  return opts.now.getTime() < addHours(opts.createdAt, NEWCOMER_HOURS).getTime();
+  if (!opts.emailVerifiedAt) return false;
+  return opts.now.getTime() < addHours(opts.emailVerifiedAt, NEWCOMER_HOURS).getTime();
 }
 
 export async function ensureReferralCode(repo: CommerceRepo, userId: string, now = new Date()) {
@@ -59,7 +60,7 @@ export async function ensureReferralCode(repo: CommerceRepo, userId: string, now
   for (let i = 0; i < 8; i++) {
     const code = generateReferralCode();
     if (await repo.getCode(code)) continue;
-    const row = { userId, code, createdAt: now.toISOString() };
+    const row = { userId, code, createdAt: now.toISOString(), disabledAt: null };
     try {
       await repo.insertCode(row);
       return row;
@@ -74,7 +75,7 @@ export async function validateReferralCode(repo: CommerceRepo, raw: string) {
   const code = normalizeReferralCode(raw);
   if (!isReferralCodeFormat(code)) return { valid: false as const };
   const row = await repo.getCode(code);
-  if (!row) return { valid: false as const };
+  if (!row || row.disabledAt) return { valid: false as const };
   return { valid: true as const, code: row.code };
 }
 
@@ -89,7 +90,7 @@ export async function bindReferral(
   const existing = await repo.getRelationshipByReferred(opts.referredUserId);
   if (existing) return { ok: false, error: "already_bound" };
   const found = await repo.getCode(code);
-  if (!found) return { ok: false, error: "invalid_code" };
+  if (!found || found.disabledAt) return { ok: false, error: "invalid_code" };
   if (found.userId === opts.referredUserId) return { ok: false, error: "self_referral" };
   const referrer = await repo.getUser(found.userId);
   const referred = await repo.getUser(opts.referredUserId);
@@ -121,7 +122,11 @@ export async function eligibilitySnapshot(
   const user = await repo.getUser(userId);
   if (!user) throw new Error("user_not_found");
   const newcomerRedeemed = await repo.hasPromotionRedemption(userId, "newcomer");
-  const newcomer = isNewcomerEligible({ createdAt: user.createdAt, redeemed: newcomerRedeemed, now });
+  const newcomer = isNewcomerEligible({
+    emailVerifiedAt: user.emailVerifiedAt,
+    redeemed: newcomerRedeemed,
+    now,
+  });
   const rel = await repo.getRelationshipByReferred(userId);
   const referralDiscountEligible = Boolean(rel && rel.discountStatus === "available");
   const credits = await repo.listCredits(userId);
@@ -129,7 +134,7 @@ export async function eligibilitySnapshot(
   return {
     user,
     newcomerEligible: newcomer,
-    newcomerExpiresAt: newcomer ? addHours(user.createdAt, NEWCOMER_HOURS).toISOString() : null,
+    newcomerExpiresAt: newcomer && user.emailVerifiedAt ? addHours(user.emailVerifiedAt, NEWCOMER_HOURS).toISOString() : null,
     newcomerRedeemed,
     referralDiscountEligible,
     relationship: rel,
@@ -625,6 +630,32 @@ export async function completeNonRestoringRefund(
     }
   }
   return { ok: true as const, order };
+}
+
+export async function forfeitReferralOnAccountDeletion(
+  repo: CommerceRepo,
+  opts: { userId: string; now?: Date }
+) {
+  const now = opts.now ?? new Date();
+  const at = now.toISOString();
+  await repo.disableReferralCode(opts.userId, at);
+  const credits = await repo.listCredits(opts.userId);
+  for (const credit of credits) {
+    if (credit.status === "pending" || credit.status === "available" || credit.status === "reserved") {
+      if (credit.status === "reserved" && credit.reservedQuoteId) {
+        await repo.releaseCreditReservation(credit.id, credit.reservedQuoteId);
+      }
+      await repo.reversePendingCredit(credit.id, at);
+    }
+  }
+  const rewards = await repo.listRewardsForReferrer(opts.userId);
+  for (const reward of rewards) {
+    if (reward.status === "pending") {
+      await repo.setRewardCanceled(reward.id, at);
+    } else if (reward.status === "available") {
+      await repo.setRewardReversed(reward.id, at);
+    }
+  }
 }
 
 export { LIST_PRICE_CENTS, STANDARD_PRICE_CENTS };

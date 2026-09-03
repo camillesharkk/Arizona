@@ -6,6 +6,8 @@ export type UserRow = {
   passwordHash: string;
   name: string | null;
   emailVerified: boolean;
+  emailVerifiedAt: string | null;
+  deletedAt: string | null;
   plan: Plan;
   planStatus: string;
   planExpiresAt: string | null;
@@ -21,6 +23,14 @@ export type UserRow = {
   lastStudyDate: string | null;
   bestScore: number | null;
   examDate: string | null;
+};
+
+export type AccountDeletionTombstone = {
+  emailHmac: string;
+  deletedAt: string;
+  newcomerUsedOrIneligible: boolean;
+  referralDiscountUsedOrIneligible: boolean;
+  hadPaidOrder: boolean;
 };
 
 export type TokenRow = {
@@ -119,4 +129,9 @@ export type Store = {
     providerOrderId: string,
     status: EntitlementStatus
   ): Promise<void>;
+  revokeActiveArizonaEntitlements(userId: string): Promise<number>;
+  deleteTokensForUser(userId: string, type?: TokenRow["type"]): Promise<void>;
+  clearLearningData(userId: string): Promise<void>;
+  getTombstone(emailHmac: string): Promise<AccountDeletionTombstone | null>;
+  upsertTombstone(row: AccountDeletionTombstone): Promise<void>;
 };

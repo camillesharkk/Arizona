@@ -132,6 +132,15 @@ a:hover { text-decoration: underline; }
 .btn-primary { background: var(--brand); color: white; }
 .btn-primary:hover { background: var(--brand-dark); }
 .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn-danger { background: var(--danger); color: white; }
+.btn-danger:hover { filter: brightness(0.92); }
+.btn-danger:disabled { opacity: 0.55; cursor: not-allowed; }
+.danger-zone { border-color: #e8c4c4; }
+.account-delete-link {
+  display: block; color: var(--muted) !important; font-weight: 600; font-size: 0.88rem;
+  padding: 8px 12px; text-decoration: none;
+}
+.account-delete-link:hover { color: var(--danger) !important; }
 .btn-sage { background: var(--sage); color: white; }
 .btn-wide { width: 100%; min-height: 48px; }
 

@@ -19,6 +19,8 @@ export async function POST(req: Request) {
   if (body.data.token) {
     const row = await store.takeToken(body.data.token, "reset");
     if (!row) return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
+    const target = await store.getUserById(row.userId);
+    if (!target || target.deletedAt) return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
     const hash = await bcrypt.hash(body.data.password, 12);
     await store.updateUser(row.userId, { passwordHash: hash });
     const devices = await getDeviceRepo();

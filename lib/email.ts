@@ -123,14 +123,20 @@ export async function sendMail(
       body: JSON.stringify(payload),
     });
     if (!res.ok) {
-      console.error("[email] Resend send failed", { status: res.status, to, subject, from });
+      const errBody = (await res.json().catch(() => ({}))) as { name?: string; message?: string; error?: string };
+      console.error("[email] Resend send failed", {
+        status: res.status,
+        type: errBody.name || errBody.error || undefined,
+        message: typeof errBody.message === "string" ? errBody.message.slice(0, 160) : undefined,
+        from,
+      });
       return { ok: false, error: "Could not send email. Please try again." };
     }
     const json = (await res.json().catch(() => ({}))) as { id?: string };
-    console.info("[email] Resend send ok", { to, subject, from });
+    console.info("[email] Resend send ok", { subject, from, status: res.status });
     return { ok: true, mocked: false, messageId: json.id };
   } catch {
-    console.error("[email] Resend request failed", { to, subject });
+    console.error("[email] Resend request failed");
     return { ok: false, error: "Could not send email. Please try again." };
   }
 }

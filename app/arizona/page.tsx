@@ -7,6 +7,7 @@ import { paths } from "@/lib/paths";
 import { JsonLd, quizJson } from "@/components/JsonLd";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { HomeProCta } from "@/components/HomeProCta";
+import { AccountStatusBanner } from "@/components/AccountStatusBanner";
 
 export const metadata = pageMeta({
   title: "Arizona Notary Exam 2026",
@@ -21,6 +22,7 @@ export default function ArizonaHub() {
       <JsonLd data={quizJson()} />
       <Breadcrumb items={[{ name: "Home", path: paths.home }]} />
       <section className="hero">
+        <AccountStatusBanner />
         <p className="kicker">Arizona Notary Exam · {examConfig.year}</p>
         <h1>Pass the Arizona notary exam with a real practice test—not another article.</h1>
         <p className="lede">
