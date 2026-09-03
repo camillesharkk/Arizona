@@ -8,6 +8,7 @@ import {
 import { deviceLabelFromUserAgent, hashDeviceToken, summarizeUserAgent } from "./label.ts";
 import { isDeviceActive, randomUUID, type DeviceRepo } from "./repo.ts";
 import type { DeviceSessionRow, PublicDevice } from "./types.ts";
+import type { SessionUser } from "@/lib/entitlements";
 
 export type ActivateOk = { ok: true; session: DeviceSessionRow; created: boolean };
 export type ActivateLimit = { ok: false; error: "DEVICE_LIMIT_REACHED"; devices: PublicDevice[] };
@@ -48,10 +49,24 @@ export async function activeDeviceCount(repo: DeviceRepo, userId: string, now = 
 export async function sessionIsUsable(repo: DeviceRepo, deviceSessionId: string, now = new Date()) {
   const row = await repo.getSession(deviceSessionId);
   if (!row || row.revokedAt) return null;
-  if (now.getTime() - new Date(row.lastSeenAt).getTime() > DEVICE_INACTIVE_MS) {
-    return row;
-  }
+  if (!isDeviceActive(row, now)) return null;
   return row;
+}
+
+export type BoundSessionFail = "legacy" | "missing" | "mismatch" | "revoked" | "inactive";
+
+export async function evaluateBoundSession(
+  repo: DeviceRepo,
+  user: Pick<SessionUser, "id" | "deviceSessionId">,
+  now = new Date()
+): Promise<{ ok: true } | { ok: false; reason: BoundSessionFail }> {
+  if (!user.deviceSessionId) return { ok: false, reason: "legacy" };
+  const row = await repo.getSession(user.deviceSessionId);
+  if (!row) return { ok: false, reason: "missing" };
+  if (row.userId !== user.id) return { ok: false, reason: "mismatch" };
+  if (row.revokedAt) return { ok: false, reason: "revoked" };
+  if (!isDeviceActive(row, now)) return { ok: false, reason: "inactive" };
+  return { ok: true };
 }
 
 export async function touchIfNeeded(
@@ -92,6 +107,9 @@ export async function activateDevice(
     const active = rows.filter((s) => isDeviceActive(s, now));
 
     if (existing && !existing.revokedAt) {
+      if (!isDeviceActive(existing, now) && active.length >= MAX_ACTIVE_DEVICES) {
+        return { ok: false as const, error: "DEVICE_LIMIT_REACHED" as const, devices: publicDevices(rows, now) };
+      }
       await repo.touchSession(existing.id, at, label, uaSummary);
       const next = await repo.getSession(existing.id);
       return { ok: true as const, session: next || { ...existing, lastSeenAt: at, deviceLabel: label, userAgentSummary: uaSummary }, created: false };

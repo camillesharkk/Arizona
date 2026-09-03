@@ -31,7 +31,23 @@ export async function getArizonaEntitlement(userId: string | null | undefined): 
   return store.getArizonaEntitlement(userId);
 }
 
-export async function hasArizonaPro(userId: string | null | undefined): Promise<boolean> {
+export function servingEntitlements<T extends { startsAt: string; expiresAt: string }>(
+  ents: T[],
+  now = new Date()
+): T[] {
+  const t = now.getTime();
+  return ents.filter((e) => new Date(e.startsAt).getTime() <= t && new Date(e.expiresAt).getTime() > t);
+}
+
+export function nextProWindow(latestExpiry: Date | null, now = new Date(), days = PRO_DURATION_DAYS) {
+  const start = latestExpiry && latestExpiry > now ? latestExpiry : now;
+  return {
+    startsAt: start,
+    expiresAt: new Date(start.getTime() + days * 24 * 60 * 60 * 1000),
+  };
+}
+
+export async function hasArizonaPro(userId: string | null | undefined) {
   const row = await getArizonaEntitlement(userId);
   return Boolean(row);
 }
@@ -62,15 +78,14 @@ export async function grantArizonaPro60d(opts: {
   }
   const latestExpiry = await store.getLatestArizonaExpiry(opts.userId);
   const now = new Date();
-  const start = latestExpiry && latestExpiry > now ? latestExpiry : now;
-  const expires = new Date(start.getTime() + PRO_DURATION_DAYS * 24 * 60 * 60 * 1000);
+  const window = nextProWindow(latestExpiry, now);
   const entitlement = await store.insertEntitlement({
     userId: opts.userId,
     productCode: AZ_PRO_PRODUCT,
     state: AZ_STATE,
     status: "active",
-    startsAt: start.toISOString(),
-    expiresAt: expires.toISOString(),
+    startsAt: window.startsAt.toISOString(),
+    expiresAt: window.expiresAt.toISOString(),
     provider: opts.provider,
     providerOrderId: opts.providerOrderId,
     providerCustomerId: opts.providerCustomerId ?? null,

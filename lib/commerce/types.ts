@@ -2,7 +2,7 @@ export type PromotionKind = "newcomer" | "referral_discount";
 export type QuoteStatus = "open" | "consumed" | "expired" | "cancelled";
 export type OrderStatus = "paid" | "refunded" | "refund_pending";
 export type CreditStatus = "pending" | "available" | "reserved" | "redeemed" | "reversed";
-export type RewardStatus = "pending" | "available" | "canceled";
+export type RewardStatus = "pending" | "available" | "canceled" | "reversed";
 export type RefundRequestStatus = "pending_manual" | "completed" | "rejected";
 export type RefundReason =
   | "user_unused_refund"
@@ -65,6 +65,18 @@ export type ReferralCreditRow = {
   redeemedOrderId: string | null;
   reversedAt: string | null;
   restoredAt: string | null;
+  reversedAfterRedemption: boolean;
+};
+
+export type ReferralCreditDebtRow = {
+  id: string;
+  userId: string;
+  sourceCreditId: string;
+  sourceRewardId: string;
+  sourceOrderId: string;
+  amountCents: number;
+  remainingCents: number;
+  createdAt: string;
 };
 
 export type PricingQuoteRow = {

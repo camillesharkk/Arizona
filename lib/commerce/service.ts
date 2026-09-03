@@ -405,7 +405,13 @@ async function maybeCreateReferralReward(
     redeemedOrderId: null,
     reversedAt: null,
     restoredAt: null,
+    reversedAfterRedemption: false,
   });
+}
+
+export function currentlyServingEntitlements(ents: ActiveEntitlement[], now = new Date()) {
+  const t = now.getTime();
+  return ents.filter((e) => new Date(e.startsAt).getTime() <= t && new Date(e.expiresAt).getTime() > t);
 }
 
 export async function markProUsed(
@@ -418,9 +424,10 @@ export async function markProUsed(
   }
 ) {
   const now = opts.now ?? new Date();
-  if (!opts.entitlements.length) return { recorded: false };
+  const serving = currentlyServingEntitlements(opts.entitlements, now);
+  if (!serving.length) return { recorded: false };
   let recorded = false;
-  for (const ent of opts.entitlements) {
+  for (const ent of serving) {
     const orders = await repo.listOrders(opts.userId);
     const order = orders.find((o) => o.entitlementId === ent.id && o.status === "paid") ?? null;
     const inserted = await repo.insertUsage({
@@ -444,9 +451,64 @@ export async function releaseRewardForOrder(repo: CommerceRepo, orderId: string,
   if (!reward || reward.status !== "pending" || !reward.creditId) return;
   const credit = await repo.getCredit(reward.creditId);
   if (credit && credit.status === "pending") {
+    const open = await repo.listOpenDebts(credit.userId);
+    const debt = open[0];
+    if (debt && debt.remainingCents >= credit.amountCents) {
+      await repo.reversePendingCredit(credit.id, now.toISOString());
+      await repo.applyDebtOffset({ debtId: debt.id, cents: credit.amountCents });
+      await repo.setRewardReversed(reward.id, now.toISOString());
+      return;
+    }
     await repo.setCreditAvailable(credit.id, now.toISOString());
   }
   await repo.setRewardAvailable(reward.id, reward.creditId, now.toISOString());
+}
+
+export const REWARD_REVERSAL_REASONS: RefundReason[] = [
+  "chargeback",
+  "fraud",
+  "provider_initiated",
+  "legal_required",
+];
+
+export async function reverseReferralForInvalidatedOrder(
+  repo: CommerceRepo,
+  opts: { orderId: string; now?: Date }
+) {
+  const now = opts.now ?? new Date();
+  const at = now.toISOString();
+  const reward = await repo.getRewardByOrder(opts.orderId);
+  if (!reward) return { ok: true as const, changed: false };
+  if (reward.status === "reversed") return { ok: true as const, changed: false, idempotent: true as const };
+
+  if (reward.creditId) {
+    const credit = await repo.getCredit(reward.creditId);
+    if (credit) {
+      if (credit.status === "pending" || credit.status === "available" || credit.status === "reserved") {
+        if (credit.status === "reserved" && credit.reservedQuoteId) {
+          await repo.releaseCreditReservation(credit.id, credit.reservedQuoteId);
+        }
+        await repo.reversePendingCredit(credit.id, at);
+      } else if (credit.status === "redeemed") {
+        const existing = await repo.getDebtBySourceCredit(credit.id);
+        if (!existing) {
+          await repo.markCreditReversedAfterRedemption(credit.id, at);
+          await repo.insertCreditDebt({
+            id: randomUUID(),
+            userId: credit.userId,
+            sourceCreditId: credit.id,
+            sourceRewardId: reward.id,
+            sourceOrderId: reward.sourceOrderId,
+            amountCents: credit.amountCents,
+            remainingCents: credit.amountCents,
+            createdAt: at,
+          });
+        }
+      }
+    }
+  }
+  await repo.setRewardReversed(reward.id, at);
+  return { ok: true as const, changed: true };
 }
 
 export async function releaseMatureRewards(repo: CommerceRepo, now = new Date()) {
@@ -550,10 +612,14 @@ export async function completeNonRestoringRefund(
     providerOrderId: order.providerOrderId,
   });
   await repo.markOrderRefunded(order.id, opts.reason, now.toISOString());
-  const reward = await repo.getRewardByOrder(order.id);
-  if (reward && reward.status === "pending") {
-    await repo.setRewardCanceled(reward.id, now.toISOString());
-    if (reward.creditId) await repo.reversePendingCredit(reward.creditId, now.toISOString());
+  if (REWARD_REVERSAL_REASONS.includes(opts.reason)) {
+    await reverseReferralForInvalidatedOrder(repo, { orderId: order.id, now });
+  } else {
+    const reward = await repo.getRewardByOrder(order.id);
+    if (reward && reward.status === "pending") {
+      await repo.setRewardCanceled(reward.id, now.toISOString());
+      if (reward.creditId) await repo.reversePendingCredit(reward.creditId, now.toISOString());
+    }
   }
   return { ok: true as const, order };
 }

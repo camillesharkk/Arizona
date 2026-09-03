@@ -29,6 +29,7 @@ export async function GET() {
       status: snap.relationship?.discountStatus ?? null,
     },
     qualifiedReferrer: await repo.hasQualifyingPaidOrder(session.id),
+    rewardAdjustmentCents: (await repo.listOpenDebts(session.id)).reduce((n, d) => n + d.remainingCents, 0),
     rewards: {
       pending: rewards.filter((r) => r.status === "pending").length,
       available: rewards.filter((r) => r.status === "available").length,

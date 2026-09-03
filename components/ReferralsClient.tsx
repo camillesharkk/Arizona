@@ -9,6 +9,7 @@ type Me = {
   credits: { available: number; pending: number; used: number; reserved: number };
   referralDiscount: { eligible: boolean; status: string | null };
   qualifiedReferrer: boolean;
+  rewardAdjustmentCents?: number;
 };
 
 export function ReferralsClient() {
@@ -57,6 +58,9 @@ export function ReferralsClient() {
           <p className="notice">
             $3 Referral Credits are earned after you have completed a qualifying purchase on this site.
           </p>
+        )}
+        {(data.rewardAdjustmentCents || 0) > 0 && (
+          <p className="notice">Referral reward adjustment applied against future credits.</p>
         )}
       </section>
       <section className="card">

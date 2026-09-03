@@ -6,6 +6,7 @@
 import { createMemoryDeviceRepo, isDeviceActive } from "../lib/devices/repo.ts";
 import {
   activateDevice,
+  evaluateBoundSession,
   revokeOwnDevice,
   signOutCurrent,
   signOutOtherDevices,
@@ -13,9 +14,10 @@ import {
   revokeAllDevices,
 } from "../lib/devices/service.ts";
 import { newDeviceToken } from "../lib/devices/label.ts";
-import { DEVICE_INACTIVE_MS, MAX_ACTIVE_DEVICES } from "../lib/devices/policy.ts";
+import { DEVICE_INACTIVE_MS, MAX_ACTIVE_DEVICES, MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW } from "../lib/devices/policy.ts";
 import { createMemoryCommerceRepo } from "../lib/commerce/repo.ts";
 import { markProUsed } from "../lib/commerce/service.ts";
+import { readSessionToken, signLegacySession, signSession } from "../lib/session-token.ts";
 
 let failures = 0;
 const lines: string[] = [];
@@ -111,7 +113,8 @@ async function run() {
 
   const stale = createMemoryDeviceRepo();
   const oldNow = new Date(now.getTime() - DEVICE_INACTIVE_MS - 1000);
-  const staleAct = await activateDevice(stale, { userId: "stale", token: newDeviceToken(), userAgent: "Chrome/1 Windows", now: oldNow });
+  const staleTok = newDeviceToken();
+  const staleAct = await activateDevice(stale, { userId: "stale", token: staleTok, userAgent: "Chrome/1 Windows", now: oldNow });
   const fresh = await activateDevice(stale, { userId: "stale", token: newDeviceToken(), userAgent: "Safari/1 iPhone", now });
   const fresh2 = await activateDevice(stale, { userId: "stale", token: newDeviceToken(), userAgent: "Chrome/1 Mac", now });
   const fresh3 = await activateDevice(stale, { userId: "stale", token: newDeviceToken(), userAgent: "Edge/1 Windows", now });
@@ -120,6 +123,14 @@ async function run() {
   else ok("30-day inactive device → does not occupy active quota");
   if (!fresh.ok || !fresh2.ok || !fresh3.ok) fail("inactive device should not block three new actives");
   else ok("inactive device does not block 3 new active devices");
+  if (staleAct.ok) {
+    const staleJwt = await evaluateBoundSession(stale, { id: "stale", deviceSessionId: staleAct.session.id }, now);
+    if (staleJwt.ok) fail("inactive device JWT still valid");
+    else ok("inactive device JWT rejected until re-activation");
+    const staleBack = await activateDevice(stale, { userId: "stale", token: staleTok, userAgent: "Chrome/1 Windows", now });
+    if (staleBack.ok || staleBack.error !== "DEVICE_LIMIT_REACHED") fail("inactive device returned past the 3-device limit");
+    else ok("inactive device cannot bypass 3-device limit on return");
+  }
 
   const churn = createMemoryDeviceRepo();
   const churnUser = "churn-user";
@@ -147,6 +158,101 @@ async function run() {
 
   if (MAX_ACTIVE_DEVICES !== 3) fail("MAX_ACTIVE_DEVICES should be 3");
   else ok("MAX_ACTIVE_DEVICES = 3");
+  if (MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW !== 5) fail("churn cap should be 5");
+  else ok("device churn window remains 5 new activations / 7 days");
+
+  const jwtUser = "jwt-user";
+  const jwtRepo = createMemoryDeviceRepo();
+  const jwtAct = await activateDevice(jwtRepo, { userId: jwtUser, token: newDeviceToken(), userAgent: "Chrome/1 Windows", now });
+  if (!jwtAct.ok) fail("jwt fixture device");
+  else {
+    const bound = {
+      id: jwtUser,
+      email: "jwt@example.com",
+      plan: "free" as const,
+      planStatus: "active",
+      emailVerified: true,
+      name: null,
+      deviceSessionId: jwtAct.session.id,
+    };
+    const token = await signSession(bound);
+    if (!(await readSessionToken(token))) fail("current JWT should parse");
+    const legacy = await signLegacySession({
+      id: jwtUser,
+      email: "jwt@example.com",
+      plan: "free",
+      planStatus: "active",
+      emailVerified: true,
+      name: null,
+    });
+    if (await readSessionToken(legacy)) fail("legacy JWT accepted");
+    else ok("legacy JWT rejected / reauth required");
+    const before = await evaluateBoundSession(jwtRepo, bound, now);
+    if (!before.ok) fail("fresh bound JWT should be usable");
+    await revokeOwnDevice(jwtRepo, { userId: jwtUser, deviceId: jwtAct.session.id, now });
+    const afterRevoke = await evaluateBoundSession(jwtRepo, bound, now);
+    if (afterRevoke.ok) fail("revoked device JWT still valid");
+    else ok("revoke device → existing JWT rejected");
+  }
+
+  const othersRepo = createMemoryDeviceRepo();
+  const othersUser = "others-user";
+  const keepDev = await activateDevice(othersRepo, { userId: othersUser, token: newDeviceToken(), userAgent: "Chrome/1 Windows", now });
+  const otherDev = await activateDevice(othersRepo, { userId: othersUser, token: newDeviceToken(), userAgent: "Safari/1 iPhone", now });
+  if (!keepDev.ok || !otherDev.ok) fail("sign-out-others fixture");
+  else {
+    await signOutOtherDevices(othersRepo, { userId: othersUser, keepDeviceId: keepDev.session.id, now });
+    const keepOk = await evaluateBoundSession(othersRepo, { id: othersUser, deviceSessionId: keepDev.session.id }, now);
+    const otherFail = await evaluateBoundSession(othersRepo, { id: othersUser, deviceSessionId: otherDev.session.id }, now);
+    if (!keepOk.ok || otherFail.ok) fail("sign out others did not reject the other JWT");
+    else ok("sign out other device → other JWT rejected");
+  }
+
+  const pwRepo = createMemoryDeviceRepo();
+  const pwUser = "pw-jwt";
+  const pwKeep = await activateDevice(pwRepo, { userId: pwUser, token: newDeviceToken(), userAgent: "Chrome/1 Windows", now });
+  const pwOther = await activateDevice(pwRepo, { userId: pwUser, token: newDeviceToken(), userAgent: "Safari/1 iPhone", now });
+  if (!pwKeep.ok || !pwOther.ok) fail("password-change jwt fixture");
+  else {
+    await revokeOthersKeepCurrent(pwRepo, { userId: pwUser, keepDeviceId: pwKeep.session.id, now });
+    const keepOk = await evaluateBoundSession(pwRepo, { id: pwUser, deviceSessionId: pwKeep.session.id }, now);
+    const otherFail = await evaluateBoundSession(pwRepo, { id: pwUser, deviceSessionId: pwOther.session.id }, now);
+    if (!keepOk.ok || otherFail.ok) fail("password change left a revoked JWT valid");
+    else ok("password change → revoked JWT rejected");
+  }
+
+  const resetRepo = createMemoryDeviceRepo();
+  const resetUser = "reset-jwt";
+  const resetA = await activateDevice(resetRepo, { userId: resetUser, token: newDeviceToken(), userAgent: "Chrome/1 Windows", now });
+  const resetB = await activateDevice(resetRepo, { userId: resetUser, token: newDeviceToken(), userAgent: "Safari/1 iPhone", now });
+  if (!resetA.ok || !resetB.ok) fail("password-reset jwt fixture");
+  else {
+    await revokeAllDevices(resetRepo, { userId: resetUser, now });
+    const a = await evaluateBoundSession(resetRepo, { id: resetUser, deviceSessionId: resetA.session.id }, now);
+    const b = await evaluateBoundSession(resetRepo, { id: resetUser, deviceSessionId: resetB.session.id }, now);
+    if (a.ok || b.ok) fail("password reset left an old JWT valid");
+    else ok("password reset → all old JWT rejected");
+  }
+
+  const ghost = createMemoryDeviceRepo();
+  const ghostUser = "ghost";
+  await activateDevice(ghost, { userId: ghostUser, token: newDeviceToken(), userAgent: "Chrome/1 Windows", now });
+  await activateDevice(ghost, { userId: ghostUser, token: newDeviceToken(), userAgent: "Safari/1 iPhone", now });
+  await activateDevice(ghost, { userId: ghostUser, token: newDeviceToken(), userAgent: "Chrome/1 Mac", now });
+  const fourth = await activateDevice(ghost, { userId: ghostUser, token: newDeviceToken(), userAgent: "Firefox/1 Linux", now });
+  const ghostLegacy = await signLegacySession({
+    id: ghostUser,
+    email: "ghost@example.com",
+    plan: "free",
+    planStatus: "active",
+    emailVerified: true,
+    name: null,
+  });
+  const ghostParsed = await readSessionToken(ghostLegacy);
+  const ghostBound = await evaluateBoundSession(ghost, { id: ghostUser, deviceSessionId: ghostParsed?.deviceSessionId || "" }, now);
+  if (ghostParsed || ghostBound.ok) fail("legacy JWT authenticated a fourth device");
+  else if (fourth.ok) fail("3-device limit failed while testing legacy JWT");
+  else ok("old JWT cannot create invisible fourth device");
 
   console.log(lines.join("\n"));
   console.log(failures === 0 ? "devices:verify OK" : `devices:verify FAIL failures=${failures}`);

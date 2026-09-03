@@ -8,6 +8,7 @@ import type {
   ProUsageEventRow,
   ReferralCodeRow,
   ReferralCreditRow,
+  ReferralCreditDebtRow,
   ReferralRelationshipRow,
   ReferralRewardRow,
   RefundRequestRow,
@@ -55,14 +56,17 @@ export type CommerceRepo = {
   redeemReservedCredit(opts: { creditId: string; quoteId: string; orderId: string; at: string }): Promise<boolean>;
   restoreRedeemedCreditsForOrder(opts: { orderId: string; at: string }): Promise<number>;
   restoreRedeemedCredit(opts: { creditId: string; orderId: string; at: string }): Promise<boolean>;
+  markCreditReversedAfterRedemption(creditId: string, at: string): Promise<boolean>;
 
   insertReward(row: ReferralRewardRow): Promise<boolean>;
+  getReward(id: string): Promise<ReferralRewardRow | null>;
   getRewardByReferred(referredUserId: string): Promise<ReferralRewardRow | null>;
   getRewardByOrder(orderId: string): Promise<ReferralRewardRow | null>;
   listRewardsForReferrer(referrerUserId: string): Promise<ReferralRewardRow[]>;
   listPendingRewards(): Promise<ReferralRewardRow[]>;
   setRewardAvailable(id: string, creditId: string, at: string): Promise<void>;
   setRewardCanceled(id: string, at: string): Promise<void>;
+  setRewardReversed(id: string, at: string): Promise<void>;
   attachRewardCredit(rewardId: string, creditId: string): Promise<void>;
 
   insertQuote(row: PricingQuoteRow): Promise<void>;
@@ -76,6 +80,11 @@ export type CommerceRepo = {
   listOrders(userId: string): Promise<CommerceOrderRow[]>;
   markOrderRefunded(id: string, reason: CommerceOrderRow["refundReason"], at: string): Promise<void>;
   hasQualifyingPaidOrder(userId: string): Promise<boolean>;
+
+  insertCreditDebt(row: ReferralCreditDebtRow): Promise<boolean>;
+  getDebtBySourceCredit(sourceCreditId: string): Promise<ReferralCreditDebtRow | null>;
+  listOpenDebts(userId: string): Promise<ReferralCreditDebtRow[]>;
+  applyDebtOffset(opts: { debtId: string; cents: number }): Promise<void>;
 
   insertUsage(row: ProUsageEventRow): Promise<boolean>;
   listUsageForEntitlement(entitlementId: string): Promise<ProUsageEventRow[]>;
@@ -97,6 +106,7 @@ type Mem = {
   orders: CommerceOrderRow[];
   usage: ProUsageEventRow[];
   refunds: RefundRequestRow[];
+  debts: ReferralCreditDebtRow[];
 };
 
 function empty(): Mem {
@@ -111,6 +121,7 @@ function empty(): Mem {
     orders: [],
     usage: [],
     refunds: [],
+    debts: [],
   };
 }
 
@@ -122,7 +133,12 @@ function hydrate(raw?: Record<string, unknown> | Mem): Mem {
     codes: Array.isArray(raw.codes) ? (raw.codes as Mem["codes"]) : [],
     relationships: Array.isArray(raw.relationships) ? (raw.relationships as Mem["relationships"]) : [],
     redemptions: Array.isArray(raw.redemptions) ? (raw.redemptions as Mem["redemptions"]) : [],
-    credits: Array.isArray(raw.credits) ? (raw.credits as Mem["credits"]) : [],
+    credits: Array.isArray(raw.credits)
+      ? (raw.credits as ReferralCreditRow[]).map((c) => ({
+          ...c,
+          reversedAfterRedemption: Boolean(c.reversedAfterRedemption),
+        }))
+      : [],
     rewards: Array.isArray(raw.rewards) ? (raw.rewards as Mem["rewards"]) : [],
     quotes: Array.isArray(raw.quotes)
       ? (raw.quotes as PricingQuoteRow[]).map((q) => ({
@@ -138,6 +154,7 @@ function hydrate(raw?: Record<string, unknown> | Mem): Mem {
       : [],
     usage: Array.isArray(raw.usage) ? (raw.usage as Mem["usage"]) : [],
     refunds: Array.isArray(raw.refunds) ? (raw.refunds as Mem["refunds"]) : [],
+    debts: Array.isArray(raw.debts) ? (raw.debts as Mem["debts"]) : [],
   };
 }
 
@@ -212,9 +229,10 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
       return db.credits.find((c) => c.id === id) ?? null;
     },
     async insertCredit(row) {
-      const i = db.credits.findIndex((c) => c.id === row.id);
-      if (i >= 0) db.credits[i] = row;
-      else db.credits.push(row);
+      const next = { ...row, reversedAfterRedemption: Boolean(row.reversedAfterRedemption) };
+      const i = db.credits.findIndex((c) => c.id === next.id);
+      if (i >= 0) db.credits[i] = next;
+      else db.credits.push(next);
     },
     async setCreditAvailable(creditId, at) {
       const c = db.credits.find((x) => x.id === creditId);
@@ -228,9 +246,12 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
     },
     async reversePendingCredit(creditId, at) {
       const c = db.credits.find((x) => x.id === creditId);
-      if (!c || c.status !== "pending") return false;
+      if (!c || (c.status !== "pending" && c.status !== "available" && c.status !== "reserved")) return false;
       c.status = "reversed";
       c.reversedAt = at;
+      c.reservedAt = null;
+      c.reservedQuoteId = null;
+      c.reservedUntil = null;
       return true;
     },
     async reserveCredits(opts) {
@@ -311,8 +332,11 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
       return true;
     },
     async restoreRedeemedCreditsForOrder(opts) {
-      const rows = db.credits.filter((x) => x.status === "redeemed" && x.redeemedOrderId === opts.orderId);
-      for (const c of rows) {
+      let n = 0;
+      for (const c of db.credits) {
+        if (c.status !== "redeemed" || c.redeemedOrderId !== opts.orderId || c.reversedAfterRedemption) continue;
+        const reward = db.rewards.find((r) => r.id === c.sourceRewardId);
+        if (reward?.status === "reversed") continue;
         c.status = "available";
         c.reversedAt = opts.at;
         c.restoredAt = opts.at;
@@ -321,12 +345,15 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
         c.reservedAt = null;
         c.reservedQuoteId = null;
         c.reservedUntil = null;
+        n += 1;
       }
-      return rows.length;
+      return n;
     },
     async restoreRedeemedCredit(opts) {
       const c = db.credits.find((x) => x.id === opts.creditId);
-      if (!c || c.status !== "redeemed" || c.redeemedOrderId !== opts.orderId) return false;
+      if (!c || c.status !== "redeemed" || c.redeemedOrderId !== opts.orderId || c.reversedAfterRedemption) return false;
+      const reward = db.rewards.find((r) => r.id === c.sourceRewardId);
+      if (reward && (reward.status === "reversed" || reward.status === "canceled")) return false;
       c.status = "available";
       c.reversedAt = opts.at;
       c.restoredAt = opts.at;
@@ -335,6 +362,13 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
       c.reservedAt = null;
       c.reservedQuoteId = null;
       c.reservedUntil = null;
+      return true;
+    },
+    async markCreditReversedAfterRedemption(creditId, at) {
+      const c = db.credits.find((x) => x.id === creditId);
+      if (!c || c.status !== "redeemed") return false;
+      c.reversedAfterRedemption = true;
+      c.reversedAt = at;
       return true;
     },
     async insertReward(row) {
@@ -346,6 +380,9 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
     },
     async getRewardByReferred(referredUserId) {
       return db.rewards.find((r) => r.referredUserId === referredUserId) ?? null;
+    },
+    async getReward(id) {
+      return db.rewards.find((r) => r.id === id) ?? null;
     },
     async getRewardByOrder(orderId) {
       return db.rewards.find((r) => r.sourceOrderId === orderId) ?? null;
@@ -365,8 +402,14 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
     },
     async setRewardCanceled(id, at) {
       const r = db.rewards.find((x) => x.id === id);
-      if (!r || r.status !== "pending") return;
+      if (!r || (r.status !== "pending" && r.status !== "available")) return;
       r.status = "canceled";
+      r.canceledAt = at;
+    },
+    async setRewardReversed(id, at) {
+      const r = db.rewards.find((x) => x.id === id);
+      if (!r || r.status === "reversed") return;
+      r.status = "reversed";
       r.canceledAt = at;
     },
     async attachRewardCredit(rewardId, creditId) {
@@ -412,6 +455,22 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
     },
     async hasQualifyingPaidOrder(userId) {
       return db.orders.some((o) => o.userId === userId && o.status === "paid");
+    },
+    async insertCreditDebt(row) {
+      if (db.debts.some((d) => d.sourceCreditId === row.sourceCreditId)) return false;
+      db.debts.push(row);
+      return true;
+    },
+    async getDebtBySourceCredit(sourceCreditId) {
+      return db.debts.find((d) => d.sourceCreditId === sourceCreditId) ?? null;
+    },
+    async listOpenDebts(userId) {
+      return db.debts.filter((d) => d.userId === userId && d.remainingCents > 0);
+    },
+    async applyDebtOffset(opts) {
+      const d = db.debts.find((x) => x.id === opts.debtId);
+      if (!d) return;
+      d.remainingCents = Math.max(0, d.remainingCents - opts.cents);
     },
     async insertUsage(row) {
       if (db.usage.some((u) => u.entitlementId === row.entitlementId)) return false;

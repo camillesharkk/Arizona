@@ -27,6 +27,8 @@ import {
   isNewcomerEligible,
   markProUsed,
   previewPrice,
+  reverseReferralForInvalidatedOrder,
+  currentlyServingEntitlements,
   refundEligibility,
   releaseMatureRewards,
 } from "../lib/commerce/service.ts";
@@ -70,6 +72,7 @@ async function addCredit(repo: CommerceRepo, userId: string, now: Date, status: 
     redeemedOrderId: null,
     reversedAt: null,
     restoredAt: null,
+    reversedAfterRedemption: false,
   });
   return id;
 }
@@ -472,15 +475,43 @@ async function run() {
     userId: iris,
     featureCode: "pro_question",
     entitlements: [
-      { id: stackedA, startsAt: t0.toISOString(), expiresAt: hoursFrom(t0, 1000).toISOString() },
-      { id: stackedB, startsAt: hoursFrom(t0, 1).toISOString(), expiresAt: hoursFrom(t0, 1000).toISOString() },
+      { id: stackedA, startsAt: t0.toISOString(), expiresAt: hoursFrom(t0, 20).toISOString() },
+      { id: stackedB, startsAt: hoursFrom(t0, 20).toISOString(), expiresAt: hoursFrom(t0, 80).toISOString() },
     ],
     now: hoursFrom(t0, 1.2),
   });
+  const usedA = await repo.listUsageForEntitlement(stackedA);
+  const usedB = await repo.listUsageForEntitlement(stackedB);
+  if (!usedA.length) fail("Order A current usage should be marked");
+  else ok("Order A active → usage marked");
+  if (usedB.length) fail("future Order B usage marked from using A");
+  else ok("Order B future → usage NOT marked");
   const r1 = await refundEligibility(repo, { userId: iris, orderId: i1.ok ? i1.order.id : "", now: hoursFrom(t0, 1.3) });
   const r2 = await refundEligibility(repo, { userId: iris, orderId: i2.ok ? i2.order.id : "", now: hoursFrom(t0, 1.3) });
-  if (r1.eligible || r2.eligible) fail("stacked active entitlements should both lose unused refund");
-  else ok("pro usage attributes to all currently active entitlements");
+  if (r1.eligible || r1.reason !== "pro_used") fail("A should lose unused refund after use");
+  else ok("using current Pro marks only A");
+  if (!r2.eligible) fail("B should remain refund eligible while future/unstarted");
+  else ok("B does not lose refund eligibility because A was used");
+  const refundB = await completeEligibleUnusedRefund(repo, {
+    userId: iris,
+    orderId: i2.ok ? i2.order.id : "",
+    refundEntitlement: async () => undefined,
+    now: hoursFrom(t0, 1.4),
+  });
+  if (!refundB.ok) fail("refund B while future");
+  const aStill = i1.ok ? await repo.getOrder(i1.order.id) : null;
+  if (aStill?.status !== "paid") fail("refund B affected A");
+  else ok("refund B → A remains paid");
+
+  const servingNow = currentlyServingEntitlements(
+    [
+      { id: "a", startsAt: t0.toISOString(), expiresAt: hoursFrom(t0, 20).toISOString() },
+      { id: "b", startsAt: hoursFrom(t0, 20).toISOString(), expiresAt: hoursFrom(t0, 80).toISOString() },
+    ],
+    hoursFrom(t0, 1)
+  );
+  if (servingNow.length !== 1 || servingNow[0].id !== "a") fail("serving filter");
+  else ok("only currently started entitlements are serving");
 
   const niles = "niles";
   await user(repo, niles, hoursAgo(t0, 250));
@@ -566,6 +597,179 @@ async function run() {
   const quinnPay = await pay(repo, { userId: quinn, applyCredit: true, requestedCreditCount: 3, now: hoursFrom(t0, 40.2) });
   if (!quinnPay.ok || quinnPay.order.amountCents !== 709) fail(`newcomer+referral+3 credits expected 709 got ${quinnPay.ok ? quinnPay.order.amountCents : "error"}`);
   else ok("newcomer + referral + 3 credits → 709");
+
+  const jules = "jules";
+  await user(repo, jules, hoursAgo(t0, 280));
+  const jA = randomUUID();
+  const jB = randomUUID();
+  const j1 = await pay(repo, { userId: jules, applyCredit: false, now: t0, entitlementId: jA });
+  const j2 = await pay(repo, { userId: jules, applyCredit: false, now: hoursFrom(t0, 1), entitlementId: jB });
+  await markProUsed(repo, {
+    userId: jules,
+    featureCode: "pro_question",
+    entitlements: [
+      { id: jA, startsAt: t0.toISOString(), expiresAt: hoursFrom(t0, 20).toISOString() },
+      { id: jB, startsAt: hoursFrom(t0, 20).toISOString(), expiresAt: hoursFrom(t0, 80).toISOString() },
+    ],
+    now: hoursFrom(t0, 2),
+  });
+  const refundA = await completeNonRestoringRefund(repo, {
+    userId: jules,
+    orderId: j1.ok ? j1.order.id : "",
+    reason: "technical_failure",
+    refundEntitlement: async () => undefined,
+    now: hoursFrom(t0, 2.1),
+  });
+  if (!refundA.ok) fail("refund A");
+  const bLeft = j2.ok ? await repo.getOrder(j2.order.id) : null;
+  if (bLeft?.status !== "paid") fail("refund A revoked B");
+  else ok("refund A → B future order remains paid");
+
+  const refA = "refA";
+  const refB = "refB";
+  await user(repo, refA, hoursAgo(t0, 500));
+  await user(repo, refB, hoursFrom(t0, 50));
+  await repo.insertCode({ userId: refA, code: generateReferralCode(), createdAt: hoursAgo(t0, 500).toISOString() });
+  const refACode = (await repo.getCodeByUser(refA))!.code;
+  await pay(repo, { userId: refA, applyCredit: false, now: hoursAgo(t0, 20) });
+  await bindReferral(repo, { referredUserId: refB, code: refACode, now: hoursFrom(t0, 50) });
+  const refBPay = await pay(repo, { userId: refB, applyCredit: false, now: hoursFrom(t0, 51) });
+  await markProUsed(repo, {
+    userId: refB,
+    featureCode: "pro_question",
+    entitlements: [{ id: refBPay.ok ? refBPay.entitlementId : "x", startsAt: hoursFrom(t0, 51).toISOString(), expiresAt: hoursFrom(t0, 1000).toISOString() }],
+    now: hoursFrom(t0, 51.1),
+  });
+  const avail = (await repo.listCredits(refA)).find((c) => c.status === "available");
+  if (!avail) fail("refA should have available credit");
+  else {
+    const cb = await completeNonRestoringRefund(repo, {
+      userId: refB,
+      orderId: refBPay.ok ? refBPay.order.id : "",
+      reason: "chargeback",
+      refundEntitlement: async () => undefined,
+      now: hoursFrom(t0, 52),
+    });
+    if (!cb.ok) fail("source chargeback");
+    const after = await repo.getCredit(avail.id);
+    if (after?.status !== "reversed") fail("available credit not reversed on chargeback");
+    else ok("source order chargeback → unused $3 reversed");
+    const twice = await reverseReferralForInvalidatedOrder(repo, { orderId: refBPay.ok ? refBPay.order.id : "", now: hoursFrom(t0, 52.1) });
+    if (!twice.idempotent && twice.changed) fail("second reversal not idempotent");
+    else ok("same reversal twice → idempotent");
+  }
+
+  const resA = "resA";
+  const resB = "resB";
+  await user(repo, resA, hoursAgo(t0, 510));
+  await user(repo, resB, hoursFrom(t0, 53));
+  await repo.insertCode({ userId: resA, code: generateReferralCode(), createdAt: hoursAgo(t0, 510).toISOString() });
+  await pay(repo, { userId: resA, applyCredit: false, now: hoursAgo(t0, 21) });
+  await bindReferral(repo, { referredUserId: resB, code: (await repo.getCodeByUser(resA))!.code, now: hoursFrom(t0, 53) });
+  const resBPay = await pay(repo, { userId: resB, applyCredit: false, now: hoursFrom(t0, 54) });
+  await markProUsed(repo, {
+    userId: resB,
+    featureCode: "pro_question",
+    entitlements: [{ id: resBPay.ok ? resBPay.entitlementId : "x", startsAt: hoursFrom(t0, 54).toISOString(), expiresAt: hoursFrom(t0, 1000).toISOString() }],
+    now: hoursFrom(t0, 54.1),
+  });
+  const resCredit = (await repo.listCredits(resA)).find((c) => c.status === "available");
+  const hold = await createQuote(repo, { userId: resA, applyCredit: true, policyAccepted: true, now: hoursFrom(t0, 55) });
+  if (!hold.ok || !resCredit) fail("reserve credit for reversal test");
+  else {
+    const c = await repo.getCredit(resCredit.id);
+    if (c?.status !== "reserved") fail("credit not reserved");
+    await reverseReferralForInvalidatedOrder(repo, { orderId: resBPay.ok ? resBPay.order.id : "", now: hoursFrom(t0, 55.1) });
+    const afterR = await repo.getCredit(resCredit.id);
+    if (afterR?.status !== "reversed") fail("reserved credit not reversed");
+    else ok("reserved credit → reversed");
+  }
+
+  const redA = "redA";
+  const redB = "redB";
+  const redC = "redC";
+  await user(repo, redA, hoursAgo(t0, 520));
+  await user(repo, redB, hoursFrom(t0, 56));
+  await user(repo, redC, hoursFrom(t0, 70));
+  await repo.insertCode({ userId: redA, code: generateReferralCode(), createdAt: hoursAgo(t0, 520).toISOString() });
+  await pay(repo, { userId: redA, applyCredit: false, now: hoursAgo(t0, 22) });
+  await bindReferral(repo, { referredUserId: redB, code: (await repo.getCodeByUser(redA))!.code, now: hoursFrom(t0, 56) });
+  const redBPay = await pay(repo, { userId: redB, applyCredit: false, now: hoursFrom(t0, 57) });
+  await markProUsed(repo, {
+    userId: redB,
+    featureCode: "pro_question",
+    entitlements: [{ id: redBPay.ok ? redBPay.entitlementId : "x", startsAt: hoursFrom(t0, 57).toISOString(), expiresAt: hoursFrom(t0, 1000).toISOString() }],
+    now: hoursFrom(t0, 57.1),
+  });
+  const redPay = await pay(repo, { userId: redA, applyCredit: true, now: hoursFrom(t0, 58) });
+  if (!redPay.ok) fail("redeem credit before chargeback");
+  const redeemed = (await repo.listCredits(redA)).find((c) => c.status === "redeemed");
+  await reverseReferralForInvalidatedOrder(repo, { orderId: redBPay.ok ? redBPay.order.id : "", now: hoursFrom(t0, 59) });
+  const debt = redeemed ? await repo.getDebtBySourceCredit(redeemed.id) : null;
+  if (!debt || debt.remainingCents !== 300) fail("redeemed credit did not create offset debt");
+  else ok("redeemed credit → future referral offset/debt");
+  const debts = await repo.listOpenDebts(redA);
+  if (debts.some((d) => d.remainingCents < 0)) fail("debt went negative");
+  else ok("debt is internal offset only, not a cash charge");
+
+  await bindReferral(repo, { referredUserId: redC, code: (await repo.getCodeByUser(redA))!.code, now: hoursFrom(t0, 70) });
+  const redCPay = await pay(repo, { userId: redC, applyCredit: false, now: hoursFrom(t0, 71) });
+  await markProUsed(repo, {
+    userId: redC,
+    featureCode: "pro_question",
+    entitlements: [{ id: redCPay.ok ? redCPay.entitlementId : "x", startsAt: hoursFrom(t0, 71).toISOString(), expiresAt: hoursFrom(t0, 1000).toISOString() }],
+    now: hoursFrom(t0, 71.1),
+  });
+  const afterOffset = await repo.listCredits(redA);
+  const newAvail = afterOffset.filter((c) => c.status === "available");
+  const debtLeft = await repo.listOpenDebts(redA);
+  if (newAvail.length !== 0) fail("future reward should offset debt instead of becoming available");
+  else ok("future referral reward → first offsets debt");
+  if (debtLeft.some((d) => d.remainingCents > 0)) fail("debt not cleared after offset");
+  else ok("debt remaining $0 after offset");
+  if (!afterOffset.some((c) => c.status === "reversed")) fail("offset credit should be reversed");
+  else ok("future reward credit reversed to offset debt");
+  if (redeemed) {
+    const kept = await repo.getCredit(redeemed.id);
+    if (kept?.status !== "redeemed" || !kept.reversedAfterRedemption) fail("redeemed credit history rewritten");
+    else ok("redeemed credit kept with reversedAfterRedemption");
+  }
+
+  const restoreTry = await completeEligibleUnusedRefund(repo, {
+    userId: redA,
+    orderId: redPay.ok ? redPay.order.id : "",
+    refundEntitlement: async () => undefined,
+    now: hoursFrom(t0, 59.2),
+  });
+  if (restoreTry.ok) {
+    const revived = redeemed ? await repo.getCredit(redeemed.id) : null;
+    if (revived?.status === "available") fail("refund restored a fraud-reversed credit");
+    else ok("refund restore cannot revive chargeback-invalidated credit");
+  } else {
+    ok("refund restore cannot revive chargeback-invalidated credit");
+  }
+
+  const pendA = "pendA";
+  const pendB = "pendB";
+  await user(repo, pendA, hoursAgo(t0, 530));
+  await user(repo, pendB, hoursFrom(t0, 72));
+  await repo.insertCode({ userId: pendA, code: generateReferralCode(), createdAt: hoursAgo(t0, 530).toISOString() });
+  await pay(repo, { userId: pendA, applyCredit: false, now: hoursAgo(t0, 23) });
+  await bindReferral(repo, { referredUserId: pendB, code: (await repo.getCodeByUser(pendA))!.code, now: hoursFrom(t0, 72) });
+  const pendPay = await pay(repo, { userId: pendB, applyCredit: false, now: hoursFrom(t0, 73) });
+  const beforeDebt = (await repo.listOpenDebts(pendA)).reduce((n, d) => n + d.remainingCents, 0);
+  await completeEligibleUnusedRefund(repo, {
+    userId: pendB,
+    orderId: pendPay.ok ? pendPay.order.id : "",
+    refundEntitlement: async () => undefined,
+    now: hoursFrom(t0, 73.1),
+  });
+  const afterDebt = (await repo.listOpenDebts(pendA)).reduce((n, d) => n + d.remainingCents, 0);
+  if (afterDebt !== beforeDebt) fail("normal unused refund created debt");
+  else ok("normal unused refund → no inappropriate debt");
+  const pendReward = await repo.getRewardByReferred(pendB);
+  if (pendReward?.status !== "canceled") fail("pending reward not canceled on unused refund");
+  else ok("unused refund cancels pending reward without debt");
 
   const preview = await previewPrice(repo, dave, false, hoursFrom(t0, 50));
   if (preview.breakdown.finalPriceCents !== STANDARD_PRICE_CENTS && preview.breakdown.finalPriceCents !== 1799) {

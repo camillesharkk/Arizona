@@ -29,6 +29,10 @@ export default function Page() {
         refund. Referral Credit(s) used on an order are restored only after an eligible unused full refund under that
         policy. Up to 3 Referral Credits can be applied per order, subject to the purchase amount.
       </p>
+      <p>
+        Referral rewards associated with refunded, reversed, fraudulent, or charged-back purchases may be reversed.
+        Referral Credits have no cash value and are not a collectible dollar debt.
+      </p>
       <p>{site.independent}</p>
     </LegalCopy>
   );

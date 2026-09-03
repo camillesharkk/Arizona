@@ -8,6 +8,7 @@ import type {
   ProUsageEventRow,
   ReferralCodeRow,
   ReferralCreditRow,
+  ReferralCreditDebtRow,
   ReferralRelationshipRow,
   ReferralRewardRow,
   RefundRequestRow,
@@ -60,6 +61,20 @@ function mapCredit(r: Record<string, unknown>): ReferralCreditRow {
     redeemedOrderId: r.redeemed_order_id ? String(r.redeemed_order_id) : null,
     reversedAt: iso(r.reversed_at),
     restoredAt: iso(r.restored_at),
+    reversedAfterRedemption: bool(r.reversed_after_redemption),
+  };
+}
+
+function mapDebt(r: Record<string, unknown>): ReferralCreditDebtRow {
+  return {
+    id: String(r.id),
+    userId: String(r.user_id),
+    sourceCreditId: String(r.source_credit_id),
+    sourceRewardId: String(r.source_reward_id),
+    sourceOrderId: String(r.source_order_id),
+    amountCents: num(r.amount_cents),
+    remainingCents: num(r.remaining_cents),
+    createdAt: iso(r.created_at) as string,
   };
 }
 
@@ -254,11 +269,13 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
     async insertCredit(row) {
       await sql`insert into referral_credits (
         id, user_id, amount_cents, source_reward_id, status, created_at, available_at,
-        reserved_at, reserved_quote_id, reserved_until, redeemed_at, redeemed_order_id, reversed_at, restored_at
+        reserved_at, reserved_quote_id, reserved_until, redeemed_at, redeemed_order_id, reversed_at, restored_at,
+        reversed_after_redemption
       ) values (
         ${row.id}, ${row.userId}, ${row.amountCents}, ${row.sourceRewardId}, ${row.status}, ${row.createdAt},
         ${row.availableAt}, ${row.reservedAt}, ${row.reservedQuoteId}, ${row.reservedUntil},
-        ${row.redeemedAt}, ${row.redeemedOrderId}, ${row.reversedAt}, ${row.restoredAt}
+        ${row.redeemedAt}, ${row.redeemedOrderId}, ${row.reversedAt}, ${row.restoredAt},
+        ${Boolean(row.reversedAfterRedemption)}
       )
       on conflict (id) do update set
         status = excluded.status,
@@ -269,7 +286,8 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
         redeemed_at = excluded.redeemed_at,
         redeemed_order_id = excluded.redeemed_order_id,
         reversed_at = excluded.reversed_at,
-        restored_at = excluded.restored_at`;
+        restored_at = excluded.restored_at,
+        reversed_after_redemption = excluded.reversed_after_redemption`;
     },
     async setCreditAvailable(creditId, at) {
       const rows = await sql`
@@ -287,8 +305,12 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
     async reversePendingCredit(creditId, at) {
       const rows = await sql`
         update referral_credits
-        set status = 'reversed', reversed_at = ${at}
-        where id = ${creditId} and status = 'pending'
+        set status = 'reversed',
+            reversed_at = ${at},
+            reserved_at = null,
+            reserved_quote_id = null,
+            reserved_until = null
+        where id = ${creditId} and status in ('pending', 'available', 'reserved')
         returning id
       `;
       return rows.length > 0;
@@ -393,7 +415,7 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
     },
     async restoreRedeemedCreditsForOrder(opts) {
       const rows = await sql`
-        update referral_credits
+        update referral_credits c
         set status = 'available',
             reversed_at = ${opts.at},
             restored_at = ${opts.at},
@@ -402,14 +424,20 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
             reserved_at = null,
             reserved_quote_id = null,
             reserved_until = null
-        where status = 'redeemed' and redeemed_order_id = ${opts.orderId}
-        returning id
+        where c.status = 'redeemed'
+          and c.redeemed_order_id = ${opts.orderId}
+          and c.reversed_after_redemption = false
+          and not exists (
+            select 1 from referral_rewards r
+            where r.id = c.source_reward_id and r.status = 'reversed'
+          )
+        returning c.id
       `;
       return rows.length;
     },
     async restoreRedeemedCredit(opts) {
       const rows = await sql`
-        update referral_credits
+        update referral_credits c
         set status = 'available',
             reversed_at = ${opts.at},
             restored_at = ${opts.at},
@@ -418,7 +446,23 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
             reserved_at = null,
             reserved_quote_id = null,
             reserved_until = null
-        where id = ${opts.creditId} and status = 'redeemed' and redeemed_order_id = ${opts.orderId}
+        where c.id = ${opts.creditId}
+          and c.status = 'redeemed'
+          and c.redeemed_order_id = ${opts.orderId}
+          and c.reversed_after_redemption = false
+          and not exists (
+            select 1 from referral_rewards r
+            where r.id = c.source_reward_id and r.status = 'reversed'
+          )
+        returning c.id
+      `;
+      return rows.length > 0;
+    },
+    async markCreditReversedAfterRedemption(creditId, at) {
+      const rows = await sql`
+        update referral_credits
+        set reversed_after_redemption = true, reversed_at = ${at}
+        where id = ${creditId} and status = 'redeemed'
         returning id
       `;
       return rows.length > 0;
@@ -439,6 +483,10 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
     },
     async getRewardByReferred(referredUserId) {
       const rows = await sql`select * from referral_rewards where referred_user_id = ${referredUserId} limit 1`;
+      return rows[0] ? mapReward(rows[0]) : null;
+    },
+    async getReward(id) {
+      const rows = await sql`select * from referral_rewards where id = ${id} limit 1`;
       return rows[0] ? mapReward(rows[0]) : null;
     },
     async getRewardByOrder(orderId) {
@@ -464,7 +512,14 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
       await sql`
         update referral_rewards
         set status = 'canceled', canceled_at = ${at}
-        where id = ${id} and status = 'pending'
+        where id = ${id} and status in ('pending', 'available')
+      `;
+    },
+    async setRewardReversed(id, at) {
+      await sql`
+        update referral_rewards
+        set status = 'reversed', canceled_at = ${at}
+        where id = ${id} and status <> 'reversed'
       `;
     },
     async attachRewardCredit(rewardId, creditId) {
@@ -536,6 +591,35 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
     async hasQualifyingPaidOrder(userId) {
       const rows = await sql`select 1 from commerce_orders where user_id = ${userId} and status = 'paid' limit 1`;
       return rows.length > 0;
+    },
+    async insertCreditDebt(row) {
+      try {
+        await sql`insert into referral_credit_debts (
+          id, user_id, source_credit_id, source_reward_id, source_order_id, amount_cents, remaining_cents, created_at
+        ) values (
+          ${row.id}, ${row.userId}, ${row.sourceCreditId}, ${row.sourceRewardId}, ${row.sourceOrderId},
+          ${row.amountCents}, ${row.remainingCents}, ${row.createdAt}
+        )`;
+        return true;
+      } catch (err) {
+        if (isUniqueViolation(err)) return false;
+        throw err;
+      }
+    },
+    async getDebtBySourceCredit(sourceCreditId) {
+      const rows = await sql`select * from referral_credit_debts where source_credit_id = ${sourceCreditId} limit 1`;
+      return rows[0] ? mapDebt(rows[0]) : null;
+    },
+    async listOpenDebts(userId) {
+      const rows = await sql`select * from referral_credit_debts where user_id = ${userId} and remaining_cents > 0`;
+      return (rows as Record<string, unknown>[]).map(mapDebt);
+    },
+    async applyDebtOffset(opts) {
+      await sql`
+        update referral_credit_debts
+        set remaining_cents = greatest(0, remaining_cents - ${opts.cents})
+        where id = ${opts.debtId}
+      `;
     },
     async insertUsage(row: ProUsageEventRow) {
       const inserted = await sql`

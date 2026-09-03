@@ -12,6 +12,7 @@ export default function LoginPage() {
   return (
     <main className="wrap hero">
       <h1>Sign in</h1>
+      <p className="notice">For account security, please sign in again.</p>
       <AuthForm mode="login" />
     </main>
   );

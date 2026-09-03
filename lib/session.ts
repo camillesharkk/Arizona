@@ -1,72 +1,42 @@
-import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import type { SessionUser } from "@/lib/entitlements";
+import { SESSION_COOKIE, readSessionToken, signSession } from "@/lib/session-token";
+import { evaluateBoundSession, touchIfNeeded } from "@/lib/devices/service";
 
-const COOKIE = "az_session";
-
-function secret() {
-  const s = process.env.AUTH_SECRET || "dev-only-change-AUTH_SECRET-before-production-32ch";
-  return new TextEncoder().encode(s);
-}
-
-export async function signSession(user: SessionUser) {
-  return new SignJWT({
-    id: user.id,
-    email: user.email,
-    plan: user.plan,
-    planStatus: user.planStatus,
-    emailVerified: user.emailVerified,
-    name: user.name,
-    deviceSessionId: user.deviceSessionId || null,
-  })
-    .setProtectedHeader({ alg: "HS256" })
-    .setExpirationTime("30d")
-    .setSubject(user.id)
-    .setIssuedAt()
-    .sign(secret());
-}
-
-export async function readSessionToken(token: string): Promise<SessionUser | null> {
-  try {
-    const { payload } = await jwtVerify(token, secret());
-    return {
-      id: String(payload.id || payload.sub),
-      email: String(payload.email),
-      plan: payload.plan === "pro" ? "pro" : "free",
-      planStatus: String(payload.planStatus || "active"),
-      emailVerified: Boolean(payload.emailVerified),
-      name: payload.name ? String(payload.name) : null,
-      deviceSessionId: payload.deviceSessionId ? String(payload.deviceSessionId) : null,
-    };
-  } catch {
-    return null;
-  }
-}
+export { signSession, readSessionToken, SESSION_COOKIE, SESSION_AUTH_VERSION } from "@/lib/session-token";
 
 export async function getSession(): Promise<SessionUser | null> {
   const jar = await cookies();
-  const token = jar.get(COOKIE)?.value;
+  const token = jar.get(SESSION_COOKIE)?.value;
   if (!token) return null;
   const user = await readSessionToken(token);
-  if (!user) return null;
-  if (!user.deviceSessionId) return user;
+  if (!user) {
+    jar.delete(SESSION_COOKIE);
+    return null;
+  }
   try {
     const { getDeviceRepo } = await import("@/lib/devices");
-    const { sessionIsUsable, touchIfNeeded } = await import("@/lib/devices/service");
     const repo = await getDeviceRepo();
-    const row = await sessionIsUsable(repo, user.deviceSessionId);
-    if (!row || row.userId !== user.id || row.revokedAt) return null;
-    await touchIfNeeded(repo, user.deviceSessionId);
+    const bound = await evaluateBoundSession(repo, user);
+    if (!bound.ok) {
+      jar.delete(SESSION_COOKIE);
+      return null;
+    }
+    await touchIfNeeded(repo, user.deviceSessionId!);
     return user;
   } catch {
+    jar.delete(SESSION_COOKIE);
     return null;
   }
 }
 
 export async function setSessionCookie(user: SessionUser) {
+  if (!user.deviceSessionId) {
+    throw new Error("device_session_required");
+  }
   const jar = await cookies();
   const token = await signSession(user);
-  jar.set(COOKIE, token, {
+  jar.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -77,5 +47,5 @@ export async function setSessionCookie(user: SessionUser) {
 
 export async function clearSessionCookie() {
   const jar = await cookies();
-  jar.delete(COOKIE);
+  jar.delete(SESSION_COOKIE);
 }

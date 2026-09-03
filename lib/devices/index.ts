@@ -36,5 +36,6 @@ export {
   revokeAllDevices,
   revokeOthersKeepCurrent,
   sessionIsUsable,
+  evaluateBoundSession,
   touchIfNeeded,
 } from "./service.ts";

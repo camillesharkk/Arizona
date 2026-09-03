@@ -51,5 +51,7 @@ export async function issueUserSession(
 }
 
 export async function refreshUserSession(user: SessionUser, deviceSessionId?: string | null) {
-  await setSessionCookie({ ...user, deviceSessionId: deviceSessionId || user.deviceSessionId || null });
+  const id = deviceSessionId || user.deviceSessionId;
+  if (!id) throw new Error("device_session_required");
+  await setSessionCookie({ ...user, deviceSessionId: id });
 }
