@@ -14,6 +14,7 @@ export const metadata = pageMeta({
 const faqs = [
   { q: "Is this the official SOS exam?", a: "No. This is independent practice. The official exam and commission are on the Arizona Secretary of State site." },
   { q: "Is Pro a subscription?", a: "No. Arizona Notary Exam Prep Pro is a one-time $19.99 payment for 60 days of access. No automatic renewal." },
+  { q: "What is the refund policy?", a: "You may request a refund within 3 days of purchase only if you have not used any Pro-only feature. One-time New Member and Referral discounts are not restored after a refund. An eligible unused full refund restores a $3 Referral Credit used on that order. Subject to applicable law and payment-provider requirements." },
   { q: "Who collects payment?", a: "Checkout will use Lemon Squeezy as Merchant of Record. Until live keys are set, signed-in mock checkout is for local testing only." },
 ];
 

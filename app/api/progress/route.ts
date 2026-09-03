@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
-import { canAccessQuestion, canTakeFullExam, canUseAdvancedAnalytics, hasArizonaPro } from "@/lib/entitlements";
+import { canAccessQuestion, canTakeFullExam, canUseAdvancedAnalytics, hasArizonaPro, fullExamCount } from "@/lib/entitlements";
+import { FREE_FULL_EXAMS } from "@/lib/product";
+import { recordProUsage } from "@/lib/commerce/usage";
 import { publishedQuestions } from "@/data/questions";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
@@ -24,7 +26,11 @@ export async function POST(req: Request) {
     if (exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
       return NextResponse.json({ error: "Pro required for additional full exams" }, { status: 402 });
     }
+    const priorFull = exam.data.mode === "full" ? await fullExamCount(session.id) : 0;
     await recordExam({ ...exam.data, userId: session.id });
+    if (exam.data.mode === "full" && priorFull >= FREE_FULL_EXAMS) {
+      await recordProUsage(session.id, "full_exam_extra");
+    }
     return NextResponse.json({ ok: true });
   }
   const parsed = answerSchema.safeParse(body);
@@ -39,6 +45,9 @@ export async function POST(req: Request) {
     selected: parsed.data.selected,
     correct,
   });
+  if (!q.is_free) {
+    await recordProUsage(session.id, "pro_question");
+  }
   return NextResponse.json({ ok: true, correct, stat: toClientStat(stat) });
 }
 

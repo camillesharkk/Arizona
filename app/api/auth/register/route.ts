@@ -12,11 +12,14 @@ import {
   verifyUrl,
 } from "@/lib/email";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { getCommerceRepo } from "@/lib/commerce";
+import { bindReferral, validateReferralCode } from "@/lib/commerce/service";
 
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   name: z.string().max(80).optional(),
+  referralCode: z.string().max(16).optional(),
 });
 
 export async function POST(req: Request) {
@@ -27,8 +30,20 @@ export async function POST(req: Request) {
   const email = body.data.email.trim().toLowerCase();
   const store = await getStore();
   if (await store.getUserByEmail(email)) return NextResponse.json({ error: "Email already registered" }, { status: 409 });
+  const referralCode = body.data.referralCode?.trim();
+  const repo = await getCommerceRepo();
+  if (referralCode) {
+    const valid = await validateReferralCode(repo, referralCode);
+    if (!valid.valid) return NextResponse.json({ error: "Invalid referral code" }, { status: 400 });
+  }
   const passwordHash = await bcrypt.hash(body.data.password, 12);
   const user = await store.createUser({ email, passwordHash, name: body.data.name || null });
+  if (referralCode) {
+    const bound = await bindReferral(repo, { referredUserId: user.id, code: referralCode });
+    if (!bound.ok && bound.error !== "already_bound") {
+      console.error("[register] referral bind failed");
+    }
+  }
   const token = newToken();
   await store.putToken({ token, type: "verify", userId: user.id, expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString() });
   const mail = await sendMail(email, VERIFY_SUBJECT, verificationEmailHtml(verifyUrl(token)));

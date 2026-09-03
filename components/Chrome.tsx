@@ -140,6 +140,8 @@ export function SiteHeader() {
             <Link href={paths.dashboard}>Dashboard</Link>
             <Link href={paths.mistakes}>Wrong Answers</Link>
             <Link href={paths.account}>Account Settings</Link>
+            <Link href={paths.referrals}>Invite & Credits</Link>
+            <Link href={paths.billing}>Billing & Access</Link>
             <Link href={paths.pricing}>{me.plan === "pro" ? "Pro Access" : "Upgrade to Pro"}</Link>
             <button className="btn btn-ghost btn-wide account-signout" type="button" onClick={logout}>
               Sign out

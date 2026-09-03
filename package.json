@@ -11,6 +11,7 @@
     "db:verify": "node db/verify.mjs",
     "questions:verify": "node --experimental-strip-types scripts/questions-verify.ts",
     "quiz:verify": "node --experimental-strip-types scripts/quiz-verify.ts",
+    "commerce:verify": "node --experimental-strip-types scripts/commerce-verify.ts",
     "contact:verify": "node --experimental-strip-types scripts/contact-verify.ts"
   },
   "dependencies": {

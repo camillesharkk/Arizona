@@ -22,6 +22,8 @@ export const paths = {
   dashboard: "/dashboard/",
   account: "/account/",
   profile: "/account/profile/",
+  referrals: "/account/referrals/",
+  billing: "/account/billing/",
   mistakes: "/wrong-answers/",
   pricing: "/pricing/",
   contact: "/contact/",

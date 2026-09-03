@@ -14,14 +14,22 @@ function db() {
   return client;
 }
 
+export function getPgSql() {
+  return db();
+}
+
+export async function ensurePgSchema() {
+  await assertSchema();
+}
+
 let schemaReady = false;
 
 async function assertSchema() {
   if (schemaReady) return;
   const sql = db();
   try {
-    const rows = await sql`select id from schema_migrations where id in ('001_init', '002_email_reminders', '003_entitlements')`;
-    if (rows.length < 3) throw new Error("missing");
+    const rows = await sql`select id from schema_migrations where id in ('001_init', '002_email_reminders', '003_entitlements', '004_commerce')`;
+    if (rows.length < 4) throw new Error("missing");
   } catch {
     throw new Error("Postgres schema is missing. Set DATABASE_URL and run: npm run db:migrate");
   }
@@ -271,6 +279,19 @@ export const pgStore: Store = {
       limit 1
     `;
     return rows[0] ? mapEntitlement(rows[0] as Record<string, unknown>) : null;
+  },
+  async listActiveArizonaEntitlements(userId) {
+    await assertSchema();
+    const rows = await db()`
+      select * from entitlements
+      where user_id = ${userId}
+        and state = 'AZ'
+        and status = 'active'
+        and starts_at <= now()
+        and expires_at > now()
+      order by starts_at asc
+    `;
+    return rows.map((r) => mapEntitlement(r as Record<string, unknown>));
   },
   async getLatestArizonaExpiry(userId) {
     await assertSchema();

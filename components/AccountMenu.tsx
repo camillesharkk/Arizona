@@ -79,6 +79,12 @@ export function AccountMenu({ me, onLogout }: { me: HeaderUser; onLogout: () => 
           <Link role="menuitem" href={paths.account} onClick={() => setOpen(false)}>
             Account Settings
           </Link>
+          <Link role="menuitem" href={paths.referrals} onClick={() => setOpen(false)}>
+            Invite & Credits
+          </Link>
+          <Link role="menuitem" href={paths.billing} onClick={() => setOpen(false)}>
+            Billing & Access
+          </Link>
           <Link role="menuitem" href={paths.pricing} onClick={() => setOpen(false)}>
             {isPro ? "Pro Access" : "Upgrade to Pro"}
           </Link>

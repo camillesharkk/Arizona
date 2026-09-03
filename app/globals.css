@@ -293,6 +293,13 @@ details.explain summary { cursor: pointer; font-weight: 700; }
   outline: 2px solid var(--brand); outline-offset: 2px;
 }
 .account-signout { color: var(--danger) !important; }
+.newcomer-dismiss {
+  position: absolute; top: 8px; right: 10px;
+  border: 0; background: transparent; color: var(--muted);
+  font-size: 1.4rem; line-height: 1; cursor: pointer; padding: 4px 8px;
+}
+.newcomer-banner { padding-right: 40px; }
+.price-breakdown p { margin: 4px 0; }
 .drawer-account {
   padding: 8px 10px 12px;
   border-bottom: 1px solid var(--line);

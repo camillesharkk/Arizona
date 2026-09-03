@@ -75,6 +75,7 @@ export function ExamRunner({
   const [marked, setMarked] = useState<string[]>([]);
   const [done, setDone] = useState(false);
   const [seconds, setSeconds] = useState(examConfig.timeLimitMinutes * 60);
+  const weakReported = useRef(false);
 
   useEffect(() => {
     if (!timed || done) return;
@@ -134,6 +135,14 @@ export function ExamRunner({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(q.question_id, letter) }),
       }).catch(() => undefined);
+      if (mode === "weak" && isPro && !weakReported.current) {
+        weakReported.current = true;
+        fetch("/api/billing/pro-usage/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ featureCode: "weak_areas" }),
+        }).catch(() => undefined);
+      }
     }
   }
 

@@ -209,6 +209,18 @@ export const fileStore: Store = {
       ) ?? null
     );
   },
+  async listActiveArizonaEntitlements(userId) {
+    const db = await load();
+    const now = Date.now();
+    return db.entitlements.filter(
+      (e) =>
+        e.userId === userId &&
+        e.state === "AZ" &&
+        e.status === "active" &&
+        new Date(e.startsAt).getTime() <= now &&
+        new Date(e.expiresAt).getTime() > now
+    );
+  },
   async getLatestArizonaExpiry(userId) {
     const db = await load();
     const times = db.entitlements

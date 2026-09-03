@@ -7,6 +7,8 @@ import { getSource } from "@/data/sources";
 import { retrieveContext } from "@/data/rag";
 import { getStore } from "@/lib/store";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { AI_LIMIT_FREE } from "@/lib/product";
+import { recordProUsage } from "@/lib/commerce/usage";
 
 export async function POST(req: Request) {
   const session = await getSession();
@@ -30,11 +32,16 @@ export async function POST(req: Request) {
   const limit = await aiDailyLimit(session.id);
   if (used >= limit) return NextResponse.json({ error: "Daily AI limit reached", remaining: 0 }, { status: 429 });
   await store.bumpAi(session.id, day);
+  const userId = session.id;
   const src = getSource(q.source_id);
   const context = retrieveContext(q.topic, q.question_text);
   const key = process.env.AI_API_KEY;
+  async function delivered() {
+    if (used >= AI_LIMIT_FREE) await recordProUsage(userId, "ai_tutor_pro_quota");
+  }
   if (!key) {
     const text = localTutor(body.data.mode, q, body.data.selected, context, src.reference);
+    await delivered();
     return NextResponse.json({ text, remaining: limit - used - 1, provider: "grounded-fallback" });
   }
   const prompt = `You are Arizona notary exam tutor. Use only this context. If unknown, say to verify on SOS.\nContext:\n${context}\nQuestion: ${q.question_text}\nCorrect: ${q.correct_option}. ${q.explanation}\nUser selected: ${body.data.selected || "n/a"}\nMode: ${body.data.mode}`;
@@ -49,6 +56,7 @@ export async function POST(req: Request) {
   });
   if (!res.ok) return NextResponse.json({ error: "AI provider error" }, { status: 502 });
   const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+  await delivered();
   return NextResponse.json({ text: json.choices?.[0]?.message?.content || "", remaining: limit - used - 1, provider: "openai" });
 }
 

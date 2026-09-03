@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
 import { PasswordField } from "@/components/PasswordField";
@@ -16,10 +16,34 @@ export function AuthForm({
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+  const [referralCode, setReferralCode] = useState("");
+  const [referralHint, setReferralHint] = useState<"idle" | "valid" | "invalid">("idle");
   const [token, setToken] = useState(initialToken);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (mode !== "register") return;
+    const ref = new URLSearchParams(window.location.search).get("ref");
+    if (ref) setReferralCode(ref.toUpperCase());
+  }, [mode]);
+
+  useEffect(() => {
+    if (mode !== "register") return;
+    const code = referralCode.trim();
+    if (!code) {
+      setReferralHint("idle");
+      return;
+    }
+    const t = window.setTimeout(() => {
+      fetch(`/api/referrals/validate/?code=${encodeURIComponent(code)}`)
+        .then((r) => r.json())
+        .then((d) => setReferralHint(d.valid ? "valid" : "invalid"))
+        .catch(() => setReferralHint("idle"));
+    }, 300);
+    return () => window.clearTimeout(t);
+  }, [mode, referralCode]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -43,7 +67,9 @@ export function AuthForm({
         ? { token, password }
         : mode === "forgot"
           ? { email }
-          : { email, password, name };
+          : mode === "register"
+            ? { email, password, name, referralCode: referralCode.trim() || undefined }
+            : { email, password, name };
     const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const data = await res.json();
     setBusy(false);
@@ -79,6 +105,25 @@ export function AuthForm({
           Name (optional)
           <input value={name} onChange={(e) => setName(e.target.value)} />
         </label>
+      )}
+      {mode === "register" && (
+        <label className="field">
+          Referral code (optional)
+          <input
+            value={referralCode}
+            onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+            autoComplete="off"
+            placeholder="AZ7KQ2MP"
+          />
+        </label>
+      )}
+      {mode === "register" && (
+        <p className="notice">
+          Use a referral code to receive a one-time 10% discount on an eligible purchase. The discount does not expire,
+          but can only be used once.
+          {referralHint === "valid" ? " Code looks valid." : ""}
+          {referralHint === "invalid" ? " This code is not valid." : ""}
+        </p>
       )}
       {mode === "reset" && !initialToken && (
         <label className="field">

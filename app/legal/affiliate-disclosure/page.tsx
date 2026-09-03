@@ -8,6 +8,11 @@ export default function Page() {
   return (
     <LegalCopy title="Affiliate Disclosure">
       <p>Some comparison links may be affiliate links. We may earn a commission if you buy through them, at no extra cost to you. Rankings are based on how well a product complements Arizona SOS requirements, not on commission size alone.</p>
+      <p>
+        Referral Credits and site promotions apply only to eligible products sold directly on this site (currently
+        Arizona Notary Exam Prep Pro). They do not apply to affiliate links, third-party products, or external merchant
+        checkout.
+      </p>
     </LegalCopy>
   );
 }

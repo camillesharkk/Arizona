@@ -15,6 +15,7 @@ export function FlashcardsClient() {
   const [i, setI] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [isPro, setIsPro] = useState(false);
+  const [fullReported, setFullReported] = useState(false);
 
   useEffect(() => {
     fetch("/api/auth/me/")
@@ -22,6 +23,16 @@ export function FlashcardsClient() {
       .then((d) => setIsPro(Boolean(d.user?.arizonaPro || d.user?.plan === "pro")))
       .catch(() => undefined);
   }, []);
+
+  useEffect(() => {
+    if (!isPro || fullReported || i < FREE_FLASHCARD_PREVIEW) return;
+    setFullReported(true);
+    fetch("/api/billing/pro-usage/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ featureCode: "flashcards_full" }),
+    }).catch(() => undefined);
+  }, [isPro, fullReported, i]);
 
   const full = useMemo(
     () => (cat === "all" ? flashcards : flashcards.filter((c) => c.category === cat)),
