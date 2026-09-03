@@ -77,6 +77,20 @@ function mapReward(r: Record<string, unknown>): ReferralRewardRow {
   };
 }
 
+function parseCreditIds(r: Record<string, unknown>, fallbackId: string | null): string[] {
+  const raw = r.credit_ids;
+  if (typeof raw === "string" && raw.trim()) {
+    try {
+      const parsed = JSON.parse(raw) as unknown;
+      if (Array.isArray(parsed)) return parsed.map(String).filter(Boolean);
+    } catch {
+      /* ignore */
+    }
+  }
+  if (Array.isArray(raw)) return (raw as unknown[]).map(String).filter(Boolean);
+  return fallbackId ? [fallbackId] : [];
+}
+
 function mapQuote(r: Record<string, unknown>): PricingQuoteRow {
   return {
     id: String(r.id),
@@ -91,6 +105,7 @@ function mapQuote(r: Record<string, unknown>): PricingQuoteRow {
     referralDiscountApplied: bool(r.referral_discount_applied),
     referralDiscountCents: num(r.referral_discount_cents),
     creditId: r.credit_id ? String(r.credit_id) : null,
+    creditIds: parseCreditIds(r, r.credit_id ? String(r.credit_id) : null),
     creditCents: num(r.credit_cents),
     subtotalCents: num(r.subtotal_cents),
     finalPriceCents: num(r.final_price_cents),
@@ -124,6 +139,7 @@ function mapOrder(r: Record<string, unknown>): CommerceOrderRow {
     newcomerApplied: bool(r.newcomer_applied),
     referralDiscountApplied: bool(r.referral_discount_applied),
     creditId: r.credit_id ? String(r.credit_id) : null,
+    creditIds: parseCreditIds(r, r.credit_id ? String(r.credit_id) : null),
     creditCents: num(r.credit_cents),
     policyVersion: String(r.policy_version),
     policyAcceptedAt: iso(r.policy_accepted_at),
@@ -277,19 +293,52 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
       `;
       return rows.length > 0;
     },
+    async reserveCredits(opts) {
+      const ids = [...new Set(opts.creditIds)];
+      if (!ids.length) return true;
+      if (ids.length !== opts.creditIds.length) return false;
+      return sql.begin(async (tx: any) => {
+        const locked = await tx`
+          select id from referral_credits
+          where id in ${tx(ids)}
+            and user_id = ${opts.userId}
+            and status = 'available'
+          for update
+        `;
+        if (locked.length !== ids.length) return false;
+        const updated = await tx`
+          update referral_credits
+          set status = 'reserved',
+              reserved_at = ${opts.at},
+              reserved_quote_id = ${opts.quoteId},
+              reserved_until = ${opts.until}
+          where id in ${tx(ids)}
+            and user_id = ${opts.userId}
+            and status = 'available'
+          returning id
+        `;
+        if (updated.length !== ids.length) throw new Error("credit_reserve_partial");
+        return true;
+      });
+    },
     async reserveCredit(opts) {
-      const rows = await sql`
+      return this.reserveCredits({
+        userId: opts.userId,
+        creditIds: [opts.creditId],
+        quoteId: opts.quoteId,
+        until: opts.until,
+        at: opts.at,
+      });
+    },
+    async releaseCreditsForQuote(quoteId) {
+      await sql`
         update referral_credits
-        set status = 'reserved',
-            reserved_at = ${opts.at},
-            reserved_quote_id = ${opts.quoteId},
-            reserved_until = ${opts.until}
-        where id = ${opts.creditId}
-          and user_id = ${opts.userId}
-          and status = 'available'
-        returning id
+        set status = 'available',
+            reserved_at = null,
+            reserved_quote_id = null,
+            reserved_until = null
+        where reserved_quote_id = ${quoteId} and status = 'reserved'
       `;
-      return rows.length > 0;
     },
     async releaseCreditReservation(creditId, quoteId) {
       await sql`
@@ -300,6 +349,10 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
             reserved_until = null
         where id = ${creditId} and reserved_quote_id = ${quoteId} and status = 'reserved'
       `;
+    },
+    async listCreditsForQuote(quoteId) {
+      const rows = await sql`select * from referral_credits where reserved_quote_id = ${quoteId}`;
+      return (rows as Record<string, unknown>[]).map(mapCredit);
     },
     async expireReservations(nowIso) {
       await sql`
@@ -316,6 +369,17 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
         where status = 'open' and expires_at <= ${nowIso}::timestamptz
       `;
     },
+    async redeemReservedCredits(opts) {
+      const rows = await sql`
+        update referral_credits
+        set status = 'redeemed',
+            redeemed_at = ${opts.at},
+            redeemed_order_id = ${opts.orderId}
+        where reserved_quote_id = ${opts.quoteId} and status = 'reserved'
+        returning id
+      `;
+      return rows.length > 0;
+    },
     async redeemReservedCredit(opts) {
       const rows = await sql`
         update referral_credits
@@ -326,6 +390,22 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
         returning id
       `;
       return rows.length > 0;
+    },
+    async restoreRedeemedCreditsForOrder(opts) {
+      const rows = await sql`
+        update referral_credits
+        set status = 'available',
+            reversed_at = ${opts.at},
+            restored_at = ${opts.at},
+            redeemed_at = null,
+            redeemed_order_id = null,
+            reserved_at = null,
+            reserved_quote_id = null,
+            reserved_until = null
+        where status = 'redeemed' and redeemed_order_id = ${opts.orderId}
+        returning id
+      `;
+      return rows.length;
     },
     async restoreRedeemedCredit(opts) {
       const rows = await sql`
@@ -394,13 +474,13 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
       await sql`insert into pricing_quotes (
         id, user_id, product_code, currency, list_price_cents, standard_price_cents, base_applied_price_cents,
         newcomer_discount_applied, newcomer_discount_cents, referral_discount_applied, referral_discount_cents,
-        credit_id, credit_cents, subtotal_cents, final_price_cents, newcomer_expires_at, referral_relationship_id,
+        credit_id, credit_ids, credit_cents, subtotal_cents, final_price_cents, newcomer_expires_at, referral_relationship_id,
         policy_version, refund_policy_version, promotion_policy_version, policy_accepted_at,
         status, created_at, expires_at, consumed_at, provider_order_id
       ) values (
         ${row.id}, ${row.userId}, ${row.productCode}, ${row.currency}, ${row.listPriceCents}, ${row.standardPriceCents},
         ${row.baseAppliedPriceCents}, ${row.newcomerDiscountApplied}, ${row.newcomerDiscountCents},
-        ${row.referralDiscountApplied}, ${row.referralDiscountCents}, ${row.creditId}, ${row.creditCents},
+        ${row.referralDiscountApplied}, ${row.referralDiscountCents}, ${row.creditId}, ${JSON.stringify(row.creditIds || [])}, ${row.creditCents},
         ${row.subtotalCents}, ${row.finalPriceCents}, ${row.newcomerExpiresAt}, ${row.referralRelationshipId},
         ${row.policyVersion}, ${row.refundPolicyVersion}, ${row.promotionPolicyVersion}, ${row.policyAcceptedAt},
         ${row.status}, ${row.createdAt}, ${row.expiresAt}, ${row.consumedAt}, ${row.providerOrderId}
@@ -425,12 +505,12 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
     async insertOrder(row) {
       await sql`insert into commerce_orders (
         id, user_id, product_code, quote_id, entitlement_id, status, paid_at, amount_cents, currency,
-        provider, provider_order_id, newcomer_applied, referral_discount_applied, credit_id, credit_cents,
+        provider, provider_order_id, newcomer_applied, referral_discount_applied, credit_id, credit_ids, credit_cents,
         policy_version, policy_accepted_at, refunded_at, refund_reason, created_at
       ) values (
         ${row.id}, ${row.userId}, ${row.productCode}, ${row.quoteId}, ${row.entitlementId}, ${row.status},
         ${row.paidAt}, ${row.amountCents}, ${row.currency}, ${row.provider}, ${row.providerOrderId},
-        ${row.newcomerApplied}, ${row.referralDiscountApplied}, ${row.creditId}, ${row.creditCents},
+        ${row.newcomerApplied}, ${row.referralDiscountApplied}, ${row.creditId}, ${JSON.stringify(row.creditIds || [])}, ${row.creditCents},
         ${row.policyVersion}, ${row.policyAcceptedAt}, ${row.refundedAt}, ${row.refundReason}, ${row.createdAt}
       )`;
     },

@@ -4,9 +4,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
 import {
+  CREDIT_PER_ORDER_NOTICE,
   CREDIT_RESTORE_NOTICE,
   ONE_TIME_DISCOUNT_NOTICE,
+  PERSONAL_USE_NOTICE,
   POLICY_CHECKBOX_TEXT,
+  PRO_DURATION_NOTICE,
   REFUND_POLICY_SUMMARY,
 } from "@/lib/pricing/copy";
 
@@ -19,6 +22,8 @@ type Breakdown = {
   referralEligible: boolean;
   referralApplied: boolean;
   referralCreditAvailable: number;
+  maxApplicableCredits: number;
+  creditsAppliedCount: number;
   creditApplied: boolean;
   creditCents: number;
   subtotalBeforeCreditCents: number;
@@ -35,7 +40,7 @@ type Breakdown = {
 type Preview = {
   newcomerOffer: { eligible: boolean; expiresAt: string | null; redeemed: boolean };
   referralDiscount: { eligible: boolean; status: string | null };
-  referralCredits: { available: number };
+  referralCredits: { available: number; maxApplicable: number };
   breakdown: Breakdown;
 };
 
@@ -179,13 +184,18 @@ export function CheckoutButton() {
           Referral Discount · 10% off · Available · One-time use
         </p>
       )}
-      {signedIn && (preview?.referralCredits.available || 0) > 0 && (
+      {signedIn && (preview?.referralCredits.available || 0) > 0 && (preview?.referralCredits.maxApplicable || 0) > 0 && (
         <label className="notice" style={{ display: "block", margin: "8px 0" }}>
           <input type="checkbox" checked={applyCredit} onChange={(e) => setApplyCredit(e.target.checked)} />{" "}
-          {(preview?.referralCredits.available || 0) === 1
-            ? "You have a $3 Referral Credit available. Apply $3 Referral Credit"
-            : `You have ${preview?.referralCredits.available} Referral Credits available. Apply one $3 Referral Credit`}
+          You have {preview?.referralCredits.available} Referral Credit
+          {(preview?.referralCredits.available || 0) === 1 ? "" : "s"} available. Apply{" "}
+          {b?.creditApplied && b.creditsAppliedCount
+            ? `${b.creditsAppliedCount} Referral Credit${b.creditsAppliedCount === 1 ? "" : "s"} (−${b.display.credit})`
+            : `${preview?.referralCredits.maxApplicable} Referral Credit${(preview?.referralCredits.maxApplicable || 0) === 1 ? "" : "s"}`}
         </label>
+      )}
+      {signedIn && (preview?.referralCredits.available || 0) > 0 && (
+        <p className="notice">{CREDIT_PER_ORDER_NOTICE}</p>
       )}
 
       <div className="price-breakdown">
@@ -195,9 +205,12 @@ export function CheckoutButton() {
         {b?.newcomerApplied && <p>New Member Offer: {b.display.newcomer}</p>}
         {b?.referralApplied && <p>Referral Discount: −10%</p>}
         {b?.newcomerApplied && b.referralApplied && <p>Your price: {b.display.subtotal}</p>}
-        {b?.creditApplied && <p>Referral Credit: −{b.display.credit}</p>}
+        {b?.creditApplied && <p>Referral Credit: −{b.display.credit} ({b.creditsAppliedCount})</p>}
         <p className="kicker">Final price: {ctaPrice}</p>
       </div>
+
+      <p className="notice">{PRO_DURATION_NOTICE}</p>
+      <p className="notice">{PERSONAL_USE_NOTICE}</p>
 
       <div className="card" style={{ margin: "12px 0" }}>
         <h3>3-Day Unused Refund Policy</h3>

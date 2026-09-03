@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { REFERRAL_CREDIT_RULES } from "@/lib/pricing/copy";
+import { REFERRAL_CREDIT_RULES, CREDIT_PER_ORDER_NOTICE } from "@/lib/pricing/copy";
 
 type Me = {
   code: string;
@@ -65,6 +65,7 @@ export function ReferralsClient() {
           When a referred friend completes their first qualifying purchase, you may earn one $3 Referral Credit.
         </p>
         <p>Referral Credits:</p>
+        <p className="notice">{CREDIT_PER_ORDER_NOTICE}</p>
         <ul>
           {REFERRAL_CREDIT_RULES.map((r) => (
             <li key={r}>{r}</li>

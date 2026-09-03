@@ -5,7 +5,7 @@ import { getStore } from "@/lib/store";
 import { checkoutUrl } from "@/lib/billing";
 import { grantArizonaPro60d, hasArizonaPro } from "@/lib/entitlements";
 import { getCommerceRepo } from "@/lib/commerce";
-import { assertQuoteStillValid, confirmPaidOrder } from "@/lib/commerce/service";
+import { assertQuoteStillValid, abandonQuote, confirmPaidOrder } from "@/lib/commerce/service";
 
 const postSchema = z.object({
   quoteId: z.string().uuid(),
@@ -20,7 +20,10 @@ export async function POST(req: Request) {
   const quote = await repo.getQuote(body.data.quoteId);
   if (!quote || quote.userId !== session.id) return NextResponse.json({ error: "quote_not_found" }, { status: 404 });
   const valid = await assertQuoteStillValid(repo, quote);
-  if (!valid.ok) return NextResponse.json({ error: valid.error }, { status: valid.error === "PRICE_CHANGED" ? 409 : 400 });
+  if (!valid.ok) {
+    await abandonQuote(repo, quote.id);
+    return NextResponse.json({ error: valid.error }, { status: valid.error === "PRICE_CHANGED" ? 409 : 400 });
+  }
   const checkout = checkoutUrl(session);
   if (checkout.includes("checkout=mock")) {
     return NextResponse.json({
@@ -61,6 +64,7 @@ export async function GET(req: Request) {
       planStatus: "active",
       emailVerified: user.emailVerified,
       name: user.name,
+      deviceSessionId: session.deviceSessionId,
     });
   }
   return NextResponse.redirect(new URL("/dashboard/?upgraded=1", req.url));

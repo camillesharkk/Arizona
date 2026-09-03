@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { getStore } from "@/lib/store";
-import { setSessionCookie } from "@/lib/session";
+import { issueUserSession } from "@/lib/devices/http";
 import {
   allowDevEmailTokens,
   newToken,
@@ -50,14 +50,20 @@ export async function POST(req: Request) {
   if (!mail.ok) {
     return NextResponse.json({ error: mail.error }, { status: 502 });
   }
-  await setSessionCookie({
-    id: user.id,
-    email: user.email,
-    plan: user.plan,
-    planStatus: user.planStatus,
-    emailVerified: user.emailVerified,
-    name: user.name,
-  });
+  const issued = await issueUserSession(
+    {
+      id: user.id,
+      email: user.email,
+      plan: user.plan,
+      planStatus: user.planStatus,
+      emailVerified: user.emailVerified,
+      name: user.name,
+    },
+    { req }
+  );
+  if (!issued.ok) {
+    return NextResponse.json({ error: issued.error }, { status: 403 });
+  }
   return NextResponse.json({
     ok: true,
     ...(allowDevEmailTokens() ? { mockedEmail: true, verifyToken: token } : {}),

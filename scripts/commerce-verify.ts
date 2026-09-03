@@ -5,9 +5,11 @@
  */
 import { randomUUID } from "crypto";
 import { applyPercent } from "../lib/pricing/money.ts";
-import { calculatePrice } from "../lib/pricing/engine.ts";
+import { calculatePrice, maxApplicableCredits } from "../lib/pricing/engine.ts";
 import {
   LIST_PRICE_CENTS,
+  MAX_CREDITS_PER_ORDER,
+  MIN_OUT_OF_POCKET_CENTS,
   NEWCOMER_HOURS,
   REFERRAL_CREDIT_CENTS,
   STANDARD_PRICE_CENTS,
@@ -51,19 +53,41 @@ async function user(repo: CommerceRepo, id: string, createdAt: Date) {
   await repo.putUser({ id, createdAt: createdAt.toISOString() });
 }
 
+async function addCredit(repo: CommerceRepo, userId: string, now: Date, status: "available" | "redeemed" = "available") {
+  const id = randomUUID();
+  await repo.insertCredit({
+    id,
+    userId,
+    amountCents: REFERRAL_CREDIT_CENTS,
+    sourceRewardId: randomUUID(),
+    status,
+    createdAt: now.toISOString(),
+    availableAt: now.toISOString(),
+    reservedAt: null,
+    reservedQuoteId: null,
+    reservedUntil: null,
+    redeemedAt: status === "redeemed" ? now.toISOString() : null,
+    redeemedOrderId: null,
+    reversedAt: null,
+    restoredAt: null,
+  });
+  return id;
+}
+
 function grant(entitlementId: string) {
   return async () => ({ entitlement: { id: entitlementId } });
 }
 
 async function pay(
   repo: CommerceRepo,
-  opts: { userId: string; applyCredit: boolean; now: Date; entitlementId?: string; policy?: boolean }
+  opts: { userId: string; applyCredit: boolean; now: Date; entitlementId?: string; policy?: boolean; requestedCreditCount?: number }
 ) {
   const q = await createQuote(repo, {
     userId: opts.userId,
     applyCredit: opts.applyCredit,
     policyAccepted: opts.policy ?? true,
     now: opts.now,
+    requestedCreditCount: opts.requestedCreditCount,
   });
   if (!q.ok) return q;
   const ent = opts.entitlementId || randomUUID();
@@ -91,18 +115,43 @@ async function run() {
     ["newcomer", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: false, applyCredit: false, availableCreditCount: 0 }, 1788],
     ["referral only", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: true, applyCredit: false, availableCreditCount: 0 }, 1799],
     ["newcomer + referral", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: false, availableCreditCount: 0 }, 1609],
-    ["newcomer + referral + $3", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: true, availableCreditCount: 1 }, 1309],
+    ["newcomer + referral + 1 credit", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: true, availableCreditCount: 1 }, 1309],
+    ["newcomer + referral + 2 credits", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: true, availableCreditCount: 2 }, 1009],
+    ["newcomer + referral + 3 credits", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: true, availableCreditCount: 3 }, 709],
     ["standard + referral + $3", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: true, applyCredit: true, availableCreditCount: 1 }, 1499],
     ["standard + $3", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 1 }, 1699],
-    ["two credits still one $3", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 5 }, 1699],
+    ["five available uses max three", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 5 }, 1099],
+    ["four requested capped at three", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 4, requestedCreditCount: 4 }, 1099],
   ];
   for (const [label, el, want] of fixtures) {
     const got = calculatePrice(el).finalPriceCents;
     if (got !== want) fail(`${label}: expected ${want} got ${got}`);
     else ok(`price ${label} = ${want}`);
   }
-  if (STANDARD_PRICE_CENTS !== 1999 || LIST_PRICE_CENTS !== 2104) fail("catalog cents");
-  else ok("LIST 2104 / STANDARD 1999");
+  const four = calculatePrice({
+    newcomerEligible: false,
+    newcomerExpiresAt: null,
+    referralDiscountEligible: false,
+    applyCredit: true,
+    availableCreditCount: 4,
+    requestedCreditCount: 4,
+  });
+  if (four.creditsAppliedCount !== MAX_CREDITS_PER_ORDER) fail("4 requested should cap at 3");
+  else ok("4 requested credits capped at 3");
+  if (maxApplicableCredits(500, 3) !== 1) fail("cheap $5 item should allow only 1 credit");
+  else ok("cheap item cannot apply 3 × $3");
+  if (maxApplicableCredits(399, 3) !== 0) fail("$3.99 should not apply a $3 credit under min payable");
+  else ok("min $1 out-of-pocket blocks unsafe credit count");
+  const cheap = calculatePrice({
+    newcomerEligible: false,
+    newcomerExpiresAt: null,
+    referralDiscountEligible: false,
+    applyCredit: true,
+    availableCreditCount: 3,
+    requestedCreditCount: 3,
+  });
+  if (cheap.finalPriceCents < MIN_OUT_OF_POCKET_CENTS) fail("final price below minimum payable");
+  else ok(`final price respects minimum payable (${cheap.finalPriceCents})`);
 
   const t0 = new Date("2026-09-01T12:00:00.000Z");
   const created = t0;
@@ -317,7 +366,7 @@ async function run() {
     else ok("redeemed credit cannot reuse");
     const reuseQuote = await createQuote(repo, { userId: gina, applyCredit: true, policyAccepted: true, now: hoursFrom(t0, 22.1) });
     if (reuseQuote.ok) fail("applyCredit succeeded with no remaining credits");
-    else ok("one order max one credit; no remaining instrument");
+    else ok("redeemed credit cannot be applied again");
   }
 
   const el10 = await refundEligibility(repo, {
@@ -432,6 +481,91 @@ async function run() {
   const r2 = await refundEligibility(repo, { userId: iris, orderId: i2.ok ? i2.order.id : "", now: hoursFrom(t0, 1.3) });
   if (r1.eligible || r2.eligible) fail("stacked active entitlements should both lose unused refund");
   else ok("pro usage attributes to all currently active entitlements");
+
+  const niles = "niles";
+  await user(repo, niles, hoursAgo(t0, 250));
+  const n1 = await addCredit(repo, niles, hoursFrom(t0, 24));
+  const n2 = await addCredit(repo, niles, hoursFrom(t0, 24));
+  await addCredit(repo, niles, hoursFrom(t0, 24));
+  const n4 = await addCredit(repo, niles, hoursFrom(t0, 24));
+  const one = await pay(repo, { userId: niles, applyCredit: true, requestedCreditCount: 1, now: hoursFrom(t0, 25) });
+  if (!one.ok || one.order.amountCents !== 1699 || one.quote.creditIds.length !== 1) fail("1 credit applied");
+  else ok("1 credit applied → 1699");
+  const twoPay = await pay(repo, { userId: niles, applyCredit: true, requestedCreditCount: 2, now: hoursFrom(t0, 26) });
+  if (!twoPay.ok || twoPay.order.amountCents !== 1399 || twoPay.quote.creditIds.length !== 2) fail("2 credits applied");
+  else ok("2 credits applied → 1399");
+
+  const otto = "otto";
+  await user(repo, otto, hoursAgo(t0, 260));
+  const o1 = await addCredit(repo, otto, hoursFrom(t0, 27));
+  const o2 = await addCredit(repo, otto, hoursFrom(t0, 27));
+  const o3 = await addCredit(repo, otto, hoursFrom(t0, 27));
+  await addCredit(repo, otto, hoursFrom(t0, 27));
+  const threePay = await pay(repo, { userId: otto, applyCredit: true, requestedCreditCount: 4, now: hoursFrom(t0, 28) });
+  if (!threePay.ok || threePay.quote.creditIds.length !== 3 || threePay.order.amountCents !== 1099) {
+    fail(`3-credit cap on order ${threePay.ok ? threePay.order.amountCents : "error"}`);
+  } else ok("3 credits applied → 1099; 4th not used");
+  const usedStatuses = await Promise.all([repo.getCredit(o1), repo.getCredit(o2), repo.getCredit(o3)]);
+  if (usedStatuses.some((c) => c?.status !== "redeemed")) fail("successful purchase should redeem all used credits");
+  else ok("successful purchase → all used credits redeemed");
+
+  const partial = await repo.reserveCredits({
+    userId: otto,
+    creditIds: [n4, o1, randomUUID()],
+    quoteId: randomUUID(),
+    until: hoursFrom(t0, 30).toISOString(),
+    at: hoursFrom(t0, 29).toISOString(),
+  });
+  if (partial) fail("mixed available/redeemed reserve should fail");
+  const leftover = await repo.getCredit(n4);
+  if (leftover?.status !== "available") fail("failed atomic reserve left a credit reserved");
+  else ok("one credit fails → whole reservation rolls back");
+
+  const piper = "piper";
+  await user(repo, piper, hoursAgo(t0, 270));
+  const p1 = await addCredit(repo, piper, hoursFrom(t0, 30));
+  const p2 = await addCredit(repo, piper, hoursFrom(t0, 30));
+  const p3 = await addCredit(repo, piper, hoursFrom(t0, 30));
+  const qHold = await createQuote(repo, { userId: piper, applyCredit: true, policyAccepted: true, now: hoursFrom(t0, 31) });
+  if (!qHold.ok || qHold.quote.creditIds.length !== 3) fail("quote did not reserve 3 credits");
+  else ok("quote atomically reserved 3 credits");
+  await repo.expireReservations(hoursFrom(t0, 32).toISOString());
+  const releasedCredits = await Promise.all([repo.getCredit(p1), repo.getCredit(p2), repo.getCredit(p3)]);
+  if (releasedCredits.some((c) => c?.status !== "available")) fail("quote expiry did not release all credits");
+  else ok("quote expires → all reserved credits released");
+
+  const threeAgain = await pay(repo, { userId: piper, applyCredit: true, now: hoursFrom(t0, 33) });
+  if (!threeAgain.ok) fail("piper 3-credit pay");
+  const restoredN = await completeEligibleUnusedRefund(repo, {
+    userId: piper,
+    orderId: threeAgain.ok ? threeAgain.order.id : "",
+    refundEntitlement: async () => undefined,
+    now: hoursFrom(t0, 33.1),
+  });
+  if (!restoredN.ok) fail("piper unused refund");
+  const back = await Promise.all([repo.getCredit(p1), repo.getCredit(p2), repo.getCredit(p3)]);
+  if (back.some((c) => c?.status !== "available" || !c.restoredAt)) fail("eligible refund did not restore all credits");
+  else ok("eligible unused refund → all used credits restored");
+
+  const sameTwice = await repo.reserveCredits({
+    userId: piper,
+    creditIds: [p1, p1],
+    quoteId: randomUUID(),
+    until: hoursFrom(t0, 34).toISOString(),
+    at: hoursFrom(t0, 33.2).toISOString(),
+  });
+  if (sameTwice) fail("same credit reserved twice in one quote");
+  else ok("same credit cannot be used twice");
+
+  const quinn = "quinn";
+  await user(repo, quinn, hoursFrom(t0, 40));
+  await bindReferral(repo, { referredUserId: quinn, code, now: hoursFrom(t0, 40) });
+  await addCredit(repo, quinn, hoursFrom(t0, 40));
+  await addCredit(repo, quinn, hoursFrom(t0, 40));
+  await addCredit(repo, quinn, hoursFrom(t0, 40));
+  const quinnPay = await pay(repo, { userId: quinn, applyCredit: true, requestedCreditCount: 3, now: hoursFrom(t0, 40.2) });
+  if (!quinnPay.ok || quinnPay.order.amountCents !== 709) fail(`newcomer+referral+3 credits expected 709 got ${quinnPay.ok ? quinnPay.order.amountCents : "error"}`);
+  else ok("newcomer + referral + 3 credits → 709");
 
   const preview = await previewPrice(repo, dave, false, hoursFrom(t0, 50));
   if (preview.breakdown.finalPriceCents !== STANDARD_PRICE_CENTS && preview.breakdown.finalPriceCents !== 1799) {

@@ -8,7 +8,7 @@ export default function AccountPage() {
   return (
     <main className="wrap hero">
       <h1>Account Settings</h1>
-      <p className="lede">Manage your profile, study reminders, exam date, and password.</p>
+      <p className="lede">Manage your profile, study reminders, exam date, password, and devices.</p>
       <AccountSettings />
     </main>
   );

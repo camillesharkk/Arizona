@@ -13,6 +13,8 @@ export function publicBreakdown(b: PriceBreakdown) {
     referralApplied: b.referralApplied,
     referralDiscountCents: b.referralDiscountCents,
     referralCreditAvailable: b.referralCreditAvailable,
+    maxApplicableCredits: b.maxApplicableCredits,
+    creditsAppliedCount: b.creditsAppliedCount,
     creditApplied: b.creditApplied,
     creditCents: b.creditCents,
     baseAppliedPriceCents: b.baseAppliedPriceCents,

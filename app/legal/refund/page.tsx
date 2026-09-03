@@ -27,8 +27,9 @@ export default function Page() {
         purchase is later refunded, those one-time discounts will not be reissued or restored.
       </p>
       <p>
-        If a $3 Referral Credit was used on the purchase, an eligible unused full refund under this policy will restore
-        that credit. Referral Credits have no cash value and cannot be withdrawn.
+        If Referral Credit(s) were used on the purchase, an eligible unused full refund under this policy will restore
+        those credits. Up to 3 Referral Credits can be applied per order, subject to the purchase amount. Referral
+        Credits have no cash value and cannot be withdrawn. New Member and Referral discounts are not restored.
       </p>
       <p>
         This standard policy does not prohibit refunds, chargebacks, or other remedies required by applicable law,

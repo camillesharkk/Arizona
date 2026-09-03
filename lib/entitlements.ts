@@ -20,6 +20,7 @@ export type SessionUser = {
   planStatus: string;
   emailVerified: boolean;
   name: string | null;
+  deviceSessionId?: string | null;
 };
 
 export { AZ_PRO_PRODUCT, AZ_STATE, PRO_DURATION_DAYS, AI_LIMIT_FREE, AI_LIMIT_PRO, FREE_FULL_EXAMS, FREE_WEAK_PREVIEW, FREE_FLASHCARD_PREVIEW } from "@/lib/product";

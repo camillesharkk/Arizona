@@ -28,8 +28,8 @@ async function assertSchema() {
   if (schemaReady) return;
   const sql = db();
   try {
-    const rows = await sql`select id from schema_migrations where id in ('001_init', '002_email_reminders', '003_entitlements', '004_commerce')`;
-    if (rows.length < 4) throw new Error("missing");
+    const rows = await sql`select id from schema_migrations where id in ('001_init', '002_email_reminders', '003_entitlements', '004_commerce', '005_credits_devices')`;
+    if (rows.length < 5) throw new Error("missing");
   } catch {
     throw new Error("Postgres schema is missing. Set DATABASE_URL and run: npm run db:migrate");
   }

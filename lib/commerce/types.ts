@@ -80,6 +80,7 @@ export type PricingQuoteRow = {
   referralDiscountApplied: boolean;
   referralDiscountCents: number;
   creditId: string | null;
+  creditIds: string[];
   creditCents: number;
   subtotalCents: number;
   finalPriceCents: number;
@@ -111,6 +112,7 @@ export type CommerceOrderRow = {
   newcomerApplied: boolean;
   referralDiscountApplied: boolean;
   creditId: string | null;
+  creditIds: string[];
   creditCents: number;
   policyVersion: string;
   policyAcceptedAt: string | null;

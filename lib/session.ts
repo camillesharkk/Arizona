@@ -17,11 +17,12 @@ export async function signSession(user: SessionUser) {
     planStatus: user.planStatus,
     emailVerified: user.emailVerified,
     name: user.name,
+    deviceSessionId: user.deviceSessionId || null,
   })
     .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("30d")
     .setSubject(user.id)
     .setIssuedAt()
-    .setExpirationTime("30d")
     .sign(secret());
 }
 
@@ -35,6 +36,7 @@ export async function readSessionToken(token: string): Promise<SessionUser | nul
       planStatus: String(payload.planStatus || "active"),
       emailVerified: Boolean(payload.emailVerified),
       name: payload.name ? String(payload.name) : null,
+      deviceSessionId: payload.deviceSessionId ? String(payload.deviceSessionId) : null,
     };
   } catch {
     return null;
@@ -45,8 +47,20 @@ export async function getSession(): Promise<SessionUser | null> {
   const jar = await cookies();
   const token = jar.get(COOKIE)?.value;
   if (!token) return null;
-  if (!token) return null;
-  return readSessionToken(token);
+  const user = await readSessionToken(token);
+  if (!user) return null;
+  if (!user.deviceSessionId) return user;
+  try {
+    const { getDeviceRepo } = await import("@/lib/devices");
+    const { sessionIsUsable, touchIfNeeded } = await import("@/lib/devices/service");
+    const repo = await getDeviceRepo();
+    const row = await sessionIsUsable(repo, user.deviceSessionId);
+    if (!row || row.userId !== user.id || row.revokedAt) return null;
+    await touchIfNeeded(repo, user.deviceSessionId);
+    return user;
+  } catch {
+    return null;
+  }
 }
 
 export async function setSessionCookie(user: SessionUser) {

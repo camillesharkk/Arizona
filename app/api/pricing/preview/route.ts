@@ -26,6 +26,7 @@ export async function GET(req: Request) {
     },
     referralCredits: {
       available: snap.availableCreditCount,
+      maxApplicable: breakdown.maxApplicableCredits,
     },
     breakdown: publicBreakdown(breakdown),
   });

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getStore } from "@/lib/store";
-import { setSessionCookie } from "@/lib/session";
+import { getSession, setSessionCookie } from "@/lib/session";
 
 export async function GET(req: Request) {
   const token = new URL(req.url).searchParams.get("token");
@@ -9,6 +9,7 @@ export async function GET(req: Request) {
   const row = await store.takeToken(token, "verify");
   if (!row) return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
   const user = await store.updateUser(row.userId, { emailVerified: true });
+  const existing = await getSession();
   await setSessionCookie({
     id: user.id,
     email: user.email,
@@ -16,6 +17,7 @@ export async function GET(req: Request) {
     planStatus: user.planStatus,
     emailVerified: true,
     name: user.name,
+    deviceSessionId: existing?.id === user.id ? existing.deviceSessionId : null,
   });
   return NextResponse.redirect(new URL("/dashboard/", req.url));
 }

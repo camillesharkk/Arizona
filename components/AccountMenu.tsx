@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { paths } from "@/lib/paths";
+import { ProAccessNote } from "@/components/ProAccessNote";
 
 export type HeaderUser = {
   email: string;
   plan: "free" | "pro";
   name: string | null;
+  planExpiresAt?: string | null;
 };
 
 export function avatarInitial(name: string | null, email: string): string {
@@ -68,6 +70,11 @@ export function AccountMenu({ me, onLogout }: { me: HeaderUser; onLogout: () => 
             <p className="account-plan-row">
               {isPro ? <span className="badge badge-pro">Pro</span> : <span className="badge">Free plan</span>}
             </p>
+            {isPro && me.planExpiresAt ? (
+              <p className="notice" style={{ margin: "6px 0 0" }}>
+                <ProAccessNote plan={me.plan} planExpiresAt={me.planExpiresAt} compact />
+              </p>
+            ) : null}
           </div>
           <div className="account-menu-sep" role="separator" />
           <Link role="menuitem" href={paths.dashboard} onClick={() => setOpen(false)}>

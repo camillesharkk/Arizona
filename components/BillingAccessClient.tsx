@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { CREDIT_RESTORE_NOTICE, ONE_TIME_DISCOUNT_NOTICE } from "@/lib/pricing/copy";
+import { CREDIT_RESTORE_NOTICE, ONE_TIME_DISCOUNT_NOTICE, PERSONAL_USE_NOTICE, PRO_DURATION_NOTICE } from "@/lib/pricing/copy";
+import { formatUsd } from "@/lib/pricing/money";
+import { ProAccessNote } from "@/components/ProAccessNote";
 
 type Order = {
   orderId: string;
@@ -24,6 +26,8 @@ function remain(ms: number) {
 
 export function BillingAccessClient() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [expiresAt, setExpiresAt] = useState<string | null>(null);
+  const [isPro, setIsPro] = useState(false);
   const [requests, setRequests] = useState<{ id: string; orderId: string; status: string; note: string | null }[]>([]);
   const [modal, setModal] = useState<string | null>(null);
   const [msg, setMsg] = useState("");
@@ -33,6 +37,8 @@ export function BillingAccessClient() {
     const d = await fetch("/api/billing/access/").then((r) => r.json());
     setOrders(d.orders || []);
     setRequests(d.refundRequests || []);
+    setExpiresAt(d.planExpiresAt || null);
+    setIsPro(Boolean(d.arizonaPro));
   }
   useEffect(() => {
     load().catch(() => undefined);
@@ -58,6 +64,14 @@ export function BillingAccessClient() {
 
   return (
     <div className="grid">
+      {isPro && (
+        <section className="card">
+          <h2>Arizona Notary Exam Prep Pro</h2>
+          <ProAccessNote plan="pro" planExpiresAt={expiresAt} />
+          <p className="notice">{PRO_DURATION_NOTICE}</p>
+          <p className="notice">{PERSONAL_USE_NOTICE}</p>
+        </section>
+      )}
       {msg && <p className="notice">{msg}</p>}
       {live.map((o) => (
         <section className="card" key={o.orderId}>
@@ -68,7 +82,7 @@ export function BillingAccessClient() {
           <h3>Promotions used on this purchase</h3>
           <p>New Member Offer {o.promotions.newcomer ? "Redeemed" : "Not used"}</p>
           <p>Referral Discount {o.promotions.referralDiscount ? "Redeemed" : "Not used"}</p>
-          <p>Referral Credit {o.promotions.creditCents ? "$3.00 redeemed" : "Not used"}</p>
+          <p>Referral Credit {o.promotions.creditCents ? `${formatUsd(o.promotions.creditCents)} redeemed` : "Not used"}</p>
           <p className="notice">{ONE_TIME_DISCOUNT_NOTICE}</p>
           {o.promotions.creditCents > 0 && <p className="notice">{CREDIT_RESTORE_NOTICE}</p>}
           <h3>Refund eligibility</h3>

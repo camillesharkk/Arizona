@@ -33,6 +33,13 @@ export type CommerceRepo = {
   insertCredit(row: ReferralCreditRow): Promise<void>;
   setCreditAvailable(creditId: string, at: string): Promise<boolean>;
   reversePendingCredit(creditId: string, at: string): Promise<boolean>;
+  reserveCredits(opts: {
+    userId: string;
+    creditIds: string[];
+    quoteId: string;
+    until: string;
+    at: string;
+  }): Promise<boolean>;
   reserveCredit(opts: {
     userId: string;
     creditId: string;
@@ -40,9 +47,13 @@ export type CommerceRepo = {
     until: string;
     at: string;
   }): Promise<boolean>;
+  releaseCreditsForQuote(quoteId: string): Promise<void>;
   releaseCreditReservation(creditId: string, quoteId: string): Promise<void>;
+  listCreditsForQuote(quoteId: string): Promise<ReferralCreditRow[]>;
   expireReservations(nowIso: string): Promise<void>;
+  redeemReservedCredits(opts: { quoteId: string; orderId: string; at: string }): Promise<boolean>;
   redeemReservedCredit(opts: { creditId: string; quoteId: string; orderId: string; at: string }): Promise<boolean>;
+  restoreRedeemedCreditsForOrder(opts: { orderId: string; at: string }): Promise<number>;
   restoreRedeemedCredit(opts: { creditId: string; orderId: string; at: string }): Promise<boolean>;
 
   insertReward(row: ReferralRewardRow): Promise<boolean>;
@@ -113,8 +124,18 @@ function hydrate(raw?: Record<string, unknown> | Mem): Mem {
     redemptions: Array.isArray(raw.redemptions) ? (raw.redemptions as Mem["redemptions"]) : [],
     credits: Array.isArray(raw.credits) ? (raw.credits as Mem["credits"]) : [],
     rewards: Array.isArray(raw.rewards) ? (raw.rewards as Mem["rewards"]) : [],
-    quotes: Array.isArray(raw.quotes) ? (raw.quotes as Mem["quotes"]) : [],
-    orders: Array.isArray(raw.orders) ? (raw.orders as Mem["orders"]) : [],
+    quotes: Array.isArray(raw.quotes)
+      ? (raw.quotes as PricingQuoteRow[]).map((q) => ({
+          ...q,
+          creditIds: q.creditIds?.length ? q.creditIds : q.creditId ? [q.creditId] : [],
+        }))
+      : [],
+    orders: Array.isArray(raw.orders)
+      ? (raw.orders as CommerceOrderRow[]).map((o) => ({
+          ...o,
+          creditIds: o.creditIds?.length ? o.creditIds : o.creditId ? [o.creditId] : [],
+        }))
+      : [],
     usage: Array.isArray(raw.usage) ? (raw.usage as Mem["usage"]) : [],
     refunds: Array.isArray(raw.refunds) ? (raw.refunds as Mem["refunds"]) : [],
   };
@@ -212,16 +233,39 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
       c.reversedAt = at;
       return true;
     },
-    async reserveCredit(opts) {
-      return withLock(`credit:${opts.creditId}`, () => {
-        const c = db.credits.find((x) => x.id === opts.creditId);
-        if (!c || c.userId !== opts.userId || c.status !== "available") return false;
-        c.status = "reserved";
-        c.reservedAt = opts.at;
-        c.reservedQuoteId = opts.quoteId;
-        c.reservedUntil = opts.until;
+    async reserveCredits(opts) {
+      return withLock("credits:all", () => {
+        const ids = [...new Set(opts.creditIds)];
+        if (ids.length !== opts.creditIds.length) return false;
+        const rows = ids.map((id) => db.credits.find((x) => x.id === id) ?? null);
+        if (rows.some((c) => !c || c.userId !== opts.userId || c.status !== "available")) return false;
+        for (const c of rows) {
+          c!.status = "reserved";
+          c!.reservedAt = opts.at;
+          c!.reservedQuoteId = opts.quoteId;
+          c!.reservedUntil = opts.until;
+        }
         return true;
       });
+    },
+    async reserveCredit(opts) {
+      return repo.reserveCredits({
+        userId: opts.userId,
+        creditIds: [opts.creditId],
+        quoteId: opts.quoteId,
+        until: opts.until,
+        at: opts.at,
+      });
+    },
+    async releaseCreditsForQuote(quoteId) {
+      for (const c of db.credits) {
+        if (c.reservedQuoteId === quoteId && c.status === "reserved") {
+          c.status = "available";
+          c.reservedAt = null;
+          c.reservedQuoteId = null;
+          c.reservedUntil = null;
+        }
+      }
     },
     async releaseCreditReservation(creditId, quoteId) {
       const c = db.credits.find((x) => x.id === creditId);
@@ -230,6 +274,9 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
       c.reservedAt = null;
       c.reservedQuoteId = null;
       c.reservedUntil = null;
+    },
+    async listCreditsForQuote(quoteId) {
+      return db.credits.filter((c) => c.reservedQuoteId === quoteId);
     },
     async expireReservations(nowIso) {
       const now = new Date(nowIso).getTime();
@@ -245,6 +292,16 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
         if (q.status === "open" && new Date(q.expiresAt).getTime() <= now) q.status = "expired";
       }
     },
+    async redeemReservedCredits(opts) {
+      const rows = db.credits.filter((x) => x.reservedQuoteId === opts.quoteId && x.status === "reserved");
+      if (!rows.length) return false;
+      for (const c of rows) {
+        c.status = "redeemed";
+        c.redeemedAt = opts.at;
+        c.redeemedOrderId = opts.orderId;
+      }
+      return true;
+    },
     async redeemReservedCredit(opts) {
       const c = db.credits.find((x) => x.id === opts.creditId);
       if (!c || c.status !== "reserved" || c.reservedQuoteId !== opts.quoteId) return false;
@@ -252,6 +309,20 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
       c.redeemedAt = opts.at;
       c.redeemedOrderId = opts.orderId;
       return true;
+    },
+    async restoreRedeemedCreditsForOrder(opts) {
+      const rows = db.credits.filter((x) => x.status === "redeemed" && x.redeemedOrderId === opts.orderId);
+      for (const c of rows) {
+        c.status = "available";
+        c.reversedAt = opts.at;
+        c.restoredAt = opts.at;
+        c.redeemedAt = null;
+        c.redeemedOrderId = null;
+        c.reservedAt = null;
+        c.reservedQuoteId = null;
+        c.reservedUntil = null;
+      }
+      return rows.length;
     },
     async restoreRedeemedCredit(opts) {
       const c = db.credits.find((x) => x.id === opts.creditId);

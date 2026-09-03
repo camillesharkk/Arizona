@@ -3,6 +3,8 @@ export const STANDARD_PRICE_CENTS = 1999;
 export const NEWCOMER_PERCENT = 85;
 export const REFERRAL_PERCENT = 90;
 export const REFERRAL_CREDIT_CENTS = 300;
+export const MAX_CREDITS_PER_ORDER = 3;
+export const MIN_OUT_OF_POCKET_CENTS = 100;
 
 export const NEWCOMER_HOURS = 72;
 export const REFUND_HOURS = 72;
@@ -15,3 +17,4 @@ export const PROMOTION_POLICY_VERSION = "2026-09-v1";
 
 export const AZ_PRO_PRODUCT_CODE = "az_exam_pro_60d";
 export const CURRENCY = "USD";
+export const PRO_DURATION_DAYS = 60;

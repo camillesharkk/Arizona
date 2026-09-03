@@ -3,15 +3,20 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
+import { ProAccessNote } from "@/components/ProAccessNote";
 
 export function HomeProCta() {
   const [isPro, setIsPro] = useState(false);
+  const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     fetch("/api/auth/me/")
       .then((r) => r.json())
-      .then((d) => setIsPro(Boolean(d.user?.arizonaPro)))
+      .then((d) => {
+        setIsPro(Boolean(d.user?.arizonaPro));
+        setExpiresAt(d.user?.planExpiresAt || null);
+      })
       .catch(() => undefined)
       .finally(() => setReady(true));
   }, []);
@@ -20,7 +25,8 @@ export function HomeProCta() {
     return (
       <section className="card" style={{ marginTop: 20 }}>
         <h2>You&apos;re on Pro</h2>
-        <p className="lede">Your 60-day Arizona Notary Exam Prep Pro access is active.</p>
+        <ProAccessNote plan="pro" planExpiresAt={expiresAt} />
+        <p className="lede">Your 60-day Arizona Notary Exam Prep Pro access is active. This is not a lifetime membership.</p>
         <Link className="btn btn-ghost" href={paths.dashboard}>
           Go to Dashboard
         </Link>

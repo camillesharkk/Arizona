@@ -7,6 +7,7 @@ import { topicLabel } from "@/lib/quiz";
 import type { TopicId } from "@/lib/types";
 import { readinessScore } from "@/lib/stats";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
+import { ProAccessNote } from "@/components/ProAccessNote";
 
 export function DashboardClient() {
   const [data, setData] = useState<{
@@ -59,6 +60,11 @@ export function DashboardClient() {
         <div className="stat"><b>{data.user.streakDays}</b><span>Day streak</span></div>
         <div className="stat"><b>{isAzPro ? "Pro" : "Free"}</b><span>Plan</span></div>
       </div>
+      {isAzPro && (
+        <div className="card">
+          <ProAccessNote plan="pro" planExpiresAt={data.user.planExpiresAt} />
+        </div>
+      )}
       <div className="card">
         <h2>Exam readiness {isAzPro ? `${ready}%` : ""}</h2>
         <p>Best score {data.user.bestScore ?? "—"}% · Tests taken {data.exams.length} · Last study {data.user.lastStudyAt?.slice(0, 10) || "—"}</p>

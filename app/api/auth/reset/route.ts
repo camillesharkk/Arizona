@@ -2,8 +2,11 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { getStore } from "@/lib/store";
-import { getSession, setSessionCookie } from "@/lib/session";
+import { getSession } from "@/lib/session";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { getDeviceRepo } from "@/lib/devices";
+import { revokeAllDevices, revokeOthersKeepCurrent } from "@/lib/devices/service";
+import { refreshUserSession } from "@/lib/devices/http";
 
 export async function POST(req: Request) {
   const limited = rateLimit(`reset:${clientIp(req)}`, 8, 60_000);
@@ -18,6 +21,8 @@ export async function POST(req: Request) {
     if (!row) return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
     const hash = await bcrypt.hash(body.data.password, 12);
     await store.updateUser(row.userId, { passwordHash: hash });
+    const devices = await getDeviceRepo();
+    await revokeAllDevices(devices, { userId: row.userId });
     return NextResponse.json({ ok: true });
   }
   const session = await getSession();
@@ -28,13 +33,18 @@ export async function POST(req: Request) {
   }
   const passwordHash = await bcrypt.hash(body.data.password, 12);
   const next = await store.updateUser(user.id, { passwordHash });
-  await setSessionCookie({
-    id: next.id,
-    email: next.email,
-    plan: next.plan,
-    planStatus: next.planStatus,
-    emailVerified: next.emailVerified,
-    name: next.name,
-  });
+  const devices = await getDeviceRepo();
+  await revokeOthersKeepCurrent(devices, { userId: next.id, keepDeviceId: session.deviceSessionId });
+  await refreshUserSession(
+    {
+      id: next.id,
+      email: next.email,
+      plan: next.plan,
+      planStatus: next.planStatus,
+      emailVerified: next.emailVerified,
+      name: next.name,
+    },
+    session.deviceSessionId
+  );
   return NextResponse.json({ ok: true });
 }

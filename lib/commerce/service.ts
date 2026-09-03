@@ -138,7 +138,13 @@ export async function eligibilitySnapshot(
   };
 }
 
-export async function previewPrice(repo: CommerceRepo, userId: string, applyCredit: boolean, now = new Date()) {
+export async function previewPrice(
+  repo: CommerceRepo,
+  userId: string,
+  applyCredit: boolean,
+  now = new Date(),
+  requestedCreditCount?: number
+) {
   const snap = await eligibilitySnapshot(repo, userId, now);
   return {
     snap,
@@ -148,21 +154,22 @@ export async function previewPrice(repo: CommerceRepo, userId: string, applyCred
       referralDiscountEligible: snap.referralDiscountEligible,
       applyCredit,
       availableCreditCount: snap.availableCreditCount,
+      requestedCreditCount,
     }),
   };
 }
 
 export async function createQuote(
   repo: CommerceRepo,
-  opts: { userId: string; applyCredit: boolean; policyAccepted: boolean; now?: Date }
+  opts: { userId: string; applyCredit: boolean; policyAccepted: boolean; now?: Date; requestedCreditCount?: number }
 ): Promise<{ ok: true; quote: PricingQuoteRow; breakdown: PriceBreakdown } | { ok: false; error: string }> {
   const now = opts.now ?? new Date();
   if (!opts.policyAccepted) return { ok: false, error: "policy_required" };
-  const { snap, breakdown } = await previewPrice(repo, opts.userId, opts.applyCredit, now);
-  if (opts.applyCredit && (!breakdown.creditApplied || snap.availableCreditCount < 1)) {
+  const { snap, breakdown } = await previewPrice(repo, opts.userId, opts.applyCredit, now, opts.requestedCreditCount);
+  if (opts.applyCredit && !breakdown.creditApplied) {
     return { ok: false, error: "credit_unavailable" };
   }
-  let creditId: string | null = null;
+  let creditIds: string[] = [];
   let expires = new Date(now.getTime() + QUOTE_TTL_MS);
   if (breakdown.newcomerApplied && snap.newcomerExpiresAt) {
     const promoEnd = new Date(snap.newcomerExpiresAt);
@@ -170,10 +177,9 @@ export async function createQuote(
   }
   if (expires.getTime() <= now.getTime()) return { ok: false, error: "PRICE_CHANGED" };
 
-  if (breakdown.creditApplied) {
-    const credit = snap.availableCredits[0];
-    if (!credit) return { ok: false, error: "credit_unavailable" };
-    creditId = credit.id;
+  if (breakdown.creditsAppliedCount > 0) {
+    creditIds = snap.availableCredits.slice(0, breakdown.creditsAppliedCount).map((c) => c.id);
+    if (creditIds.length !== breakdown.creditsAppliedCount) return { ok: false, error: "credit_unavailable" };
   }
 
   const quote: PricingQuoteRow = {
@@ -188,7 +194,8 @@ export async function createQuote(
     newcomerDiscountCents: breakdown.newcomerDiscountCents,
     referralDiscountApplied: breakdown.referralApplied,
     referralDiscountCents: breakdown.referralDiscountCents,
-    creditId,
+    creditId: creditIds[0] ?? null,
+    creditIds,
     creditCents: breakdown.creditCents,
     subtotalCents: breakdown.subtotalBeforeCreditCents,
     finalPriceCents: breakdown.finalPriceCents,
@@ -205,10 +212,10 @@ export async function createQuote(
     providerOrderId: null,
   };
 
-  if (creditId) {
-    const reserved = await repo.reserveCredit({
+  if (creditIds.length) {
+    const reserved = await repo.reserveCredits({
       userId: opts.userId,
-      creditId,
+      creditIds,
       quoteId: quote.id,
       until: quote.expiresAt,
       at: now.toISOString(),
@@ -220,6 +227,11 @@ export async function createQuote(
   return { ok: true, quote, breakdown };
 }
 
+export async function abandonQuote(repo: CommerceRepo, quoteId: string) {
+  await repo.releaseCreditsForQuote(quoteId);
+  await repo.expireQuote(quoteId);
+}
+
 export async function assertQuoteStillValid(
   repo: CommerceRepo,
   quote: PricingQuoteRow,
@@ -228,32 +240,35 @@ export async function assertQuoteStillValid(
   if (quote.status !== "open") return { ok: false, error: "expired" };
   if (new Date(quote.expiresAt).getTime() <= now.getTime()) {
     await repo.expireQuote(quote.id);
-    if (quote.creditId) await repo.releaseCreditReservation(quote.creditId, quote.id);
+    await repo.releaseCreditsForQuote(quote.id);
     return { ok: false, error: "expired" };
   }
   const snap = await eligibilitySnapshot(repo, quote.userId, now);
-  let creditHeld = false;
-  if (quote.creditId) {
-    const credit = await repo.getCredit(quote.creditId);
-    creditHeld = Boolean(
-      credit &&
-        credit.userId === quote.userId &&
-        credit.status === "reserved" &&
-        credit.reservedQuoteId === quote.id
-    );
-    if (!creditHeld) return { ok: false, error: "PRICE_CHANGED" };
-  }
+  const quoteCreditIds = quote.creditIds?.length ? quote.creditIds : quote.creditId ? [quote.creditId] : [];
+  const held = quoteCreditIds.length ? await repo.listCreditsForQuote(quote.id) : [];
+  const creditHeld =
+    quoteCreditIds.length === 0 ||
+    (held.length === quoteCreditIds.length &&
+      held.every(
+        (c) =>
+          c.userId === quote.userId &&
+          c.status === "reserved" &&
+          c.reservedQuoteId === quote.id &&
+          quoteCreditIds.includes(c.id)
+      ));
+  if (!creditHeld) return { ok: false, error: "PRICE_CHANGED" };
   const breakdown = calculatePrice({
     newcomerEligible: snap.newcomerEligible,
     newcomerExpiresAt: snap.newcomerExpiresAt,
     referralDiscountEligible: snap.referralDiscountEligible,
-    applyCredit: creditHeld,
-    availableCreditCount: creditHeld ? 1 : snap.availableCreditCount,
+    applyCredit: quoteCreditIds.length > 0,
+    availableCreditCount: Math.max(snap.availableCreditCount, quoteCreditIds.length),
+    requestedCreditCount: quoteCreditIds.length,
   });
   if (
     breakdown.newcomerApplied !== quote.newcomerDiscountApplied ||
     breakdown.referralApplied !== quote.referralDiscountApplied ||
-    breakdown.creditApplied !== Boolean(quote.creditId) ||
+    breakdown.creditsAppliedCount !== quoteCreditIds.length ||
     breakdown.finalPriceCents !== quote.finalPriceCents
   ) {
     return { ok: false, error: "PRICE_CHANGED" };
@@ -305,6 +320,7 @@ export async function confirmPaidOrder(
     newcomerApplied: quote.newcomerDiscountApplied,
     referralDiscountApplied: quote.referralDiscountApplied,
     creditId: quote.creditId,
+    creditIds: quote.creditIds?.length ? quote.creditIds : quote.creditId ? [quote.creditId] : [],
     creditCents: quote.creditCents,
     policyVersion: quote.policyVersion,
     policyAcceptedAt: quote.policyAcceptedAt,
@@ -333,9 +349,9 @@ export async function confirmPaidOrder(
     });
     await repo.markReferralDiscountRedeemed(opts.userId, order.id, now.toISOString());
   }
-  if (quote.creditId) {
-    const redeemed = await repo.redeemReservedCredit({
-      creditId: quote.creditId,
+  const quoteCreditIds = quote.creditIds?.length ? quote.creditIds : quote.creditId ? [quote.creditId] : [];
+  if (quoteCreditIds.length) {
+    const redeemed = await repo.redeemReservedCredits({
       quoteId: quote.id,
       orderId: order.id,
       at: now.toISOString(),
@@ -505,9 +521,7 @@ export async function completeEligibleUnusedRefund(
     providerOrderId: order.providerOrderId,
   });
   await repo.markOrderRefunded(order.id, "user_unused_refund", now.toISOString());
-  if (order.creditId) {
-    await repo.restoreRedeemedCredit({ creditId: order.creditId, orderId: order.id, at: now.toISOString() });
-  }
+  await repo.restoreRedeemedCreditsForOrder({ orderId: order.id, at: now.toISOString() });
   const reward = await repo.getRewardByOrder(order.id);
   if (reward && reward.status === "pending") {
     await repo.setRewardCanceled(reward.id, now.toISOString());

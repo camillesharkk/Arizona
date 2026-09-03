@@ -22,6 +22,8 @@ export function AuthForm({
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
+  const [limitDevices, setLimitDevices] = useState<{ id: string; deviceLabel: string; lastSeenAt: string }[] | null>(null);
+  const [revokeDeviceId, setRevokeDeviceId] = useState("");
 
   useEffect(() => {
     if (mode !== "register") return;
@@ -69,14 +71,25 @@ export function AuthForm({
           ? { email }
           : mode === "register"
             ? { email, password, name, referralCode: referralCode.trim() || undefined }
-            : { email, password, name };
+            : { email, password, name, ...(revokeDeviceId ? { revokeDeviceId } : {}) };
     const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const data = await res.json();
     setBusy(false);
     if (!res.ok) {
+      if (mode === "login" && data.code === "DEVICE_LIMIT_REACHED") {
+        setLimitDevices(data.devices || []);
+        setError(data.message || "Device limit reached");
+        return;
+      }
+      if (mode === "login" && data.code === "TOO_MANY_DEVICE_CHANGES") {
+        setError(data.message || "Too many new devices");
+        return;
+      }
       setError(data.error || "Request failed");
       return;
     }
+    setLimitDevices(null);
+    setRevokeDeviceId("");
     if (data.verifyToken) setInfo(`Dev verify link token: ${data.verifyToken}`);
     else if (data.resetToken) setInfo(`Dev reset token: ${data.resetToken}`);
     else if (mode === "forgot") setInfo("If that email is registered, a reset link is on the way.");
@@ -165,10 +178,38 @@ export function AuthForm({
           />
         </>
       )}
+      {mode === "login" && limitDevices && (
+        <div className="card" style={{ marginBottom: 12 }}>
+          <h2>Device limit reached</h2>
+          <p>Your account can be active on up to 3 devices at a time. Remove a device, then sign in on this one.</p>
+          {limitDevices.map((d) => (
+            <label key={d.id} className="field">
+              <input
+                type="radio"
+                name="revokeDevice"
+                checked={revokeDeviceId === d.id}
+                onChange={() => setRevokeDeviceId(d.id)}
+              />{" "}
+              {d.deviceLabel}
+              <span className="notice">Last active: {new Date(d.lastSeenAt).toLocaleString()}</span>
+            </label>
+          ))}
+        </div>
+      )}
       {error && <p className="form-error">{error}</p>}
       {info && <p className="notice">{info}</p>}
       <button className="btn btn-primary" type="submit" disabled={busy}>
-        {busy ? "Working…" : mode === "login" ? "Sign in" : mode === "register" ? "Create Free Account" : mode === "forgot" ? "Send reset link" : "Set new password"}
+        {busy
+          ? "Working…"
+          : mode === "login"
+            ? revokeDeviceId
+              ? "Remove device and sign in"
+              : "Sign in"
+            : mode === "register"
+              ? "Create Free Account"
+              : mode === "forgot"
+                ? "Send reset link"
+                : "Set new password"}
       </button>
       <p className="notice">
         {mode === "login" && (

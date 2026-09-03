@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getSession, setSessionCookie } from "@/lib/session";
+import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
+import { refreshUserSession } from "@/lib/devices/http";
 
 export async function POST(req: Request) {
   const session = await getSession();
@@ -24,13 +25,16 @@ export async function POST(req: Request) {
     ...(body.data.emailExam !== undefined ? { emailExam: body.data.emailExam } : {}),
     ...(body.data.examDate !== undefined ? { examDate: body.data.examDate ? body.data.examDate : null } : {}),
   });
-  await setSessionCookie({
-    id: user.id,
-    email: user.email,
-    plan: user.plan,
-    planStatus: user.planStatus,
-    emailVerified: user.emailVerified,
-    name: user.name,
-  });
+  await refreshUserSession(
+    {
+      id: user.id,
+      email: user.email,
+      plan: user.plan,
+      planStatus: user.planStatus,
+      emailVerified: user.emailVerified,
+      name: user.name,
+    },
+    session.deviceSessionId
+  );
   return NextResponse.json({ ok: true });
 }

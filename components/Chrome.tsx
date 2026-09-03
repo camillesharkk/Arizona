@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { paths } from "@/lib/paths";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
+import { ProAccessNote } from "@/components/ProAccessNote";
 
 type Me = HeaderUser | null;
 
@@ -112,6 +113,11 @@ export function SiteHeader() {
             <p className="drawer-account-name">{me.name?.trim() || me.email}</p>
             {me.name?.trim() ? <p className="drawer-account-email">{me.email}</p> : null}
             <span className={me.plan === "pro" ? "badge badge-pro" : "badge"}>{me.plan === "pro" ? "Pro" : "Free"}</span>
+            {me.plan === "pro" && me.planExpiresAt ? (
+              <p className="notice">
+                <ProAccessNote plan={me.plan} planExpiresAt={me.planExpiresAt} compact />
+              </p>
+            ) : null}
           </div>
         ) : (
           <p className="kicker">Guest</p>
