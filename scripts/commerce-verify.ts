@@ -11,6 +11,9 @@ import {
   MAX_CREDITS_PER_ORDER,
   MIN_OUT_OF_POCKET_CENTS,
   NEWCOMER_HOURS,
+  NEWCOMER_PRICE_CENTS,
+  POLICY_VERSION,
+  PROMOTION_POLICY_VERSION,
   REFERRAL_CREDIT_CENTS,
   STANDARD_PRICE_CENTS,
 } from "../lib/pricing/catalog.ts";
@@ -106,25 +109,30 @@ async function pay(
 }
 
 async function run() {
+  if (LIST_PRICE_CENTS !== 2221 || STANDARD_PRICE_CENTS !== 2221) fail("base/standard price should be 2221");
+  else ok("base/standard price = 2221");
+  if (NEWCOMER_PRICE_CENTS !== 1999) fail("newcomer price should be 1999");
+  else ok("newcomer price = 1999");
+  if (applyPercent(2221, 90) !== NEWCOMER_PRICE_CENTS) fail("2221 × 90% should be 1999");
+  else ok("New Member discount is 10% (90% of 2221 = 1999)");
   if (applyPercent(1999, 90) !== 1799) fail("1999 × 90% should be 1799");
   else ok("1999 × 90% = 1799");
-  if (applyPercent(1788, 90) !== 1609) fail("1788 × 90% should be 1609");
-  else ok("1788 × 90% = 1609");
-  if (applyPercent(LIST_PRICE_CENTS, 85) !== 1788) fail("2104 × 85% should be 1788");
-  else ok("2104 × 85% = 1788");
 
   const fixtures: [string, Parameters<typeof calculatePrice>[0], number][] = [
-    ["ordinary", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: false, availableCreditCount: 0 }, 1999],
-    ["newcomer", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: false, applyCredit: false, availableCreditCount: 0 }, 1788],
-    ["referral only", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: true, applyCredit: false, availableCreditCount: 0 }, 1799],
-    ["newcomer + referral", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: false, availableCreditCount: 0 }, 1609],
-    ["newcomer + referral + 1 credit", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: true, availableCreditCount: 1 }, 1309],
-    ["newcomer + referral + 2 credits", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: true, availableCreditCount: 2 }, 1009],
-    ["newcomer + referral + 3 credits", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: true, availableCreditCount: 3 }, 709],
-    ["standard + referral + $3", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: true, applyCredit: true, availableCreditCount: 1 }, 1499],
-    ["standard + $3", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 1 }, 1699],
-    ["five available uses max three", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 5 }, 1099],
-    ["four requested capped at three", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 4, requestedCreditCount: 4 }, 1099],
+    ["ordinary", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: false, availableCreditCount: 0 }, 2221],
+    ["newcomer", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: false, applyCredit: false, availableCreditCount: 0 }, 1999],
+    ["referral only", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: true, applyCredit: false, availableCreditCount: 0 }, 1999],
+    ["newcomer + referral", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: false, availableCreditCount: 0 }, 1799],
+    ["newcomer + referral + 1 credit", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: true, availableCreditCount: 1 }, 1499],
+    ["newcomer + referral + 2 credits", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: true, availableCreditCount: 2 }, 1199],
+    ["newcomer + referral + 3 credits", { newcomerEligible: true, newcomerExpiresAt: "x", referralDiscountEligible: true, applyCredit: true, availableCreditCount: 3 }, 899],
+    ["standard + referral + $3", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: true, applyCredit: true, availableCreditCount: 1 }, 1699],
+    ["standard + $3", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 1 }, 1921],
+    ["standard + 2 credits", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 2 }, 1621],
+    ["old + 3 credits", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 3 }, 1321],
+    ["referral + 3 credits", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: true, applyCredit: true, availableCreditCount: 3 }, 1099],
+    ["five available uses max three", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 5 }, 1321],
+    ["four requested capped at three", { newcomerEligible: false, newcomerExpiresAt: null, referralDiscountEligible: false, applyCredit: true, availableCreditCount: 4, requestedCreditCount: 4 }, 1321],
   ];
   for (const [label, el, want] of fixtures) {
     const got = calculatePrice(el).finalPriceCents;
@@ -197,10 +205,45 @@ async function run() {
   if (!snapBob.newcomerEligible || !snapBob.referralDiscountEligible) fail("bob should have newcomer+referral");
   else ok("bob newcomer + referral eligible");
 
+  const newbie = "newbie";
+  await user(repo, newbie, t0);
+  const newbieNow = await previewPrice(repo, newbie, false, hoursFrom(t0, 1));
+  if (newbieNow.breakdown.finalPriceCents !== 1999 || !newbieNow.breakdown.newcomerApplied) fail("new user <72h should be 1999");
+  else ok("new user <72h → 1999");
+  const newbie72 = await previewPrice(repo, newbie, false, hoursFrom(t0, NEWCOMER_HOURS));
+  if (newbie72.breakdown.finalPriceCents !== 2221 || newbie72.breakdown.newcomerApplied) fail("exact 72h should be 2221");
+  else ok("exact 72h → 2221");
+  const alicePreview = await previewPrice(repo, alice, false, t0);
+  if (alicePreview.breakdown.finalPriceCents !== 2221) fail("old user should be 2221");
+  else ok("old registered user >72h no referral no credit → 2221");
+  const oldRefUser = "oldrefu";
+  await user(repo, oldRefUser, hoursAgo(t0, 200));
+  await bindReferral(repo, { referredUserId: oldRefUser, code, now: t0 });
+  const oldRefPreview = await previewPrice(repo, oldRefUser, false, t0);
+  if (oldRefPreview.breakdown.finalPriceCents !== 1999 || !oldRefPreview.breakdown.referralApplied) fail("old + referral should be 1999");
+  else ok("old + referral → 1999");
+  await addCredit(repo, oldRefUser, t0);
+  await addCredit(repo, oldRefUser, t0);
+  await addCredit(repo, oldRefUser, t0);
+  const oldRef3 = await previewPrice(repo, oldRefUser, true, t0);
+  if (oldRef3.breakdown.finalPriceCents !== 1099 || oldRef3.breakdown.creditsAppliedCount !== 3) fail("referral + 3 credits should be 1099");
+  else ok("referral + 3 credits → 1099");
+
   const quoteFail = await createQuote(repo, { userId: bob, applyCredit: false, policyAccepted: true, now: hoursFrom(t0, 1) });
   if (!quoteFail.ok) fail("quote create");
   else {
     ok("quote does not redeem");
+    if (quoteFail.quote.policyVersion !== POLICY_VERSION || quoteFail.quote.promotionPolicyVersion !== PROMOTION_POLICY_VERSION) {
+      fail("new quote missing current pricing/promotion version");
+    } else ok("new quote uses 2026-09-v2 pricing version");
+    const staleQuote = {
+      ...quoteFail.quote,
+      policyVersion: "2026-09-v1",
+      promotionPolicyVersion: "2026-09-v1",
+    };
+    const oldVer = await assertQuoteStillValid(repo, staleQuote, hoursFrom(t0, 1));
+    if (oldVer.ok || oldVer.error !== "PRICE_CHANGED") fail("old pricing quote still payable");
+    else ok("old pricing/policy version quote → PRICE_CHANGED");
     const afterQuote = await eligibilitySnapshot(repo, bob, hoursFrom(t0, 1));
     if (!afterQuote.referralDiscountEligible || afterQuote.newcomerRedeemed) fail("quote consumed promotion");
     else ok("failed/unpaid checkout does not redeem");
@@ -212,13 +255,14 @@ async function run() {
 
   const alicePay = await pay(repo, { userId: alice, applyCredit: false, now: hoursAgo(t0, 10) });
   if (!alicePay.ok) fail("alice qualifying purchase");
-  else ok("alice has qualifying paid order");
+  else if (alicePay.order.amountCents !== 2221) fail(`alice amount ${alicePay.order.amountCents}`);
+  else ok("alice has qualifying paid order at 2221");
 
   const bobPay = await pay(repo, { userId: bob, applyCredit: false, now: hoursFrom(t0, 2) });
   if (!bobPay.ok) fail(`bob pay ${"error" in bobPay ? bobPay.error : ""}`);
   else {
-    if (bobPay.order.amountCents !== 1609) fail(`bob amount ${bobPay.order.amountCents}`);
-    else ok("bob paid newcomer+referral 1609");
+    if (bobPay.order.amountCents !== 1799) fail(`bob amount ${bobPay.order.amountCents}`);
+    else ok("bob paid newcomer+referral 1799");
     const after = await eligibilitySnapshot(repo, bob, hoursFrom(t0, 2.1));
     if (after.newcomerEligible || after.referralDiscountEligible) fail("promotions still available after pay");
     else ok("successful pay redeems newcomer and referral discount");
@@ -353,8 +397,8 @@ async function run() {
   const ginaCreditPay = await pay(repo, { userId: gina, applyCredit: true, now: hoursFrom(t0, 22) });
   if (!ginaCreditPay.ok) fail(`gina credit pay ${"error" in ginaCreditPay ? ginaCreditPay.error : ""}`);
   else {
-    if (ginaCreditPay.order.amountCents !== 1699) fail(`gina+$3 expected 1699 got ${ginaCreditPay.order.amountCents}`);
-    else ok("standard + $3 = 1699");
+    if (ginaCreditPay.order.amountCents !== 1921) fail(`gina+$3 expected 1921 got ${ginaCreditPay.order.amountCents}`);
+    else ok("standard + $3 = 1921");
     const c = await repo.getCredit(creditId);
     if (c?.status !== "redeemed") fail("credit not redeemed");
     else ok("successful order redeems credit");
@@ -520,11 +564,11 @@ async function run() {
   await addCredit(repo, niles, hoursFrom(t0, 24));
   const n4 = await addCredit(repo, niles, hoursFrom(t0, 24));
   const one = await pay(repo, { userId: niles, applyCredit: true, requestedCreditCount: 1, now: hoursFrom(t0, 25) });
-  if (!one.ok || one.order.amountCents !== 1699 || one.quote.creditIds.length !== 1) fail("1 credit applied");
-  else ok("1 credit applied → 1699");
+  if (!one.ok || one.order.amountCents !== 1921 || one.quote.creditIds.length !== 1) fail("1 credit applied");
+  else ok("1 credit applied → 1921");
   const twoPay = await pay(repo, { userId: niles, applyCredit: true, requestedCreditCount: 2, now: hoursFrom(t0, 26) });
-  if (!twoPay.ok || twoPay.order.amountCents !== 1399 || twoPay.quote.creditIds.length !== 2) fail("2 credits applied");
-  else ok("2 credits applied → 1399");
+  if (!twoPay.ok || twoPay.order.amountCents !== 1621 || twoPay.quote.creditIds.length !== 2) fail("2 credits applied");
+  else ok("2 credits applied → 1621");
 
   const otto = "otto";
   await user(repo, otto, hoursAgo(t0, 260));
@@ -533,9 +577,9 @@ async function run() {
   const o3 = await addCredit(repo, otto, hoursFrom(t0, 27));
   await addCredit(repo, otto, hoursFrom(t0, 27));
   const threePay = await pay(repo, { userId: otto, applyCredit: true, requestedCreditCount: 4, now: hoursFrom(t0, 28) });
-  if (!threePay.ok || threePay.quote.creditIds.length !== 3 || threePay.order.amountCents !== 1099) {
+  if (!threePay.ok || threePay.quote.creditIds.length !== 3 || threePay.order.amountCents !== 1321) {
     fail(`3-credit cap on order ${threePay.ok ? threePay.order.amountCents : "error"}`);
-  } else ok("3 credits applied → 1099; 4th not used");
+  } else ok("3 credits applied → 1321; 4th not used");
   const usedStatuses = await Promise.all([repo.getCredit(o1), repo.getCredit(o2), repo.getCredit(o3)]);
   if (usedStatuses.some((c) => c?.status !== "redeemed")) fail("successful purchase should redeem all used credits");
   else ok("successful purchase → all used credits redeemed");
@@ -595,8 +639,8 @@ async function run() {
   await addCredit(repo, quinn, hoursFrom(t0, 40));
   await addCredit(repo, quinn, hoursFrom(t0, 40));
   const quinnPay = await pay(repo, { userId: quinn, applyCredit: true, requestedCreditCount: 3, now: hoursFrom(t0, 40.2) });
-  if (!quinnPay.ok || quinnPay.order.amountCents !== 709) fail(`newcomer+referral+3 credits expected 709 got ${quinnPay.ok ? quinnPay.order.amountCents : "error"}`);
-  else ok("newcomer + referral + 3 credits → 709");
+  if (!quinnPay.ok || quinnPay.order.amountCents !== 899) fail(`newcomer+referral+3 credits expected 899 got ${quinnPay.ok ? quinnPay.order.amountCents : "error"}`);
+  else ok("newcomer + referral + 3 credits → 899");
 
   const jules = "jules";
   await user(repo, jules, hoursAgo(t0, 280));

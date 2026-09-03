@@ -6,4 +6,4 @@ export const AI_LIMIT_PRO = 15;
 export const FREE_FULL_EXAMS = 1;
 export const FREE_WEAK_PREVIEW = 5;
 export const FREE_FLASHCARD_PREVIEW = 8;
-export const PRO_PRICE = "19.99";
+export const PRO_PRICE = "22.21";

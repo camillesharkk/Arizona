@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
 import { ProAccessNote } from "@/components/ProAccessNote";
+import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
+import { formatUsd } from "@/lib/pricing/money";
+import { GUEST_NEWCOMER_HINT } from "@/lib/pricing/copy";
 
 export function HomeProCta() {
   const [isPro, setIsPro] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
@@ -15,6 +19,7 @@ export function HomeProCta() {
       .then((r) => r.json())
       .then((d) => {
         setIsPro(Boolean(d.user?.arizonaPro));
+        setSignedIn(Boolean(d.user));
         setExpiresAt(d.user?.planExpiresAt || null);
       })
       .catch(() => undefined)
@@ -48,9 +53,10 @@ export function HomeProCta() {
         <li>Exam readiness &amp; advanced analytics</li>
       </ul>
       <p>
-        <strong>$19.99 · 60-Day Full Access</strong>
+        <strong>{formatUsd(STANDARD_PRICE_CENTS)} · 60-Day Full Access</strong>
       </p>
       <p className="notice">One-time payment. No subscription. No automatic renewal.</p>
+      {!signedIn && <p className="notice">{GUEST_NEWCOMER_HINT}</p>}
       <Link className="btn btn-ghost" href={paths.pricing}>
         View Pro &amp; Pricing
       </Link>

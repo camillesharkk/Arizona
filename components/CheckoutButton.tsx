@@ -6,12 +6,15 @@ import { paths } from "@/lib/paths";
 import {
   CREDIT_PER_ORDER_NOTICE,
   CREDIT_RESTORE_NOTICE,
+  GUEST_NEWCOMER_HINT,
   ONE_TIME_DISCOUNT_NOTICE,
   PERSONAL_USE_NOTICE,
   POLICY_CHECKBOX_TEXT,
   PRO_DURATION_NOTICE,
   REFUND_POLICY_SUMMARY,
 } from "@/lib/pricing/copy";
+import { NEWCOMER_PRICE_CENTS, STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
+import { formatUsd } from "@/lib/pricing/money";
 
 type Breakdown = {
   listPriceCents: number;
@@ -19,6 +22,7 @@ type Breakdown = {
   newcomerEligible: boolean;
   newcomerExpiresAt: string | null;
   newcomerApplied: boolean;
+  newcomerDiscountCents: number;
   referralEligible: boolean;
   referralApplied: boolean;
   referralCreditAvailable: number;
@@ -151,7 +155,7 @@ export function CheckoutButton() {
   }
 
   const b = preview?.breakdown;
-  const guestPrice = "$19.99";
+  const guestPrice = formatUsd(STANDARD_PRICE_CENTS);
   const ctaPrice = b ? b.display.final : guestPrice;
   const expiresLabel = preview?.newcomerOffer.expiresAt
     ? new Date(preview.newcomerOffer.expiresAt).toLocaleString()
@@ -169,10 +173,13 @@ export function CheckoutButton() {
           >
             ×
           </button>
-          <p className="kicker">New Member Offer · 15% off</p>
+          <p className="kicker">New Member Offer</p>
           <p>
-            <strong>{b?.display.newcomer}</strong>
-            {remainingMs > 0 ? <> · Ends in {formatRemaining(remainingMs)}</> : <> · expired</>}
+            Standard price {guestPrice} · Your New Member price <strong>{b?.display.newcomer || formatUsd(NEWCOMER_PRICE_CENTS)}</strong>
+            {b?.newcomerDiscountCents ? <> · Save {formatUsd(b.newcomerDiscountCents)}</> : null}
+          </p>
+          <p>
+            {remainingMs > 0 ? <>Ends in {formatRemaining(remainingMs)}</> : <>expired</>}
           </p>
         </div>
       )}
@@ -203,6 +210,7 @@ export function CheckoutButton() {
           Standard price: <strong>{b?.display.standard || guestPrice}</strong>
         </p>
         {b?.newcomerApplied && <p>New Member Offer: {b.display.newcomer}</p>}
+        {b?.newcomerApplied && b.newcomerDiscountCents > 0 && <p>Save {formatUsd(b.newcomerDiscountCents)}</p>}
         {b?.referralApplied && <p>Referral Discount: −10%</p>}
         {b?.newcomerApplied && b.referralApplied && <p>Your price: {b.display.subtotal}</p>}
         {b?.creditApplied && <p>Referral Credit: −{b.display.credit} ({b.creditsAppliedCount})</p>}
@@ -234,7 +242,9 @@ export function CheckoutButton() {
       )}
       {signedIn === false && (
         <p className="notice">
-          <Link href={paths.login}>Sign in</Link> to apply New Member or Referral pricing.
+          {GUEST_NEWCOMER_HINT}{" "}
+          <Link href={paths.register}>Create an account</Link> or <Link href={paths.login}>sign in</Link> to apply New
+          Member or Referral pricing.
         </p>
       )}
 

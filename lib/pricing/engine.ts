@@ -2,7 +2,7 @@ import {
   LIST_PRICE_CENTS,
   MAX_CREDITS_PER_ORDER,
   MIN_OUT_OF_POCKET_CENTS,
-  NEWCOMER_PERCENT,
+  NEWCOMER_PRICE_CENTS,
   REFERRAL_CREDIT_CENTS,
   REFERRAL_PERCENT,
   STANDARD_PRICE_CENTS,
@@ -51,9 +51,7 @@ export function maxApplicableCredits(subtotalCents: number, availableCount: numb
 
 export function calculatePrice(el: PriceEligibility): PriceBreakdown {
   const newcomerApplied = el.newcomerEligible;
-  const baseAppliedPriceCents = newcomerApplied
-    ? applyPercent(LIST_PRICE_CENTS, NEWCOMER_PERCENT)
-    : STANDARD_PRICE_CENTS;
+  const baseAppliedPriceCents = newcomerApplied ? NEWCOMER_PRICE_CENTS : STANDARD_PRICE_CENTS;
   const newcomerDiscountCents = newcomerApplied ? LIST_PRICE_CENTS - baseAppliedPriceCents : 0;
 
   const referralApplied = el.referralDiscountEligible;

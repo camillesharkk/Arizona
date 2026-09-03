@@ -13,6 +13,9 @@ export const CREDIT_RESTORE_NOTICE =
 export const CREDIT_PER_ORDER_NOTICE =
   "Up to 3 Referral Credits can be applied per order, subject to the purchase amount.";
 
+export const GUEST_NEWCOMER_HINT =
+  "Create an account to unlock a 72-hour New Member price.";
+
 export const REFERRAL_CREDIT_RULES = [
   "have no cash value",
   "cannot be withdrawn",

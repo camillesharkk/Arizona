@@ -238,6 +238,9 @@ export async function assertQuoteStillValid(
   now = new Date()
 ): Promise<{ ok: true; breakdown: PriceBreakdown } | { ok: false; error: "PRICE_CHANGED" | "expired" }> {
   if (quote.status !== "open") return { ok: false, error: "expired" };
+  if (quote.policyVersion !== POLICY_VERSION || quote.promotionPolicyVersion !== PROMOTION_POLICY_VERSION) {
+    return { ok: false, error: "PRICE_CHANGED" };
+  }
   if (new Date(quote.expiresAt).getTime() <= now.getTime()) {
     await repo.expireQuote(quote.id);
     await repo.releaseCreditsForQuote(quote.id);
