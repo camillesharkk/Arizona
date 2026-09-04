@@ -8,12 +8,9 @@ import {
   CREDIT_RESTORE_NOTICE,
   GUEST_NEWCOMER_HINT,
   ONE_TIME_DISCOUNT_NOTICE,
-  PERSONAL_USE_NOTICE,
-  POLICY_CHECKBOX_TEXT,
-  PRO_DURATION_NOTICE,
   REFUND_POLICY_SUMMARY,
 } from "@/lib/pricing/copy";
-import { NEWCOMER_PRICE_CENTS, STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
+import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
 
 type Breakdown = {
@@ -157,42 +154,17 @@ export function CheckoutButton() {
   const b = preview?.breakdown;
   const guestPrice = formatUsd(STANDARD_PRICE_CENTS);
   const ctaPrice = b ? b.display.final : guestPrice;
-  const expiresLabel = preview?.newcomerOffer.expiresAt
-    ? new Date(preview.newcomerOffer.expiresAt).toLocaleString()
-    : "";
+  const isGuest = signedIn === false;
+  const savingsCents = b ? b.listPriceCents - b.finalPriceCents : 0;
+  const showSave = !isGuest && Boolean(b) && savingsCents > 0;
+  const showNewcomerPromo = Boolean(signedIn && b?.newcomerApplied && !dismissed);
+  const showCountdown = Boolean(signedIn && b?.newcomerEligible && remainingMs > 0 && !dismissed);
+  const showDismiss = Boolean(signedIn && preview?.newcomerOffer.eligible && !dismissed);
 
   return (
     <div className="pricing-buy">
-      {signedIn && preview?.newcomerOffer.eligible && !dismissed && (
-        <div className="card newcomer-banner" style={{ position: "relative", marginBottom: 12 }}>
-          <button
-            type="button"
-            className="newcomer-dismiss"
-            aria-label="Hide newcomer offer reminder"
-            onClick={() => setHideModal(true)}
-          >
-            ×
-          </button>
-          <p className="kicker">New Member Offer</p>
-          <p>
-            Standard price {guestPrice} · Your New Member price <strong>{b?.display.newcomer || formatUsd(NEWCOMER_PRICE_CENTS)}</strong>
-            {b?.newcomerDiscountCents ? <> · Save {formatUsd(b.newcomerDiscountCents)}</> : null}
-          </p>
-          <p>
-            {remainingMs > 0 ? <>Ends in {formatRemaining(remainingMs)}</> : <>expired</>}
-          </p>
-        </div>
-      )}
-      {signedIn && preview?.newcomerOffer.eligible && dismissed && expiresLabel && (
-        <p className="notice">New Member pricing is still available until {expiresLabel}</p>
-      )}
-      {signedIn && preview?.referralDiscount.eligible && (
-        <p className="notice">
-          Referral Discount · 10% off · Available · One-time use
-        </p>
-      )}
       {signedIn && (preview?.referralCredits.available || 0) > 0 && (preview?.referralCredits.maxApplicable || 0) > 0 && (
-        <label className="notice" style={{ display: "block", margin: "8px 0" }}>
+        <label className="notice credit-apply">
           <input type="checkbox" checked={applyCredit} onChange={(e) => setApplyCredit(e.target.checked)} />{" "}
           You have {preview?.referralCredits.available} Referral Credit
           {(preview?.referralCredits.available || 0) === 1 ? "" : "s"} available. Apply{" "}
@@ -205,72 +177,116 @@ export function CheckoutButton() {
         <p className="notice">{CREDIT_PER_ORDER_NOTICE}</p>
       )}
 
-      <p className="notice">{PRO_DURATION_NOTICE}</p>
-      <p className="notice">{PERSONAL_USE_NOTICE}</p>
-
       <section className="price-summary-card" aria-label="Price summary">
-        {signedIn !== false && b?.newcomerApplied && <span className="offer-badge">NEW MEMBER OFFER ACTIVE</span>}
-        {signedIn !== false && b?.referralApplied && <span className="offer-badge">REFERRAL DISCOUNT APPLIED</span>}
-        {signedIn !== false && b?.creditApplied && b.creditsAppliedCount > 0 && (
-          <span className="offer-badge">
-            {b.creditsAppliedCount === 1 ? "$3 CREDIT APPLIED" : `${b.creditsAppliedCount} CREDITS APPLIED`}
-          </span>
+        {showDismiss && (
+          <button
+            type="button"
+            className="newcomer-dismiss"
+            aria-label="Hide newcomer offer reminder"
+            onClick={() => setHideModal(true)}
+          >
+            ×
+          </button>
         )}
-        {signedIn !== false && b && b.listPriceCents - b.finalPriceCents > 0 && (
-          <span className="offer-badge">SAVE {formatUsd(b.listPriceCents - b.finalPriceCents)} TODAY</span>
+        {(showNewcomerPromo || (signedIn && b?.referralApplied) || (signedIn && b?.creditApplied && (b.creditsAppliedCount || 0) > 0)) && (
+          <div className={showDismiss ? "offer-badges offer-badges-dismiss" : "offer-badges"}>
+            {showNewcomerPromo && <span className="offer-badge">NEW MEMBER OFFER</span>}
+            {signedIn && b?.referralApplied && <span className="offer-badge">REFERRAL -10%</span>}
+            {signedIn && b?.creditApplied && b.creditsAppliedCount > 0 && (
+              <span className="offer-badge offer-badge-credit">
+                {b.creditsAppliedCount === 1 ? "$3 CREDIT APPLIED" : `${b.creditsAppliedCount} CREDITS APPLIED`}
+              </span>
+            )}
+          </div>
         )}
-        <p className="kicker">{signedIn === false || !b ? "YOUR PRICE" : "YOUR PRICE TODAY"}</p>
-        <p className="price-today" aria-label={`Your price today ${ctaPrice}`}>
-          {ctaPrice}
+        <div className="price-hero">
+          <div>
+            <p className="price-hero-label">{isGuest || !b ? "YOUR PRICE" : "YOUR PRICE TODAY"}</p>
+            <p className="price-today" aria-label={`Your price today ${ctaPrice}`}>
+              {ctaPrice}
+            </p>
+          </div>
+          {showSave && b && (
+            <p className="you-save">Save {formatUsd(savingsCents)} today</p>
+          )}
+        </div>
+        <dl className="price-breakdown">
+          <dt>Standard price</dt>
+          <dd>{b?.display.standard || guestPrice}</dd>
+          {signedIn && b?.newcomerApplied && b.display.newcomer && (
+            <>
+              <dt>New Member price</dt>
+              <dd>{b.display.newcomer}</dd>
+            </>
+          )}
+          {signedIn && b?.referralApplied && (
+            <>
+              <dt>Referral discount</dt>
+              <dd>−10%</dd>
+            </>
+          )}
+          {signedIn && b?.creditApplied && b.display.credit && (
+            <>
+              <dt>Referral Credits</dt>
+              <dd>−{b.display.credit}</dd>
+            </>
+          )}
+        </dl>
+        {isGuest && <p className="price-guest-hint">{GUEST_NEWCOMER_HINT}</p>}
+        {showCountdown && (
+          <p className="offer-ends">
+            Offer ends in <strong>{formatRemaining(remainingMs)}</strong>
+          </p>
+        )}
+        <p className="price-assurance">
+          One-time payment · 60-day full access · No subscription · No automatic renewal
         </p>
-        {signedIn !== false && b && b.listPriceCents - b.finalPriceCents > 0 && (
-          <p className="you-save">YOU SAVE {formatUsd(b.listPriceCents - b.finalPriceCents)}</p>
-        )}
-        <p>Standard price {b?.display.standard || guestPrice}</p>
-        {signedIn === false && <p>{GUEST_NEWCOMER_HINT}</p>}
-        {signedIn && b?.newcomerApplied && <p>Your New Member price {b.display.newcomer}</p>}
-        {signedIn && b?.referralApplied && <p>Referral discount −10%</p>}
-        {signedIn && b?.creditApplied && b.display.credit && (
-          <p>
-            Referral Credits −{b.display.credit}
-            {b.creditsAppliedCount ? ` (${b.creditsAppliedCount})` : ""}
-          </p>
-        )}
-        {signedIn && b?.newcomerEligible && remainingMs > 0 && (
-          <p>
-            Offer ends in: <strong>{formatRemaining(remainingMs)}</strong>
-          </p>
-        )}
-        <p className="notice">One-time payment · 60-day full access · No subscription · No automatic renewal</p>
       </section>
 
-      <div className="card" style={{ margin: "12px 0" }}>
-        <h3>3-Day Unused Refund Policy</h3>
-        <p>{REFUND_POLICY_SUMMARY}</p>
-        <h3>One-time discount notice</h3>
-        <p>{ONE_TIME_DISCOUNT_NOTICE}</p>
-        {applyCredit && <p>{CREDIT_RESTORE_NOTICE}</p>}
-        <label style={{ display: "block", marginTop: 12 }}>
-          <input type="checkbox" checked={policy} onChange={(e) => setPolicy(e.target.checked)} /> {POLICY_CHECKBOX_TEXT}
+      {signedIn && (
+        <label className="policy-accept">
+          <input type="checkbox" checked={policy} onChange={(e) => setPolicy(e.target.checked)} />
+          <span>
+            I understand the refund and promotion terms.{" "}
+            <a href="#refund-policy">View refund policy</a>
+          </span>
         </label>
-      </div>
+      )}
 
-      <button className="btn btn-primary" type="button" onClick={go} disabled={busy || (signedIn === true && !policy)}>
-        {busy ? "Working…" : `Get 60-Day Pro — ${ctaPrice}`}
-      </button>
+      {isGuest ? (
+        <Link className="btn btn-primary pricing-cta" href={paths.register}>
+          Create Free Account to Unlock Offer
+        </Link>
+      ) : (
+        <button
+          className="btn btn-primary pricing-cta"
+          type="button"
+          onClick={go}
+          disabled={busy || signedIn !== true || !policy}
+        >
+          {busy ? "Working…" : `Get 60-Day Pro — ${ctaPrice}`}
+        </button>
+      )}
       {priceChanged && <p className="notice">Your available price has changed.</p>}
       {err && (
         <p className="notice">
           {err}. <Link href={paths.login}>Sign in</Link>
         </p>
       )}
-      {signedIn === false && (
+      {isGuest && (
         <p className="notice">
-          {GUEST_NEWCOMER_HINT}{" "}
           <Link href={paths.register}>Create an account</Link> or <Link href={paths.login}>sign in</Link> to apply New
           Member or Referral pricing.
         </p>
       )}
+
+      <div className="card pricing-policy-card" id="refund-policy">
+        <h3>3-Day Unused Refund Policy</h3>
+        <p>{REFUND_POLICY_SUMMARY}</p>
+        <h3>One-time discount notice</h3>
+        <p>{ONE_TIME_DISCOUNT_NOTICE}</p>
+        {applyCredit && <p>{CREDIT_RESTORE_NOTICE}</p>}
+      </div>
 
       {hideModal && (
         <div className="nav-backdrop" style={{ inset: 0, zIndex: 50 }} onClick={() => setHideModal(false)}>

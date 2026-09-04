@@ -304,47 +304,135 @@ details.explain summary { cursor: pointer; font-weight: 700; }
 }
 .account-signout { color: var(--danger) !important; }
 .newcomer-dismiss {
-  position: absolute; top: 8px; right: 10px;
+  position: absolute; top: 6px; right: 8px;
   border: 0; background: transparent; color: var(--muted);
-  font-size: 1.4rem; line-height: 1; cursor: pointer; padding: 4px 8px;
+  font-size: 1.25rem; line-height: 1; cursor: pointer; padding: 4px 8px;
 }
-.newcomer-banner { padding-right: 40px; }
-.price-breakdown p { margin: 4px 0; }
+.pricing-buy { margin-top: 4px; }
+.pricing-buy .credit-apply { display: block; margin: 6px 0 4px; }
 .price-summary-card {
-  border: 2px solid var(--brand);
+  position: relative;
+  border: 1px solid var(--brand);
   background: var(--bg-2);
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 24px rgba(42, 28, 20, 0.06);
   border-radius: var(--radius);
-  padding: 20px 18px;
-  margin: 16px 0 12px;
+  padding: 24px 26px;
+  margin: 8px 0 10px;
   max-width: 100%;
   box-sizing: border-box;
   overflow-wrap: anywhere;
 }
-.price-summary-card .price-today {
-  font-size: clamp(2rem, 7vw, 2.75rem);
-  font-weight: 800;
-  line-height: 1.1;
-  margin: 6px 0 10px;
-  color: var(--ink);
+.price-summary-card .offer-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 0;
+  margin: 0 0 8px;
 }
-.price-summary-card .you-save {
-  font-size: 1.2rem;
-  font-weight: 800;
-  margin: 0 0 10px;
-  color: var(--ink);
-}
+.price-summary-card .offer-badges-dismiss { padding-right: 28px; }
 .offer-badge {
   display: inline-block;
   font-weight: 800;
-  font-size: 0.78rem;
-  letter-spacing: 0.03em;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
   background: var(--brand-soft);
   color: var(--ink);
-  border: 1px solid var(--brand);
+  border: 0;
   border-radius: 999px;
-  padding: 4px 10px;
-  margin: 0 6px 8px 0;
+  padding: 3px 9px;
+  margin: 0;
+}
+.offer-badge-credit {
+  background: var(--sage-soft);
+  color: var(--sage);
+  font-weight: 700;
+}
+.price-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 20px;
+  margin: 0 0 10px;
+}
+.price-hero-label {
+  margin: 0 0 2px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.price-summary-card .price-today {
+  font-size: clamp(3.25rem, 6vw, 4rem);
+  font-weight: 800;
+  line-height: 0.95;
+  margin: 0;
+  color: var(--ink);
+}
+.price-summary-card .you-save {
+  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: var(--brand-dark);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.price-breakdown {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 16px;
+  row-gap: 2px;
+  margin: 0 0 8px;
+  font-size: 0.92rem;
+}
+.price-breakdown dt,
+.price-breakdown dd {
+  margin: 0;
+  padding: 1px 0;
+}
+.price-breakdown dd {
+  font-weight: 700;
+  text-align: right;
+}
+.price-guest-hint {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.offer-ends {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+.offer-ends strong { font-weight: 800; }
+.price-assurance {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.policy-accept {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 4px 0 10px;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+.policy-accept input { margin-top: 3px; flex-shrink: 0; }
+.pricing-cta {
+  min-width: min(100%, 28rem);
+  padding: 14px 32px;
+  font-size: 1.05rem;
+}
+.pricing-policy-card { margin-top: 20px; }
+.pricing-policy-card h3 { margin-top: 0; }
+@media (max-width: 640px) {
+  .price-summary-card { padding: 22px 18px; }
+  .price-hero { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .price-summary-card .price-today { font-size: 3.25rem; }
+  .price-summary-card .you-save { white-space: normal; font-size: 1.125rem; }
+  .pricing-cta { width: 100%; min-width: 0; }
 }
 .ai-usage { font-weight: 800; margin: 6px 0; }
 .ai-limit-notice { margin: 10px 0; }
