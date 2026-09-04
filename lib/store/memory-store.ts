@@ -37,6 +37,23 @@ function empty(): Mem {
   };
 }
 
+const locks = new Map<string, Promise<void>>();
+
+async function withLock<T>(key: string, fn: () => T | Promise<T>): Promise<T> {
+  const prev = locks.get(key) ?? Promise.resolve();
+  let release!: () => void;
+  const next = new Promise<void>((r) => {
+    release = r;
+  });
+  locks.set(key, prev.then(() => next));
+  await prev;
+  try {
+    return await fn();
+  } finally {
+    release();
+  }
+}
+
 function freshUser(email: string, passwordHash: string, name: string | null): UserRow {
   return {
     id: randomUUID(),
@@ -126,6 +143,19 @@ export function createMemoryStore(): Store {
       }
       row.n += 1;
       return row.n;
+    },
+    async consumeAiQuota(userId, day, limit) {
+      return withLock(`ai:${userId}:${day}`, () => {
+        const row = db.ai.find((a) => a.userId === userId && a.day === day);
+        const used = row?.n ?? 0;
+        if (used >= limit) return { ok: false, used, limit, remaining: 0 };
+        if (!row) {
+          db.ai.push({ userId, day, n: 1 });
+          return { ok: true, used: 1, limit, remaining: Math.max(0, limit - 1) };
+        }
+        row.n += 1;
+        return { ok: true, used: row.n, limit, remaining: Math.max(0, limit - row.n) };
+      });
     },
     async seenWebhook(id, provider) {
       const key = `${provider}:${id}`;

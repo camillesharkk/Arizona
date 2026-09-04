@@ -232,6 +232,7 @@ details.explain summary { cursor: pointer; font-weight: 700; }
   border: 1px solid var(--line); background: white; border-radius: 999px;
   padding: 8px 12px; cursor: pointer; font-family: inherit; font-weight: 600;
 }
+.chip:disabled { opacity: 0.55; cursor: not-allowed; }
 .chip.on { background: var(--ink); color: white; border-color: var(--ink); }
 
 .flash-card {
@@ -309,6 +310,55 @@ details.explain summary { cursor: pointer; font-weight: 700; }
 }
 .newcomer-banner { padding-right: 40px; }
 .price-breakdown p { margin: 4px 0; }
+.price-summary-card {
+  border: 2px solid var(--brand);
+  background: var(--bg-2);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  margin: 16px 0 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+.price-summary-card .price-today {
+  font-size: clamp(2rem, 7vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 6px 0 10px;
+  color: var(--ink);
+}
+.price-summary-card .you-save {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+.offer-badge {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  background: var(--brand-soft);
+  color: var(--ink);
+  border: 1px solid var(--brand);
+  border-radius: 999px;
+  padding: 4px 10px;
+  margin: 0 6px 8px 0;
+}
+.ai-usage { font-weight: 800; margin: 6px 0; }
+.ai-limit-notice { margin: 10px 0; }
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 .drawer-account {
   padding: 8px 10px 12px;
   border-bottom: 1px solid var(--line);

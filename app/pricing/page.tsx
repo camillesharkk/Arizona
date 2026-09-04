@@ -7,6 +7,7 @@ import { JsonLd, faqJson } from "@/components/JsonLd";
 import { PERSONAL_USE_NOTICE, PRO_DURATION_NOTICE, CREDIT_PER_ORDER_NOTICE, GUEST_NEWCOMER_HINT } from "@/lib/pricing/copy";
 import { STANDARD_PRICE_CENTS, NEWCOMER_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
+import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
 
 export const metadata = pageMeta({
   title: "Arizona Notary Exam Prep Pro — 60-Day Full Access",
@@ -42,7 +43,7 @@ export default function PricingPage() {
             <li>Full study guide, exam guide, and new laws</li>
             <li>Free account, cloud progress, basic wrong-answer notebook, favorites</li>
             <li>Some exam questions</li>
-            <li>AI Tutor — 3 requests per day</li>
+            <li>AI Tutor — {AI_LIMIT_FREE} successful requests per day</li>
           </ul>
         </section>
         <section className="card">
@@ -63,7 +64,7 @@ export default function PricingPage() {
             <li>Exam readiness score</li>
             <li>Advanced analytics</li>
             <li>Personalized study plan</li>
-            <li>AI Tutor — 15 requests per day</li>
+            <li>AI Tutor — {AI_LIMIT_PRO} successful requests per day</li>
             <li>Advanced weekly progress</li>
             <li>Cross-device progress</li>
           </ul>

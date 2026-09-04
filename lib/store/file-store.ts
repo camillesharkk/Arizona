@@ -173,6 +173,19 @@ export const fileStore: Store = {
       return row.n;
     });
   },
+  consumeAiQuota(userId, day, limit) {
+    return mutate((db) => {
+      const row = db.ai.find((a) => a.userId === userId && a.day === day);
+      const used = row?.n ?? 0;
+      if (used >= limit) return { ok: false, used, limit, remaining: 0 };
+      if (!row) {
+        db.ai.push({ userId, day, n: 1 });
+        return { ok: true, used: 1, limit, remaining: Math.max(0, limit - 1) };
+      }
+      row.n += 1;
+      return { ok: true, used: row.n, limit, remaining: Math.max(0, limit - row.n) };
+    });
+  },
   seenWebhook(id, provider) {
     return mutate((db) => {
       const key = `${provider}:${id}`;

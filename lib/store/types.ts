@@ -107,6 +107,11 @@ export type Store = {
   listExams(userId: string): Promise<ExamRow[]>;
   aiCount(userId: string, day: string): Promise<number>;
   bumpAi(userId: string, day: string): Promise<number>;
+  consumeAiQuota(
+    userId: string,
+    day: string,
+    limit: number
+  ): Promise<{ ok: boolean; used: number; limit: number; remaining: number }>;
   seenWebhook(id: string, provider: string): Promise<boolean>;
   listMailUsers(): Promise<UserRow[]>;
   claimEmailSend(userId: string, emailType: EmailType, periodKey: string): Promise<boolean>;

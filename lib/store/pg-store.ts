@@ -223,6 +223,23 @@ export const pgStore: Store = {
       where ai_usage.user_id = excluded.user_id`;
     return this.aiCount(userId, day);
   },
+  async consumeAiQuota(userId, day, limit) {
+    await assertSchema();
+    const rows = await db()`
+      insert into ai_usage (user_id, day, n)
+      values (${userId}, ${day}, 1)
+      on conflict (user_id, day) do update
+        set n = ai_usage.n + 1, updated_at = now()
+        where ai_usage.n < ${limit}
+      returning n
+    `;
+    if (rows[0]) {
+      const used = Number((rows[0] as { n: number }).n);
+      return { ok: true, used, limit, remaining: Math.max(0, limit - used) };
+    }
+    const used = await this.aiCount(userId, day);
+    return { ok: false, used, limit, remaining: 0 };
+  },
   async seenWebhook(id, provider) {
     await assertSchema();
     const inserted = await db()`

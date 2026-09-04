@@ -205,20 +205,44 @@ export function CheckoutButton() {
         <p className="notice">{CREDIT_PER_ORDER_NOTICE}</p>
       )}
 
-      <div className="price-breakdown">
-        <p>
-          Standard price: <strong>{b?.display.standard || guestPrice}</strong>
-        </p>
-        {b?.newcomerApplied && <p>New Member Offer: {b.display.newcomer}</p>}
-        {b?.newcomerApplied && b.newcomerDiscountCents > 0 && <p>Save {formatUsd(b.newcomerDiscountCents)}</p>}
-        {b?.referralApplied && <p>Referral Discount: −10%</p>}
-        {b?.newcomerApplied && b.referralApplied && <p>Your price: {b.display.subtotal}</p>}
-        {b?.creditApplied && <p>Referral Credit: −{b.display.credit} ({b.creditsAppliedCount})</p>}
-        <p className="kicker">Final price: {ctaPrice}</p>
-      </div>
-
       <p className="notice">{PRO_DURATION_NOTICE}</p>
       <p className="notice">{PERSONAL_USE_NOTICE}</p>
+
+      <section className="price-summary-card" aria-label="Price summary">
+        {signedIn !== false && b?.newcomerApplied && <span className="offer-badge">NEW MEMBER OFFER ACTIVE</span>}
+        {signedIn !== false && b?.referralApplied && <span className="offer-badge">REFERRAL DISCOUNT APPLIED</span>}
+        {signedIn !== false && b?.creditApplied && b.creditsAppliedCount > 0 && (
+          <span className="offer-badge">
+            {b.creditsAppliedCount === 1 ? "$3 CREDIT APPLIED" : `${b.creditsAppliedCount} CREDITS APPLIED`}
+          </span>
+        )}
+        {signedIn !== false && b && b.listPriceCents - b.finalPriceCents > 0 && (
+          <span className="offer-badge">SAVE {formatUsd(b.listPriceCents - b.finalPriceCents)} TODAY</span>
+        )}
+        <p className="kicker">{signedIn === false || !b ? "YOUR PRICE" : "YOUR PRICE TODAY"}</p>
+        <p className="price-today" aria-label={`Your price today ${ctaPrice}`}>
+          {ctaPrice}
+        </p>
+        {signedIn !== false && b && b.listPriceCents - b.finalPriceCents > 0 && (
+          <p className="you-save">YOU SAVE {formatUsd(b.listPriceCents - b.finalPriceCents)}</p>
+        )}
+        <p>Standard price {b?.display.standard || guestPrice}</p>
+        {signedIn === false && <p>{GUEST_NEWCOMER_HINT}</p>}
+        {signedIn && b?.newcomerApplied && <p>Your New Member price {b.display.newcomer}</p>}
+        {signedIn && b?.referralApplied && <p>Referral discount −10%</p>}
+        {signedIn && b?.creditApplied && b.display.credit && (
+          <p>
+            Referral Credits −{b.display.credit}
+            {b.creditsAppliedCount ? ` (${b.creditsAppliedCount})` : ""}
+          </p>
+        )}
+        {signedIn && b?.newcomerEligible && remainingMs > 0 && (
+          <p>
+            Offer ends in: <strong>{formatRemaining(remainingMs)}</strong>
+          </p>
+        )}
+        <p className="notice">One-time payment · 60-day full access · No subscription · No automatic renewal</p>
+      </section>
 
       <div className="card" style={{ margin: "12px 0" }}>
         <h3>3-Day Unused Refund Policy</h3>
