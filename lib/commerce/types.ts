@@ -143,6 +143,18 @@ export type ProUsageEventRow = {
   at: string;
 };
 
+export type CheckoutBindingStatus = "creating" | "ready" | "failed";
+
+export type ProviderCheckoutBinding = {
+  quoteId: string;
+  provider: string;
+  providerCheckoutId: string | null;
+  checkoutUrl: string | null;
+  status: CheckoutBindingStatus;
+  expiresAt: string;
+  createdAt: string;
+};
+
 export type RefundRequestRow = {
   id: string;
   userId: string;

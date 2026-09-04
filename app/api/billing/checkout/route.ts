@@ -6,6 +6,8 @@ import { checkoutUrl } from "@/lib/billing";
 import { grantArizonaPro60d, hasArizonaPro } from "@/lib/entitlements";
 import { getCommerceRepo } from "@/lib/commerce";
 import { assertQuoteStillValid, abandonQuote, confirmPaidOrder } from "@/lib/commerce/service";
+import { ensureLemonCheckout } from "@/lib/billing/lemon-checkout";
+import { getLemonConfig, isLemonProvider } from "@/lib/billing/lemonsqueezy";
 
 const postSchema = z.object({
   quoteId: z.string().uuid(),
@@ -24,6 +26,29 @@ export async function POST(req: Request) {
     await abandonQuote(repo, quote.id);
     return NextResponse.json({ error: valid.error }, { status: valid.error === "PRICE_CHANGED" ? 409 : 400 });
   }
+
+  if (isLemonProvider()) {
+    const cfg = getLemonConfig();
+    if (!cfg.ok) {
+      return NextResponse.json({ error: cfg.error, missing: cfg.missing }, { status: 503 });
+    }
+    const store = await getStore();
+    const user = await store.getUserById(session.id);
+    if (!user?.email) return NextResponse.json({ error: "account_email_required" }, { status: 400 });
+    const lemon = await ensureLemonCheckout({
+      repo,
+      quote,
+      email: user.email,
+      config: cfg.config,
+    });
+    if (!lemon.ok) return NextResponse.json({ error: lemon.error }, { status: lemon.status });
+    return NextResponse.json({
+      url: lemon.url,
+      quoteId: lemon.quoteId,
+      finalPriceCents: lemon.finalPriceCents,
+    });
+  }
+
   const checkout = checkoutUrl(session);
   if (checkout.includes("checkout=mock")) {
     return NextResponse.json({
@@ -38,7 +63,7 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   const url = new URL(req.url);
   if (url.searchParams.get("mock") !== "success") return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production" || isLemonProvider()) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
   const session = await getSession();

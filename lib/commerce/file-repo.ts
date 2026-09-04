@@ -90,6 +90,10 @@ function persistWrap(inner: CommerceRepo & { snapshot: () => unknown }): Commerc
     insertRefundRequest: wrap(inner.insertRefundRequest.bind(inner)),
     listRefundRequests: inner.listRefundRequests.bind(inner),
     completeRefundRequest: wrap(inner.completeRefundRequest.bind(inner)),
+    getCheckoutBinding: inner.getCheckoutBinding.bind(inner),
+    claimCheckoutBinding: wrap(inner.claimCheckoutBinding.bind(inner)),
+    completeCheckoutBinding: wrap(inner.completeCheckoutBinding.bind(inner)),
+    releaseCheckoutClaim: wrap(inner.releaseCheckoutClaim.bind(inner)),
   };
 }
 

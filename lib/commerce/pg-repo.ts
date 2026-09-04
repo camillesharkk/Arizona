@@ -11,6 +11,7 @@ import type {
   ReferralCreditDebtRow,
   ReferralRelationshipRow,
   ReferralRewardRow,
+  ProviderCheckoutBinding,
   RefundRequestRow,
 } from "./types.ts";
 
@@ -196,6 +197,18 @@ function mapRefund(r: Record<string, unknown>): RefundRequestRow {
 function isUniqueViolation(err: unknown) {
   const e = err as { code?: string };
   return e.code === "23505";
+}
+
+function mapBinding(r: Record<string, unknown>): ProviderCheckoutBinding {
+  return {
+    quoteId: String(r.quote_id),
+    provider: String(r.provider),
+    providerCheckoutId: r.provider_checkout_id ? String(r.provider_checkout_id) : null,
+    checkoutUrl: r.checkout_url ? String(r.checkout_url) : null,
+    status: String(r.status) as ProviderCheckoutBinding["status"],
+    expiresAt: iso(r.expires_at) as string,
+    createdAt: iso(r.created_at) as string,
+  };
 }
 
 export function createPgCommerceRepo(sql: any): CommerceRepo {
@@ -666,6 +679,63 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
     },
     async completeRefundRequest(id, at) {
       await sql`update refund_requests set status = 'completed', completed_at = ${at} where id = ${id}`;
+    },
+    async getCheckoutBinding(quoteId) {
+      const rows = await sql`select * from provider_checkout_bindings where quote_id = ${quoteId} limit 1`;
+      return rows[0] ? mapBinding(rows[0] as Record<string, unknown>) : null;
+    },
+    async claimCheckoutBinding(opts) {
+      const inserted = await sql`
+        insert into provider_checkout_bindings (quote_id, provider, status, expires_at, created_at)
+        values (${opts.quoteId}, ${opts.provider}, 'creating', ${opts.expiresAt}, ${opts.now})
+        on conflict (quote_id) do nothing
+        returning *
+      `;
+      if (inserted[0]) return { created: true, binding: mapBinding(inserted[0] as Record<string, unknown>) };
+      const existingRows = await sql`select * from provider_checkout_bindings where quote_id = ${opts.quoteId} limit 1`;
+      const existing = existingRows[0] ? mapBinding(existingRows[0] as Record<string, unknown>) : null;
+      if (existing?.status === "ready" && existing.checkoutUrl) {
+        return { created: false, binding: existing };
+      }
+      const age = existing ? new Date(opts.now).getTime() - new Date(existing.createdAt).getTime() : 0;
+      const steal = existing && (existing.status === "failed" || (existing.status === "creating" && age >= 60_000));
+      if (steal) {
+        const taken = await sql`
+          update provider_checkout_bindings
+          set provider = ${opts.provider},
+              provider_checkout_id = null,
+              checkout_url = null,
+              status = 'creating',
+              expires_at = ${opts.expiresAt},
+              created_at = ${opts.now}
+          where quote_id = ${opts.quoteId}
+            and (
+              status = 'failed'
+              or (status = 'creating' and created_at <= ${new Date(new Date(opts.now).getTime() - 60_000).toISOString()})
+            )
+          returning *
+        `;
+        if (taken[0]) return { created: true, binding: mapBinding(taken[0] as Record<string, unknown>) };
+      }
+      const again = await sql`select * from provider_checkout_bindings where quote_id = ${opts.quoteId} limit 1`;
+      if (!again[0]) {
+        throw new Error("checkout_binding_missing");
+      }
+      return { created: false, binding: mapBinding(again[0] as Record<string, unknown>) };
+    },
+    async completeCheckoutBinding(opts) {
+      const rows = await sql`
+        update provider_checkout_bindings
+        set provider_checkout_id = ${opts.providerCheckoutId},
+            checkout_url = ${opts.checkoutUrl},
+            status = 'ready'
+        where quote_id = ${opts.quoteId} and status = 'creating'
+        returning *
+      `;
+      return rows[0] ? mapBinding(rows[0] as Record<string, unknown>) : null;
+    },
+    async releaseCheckoutClaim(quoteId) {
+      await sql`delete from provider_checkout_bindings where quote_id = ${quoteId} and status = 'creating'`;
     },
   };
 }

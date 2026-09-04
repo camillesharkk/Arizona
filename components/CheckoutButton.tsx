@@ -9,6 +9,7 @@ import {
   GUEST_NEWCOMER_HINT,
   ONE_TIME_DISCOUNT_NOTICE,
   REFUND_POLICY_SUMMARY,
+  TAX_CHECKOUT_NOTICE,
 } from "@/lib/pricing/copy";
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
@@ -137,15 +138,32 @@ export function CheckoutButton() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ quoteId: quote.quoteId }),
     });
-    const data = await res.json();
+    let data = await res.json();
+    if (res.status === 409 && data.error === "checkout_in_progress") {
+      const retry = await fetch("/api/billing/checkout/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quoteId: quote.quoteId }),
+      });
+      data = await retry.json();
+      if (!retry.ok && retry.status !== 409) {
+        setErr(data.error || "Could not start checkout");
+        setBusy(false);
+        return;
+      }
+      if (retry.ok && data.url) {
+        window.location.href = data.url;
+        return;
+      }
+    }
     setBusy(false);
-    if (res.status === 409 || data.error === "PRICE_CHANGED") {
+    if (data.error === "PRICE_CHANGED") {
       setPriceChanged(true);
       await load(applyCredit);
       return;
     }
-    if (!res.ok) {
-      setErr(data.error || "Sign in first");
+    if (!data.url) {
+      setErr(data.error || "Could not start checkout");
       return;
     }
     window.location.href = data.url;
@@ -267,6 +285,7 @@ export function CheckoutButton() {
           {busy ? "Working…" : `Get 60-Day Pro — ${ctaPrice}`}
         </button>
       )}
+      <p className="notice">{TAX_CHECKOUT_NOTICE}</p>
       {priceChanged && <p className="notice">Your available price has changed.</p>}
       {err && (
         <p className="notice">

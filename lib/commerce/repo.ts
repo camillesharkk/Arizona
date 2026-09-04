@@ -11,6 +11,7 @@ import type {
   ReferralCreditDebtRow,
   ReferralRelationshipRow,
   ReferralRewardRow,
+  ProviderCheckoutBinding,
   RefundRequestRow,
 } from "./types.ts";
 
@@ -94,6 +95,20 @@ export type CommerceRepo = {
   insertRefundRequest(row: RefundRequestRow): Promise<void>;
   listRefundRequests(userId: string): Promise<RefundRequestRow[]>;
   completeRefundRequest(id: string, at: string): Promise<void>;
+
+  getCheckoutBinding(quoteId: string): Promise<ProviderCheckoutBinding | null>;
+  claimCheckoutBinding(opts: {
+    quoteId: string;
+    provider: string;
+    expiresAt: string;
+    now: string;
+  }): Promise<{ created: boolean; binding: ProviderCheckoutBinding }>;
+  completeCheckoutBinding(opts: {
+    quoteId: string;
+    providerCheckoutId: string;
+    checkoutUrl: string;
+  }): Promise<ProviderCheckoutBinding | null>;
+  releaseCheckoutClaim(quoteId: string): Promise<void>;
 };
 
 type Mem = {
@@ -108,6 +123,7 @@ type Mem = {
   usage: ProUsageEventRow[];
   refunds: RefundRequestRow[];
   debts: ReferralCreditDebtRow[];
+  checkoutBindings: ProviderCheckoutBinding[];
 };
 
 function empty(): Mem {
@@ -123,6 +139,7 @@ function empty(): Mem {
     usage: [],
     refunds: [],
     debts: [],
+    checkoutBindings: [],
   };
 }
 
@@ -163,6 +180,9 @@ function hydrate(raw?: Record<string, unknown> | Mem): Mem {
     usage: Array.isArray(raw.usage) ? (raw.usage as Mem["usage"]) : [],
     refunds: Array.isArray(raw.refunds) ? (raw.refunds as Mem["refunds"]) : [],
     debts: Array.isArray(raw.debts) ? (raw.debts as Mem["debts"]) : [],
+    checkoutBindings: Array.isArray((raw as Mem).checkoutBindings)
+      ? ((raw as Mem).checkoutBindings as ProviderCheckoutBinding[])
+      : [],
   };
 }
 
@@ -508,6 +528,58 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
       if (!r) return;
       r.status = "completed";
       r.completedAt = at;
+    },
+    async getCheckoutBinding(quoteId) {
+      return db.checkoutBindings.find((b) => b.quoteId === quoteId) ?? null;
+    },
+    async claimCheckoutBinding(opts) {
+      return withLock(`checkout:${opts.quoteId}`, () => {
+        const existing = db.checkoutBindings.find((b) => b.quoteId === opts.quoteId);
+        const nowMs = new Date(opts.now).getTime();
+        if (existing?.status === "ready" && existing.checkoutUrl) {
+          return { created: false, binding: existing };
+        }
+        if (existing?.status === "creating") {
+          const age = nowMs - new Date(existing.createdAt).getTime();
+          if (age < 60_000) return { created: false, binding: existing };
+        }
+        if (existing) {
+          existing.provider = opts.provider;
+          existing.providerCheckoutId = null;
+          existing.checkoutUrl = null;
+          existing.status = "creating";
+          existing.expiresAt = opts.expiresAt;
+          existing.createdAt = opts.now;
+          return { created: true, binding: existing };
+        }
+        const binding: ProviderCheckoutBinding = {
+          quoteId: opts.quoteId,
+          provider: opts.provider,
+          providerCheckoutId: null,
+          checkoutUrl: null,
+          status: "creating",
+          expiresAt: opts.expiresAt,
+          createdAt: opts.now,
+        };
+        db.checkoutBindings.push(binding);
+        return { created: true, binding };
+      });
+    },
+    async completeCheckoutBinding(opts) {
+      return withLock(`checkout:${opts.quoteId}`, () => {
+        const row = db.checkoutBindings.find((b) => b.quoteId === opts.quoteId && b.status === "creating");
+        if (!row) return null;
+        row.providerCheckoutId = opts.providerCheckoutId;
+        row.checkoutUrl = opts.checkoutUrl;
+        row.status = "ready";
+        return row;
+      });
+    },
+    async releaseCheckoutClaim(quoteId) {
+      return withLock(`checkout:${quoteId}`, () => {
+        const i = db.checkoutBindings.findIndex((b) => b.quoteId === quoteId && b.status === "creating");
+        if (i >= 0) db.checkoutBindings.splice(i, 1);
+      });
     },
   };
 

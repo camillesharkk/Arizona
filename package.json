@@ -15,6 +15,7 @@
     "devices:verify": "node --experimental-strip-types scripts/devices-verify.ts",
     "auth:verify": "node --experimental-strip-types scripts/auth-verify.ts",
     "ai:verify": "node --experimental-strip-types scripts/ai-verify.ts",
+    "lemon:verify": "node --experimental-strip-types scripts/lemon-verify.ts",
     "contact:verify": "node --experimental-strip-types scripts/contact-verify.ts"
   },
   "dependencies": {

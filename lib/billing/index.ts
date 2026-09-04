@@ -40,12 +40,7 @@ export function checkoutUrl(user: { id: string; email: string }) {
     u.searchParams.set("passthrough", user.id);
     return u.toString();
   }
-  if (p === "lemonsqueezy" && process.env.LEMONSQUEEZY_CHECKOUT_URL) {
-    const u = new URL(process.env.LEMONSQUEEZY_CHECKOUT_URL);
-    u.searchParams.set("checkout[email]", user.email);
-    u.searchParams.set("checkout[custom][user_id]", user.id);
-    return u.toString();
-  }
+  // LEMONSQUEEZY_CHECKOUT_URL is deprecated. Lemon uses POST /v1/checkouts via lib/billing/lemonsqueezy.ts.
   return `${siteUrl()}${paths.pricing}?checkout=mock&uid=${encodeURIComponent(user.id)}`;
 }
 

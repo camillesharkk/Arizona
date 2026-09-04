@@ -17,12 +17,23 @@ export function DashboardClient() {
     arizonaPro?: boolean;
   } | null>(null);
   const [checkEmail, setCheckEmail] = useState(false);
+  const [checkoutPending, setCheckoutPending] = useState(false);
   useEffect(() => {
-    setCheckEmail(new URLSearchParams(window.location.search).get("checkEmail") === "1");
-    fetch("/api/progress/")
-      .then((r) => r.json())
-      .then(setData)
-      .catch(() => setData(null));
+    const params = new URLSearchParams(window.location.search);
+    setCheckEmail(params.get("checkEmail") === "1");
+    const pending = params.get("checkout") === "success";
+    setCheckoutPending(pending);
+    async function load() {
+      const progress = await fetch("/api/progress/").then((r) => r.json()).catch(() => null);
+      setData(progress);
+      if (pending) {
+        const access = await fetch("/api/billing/access/").then((r) => r.json()).catch(() => null);
+        if (access && typeof access.arizonaPro === "boolean" && progress) {
+          setData({ ...progress, arizonaPro: access.arizonaPro });
+        }
+      }
+    }
+    load();
   }, []);
   if (!data?.user) {
     return (
@@ -54,6 +65,9 @@ export function DashboardClient() {
   return (
     <div className="grid">
       {checkEmail && <p className="notice">Check your inbox for a verification email, then click the link.</p>}
+      {checkoutPending && !isAzPro && (
+        <p className="notice">Payment received. Your access is being activated.</p>
+      )}
       <div className="grid grid-4 stats-mobile">
         <div className="stat"><b>{answered}</b><span>Answers</span></div>
         <div className="stat"><b>{acc}%</b><span>Accuracy</span></div>

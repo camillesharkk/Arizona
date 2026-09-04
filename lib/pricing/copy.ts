@@ -30,3 +30,5 @@ export const PERSONAL_USE_NOTICE =
 
 export const PRO_DURATION_NOTICE =
   "Your Pro access lasts for 60 days from activation. If you purchase additional 60-day access while Pro is still active, the additional time is added after your current expiration date.";
+
+export const TAX_CHECKOUT_NOTICE = "Applicable taxes may be added at checkout.";
