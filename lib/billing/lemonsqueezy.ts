@@ -21,15 +21,21 @@ function missingNamed(env: LemonEnv, keys: string[]) {
   return keys.filter((k) => !String(env[k] || "").trim());
 }
 
-export function lemonTestMode(env: LemonEnv = process.env) {
-  return env.LEMONSQUEEZY_TEST_MODE === "true";
+export function parseLemonTestMode(env: LemonEnv = process.env): { ok: true; testMode: boolean } | LemonConfigError {
+  const raw = env.LEMONSQUEEZY_TEST_MODE;
+  if (raw == null || !String(raw).trim()) {
+    return { ok: false, error: "LEMON_CONFIG_MISSING", missing: ["LEMONSQUEEZY_TEST_MODE"] };
+  }
+  const value = String(raw).trim();
+  if (value === "true") return { ok: true, testMode: true };
+  if (value === "false") return { ok: true, testMode: false };
+  return { ok: false, error: "LEMON_TEST_MODE_INVALID", missing: ["LEMONSQUEEZY_TEST_MODE"] };
 }
 
 export function isLemonProvider(env: LemonEnv = process.env) {
   return (env.MOR_PROVIDER || "mock").toLowerCase() === "lemonsqueezy";
 }
 
-/** Production Lemon must stay in Test Mode this round. Live Mode is a safe failure. */
 export function getLemonConfig(env: LemonEnv = process.env): LemonConfigOk | LemonConfigError {
   const missing = missingNamed(env, [
     "LEMONSQUEEZY_API_KEY",
@@ -38,7 +44,8 @@ export function getLemonConfig(env: LemonEnv = process.env): LemonConfigOk | Lem
     "LEMONSQUEEZY_WEBHOOK_SECRET",
   ]);
   if (missing.length) return { ok: false, error: "LEMON_CONFIG_MISSING", missing };
-  if (!lemonTestMode(env)) return { ok: false, error: "LEMON_LIVE_MODE_FORBIDDEN", missing: ["LEMONSQUEEZY_TEST_MODE"] };
+  const mode = parseLemonTestMode(env);
+  if (!mode.ok) return mode;
   const storeId = String(env.LEMONSQUEEZY_STORE_ID).trim();
   const variantId = String(env.LEMONSQUEEZY_VARIANT_ID).trim();
   if (!Number.isFinite(Number(storeId)) || !Number.isFinite(Number(variantId))) {
@@ -51,7 +58,7 @@ export function getLemonConfig(env: LemonEnv = process.env): LemonConfigOk | Lem
       storeId,
       variantId,
       webhookSecret: String(env.LEMONSQUEEZY_WEBHOOK_SECRET).trim(),
-      testMode: true,
+      testMode: mode.testMode,
     },
   };
 }

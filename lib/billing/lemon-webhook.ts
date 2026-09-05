@@ -129,6 +129,9 @@ async function handleOrderRefunded(
   if (order.storeId !== Number(config.storeId)) {
     return fail(409, "store_mismatch", { orderId: order.orderId });
   }
+  if (order.testMode !== config.testMode) {
+    return fail(409, "test_live_mismatch", { orderId: order.orderId });
+  }
   const commerce = await repo.getOrderByProvider(LEMON_PROVIDER, order.orderId);
   if (!commerce) {
     lemonLog("provider_order_not_found", { orderId: order.orderId, event: "order_refunded" });

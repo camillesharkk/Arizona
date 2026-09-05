@@ -165,7 +165,8 @@ async function runWebhook(
   tracker: ReturnType<typeof grantTracker>,
   bodyObj: unknown,
   headerName: string,
-  secret = TEST_SECRET
+  secret = TEST_SECRET,
+  config: LemonConfig = cfg
 ) {
   const raw = JSON.stringify(bodyObj);
   if (!verifyLemonWebhookSignature(raw, sign(raw, secret), secret)) {
@@ -175,7 +176,7 @@ async function runWebhook(
     raw,
     headerEventName: headerName,
     repo,
-    config: cfg,
+    config,
     body: bodyObj,
     grantPro: tracker.grantPro,
     refundEntitlement: tracker.refundEntitlement,
@@ -213,15 +214,54 @@ async function run() {
   if (missVariant.ok || !missVariant.missing.includes("LEMONSQUEEZY_VARIANT_ID")) fail("missing variant should safe-fail");
   else ok("missing Variant ID → safe failure");
 
-  const live = getLemonConfig({
+  const testCfg = getLemonConfig({
+    LEMONSQUEEZY_API_KEY: "k",
+    LEMONSQUEEZY_STORE_ID: "1",
+    LEMONSQUEEZY_VARIANT_ID: "2",
+    LEMONSQUEEZY_WEBHOOK_SECRET: "s",
+    LEMONSQUEEZY_TEST_MODE: "true",
+  });
+  if (!testCfg.ok || testCfg.config.testMode !== true) fail("TEST_MODE=true should be accepted");
+  else ok("TEST_MODE=true → config accepted, testMode=true");
+
+  const liveCfg = getLemonConfig({
     LEMONSQUEEZY_API_KEY: "k",
     LEMONSQUEEZY_STORE_ID: "1",
     LEMONSQUEEZY_VARIANT_ID: "2",
     LEMONSQUEEZY_WEBHOOK_SECRET: "s",
     LEMONSQUEEZY_TEST_MODE: "false",
   });
-  if (live.ok) fail("live mode must be forbidden");
-  else ok("test/live mismatch config → safe failure");
+  if (!liveCfg.ok || liveCfg.config.testMode !== false) fail("TEST_MODE=false should be accepted");
+  else ok("TEST_MODE=false → config accepted, testMode=false");
+
+  const missMode = getLemonConfig({
+    LEMONSQUEEZY_API_KEY: "k",
+    LEMONSQUEEZY_STORE_ID: "1",
+    LEMONSQUEEZY_VARIANT_ID: "2",
+    LEMONSQUEEZY_WEBHOOK_SECRET: "s",
+  });
+  if (missMode.ok || !missMode.missing.includes("LEMONSQUEEZY_TEST_MODE")) fail("missing TEST_MODE should safe-fail");
+  else ok("missing TEST_MODE → safe failure");
+
+  const emptyMode = getLemonConfig({
+    LEMONSQUEEZY_API_KEY: "k",
+    LEMONSQUEEZY_STORE_ID: "1",
+    LEMONSQUEEZY_VARIANT_ID: "2",
+    LEMONSQUEEZY_WEBHOOK_SECRET: "s",
+    LEMONSQUEEZY_TEST_MODE: "   ",
+  });
+  if (emptyMode.ok) fail("empty TEST_MODE should safe-fail");
+  else ok("empty TEST_MODE → safe failure");
+
+  const badMode = getLemonConfig({
+    LEMONSQUEEZY_API_KEY: "k",
+    LEMONSQUEEZY_STORE_ID: "1",
+    LEMONSQUEEZY_VARIANT_ID: "2",
+    LEMONSQUEEZY_WEBHOOK_SECRET: "s",
+    LEMONSQUEEZY_TEST_MODE: "yes",
+  });
+  if (badMode.ok || badMode.error !== "LEMON_TEST_MODE_INVALID") fail("invalid TEST_MODE=yes should safe-fail");
+  else ok("invalid TEST_MODE=yes → safe failure");
 
   const now = new Date();
   const repo = createMemoryCommerceRepo();
@@ -255,8 +295,8 @@ async function run() {
     else ok("Store ID comes from env");
     if (p.data.relationships.variant.data.id !== cfg.variantId) fail("variant id must come from env/config");
     else ok("Variant ID comes from env");
-    if (p.data.attributes.test_mode !== true) fail("test_mode should be true");
-    else ok("test_mode=true");
+    if (p.data.attributes.test_mode !== true) fail("test checkout payload test_mode should be true");
+    else ok("Test checkout payload → test_mode=true");
     if (JSON.stringify(p.data.attributes.product_options.enabled_variants) !== JSON.stringify([2002])) {
       fail("enabled_variants must be only the target variant");
     } else ok("enabled_variants only target variant");
@@ -271,6 +311,20 @@ async function run() {
     if (p.data.attributes.product_options.redirect_url !== "https://arizonanotaryprep.com/dashboard/?checkout=success") {
       fail("redirect_url should be dashboard checkout=success");
     }
+    const livePayload = buildLemonCheckoutPayload({
+      storeId: cfg.storeId,
+      variantId: cfg.variantId,
+      customPriceCents: oldQuote.quote.finalPriceCents,
+      email: "old@example.test",
+      userId: oldQuote.quote.userId,
+      quoteId: oldQuote.quote.id,
+      productCode: oldQuote.quote.productCode,
+      expiresAt: checkoutExpiryIso(oldQuote.quote.expiresAt),
+      redirectUrl: lemonRedirectUrl("https://arizonanotaryprep.com"),
+      testMode: false,
+    });
+    if (livePayload.data.attributes.test_mode !== false) fail("live checkout payload test_mode should be false");
+    else ok("Live checkout payload → test_mode=false");
   }
 
   const solo = createMemoryCommerceRepo();
@@ -409,6 +463,105 @@ async function run() {
   await rejectCase("wrong subtotal", { subtotal: 1 });
   await rejectCase("lemon discount", { discountTotal: 100 });
   await rejectCase("test/live mismatch", { testMode: false });
+
+  const liveCfgObj: LemonConfig = { ...cfg, testMode: false };
+  const mixRepo = createMemoryCommerceRepo();
+  const mixT = grantTracker();
+  await putUser(mixRepo, "mix", hoursAgo(now, 1));
+  const mixQ = await createQuote(mixRepo, { userId: "mix", applyCredit: false, policyAccepted: true, now });
+  if (!mixQ.ok) fail("mismatch quote");
+  else {
+    const liveWh = await runWebhook(
+      mixRepo,
+      mixT,
+      orderBody({
+        eventName: "order_created",
+        orderId: "ord-live-on-test",
+        userId: "mix",
+        quoteId: mixQ.quote.id,
+        subtotal: mixQ.quote.finalPriceCents,
+        testMode: false,
+      }),
+      "order_created"
+    );
+    if (liveWh.status === 200 || mixT.grants.length) fail("Test config + live webhook granted Pro");
+    else ok("Test config + live webhook → no Pro");
+
+    const testOnLive = await runWebhook(
+      mixRepo,
+      mixT,
+      orderBody({
+        eventName: "order_created",
+        orderId: "ord-test-on-live",
+        userId: "mix",
+        quoteId: mixQ.quote.id,
+        subtotal: mixQ.quote.finalPriceCents,
+        testMode: true,
+      }),
+      "order_created",
+      TEST_SECRET,
+      liveCfgObj
+    );
+    if (testOnLive.status === 200 || mixT.grants.length) fail("Live config + test webhook granted Pro");
+    else ok("Live config + test webhook → no Pro");
+  }
+
+  const liveRepo = createMemoryCommerceRepo();
+  const liveT = grantTracker();
+  await putUser(liveRepo, "lv", hoursAgo(now, 1));
+  const liveQ = await createQuote(liveRepo, { userId: "lv", applyCredit: false, policyAccepted: true, now });
+  if (!liveQ.ok) fail("live quote");
+  else {
+    const liveBody = orderBody({
+      eventName: "order_created",
+      orderId: "ord-live-1",
+      userId: "lv",
+      quoteId: liveQ.quote.id,
+      subtotal: liveQ.quote.finalPriceCents,
+      testMode: false,
+    });
+    const liveOk = await runWebhook(liveRepo, liveT, liveBody, "order_created", TEST_SECRET, liveCfgObj);
+    const liveOrders = await liveRepo.listOrders("lv");
+    if (liveOk.status !== 200 || liveT.grants.length !== 1 || liveOrders.length !== 1) {
+      fail("valid live order should pay once");
+    } else ok("Live config + valid live order → exactly 1 commerce order + 1 entitlement");
+    const liveDup = await runWebhook(liveRepo, liveT, liveBody, "order_created", TEST_SECRET, liveCfgObj);
+    if (liveDup.status !== 200 || liveT.grants.length !== 1 || (await liveRepo.listOrders("lv")).length !== 1) {
+      fail("duplicate live order not idempotent");
+    } else ok("duplicate valid live order → idempotent");
+  }
+
+  async function rejectLive(label: string, patch: Partial<Parameters<typeof orderBody>[0]>) {
+    const r = createMemoryCommerceRepo();
+    const t = grantTracker();
+    await putUser(r, "u", hoursAgo(now, 1));
+    const q = await createQuote(r, { userId: "u", applyCredit: false, policyAccepted: true, now });
+    if (!q.ok) return fail(`live ${label} quote`);
+    const res = await runWebhook(
+      r,
+      t,
+      orderBody({
+        eventName: "order_created",
+        orderId: `live-bad-${label}`,
+        userId: "u",
+        quoteId: q.quote.id,
+        subtotal: q.quote.finalPriceCents,
+        testMode: false,
+        ...patch,
+      }),
+      "order_created",
+      TEST_SECRET,
+      liveCfgObj
+    );
+    if (res.status === 200 || t.grants.length) fail(`live ${label} granted Pro`);
+    else ok(`wrong live ${label} → no Pro`);
+  }
+  await rejectLive("store", { storeId: 9 });
+  await rejectLive("variant", { variantId: 9 });
+  await rejectLive("quote", { quoteId: randomUUID() });
+  await rejectLive("user", { userId: randomUUID() });
+  await rejectLive("currency", { currency: "EUR" });
+  await rejectLive("subtotal", { subtotal: 1 });
 
   const taxRepo = createMemoryCommerceRepo();
   const taxT = grantTracker();
