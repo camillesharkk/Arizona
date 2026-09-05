@@ -19,6 +19,7 @@ import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
 import { getSource } from "@/data/sources";
 import { paths } from "@/lib/paths";
+import { trackEvent } from "@/lib/analytics";
 
 type Mode = "quick" | "full" | "weak" | "practice";
 
@@ -76,6 +77,14 @@ export function ExamRunner({
   const [done, setDone] = useState(false);
   const [seconds, setSeconds] = useState(examConfig.timeLimitMinutes * 60);
   const weakReported = useRef(false);
+  const startReported = useRef(false);
+
+  useEffect(() => {
+    if (startReported.current || !questions.length) return;
+    startReported.current = true;
+    if (mode === "quick") trackEvent("quick10_start");
+    if (mode === "full") trackEvent("full45_start", { plan: isPro ? "pro" : "free" });
+  }, [questions.length, mode, isPro]);
 
   useEffect(() => {
     if (!timed || done) return;
@@ -175,6 +184,12 @@ export function ExamRunner({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ kind: "exam", mode, score: pct, correctCount: results.filter((r) => r.correct).length, total: questions.length }),
     }).catch(() => undefined);
+    trackEvent("exam_complete", {
+      exam_type: mode === "quick" ? "quick10" : mode === "full" ? "full45" : "weak",
+      score_percent: pct,
+      passed: pct >= examConfig.passingScorePercent,
+      plan: isPro ? "pro" : "free",
+    });
   }
 
   if (done) {

@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { CheckoutButton } from "@/components/CheckoutButton";
+import { PricingAnalytics } from "@/components/PricingAnalytics";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -26,6 +27,7 @@ const faqs = [
 export default function PricingPage() {
   return (
     <main className="wrap hero">
+      <PricingAnalytics />
       <JsonLd data={faqJson(faqs)} />
       <Breadcrumb items={[{ name: "Home", path: paths.home }, { name: "Pricing", path: paths.pricing }]} />
       <h1>Free vs Arizona Notary Exam Prep Pro</h1>

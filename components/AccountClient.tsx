@@ -38,6 +38,10 @@ export function AccountClient() {
       setError(result.error);
       return;
     }
+    if (mode === "register") {
+      const { trackEvent } = await import("@/lib/analytics");
+      trackEvent("sign_up");
+    }
     setPassword("");
   }
 

@@ -8,6 +8,7 @@ import type { TopicId } from "@/lib/types";
 import { readinessScore } from "@/lib/stats";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 import { ProAccessNote } from "@/components/ProAccessNote";
+import { hasRememberedPurchase, pickLatestPaidOrder, rememberPurchase, trackPurchase } from "@/lib/analytics";
 
 export function DashboardClient() {
   const [data, setData] = useState<{
@@ -30,6 +31,13 @@ export function DashboardClient() {
         const access = await fetch("/api/billing/access/").then((r) => r.json()).catch(() => null);
         if (access && typeof access.arizonaPro === "boolean" && progress) {
           setData({ ...progress, arizonaPro: access.arizonaPro });
+        }
+        if (access?.arizonaPro) {
+          const latest = pickLatestPaidOrder(Array.isArray(access.orders) ? access.orders : []);
+          if (latest?.orderId && !hasRememberedPurchase(latest.orderId, window.localStorage)) {
+            rememberPurchase(latest.orderId, window.localStorage);
+            trackPurchase({ transactionId: latest.orderId, valueCents: Number(latest.amountCents || 0) });
+          }
         }
       }
     }

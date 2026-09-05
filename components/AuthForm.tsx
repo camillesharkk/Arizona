@@ -129,6 +129,8 @@ export function AuthForm({
         return;
       }
       if (mode === "register" && data.code === "VERIFICATION_EMAIL_FAILED") {
+        const { trackEvent } = await import("@/lib/analytics");
+        trackEvent("sign_up");
         setRegisterBlock("email-failed");
         if (typeof window !== "undefined") sessionStorage.setItem(VERIFY_EMAIL_KEY, email.trim().toLowerCase());
         setError("Your account was created, but we could not send the verification email.");
@@ -157,6 +159,8 @@ export function AuthForm({
       return;
     }
     if (mode === "register") {
+      const { trackEvent } = await import("@/lib/analytics");
+      trackEvent("sign_up");
       if (typeof window !== "undefined") sessionStorage.setItem(VERIFY_EMAIL_KEY, email.trim().toLowerCase());
       window.location.href = `${paths.verify}?sent=1`;
       return;

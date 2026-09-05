@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { REFERRAL_CREDIT_RULES, CREDIT_PER_ORDER_NOTICE } from "@/lib/pricing/copy";
+import { trackEvent } from "@/lib/analytics";
 
 type Me = {
   code: string;
@@ -29,6 +30,7 @@ export function ReferralsClient() {
   async function copy(text: string, label: string) {
     await navigator.clipboard.writeText(text);
     setCopied(label);
+    trackEvent("referral_share");
   }
   return (
     <div className="grid">

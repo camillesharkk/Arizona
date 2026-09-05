@@ -13,6 +13,7 @@ import {
 } from "@/lib/pricing/copy";
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
+import { checkoutStartParams, trackEvent } from "@/lib/analytics";
 
 type Breakdown = {
   listPriceCents: number;
@@ -152,6 +153,7 @@ export function CheckoutButton() {
         return;
       }
       if (retry.ok && data.url) {
+        trackEvent("checkout_start", checkoutStartParams(quote.breakdown));
         window.location.href = data.url;
         return;
       }
@@ -166,6 +168,7 @@ export function CheckoutButton() {
       setErr(data.error || "Could not start checkout");
       return;
     }
+    trackEvent("checkout_start", checkoutStartParams(quote.breakdown));
     window.location.href = data.url;
   }
 

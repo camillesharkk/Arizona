@@ -6,6 +6,7 @@ import type { Question } from "@/lib/types";
 import { getSource } from "@/data/sources";
 import { paths } from "@/lib/paths";
 import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
+import { trackEvent } from "@/lib/analytics";
 
 const MODES = [
   { id: "explain", label: "Explain this question" },
@@ -81,6 +82,11 @@ export function TutorPanel({ q, selected }: { q: Question; selected?: "A" | "B" 
       return;
     }
     setText(data.text);
+    trackEvent("ai_tutor_use", {
+      provider: data.provider === "deepseek" ? "deepseek" : "grounded-fallback",
+      plan: data.plan === "pro" ? "pro" : "free",
+      mode,
+    });
   }
 
   return (
