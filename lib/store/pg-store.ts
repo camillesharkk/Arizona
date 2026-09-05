@@ -240,6 +240,24 @@ export const pgStore: Store = {
     const used = await this.aiCount(userId, day);
     return { ok: false, used, limit, remaining: 0 };
   },
+  async consumeSiteQuota(scope, day, limit) {
+    await assertSchema();
+    const token = randomUUID();
+    const id = `${day}:${token}`;
+    const like = `${day}:%`;
+    return db().begin(async (sql) => {
+      await sql`select pg_advisory_xact_lock(881120, hashtext(${`${scope}:${day}`}))`;
+      const counted = await sql`select count(*)::int as n from webhooks where provider = ${scope} and id like ${like}`;
+      const used = Number((counted[0] as { n: number }).n);
+      if (used >= limit) return { ok: false, token: null, used };
+      await sql`insert into webhooks (id, provider, at) values (${id}, ${scope}, ${new Date().toISOString()})`;
+      return { ok: true, token, used: used + 1 };
+    });
+  },
+  async releaseSiteQuota(scope, day, token) {
+    await assertSchema();
+    await db()`delete from webhooks where provider = ${scope} and id = ${`${day}:${token}`}`;
+  },
   async seenWebhook(id, provider) {
     await assertSchema();
     const inserted = await db()`

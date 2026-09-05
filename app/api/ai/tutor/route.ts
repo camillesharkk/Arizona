@@ -3,13 +3,12 @@ import { z } from "zod";
 import { getSession } from "@/lib/session";
 import { aiDailyLimit, canAccessQuestion, hasArizonaPro } from "@/lib/entitlements";
 import { publishedQuestions } from "@/data/questions";
-import { getSource } from "@/data/sources";
-import { retrieveContext } from "@/data/rag";
 import { getStore } from "@/lib/store";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { recordProUsage } from "@/lib/commerce/usage";
-import { deliverTutorAnswer, readAiUsage, utcAiDay } from "@/lib/ai/quota";
-import { localTutor } from "@/lib/ai/local-tutor";
+import { readAiUsage, utcAiDay } from "@/lib/ai/quota";
+import { parseOpenAiDailyCap } from "@/lib/ai/openai";
+import { runTutorTurn } from "@/lib/ai/tutor";
 
 function usagePayload(plan: "free" | "pro", used: number, limit: number, remaining: number) {
   return { plan, used, limit, remaining };
@@ -52,47 +51,23 @@ export async function POST(req: Request) {
       { status: 429 }
     );
   }
-  const src = getSource(q.source_id);
-  const context = retrieveContext(q.topic, q.question_text);
-  const key = process.env.AI_API_KEY;
-  let text = "";
-  let provider: "grounded-fallback" | "openai" = "grounded-fallback";
-  if (!key) {
-    text = localTutor(body.data.mode, q, body.data.selected, context, src.reference);
-  } else {
-    try {
-      const prompt = `You are Arizona notary exam tutor. Use only this context. If unknown, say to verify on SOS.\nContext:\n${context}\nQuestion: ${q.question_text}\nCorrect: ${q.correct_option}. ${q.explanation}\nUser selected: ${body.data.selected || "n/a"}\nMode: ${body.data.mode}`;
-      const res = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: process.env.AI_MODEL || "gpt-4o-mini",
-          messages: [{ role: "user", content: prompt }],
-          temperature: 0.2,
-        }),
-      });
-      if (!res.ok) {
-        return NextResponse.json({ error: "AI provider error", ...usagePayload(plan, before.used, limit, before.remaining) }, { status: 502 });
-      }
-      const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
-      text = json.choices?.[0]?.message?.content || "";
-      provider = "openai";
-    } catch {
-      return NextResponse.json({ error: "AI provider error", ...usagePayload(plan, before.used, limit, before.remaining) }, { status: 502 });
-    }
-  }
-  const delivered = await deliverTutorAnswer({
+  const delivered = await runTutorTurn({
     store,
     userId: session.id,
     limit,
-    text,
     day,
+    mode: body.data.mode,
+    question: q,
+    selected: body.data.selected,
+    apiKey: process.env.AI_API_KEY,
+    model: process.env.AI_MODEL,
+    openaiDailyCap: parseOpenAiDailyCap(),
     onExceedFreeQuota: async () => {
       await recordProUsage(session.id, "ai_tutor_pro_quota");
     },
   });
   if (!delivered.ok && delivered.reason === "empty") {
-    return NextResponse.json({ error: "Empty provider response", ...usagePayload(plan, delivered.used, limit, delivered.remaining) }, { status: 502 });
+    return NextResponse.json({ error: "Could not explain this question", ...usagePayload(plan, delivered.used, limit, delivered.remaining) }, { status: 502 });
   }
   if (!delivered.ok) {
     return NextResponse.json(
@@ -101,8 +76,8 @@ export async function POST(req: Request) {
     );
   }
   return NextResponse.json({
-    text,
-    provider,
+    text: delivered.text,
+    provider: delivered.provider,
     ...usagePayload(plan, delivered.used, delivered.limit, delivered.remaining),
   });
 }

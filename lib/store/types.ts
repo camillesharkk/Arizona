@@ -112,6 +112,12 @@ export type Store = {
     day: string,
     limit: number
   ): Promise<{ ok: boolean; used: number; limit: number; remaining: number }>;
+  consumeSiteQuota(
+    scope: string,
+    day: string,
+    limit: number
+  ): Promise<{ ok: boolean; token: string | null; used: number }>;
+  releaseSiteQuota(scope: string, day: string, token: string): Promise<void>;
   seenWebhook(id: string, provider: string): Promise<boolean>;
   listMailUsers(): Promise<UserRow[]>;
   claimEmailSend(userId: string, emailType: EmailType, periodKey: string): Promise<boolean>;

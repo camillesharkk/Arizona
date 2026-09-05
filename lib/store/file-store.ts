@@ -9,6 +9,7 @@ type FileDb = {
   stats: QuestionStat[];
   exams: ExamRow[];
   ai: { userId: string; day: string; n: number }[];
+  siteQuota: { scope: string; day: string; n: number; tokens: string[] }[];
   webhooks: string[];
   emailLogs: { userId: string; emailType: EmailType; periodKey: string; status: string; messageId?: string | null }[];
   entitlements: EntitlementRow[];
@@ -21,6 +22,7 @@ const empty = (): FileDb => ({
   stats: [],
   exams: [],
   ai: [],
+  siteQuota: [],
   webhooks: [],
   emailLogs: [],
   entitlements: [],
@@ -33,7 +35,9 @@ let queue: Promise<void> = Promise.resolve();
 async function load(): Promise<FileDb> {
   try {
     const raw = await readFile(filePath(), "utf8");
-    return { ...empty(), ...JSON.parse(raw) };
+    const parsed = { ...empty(), ...JSON.parse(raw) } as FileDb;
+    if (!Array.isArray(parsed.siteQuota)) parsed.siteQuota = [];
+    return parsed;
   } catch {
     return empty();
   }
@@ -184,6 +188,29 @@ export const fileStore: Store = {
       }
       row.n += 1;
       return { ok: true, used: row.n, limit, remaining: Math.max(0, limit - row.n) };
+    });
+  },
+  consumeSiteQuota(scope, day, limit) {
+    return mutate((db) => {
+      const row = db.siteQuota.find((a) => a.scope === scope && a.day === day);
+      const used = row?.n ?? 0;
+      if (used >= limit) return { ok: false, token: null, used };
+      const token = randomUUID();
+      if (!row) {
+        db.siteQuota.push({ scope, day, n: 1, tokens: [token] });
+        return { ok: true, token, used: 1 };
+      }
+      row.n += 1;
+      row.tokens.push(token);
+      return { ok: true, token, used: row.n };
+    });
+  },
+  releaseSiteQuota(scope, day, token) {
+    return mutate((db) => {
+      const row = db.siteQuota.find((a) => a.scope === scope && a.day === day);
+      if (!row || !row.tokens.includes(token)) return;
+      row.tokens = row.tokens.filter((t) => t !== token);
+      row.n = Math.max(0, row.n - 1);
     });
   },
   seenWebhook(id, provider) {

@@ -17,6 +17,7 @@ type Mem = {
   stats: QuestionStat[];
   exams: ExamRow[];
   ai: { userId: string; day: string; n: number }[];
+  siteQuota: { scope: string; day: string; n: number; tokens: string[] }[];
   webhooks: string[];
   emailLogs: { userId: string; emailType: EmailType; periodKey: string; status: string; messageId?: string | null }[];
   entitlements: EntitlementRow[];
@@ -30,6 +31,7 @@ function empty(): Mem {
     stats: [],
     exams: [],
     ai: [],
+    siteQuota: [],
     webhooks: [],
     emailLogs: [],
     entitlements: [],
@@ -155,6 +157,29 @@ export function createMemoryStore(): Store {
         }
         row.n += 1;
         return { ok: true, used: row.n, limit, remaining: Math.max(0, limit - row.n) };
+      });
+    },
+    async consumeSiteQuota(scope, day, limit) {
+      return withLock(`site:${scope}:${day}`, () => {
+        const row = db.siteQuota.find((a) => a.scope === scope && a.day === day);
+        const used = row?.n ?? 0;
+        if (used >= limit) return { ok: false, token: null, used };
+        const token = randomUUID();
+        if (!row) {
+          db.siteQuota.push({ scope, day, n: 1, tokens: [token] });
+          return { ok: true, token, used: 1 };
+        }
+        row.n += 1;
+        row.tokens.push(token);
+        return { ok: true, token, used: row.n };
+      });
+    },
+    async releaseSiteQuota(scope, day, token) {
+      return withLock(`site:${scope}:${day}`, () => {
+        const row = db.siteQuota.find((a) => a.scope === scope && a.day === day);
+        if (!row || !row.tokens.includes(token)) return;
+        row.tokens = row.tokens.filter((t) => t !== token);
+        row.n = Math.max(0, row.n - 1);
       });
     },
     async seenWebhook(id, provider) {
