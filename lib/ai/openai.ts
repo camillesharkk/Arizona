@@ -59,6 +59,8 @@ export async function requestOpenAiTutor(opts: {
         input: opts.prompt,
         max_output_tokens: AI_MAX_OUTPUT_TOKENS,
         temperature: 0.2,
+        reasoning: { effort: "none" },
+        store: false,
       }),
       signal: ac.signal,
     });

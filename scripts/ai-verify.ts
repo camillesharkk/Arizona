@@ -236,11 +236,21 @@ async function run() {
   if (openaiUrl !== OPENAI_RESPONSES_URL) fail("OpenAI must use Responses API");
   else ok("OpenAI request uses /v1/responses");
 
-  const parsedBody = JSON.parse(openaiBody || "{}") as { model?: string; max_output_tokens?: number; input?: string };
+  const parsedBody = JSON.parse(openaiBody || "{}") as {
+    model?: string;
+    max_output_tokens?: number;
+    input?: string;
+    reasoning?: { effort?: string };
+    store?: boolean;
+  };
   if (parsedBody.model !== DEFAULT_AI_MODEL) fail(`default model should be ${DEFAULT_AI_MODEL}`);
-  else ok(`default model = ${DEFAULT_AI_MODEL}`);
+  else ok("AI_MODEL default remains gpt-5.6-luna");
   if (parsedBody.max_output_tokens !== AI_MAX_OUTPUT_TOKENS) fail("max output is not bounded");
-  else ok("max output is bounded");
+  else ok("max_output_tokens === 500");
+  if (parsedBody.reasoning?.effort !== "none") fail("reasoning.effort should be none");
+  else ok("request body reasoning.effort === \"none\"");
+  if (parsedBody.store !== false) fail("store should be false");
+  else ok("request body store === false");
   const prompt = parsedBody.input || "";
   if (!prompt.includes("Use only the supplied verified context") || !prompt.includes("Do not invent Arizona law")) {
     fail("prompt missing grounding rules");
