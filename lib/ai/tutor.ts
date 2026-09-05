@@ -4,10 +4,11 @@ import { deliverTutorAnswer, utcAiDay } from "./quota.ts";
 import { localTutor } from "./local-tutor.ts";
 import {
   DEFAULT_AI_MODEL,
-  OPENAI_SITE_CAP_SCOPE,
-  requestOpenAiTutor,
-} from "./openai.ts";
-import { buildTutorPrompt, type TutorMode } from "./prompt.ts";
+  PROVIDER_SITE_CAP_SCOPE,
+  requestDeepSeekTutor,
+  type AiProviderName,
+} from "./provider.ts";
+import { buildTutorInput, buildTutorInstructions, type TutorMode } from "./prompt.ts";
 import type { Store } from "../store/types.ts";
 
 export type TutorQuestion = {
@@ -31,9 +32,10 @@ export async function runTutorTurn(opts: {
   question: TutorQuestion;
   selected?: string;
   day?: string;
+  provider?: AiProviderName;
   apiKey?: string;
   model?: string;
-  openaiDailyCap?: number | null;
+  providerDailyCap?: number | null;
   fetch?: typeof fetch;
   timeoutMs?: number;
   onExceedFreeQuota?: (used: number) => Promise<void>;
@@ -42,7 +44,7 @@ export async function runTutorTurn(opts: {
   const q = opts.question;
   const src = getSource(q.source_id);
   const context = retrieveContext(q.topic, q.question_text, q.source_id);
-  const prompt = buildTutorPrompt({
+  const promptInput = {
     mode: opts.mode,
     questionText: q.question_text,
     optionA: q.option_a,
@@ -53,30 +55,34 @@ export async function runTutorTurn(opts: {
     selected: opts.selected,
     context,
     pinCite: src.reference,
-  });
+  };
+  const instructions = buildTutorInstructions(opts.mode, src.reference);
+  const input = buildTutorInput(promptInput);
 
   let text = "";
-  let provider: "openai" | "grounded-fallback" = "grounded-fallback";
+  let provider: "deepseek" | "grounded-fallback" = "grounded-fallback";
   const key = String(opts.apiKey || "").trim();
+  const useDeepSeek = (opts.provider ?? "local") === "deepseek" && Boolean(key);
 
-  if (key) {
+  if (useDeepSeek) {
     let reserved: { ok: boolean; token: string | null } = { ok: true, token: null };
-    if (opts.openaiDailyCap != null) {
-      reserved = await opts.store.consumeSiteQuota(OPENAI_SITE_CAP_SCOPE, day, opts.openaiDailyCap);
+    if (opts.providerDailyCap != null) {
+      reserved = await opts.store.consumeSiteQuota(PROVIDER_SITE_CAP_SCOPE, day, opts.providerDailyCap);
     }
     if (reserved.ok) {
-      const result = await requestOpenAiTutor({
+      const result = await requestDeepSeekTutor({
         apiKey: key,
-        prompt,
+        instructions,
+        input,
         model: opts.model || DEFAULT_AI_MODEL,
         fetch: opts.fetch,
         timeoutMs: opts.timeoutMs,
       });
       if (result.ok) {
         text = result.text;
-        provider = "openai";
+        provider = "deepseek";
       } else if (reserved.token) {
-        await opts.store.releaseSiteQuota(OPENAI_SITE_CAP_SCOPE, day, reserved.token);
+        await opts.store.releaseSiteQuota(PROVIDER_SITE_CAP_SCOPE, day, reserved.token);
       }
     }
   }

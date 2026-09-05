@@ -21,17 +21,21 @@ const MODE_GUIDE: Record<TutorMode, string> = {
   similar: "Generate exactly one similar practice question and a short explanation. Do not generate more than one.",
 };
 
-export function buildTutorPrompt(input: TutorPromptInput) {
+export function buildTutorInstructions(mode: TutorMode, pinCite: string) {
   return [
     "You are an Arizona notary exam-prep tutor.",
     "Use only the supplied verified context.",
     "Do not invent Arizona law.",
     "If the supplied context does not establish the answer, say so.",
-    `Prefer the supplied A.R.S. pin-cite: ${input.pinCite}.`,
+    `Prefer the supplied A.R.S. pin-cite: ${pinCite}.`,
     "Do not imply affiliation with the Arizona Secretary of State.",
     "Educational exam-prep only, not legal advice.",
-    MODE_GUIDE[input.mode],
-    "",
+    MODE_GUIDE[mode],
+  ].join("\n");
+}
+
+export function buildTutorInput(input: TutorPromptInput) {
+  return [
     "Verified context:",
     input.context,
     "",
@@ -44,4 +48,8 @@ export function buildTutorPrompt(input: TutorPromptInput) {
     `Selected answer: ${input.selected || "n/a"}`,
     `Mode: ${input.mode}`,
   ].join("\n");
+}
+
+export function buildTutorPrompt(input: TutorPromptInput) {
+  return `${buildTutorInstructions(input.mode, input.pinCite)}\n\n${buildTutorInput(input)}`;
 }

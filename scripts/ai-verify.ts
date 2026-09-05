@@ -1,7 +1,7 @@
 /**
  * AI Tutor quota / delivery gate.
  * Run: npm run ai:verify
- * In-memory only. No OpenAI. No production DB.
+ * In-memory only. No DeepSeek network. No production DB.
  */
 import { createMemoryStore } from "../lib/store/memory-store.ts";
 import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "../lib/product.ts";
@@ -10,11 +10,12 @@ import { localTutor } from "../lib/ai/local-tutor.ts";
 import {
   AI_MAX_OUTPUT_TOKENS,
   DEFAULT_AI_MODEL,
-  OPENAI_RESPONSES_URL,
+  DEEPSEEK_RESPONSES_URL,
   extractResponsesText,
-  parseOpenAiDailyCap,
-  requestOpenAiTutor,
-} from "../lib/ai/openai.ts";
+  parseAiProvider,
+  parseProviderDailyCap,
+  requestDeepSeekTutor,
+} from "../lib/ai/provider.ts";
 import { buildTutorPrompt } from "../lib/ai/prompt.ts";
 import { runTutorTurn } from "../lib/ai/tutor.ts";
 import { retrieveContext } from "../data/rag.ts";
@@ -166,7 +167,7 @@ async function run() {
     fail("basic question explanation missing from core UI");
   } else ok("basic question explanation never writes ai_usage");
 
-  const SECRET = "sk-verify-openai-secret-do-not-log";
+  const SECRET = "sk-verify-deepseek-secret-do-not-log";
   const capturedLogs: string[] = [];
   const origError = console.error;
   const origLog = console.log;
@@ -190,77 +191,105 @@ async function run() {
     source_id: "ars_41_253",
   };
 
-  const extracted = extractResponsesText({
-    output: [
-      {
-        type: "message",
-        content: [{ type: "output_text", text: "Responses API extracted text." }],
-      },
-    ],
-  });
+  function deepseekMessage(text: string) {
+    return { output: [{ type: "message", content: [{ type: "output_text", text }] }] };
+  }
+
+  const extracted = extractResponsesText(deepseekMessage("Responses API extracted text."));
   if (extracted !== "Responses API extracted text.") fail("correct response extraction");
   else ok("correct response extraction");
 
-  const noKeyStore = createMemoryStore();
+  const mixed = extractResponsesText({
+    output: [
+      { type: "reasoning", content: [{ type: "output_text", text: "hidden chain of thought" }] },
+      { type: "message", content: [{ type: "output_text", text: "User facing answer." }] },
+    ],
+  });
+  if (mixed !== "User facing answer.") fail("reasoning output leaked to user");
+  else ok("reasoning output is NOT returned to user");
+
+  if (parseAiProvider({}) !== "local" || parseAiProvider({ AI_PROVIDER: "local" }) !== "local") {
+    fail("unset/local AI_PROVIDER should be local");
+  } else ok("AI_PROVIDER=local → localTutor");
+
+  let localCalls = 0;
+  const localTurn = await runTutorTurn({
+    store: createMemoryStore(),
+    userId: "local-user",
+    limit: AI_LIMIT_FREE,
+    mode: "explain",
+    question: tutorQ,
+    selected: "A",
+    provider: "local",
+    apiKey: SECRET,
+    fetch: (async () => {
+      localCalls += 1;
+      return jsonResponse(200, deepseekMessage("should not call"));
+    }) as typeof fetch,
+  });
+  if (!localTurn.ok || localTurn.provider !== "grounded-fallback" || localCalls !== 0) fail("AI_PROVIDER=local still called DeepSeek");
+  else ok("AI_PROVIDER=local → localTutor");
+
   const noKey = await runTutorTurn({
-    store: noKeyStore,
+    store: createMemoryStore(),
     userId: "nokey",
     limit: AI_LIMIT_FREE,
     mode: "explain",
     question: tutorQ,
     selected: "A",
+    provider: "deepseek",
   });
-  if (!noKey.ok || noKey.provider !== "grounded-fallback" || noKey.used !== 1) fail("no key → local fallback");
-  else ok("no key → local fallback");
+  if (!noKey.ok || noKey.provider !== "grounded-fallback" || noKey.used !== 1) fail("deepseek + no key should fallback");
+  else ok("AI_PROVIDER=deepseek + no key → grounded fallback");
 
-  let openaiUrl = "";
-  let openaiBody = "";
-  const okStore = createMemoryStore();
+  let providerUrl = "";
+  let providerBody = "";
   const okTurn = await runTutorTurn({
-    store: okStore,
-    userId: "openai-ok",
+    store: createMemoryStore(),
+    userId: "ds-ok",
     limit: AI_LIMIT_FREE,
     mode: "explain",
     question: tutorQ,
     selected: "B",
+    provider: "deepseek",
     apiKey: SECRET,
     fetch: (async (input, init) => {
-      openaiUrl = String(input);
-      openaiBody = String(init?.body || "");
-      return jsonResponse(200, { output_text: "OpenAI grounded answer." });
+      providerUrl = String(input);
+      providerBody = String(init?.body || "");
+      return jsonResponse(200, deepseekMessage("DeepSeek grounded answer."));
     }) as typeof fetch,
   });
-  if (!okTurn.ok || okTurn.provider !== "openai" || okTurn.text !== "OpenAI grounded answer." || okTurn.used !== 1) {
-    fail("Responses API success → provider=openai");
-  } else ok("Responses API success → provider=openai");
-  if (openaiUrl !== OPENAI_RESPONSES_URL) fail("OpenAI must use Responses API");
-  else ok("OpenAI request uses /v1/responses");
+  if (!okTurn.ok || okTurn.provider !== "deepseek" || okTurn.text !== "DeepSeek grounded answer." || okTurn.used !== 1) {
+    fail("valid DeepSeek response → provider=deepseek");
+  } else ok("valid DeepSeek response → provider=deepseek");
+  if (providerUrl !== DEEPSEEK_RESPONSES_URL) fail("endpoint must be https://api.deepseek.com/responses");
+  else ok("endpoint exactly https://api.deepseek.com/responses");
 
-  const parsedBody = JSON.parse(openaiBody || "{}") as {
+  const parsedBody = JSON.parse(providerBody || "{}") as {
     model?: string;
     max_output_tokens?: number;
+    instructions?: string;
     input?: string;
+    stream?: boolean;
     reasoning?: { effort?: string };
-    store?: boolean;
   };
   if (parsedBody.model !== DEFAULT_AI_MODEL) fail(`default model should be ${DEFAULT_AI_MODEL}`);
-  else ok("AI_MODEL default remains gpt-5.6-luna");
+  else ok("model default: deepseek-v4-flash");
   if (parsedBody.max_output_tokens !== AI_MAX_OUTPUT_TOKENS) fail("max output is not bounded");
-  else ok("max_output_tokens === 500");
+  else ok("max_output_tokens: 500");
   if (parsedBody.reasoning?.effort !== "none") fail("reasoning.effort should be none");
-  else ok("request body reasoning.effort === \"none\"");
-  if (parsedBody.store !== false) fail("store should be false");
-  else ok("request body store === false");
-  const prompt = parsedBody.input || "";
-  if (!prompt.includes("Use only the supplied verified context") || !prompt.includes("Do not invent Arizona law")) {
-    fail("prompt missing grounding rules");
+  else ok("reasoning.effort: none");
+  if (parsedBody.stream !== false) fail("stream should be false");
+  const prompt = `${parsedBody.instructions || ""}\n${parsedBody.input || ""}`;
+  if (!prompt.includes("Use only the supplied verified context") || !prompt.includes("Do not invent Arizona law") || !prompt.includes(tutorQ.question_text)) {
+    fail("prompt missing grounding rules or question");
   } else ok("prompt contains relevant verified context");
   if (prompt.includes(sources.ars_41_317.title) || prompt.includes(sources.ars_41_317.url) || prompt.includes(sources.ars_1_244.url)) {
     fail("prompt contains unrelated full source registry");
-  } else ok("prompt does not contain unrelated full source registry");
-  if (prompt.includes("openai-ok") || prompt.includes("@") || prompt.includes(SECRET) || prompt.includes("password")) {
+  } else ok("prompt does not contain full unrelated source registry");
+  if (prompt.includes("ds-ok") || prompt.includes("@") || prompt.includes(SECRET) || prompt.includes("password")) {
     fail("prompt contains user PII or secret");
-  } else ok("prompt does not contain user PII");
+  } else ok("no user PII");
 
   const ctx = retrieveContext(tutorQ.topic, tutorQ.question_text, tutorQ.source_id);
   const built = buildTutorPrompt({
@@ -288,6 +317,7 @@ async function run() {
       mode: "explain",
       question: tutorQ,
       selected: "A",
+      provider: "deepseek",
       apiKey: SECRET,
       timeoutMs: 80,
       fetch: fetchImpl,
@@ -297,11 +327,11 @@ async function run() {
     return r;
   }
 
-  await fallbackCase("provider network failure", (async () => {
+  await fallbackCase("network error", (async () => {
     throw new Error("ECONNRESET");
   }) as typeof fetch);
-  await fallbackCase("provider 429", (async () => jsonResponse(429, { error: "rate" })) as typeof fetch);
-  await fallbackCase("provider 500", (async () => jsonResponse(500, { error: "boom" })) as typeof fetch);
+  await fallbackCase("DeepSeek 429", (async () => jsonResponse(429, { error: "rate" })) as typeof fetch);
+  await fallbackCase("DeepSeek 500", (async () => jsonResponse(500, { error: "boom" })) as typeof fetch);
   await fallbackCase("timeout", (async (_input, init) => {
     await new Promise<never>((_resolve, reject) => {
       init?.signal?.addEventListener("abort", () => {
@@ -322,6 +352,7 @@ async function run() {
     limit: AI_LIMIT_FREE,
     mode: "explain",
     question: tutorQ,
+    provider: "deepseek",
     apiKey: SECRET,
     fetch: (async () => {
       throw new Error("network");
@@ -335,22 +366,27 @@ async function run() {
     fail("fallback success should consume exactly 1");
   } else ok("fallback success consumes exactly 1 user Tutor usage");
 
-  if (parseOpenAiDailyCap({}) !== null || parseOpenAiDailyCap({ AI_OPENAI_DAILY_CAP: "" }) !== null) {
+  if (parseProviderDailyCap({}) !== null || parseProviderDailyCap({ AI_PROVIDER_DAILY_CAP: "" }) !== null) {
     fail("unset provider cap should stay disabled");
-  } else ok("unset AI_OPENAI_DAILY_CAP keeps existing local behavior");
-  if (parseOpenAiDailyCap({ AI_OPENAI_DAILY_CAP: "1000" }) !== 1000) fail("AI_OPENAI_DAILY_CAP=1000");
-  else ok("configured AI_OPENAI_DAILY_CAP is honored");
+  } else ok("unset AI_PROVIDER_DAILY_CAP keeps existing local behavior");
+  if (parseProviderDailyCap({ AI_PROVIDER_DAILY_CAP: "100" }) !== 100) fail("AI_PROVIDER_DAILY_CAP=100");
+  else ok("configured AI_PROVIDER_DAILY_CAP is honored");
 
   const capStore = createMemoryStore();
+  let capCalls = 0;
   const cap1 = await runTutorTurn({
     store: capStore,
     userId: "cap-a",
     limit: AI_LIMIT_FREE,
     mode: "explain",
     question: tutorQ,
+    provider: "deepseek",
     apiKey: SECRET,
-    openaiDailyCap: 1,
-    fetch: (async () => jsonResponse(200, { output_text: "first openai" })) as typeof fetch,
+    providerDailyCap: 1,
+    fetch: (async () => {
+      capCalls += 1;
+      return jsonResponse(200, deepseekMessage("first deepseek"));
+    }) as typeof fetch,
   });
   const cap2 = await runTutorTurn({
     store: capStore,
@@ -358,13 +394,17 @@ async function run() {
     limit: AI_LIMIT_FREE,
     mode: "explain",
     question: tutorQ,
+    provider: "deepseek",
     apiKey: SECRET,
-    openaiDailyCap: 1,
-    fetch: (async () => jsonResponse(200, { output_text: "should not run" })) as typeof fetch,
+    providerDailyCap: 1,
+    fetch: (async () => {
+      capCalls += 1;
+      return jsonResponse(200, deepseekMessage("should not run"));
+    }) as typeof fetch,
   });
-  if (!cap1.ok || cap1.provider !== "openai" || !cap2.ok || cap2.provider !== "grounded-fallback") {
-    fail("site-wide OpenAI cap did not fall back");
-  } else ok("site-wide OpenAI cap falls back to localTutor after limit");
+  if (!cap1.ok || cap1.provider !== "deepseek" || !cap2.ok || cap2.provider !== "grounded-fallback" || capCalls !== 1) {
+    fail("provider cap reached still called DeepSeek");
+  } else ok("provider cap reached → no external DeepSeek call → localTutor");
 
   const snapshot = JSON.stringify({ okTurn, failedThenOk, noKey, cap1, cap2, capturedLogs });
   if (snapshot.includes(SECRET) || capturedLogs.some((l) => l.includes(SECRET))) fail("secret appeared in response/log snapshot");
@@ -375,13 +415,14 @@ async function run() {
   if (AI_LIMIT_PRO !== 300) fail("Pro limit remains 300");
   else ok("Pro limit remains 300");
 
-  const direct = await requestOpenAiTutor({
+  const direct = await requestDeepSeekTutor({
     apiKey: SECRET,
-    prompt: "x",
-    fetch: (async () => jsonResponse(200, { output_text: "  " })) as typeof fetch,
+    instructions: "x",
+    input: "y",
+    fetch: (async () => jsonResponse(200, { output: [] })) as typeof fetch,
   });
-  if (direct.ok) fail("empty OpenAI text should be invalid/empty");
-  else ok("empty model response is not treated as success");
+  if (direct.ok) fail("empty DeepSeek text should be invalid/empty");
+  else ok("empty response → fallback");
   } finally {
     console.error = origError;
     console.log = origLog;

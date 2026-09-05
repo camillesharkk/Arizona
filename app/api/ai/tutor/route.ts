@@ -7,7 +7,7 @@ import { getStore } from "@/lib/store";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { recordProUsage } from "@/lib/commerce/usage";
 import { readAiUsage, utcAiDay } from "@/lib/ai/quota";
-import { parseOpenAiDailyCap } from "@/lib/ai/openai";
+import { parseAiProvider, parseProviderDailyCap } from "@/lib/ai/provider";
 import { runTutorTurn } from "@/lib/ai/tutor";
 
 function usagePayload(plan: "free" | "pro", used: number, limit: number, remaining: number) {
@@ -59,9 +59,10 @@ export async function POST(req: Request) {
     mode: body.data.mode,
     question: q,
     selected: body.data.selected,
-    apiKey: process.env.AI_API_KEY,
+    provider: parseAiProvider(),
+    apiKey: process.env.DEEPSEEK_API_KEY,
     model: process.env.AI_MODEL,
-    openaiDailyCap: parseOpenAiDailyCap(),
+    providerDailyCap: parseProviderDailyCap(),
     onExceedFreeQuota: async () => {
       await recordProUsage(session.id, "ai_tutor_pro_quota");
     },
