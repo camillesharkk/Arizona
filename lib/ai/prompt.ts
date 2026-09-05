@@ -30,6 +30,11 @@ export function buildTutorInstructions(mode: TutorMode, pinCite: string) {
     `Prefer the supplied A.R.S. pin-cite: ${pinCite}.`,
     "Do not imply affiliation with the Arizona Secretary of State.",
     "Educational exam-prep only, not legal advice.",
+    "Return plain text only.",
+    "Do not use Markdown.",
+    "Do not use *, **, #, backticks, markdown headings or markdown emphasis.",
+    "Use short paragraphs and simple numbered or hyphen lists only when useful.",
+    "Preserve A.R.S. citations exactly.",
     MODE_GUIDE[mode],
   ].join("\n");
 }

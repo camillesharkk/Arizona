@@ -2,6 +2,7 @@ import { getSource } from "../../data/sources.ts";
 import { retrieveContext } from "../../data/rag.ts";
 import { deliverTutorAnswer, utcAiDay } from "./quota.ts";
 import { localTutor } from "./local-tutor.ts";
+import { normalizeTutorText } from "./plain-text.ts";
 import {
   DEFAULT_AI_MODEL,
   PROVIDER_SITE_CAP_SCOPE,
@@ -91,6 +92,7 @@ export async function runTutorTurn(opts: {
     text = localTutor(opts.mode, q, opts.selected, context, src.reference);
     provider = "grounded-fallback";
   }
+  text = normalizeTutorText(text);
 
   const delivered = await deliverTutorAnswer({
     store: opts.store,

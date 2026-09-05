@@ -5,9 +5,9 @@ import Link from "next/link";
 import type { Question } from "@/lib/types";
 import { examConfig } from "@/data/exam-config";
 import {
+  buildQuickExam,
   pickExamSet,
   pickFullExam,
-  pickQuickExam,
   presentExamQuestions,
   scorePercent,
   topicLabel,
@@ -42,19 +42,19 @@ export function ExamRunner({
       toOriginalRef.current = maps;
       return out;
     };
+    if (mode === "quick") {
+      const picked = buildQuickExam({ isPro, seed: sessionSeed, stale: preset });
+      if (picked.length !== 10) {
+        console.error("[exam] Quick exam requires 10 questions; pool returned", picked.length);
+        return [];
+      }
+      return present(picked);
+    }
     if (preset?.length) return present(preset);
     if (mode === "full") {
       const picked = pickFullExam(sessionSeed);
       if (picked.length !== examConfig.questionCount) {
         console.error("[exam] Full exam requires", examConfig.questionCount, "questions; pool returned", picked.length);
-        return [];
-      }
-      return present(picked);
-    }
-    if (mode === "quick") {
-      const picked = pickQuickExam(sessionSeed, false);
-      if (picked.length !== 10) {
-        console.error("[exam] Quick exam requires 10 questions; pool returned", picked.length);
         return [];
       }
       return present(picked);

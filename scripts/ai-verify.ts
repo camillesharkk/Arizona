@@ -290,6 +290,73 @@ async function run() {
   if (prompt.includes("ds-ok") || prompt.includes("@") || prompt.includes(SECRET) || prompt.includes("password")) {
     fail("prompt contains user PII or secret");
   } else ok("no user PII");
+  if (!prompt.includes("Return plain text only") || !prompt.includes("Do not use Markdown")) {
+    fail("prompt missing plain-text instructions");
+  } else ok("prompt requires plain text, not Markdown");
+
+  const md = [
+    "**Why C is wrong:**",
+    "",
+    "Arizona law does **not** *authorizes* a blanket grant.",
+    "",
+    "### Key takeaway",
+    "",
+    "Under A.R.S. § 41-269(F), keep this citation.",
+    "",
+    "Use `code` only if needed.",
+  ].join("\n");
+  const mdTurn = await runTutorTurn({
+    store: createMemoryStore(),
+    userId: "md-ds",
+    limit: AI_LIMIT_FREE,
+    mode: "explain",
+    question: tutorQ,
+    provider: "deepseek",
+    apiKey: SECRET,
+    fetch: (async () => jsonResponse(200, deepseekMessage(md))) as typeof fetch,
+  });
+  if (
+    !mdTurn.ok ||
+    mdTurn.text.includes("**") ||
+    mdTurn.text.includes("*") ||
+    mdTurn.text.includes("###") ||
+    mdTurn.text.includes("`")
+  ) {
+    fail("DeepSeek markdown leaked to client");
+  } else ok("DeepSeek markdown-like response → client text has no Markdown emphasis");
+  if (!mdTurn.ok || !mdTurn.text.includes("A.R.S. § 41-269(F)")) fail("A.R.S. citation was stripped");
+  else ok("A.R.S. § citation is preserved");
+  if (!mdTurn.ok || !mdTurn.text.includes("\n")) fail("paragraph line breaks were flattened");
+  else ok("paragraph line breaks are preserved");
+
+  const similarTurn = await runTutorTurn({
+    store: createMemoryStore(),
+    userId: "md-sim",
+    limit: AI_LIMIT_FREE,
+    mode: "similar",
+    question: tutorQ,
+    provider: "deepseek",
+    apiKey: SECRET,
+    fetch: (async () => jsonResponse(200, deepseekMessage("**Similar question:**\n\nA signer appears.\n\n*Explanation*"))) as typeof fetch,
+  });
+  if (!similarTurn.ok || /[*#`]/.test(similarTurn.text)) fail("Similar question still has Markdown markers");
+  else ok("Similar question contains no Markdown markers");
+
+  const fbQ = {
+    ...tutorQ,
+    explanation: "**Why B is correct:**\n\nUnder A.R.S. § 41-253, personal appearance is required.\n\n*Note*",
+  };
+  const fbTurn = await runTutorTurn({
+    store: createMemoryStore(),
+    userId: "md-fb",
+    limit: AI_LIMIT_FREE,
+    mode: "explain",
+    question: fbQ,
+    provider: "local",
+  });
+  if (!fbTurn.ok || /[*#`]/.test(fbTurn.text) || !fbTurn.text.includes("A.R.S. § 41-253") || !fbTurn.text.includes("\n")) {
+    fail("grounded fallback skipped normalization");
+  } else ok("grounded fallback also goes through normalization");
 
   const ctx = retrieveContext(tutorQ.topic, tutorQ.question_text, tutorQ.source_id);
   const built = buildTutorPrompt({

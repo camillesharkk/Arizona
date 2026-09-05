@@ -15,6 +15,7 @@ import {
   shuffle,
   type Letter,
 } from "../lib/answer-sequence.ts";
+import { buildQuickExam, pickQuickExam } from "../lib/quiz.ts";
 import type { Question } from "../lib/types.ts";
 
 const LETTERS: Letter[] = ["A", "B", "C", "D"];
@@ -195,6 +196,36 @@ if (first.targets.join("") === other.targets.join("")) {
 } else {
   ok("different sessions produce different answer sequences");
 }
+
+const freeQuick = buildQuickExam({ isPro: false, seed: 404 });
+if (freeQuick.length !== 10) fail(`Free Quick10 length ${freeQuick.length}`);
+else if (new Set(freeQuick.map((q) => q.question_id)).size !== 10) fail("Free Quick10 is not unique");
+else if (freeQuick.some((q) => !isActiveQuestion(q) || !q.is_free)) fail("Free Quick10 includes inactive or Pro-only item");
+else ok("Free Quick10 always eligible");
+if (freeQuick.some((q) => !q.is_free)) fail("Free Quick10 leaked a Pro-only item");
+else ok("Free Quick10 has no Pro-only item");
+
+const proItem = publishedQuestions().find((q) => !q.is_free && isActiveQuestion(q));
+const inactive = allQuestions.find((q) => q.question_id === "az-081");
+if (!proItem || !inactive) fail("need an active Pro item and az-081 for stale session test");
+else {
+  const stale = [proItem, inactive, ...freeQuick.slice(0, 3)];
+  const sanitized = buildQuickExam({ isPro: false, seed: 505, stale });
+  const ids = sanitized.map((q) => q.question_id);
+  if (sanitized.length !== 10) fail(`stale Quick10 rebuilt to ${sanitized.length}`);
+  else if (new Set(ids).size !== 10) fail("stale Quick10 rebuild is not unique");
+  else if (ids.includes(proItem.question_id) || ids.includes("az-081") || sanitized.some((q) => !q.is_free || !isActiveQuestion(q))) {
+    fail("stale Quick10 still contains Pro/inactive content");
+  } else if (sanitized.some((q) => q.question_text === proItem.question_text)) {
+    fail("stale Quick10 leaked Pro question text");
+  } else ok("stale session with Pro item gets sanitized");
+  ok("no Pro content leak");
+  ok("exactly 10 unique eligible questions");
+}
+
+const proQuick = pickQuickExam(606, false);
+if (proQuick.length !== 10) fail("Pro Quick10 should still pick 10");
+else ok("Pro Quick10 keeps existing full-pool behavior");
 
 const reportSeeds = [101, 202, 303];
 lines.push("");

@@ -1,9 +1,9 @@
-import type { Question, TopicId } from "@/lib/types";
-import { topics } from "@/data/exam-config";
-import { examConfig } from "@/data/exam-config";
-import { publishedQuestions } from "@/data/questions";
-import { isActiveQuestion } from "@/lib/question-status";
-import { shuffle } from "@/lib/answer-sequence";
+import type { Question, TopicId } from "./types.ts";
+import { topics } from "../data/exam-config.ts";
+import { examConfig } from "../data/exam-config.ts";
+import { publishedQuestions } from "../data/questions.ts";
+import { isActiveQuestion } from "./question-status.ts";
+import { shuffle } from "./answer-sequence.ts";
 
 export { isActiveQuestion };
 export {
@@ -17,7 +17,7 @@ export {
   shuffle,
   shuffleQuestionOptions,
   type Letter,
-} from "@/lib/answer-sequence";
+} from "./answer-sequence.ts";
 
 export function eligibleExamPool(opts?: { freeOnly?: boolean; topic?: TopicId }): Question[] {
   let pool = publishedQuestions().filter((q) => isActiveQuestion(q));
@@ -42,6 +42,41 @@ export function pickFullExam(seed?: number): Question[] {
 
 export function pickQuickExam(seed?: number, freeOnly = false): Question[] {
   return pickExamSet(10, { requireExact: true, freeOnly, seed });
+}
+
+export function isQuickEligible(q: Question, opts?: { freeOnly?: boolean; asOf?: Date }) {
+  if (!isActiveQuestion(q, opts?.asOf)) return false;
+  if (opts?.freeOnly && !q.is_free) return false;
+  return true;
+}
+
+export function sanitizeQuickExam(
+  list: Question[],
+  opts?: { freeOnly?: boolean; seed?: number; count?: number; asOf?: Date }
+): Question[] {
+  const count = opts?.count ?? 10;
+  const kept: Question[] = [];
+  const seen = new Set<string>();
+  for (const q of list) {
+    if (!isQuickEligible(q, opts) || seen.has(q.question_id)) continue;
+    seen.add(q.question_id);
+    kept.push(q);
+    if (kept.length === count) return kept;
+  }
+  const fill = eligibleExamPool({ freeOnly: opts?.freeOnly }).filter((q) => !seen.has(q.question_id));
+  for (const q of shuffle(fill, opts?.seed)) {
+    if (!isQuickEligible(q, opts)) continue;
+    seen.add(q.question_id);
+    kept.push(q);
+    if (kept.length === count) break;
+  }
+  return kept.length === count ? kept : [];
+}
+
+export function buildQuickExam(opts: { isPro?: boolean; seed?: number; stale?: Question[]; asOf?: Date }) {
+  const freeOnly = !opts.isPro;
+  const raw = opts.stale?.length ? opts.stale : pickQuickExam(opts.seed, freeOnly);
+  return sanitizeQuickExam(raw, { freeOnly, seed: opts.seed, asOf: opts.asOf });
 }
 
 export function scorePercent(correct: number, total: number): number {
