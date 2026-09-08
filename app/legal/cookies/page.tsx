@@ -6,7 +6,7 @@ export const metadata = pageMeta({ title: "Cookie Policy", description: "Cookies
 
 export default function Page() {
   return (
-    <LegalCopy title="Cookie Policy">
+    <LegalCopy title="Cookie Policy" path={paths.cookies}>
       <p>We use an httpOnly session cookie to keep you signed in. Essential cookies are required for login. We do not run ads during a timed exam attempt.</p>
     </LegalCopy>
   );

@@ -64,7 +64,7 @@ export async function refreshPlanCache(userId: string) {
 
 export async function grantArizonaPro60d(opts: {
   userId: string;
-  provider: "mock" | "lemon_squeezy";
+  provider: "mock" | "lemon_squeezy" | "paddle";
   providerOrderId: string;
   providerCustomerId?: string | null;
 }): Promise<{ ok: true; duplicate: boolean; entitlement: EntitlementRow }> {

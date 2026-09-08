@@ -7,7 +7,7 @@ import { paths } from "@/lib/paths";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
 import { ProAccessNote } from "@/components/ProAccessNote";
 
-type Me = HeaderUser | null;
+type AuthStatus = "loading" | "signed-in" | "signed-out";
 
 function active(pathname: string, href: string) {
   if (href === paths.home || href === paths.hub) return pathname === paths.home || pathname === paths.hub || pathname === "/arizona";
@@ -19,13 +19,30 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [studyOpen, setStudyOpen] = useState(true);
   const [accountOpen, setAccountOpen] = useState(true);
-  const [me, setMe] = useState<Me>(null);
+  const [me, setMe] = useState<HeaderUser | null>(null);
+  const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
 
   useEffect(() => {
+    let cancelled = false;
     fetch("/api/auth/me/")
       .then((r) => r.json())
-      .then((d) => setMe(d.user))
-      .catch(() => setMe(null));
+      .then((d) => {
+        if (cancelled) return;
+        if (d.user) {
+          setMe(d.user);
+          setAuthStatus("signed-in");
+        } else {
+          setMe(null);
+          setAuthStatus("signed-out");
+        }
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setAuthStatus((prev) => (prev === "signed-in" ? prev : "signed-out"));
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [pathname]);
 
   useEffect(() => setOpen(false), [pathname]);
@@ -39,6 +56,7 @@ export function SiteHeader() {
   async function logout() {
     await fetch("/api/auth/logout/", { method: "POST" });
     setMe(null);
+    setAuthStatus("signed-out");
     setOpen(false);
     window.location.href = paths.home;
   }
@@ -92,15 +110,16 @@ export function SiteHeader() {
           </Link>
         </nav>
         <div className="header-right">
-          {!me && (
+          {authStatus === "signed-out" && (
             <Link href={paths.login} className={`header-signin ${active(pathname, paths.login) ? "active" : ""}`}>
               Sign in
             </Link>
           )}
+          {authStatus === "loading" && <span className="header-auth-placeholder" aria-hidden="true" />}
           <Link className="btn btn-primary header-cta" href={paths.practice}>
             Start Free Test
           </Link>
-          {me && <AccountMenu me={me} onLogout={logout} />}
+          {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} />}
           <Link className="btn btn-primary bar" href={paths.practice}>
             Practice Test
           </Link>
@@ -108,7 +127,7 @@ export function SiteHeader() {
       </div>
       {open && <div className="nav-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />}
       <nav id="mobile-nav" className={open ? "nav-drawer open" : "nav-drawer"} aria-label="Mobile">
-        {me ? (
+        {authStatus === "signed-in" && me ? (
           <div className="drawer-account">
             <p className="drawer-account-name">{me.name?.trim() || me.email}</p>
             {me.name?.trim() ? <p className="drawer-account-email">{me.email}</p> : null}
@@ -119,6 +138,8 @@ export function SiteHeader() {
               </p>
             ) : null}
           </div>
+        ) : authStatus === "loading" ? (
+          <p className="kicker">Loading account…</p>
         ) : (
           <p className="kicker">Guest</p>
         )}
@@ -141,7 +162,7 @@ export function SiteHeader() {
             </Link>
           ))}
         <Link href={paths.courses}>Arizona Notary Courses</Link>
-        {me ? (
+        {authStatus === "signed-in" && me ? (
           <>
             <Link href={paths.dashboard}>Dashboard</Link>
             <Link href={paths.mistakes}>Wrong Answers</Link>
@@ -156,12 +177,12 @@ export function SiteHeader() {
               Delete Account
             </Link>
           </>
-        ) : (
+        ) : authStatus === "signed-out" ? (
           <>
             <Link href={paths.login}>Sign in</Link>
             <Link href={paths.register}>Create Free Account</Link>
           </>
-        )}
+        ) : null}
         <Link className="btn btn-primary btn-wide" href={paths.practice}>
           Practice Test
         </Link>
@@ -192,6 +213,7 @@ export function SiteFooter() {
           <strong>Company</strong>
           <p><Link href={paths.privacy}>Privacy</Link></p>
           <p><Link href={paths.terms}>Terms</Link></p>
+          <p><Link href={paths.refund}>Refund Policy</Link></p>
           <p><Link href={paths.affiliate}>Affiliate Disclosure</Link></p>
           <p><Link href={paths.disclaimer}>Disclaimer</Link></p>
           <p><Link href={paths.contact}>Contact</Link></p>

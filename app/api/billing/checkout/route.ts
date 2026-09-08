@@ -8,6 +8,9 @@ import { getCommerceRepo } from "@/lib/commerce";
 import { assertQuoteStillValid, abandonQuote, confirmPaidOrder } from "@/lib/commerce/service";
 import { ensureLemonCheckout } from "@/lib/billing/lemon-checkout";
 import { getLemonConfig, isLemonProvider } from "@/lib/billing/lemonsqueezy";
+import { ensurePaddleCheckout } from "@/lib/billing/paddle-checkout";
+import { CURRENCY } from "@/lib/pricing/catalog";
+import { getPaddleCheckoutConfig, isPaddleProvider, isPositiveCents } from "@/lib/billing/paddle";
 
 const postSchema = z.object({
   quoteId: z.string().uuid(),
@@ -26,6 +29,9 @@ export async function POST(req: Request) {
     await abandonQuote(repo, quote.id);
     return NextResponse.json({ error: valid.error }, { status: valid.error === "PRICE_CHANGED" ? 409 : 400 });
   }
+
+  if (quote.currency !== CURRENCY) return NextResponse.json({ error: "currency_mismatch" }, { status: 400 });
+  if (!isPositiveCents(quote.finalPriceCents)) return NextResponse.json({ error: "price_invalid" }, { status: 400 });
 
   if (isLemonProvider()) {
     const cfg = getLemonConfig();
@@ -49,6 +55,25 @@ export async function POST(req: Request) {
     });
   }
 
+  if (isPaddleProvider()) {
+    const cfg = getPaddleCheckoutConfig();
+    if (!cfg.ok) {
+      return NextResponse.json({ error: cfg.error, missing: cfg.missing }, { status: 503 });
+    }
+    const paddle = await ensurePaddleCheckout({
+      repo,
+      quote,
+      config: cfg.config,
+    });
+    if (!paddle.ok) return NextResponse.json({ error: paddle.error }, { status: paddle.status });
+    return NextResponse.json({
+      transactionId: paddle.transactionId,
+      quoteId: paddle.quoteId,
+      finalPriceCents: paddle.finalPriceCents,
+      provider: "paddle",
+    });
+  }
+
   const checkout = checkoutUrl(session);
   if (checkout.includes("checkout=mock")) {
     return NextResponse.json({
@@ -63,7 +88,7 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   const url = new URL(req.url);
   if (url.searchParams.get("mock") !== "success") return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (process.env.NODE_ENV === "production" || isLemonProvider()) {
+  if (process.env.NODE_ENV === "production" || isLemonProvider() || isPaddleProvider()) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
   const session = await getSession();

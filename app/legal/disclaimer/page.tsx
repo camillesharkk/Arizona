@@ -7,7 +7,7 @@ export const metadata = pageMeta({ title: "Disclaimer", description: "Independen
 
 export default function Page() {
   return (
-    <LegalCopy title="Disclaimer">
+    <LegalCopy title="Disclaimer" path={paths.disclaimer}>
       <p>{site.independent}</p>
       <p>Nothing on this site is legal advice. Bond amounts, fees, passing scores, and procedures can change. Verify on the Arizona Secretary of State notary pages before you act.</p>
     </LegalCopy>

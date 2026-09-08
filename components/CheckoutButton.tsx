@@ -109,6 +109,27 @@ export function CheckoutButton() {
     }
   }, [remainingMs, preview, applyCredit, load]);
 
+  async function openPaddleOverlay(transactionId: string) {
+    const {
+      PADDLE_OVERLAY_SETTINGS,
+      loadBrowserPaddle,
+      paddleBrowserConfig,
+      paddleSuccessUrl,
+    } = await import("@/lib/billing/paddle-browser");
+    const cfg = paddleBrowserConfig();
+    if (!cfg.ok) return { ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" };
+    const paddle = await loadBrowserPaddle();
+    if (!paddle) return { ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" };
+    paddle.Checkout.open({
+      transactionId,
+      settings: {
+        ...PADDLE_OVERLAY_SETTINGS,
+        successUrl: paddleSuccessUrl(window.location.origin),
+      },
+    });
+    return { ok: true as const };
+  }
+
   async function go() {
     if (!policy) {
       setErr("Please confirm the refund and promotion terms before checkout.");
@@ -152,6 +173,17 @@ export function CheckoutButton() {
         setBusy(false);
         return;
       }
+      if (retry.ok && data.transactionId) {
+        trackEvent("checkout_start", checkoutStartParams(quote.breakdown));
+        const overlay = await openPaddleOverlay(String(data.transactionId));
+        if (!overlay.ok) {
+          setErr("Checkout is currently unavailable");
+          setBusy(false);
+          return;
+        }
+        setBusy(false);
+        return;
+      }
       if (retry.ok && data.url) {
         trackEvent("checkout_start", checkoutStartParams(quote.breakdown));
         window.location.href = data.url;
@@ -162,6 +194,15 @@ export function CheckoutButton() {
     if (data.error === "PRICE_CHANGED") {
       setPriceChanged(true);
       await load(applyCredit);
+      return;
+    }
+    if (data.transactionId) {
+      trackEvent("checkout_start", checkoutStartParams(quote.breakdown));
+      const overlay = await openPaddleOverlay(String(data.transactionId));
+      if (!overlay.ok) {
+        setErr("Checkout is currently unavailable");
+        return;
+      }
       return;
     }
     if (!data.url) {

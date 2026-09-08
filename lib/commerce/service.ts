@@ -25,7 +25,7 @@ import type {
 
 export type GrantProFn = (opts: {
   userId: string;
-  provider: "mock" | "lemon_squeezy";
+  provider: "mock" | "lemon_squeezy" | "paddle";
   providerOrderId: string;
 }) => Promise<{ entitlement: { id: string } }>;
 
@@ -289,7 +289,7 @@ export async function confirmPaidOrder(
   opts: {
     userId: string;
     quoteId: string;
-    provider: "mock" | "lemon_squeezy";
+    provider: "mock" | "lemon_squeezy" | "paddle";
     providerOrderId: string;
     grantPro: GrantProFn;
     now?: Date;

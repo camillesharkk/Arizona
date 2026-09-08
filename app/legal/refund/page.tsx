@@ -10,7 +10,7 @@ export const metadata = pageMeta({
 
 export default function Page() {
   return (
-    <LegalCopy title="Refund Policy">
+    <LegalCopy title="Refund Policy" path={paths.refund}>
       <p>
         Our standard refund policy for Arizona Notary Exam Prep Pro: you may request a full refund within 72 hours
         (3 days) of a successful purchase only if you have not used any Pro-only feature.
@@ -33,11 +33,11 @@ export default function Page() {
       </p>
       <p>
         This standard policy does not prohibit refunds, chargebacks, or other remedies required by applicable law,
-        the payment provider (Merchant of Record), duplicate-charge corrections, fraud reviews, or major technical
+        Paddle (Merchant of Record), duplicate-charge corrections, fraud reviews, or major technical
         failures. Those cases are handled separately and may not restore Referral Credits.
       </p>
       <p>
-        Digital Pro purchases are processed by the configured Merchant of Record. Their tax invoice and provider rules
+        Digital Pro purchases are processed by Paddle as Merchant of Record. Their tax invoice and provider rules
         still apply. A completed refund returns the related Pro entitlement to refunded status.
       </p>
     </LegalCopy>

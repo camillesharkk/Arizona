@@ -18,6 +18,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     paths.pricing,
     paths.privacy,
     paths.terms,
+    paths.refund,
+    paths.disclaimer,
+    paths.contact,
   ];
   return urls.map((path) => ({ url: `${siteUrl()}${path}`, changeFrequency: "weekly" as const, priority: 0.8 }));
 }

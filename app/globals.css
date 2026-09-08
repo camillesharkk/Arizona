@@ -52,6 +52,9 @@ a:hover { text-decoration: underline; }
   color: var(--muted); font-size: 0.95rem; font-weight: 600; text-decoration: none;
   white-space: nowrap;
 }
+.header-auth-placeholder {
+  display: inline-block; width: 3.6rem; height: 1.2rem; flex-shrink: 0;
+}
 .header-signin:hover, .header-signin.active { color: var(--ink); text-decoration: none; }
 .header-cta { white-space: nowrap; }
 .menu-btn {
@@ -468,7 +471,7 @@ details.explain summary { cursor: pointer; font-weight: 700; }
 @media (max-width: 900px) {
   .grid-4, .grid-3 { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
-  .nav-desktop, .header-cta, .header-signin, .account-menu { display: none; }
+  .nav-desktop, .header-cta, .header-signin, .header-auth-placeholder, .account-menu { display: none; }
   .menu-btn { display: inline-flex; }
   .hero-secondary-cta { display: none; }
 }

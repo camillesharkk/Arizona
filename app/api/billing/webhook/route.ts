@@ -2,8 +2,11 @@ import { NextResponse } from "next/server";
 import { applyBillingEvent, parsePaddleLike, verifyMorSignature } from "@/lib/billing";
 import { handleLemonWebhook } from "@/lib/billing/lemon-webhook";
 import { getLemonConfig, isLemonProvider, verifyLemonWebhookSignature } from "@/lib/billing/lemonsqueezy";
+import { PADDLE_PROVIDER, createPaddleSdk, getPaddleWebhookConfig, isPaddleProvider, paddleLog } from "@/lib/billing/paddle";
+import { handlePaddleWebhook } from "@/lib/billing/paddle-webhook";
 import { getCommerceRepo } from "@/lib/commerce";
 import { grantArizonaPro60d, refundArizonaOrder } from "@/lib/entitlements";
+import { getStore } from "@/lib/store";
 
 export async function POST(req: Request) {
   const raw = await req.text();
@@ -42,6 +45,48 @@ export async function POST(req: Request) {
         await refundArizonaOrder(opts.userId, opts.provider, opts.providerOrderId);
       },
     });
+    return NextResponse.json(result.body, { status: result.status });
+  }
+
+  if (isPaddleProvider()) {
+    const cfg = getPaddleWebhookConfig();
+    if (!cfg.ok) {
+      return NextResponse.json({ error: cfg.error }, { status: 503 });
+    }
+    const signature = req.headers.get("paddle-signature");
+    if (!signature) {
+      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+    }
+    let event: { eventType?: string; notificationId?: string | null; data?: { id?: string } };
+    try {
+      const paddle = createPaddleSdk(cfg.config);
+      event = await paddle.webhooks.unmarshal(raw, cfg.config.webhookSecret, signature);
+    } catch {
+      paddleLog("invalid_signature");
+      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+    }
+    const repo = await getCommerceRepo();
+    const result = await handlePaddleWebhook({
+      repo,
+      config: cfg.config,
+      event,
+      grantPro: async (opts) => {
+        const granted = await grantArizonaPro60d({
+          userId: opts.userId,
+          provider: opts.provider,
+          providerOrderId: opts.providerOrderId,
+        });
+        return { entitlement: { id: granted.entitlement.id } };
+      },
+    });
+    if (result.status === 200 && result.recordNotificationId) {
+      try {
+        const store = await getStore();
+        await store.seenWebhook(result.recordNotificationId, PADDLE_PROVIDER);
+      } catch {
+        paddleLog("webhook_seen_failed", { event: String(event.eventType || ""), orderId: String(event.data?.id || "") });
+      }
+    }
     return NextResponse.json(result.body, { status: result.status });
   }
 

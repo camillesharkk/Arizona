@@ -16,10 +16,13 @@
     "auth:verify": "node --experimental-strip-types scripts/auth-verify.ts",
     "ai:verify": "node --experimental-strip-types scripts/ai-verify.ts",
     "lemon:verify": "node --experimental-strip-types scripts/lemon-verify.ts",
+    "paddle:verify": "node --experimental-strip-types scripts/paddle-verify.ts",
     "analytics:verify": "node --experimental-strip-types scripts/analytics-verify.ts",
     "contact:verify": "node --experimental-strip-types scripts/contact-verify.ts"
   },
   "dependencies": {
+    "@paddle/paddle-js": "^1.6.5",
+    "@paddle/paddle-node-sdk": "^3.10.0",
     "bcryptjs": "^2.4.3",
     "jose": "^5.9.6",
     "next": "^15.4.6",
