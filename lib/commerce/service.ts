@@ -627,7 +627,7 @@ export async function requestEligibleRefund(
     reason: "user_unused_refund",
     createdAt: now.toISOString(),
     completedAt: null,
-    note: "Awaiting payment-provider refund. Lemon is not connected yet.",
+    note: "Your refund request has been received. If approved, the refund will be processed through Paddle, our Merchant of Record.",
   });
   return { ok: true as const, eligibility: el };
 }

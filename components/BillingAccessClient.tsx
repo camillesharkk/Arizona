@@ -58,7 +58,11 @@ export function BillingAccessClient() {
     });
     const data = await res.json();
     setModal(null);
-    setMsg(data.message || data.error || "Request recorded");
+    setMsg(
+      data.message ||
+        data.error ||
+        "Your refund request has been received. If approved, the refund will be processed through Paddle, our Merchant of Record."
+    );
     await load();
   }
 
@@ -140,7 +144,9 @@ export function BillingAccessClient() {
               If a $3 Referral Credit was used, that credit will be restored after an eligible unused full refund is
               completed.
             </p>
-            <p className="notice">Payment-provider refund is not processed automatically in this release.</p>
+            <p className="notice">
+              If approved, the refund will be processed through Paddle, our Merchant of Record.
+            </p>
             <div className="row">
               <button className="btn btn-ghost" type="button" onClick={() => setModal(null)}>
                 Cancel

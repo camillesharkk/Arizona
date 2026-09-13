@@ -19,6 +19,7 @@ export async function POST(req: Request) {
   return NextResponse.json({
     ok: true,
     status: "pending_manual",
-    message: "Refund request recorded. Payment-provider refund is not completed automatically yet.",
+    message:
+      "Your refund request has been received. If approved, the refund will be processed through Paddle, our Merchant of Record.",
   });
 }
