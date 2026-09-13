@@ -35,6 +35,17 @@ export const lawChanges: LawChange[] = [
     impact: "Rebuild your price sheet from the current statute, not from last year's flyer.",
     source_id: "ars_41_311",
   },
+  {
+    slug: "sb1479-journal-thumbprint",
+    title: "Journal thumbprint for deeds and powers of attorney (SB 1479)",
+    effective_from: "2026-09-12",
+    status: "effective",
+    who_affected: "Notaries who notarize deeds, quitclaim deeds, deeds of trust, other real-property documents, or powers of attorney.",
+    before: "A.R.S. § 41-254 required personal appearance but did not require a journal thumbprint for those documents.",
+    after: "Effective September 12, 2026, in-person notarization of those documents generally requires the signer's right thumbprint in the journal (or left thumb/any available finger, or a notation explaining physical inability). Exceptions include a trustee's deed from foreclosure, a deed of release and reconveyance, and a compliant remote act under § 41-263.",
+    impact: "For covered in-person acts on or after September 12, 2026, collect the statutory journal thumbprint or make the required notation. Do not treat the old ARS compilation page as proof the rule is not in force.",
+    source_id: "az_sb_1479_2026",
+  },
 ];
 
 export function getLawChange(slug: string): LawChange | undefined {

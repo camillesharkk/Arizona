@@ -120,6 +120,96 @@ export function isPaddleTransactionId(id: string) {
   return /^txn_[a-z0-9]+/i.test(id);
 }
 
+export const PADDLE_CREATING_SAFE_WINDOW_MS = 60_000;
+export const PADDLE_RECONCILE_LOOKBACK_MS = 2 * 60 * 1000;
+export const PADDLE_RECONCILE_MAX_RESULTS = 500;
+export const PADDLE_RECONCILE_PER_PAGE = 50;
+
+export type PaddleTxnSnapshot = {
+  id?: string;
+  status?: string;
+  currencyCode?: string;
+  discountId?: string | null;
+  customData?: Record<string, unknown> | null;
+  items?: Array<{
+    quantity?: number;
+    price?: {
+      productId?: string | null;
+      unitPrice?: { amount?: string | null; currencyCode?: string | null } | null;
+      billingCycle?: unknown;
+    } | null;
+  }> | null;
+  details?: {
+    totals?: { discount?: string | null } | null;
+    lineItems?: Array<{
+      quantity?: number;
+      product?: { id?: string | null } | null;
+      totals?: { discount?: string | null } | null;
+    }> | null;
+  } | null;
+  checkout?: { url?: string | null } | null;
+  createdAt?: string;
+};
+
+export function readPaddleCustom(data: { customData?: Record<string, unknown> | null }) {
+  const raw = data.customData && typeof data.customData === "object" ? data.customData : {};
+  return {
+    user_id: String(raw.user_id || "").trim(),
+    quote_id: String(raw.quote_id || "").trim(),
+    product_code: String(raw.product_code || "").trim(),
+  };
+}
+
+function discountAmount(value: string | null | undefined) {
+  if (value == null || value === "") return "0";
+  return String(value);
+}
+
+export function hasUnauthorizedPaddleDiscount(txn: PaddleTxnSnapshot) {
+  if (txn.discountId) return true;
+  if (discountAmount(txn.details?.totals?.discount) !== "0") return true;
+  const lines = txn.details?.lineItems || [];
+  return lines.some((line) => discountAmount(line.totals?.discount) !== "0");
+}
+
+export function matchPaddleTransactionToQuote(
+  txn: PaddleTxnSnapshot,
+  quote: { id: string; userId: string; productCode: string; currency: string; finalPriceCents: number },
+  productId: string
+): { ok: true } | { ok: false; error: string } {
+  const custom = readPaddleCustom(txn);
+  if (custom.quote_id !== quote.id) return { ok: false, error: "quote_mismatch" };
+  if (custom.user_id !== quote.userId) return { ok: false, error: "user_mismatch" };
+  if (custom.product_code !== expectedPaddleProductCode() || custom.product_code !== quote.productCode) {
+    return { ok: false, error: "product_mismatch" };
+  }
+  if (String(txn.currencyCode || "") !== CURRENCY || quote.currency !== CURRENCY) {
+    return { ok: false, error: "currency_mismatch" };
+  }
+  const items = Array.isArray(txn.items) ? txn.items : [];
+  if (items.length !== 1) return { ok: false, error: "item_count_mismatch" };
+  const item = items[0];
+  if (Number(item.quantity) !== 1) return { ok: false, error: "quantity_mismatch" };
+  if (String(item.price?.productId || "") !== productId) return { ok: false, error: "product_id_mismatch" };
+  if (item.price?.billingCycle) return { ok: false, error: "subscription_not_allowed" };
+  if (!paddleUnitPriceMatchesQuote(item.price?.unitPrice?.amount, quote.finalPriceCents)) {
+    return { ok: false, error: "amount_mismatch" };
+  }
+  if (item.price?.unitPrice?.currencyCode && item.price.unitPrice.currencyCode !== CURRENCY) {
+    return { ok: false, error: "currency_mismatch" };
+  }
+  const lineItems = txn.details?.lineItems || [];
+  if (lineItems.length > 1) return { ok: false, error: "item_count_mismatch" };
+  const lineProductId = lineItems[0]?.product?.id ? String(lineItems[0].product.id) : "";
+  if (lineProductId && lineProductId !== productId) return { ok: false, error: "product_id_mismatch" };
+  if (lineItems[0] && Number(lineItems[0].quantity) !== 1) return { ok: false, error: "quantity_mismatch" };
+  if (hasUnauthorizedPaddleDiscount(txn)) return { ok: false, error: "paddle_discount_not_allowed" };
+  const status = String(txn.status || "").toLowerCase();
+  if (status === "canceled" || status === "cancelled") return { ok: false, error: "transaction_canceled" };
+  if (!isPaddleTransactionId(String(txn.id || ""))) return { ok: false, error: "transaction_id_invalid" };
+  return { ok: true };
+}
+
 export function shouldGrantAccessFromPaddleCheckoutCompleted() {
   return false;
 }
@@ -162,9 +252,22 @@ export function buildPaddleTransactionPayload(opts: {
   };
 }
 
+export type PaddleListQuery = {
+  after?: string;
+  perPage?: number;
+  createdAt?: string;
+  "createdAt[LT]"?: string;
+  "createdAt[GT]"?: string;
+  "createdAt[LTE]"?: string;
+  "createdAt[GTE]"?: string;
+};
+
 export type PaddleTransactionsClient = {
   transactions: {
     create: (payload: CreateTransactionRequestBody) => Promise<{ id: string; checkout?: { url?: string | null } | null }>;
+    list?: (
+      query?: PaddleListQuery
+    ) => AsyncIterable<PaddleTxnSnapshot> | Iterable<PaddleTxnSnapshot> | Promise<PaddleTxnSnapshot[]>;
   };
 };
 

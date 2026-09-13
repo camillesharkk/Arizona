@@ -1,5 +1,6 @@
 import type { CommerceRepo } from "../commerce/repo.ts";
 import type { PricingQuoteRow } from "../commerce/types.ts";
+import { assertQuoteStillValid } from "../commerce/service.ts";
 import { AZ_PRO_PRODUCT_CODE, CURRENCY } from "../pricing/catalog.ts";
 import {
   PADDLE_PROVIDER,
@@ -11,6 +12,7 @@ import {
   type PaddleCheckoutConfig,
   type PaddleTransactionsClient,
 } from "./paddle.ts";
+import { reconcilePaddleCheckoutBinding } from "./paddle-reconcile.ts";
 
 export async function ensurePaddleCheckout(opts: {
   repo: CommerceRepo;
@@ -28,11 +30,53 @@ export async function ensurePaddleCheckout(opts: {
   if (!isPositiveCents(quote.finalPriceCents)) return { ok: false, error: "price_invalid", status: 400 };
   if (!quote.policyAcceptedAt) return { ok: false, error: "policy_required", status: 400 };
 
+  const now = opts.now ?? new Date();
+  const sdk = opts.sdk ?? createPaddleSdk(opts.config);
+
+  const existing = await opts.repo.getCheckoutBinding(quote.id);
+  if (existing?.status === "ready" && existing.providerCheckoutId) {
+    return {
+      ok: true,
+      transactionId: existing.providerCheckoutId,
+      quoteId: quote.id,
+      finalPriceCents: quote.finalPriceCents,
+    };
+  }
+
+  const recon = await reconcilePaddleCheckoutBinding({
+    repo: opts.repo,
+    quote,
+    config: opts.config,
+    now,
+    sdk,
+  });
+  if (!recon.ok) return { ok: false, error: recon.error, status: recon.status };
+  if (recon.kind === "ready") {
+    return {
+      ok: true,
+      transactionId: recon.transactionId,
+      quoteId: quote.id,
+      finalPriceCents: quote.finalPriceCents,
+    };
+  }
+  if (recon.kind === "in_progress") {
+    paddleLog("checkout_in_progress", { quoteId: quote.id });
+    return { ok: false, error: "checkout_in_progress", status: 409 };
+  }
+  if (recon.kind === "cleared" && recon.quoteExpired) {
+    return { ok: false, error: "expired", status: 400 };
+  }
+
+  const valid = await assertQuoteStillValid(opts.repo, quote, now);
+  if (!valid.ok) {
+    return { ok: false, error: valid.error, status: valid.error === "PRICE_CHANGED" ? 409 : 400 };
+  }
+
   const claimed = await opts.repo.claimCheckoutBinding({
     quoteId: quote.id,
     provider: PADDLE_PROVIDER,
     expiresAt: quote.expiresAt,
-    now: (opts.now ?? new Date()).toISOString(),
+    now: now.toISOString(),
   });
 
   if (!claimed.created) {
@@ -56,13 +100,8 @@ export async function ensurePaddleCheckout(opts: {
     productCode: quote.productCode,
   });
 
-  const created = await createPaddleTransaction(
-    opts.config,
-    payload,
-    opts.sdk ?? createPaddleSdk(opts.config)
-  );
+  const created = await createPaddleTransaction(opts.config, payload, sdk);
   if (!created.ok) {
-    await opts.repo.releaseCheckoutClaim(quote.id);
     return { ok: false, error: created.error, status: 502 };
   }
 
@@ -72,17 +111,16 @@ export async function ensurePaddleCheckout(opts: {
     checkoutUrl: created.checkoutUrl || `paddle-overlay:${created.id}`,
   });
   if (!finished?.providerCheckoutId) {
-    paddleLog("checkout_complete_lost", { quoteId: quote.id });
-    const existing = await opts.repo.getCheckoutBinding(quote.id);
-    if (existing?.status === "ready" && existing.providerCheckoutId) {
+    paddleLog("checkout_complete_lost", { quoteId: quote.id, orderId: created.id });
+    const current = await opts.repo.getCheckoutBinding(quote.id);
+    if (current?.status === "ready" && current.providerCheckoutId) {
       return {
         ok: true,
-        transactionId: existing.providerCheckoutId,
+        transactionId: current.providerCheckoutId,
         quoteId: quote.id,
         finalPriceCents: quote.finalPriceCents,
       };
     }
-    await opts.repo.releaseCheckoutClaim(quote.id);
     return { ok: false, error: "checkout_in_progress", status: 409 };
   }
 

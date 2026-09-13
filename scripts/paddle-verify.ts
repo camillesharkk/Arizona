@@ -25,6 +25,8 @@ import {
 } from "../lib/billing/paddle.ts";
 import { ensurePaddleCheckout } from "../lib/billing/paddle-checkout.ts";
 import { handlePaddleWebhook, type PaddleWebhookEventLike } from "../lib/billing/paddle-webhook.ts";
+import type { PaddleTxnSnapshot } from "../lib/billing/paddle.ts";
+import { reconcilePaddleCheckoutBinding } from "../lib/billing/paddle-reconcile.ts";
 import { PADDLE_OVERLAY_SETTINGS, paddleSuccessPath } from "../lib/billing/paddle-public.ts";
 import { REFERRAL_CREDIT_CENTS } from "../lib/pricing/catalog.ts";
 import { Environment } from "@paddle/paddle-node-sdk";
@@ -90,7 +92,10 @@ function grantTracker() {
   return { grants, grantPro };
 }
 
-function mockSdk(counter: { n: number; payloads: unknown[] }): PaddleTransactionsClient {
+function mockSdk(
+  counter: { n: number; payloads: unknown[] },
+  remote: PaddleTxnSnapshot[] | (() => PaddleTxnSnapshot[]) = []
+): PaddleTransactionsClient {
   return {
     transactions: {
       create: async (payload) => {
@@ -98,8 +103,36 @@ function mockSdk(counter: { n: number; payloads: unknown[] }): PaddleTransaction
         counter.payloads.push(payload);
         return { id: `txn_verify${counter.n}abcdefgh`, checkout: { url: null } };
       },
+      list: async function* () {
+        const rows = typeof remote === "function" ? remote() : remote;
+        for (const row of rows) yield row;
+      },
     },
   };
+}
+
+function listedTxn(event: PaddleWebhookEventLike): PaddleTxnSnapshot {
+  const data = event.data || {};
+  return {
+    id: data.id,
+    status: data.status,
+    currencyCode: data.currencyCode,
+    discountId: data.discountId ?? null,
+    customData: data.customData ?? null,
+    items: data.items ?? null,
+    details: data.details ?? null,
+    checkout: { url: null },
+  };
+}
+
+function orphanCreating(repo: CommerceRepo, quoteId: string, createdAt: Date) {
+  const snap = (repo as { snapshot?: () => { checkoutBindings: Array<Record<string, unknown>> } }).snapshot;
+  const row = snap?.().checkoutBindings.find((b) => b.quoteId === quoteId);
+  if (!row) throw new Error("missing binding to orphan");
+  row.status = "creating";
+  row.providerCheckoutId = null;
+  row.checkoutUrl = null;
+  row.createdAt = createdAt.toISOString();
 }
 
 function completedEvent(opts: {
@@ -352,7 +385,15 @@ async function run() {
   await putUser(paidRepo, "pay", hoursAgo(now, 1));
   const payQ = await createQuote(paidRepo, { userId: "pay", applyCredit: false, policyAccepted: true, now });
   if (!payQ.ok) throw new Error("pay quote");
-  const txnId = "txn_completedabcdefghijk";
+  const payCheckout = await ensurePaddleCheckout({
+    repo: paidRepo,
+    quote: payQ.quote,
+    config: cfg,
+    now,
+    sdk: mockSdk({ n: 0, payloads: [] }),
+  });
+  if (!payCheckout.ok) throw new Error("pay checkout");
+  const txnId = payCheckout.transactionId;
   const paid = await handlePaddleWebhook({
     repo: paidRepo,
     config: cfg,
@@ -459,6 +500,513 @@ async function run() {
     if (stolen.status === 200 && mismatchTracker.grants.length) fail("customData user_id mismatch granted");
     else ok("webhook user_id must match quote.userId; grant uses quote.userId only");
   }
+
+  const lateRepo = createMemoryCommerceRepo();
+  const lateTracker = grantTracker();
+  await putUser(lateRepo, "late", hoursAgo(now, 1));
+  const lateQ = await createQuote(lateRepo, { userId: "late", applyCredit: false, policyAccepted: true, now });
+  if (!lateQ.ok) throw new Error("late quote");
+  const lateCheckout = await ensurePaddleCheckout({
+    repo: lateRepo,
+    quote: lateQ.quote,
+    config: cfg,
+    now,
+    sdk: mockSdk({ n: 0, payloads: [] }),
+  });
+  if (!lateCheckout.ok) fail("late checkout setup");
+  else {
+    await lateRepo.expireQuote(lateQ.quote.id);
+    await lateRepo.expireReservations(new Date(now.getTime() + 16 * 60 * 1000).toISOString());
+    const expiredQuote = await lateRepo.getQuote(lateQ.quote.id);
+    if (expiredQuote?.status !== "expired") fail("late quote should be expired before webhook");
+    const latePaid = await handlePaddleWebhook({
+      repo: lateRepo,
+      config: cfg,
+      grantPro: lateTracker.grantPro,
+      event: completedEvent({
+        transactionId: lateCheckout.transactionId,
+        userId: "late",
+        quoteId: lateQ.quote.id,
+        amount: lateQ.quote.finalPriceCents,
+      }),
+    });
+    if (
+      latePaid.status !== 200 ||
+      lateTracker.grants.length !== 1 ||
+      !lateTracker.grants[0].startsWith(`paddle:${lateCheckout.transactionId}:late`)
+    ) {
+      fail("expired quote after bound checkout must still fulfill");
+    } else ok("bound transaction.completed after quote TTL → still grants 60-day Pro once");
+  }
+
+  const staleRepo = createMemoryCommerceRepo();
+  await putUser(staleRepo, "stale", hoursAgo(now, 1));
+  const staleQ = await createQuote(staleRepo, { userId: "stale", applyCredit: false, policyAccepted: true, now });
+  if (!staleQ.ok) throw new Error("stale quote");
+  await staleRepo.expireQuote(staleQ.quote.id);
+  const staleCheckout = await ensurePaddleCheckout({
+    repo: staleRepo,
+    quote: (await staleRepo.getQuote(staleQ.quote.id)) ?? staleQ.quote,
+    config: cfg,
+    now,
+    sdk: mockSdk({ n: 0, payloads: [] }),
+  });
+  if (staleCheckout.ok) fail("expired quote must not create a new Paddle transaction");
+  else ok("expired quote → new checkout rejected");
+
+  const bindRepo = createMemoryCommerceRepo();
+  const bindTracker = grantTracker();
+  await putUser(bindRepo, "bind", hoursAgo(now, 1));
+  const qA = await createQuote(bindRepo, { userId: "bind", applyCredit: false, policyAccepted: true, now });
+  const qB = await createQuote(bindRepo, { userId: "bind", applyCredit: false, policyAccepted: true, now });
+  if (!qA.ok || !qB.ok) throw new Error("binding quotes");
+  const cA = await ensurePaddleCheckout({
+    repo: bindRepo,
+    quote: qA.quote,
+    config: cfg,
+    now,
+    sdk: mockSdk({ n: 0, payloads: [] }),
+  });
+  const cB = await ensurePaddleCheckout({
+    repo: bindRepo,
+    quote: qB.quote,
+    config: cfg,
+    now,
+    sdk: mockSdk({ n: 10, payloads: [] }),
+  });
+  if (!cA.ok || !cB.ok) fail("binding checkout setup");
+  else {
+    const crossed = await handlePaddleWebhook({
+      repo: bindRepo,
+      config: cfg,
+      grantPro: bindTracker.grantPro,
+      event: completedEvent({
+        transactionId: cA.transactionId,
+        userId: "bind",
+        quoteId: qB.quote.id,
+        amount: qB.quote.finalPriceCents,
+      }),
+    });
+    if (crossed.status === 200 || bindTracker.grants.length) fail("crossed quote/transaction binding granted");
+    else ok("wrong quote / transaction binding → no grant");
+  }
+
+  const unbound = createMemoryCommerceRepo();
+  const unboundTracker = grantTracker();
+  await putUser(unbound, "free", hoursAgo(now, 1));
+  const freeQ = await createQuote(unbound, { userId: "free", applyCredit: false, policyAccepted: true, now });
+  if (!freeQ.ok) throw new Error("unbound quote");
+  const unboundPaid = await handlePaddleWebhook({
+    repo: unbound,
+    config: cfg,
+    grantPro: unboundTracker.grantPro,
+    event: completedEvent({
+      transactionId: "txn_neverboundabcdefgh",
+      userId: "free",
+      quoteId: freeQ.quote.id,
+      amount: freeQ.quote.finalPriceCents,
+    }),
+  });
+  if (unboundPaid.status === 200 || unboundTracker.grants.length) fail("unbound transaction granted");
+  else ok("transaction without checkout binding → no grant");
+
+  const creditRepo = createMemoryCommerceRepo();
+  const creditTracker = grantTracker();
+  await putUser(creditRepo, "cred", hoursAgo(now, 1));
+  const creditId = await addCredit(creditRepo, "cred", now);
+  const creditQ = await createQuote(creditRepo, { userId: "cred", applyCredit: true, policyAccepted: true, now });
+  if (!creditQ.ok || !creditQ.quote.creditIds.includes(creditId)) throw new Error("credit quote");
+  const creditCheckout = await ensurePaddleCheckout({
+    repo: creditRepo,
+    quote: creditQ.quote,
+    config: cfg,
+    now,
+    sdk: mockSdk({ n: 0, payloads: [] }),
+  });
+  if (!creditCheckout.ok) fail("credit checkout setup");
+  else {
+    await creditRepo.expireReservations(new Date(now.getTime() + 16 * 60 * 1000).toISOString());
+    const held = await creditRepo.getCredit(creditId);
+    if (held?.status !== "reserved" || held.reservedQuoteId !== creditQ.quote.id) {
+      fail("ready binding credit was released after quote TTL");
+    } else ok("A. ready Paddle binding → credit stays reserved after quote TTL");
+
+    const q2 = await createQuote(creditRepo, { userId: "cred", applyCredit: true, policyAccepted: true, now });
+    if (q2.ok && q2.quote.creditIds.includes(creditId)) fail("Q2 reused a credit bound to a ready Paddle transaction");
+    else ok("B. Q2 cannot take credit reserved by a ready Paddle transaction");
+
+    const creditPaid = await handlePaddleWebhook({
+      repo: creditRepo,
+      config: cfg,
+      grantPro: creditTracker.grantPro,
+      event: completedEvent({
+        transactionId: creditCheckout.transactionId,
+        userId: "cred",
+        quoteId: creditQ.quote.id,
+        amount: creditQ.quote.finalPriceCents,
+      }),
+    });
+    const redeemed = await creditRepo.getCredit(creditId);
+    if (
+      creditPaid.status !== 200 ||
+      creditTracker.grants.length !== 1 ||
+      redeemed?.status !== "redeemed" ||
+      redeemed.redeemedOrderId !== (await creditRepo.listOrders("cred"))[0]?.id
+    ) {
+      fail("bound credit quote after TTL did not grant once and redeem credit");
+    } else ok("C. Q1 TTL then transaction.completed → one 60-day Pro and credit redeemed once");
+
+    const creditDup = await handlePaddleWebhook({
+      repo: creditRepo,
+      config: cfg,
+      grantPro: creditTracker.grantPro,
+      event: completedEvent({
+        transactionId: creditCheckout.transactionId,
+        userId: "cred",
+        quoteId: creditQ.quote.id,
+        amount: creditQ.quote.finalPriceCents,
+        notificationId: "ntf_credit_dup",
+      }),
+    });
+    if (creditDup.status !== 200 || creditTracker.grants.length !== 1 || (await creditRepo.listOrders("cred")).length !== 1) {
+      fail("repeat credit transaction.completed not idempotent");
+    } else ok("G. duplicate transaction.completed → still only one 60-day grant");
+  }
+
+  const stealRepo = createMemoryCommerceRepo();
+  const stealTracker = grantTracker();
+  await putUser(stealRepo, "steal", hoursAgo(now, 1));
+  const stealCredit = await addCredit(stealRepo, "steal", now);
+  const stealQ = await createQuote(stealRepo, { userId: "steal", applyCredit: true, policyAccepted: true, now });
+  if (!stealQ.ok) throw new Error("steal quote");
+  const stealCheckout = await ensurePaddleCheckout({
+    repo: stealRepo,
+    quote: stealQ.quote,
+    config: cfg,
+    now,
+    sdk: mockSdk({ n: 0, payloads: [] }),
+  });
+  if (!stealCheckout.ok) fail("steal checkout setup");
+  else {
+    await stealRepo.releaseCreditsForQuote(stealQ.quote.id);
+    const otherQuote = await createQuote(stealRepo, { userId: "steal", applyCredit: true, policyAccepted: true, now });
+    if (!otherQuote.ok || !otherQuote.quote.creditIds.includes(stealCredit)) fail("setup Q2 occupying stolen credit");
+    else {
+      const stolenPay = await handlePaddleWebhook({
+        repo: stealRepo,
+        config: cfg,
+        grantPro: stealTracker.grantPro,
+        event: completedEvent({
+          transactionId: stealCheckout.transactionId,
+          userId: "steal",
+          quoteId: stealQ.quote.id,
+          amount: stealQ.quote.finalPriceCents,
+        }),
+      });
+      if (stealTracker.grants.length || stolenPay.status === 200) {
+        fail("occupied credit webhook granted before failing");
+      } else ok("D. credit reserved by another quote → old webhook does not write entitlement/order");
+    }
+  }
+
+  const freeCreditRepo = createMemoryCommerceRepo();
+  await putUser(freeCreditRepo, "loose", hoursAgo(now, 1));
+  const looseCredit = await addCredit(freeCreditRepo, "loose", now);
+  const looseQ = await createQuote(freeCreditRepo, { userId: "loose", applyCredit: true, policyAccepted: true, now });
+  if (!looseQ.ok) throw new Error("loose quote");
+  await freeCreditRepo.expireReservations(new Date(now.getTime() + 16 * 60 * 1000).toISOString());
+  const looseAfter = await freeCreditRepo.getCredit(looseCredit);
+  if (looseAfter?.status !== "available") fail("unbound expired quote should release credit");
+  else ok("E. expired quote with no checkout binding → credit released");
+
+  if (oldQuote.ok && oldQuote.quote.finalPriceCents === 2221 && nq.ok && nq.quote.finalPriceCents === 1999) {
+    ok("H. no-credit $22.21 / $19.99 quote amounts unchanged");
+    ok("I. no-credit ordinary order behavior unchanged");
+  } else fail("H/I. no-credit standard/newcomer amounts changed");
+
+  const reconNow = new Date(now.getTime() + 2 * 60 * 1000);
+  const reconRepo = createMemoryCommerceRepo();
+  await putUser(reconRepo, "recon", hoursAgo(reconNow, 1));
+  const reconCredit = await addCredit(reconRepo, "recon", reconNow);
+  const reconQ = await createQuote(reconRepo, { userId: "recon", applyCredit: true, policyAccepted: true, now: reconNow });
+  if (!reconQ.ok) throw new Error("recon quote");
+  const reconCounter = { n: 0, payloads: [] as unknown[] };
+  const reconRemote: PaddleTxnSnapshot[] = [];
+  const reconSdk = mockSdk(reconCounter, () => reconRemote);
+  const reconCheckout = await ensurePaddleCheckout({
+    repo: reconRepo,
+    quote: reconQ.quote,
+    config: cfg,
+    now: reconNow,
+    sdk: reconSdk,
+  });
+  if (!reconCheckout.ok) fail("A. setup checkout failed");
+  else {
+    reconRemote.push(
+      listedTxn(
+        completedEvent({
+          transactionId: reconCheckout.transactionId,
+          userId: "recon",
+          quoteId: reconQ.quote.id,
+          amount: reconQ.quote.finalPriceCents,
+          status: "ready",
+        })
+      )
+    );
+    orphanCreating(reconRepo, reconQ.quote.id, new Date(reconNow.getTime() - 61_000));
+    const recovered = await ensurePaddleCheckout({
+      repo: reconRepo,
+      quote: reconQ.quote,
+      config: cfg,
+      now: reconNow,
+      sdk: reconSdk,
+    });
+    const binding = await reconRepo.getCheckoutBinding(reconQ.quote.id);
+    const held = await reconRepo.getCredit(reconCredit);
+    if (
+      !recovered.ok ||
+      recovered.transactionId !== reconCheckout.transactionId ||
+      reconCounter.n !== 1 ||
+      binding?.status !== "ready" ||
+      binding.providerCheckoutId !== reconCheckout.transactionId ||
+      held?.status !== "reserved" ||
+      held.reservedQuoteId !== reconQ.quote.id
+    ) {
+      fail("A. stale creating did not recover the remote transaction without a second create");
+    } else ok("A. reconcile recovers ready transaction and keeps credit locked");
+  }
+
+  const adoptRepo = createMemoryCommerceRepo();
+  let adoptFails = 1;
+  const adoptGrants: string[] = [];
+  const adoptGrant: GrantProFn = async (opts) => {
+    if (adoptFails > 0) {
+      adoptFails -= 1;
+      throw new Error("temporary_fulfillment");
+    }
+    adoptGrants.push(`${opts.provider}:${opts.providerOrderId}:${opts.userId}`);
+    return { entitlement: { id: randomUUID() } };
+  };
+  await putUser(adoptRepo, "adopt", hoursAgo(reconNow, 1));
+  const adoptCredit = await addCredit(adoptRepo, "adopt", reconNow);
+  const adoptQ = await createQuote(adoptRepo, { userId: "adopt", applyCredit: true, policyAccepted: true, now: reconNow });
+  if (!adoptQ.ok) throw new Error("adopt quote");
+  const adoptCheckout = await ensurePaddleCheckout({
+    repo: adoptRepo,
+    quote: adoptQ.quote,
+    config: cfg,
+    now: reconNow,
+    sdk: mockSdk({ n: 0, payloads: [] }),
+  });
+  if (!adoptCheckout.ok) fail("B. setup checkout failed");
+  else {
+    orphanCreating(adoptRepo, adoptQ.quote.id, new Date(reconNow.getTime() - 61_000));
+    const firstPay = await handlePaddleWebhook({
+      repo: adoptRepo,
+      config: cfg,
+      grantPro: adoptGrant,
+      event: completedEvent({
+        transactionId: adoptCheckout.transactionId,
+        userId: "adopt",
+        quoteId: adoptQ.quote.id,
+        amount: adoptQ.quote.finalPriceCents,
+      }),
+    });
+    const afterFail = await adoptRepo.getCheckoutBinding(adoptQ.quote.id);
+    const retryPay = await handlePaddleWebhook({
+      repo: adoptRepo,
+      config: cfg,
+      grantPro: adoptGrant,
+      event: completedEvent({
+        transactionId: adoptCheckout.transactionId,
+        userId: "adopt",
+        quoteId: adoptQ.quote.id,
+        amount: adoptQ.quote.finalPriceCents,
+        notificationId: "ntf_adopt_retry",
+      }),
+    });
+    const redeemed = await adoptRepo.getCredit(adoptCredit);
+    if (
+      firstPay.status !== 503 ||
+      afterFail?.status !== "ready" ||
+      afterFail.providerCheckoutId !== adoptCheckout.transactionId ||
+      retryPay.status !== 200 ||
+      adoptGrants.length !== 1 ||
+      redeemed?.status !== "redeemed"
+    ) {
+      fail("B. webhook did not adopt orphan creating and fulfill once on retry");
+    } else ok("B. webhook adopts creating binding, then retry fulfills once");
+  }
+
+  const emptyRepo = createMemoryCommerceRepo();
+  await putUser(emptyRepo, "empty", hoursAgo(reconNow, 1));
+  const emptyCredit = await addCredit(emptyRepo, "empty", reconNow);
+  const emptyQ = await createQuote(emptyRepo, { userId: "empty", applyCredit: true, policyAccepted: true, now: reconNow });
+  if (!emptyQ.ok) throw new Error("empty quote");
+  await emptyRepo.claimCheckoutBinding({
+    quoteId: emptyQ.quote.id,
+    provider: PADDLE_PROVIDER,
+    expiresAt: emptyQ.quote.expiresAt,
+    now: new Date(reconNow.getTime() - 61_000).toISOString(),
+  });
+  await emptyRepo.expireQuote(emptyQ.quote.id);
+  const emptyCleared = await ensurePaddleCheckout({
+    repo: emptyRepo,
+    quote: (await emptyRepo.getQuote(emptyQ.quote.id)) ?? emptyQ.quote,
+    config: cfg,
+    now: reconNow,
+    sdk: mockSdk({ n: 0, payloads: [] }),
+  });
+  const emptyCreditAfter = await emptyRepo.getCredit(emptyCredit);
+  const emptyBind = await emptyRepo.getCheckoutBinding(emptyQ.quote.id);
+  if (emptyCleared.ok || emptyCreditAfter?.status !== "available" || emptyBind) {
+    fail("C. expired quote with no remote transaction did not release credit");
+  } else ok("C. stale creating + no remote txn + expired quote → credit available");
+
+  const retryRepo = createMemoryCommerceRepo();
+  await putUser(retryRepo, "retry", hoursAgo(reconNow, 1));
+  const retryQ = await createQuote(retryRepo, { userId: "retry", applyCredit: false, policyAccepted: true, now: reconNow });
+  if (!retryQ.ok) throw new Error("retry quote");
+  await retryRepo.claimCheckoutBinding({
+    quoteId: retryQ.quote.id,
+    provider: PADDLE_PROVIDER,
+    expiresAt: retryQ.quote.expiresAt,
+    now: new Date(reconNow.getTime() - 61_000).toISOString(),
+  });
+  const retryCounter = { n: 0, payloads: [] as unknown[] };
+  const retryCheckout = await ensurePaddleCheckout({
+    repo: retryRepo,
+    quote: retryQ.quote,
+    config: cfg,
+    now: reconNow,
+    sdk: mockSdk(retryCounter),
+  });
+  if (!retryCheckout.ok || retryCounter.n !== 1) fail("D. valid quote did not safely retry create after empty reconcile");
+  else ok("D. stale creating + no remote txn + valid quote → safe retry create");
+
+  const conflictRepo = createMemoryCommerceRepo();
+  await putUser(conflictRepo, "conflict", hoursAgo(reconNow, 1));
+  const conflictCredit = await addCredit(conflictRepo, "conflict", reconNow);
+  const conflictQ = await createQuote(conflictRepo, {
+    userId: "conflict",
+    applyCredit: true,
+    policyAccepted: true,
+    now: reconNow,
+  });
+  if (!conflictQ.ok) throw new Error("conflict quote");
+  await conflictRepo.claimCheckoutBinding({
+    quoteId: conflictQ.quote.id,
+    provider: PADDLE_PROVIDER,
+    expiresAt: conflictQ.quote.expiresAt,
+    now: new Date(reconNow.getTime() - 61_000).toISOString(),
+  });
+  const twins = [
+    listedTxn(
+      completedEvent({
+        transactionId: "txn_conflictoneabcdefgh",
+        userId: "conflict",
+        quoteId: conflictQ.quote.id,
+        amount: conflictQ.quote.finalPriceCents,
+        status: "ready",
+      })
+    ),
+    listedTxn(
+      completedEvent({
+        transactionId: "txn_conflicttwoabcdefgh",
+        userId: "conflict",
+        quoteId: conflictQ.quote.id,
+        amount: conflictQ.quote.finalPriceCents,
+        status: "ready",
+      })
+    ),
+  ];
+  const conflictCounter = { n: 0, payloads: [] as unknown[] };
+  const conflictCheckout = await ensurePaddleCheckout({
+    repo: conflictRepo,
+    quote: conflictQ.quote,
+    config: cfg,
+    now: reconNow,
+    sdk: mockSdk(conflictCounter, twins),
+  });
+  const conflictHeld = await conflictRepo.getCredit(conflictCredit);
+  const conflictBind = await conflictRepo.getCheckoutBinding(conflictQ.quote.id);
+  if (
+    conflictCheckout.ok ||
+    !("error" in conflictCheckout) ||
+    conflictCheckout.error !== "paddle_transaction_reconciliation_conflict" ||
+    conflictCounter.n !== 0 ||
+    conflictHeld?.status !== "reserved" ||
+    conflictBind?.status !== "creating"
+  ) {
+    fail("E. two matching transactions did not fail closed");
+  } else ok("E. two matching transactions → fail closed, credit stays locked");
+
+  const wrongRemote = createMemoryCommerceRepo();
+  const wrongTracker = grantTracker();
+  await putUser(wrongRemote, "wrong", hoursAgo(reconNow, 1));
+  const wrongQ = await createQuote(wrongRemote, { userId: "wrong", applyCredit: false, policyAccepted: true, now: reconNow });
+  if (!wrongQ.ok) throw new Error("wrong quote");
+  await wrongRemote.claimCheckoutBinding({
+    quoteId: wrongQ.quote.id,
+    provider: PADDLE_PROVIDER,
+    expiresAt: wrongQ.quote.expiresAt,
+    now: new Date(reconNow.getTime() - 61_000).toISOString(),
+  });
+  const wrongList = [
+    listedTxn(
+      completedEvent({
+        transactionId: "txn_wrongproductabcdefgh",
+        userId: "wrong",
+        quoteId: wrongQ.quote.id,
+        amount: wrongQ.quote.finalPriceCents,
+        productId: "pro_01someoneelsesproduct",
+        status: "ready",
+      })
+    ),
+    listedTxn(
+      completedEvent({
+        transactionId: "txn_wronguserabcdefghxx",
+        userId: "other-user",
+        quoteId: wrongQ.quote.id,
+        amount: wrongQ.quote.finalPriceCents,
+        status: "ready",
+      })
+    ),
+    listedTxn(
+      completedEvent({
+        transactionId: "txn_wrongamountabcdefgh",
+        userId: "wrong",
+        quoteId: wrongQ.quote.id,
+        amount: wrongQ.quote.finalPriceCents + 100,
+        status: "ready",
+      })
+    ),
+  ];
+  const wrongRecon = await reconcilePaddleCheckoutBinding({
+    repo: wrongRemote,
+    quote: wrongQ.quote,
+    config: cfg,
+    now: reconNow,
+    sdk: mockSdk({ n: 0, payloads: [] }, wrongList),
+  });
+  const wrongPay = await handlePaddleWebhook({
+    repo: wrongRemote,
+    config: cfg,
+    grantPro: wrongTracker.grantPro,
+    event: completedEvent({
+      transactionId: "txn_wrongamountabcdefgh",
+      userId: "wrong",
+      quoteId: wrongQ.quote.id,
+      amount: wrongQ.quote.finalPriceCents + 100,
+    }),
+  });
+  if (
+    (wrongRecon.ok && wrongRecon.kind === "ready") ||
+    wrongPay.status === 200 ||
+    wrongTracker.grants.length
+  ) {
+    fail("G. mismatched remote transactions were adopted");
+  } else ok("G. wrong product / user / amount cannot be reconciled or adopted");
 
   if (failures) {
     console.error(lines.join("\n"));

@@ -56,6 +56,7 @@ function persistWrap(inner: CommerceRepo & { snapshot: () => unknown }): Commerc
     listCreditsForQuote: inner.listCreditsForQuote.bind(inner),
     expireReservations: wrap(inner.expireReservations.bind(inner)),
     redeemReservedCredits: wrap(inner.redeemReservedCredits.bind(inner)),
+    redeemQuotedCredits: wrap(inner.redeemQuotedCredits.bind(inner)),
     redeemReservedCredit: wrap(inner.redeemReservedCredit.bind(inner)),
     restoreRedeemedCreditsForOrder: wrap(inner.restoreRedeemedCreditsForOrder.bind(inner)),
     restoreRedeemedCredit: wrap(inner.restoreRedeemedCredit.bind(inner)),
@@ -73,6 +74,7 @@ function persistWrap(inner: CommerceRepo & { snapshot: () => unknown }): Commerc
     insertQuote: wrap(inner.insertQuote.bind(inner)),
     getQuote: inner.getQuote.bind(inner),
     consumeQuote: wrap(inner.consumeQuote.bind(inner)),
+    consumeQuoteForBoundFulfillment: wrap(inner.consumeQuoteForBoundFulfillment.bind(inner)),
     expireQuote: wrap(inner.expireQuote.bind(inner)),
     insertOrder: wrap(inner.insertOrder.bind(inner)),
     getOrder: inner.getOrder.bind(inner),
@@ -91,8 +93,10 @@ function persistWrap(inner: CommerceRepo & { snapshot: () => unknown }): Commerc
     listRefundRequests: inner.listRefundRequests.bind(inner),
     completeRefundRequest: wrap(inner.completeRefundRequest.bind(inner)),
     getCheckoutBinding: inner.getCheckoutBinding.bind(inner),
+    getCheckoutBindingByProviderId: inner.getCheckoutBindingByProviderId.bind(inner),
     claimCheckoutBinding: wrap(inner.claimCheckoutBinding.bind(inner)),
     completeCheckoutBinding: wrap(inner.completeCheckoutBinding.bind(inner)),
+    adoptCreatingCheckoutBinding: wrap(inner.adoptCreatingCheckoutBinding.bind(inner)),
     releaseCheckoutClaim: wrap(inner.releaseCheckoutClaim.bind(inner)),
   };
 }

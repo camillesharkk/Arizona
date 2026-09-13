@@ -1,16 +1,18 @@
 import { EventName } from "@paddle/paddle-node-sdk";
 import type { CommerceRepo } from "../commerce/repo.ts";
 import type { GrantProFn } from "../commerce/service.ts";
-import { confirmPaidOrder } from "../commerce/service.ts";
+import { confirmPaidOrder, quotedCreditsBoundToQuote } from "../commerce/service.ts";
 import { AZ_PRO_PRODUCT_CODE, CURRENCY } from "../pricing/catalog.ts";
 import {
   PADDLE_PROVIDER,
   expectedPaddleProductCode,
   isPaddleTransactionId,
+  matchPaddleTransactionToQuote,
   paddleLog,
   paddleUnitPriceMatchesQuote,
   type PaddleWebhookConfig,
 } from "./paddle.ts";
+import { adoptPaddleCreatingBinding } from "./paddle-reconcile.ts";
 
 export type PaddleWebhookResult = {
   status: number;
@@ -160,6 +162,72 @@ export async function handlePaddleWebhook(opts: {
     return fail(409, "currency_mismatch", { orderId: transactionId, quoteId: quote.id });
   }
 
+  const matched = matchPaddleTransactionToQuote(txn, quote, opts.config.productId);
+  if (!matched.ok) return fail(409, matched.error, { orderId: transactionId, quoteId: quote.id });
+
+  const held = await quotedCreditsBoundToQuote(opts.repo, quote);
+  if (!held.ok) return fail(409, held.error, { orderId: transactionId, quoteId: quote.id });
+
+  let byQuote = await opts.repo.getCheckoutBinding(quote.id);
+  let byTxn = await opts.repo.getCheckoutBindingByProviderId(PADDLE_PROVIDER, transactionId);
+  const readyForTxn =
+    byQuote?.provider === PADDLE_PROVIDER &&
+    byTxn?.provider === PADDLE_PROVIDER &&
+    byQuote.status === "ready" &&
+    byTxn.status === "ready" &&
+    byQuote.quoteId === quote.id &&
+    byTxn.quoteId === quote.id &&
+    byQuote.providerCheckoutId === transactionId &&
+    byTxn.providerCheckoutId === transactionId;
+
+  if (!readyForTxn) {
+    const adoptable =
+      byQuote?.provider === PADDLE_PROVIDER &&
+      byQuote.status === "creating" &&
+      !byQuote.providerCheckoutId &&
+      !byTxn;
+    if (adoptable) {
+      const adopted = await adoptPaddleCreatingBinding({
+        repo: opts.repo,
+        quoteId: quote.id,
+        transactionId,
+      });
+      byQuote = adopted ?? (await opts.repo.getCheckoutBinding(quote.id));
+      byTxn = await opts.repo.getCheckoutBindingByProviderId(PADDLE_PROVIDER, transactionId);
+    } else if (
+      byQuote?.provider === PADDLE_PROVIDER &&
+      byQuote.status === "creating" &&
+      byQuote.providerCheckoutId === transactionId
+    ) {
+      await opts.repo.completeCheckoutBinding({
+        quoteId: quote.id,
+        providerCheckoutId: transactionId,
+        checkoutUrl: `paddle-overlay:${transactionId}`,
+      });
+      byQuote = await opts.repo.getCheckoutBinding(quote.id);
+      byTxn = await opts.repo.getCheckoutBindingByProviderId(PADDLE_PROVIDER, transactionId);
+    }
+  }
+
+  if (
+    byQuote?.provider === PADDLE_PROVIDER &&
+    byTxn?.provider === PADDLE_PROVIDER &&
+    byQuote.status === "ready" &&
+    byTxn.status === "ready" &&
+    byQuote.quoteId === quote.id &&
+    byTxn.quoteId === quote.id &&
+    byQuote.providerCheckoutId === transactionId &&
+    byTxn.providerCheckoutId === transactionId
+  ) {
+    // adopted or already ready — continue fulfillment
+  } else if (byQuote?.status === "creating" || byTxn?.status === "creating") {
+    return fail(503, "checkout_in_progress", { orderId: transactionId, quoteId: quote.id });
+  } else if (!byQuote || !byTxn) {
+    return fail(409, "checkout_binding_missing", { orderId: transactionId, quoteId: quote.id });
+  } else {
+    return fail(409, "checkout_binding_mismatch", { orderId: transactionId, quoteId: quote.id });
+  }
+
   const taken = await opts.repo.getOrderByProvider(PADDLE_PROVIDER, transactionId);
   if (taken && taken.userId !== quote.userId) {
     return fail(409, "provider_order_conflict", { orderId: transactionId, quoteId: quote.id });
@@ -172,6 +240,7 @@ export async function handlePaddleWebhook(opts: {
       provider: PADDLE_PROVIDER,
       providerOrderId: transactionId,
       grantPro: opts.grantPro,
+      boundFulfillment: true,
     });
     if (!result.ok) {
       if (result.error === "quote_consumed" || result.error === "expired" || result.error === "PRICE_CHANGED") {
@@ -182,6 +251,9 @@ export async function handlePaddleWebhook(opts: {
             { recordNotificationId: notificationId }
           );
         }
+      }
+      if (result.error === "credit_conflict") {
+        return fail(409, "credit_conflict", { orderId: transactionId, quoteId: quote.id });
       }
       paddleLog("order_confirm_failed", { orderId: transactionId, quoteId: quote.id, event: result.error });
       return fail(503, result.error, { orderId: transactionId, quoteId: quote.id });

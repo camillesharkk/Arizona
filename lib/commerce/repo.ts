@@ -55,6 +55,13 @@ export type CommerceRepo = {
   listCreditsForQuote(quoteId: string): Promise<ReferralCreditRow[]>;
   expireReservations(nowIso: string): Promise<void>;
   redeemReservedCredits(opts: { quoteId: string; orderId: string; at: string }): Promise<boolean>;
+  redeemQuotedCredits(opts: {
+    userId: string;
+    quoteId: string;
+    creditIds: string[];
+    orderId: string;
+    at: string;
+  }): Promise<boolean>;
   redeemReservedCredit(opts: { creditId: string; quoteId: string; orderId: string; at: string }): Promise<boolean>;
   restoreRedeemedCreditsForOrder(opts: { orderId: string; at: string }): Promise<number>;
   restoreRedeemedCredit(opts: { creditId: string; orderId: string; at: string }): Promise<boolean>;
@@ -74,6 +81,7 @@ export type CommerceRepo = {
   insertQuote(row: PricingQuoteRow): Promise<void>;
   getQuote(id: string): Promise<PricingQuoteRow | null>;
   consumeQuote(id: string, providerOrderId: string, at: string): Promise<boolean>;
+  consumeQuoteForBoundFulfillment(id: string, providerOrderId: string, at: string): Promise<boolean>;
   expireQuote(id: string): Promise<void>;
 
   insertOrder(row: CommerceOrderRow): Promise<void>;
@@ -97,6 +105,10 @@ export type CommerceRepo = {
   completeRefundRequest(id: string, at: string): Promise<void>;
 
   getCheckoutBinding(quoteId: string): Promise<ProviderCheckoutBinding | null>;
+  getCheckoutBindingByProviderId(
+    provider: string,
+    providerCheckoutId: string
+  ): Promise<ProviderCheckoutBinding | null>;
   claimCheckoutBinding(opts: {
     quoteId: string;
     provider: string;
@@ -105,6 +117,12 @@ export type CommerceRepo = {
   }): Promise<{ created: boolean; binding: ProviderCheckoutBinding }>;
   completeCheckoutBinding(opts: {
     quoteId: string;
+    providerCheckoutId: string;
+    checkoutUrl: string;
+  }): Promise<ProviderCheckoutBinding | null>;
+  adoptCreatingCheckoutBinding(opts: {
+    quoteId: string;
+    provider: string;
     providerCheckoutId: string;
     checkoutUrl: string;
   }): Promise<ProviderCheckoutBinding | null>;
@@ -336,12 +354,15 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
     async expireReservations(nowIso) {
       const now = new Date(nowIso).getTime();
       for (const c of db.credits) {
-        if (c.status === "reserved" && c.reservedUntil && new Date(c.reservedUntil).getTime() <= now) {
-          c.status = "available";
-          c.reservedAt = null;
-          c.reservedQuoteId = null;
-          c.reservedUntil = null;
-        }
+        if (c.status !== "reserved" || !c.reservedUntil || new Date(c.reservedUntil).getTime() > now) continue;
+        const binding = c.reservedQuoteId
+          ? db.checkoutBindings.find((b) => b.quoteId === c.reservedQuoteId)
+          : undefined;
+        if (binding && (binding.status === "ready" || binding.status === "creating")) continue;
+        c.status = "available";
+        c.reservedAt = null;
+        c.reservedQuoteId = null;
+        c.reservedUntil = null;
       }
       for (const q of db.quotes) {
         if (q.status === "open" && new Date(q.expiresAt).getTime() <= now) q.status = "expired";
@@ -354,6 +375,27 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
         c.status = "redeemed";
         c.redeemedAt = opts.at;
         c.redeemedOrderId = opts.orderId;
+      }
+      return true;
+    },
+    async redeemQuotedCredits(opts) {
+      const ids = [...new Set(opts.creditIds)];
+      if (!ids.length) return true;
+      if (ids.length !== opts.creditIds.length) return false;
+      const rows = ids.map((id) => db.credits.find((c) => c.id === id) ?? null);
+      if (rows.some((c) => !c || c.userId !== opts.userId)) return false;
+      for (const c of rows) {
+        const reservedHere = c!.status === "reserved" && c!.reservedQuoteId === opts.quoteId;
+        const already = c!.status === "redeemed" && c!.redeemedOrderId === opts.orderId;
+        if (!reservedHere && !already) return false;
+      }
+      for (const c of rows) {
+        if (c!.status === "redeemed" && c!.redeemedOrderId === opts.orderId) continue;
+        c!.status = "redeemed";
+        c!.redeemedAt = opts.at;
+        c!.redeemedOrderId = opts.orderId;
+        c!.reservedAt = null;
+        c!.reservedUntil = null;
       }
       return true;
     },
@@ -464,6 +506,14 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
       q.providerOrderId = providerOrderId;
       return true;
     },
+    async consumeQuoteForBoundFulfillment(id, providerOrderId, at) {
+      const q = db.quotes.find((x) => x.id === id);
+      if (!q || (q.status !== "open" && q.status !== "expired")) return false;
+      q.status = "consumed";
+      q.consumedAt = at;
+      q.providerOrderId = providerOrderId;
+      return true;
+    },
     async expireQuote(id) {
       const q = db.quotes.find((x) => x.id === id);
       if (q && q.status === "open") q.status = "expired";
@@ -532,6 +582,14 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
     async getCheckoutBinding(quoteId) {
       return db.checkoutBindings.find((b) => b.quoteId === quoteId) ?? null;
     },
+    async getCheckoutBindingByProviderId(provider, providerCheckoutId) {
+      if (!providerCheckoutId) return null;
+      return (
+        db.checkoutBindings.find(
+          (b) => b.provider === provider && b.providerCheckoutId === providerCheckoutId
+        ) ?? null
+      );
+    },
     async claimCheckoutBinding(opts) {
       return withLock(`checkout:${opts.quoteId}`, () => {
         const existing = db.checkoutBindings.find((b) => b.quoteId === opts.quoteId);
@@ -568,6 +626,29 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
     async completeCheckoutBinding(opts) {
       return withLock(`checkout:${opts.quoteId}`, () => {
         const row = db.checkoutBindings.find((b) => b.quoteId === opts.quoteId && b.status === "creating");
+        if (!row) return null;
+        row.providerCheckoutId = opts.providerCheckoutId;
+        row.checkoutUrl = opts.checkoutUrl;
+        row.status = "ready";
+        return row;
+      });
+    },
+    async adoptCreatingCheckoutBinding(opts) {
+      return withLock(`checkout:${opts.quoteId}`, () => {
+        const taken = db.checkoutBindings.find(
+          (b) =>
+            b.provider === opts.provider &&
+            b.providerCheckoutId === opts.providerCheckoutId &&
+            b.quoteId !== opts.quoteId
+        );
+        if (taken) return null;
+        const row = db.checkoutBindings.find(
+          (b) =>
+            b.quoteId === opts.quoteId &&
+            b.provider === opts.provider &&
+            b.status === "creating" &&
+            !b.providerCheckoutId
+        );
         if (!row) return null;
         row.providerCheckoutId = opts.providerCheckoutId;
         row.checkoutUrl = opts.checkoutUrl;

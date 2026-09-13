@@ -285,10 +285,10 @@ export const sources: Record<string, Source> = {
     source_type: "Statute",
     title: "Laws 2026, Chapter 31 (SB 1479)",
     reference:
-      "Arizona Legislature — Laws 2026, Chapter 31 (SB 1479). Approved April 9, 2026. General effective date September 12, 2026 (azleg.gov General Effective Dates; no emergency clause in the chaptered act). Amends A.R.S. §§ 41-254 and 41-263 (among other titles). Not in force on 2026-09-02.",
+      "Arizona Legislature — Laws 2026, Chapter 31 (SB 1479). Approved April 9, 2026. General effective date September 12, 2026 (57th Legislature, Second Regular Session). Amends A.R.S. §§ 41-254 and 41-263 (among other titles). In force for notarial acts on or after September 12, 2026. The online A.R.S. compilation may lag; use this chaptered session law until the compilation is updated.",
     url: "https://www.azleg.gov/legtext/57leg/2r/laws/0031.htm",
-    last_verified_at: "2026-09-01",
-    last_checked_at: "2026-09-01",
+    last_verified_at: "2026-09-13",
+    last_checked_at: "2026-09-13",
   },
 };
 

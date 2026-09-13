@@ -414,7 +414,14 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
             reserved_at = null,
             reserved_quote_id = null,
             reserved_until = null
-        where status = 'reserved' and reserved_until is not null and reserved_until <= ${nowIso}::timestamptz
+        where status = 'reserved'
+          and reserved_until is not null
+          and reserved_until <= ${nowIso}::timestamptz
+          and not exists (
+            select 1 from provider_checkout_bindings b
+            where b.quote_id = referral_credits.reserved_quote_id
+              and b.status in ('ready', 'creating')
+          )
       `;
       await sql`
         update pricing_quotes
@@ -432,6 +439,40 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
         returning id
       `;
       return rows.length > 0;
+    },
+    async redeemQuotedCredits(opts) {
+      const ids = [...new Set(opts.creditIds)];
+      if (!ids.length) return true;
+      if (ids.length !== opts.creditIds.length) return false;
+      return sql.begin(async (tx: any) => {
+        const locked = await tx`
+          select id from referral_credits
+          where id in ${tx(ids)}
+            and user_id = ${opts.userId}
+            and (
+              (status = 'reserved' and reserved_quote_id = ${opts.quoteId})
+              or (status = 'redeemed' and redeemed_order_id = ${opts.orderId})
+            )
+          for update
+        `;
+        if (locked.length !== ids.length) return false;
+        const updated = await tx`
+          update referral_credits
+          set status = 'redeemed',
+              redeemed_at = ${opts.at},
+              redeemed_order_id = ${opts.orderId},
+              reserved_at = null,
+              reserved_until = null
+          where id in ${tx(ids)}
+            and user_id = ${opts.userId}
+            and (
+              (status = 'reserved' and reserved_quote_id = ${opts.quoteId})
+              or (status = 'redeemed' and redeemed_order_id = ${opts.orderId})
+            )
+          returning id
+        `;
+        return updated.length === ids.length;
+      });
     },
     async redeemReservedCredit(opts) {
       const rows = await sql`
@@ -585,6 +626,15 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
       `;
       return rows.length > 0;
     },
+    async consumeQuoteForBoundFulfillment(id, providerOrderId, at) {
+      const rows = await sql`
+        update pricing_quotes
+        set status = 'consumed', consumed_at = ${at}, provider_order_id = ${providerOrderId}
+        where id = ${id} and status in ('open', 'expired')
+        returning id
+      `;
+      return rows.length > 0;
+    },
     async expireQuote(id) {
       await sql`update pricing_quotes set status = 'expired' where id = ${id} and status = 'open'`;
     },
@@ -684,6 +734,15 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
       const rows = await sql`select * from provider_checkout_bindings where quote_id = ${quoteId} limit 1`;
       return rows[0] ? mapBinding(rows[0] as Record<string, unknown>) : null;
     },
+    async getCheckoutBindingByProviderId(provider, providerCheckoutId) {
+      if (!providerCheckoutId) return null;
+      const rows = await sql`
+        select * from provider_checkout_bindings
+        where provider = ${provider} and provider_checkout_id = ${providerCheckoutId}
+        limit 1
+      `;
+      return rows[0] ? mapBinding(rows[0] as Record<string, unknown>) : null;
+    },
     async claimCheckoutBinding(opts) {
       const inserted = await sql`
         insert into provider_checkout_bindings (quote_id, provider, status, expires_at, created_at)
@@ -730,6 +789,28 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
             checkout_url = ${opts.checkoutUrl},
             status = 'ready'
         where quote_id = ${opts.quoteId} and status = 'creating'
+        returning *
+      `;
+      return rows[0] ? mapBinding(rows[0] as Record<string, unknown>) : null;
+    },
+    async adoptCreatingCheckoutBinding(opts) {
+      const taken = await sql`
+        select quote_id from provider_checkout_bindings
+        where provider = ${opts.provider}
+          and provider_checkout_id = ${opts.providerCheckoutId}
+          and quote_id <> ${opts.quoteId}
+        limit 1
+      `;
+      if (taken[0]) return null;
+      const rows = await sql`
+        update provider_checkout_bindings
+        set provider_checkout_id = ${opts.providerCheckoutId},
+            checkout_url = ${opts.checkoutUrl},
+            status = 'ready'
+        where quote_id = ${opts.quoteId}
+          and provider = ${opts.provider}
+          and status = 'creating'
+          and provider_checkout_id is null
         returning *
       `;
       return rows[0] ? mapBinding(rows[0] as Record<string, unknown>) : null;

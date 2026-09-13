@@ -24,14 +24,34 @@ export async function POST(req: Request) {
   const repo = await getCommerceRepo();
   const quote = await repo.getQuote(body.data.quoteId);
   if (!quote || quote.userId !== session.id) return NextResponse.json({ error: "quote_not_found" }, { status: 404 });
+
+  if (quote.currency !== CURRENCY) return NextResponse.json({ error: "currency_mismatch" }, { status: 400 });
+  if (!isPositiveCents(quote.finalPriceCents)) return NextResponse.json({ error: "price_invalid" }, { status: 400 });
+
+  if (isPaddleProvider()) {
+    const cfg = getPaddleCheckoutConfig();
+    if (!cfg.ok) {
+      return NextResponse.json({ error: cfg.error, missing: cfg.missing }, { status: 503 });
+    }
+    const paddle = await ensurePaddleCheckout({
+      repo,
+      quote,
+      config: cfg.config,
+    });
+    if (!paddle.ok) return NextResponse.json({ error: paddle.error }, { status: paddle.status });
+    return NextResponse.json({
+      transactionId: paddle.transactionId,
+      quoteId: paddle.quoteId,
+      finalPriceCents: paddle.finalPriceCents,
+      provider: "paddle",
+    });
+  }
+
   const valid = await assertQuoteStillValid(repo, quote);
   if (!valid.ok) {
     await abandonQuote(repo, quote.id);
     return NextResponse.json({ error: valid.error }, { status: valid.error === "PRICE_CHANGED" ? 409 : 400 });
   }
-
-  if (quote.currency !== CURRENCY) return NextResponse.json({ error: "currency_mismatch" }, { status: 400 });
-  if (!isPositiveCents(quote.finalPriceCents)) return NextResponse.json({ error: "price_invalid" }, { status: 400 });
 
   if (isLemonProvider()) {
     const cfg = getLemonConfig();
@@ -52,25 +72,6 @@ export async function POST(req: Request) {
       url: lemon.url,
       quoteId: lemon.quoteId,
       finalPriceCents: lemon.finalPriceCents,
-    });
-  }
-
-  if (isPaddleProvider()) {
-    const cfg = getPaddleCheckoutConfig();
-    if (!cfg.ok) {
-      return NextResponse.json({ error: cfg.error, missing: cfg.missing }, { status: 503 });
-    }
-    const paddle = await ensurePaddleCheckout({
-      repo,
-      quote,
-      config: cfg.config,
-    });
-    if (!paddle.ok) return NextResponse.json({ error: paddle.error }, { status: paddle.status });
-    return NextResponse.json({
-      transactionId: paddle.transactionId,
-      quoteId: paddle.quoteId,
-      finalPriceCents: paddle.finalPriceCents,
-      provider: "paddle",
     });
   }
 

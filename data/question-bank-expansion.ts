@@ -467,12 +467,12 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_feedback: {
       A: "Subsection (C) relaxes ID and journal signature, not the duty to keep a journal.",
       B: "Correct. First-time ID in the six-month window; later visits in that window need not repeat ID or the journal signature.",
-      C: "Section 41-319(C) does not impose hourly thumbprints. (A later 2026 thumbprint amendment is a different statute and effective date.)",
+      C: "Section 41-319(C) does not impose hourly thumbprints. The current deed/POA journal thumbprint rule is A.R.S. § 41-254(C), effective September 12, 2026, not this subsection.",
       D: "The statute does not require a new journal each visit.",
     },
     source_id: "ars_41_319",
     source_reference: "A.R.S. § 41-319(C)",
-    last_verified_at: "2026-09-02",
+    last_verified_at: "2026-09-13",
     is_free: false,
   },
   {
@@ -769,25 +769,25 @@ export const expansionDrafts: ExpansionDraft[] = [
     topic: "new-laws",
     difficulty: "medium",
     question_text:
-      "On September 2, 2026, a customer asks an Arizona notary to take a right thumbprint in the journal for an in-person deed acknowledgment 'because SB 1479 already requires it.' As of that date, which statement is correct?",
-    option_a: "Laws 2026, Chapter 31 is already in force because the governor signed it on April 9, 2026",
+      "After September 12, 2026, a customer appears in person for an Arizona notary to acknowledge a deed (not a listed exception) and asks whether current law requires a journal thumbprint. Which statement is correct?",
+    option_a: "No journal thumbprint is required because Laws 2026, Chapter 31 (SB 1479) is only a future proposal",
     option_b:
-      "The Chapter 31 amendments to A.R.S. § 41-254 (including the deed/power-of-attorney journal thumbprint) take effect September 12, 2026; they are not current law on September 2, 2026, so the notary should not treat that thumbprint rule as already effective",
+      "The notary must require the party signing to place the party's right thumbprint in the notary's journal, or if the right thumb is unavailable use the left thumb or any available finger and so indicate, or if the party is physically unable to provide a thumbprint or fingerprint so indicate and explain that physical condition",
     option_c: "A study site's last_verified_at date is the statute's effective date",
-    option_d: "The customer may pick any effective date",
+    option_d: "The customer may waive the journal thumbprint",
     correct_option: "B",
     explanation:
-      "Laws 2026, Chapter 31 (SB 1479) was approved April 9, 2026, and has a general effective date of September 12, 2026 (no emergency clause). A.R.S. § 1-241 controls when a specified-day act takes effect. The thumbprint language is in the Chapter 31 amendment to § 41-254 and is not in force on September 2, 2026. Signing date, a study last-verified date, and a customer's preference are not substitutes for that effective date.",
+      "Laws 2026, Chapter 31 (SB 1479) amended A.R.S. § 41-254 effective September 12, 2026. That is now current law. Subsection (C) requires a right-thumbprint journal entry for a deed, quitclaim deed, deed of trust, other document affecting real property, or a power of attorney, with left-thumb/other-finger and physical-inability notation rules. Subsection (D) lists exceptions (trustee's deed from judicial or nonjudicial foreclosure, deed of release and reconveyance, and a compliant remote act under § 41-263). Signing date and a study last-verified date are not substitutes for that effective date.",
     option_feedback: {
-      A: "The April 9 approval is not the September 12 effective date.",
-      B: "Correct. On September 2, 2026, the Chapter 31 thumbprint amendment is not yet in force.",
+      A: "Chapter 31 took effect September 12, 2026, and is current law.",
+      B: "Correct. Current A.R.S. § 41-254(C) (as amended effective September 12, 2026) requires that journal thumbprint or the statutory alternative notation.",
       C: "last_verified_at is a study-check date, not a statutory effective date.",
-      D: "Customers do not set effective dates.",
+      D: "The customer cannot waive a statutory journal requirement.",
     },
     source_id: "az_sb_1479_2026",
     source_reference:
-      "Laws 2026, Chapter 31 (SB 1479) § 6 (amending A.R.S. § 41-254), effective September 12, 2026; A.R.S. § 1-241 (not in force on 2026-09-02)",
-    last_verified_at: "2026-09-02",
+      "Laws 2026, Chapter 31 (SB 1479) § 6 (amending A.R.S. § 41-254), effective September 12, 2026; A.R.S. § 1-241",
+    last_verified_at: "2026-09-13",
     is_free: false,
   },
   {
@@ -795,7 +795,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     topic: "new-laws",
     difficulty: "hard",
     question_text:
-      "Beginning September 12, 2026, when Laws 2026, Chapter 31 takes effect, a notary performing an in-person notarization of a deed (not a listed exception) must, in addition to personal appearance:",
+      "Under current Arizona law (Laws 2026, Chapter 31, effective September 12, 2026), a notary performing an in-person notarization of a deed (not a listed exception) must, in addition to personal appearance:",
     option_a: "Skip the journal because a deed is recorded",
     option_b:
       "Require the party signing to place the party's right thumbprint in the notary's journal, or if the right thumb is unavailable use the left thumb or any available finger and so indicate, or if the party is physically unable to provide a thumbprint or fingerprint so indicate and explain that condition",
@@ -803,17 +803,17 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "Mail the deed to the Governor instead of completing a certificate",
     correct_option: "B",
     explanation:
-      "Chapter 31 § 6 adds A.R.S. § 41-254(C)–(D), effective September 12, 2026. Subsection (C) requires a right-thumbprint journal entry for a deed, quitclaim deed, deed of trust, other document that affects real property, or a power of attorney, with left-thumb/other-finger and physical-inability notation rules. Subsection (D) excepts a trustee's deed from judicial or nonjudicial foreclosure, a deed of release and reconveyance, and a compliant remote act under § 41-263 if the journal includes the individual's identification credential number and the audiovisual recording is retained at least seven years. This item is a future-effective rule; it is not current law before September 12, 2026.",
+      "Chapter 31 § 6 added A.R.S. § 41-254(C)–(D), effective September 12, 2026. That is now current law. Subsection (C) requires a right-thumbprint journal entry for a deed, quitclaim deed, deed of trust, other document that affects real property, or a power of attorney, with left-thumb/other-finger and physical-inability notation rules. Subsection (D) excepts a trustee's deed from judicial or nonjudicial foreclosure, a deed of release and reconveyance, and a compliant remote act under § 41-263 if the journal includes the individual's identification credential number and the audiovisual recording is retained at least seven years.",
     option_feedback: {
       A: "Recording does not waive the Chapter 31 journal-thumbprint duty for covered in-person deeds.",
-      B: "Correct. Beginning September 12, 2026, § 41-254(C) (as amended) requires that journal thumbprint (or the statutory alternative notation).",
+      B: "Correct. Current A.R.S. § 41-254(C) (effective September 12, 2026) requires that journal thumbprint (or the statutory alternative notation).",
       C: "The RON exception in new § 41-254(D)(3) has specific journal and seven-year recording conditions; it is not automatic.",
       D: "The Governor's office is not a substitute for the notarial certificate.",
     },
     source_id: "az_sb_1479_2026",
     source_reference:
-      "Laws 2026, Chapter 31 (SB 1479) § 6, adding A.R.S. § 41-254(C)–(D), effective September 12, 2026 (future-effective as of 2026-09-02)",
-    last_verified_at: "2026-09-02",
+      "Laws 2026, Chapter 31 (SB 1479) § 6, adding A.R.S. § 41-254(C)–(D), effective September 12, 2026",
+    last_verified_at: "2026-09-13",
     effective_from: "2026-09-12",
     is_free: false,
   },
@@ -1017,7 +1017,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     topic: "electronic-ron",
     difficulty: "hard",
     question_text:
-      "When a notarial act is performed under A.R.S. § 41-263, which pair of rules currently applies (as of September 2, 2026, before Laws 2026, Chapter 31 takes effect)?",
+      "When a notarial act is performed under A.R.S. § 41-263, which pair of rules currently applies to the recording and certificate (the general RON retention rule, not the § 41-254(D) exception)?",
     option_a: "No recording is required, and the certificate must hide that technology was used",
     option_b:
       "An audiovisual recording of the performance of the notarial act must be created and, unless a different period is required by SOS rule, retained at least five years; the certificate must indicate that the notarial act was performed using communication technology",
@@ -1025,7 +1025,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "The certificate may never mention communication technology",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-263(B)(3) requires an audiovisual recording of the performance of the notarial act. Section 41-263(E), as currently in force, requires retention for at least five years after the recording is made unless a different period is required by rule under subsection (G)(4). Section 41-263(C) requires the certificate to indicate that communication technology was used. A sufficient short-form addition is substantially: 'This notarial act involved the use of communication technology' (§ 41-263(D)(2)). Chapter 31's later seven-year exception tied to new § 41-254 is not in force on September 2, 2026, and is not this item.",
+      "A.R.S. § 41-263(B)(3) requires an audiovisual recording of the performance of the notarial act. Section 41-263(E) requires retention for at least five years after the recording is made unless a different period is required by rule under subsection (G)(4). Section 41-263(C) requires the certificate to indicate that communication technology was used. A sufficient short-form addition is substantially: 'This notarial act involved the use of communication technology' (§ 41-263(D)(2)). The seven-year audiovisual-recording condition in current § 41-254(D) applies only to the listed remote-act exception to the journal-thumbprint rule; it is not this item's general § 41-263 retention rule.",
     option_feedback: {
       A: "Recording is required, and the certificate must indicate communication technology.",
       B: "Correct. Create the recording, keep it at least five years unless a rule sets a different period, and say so on the certificate.",
@@ -1033,8 +1033,8 @@ export const expansionDrafts: ExpansionDraft[] = [
       D: "Section 41-263(C) requires the certificate to indicate use of communication technology.",
     },
     source_id: "ars_41_263",
-    source_reference: "A.R.S. § 41-263(B)(3), (C), (D)(2), (E) (as in force 2026-09-02)",
-    last_verified_at: "2026-09-02",
+    source_reference: "A.R.S. § 41-263(B)(3), (C), (D)(2), (E); A.R.S. § 41-254(D) (thumbprint exception, not this item)",
+    last_verified_at: "2026-09-13",
     is_free: false,
   },
 ];

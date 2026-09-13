@@ -4,7 +4,12 @@ import { getLawChange, lawStatus } from "@/data/laws";
 import { getSource } from "@/data/sources";
 
 export function generateStaticParams() {
-  return [{ slug: "effective-date-discipline" }, { slug: "ron-is-regulated" }, { slug: "fee-cap-reminders" }];
+  return [
+    { slug: "effective-date-discipline" },
+    { slug: "ron-is-regulated" },
+    { slug: "fee-cap-reminders" },
+    { slug: "sb1479-journal-thumbprint" },
+  ];
 }
 
 export default async function LawDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -14,7 +19,7 @@ export default async function LawDetailPage({ params }: { params: Promise<{ slug
   const src = getSource(c.source_id);
   return (
     <main className="wrap hero">
-      <p className="kicker">Law detail · {lawStatus(c)}</p>
+      <p className="kicker">Law detail · {lawStatus(c, "2026-09-13")}</p>
       <h1>{c.title}</h1>
       <p>
         Effective {c.effective_from}. {c.who_affected}

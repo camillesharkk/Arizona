@@ -14,8 +14,8 @@ export default function NewLawsPage() {
       <p className="kicker">New Laws</p>
       <h1>Arizona Notary Law Changes {examConfig.year} — What Changed and What to Study</h1>
       <p className="lede">
-        Status is computed from effective dates vs last verified ({examConfig.lastVerifiedAt}), not
-        baked into the template.
+        Status is computed from each statutory effective date (as of 2026-09-13), not baked into the
+        template.
       </p>
       <div className="row">
         <Link className="btn btn-primary" href="/arizona/questions/new-laws/">
@@ -26,7 +26,7 @@ export default function NewLawsPage() {
         </a>
       </div>
       {lawChanges.map((c) => {
-        const status = lawStatus(c);
+        const status = lawStatus(c, "2026-09-13");
         const src = getSource(c.source_id);
         return (
           <article key={c.slug} className="card" style={{ marginTop: 18 }}>

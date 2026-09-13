@@ -206,6 +206,7 @@ export const chapters: StudyChapter[] = [
       "Official SOS and statute text beat social posts.",
       "Practice questions should be regenerated when a source changes.",
       "Commission term does not freeze the statutes.",
+      "Laws 2026, Chapter 31 (SB 1479) journal-thumbprint rules for covered deeds and powers of attorney are current law as of September 12, 2026.",
     ],
     source_id: "sos_exam",
   },

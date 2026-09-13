@@ -280,7 +280,7 @@ const drafts: Draft[] = [
     option_d: "Appear by audio-only telephone or by a pre-recorded video for every act",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-254(A) requires the individual making the statement or executing the signature to appear personally before the notarial officer. A.R.S. § 41-263(A) allows a remotely located individual to comply with § 41-254 by using communication technology. Ordinary mail, an audio-only telephone call, or a pre-recorded video is not that statutory appearance. This item does not apply SB 1479 thumbprint rules, which were not yet in force on 2026-09-01.",
+      "A.R.S. § 41-254(A) requires the individual making the statement or executing the signature to appear personally before the notarial officer. A.R.S. § 41-263(A) allows a remotely located individual to comply with § 41-254 by using communication technology. Ordinary mail, an audio-only telephone call, or a pre-recorded video is not that statutory appearance. This item tests appearance only. Current § 41-254(C) journal-thumbprint rules (effective September 12, 2026) apply to listed real-property and power-of-attorney documents and are not this question.",
     option_feedback: {
       A: "Mail without personal appearance does not satisfy A.R.S. § 41-254(A).",
       B: "Correct. Section 41-254(A) requires personal appearance; § 41-263(A) is the authorized remote path.",
@@ -289,7 +289,7 @@ const drafts: Draft[] = [
     },
     source_id: "ars_41_254",
     source_reference: "A.R.S. § 41-254(A); A.R.S. § 41-263(A)",
-    last_verified_at: "2026-09-01",
+    last_verified_at: "2026-09-13",
     is_free: true,
   },
   {
@@ -827,17 +827,17 @@ const drafts: Draft[] = [
     option_d: "Ask the customer which version of the statute to follow",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-269(E) sets a four-year commission term; it does not freeze the rest of Title 41 for that term. A.R.S. § 1-241 provides that an act that by its terms takes effect on a specified day takes effect at noon on that day unless the act provides otherwise. A.R.S. § 1-244 provides that no statute is retroactive unless expressly declared. Example as of 2026-09-01: Laws 2026, Chapter 31 (SB 1479) was approved April 9, 2026, with a general effective date of September 12, 2026. It is signed but not yet in force on 2026-09-01, so its later journal/thumbprint amendments (including to § 41-254) are not current law for an act performed on 2026-09-01. A last-verified date on a study item is not a statute's effective date.",
+      "A.R.S. § 41-269(E) sets a four-year commission term; it does not freeze the rest of Title 41 for that term. A.R.S. § 1-241 provides that an act that by its terms takes effect on a specified day takes effect at noon on that day unless the act provides otherwise. A.R.S. § 1-244 provides that no statute is retroactive unless expressly declared. Example: Laws 2026, Chapter 31 (SB 1479) was approved April 9, 2026, and took effect September 12, 2026. For a notarial act on or after that date, the Chapter 31 amendments (including the § 41-254 journal-thumbprint rules) are current law. For an act performed before September 12, 2026, those amendments did not yet apply. A last-verified date on a study item is not a statute's effective date.",
     option_feedback: {
       A: "The four-year term in A.R.S. § 41-269(E) does not freeze later amendments.",
       B: "Correct. Apply the law in force on the date of the notarial act; watch the statutory effective date (A.R.S. § 1-241).",
-      C: "A signed act with a later effective date is not current before that date. Example: SB 1479 / Laws 2026, Ch. 31, effective September 12, 2026.",
+      C: "A signed act is not current before its effective date. SB 1479 / Laws 2026, Ch. 31 became current at noon on September 12, 2026.",
       D: "Customers do not choose the governing statute.",
     },
     source_id: "ars_1_241",
     source_reference:
-      "A.R.S. § 1-241; A.R.S. § 1-244; A.R.S. § 41-269(E); Laws 2026, Chapter 31 (SB 1479), effective September 12, 2026 (not in force 2026-09-01)",
-    last_verified_at: "2026-09-01",
+      "A.R.S. § 1-241; A.R.S. § 1-244; A.R.S. § 41-269(E); Laws 2026, Chapter 31 (SB 1479), effective September 12, 2026",
+    last_verified_at: "2026-09-13",
     is_free: true,
   },
   {
@@ -877,17 +877,17 @@ const drafts: Draft[] = [
     option_d: "A practice bank's effective_from field is the legal effective date of the statute",
     correct_option: "B",
     explanation:
-      "A.R.S. § 1-241 controls when an act that specifies a day takes effect (noon on that day unless otherwise provided). A.R.S. § 1-244 forbids treating a statute as retroactive unless the statute expressly so declares. Signing date, publication date, a study last-verified date, and a question-bank effective_from field are not substitutes for the act's effective date. Illustration as of 2026-09-01: Laws 2026, Chapter 31 (SB 1479) was approved April 9, 2026 and is effective September 12, 2026. On 2026-09-01 it is not yet current law; do not apply its later amendments (including thumbprint/journal changes) to an act performed before September 12, 2026.",
+      "A.R.S. § 1-241 controls when an act that specifies a day takes effect (noon on that day unless otherwise provided). A.R.S. § 1-244 forbids treating a statute as retroactive unless the statute expressly so declares. Signing date, publication date, a study last-verified date, and a question-bank effective_from field are not substitutes for the act's effective date. Illustration: Laws 2026, Chapter 31 (SB 1479) was approved April 9, 2026 and took effect September 12, 2026. An act performed before that date did not use the Chapter 31 thumbprint/journal amendments; an act performed on or after September 12, 2026, must apply those current rules.",
     option_feedback: {
-      A: "The governor's signature is not the same as the statutory effective date. SB 1479 / Laws 2026, Ch. 31 is effective September 12, 2026.",
-      B: "Correct. Future effective date means not currently effective; apply the law in force on the date of the act (A.R.S. § 1-241, § 1-244).",
+      A: "The governor's signature is not the same as the statutory effective date. SB 1479 / Laws 2026, Ch. 31 became current on September 12, 2026.",
+      B: "Correct. A future effective date is not current before that date; apply the law in force on the date of the act (A.R.S. § 1-241, § 1-244).",
       C: "last_verified_at records when a study item was checked; it is not a statute's effective date.",
       D: "A question-bank effective_from field is not Arizona's statutory effective date.",
     },
     source_id: "az_sb_1479_2026",
     source_reference:
-      "Laws 2026, Chapter 31 (SB 1479), effective September 12, 2026; A.R.S. § 1-241; A.R.S. § 1-244 (not in force on 2026-09-01)",
-    last_verified_at: "2026-09-01",
+      "Laws 2026, Chapter 31 (SB 1479), effective September 12, 2026; A.R.S. § 1-241; A.R.S. § 1-244",
+    last_verified_at: "2026-09-13",
     is_free: true,
   },
   {
@@ -1067,17 +1067,17 @@ const drafts: Draft[] = [
     option_d: "Wait until a signer complains before checking the official text",
     correct_option: "B",
     explanation:
-      "Legal text and effective dates come from the Arizona Legislature (current A.R.S. and session laws). A.R.S. § 1-241 and § 1-244 control timing and non-retroactivity. SOS notary pages may describe filing, exam, and name/address operations, and some still display recodified/old section numbers; those pages do not replace the current Legislature numbering. Illustration as of 2026-09-01: Laws 2026, Chapter 31 (SB 1479) is effective September 12, 2026, so it is not current law today. This item does not ask which commercial study page to use.",
+      "Legal text and effective dates come from the Arizona Legislature (current A.R.S. and session laws). A.R.S. § 1-241 and § 1-244 control timing and non-retroactivity. SOS notary pages may describe filing, exam, and name/address operations, and some still display recodified/old section numbers; those pages do not replace the current Legislature numbering. Illustration: Laws 2026, Chapter 31 (SB 1479) took effect September 12, 2026, so its § 41-254 journal-thumbprint amendments are current law for acts on or after that date. The online A.R.S. compilation may lag a session; use the chaptered session law until the compilation is updated. This item does not ask which commercial study page to use.",
     option_feedback: {
       A: "Unofficial recaps are not the official text or effective date.",
       B: "Correct. Current A.R.S. + stated effective date; SOS pages are operational only; apply law in force on the act date.",
-      C: "A chaptered session law still waits for its effective date (§ 1-241). SB 1479 is not in force on 2026-09-01.",
+      C: "A chaptered session law waits for its effective date (§ 1-241). After that date it is current. SB 1479 became current on September 12, 2026.",
       D: "A complaint is not how a notary determines current law.",
     },
     source_id: "az_sb_1479_2026",
     source_reference:
-      "Laws 2026, Chapter 31 (SB 1479), effective September 12, 2026; A.R.S. § 1-241; A.R.S. § 1-244; current A.R.S. on azleg.gov",
-    last_verified_at: "2026-09-01",
+      "Laws 2026, Chapter 31 (SB 1479), effective September 12, 2026; A.R.S. § 1-241; A.R.S. § 1-244; Arizona Legislature session law",
+    last_verified_at: "2026-09-13",
     is_free: false,
   },
   {

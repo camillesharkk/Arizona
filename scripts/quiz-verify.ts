@@ -59,7 +59,9 @@ function assertPresented(canonical: Question[], presented: Question[], maps: Rec
   if (presented.length !== canonical.length) fail(`${label}: presented ${presented.length} != picked ${canonical.length}`);
   const ids = presented.map((q) => q.question_id);
   if (new Set(ids).size !== ids.length) fail(`${label}: duplicate question ids`);
-  if (ids.includes("az-081")) fail(`${label}: included inactive az-081`);
+  if (ids.includes("az-081") && presented.some((q) => q.question_id === "az-081" && !isActiveQuestion(q))) {
+    fail(`${label}: included inactive az-081`);
+  }
   for (let i = 0; i < canonical.length; i++) {
     const orig = canonical[i];
     const shown = presented[i];
@@ -128,6 +130,10 @@ const az081 = allQuestions.find((q) => q.question_id === "az-081");
 if (!az081) fail("az-081 missing");
 else if (isActiveQuestion(az081, today)) fail("az-081 leaked into 2026-09-02 active pool");
 else ok("az-081 remains inactive on 2026-09-02");
+
+const afterSb1479 = new Date("2026-09-13T12:00:00.000Z");
+if (az081 && !isActiveQuestion(az081, afterSb1479)) fail("az-081 should be active on 2026-09-13 after SB 1479 took effect");
+else if (az081) ok("az-081 is active on 2026-09-13");
 
 const fullN = examConfig.questionCount;
 if (fullN !== 45) info(`examConfig.questionCount is ${fullN} (tests follow config)`);
@@ -206,15 +212,16 @@ if (freeQuick.some((q) => !q.is_free)) fail("Free Quick10 leaked a Pro-only item
 else ok("Free Quick10 has no Pro-only item");
 
 const proItem = publishedQuestions().find((q) => !q.is_free && isActiveQuestion(q));
-const inactive = allQuestions.find((q) => q.question_id === "az-081");
-if (!proItem || !inactive) fail("need an active Pro item and az-081 for stale session test");
+const inactiveTemplate = publishedQuestions().find((q) => q.is_free && isActiveQuestion(q));
+if (!proItem || !inactiveTemplate) fail("need an active Pro item and a free item for stale session test");
 else {
+  const inactive = { ...inactiveTemplate, question_id: "az-inactive-sentinel", effective_from: "2099-01-01" };
   const stale = [proItem, inactive, ...freeQuick.slice(0, 3)];
   const sanitized = buildQuickExam({ isPro: false, seed: 505, stale });
   const ids = sanitized.map((q) => q.question_id);
   if (sanitized.length !== 10) fail(`stale Quick10 rebuilt to ${sanitized.length}`);
   else if (new Set(ids).size !== 10) fail("stale Quick10 rebuild is not unique");
-  else if (ids.includes(proItem.question_id) || ids.includes("az-081") || sanitized.some((q) => !q.is_free || !isActiveQuestion(q))) {
+  else if (ids.includes(proItem.question_id) || ids.includes("az-inactive-sentinel") || sanitized.some((q) => !q.is_free || !isActiveQuestion(q))) {
     fail("stale Quick10 still contains Pro/inactive content");
   } else if (sanitized.some((q) => q.question_text === proItem.question_text)) {
     fail("stale Quick10 leaked Pro question text");

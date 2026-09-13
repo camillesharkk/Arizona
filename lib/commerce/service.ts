@@ -232,8 +232,15 @@ export async function createQuote(
   return { ok: true, quote, breakdown };
 }
 
+async function checkoutBindingHoldsCredits(repo: CommerceRepo, quoteId: string) {
+  const binding = await repo.getCheckoutBinding(quoteId);
+  return Boolean(binding && (binding.status === "ready" || binding.status === "creating"));
+}
+
 export async function abandonQuote(repo: CommerceRepo, quoteId: string) {
-  await repo.releaseCreditsForQuote(quoteId);
+  if (!(await checkoutBindingHoldsCredits(repo, quoteId))) {
+    await repo.releaseCreditsForQuote(quoteId);
+  }
   await repo.expireQuote(quoteId);
 }
 
@@ -248,7 +255,9 @@ export async function assertQuoteStillValid(
   }
   if (new Date(quote.expiresAt).getTime() <= now.getTime()) {
     await repo.expireQuote(quote.id);
-    await repo.releaseCreditsForQuote(quote.id);
+    if (!(await checkoutBindingHoldsCredits(repo, quote.id))) {
+      await repo.releaseCreditsForQuote(quote.id);
+    }
     return { ok: false, error: "expired" };
   }
   const snap = await eligibilitySnapshot(repo, quote.userId, now);
@@ -284,6 +293,23 @@ export async function assertQuoteStillValid(
   return { ok: true, breakdown };
 }
 
+export async function quotedCreditsBoundToQuote(
+  repo: CommerceRepo,
+  quote: PricingQuoteRow
+): Promise<{ ok: true } | { ok: false; error: "credit_conflict" }> {
+  const ids = quote.creditIds?.length ? quote.creditIds : quote.creditId ? [quote.creditId] : [];
+  if (!ids.length) return { ok: true };
+  if (new Set(ids).size !== ids.length) return { ok: false, error: "credit_conflict" };
+  for (const id of ids) {
+    const credit = await repo.getCredit(id);
+    if (!credit || credit.userId !== quote.userId) return { ok: false, error: "credit_conflict" };
+    const reservedHere = credit.status === "reserved" && credit.reservedQuoteId === quote.id;
+    const redeemedHere = credit.status === "redeemed" && credit.reservedQuoteId === quote.id;
+    if (!reservedHere && !redeemedHere) return { ok: false, error: "credit_conflict" };
+  }
+  return { ok: true };
+}
+
 export async function confirmPaidOrder(
   repo: CommerceRepo,
   opts: {
@@ -293,6 +319,7 @@ export async function confirmPaidOrder(
     providerOrderId: string;
     grantPro: GrantProFn;
     now?: Date;
+    boundFulfillment?: boolean;
   }
 ): Promise<{ ok: true; order: CommerceOrderRow; duplicate?: boolean } | { ok: false; error: string }> {
   const now = opts.now ?? new Date();
@@ -301,11 +328,37 @@ export async function confirmPaidOrder(
 
   const quote = await repo.getQuote(opts.quoteId);
   if (!quote || quote.userId !== opts.userId) return { ok: false, error: "quote_not_found" };
-  const valid = await assertQuoteStillValid(repo, quote, now);
-  if (!valid.ok) return { ok: false, error: valid.error };
+  const quoteCreditIds = quote.creditIds?.length ? quote.creditIds : quote.creditId ? [quote.creditId] : [];
+  if (!opts.boundFulfillment) {
+    const valid = await assertQuoteStillValid(repo, quote, now);
+    if (!valid.ok) return { ok: false, error: valid.error };
+  } else if (quote.status !== "open" && quote.status !== "expired") {
+    return { ok: false, error: quote.status === "consumed" ? "quote_consumed" : "expired" };
+  } else {
+    const held = await quotedCreditsBoundToQuote(repo, quote);
+    if (!held.ok) return { ok: false, error: held.error };
+  }
 
-  const consumed = await repo.consumeQuote(quote.id, opts.providerOrderId, now.toISOString());
-  if (!consumed) return { ok: false, error: "quote_consumed" };
+  let orderId: string = randomUUID();
+  if (opts.boundFulfillment && quoteCreditIds.length) {
+    const first = await repo.getCredit(quoteCreditIds[0]);
+    if (first?.status === "redeemed" && first.redeemedOrderId && first.reservedQuoteId === quote.id) {
+      orderId = first.redeemedOrderId;
+    }
+    const redeemed = await repo.redeemQuotedCredits({
+      userId: opts.userId,
+      quoteId: quote.id,
+      creditIds: quoteCreditIds,
+      orderId,
+      at: now.toISOString(),
+    });
+    if (!redeemed) return { ok: false, error: "credit_redeem_failed" };
+  }
+
+  if (!opts.boundFulfillment) {
+    const consumed = await repo.consumeQuote(quote.id, opts.providerOrderId, now.toISOString());
+    if (!consumed) return { ok: false, error: "quote_consumed" };
+  }
 
   const granted = await opts.grantPro({
     userId: opts.userId,
@@ -314,7 +367,7 @@ export async function confirmPaidOrder(
   });
 
   const order: CommerceOrderRow = {
-    id: randomUUID(),
+    id: orderId,
     userId: opts.userId,
     productCode: quote.productCode,
     quoteId: quote.id,
@@ -338,6 +391,14 @@ export async function confirmPaidOrder(
   };
   await repo.insertOrder(order);
 
+  if (opts.boundFulfillment) {
+    const consumed = await repo.consumeQuoteForBoundFulfillment(quote.id, opts.providerOrderId, now.toISOString());
+    if (!consumed) {
+      const existing = await repo.getOrderByProvider(opts.provider, opts.providerOrderId);
+      if (!existing) return { ok: false, error: "quote_consumed" };
+    }
+  }
+
   if (quote.newcomerDiscountApplied) {
     await repo.insertPromotionRedemption({
       id: randomUUID(),
@@ -357,8 +418,7 @@ export async function confirmPaidOrder(
     });
     await repo.markReferralDiscountRedeemed(opts.userId, order.id, now.toISOString());
   }
-  const quoteCreditIds = quote.creditIds?.length ? quote.creditIds : quote.creditId ? [quote.creditId] : [];
-  if (quoteCreditIds.length) {
+  if (!opts.boundFulfillment && quoteCreditIds.length) {
     const redeemed = await repo.redeemReservedCredits({
       quoteId: quote.id,
       orderId: order.id,
