@@ -127,6 +127,9 @@ export function SiteHeader() {
       </div>
       {open && <div className="nav-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />}
       <nav id="mobile-nav" className={open ? "nav-drawer open" : "nav-drawer"} aria-label="Mobile">
+        <Link className="btn btn-primary btn-wide drawer-start" href={paths.practice}>
+          Practice Test
+        </Link>
         {authStatus === "signed-in" && me ? (
           <div className="drawer-account">
             <p className="drawer-account-name">{me.name?.trim() || me.email}</p>
@@ -183,9 +186,6 @@ export function SiteHeader() {
             <Link href={paths.register}>Create Free Account</Link>
           </>
         ) : null}
-        <Link className="btn btn-primary btn-wide" href={paths.practice}>
-          Practice Test
-        </Link>
       </nav>
     </header>
   );

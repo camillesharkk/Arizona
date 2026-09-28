@@ -9,6 +9,7 @@ import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress, toggleFlag } from "@/lib/storage";
+import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
 
 export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [filter, setFilter] = useState<"all" | TopicId | "wrong" | "unanswered">(topic ?? "all");
@@ -21,6 +22,9 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [isPro, setIsPro] = useState(false);
   const sessionSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
+  const choiceLock = useRef<string | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   useEffect(() => subscribeProgress(() => setProgress(loadProgress())), []);
   useEffect(() => {
@@ -68,6 +72,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const safeIdx = Math.min(idx, Math.max(0, pool.length - 1));
   const q = pool[safeIdx];
   const selected = q ? answers[q.question_id] : undefined;
+  const lastQuestion = safeIdx + 1 >= pool.length;
   const answered = progress.answeredIds.length;
   const correctSession = pool.filter((item) => answers[item.question_id] === item.correct_option).length;
 
@@ -75,6 +80,15 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     if (!q) return display;
     return toOriginalRef.current[q.question_id]?.[display] ?? display;
   }
+
+  function goTo(nextIdx: number) {
+    cancelAutoAdvance();
+    setIdx(nextIdx);
+  }
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, [safeIdx, q?.question_id]);
 
   if (!q) {
     return <p>No questions match these filters.</p>;
@@ -90,6 +104,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
               className={`chip ${filter === id ? "on" : ""}`}
               type="button"
               onClick={() => {
+                cancelAutoAdvance();
                 setFilter(id);
                 setIdx(0);
                 setResumed(true);
@@ -104,6 +119,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
             className={`chip ${difficulty === d ? "on" : ""}`}
             type="button"
             onClick={() => {
+              cancelAutoAdvance();
               setDifficulty(d);
               setIdx(0);
             }}
@@ -120,7 +136,11 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
         index={safeIdx}
         selected={selected}
         reveal={!!selected}
+        lockChoice={!!selected}
+        headingRef={headingRef}
         onChoose={(l) => {
+          if (answers[q.question_id] || choiceLock.current === q.question_id) return;
+          choiceLock.current = q.question_id;
           setAnswers((a) => ({ ...a, [q.question_id]: l }));
           recordAnswer(q.question_id, l === q.correct_option);
           saveProgress({ lastQuestionId: q.question_id });
@@ -130,6 +150,9 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
             body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l) }),
           }).catch(() => undefined);
           setExplainOpen(true);
+          if (l === q.correct_option) {
+            scheduleAfterCorrect(!lastQuestion, () => setIdx((i) => Math.min(pool.length - 1, i + 1)));
+          }
         }}
         marked={progress.flaggedIds.includes(q.question_id)}
         onMark={() => toggleFlag(q.question_id)}
@@ -145,15 +168,16 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       <AccountInvite compact />
       <div className="sticky-nav">
         <div className="wrap row space">
-          <button className="btn btn-ghost" type="button" disabled={safeIdx === 0} onClick={() => setIdx(safeIdx - 1)}>
+          <button className="btn btn-ghost" type="button" disabled={safeIdx === 0} onClick={() => goTo(safeIdx - 1)}>
             Previous
           </button>
           <button
             className="btn btn-primary"
             type="button"
-            onClick={() => setIdx(Math.min(pool.length - 1, safeIdx + 1))}
+            disabled={lastQuestion}
+            onClick={() => goTo(Math.min(pool.length - 1, safeIdx + 1))}
           >
-            Next Question
+            {lastQuestion ? "Last question" : "Next Question"}
           </button>
         </div>
       </div>
