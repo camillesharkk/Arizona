@@ -1,6 +1,9 @@
 import type { LawChange } from "../lib/types.ts";
 import { examConfig } from "./exam-config.ts";
 
+/** Date used to compute effective vs upcoming on the public law pages. */
+export const lawIndexAsOf = "2026-09-28";
+
 export const lawChanges: LawChange[] = [
   {
     slug: "effective-date-discipline",
@@ -12,6 +15,7 @@ export const lawChanges: LawChange[] = [
     after: "Study materials and live practice must track statutory effective dates. Acts on or after a change follow the new rule.",
     impact: "When SOS or the legislature updates identification, RON, or fee rules, update your seal/journal/process the same day the rule takes effect—not at renewal.",
     source_id: "sos_exam",
+    onIndex: false,
   },
   {
     slug: "ron-is-regulated",
@@ -23,6 +27,7 @@ export const lawChanges: LawChange[] = [
     after: "Authorized RON requires registered technology, identity proofing, and electronic records that meet Arizona requirements.",
     impact: "If you are not registered and equipped for RON, require in-person appearance. Do not improvise.",
     source_id: "ars_41_311",
+    onIndex: false,
   },
   {
     slug: "fee-cap-reminders",
@@ -34,6 +39,7 @@ export const lawChanges: LawChange[] = [
     after: "Treat the statutory maximum as a hard ceiling unless an official source clearly allows a listed extra charge.",
     impact: "Rebuild your price sheet from the current statute, not from last year's flyer.",
     source_id: "ars_41_311",
+    onIndex: false,
   },
   {
     slug: "sb1479-journal-thumbprint",
@@ -42,16 +48,21 @@ export const lawChanges: LawChange[] = [
     status: "effective",
     who_affected: "Notaries who notarize deeds, quitclaim deeds, deeds of trust, other real-property documents, or powers of attorney.",
     before: "A.R.S. § 41-254 required personal appearance but did not require a journal thumbprint for those documents.",
-    after: "Effective September 12, 2026, in-person notarization of those documents generally requires the signer's right thumbprint in the journal (or left thumb/any available finger, or a notation explaining physical inability). Exceptions include a trustee's deed from foreclosure, a deed of release and reconveyance, and a compliant remote act under § 41-263.",
+    after: "Effective September 12, 2026, covered acts generally require the signer’s right thumbprint in the journal. If that thumb is unavailable, use the left thumb or another available finger and note it; if physically unable to provide a print, record that fact and the explanation. Exceptions include a trustee’s deed from foreclosure and a deed of release and reconveyance. A compliant remote act under § 41-263 is exempt only if the journal includes the individual’s identification credential number AND the audiovisual recording is retained for at least seven years.",
     impact: "For covered in-person acts on or after September 12, 2026, collect the statutory journal thumbprint or make the required notation. Do not treat the old ARS compilation page as proof the rule is not in force.",
     source_id: "az_sb_1479_2026",
+    onIndex: true,
   },
 ];
+
+export function hubLawChanges(): LawChange[] {
+  return lawChanges.filter((c) => c.onIndex);
+}
 
 export function getLawChange(slug: string): LawChange | undefined {
   return lawChanges.find((l) => l.slug === slug);
 }
 
-export function lawStatus(change: LawChange, asOf = examConfig.lastVerifiedAt): "effective" | "upcoming" {
+export function lawStatus(change: LawChange, asOf = lawIndexAsOf): "effective" | "upcoming" {
   return new Date(asOf) >= new Date(change.effective_from) ? "effective" : "upcoming";
 }

@@ -71,6 +71,7 @@ export type StudyChapter = {
   sections: { heading: string; body: string }[];
   keyFacts: string[];
   source_id: string;
+  example?: { heading: string; body: string };
 };
 
 export type LawChange = {
@@ -83,4 +84,6 @@ export type LawChange = {
   after: string;
   impact: string;
   source_id: string;
+  /** Only session-law items with a verified effective date appear on the hub. */
+  onIndex: boolean;
 };

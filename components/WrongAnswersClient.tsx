@@ -55,7 +55,7 @@ export function WrongAnswersClient() {
         <div className="card">
           <h2>No missed questions yet</h2>
           <p>Wrong answers from practice tests and topic drills collect here automatically.</p>
-          <Link className="btn btn-primary" href="/arizona/exam-questions/">
+          <Link className="btn btn-primary" href="/arizona-notary-exam-questions/">
             Start Questions
           </Link>
         </div>

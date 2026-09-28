@@ -123,7 +123,7 @@ export function ExamRunner({
         ) : (
           <p>Not enough questions in this set. Try Full 45 or open Exam Questions.</p>
         )}
-        <Link className="btn btn-primary" href="/arizona/exam-questions/">
+        <Link className="btn btn-primary" href={paths.questions}>
           Start Questions
         </Link>
       </div>
@@ -412,7 +412,7 @@ export function QuestionBlock({
         {letters.map((l) => {
           let cls = "q-option";
           if (selected === l) cls += " selected";
-          if (reveal && selected) {
+          if (reveal) {
             if (l === q.correct_option) cls += " correct";
             else if (selected === l) cls += " wrong";
           }
@@ -430,15 +430,16 @@ export function QuestionBlock({
           );
         })}
       </div>
-      {reveal && selected && (
+      {reveal && (
         <div className="explain">
-          <strong>{selected === q.correct_option ? "Correct" : "Not quite"}.</strong>
+          <strong>{!selected ? "Unanswered" : selected === q.correct_option ? "Correct" : "Not quite"}.</strong>
+          <p>Correct answer: {q.correct_option}. {map[q.correct_option]}</p>
           <p>{q.explanation}</p>
-          {selected !== q.correct_option && <p>{q.option_feedback[selected]}</p>}
+          {selected && selected !== q.correct_option && <p>{q.option_feedback[selected]}</p>}
           <details>
             <summary>Official source</summary>
             <p>
-              {q.source_reference} · {getSource(q.source_id).url}
+              <a href={getSource(q.source_id).url}>{q.source_reference}</a>
             </p>
           </details>
         </div>
