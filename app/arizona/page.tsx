@@ -29,7 +29,7 @@ export default function ArizonaHub() {
           Start in seconds. Finish a timed simulation. See your score, weak topics, and the official
           source behind every item.
         </p>
-        <div className="row" style={{ margin: "20px 0" }}>
+        <div className="row hero-cta-row" style={{ margin: "20px 0" }}>
           <Link className="btn btn-primary" href={paths.practice}>
             Start Free Practice Test
           </Link>
