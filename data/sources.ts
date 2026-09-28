@@ -28,14 +28,14 @@ export const sources: Record<string, Source> = {
   sos_manual_2026_08: {
     source_id: "sos_manual_2026_08",
     source_type: "Manual",
-    title: "Arizona Notary Public Reference Manual (August 2026)",
+    title: "Arizona Notary Public Reference Manual (current SOS download)",
     reference:
-      "Arizona Secretary of State — Notary Public Reference Manual, August 2026 (file: Notary-Manual-Aug-2026.pdf). No page-level pin-cite recorded.",
-    url: "https://azsos.gov/resources/notary-manual-cover",
-    document_url: "Notary-Manual-Aug-2026.pdf",
-    version: "August 2026",
+      "SOS download Notary-Manual-Aug-2026.pdf; the document cover states January 2025. Consult later session laws for amendments.",
+    url: "https://azsos.gov/media/143",
+    document_url: "https://azsos.gov/sites/default/files/docs/Notary-Manual-Aug-2026.pdf",
+    version: "January 2025 cover; August 2026 filename",
     last_verified_at: "2026-08-01",
-    last_checked_at: "2026-09-01",
+    last_checked_at: "2026-09-28",
   },
   ars_41_269: {
     source_id: "ars_41_269",

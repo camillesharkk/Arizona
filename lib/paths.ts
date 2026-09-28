@@ -11,7 +11,7 @@ export const paths = {
   flashcards: "/arizona/flashcards/",
   laws: "/arizona/new-laws/",
   become: "/arizona/become-a-notary/",
-  examGuide: "/arizona/exam-guide/",
+  examGuide: "/arizona-notary-exam-prep/",
   topic: (id: string) => `/arizona/questions/${id}/`,
   law: (slug: string) => `/arizona/laws/${slug}/`,
   login: "/login/",

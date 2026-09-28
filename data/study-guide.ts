@@ -13,7 +13,7 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "Eligibility in plain language",
-        body: "Applicants must meet statutory residency, age, and character requirements and complete the SOS process. If you are unsure whether a criminal history or non-residency issue blocks you, read the official application instructions rather than guessing from a forum post.",
+        body: "Under A.R.S. § 41-269(B), an applicant must be at least 18, a U.S. citizen or permanent legal resident, an Arizona resident for income-tax purposes with Arizona as the primary residence on tax returns, and able to read, write and understand English. The applicant must also meet the disqualification, examination and reference-manual requirements. Working in Arizona alone does not establish residency.",
       },
       {
         heading: "Exam vs. commission",
@@ -25,7 +25,11 @@ export const chapters: StudyChapter[] = [
       "Commissioning authority: Arizona Secretary of State.",
       "Exam on this platform: timed, open-book model matching published SOS format fields.",
     ],
-    source_id: "sos_exam",
+    source_id: "ars_41_269",
+    example: {
+      heading: "Worked example: employer paid for the stamp",
+      body: "An employer pays your commissioning costs, then says the commission belongs to the business. Under A.R.S. § 41-269(G), payment does not transfer ownership of the commission or stamping device. You remain the commissioned officer responsible for their use.",
+    },
   },
   {
     id: "identification",
@@ -39,11 +43,11 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "Satisfactory evidence",
-        body: "Use personal knowledge, an acceptable identification credential, or a credible witness if Arizona law allows that path. Unreadable, obviously altered, or mismatched ID is not 'close enough.'",
+        body: "A.R.S. § 41-255 separates personal knowledge from satisfactory evidence. Listed credentials include an unexpired passport, driver license or government-issued nondriver ID; other listed government identification must carry a signature or photograph and be satisfactory to the officer. A credible witness must make an oath or affirmation and be personally known to the officer or identified with a listed credential. Check the statute’s special rules for real-estate conveyances; do not assume every foreign credential works for every act.",
       },
       {
         heading: "Communication",
-        body: "If you cannot communicate the acknowledgment or oath, stop. Showing ID does not fix a language or capacity barrier.",
+        body: "A.R.S. § 41-253(F) permits direct communication in a shared language or indirect communication through a translator who communicates with both participants in languages the translator understands. If you cannot establish that communication or the signer’s willingness and capacity, stop and resolve the problem. Identification alone does not complete the act.",
       },
     ],
     keyFacts: [
@@ -51,13 +55,17 @@ export const chapters: StudyChapter[] = [
       "Personal knowledge is a real relationship, not a social-media follow.",
       "Credible-witness rules are statutory—follow them exactly.",
     ],
-    source_id: "sos_handbook",
+    source_id: "ars_41_255",
+    example: {
+      heading: "Worked example: unreadable ID",
+      body: "A signer hands you a government card so damaged that the photograph and expiration date cannot be read. A.R.S. § 41-255(B) lists credentials that must be unexpired and otherwise match the statute. If you cannot read those facts, that card is not the listed credential. Use another method the statute allows—personal knowledge under § 41-255(A), a credible witness under § 41-255(B)(2), or additional credentials under § 41-255(D)—or stop. A journal note that says “ID damaged” does not create satisfactory evidence.",
+    },
   },
   {
     id: "acknowledgments",
     title: "Acknowledgments",
     topic: "acknowledgments",
-    summary: "The signer acknowledges that the signature is theirs and was made voluntarily.",
+    summary: "The signer declares that they signed the record for its stated purpose; a representative also declares the required authority. This is different from swearing the record’s statements are true.",
     sections: [
       {
         heading: "What you are certifying",
@@ -77,7 +85,11 @@ export const chapters: StudyChapter[] = [
       "Complete the venue for the place the act occurs.",
       "Loose certificates are for space, not for missing signers.",
     ],
-    source_id: "sos_handbook",
+    source_id: "ars_41_253",
+    example: {
+      heading: "Worked example: two names, one person",
+      body: "The deed names two owners. Only one appears. A.R.S. § 41-254(A) requires the individual whose signature is the subject of the act to appear. Complete the acknowledgment only for the person in front of you, and write a certificate that names only who appeared. Do not claim the absent owner appeared, and do not sign that person’s name. Executing a certificate certifies compliance with the act actually performed (A.R.S. § 41-264(D)).",
+    },
   },
   {
     id: "jurats",
@@ -99,11 +111,15 @@ export const chapters: StudyChapter[] = [
       },
     ],
     keyFacts: [
-      "Wrong certificate wording can void the act.",
+      "Use certificate wording that accurately records the act performed.",
       "Oath/affirmation is personal to the signer.",
       "Match the certificate to the act actually performed.",
     ],
-    source_id: "sos_handbook",
+    source_id: "ars_41_251",
+    example: {
+      heading: "Worked example: signer refuses the oath",
+      body: "The certificate is a verification on oath or affirmation (often called a jurat). The signer will not take an oath or affirmation. A.R.S. § 41-251(16) requires that declaration before the notarial officer. You cannot complete that act. Do not silently stamp an acknowledgment certificate instead—that would certify a different act (A.R.S. § 41-264(D)). Offer a lawful affirmation if the objection is to religious oath language; if they still refuse, stop.",
+    },
   },
   {
     id: "journals",
@@ -117,11 +133,11 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "How to write entries",
-        body: "Make entries at the time of the act, in order. Do not invent a month-end summary. Do not skip 'regulars.'",
+        body: "Under A.R.S. § 41-319, record entries chronologically with the date, document description, act, signer’s name/address/signature, identity evidence and fee as required. Personal knowledge and specified repeat entries have statutory alternatives; read those before using them. Being a regular customer alone is not permission to omit the record.",
       },
       {
         heading: "Privacy and access",
-        body: "Journals hold personal data. Disclose according to Arizona law—not by posting pages online, and not by destroying records to hide a problem.",
+        body: "Separate public-record entries from entries that must remain confidential. Section 41-319 addresses a written request identifying the person, type of document and month/year for a certified copy of a public journal entry. Do not expose unrelated entries while fulfilling that request.",
       },
     ],
     keyFacts: [
@@ -129,7 +145,11 @@ export const chapters: StudyChapter[] = [
       "Report a lost or stolen journal as required.",
       "End-of-commission handling follows SOS instructions.",
     ],
-    source_id: "ars_41_311",
+    source_id: "ars_41_319",
+    example: {
+      heading: "Worked example: “skip the journal, I’m a regular”",
+      body: "A repeat customer asks you to skip the journal to save time. A.R.S. § 41-319 requires notarial acts to be recorded in the required journal, in chronological order, unless a specific statutory alternative actually applies. Being a regular is not a waiver. For deeds, quitclaim deeds, deeds of trust, other real-property documents, and powers of attorney, also apply the journal-thumbprint rule in Laws 2026, Chapter 31 (SB 1479), effective September 12, 2026—details live on the law-change page, not as a second copy of that statute here.",
+    },
   },
   {
     id: "seals-fees",
@@ -153,9 +173,13 @@ export const chapters: StudyChapter[] = [
     keyFacts: [
       "Name on seal matches commissioned name.",
       "Expired commission = stop all acts.",
-      "Never exceed the legal fee cap, including 'rush' add-ons.",
+      "Notarial-act fees must comply with the current fee rule; do not disguise excess notarial fees as rush charges.",
     ],
-    source_id: "ars_41_311",
+    source_id: "ars_41_266",
+    example: {
+      heading: "Worked example: stamp over a signature",
+      body: "The remaining space sits on top of the signer’s wet signature. A.R.S. § 41-266(C) forbids affixing the official stamp over the notary’s signature or any other signature on the record. Place a readable stamp that can be copied with the record (§ 41-266(A)(2)). A faint or covered impression does not become valid because “everyone knew what you meant.”",
+    },
   },
   {
     id: "prohibited-acts",
@@ -165,7 +189,7 @@ export const chapters: StudyChapter[] = [
     sections: [
       {
         heading: "Conflicts",
-        body: "If you are a party or have a disqualifying financial interest, refuse. Convenience is not an exception.",
+        body: "A.R.S. § 41-252(B) bars an act if you or your spouse is a party to the record or has a direct beneficial interest. Refer the signer to another notary; a deadline does not remove the conflict. Under § 41-256, also consider whether the person can understand the act and is signing willingly.",
       },
       {
         heading: "Unauthorized practice of law",
@@ -181,34 +205,36 @@ export const chapters: StudyChapter[] = [
       "Capacity and willingness are required.",
       "Industry pressure is not a legal defense.",
     ],
-    source_id: "sos_handbook",
+    source_id: "ars_41_273",
+    example: {
+      heading: "Worked example: spouse is on the deed",
+      body: "Your spouse is named as a grantor. A.R.S. § 41-252(B) says you may not perform a notarial act on a record to which you or your spouse is a party, or in which either has a direct beneficial interest. The act is voidable. Convenience, a closing deadline, or “just this once” is not an exception. Send them to another notary. Separately, A.R.S. § 41-273(A) does not authorize choosing the customer’s legal form or giving legal strategy.",
+    },
   },
   {
     id: "new-laws",
     title: "Keeping Up With 2026 Changes",
     topic: "new-laws",
-    summary: "Follow the law in effect on the date of the act. Study effective dates, not rumors.",
+    summary: "Apply the statute in force on the date of the act. Session-law details live on the law-change page so this guide does not copy them twice.",
     sections: [
       {
-        heading: "Effective dates",
-        body: "A handbook you received at commissioning can lag. When a statute changes, acts on or after the effective date follow the new rule.",
+        heading: "Where to read verified changes",
+        body: "The law-change index lists Arizona session laws we have verified, with effective dates. As of September 12, 2026, that list includes Laws 2026, Chapter 31 (SB 1479) journal thumbprints for covered deeds and powers of attorney. Do not treat a blog titled “new notary laws 2026” as Arizona law.",
       },
       {
-        heading: "Remote online notarization",
-        body: "RON is a regulated electronic process with technology and identity-proofing rules. It is not an informal video chat.",
-      },
-      {
-        heading: "How this site treats updates",
-        body: "New Laws pages pair a before/after explanation with practice items. Last verified dates are visible so you never treat stale copy as current law.",
+        heading: "How to study a change",
+        body: "Read the chaptered session law and the effective date, then drill the new-laws question set. A.R.S. § 1-241 and § 1-244 control timing and non-retroactivity. A commission term does not freeze older handbook language.",
       },
     ],
     keyFacts: [
-      "Official SOS and statute text beat social posts.",
-      "Practice questions should be regenerated when a source changes.",
-      "Commission term does not freeze the statutes.",
-      "Laws 2026, Chapter 31 (SB 1479) journal-thumbprint rules for covered deeds and powers of attorney are current law as of September 12, 2026.",
+      "Official legislature text and stated effective dates beat social posts.",
+      "This chapter points to the law page instead of reprinting the same SB 1479 write-up.",
     ],
-    source_id: "sos_exam",
+    source_id: "az_sb_1479_2026",
+    example: {
+      heading: "Worked example: an older handbook and a current deed",
+      body: "A signer brings a deed after a new rule has taken effect, but your old handbook does not mention it. Check the chaptered law and its exceptions for that act’s date, then use the verified law-update page below to work through the thumbprint requirements. The date you received your commission does not freeze the rules.",
+    },
   },
   {
     id: "copy-certification",
@@ -235,6 +261,10 @@ export const chapters: StudyChapter[] = [
       "Do not certify a copy of an Arizona public record except as § 41-319 requires.",
     ],
     source_id: "ars_41_253",
+    example: {
+      heading: "Worked example: a copy of an Arizona public record",
+      body: "A customer asks you to certify a copy of an Arizona public record. Section 41-253(D) excludes those records from ordinary copy certification, apart from the journal exception in § 41-319. Direct the customer to the issuing custodian’s certified-copy process; do not stamp a photocopy as a substitute.",
+    },
   },
   {
     id: "electronic-ron",
@@ -258,9 +288,13 @@ export const chapters: StudyChapter[] = [
     keyFacts: [
       "The notary must be located in Arizona for a remote act under § 41-263(B).",
       "RON identity may use personal knowledge, a credible witness, or at least two types of identity proofing.",
-      "Keep the audiovisual recording at least five years unless a different rule period applies.",
+      "The usual statutory recording floor is five years; the SB 1479 thumbprint exception requires seven years and the journal credential number.",
     ],
     source_id: "ars_41_263",
+    example: {
+      heading: "Worked example: an ordinary video call",
+      body: "A customer sends an ID photo and asks you to watch a signature over a casual video call. That alone does not meet § 41-263. The notary must be in Arizona and meet the identity, record-confirmation, audiovisual-recording, certificate and prior-notification requirements. Arrange a compliant session or an in-person appointment.",
+    },
   },
   {
     id: "exam-day",
@@ -270,7 +304,7 @@ export const chapters: StudyChapter[] = [
     sections: [
       {
         heading: "Use the open book intelligently",
-        body: "If the official exam allows references, tab the definitions of acknowledgment, jurat, and identification. Searching from zero on every item wastes the clock.",
+        body: "Learn where the definitions and rules appear in the digital manual. The official examination provides the manual on screen and does not allow a physical copy. Practice navigating it while studying; do not plan to bring a tabbed paper manual to the exam.",
       },
       {
         heading: "Trap patterns",
@@ -287,6 +321,10 @@ export const chapters: StudyChapter[] = [
       "Timebox: do not spend the whole clock on one fact pattern.",
     ],
     source_id: "sos_exam",
+    example: {
+      heading: "Worked example: a correct guess",
+      body: "You choose the right answer but cannot explain why the other choices fail. Treat it as a review item. Find the cited rule, explain the difference, and try another scenario. Use the Exam Prep page for the full study schedule rather than treating one practice score as proof of readiness.",
+    },
   },
   {
     id: "after-exam",
@@ -313,5 +351,9 @@ export const chapters: StudyChapter[] = [
       "Compare products after you understand which purchases are mandatory.",
     ],
     source_id: "sos_exam",
+    example: {
+      heading: "Worked example: passed, but not yet commissioned",
+      body: "You pass the exam and a friend asks you to notarize that afternoon. Passing alone does not issue a commission. Complete the SOS application requirements and wait for the commission to take effect before acting; § 41-269 also requires a valid bond on file.",
+    },
   },
 ];

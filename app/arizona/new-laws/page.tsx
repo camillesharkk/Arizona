@@ -1,32 +1,41 @@
 import Link from "next/link";
-import { lawChanges, lawStatus } from "@/data/laws";
-import { examConfig } from "@/data/exam-config";
+import { hubLawChanges, lawIndexAsOf, lawStatus } from "@/data/laws";
 import { getSource } from "@/data/sources";
+import { pageMeta } from "@/lib/seo";
+import { paths } from "@/lib/paths";
 
-export const metadata = {
-  title: "Arizona Notary Law Changes 2026",
-  description: "What changed in Arizona notary law and which practice questions to study.",
-};
+export const metadata = pageMeta({
+  title: "Arizona Notary Law Change: SB 1479 (Sept. 12, 2026)",
+  description:
+    "Verified Arizona notary session-law change: Laws 2026, Chapter 31 (SB 1479) journal thumbprint rule, effective September 12, 2026.",
+  path: paths.laws,
+});
 
 export default function NewLawsPage() {
+  const listed = hubLawChanges();
   return (
     <main className="wrap hero">
-      <p className="kicker">New Laws</p>
-      <h1>Arizona Notary Law Changes {examConfig.year} — What Changed and What to Study</h1>
+      <p className="kicker">Arizona session law</p>
+      <h1>Arizona Notary Law Change — SB 1479 Journal Thumbprint</h1>
       <p className="lede">
-        Status is computed from each statutory effective date (as of 2026-09-13), not baked into the
-        template.
+        Verified Arizona update: SB 1479 adds journal-thumbprint requirements for covered documents,
+        effective September 12, 2026. Read the exceptions before applying the rule.
+      </p>
+      <p>Effective-date confirmation: <a href="https://azsos.gov/business/notary">Arizona Secretary of State SB 1479 notice</a>. Signed April 9, 2026.</p>
+      <p className="notice">
+        Status uses each item’s statutory effective date (as of {lawIndexAsOf}). Re-read the chaptered session law
+        before you rely on it.
       </p>
       <div className="row">
         <Link className="btn btn-primary" href="/arizona/questions/new-laws/">
-          Practice New-Law Questions
+          Practice SB 1479 Questions
         </Link>
-        <a className="btn btn-ghost" href={examConfig.officialManualUrl} target="_blank" rel="noreferrer">
-          Read Official Source
-        </a>
+        <Link className="btn btn-ghost" href={paths.study}>
+          Study Guide
+        </Link>
       </div>
-      {lawChanges.map((c) => {
-        const status = lawStatus(c, "2026-09-13");
+      {listed.map((c) => {
+        const status = lawStatus(c);
         const src = getSource(c.source_id);
         return (
           <article key={c.slug} className="card" style={{ marginTop: 18 }}>
@@ -57,8 +66,12 @@ export default function NewLawsPage() {
         );
       })}
       <section className="card" style={{ marginTop: 18 }}>
-        <h2>Revision history</h2>
-        <p>V1.0 · {examConfig.lastVerifiedAt} · Independent study rewrite. Re-verify against SOS before relying.</p>
+        <h2>What this page does not cover</h2>
+        <p>
+          Standing Arizona rules (identification, RON technology, fee caps) belong in the{" "}
+          <Link href={paths.study}>Study Guide</Link>. Those rules are not listed here as 2026 “changes” unless a
+          session law with a verified effective date amended them.
+        </p>
       </section>
     </main>
   );

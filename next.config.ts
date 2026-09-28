@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["postgres"],
   async redirects() {
     return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.arizonanotaryprep.com" }],
+        destination: "https://arizonanotaryprep.com/:path*",
+        permanent: true,
+      },
       { source: "/arizona/practice-test", destination: "/arizona-notary-practice-test/", permanent: true },
       { source: "/arizona/practice-test/", destination: "/arizona-notary-practice-test/", permanent: true },
       { source: "/arizona/exam-questions", destination: "/arizona-notary-exam-questions/", permanent: true },
