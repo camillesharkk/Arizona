@@ -6,7 +6,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const urls = [
     paths.home,
     paths.practice,
-    paths.practiceFree,
     paths.questions,
     paths.study,
     paths.examPrep,

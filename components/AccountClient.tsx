@@ -84,7 +84,7 @@ export function AccountClient() {
               Latest attempt {progress.scores[0].score}% on {progress.scores[0].at.slice(0, 10)}
             </p>
           )}
-          <Link href="/arizona/exam-questions/">Continue last practice</Link>
+          <Link href="/arizona-notary-exam-questions/">Continue last practice</Link>
         </section>
       </div>
     );

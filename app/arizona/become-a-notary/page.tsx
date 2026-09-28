@@ -42,7 +42,7 @@ export default function BecomePage() {
         Required legal steps vs optional purchases. Exam prep comes before shopping for a prettier stamp.
       </p>
       <div className="row">
-        <Link className="btn btn-primary" href="/arizona/practice-test/">
+        <Link className="btn btn-primary" href="/arizona-notary-practice-test/">
           Start Exam Prep
         </Link>
         <a className="btn btn-ghost" href="#compare">
@@ -56,7 +56,7 @@ export default function BecomePage() {
             <h2>{s.t}</h2>
             <p>{s.d}</p>
             {i === 2 && (
-              <Link className="btn btn-primary" href="/arizona/practice-test/">
+              <Link className="btn btn-primary" href="/arizona-notary-practice-test/">
                 Need to prepare? Free Practice Test
               </Link>
             )}
