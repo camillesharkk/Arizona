@@ -45,7 +45,7 @@ export default function PricingPage() {
           <p className="kicker">$0</p>
           <ul>
             <li>Quick 10</li>
-            <li>First full 45-question practice test</li>
+            <li>One free Full 45 in this browser, which can include Pro questions</li>
             <li>Score, PASS / NEEDS REVIEW</li>
             <li>Topic accuracy and weak areas</li>
             <li>Official sources and last verified dates</li>
