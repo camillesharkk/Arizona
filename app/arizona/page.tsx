@@ -8,6 +8,7 @@ import { JsonLd, quizJson } from "@/components/JsonLd";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { HomeProCta } from "@/components/HomeProCta";
 import { AccountStatusBanner } from "@/components/AccountStatusBanner";
+import { searchMatrix } from "@/lib/seo-guides";
 
 export const metadata = pageMeta({
   title: "Arizona Notary Exam 2026",
@@ -89,6 +90,19 @@ export default function ArizonaHub() {
           </a>
         </p>
         <p className="notice">{examConfig.disclaimer}</p>
+      </section>
+
+      <section style={{ marginTop: 28 }}>
+        <h2>High-intent exam guides</h2>
+        <p className="lede">If you arrived from a specific Google query, start on the matching page, then take a practice test.</p>
+        <div className="grid grid-2">
+          {searchMatrix.map((item) => (
+            <Link key={item.title} href={item.href} className="card">
+              <h3>{item.title}</h3>
+              <p>{item.blurb}</p>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section style={{ marginTop: 28 }}>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import type { Difficulty, TopicId } from "@/lib/types";
@@ -10,6 +11,8 @@ import { TutorPanel } from "@/components/TutorPanel";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress, toggleFlag } from "@/lib/storage";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
+import { paths } from "@/lib/paths";
+import { isActiveQuestion } from "@/lib/question-status";
 
 export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [filter, setFilter] = useState<"all" | TopicId | "wrong" | "unanswered">(topic ?? "all");
@@ -90,7 +93,15 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     headingRef.current?.focus();
   }, [safeIdx, q?.question_id]);
 
-  if (!q) {
+  const selectedTopic: TopicId | null =
+    topic ?? (filter !== "all" && filter !== "wrong" && filter !== "unanswered" ? filter : null);
+  const topicQuestions = selectedTopic
+    ? publishedQuestions().filter((item) => item.topic === selectedTopic && isActiveQuestion(item))
+    : [];
+  const topicFreeCount = topicQuestions.filter((item) => item.is_free).length;
+  const proOnlyTopic = Boolean(selectedTopic && !isPro && topicFreeCount === 0 && topicQuestions.length > 0);
+
+  if (!q && !proOnlyTopic) {
     return <p>No questions match these filters.</p>;
   }
 
@@ -131,6 +142,22 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       <p className="notice">
         Answered {answered} · This session correct {correctSession} · Wrong notebook {progress.wrongIds.length}
       </p>
+      {proOnlyTopic ? (
+        <div className="card">
+          <h2>{topics.find((t) => t.id === selectedTopic)?.label} is in the Pro bank</h2>
+          <p>
+            This topic has {topicQuestions.length} practice questions and no free questions. Quick 10 still uses the free
+            pool, and topics with free questions can be practiced without Pro.
+          </p>
+          <Link className="btn btn-primary" href={paths.pricing}>
+            Unlock Pro
+          </Link>
+          <Link className="btn btn-ghost" href={`${paths.practice}?mode=quick`} style={{ marginLeft: 8 }}>
+            Free Quick 10
+          </Link>
+        </div>
+      ) : q ? (
+      <>
       <QuestionBlock
         q={q}
         index={safeIdx}
@@ -181,6 +208,8 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
           </button>
         </div>
       </div>
+      </>
+      ) : null}
     </div>
   );
 }

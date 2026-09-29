@@ -3,6 +3,7 @@ import { examConfig } from "@/data/exam-config";
 import { getSource } from "@/data/sources";
 import { paths } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
+import { PrepCtas } from "@/components/PrepCtas";
 
 export const metadata = pageMeta({
   title: "Arizona Notary Exam Prep 2026 | 7-Step Study Plan",
@@ -27,10 +28,7 @@ export default function ExamGuidePage() {
       <h1>Arizona Notary Exam Prep 2026 — A Seven-Step Study Plan</h1>
       <p className="lede">Start with a short diagnostic, learn the rules, then use a timed test to find what still needs work. Follow one step per day or spread the steps over a longer period.</p>
       <p>This is a suggested study schedule, not an official course or a guarantee of passing. The <Link href={paths.study}>core Study Guide is free</Link>; <Link href={paths.practice}>Practice Test</Link> handles the questions and results.</p>
-      <div className="row">
-        <Link className="btn btn-primary" href={`${paths.practice}?mode=quick`}>Start with Quick 10</Link>
-        <Link className="btn btn-ghost" href={paths.study}>Open the Free Study Guide</Link>
-      </div>
+      <PrepCtas />
       {steps.map((step, index) => <section key={step.title} className="card" style={{ marginTop: 18 }} id={`step-${index + 1}`}>
         <h2>{step.title}</h2>
         <p className="notice">Suggested time: {step.time}</p>
@@ -48,6 +46,7 @@ export default function ExamGuidePage() {
         <h2>What to do after a practice pass</h2>
         <p>Check that you can explain why the alternatives are wrong, especially on repeated questions. If you cannot, return to the matching guide chapter. A practice score cannot predict an official result.</p>
         <p>Passing the official exam is one part of commissioning. Follow the <Link href={paths.become}>commission application checklist</Link> for the bond, oath and filing process; do not start notarizing on the strength of a practice score.</p>
+        <p>More answers: <Link href={paths.howHard}>how hard is the exam</Link>, <Link href={paths.passingScore}>passing score</Link>, <Link href={paths.examFaq}>FAQ</Link>, <Link href={paths.cram}>cram sheet</Link>.</p>
       </section>
     </main>
   );

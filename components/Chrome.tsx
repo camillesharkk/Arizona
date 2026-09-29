@@ -207,6 +207,8 @@ export function SiteFooter() {
           <p><Link href={paths.practice}>Practice Test</Link></p>
           <p><Link href={paths.questions}>Questions</Link></p>
           <p><Link href={paths.study}>Study Guide</Link></p>
+          <p><Link href={paths.guidesIndex}>Exam guides</Link></p>
+          <p><Link href={paths.passingScore}>Passing score</Link></p>
           <p><Link href={paths.mistakes}>Wrong Answers</Link></p>
         </div>
         <div>

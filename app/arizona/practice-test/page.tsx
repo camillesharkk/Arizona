@@ -6,29 +6,37 @@ import { pageMeta } from "@/lib/seo";
 import { eligibleExamPool } from "@/lib/quiz";
 import { getSource } from "@/data/sources";
 
+const practicePool = eligibleExamPool();
+const practiceFreeCount = practicePool.filter((q) => q.is_free).length;
+
 export const metadata = pageMeta({
-  title: "Free Arizona Notary Practice Test 2026",
-  description: "Start a free Arizona notary practice test without registration. Quick 10 or your first Full 45, with scores, answer explanations and official sources.",
+  title: "Arizona Notary Exam Practice Test 2026 | Free Quick 10 & Full 45",
+  description: `Practice bank of ${practicePool.length} questions. ${practiceFreeCount} are free for Quick 10 and topic practice. Pro includes all ${practicePool.length}. Each Full 45 draws ${examConfig.questionCount}. Not official exam questions.`,
   path: paths.practice,
+  keywords: "Arizona notary exam practice test, free Arizona notary practice test",
 });
 
 export default function PracticeTestPage() {
-  const pool = eligibleExamPool();
+  const pool = practicePool;
   const free = pool.filter((q) => q.is_free);
   const samples = ["commission", "identification", "acknowledgments", "jurats", "seals-fees", "prohibited-acts"]
     .flatMap((topic) => free.filter((q) => q.topic === topic).slice(0, 1));
   return (
     <main className="wrap hero">
       <p className="kicker">Practice Test</p>
-      <h1>Free Arizona Notary Practice Test {examConfig.year}</h1>
+      <h1>Arizona Notary Exam Practice Test — Free Quick 10 & Full 45</h1>
       <p className="lede">
         Free Quick 10 and your first {examConfig.questionCount}-question full practice test. No registration or email required to start.
         Get your score, topic accuracy, correct answers, explanations and official references when you finish.
       </p>
       <p>
-        <strong>{pool.length} unique questions in the active bank; {free.length} available for free topic practice.</strong>{" "}
-        Quick 10 draws from the free pool. Full 45 draws {examConfig.questionCount} distinct questions from the full bank;
-        later attempts can repeat questions. Unlimited full tests and additional Pro features are paid.
+        <strong>
+          The practice bank has {pool.length} questions. {free.length} are free. Pro can use all {pool.length}. Each Full 45
+          draws {examConfig.questionCount} distinct questions from that bank.
+        </strong>{" "}
+        Quick 10 and topic practice without Pro use only the {free.length} free questions. The other {pool.length - free.length} are
+        Pro-only. Your first Full 45 is free and can include Pro questions; later full exams are a Pro feature. Later attempts can
+        repeat questions.
       </p>
       <PracticeLaunch />
       <p className="notice">Independent practice questions, not official exam questions. An account is optional for saving progress across devices.</p>
@@ -41,8 +49,9 @@ export default function PracticeTestPage() {
         </p>
         <p>
           The simulation uses an {examConfig.passingScorePercent}% practice target ({Math.ceil(examConfig.questionCount * examConfig.passingScorePercent / 100)} of {examConfig.questionCount}).
-          A practice pass is not a commission or an official exam result. The official exam provides its own on-screen manual;
-          a physical manual is not allowed. Check the <a href={examConfig.officialExamUrl}>Arizona SOS exam instructions</a> before booking.
+          A practice pass is not a commission or an official exam result. Older SOS notices described an on-screen manual and no
+          physical manual. That format was not re-read from the SOS page on 2026-09-29. Check the{" "}
+          <a href={examConfig.officialExamUrl}>Arizona SOS exam instructions</a> before booking.
         </p>
       </section>
       <section aria-labelledby="sample-questions">
@@ -66,6 +75,8 @@ export default function PracticeTestPage() {
         <h2>Choose your next step</h2>
         <p>Need the rules explained? Read the <Link href={paths.study}>free Arizona Notary Study Guide</Link>.</p>
         <p>Need a study schedule? Follow the <Link href={paths.examPrep}>seven-step exam preparation plan</Link>.</p>
+        <p>Need a number, not a full test yet? Open the <Link href={paths.guidesIndex}>exam guide matrix</Link> (passing score, question count, fees, bond, RON).</p>
+        <p>Ready for the rest of the bank? See <Link href={paths.pricing}>Arizona Notary Exam Prep Pro</Link>.</p>
       </section>
     </main>
   );

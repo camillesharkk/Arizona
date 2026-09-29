@@ -5,7 +5,7 @@ import { eligibleExamPool } from '../lib/quiz.ts';
 
 const base = process.env.SEO_TEST_BASE || 'http://localhost:3100';
 const canonicalBase = process.env.SEO_CANONICAL_BASE || 'https://arizonanotaryprep.com';
-const paths = ['/arizona-notary-practice-test/', '/arizona-notary-study-guide/', '/arizona-notary-exam-prep/', '/arizona/new-laws/'];
+const paths = ['/arizona-notary-practice-test/', '/arizona-notary-study-guide/', '/arizona-notary-exam-prep/', '/arizona/new-laws/', '/arizona-notary-exam-guides/', '/arizona-notary-exam-passing-score/', '/arizona-notary-exam-questions/', '/arizona-notary-fees/', '/arizona-notary-bond-requirements/', '/arizona-remote-online-notary-requirements/', '/arizona-notary-exam-cram-sheet/', '/arizona-notary-exam-mistakes-to-avoid/'];
 const reports = [];
 const documents = new Map();
 const clean = html => html.replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
@@ -25,8 +25,11 @@ for (const path of paths) {
 const practice = documents.get(paths[0]);
 const pool = eligibleExamPool();
 assert.equal(new Set(pool.map(q => q.question_text.trim().toLowerCase())).size, pool.length);
-assert.match(clean(practice), new RegExp(`${pool.length} unique questions`));
-assert.match(clean(practice), new RegExp(`${pool.filter(q => q.is_free).length} available for free topic practice`));
+const freeCount = pool.filter(q => q.is_free).length;
+assert.match(clean(practice), new RegExp(`The practice bank has ${pool.length} questions`));
+assert.match(clean(practice), new RegExp(`${freeCount} are free`));
+assert.match(clean(practice), new RegExp(`Pro can use all ${pool.length}`));
+assert.match(clean(practice), new RegExp(`The other ${pool.length - freeCount} are`));
 const decode = text => text.replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 const sampleTexts = [...practice.replace(/<!--[\s\S]*?-->/g, '').matchAll(/<h3[^>]*>\d+\.\s*([\s\S]*?)<\/h3>/g)].map(match => decode(clean(match[1])).trim());
 assert.equal(sampleTexts.length, 6);
@@ -45,14 +48,43 @@ for (const chapter of chapters) {
   assert.ok(study.includes(`href="/arizona/questions/${chapter.topic}/"`));
 }
 assert.equal((documents.get(paths[2]).match(/id="step-\d"/g) || []).length, 7);
+assert.match(clean(documents.get(paths[4])), /Arizona Notary Exam Passing Score/);
+assert.match(clean(documents.get(paths[5])), /The statute does not set a passing percent/);
+assert.match(clean(documents.get(paths[5])), /Try 10 free questions/);
+assert.match(clean(documents.get(paths[5])), /41-270/);
+assert.match(documents.get(paths[7]), /\$10/);
+assert.match(documents.get(paths[7]), /41-316/);
+assert.match(documents.get(paths[8]), /\$5,000/);
+assert.match(documents.get(paths[8]), /41-269/);
+assert.match(documents.get(paths[9]), /41-263/);
+assert.match(documents.get(paths[9]), /at least seven years/);
+assert.match(clean(documents.get(paths[10])), /not the SOS manual/);
+assert.match(clean(documents.get(paths[10])), /Try 10 free questions/);
+assert.match(clean(documents.get(paths[11])), /Take a full 45-question practice exam/);
+assert.match(documents.get(paths[11]), /41-252/);
+for (const path of paths.slice(5)) {
+  assert.match(documents.get(path), /azleg\.gov|law\.cornell\.edu|azsos\.gov/);
+}
+assert.equal((documents.get(paths[6]).match(/Official basis:/g) || []).length, 6);
 assert.match(clean(documents.get(paths[3])), /September 12, 2026/);
 assert.match(clean(documents.get(paths[3])), /at least seven years/);
 const sitemap = await (await fetch(base + '/sitemap.xml')).text();
-assert.ok(!sitemap.includes('/arizona-notary-practice-test-free/'));
+assert.ok(sitemap.includes('/arizona-notary-exam-guides/'));
+assert.ok(sitemap.includes('/arizona-notary-exam-passing-score/'));
+assert.ok(sitemap.includes('/arizona-notary-fees/'));
+assert.ok(sitemap.includes('/arizona-notary-bond-requirements/'));
+assert.ok(sitemap.includes('/arizona-remote-online-notary-requirements/'));
+assert.ok(sitemap.includes('/arizona-notary-exam-cram-sheet/'));
+assert.ok(sitemap.includes('/arizona-notary-exam-mistakes-to-avoid/'));
+for (const draft of ['/how-hard-is-the-arizona-notary-exam/', '/how-many-questions-on-the-arizona-notary-exam/', '/arizona-notary-exam-requirements/', '/arizona-notary-exam-faq/', '/arizona-notary-practice-test-free/']) {
+  assert.ok(!sitemap.includes(draft), draft);
+}
+const hard = await (await fetch(base + '/how-hard-is-the-arizona-notary-exam/')).text();
+assert.match(hard, /noindex/);
 for (const match of sitemap.matchAll(/<loc>(.*?)<\/loc>/g)) assert.ok(match[1].startsWith(canonicalBase + '/'));
 const alias = await (await fetch(base + '/arizona-notary-practice-test-free/')).text();
 assert.ok(alias.includes(`rel="canonical" href="${canonicalBase}${paths[0]}"`));
-for (const [old, current] of [['/arizona/practice-test/', paths[0]], ['/arizona/study-guide/', paths[1]], ['/arizona/exam-guide/', paths[2]]]) {
+for (const [old, current] of [['/arizona/practice-test/', paths[0]], ['/arizona/study-guide/', paths[1]], ['/arizona/exam-guide/', paths[2]], ['/arizona-notary-exam-practice-test/', paths[0]], ['/arizona-notary-exam-questions-and-answers/', '/arizona-notary-exam-questions/']]) {
   const response = await fetch(base + old, { redirect: 'manual' });
   assert.equal(response.status, 308);
   assert.equal(new URL(response.headers.get('location'), base).pathname, current);
