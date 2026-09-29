@@ -1,6 +1,7 @@
 import type { Question, TopicId } from "../lib/types.ts";
 import { isActiveQuestion } from "../lib/question-status.ts";
 import { expansionDrafts } from "./question-bank-expansion.ts";
+import { wave2Drafts } from "./question-bank-wave2.ts";
 
 type Draft = Omit<
   Question,
@@ -1181,7 +1182,7 @@ const drafts: Draft[] = [
   },
 ];
 
-export const questions: Question[] = publish([...drafts, ...expansionDrafts]);
+export const questions: Question[] = publish([...drafts, ...expansionDrafts, ...wave2Drafts]);
 
 export function publishedQuestions(): Question[] {
   return questions.filter((q) => isActiveQuestion(q));

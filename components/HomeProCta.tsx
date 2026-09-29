@@ -7,12 +7,15 @@ import { ProAccessNote } from "@/components/ProAccessNote";
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
 import { GUEST_NEWCOMER_HINT } from "@/lib/pricing/copy";
+import { eligibleExamPool } from "@/lib/quiz";
+import { examConfig } from "@/data/exam-config";
 
 export function HomeProCta() {
   const [isPro, setIsPro] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
+  const bankSize = eligibleExamPool().length;
 
   useEffect(() => {
     fetch("/api/auth/me/")
@@ -43,11 +46,11 @@ export function HomeProCta() {
     <section className="card" style={{ marginTop: 20 }}>
       <h2>Ready for the full prep experience?</h2>
       <p className="lede">
-        Upgrade to Arizona Notary Exam Prep Pro for the full question bank, unlimited full-length
-        practice tests, weak-area training, advanced progress insights, and more.
+        Upgrade to Arizona Notary Exam Prep Pro for all {bankSize} practice questions,
+        unlimited full-length practice tests, weak-area training, advanced progress insights, and more.
       </p>
       <ul>
-        <li>Full question bank</li>
+        <li>All {bankSize} practice questions. Each Full {examConfig.questionCount} draws {examConfig.questionCount}.</li>
         <li>Unlimited full exams</li>
         <li>Weak-area training</li>
         <li>Exam readiness &amp; advanced analytics</li>

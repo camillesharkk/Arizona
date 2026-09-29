@@ -3,7 +3,10 @@ import { chapters } from "@/data/study-guide";
 import { getSource } from "@/data/sources";
 import { ChapterProgress, Readiness } from "@/components/StudyProgress";
 import { paths } from "@/lib/paths";
+import { eligibleExamPool } from "@/lib/quiz";
 import { pageMeta } from "@/lib/seo";
+import { PrepCtas } from "@/components/PrepCtas";
+import { HomeProCta } from "@/components/HomeProCta";
 
 const chapterReferences: Record<string, string[]> = {
   identification: ["ars_41_253", "ars_41_254", "ars_41_256"],
@@ -37,12 +40,7 @@ export default async function StudyGuidePage() {
         The current SOS download is named “Notary-Manual-Aug-2026.pdf”; its cover says January 2025.
         For later changes, use the <Link href={paths.laws}>verified Arizona law updates</Link> and chaptered statutes.
       </p>
-      <div className="row">
-        <Link className="btn btn-primary" href={paths.practice}>
-          Take a Practice Test
-        </Link>
-        <Link className="btn btn-ghost" href={paths.examPrep}>Follow the Study Plan</Link>
-      </div>
+      <PrepCtas />
       <div className="grid grid-2" style={{ marginTop: 24 }}>
         <nav className="card toc">
           <h2>Chapters</h2>
@@ -83,12 +81,22 @@ export default async function StudyGuidePage() {
             </p>
             {chapterReferences[c.id]?.length > 0 && <p className="notice">Also consult: {chapterReferences[c.id].map((id, i) => <span key={id}>{i > 0 ? " · " : ""}<a href={getSource(id).url}>{getSource(id).title}</a></span>)}</p>}
             {c.id === "new-laws" && <p><Link href={paths.laws}>Read the verified change and its effective date</Link></p>}
-            <Link className="btn btn-primary" href={paths.topic(c.topic)}>
-              Practice This Topic
-            </Link>
+            {eligibleExamPool({ topic: c.topic, freeOnly: true }).length > 0 ? (
+              <Link className="btn btn-primary" href={paths.topic(c.topic)}>
+                Practice this topic free
+              </Link>
+            ) : (
+              <p>
+                This topic’s practice questions are Pro-only.{" "}
+                <Link href={paths.topic(c.topic)}>See the Pro explanation</Link>
+                {" · "}
+                <Link href={`${paths.practice}?mode=quick`}>Start free Quick 10</Link>
+              </p>
+            )}
           </article>
         );
       })}
+      <HomeProCta />
     </main>
   );
 }
