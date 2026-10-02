@@ -18,6 +18,7 @@
     "lemon:verify": "node --experimental-strip-types scripts/lemon-verify.ts",
     "paddle:verify": "node --experimental-strip-types scripts/paddle-verify.ts",
     "analytics:verify": "node --experimental-strip-types scripts/analytics-verify.ts",
+    "operations:verify": "node --experimental-strip-types scripts/operations-verify.ts",
     "contact:verify": "node --experimental-strip-types scripts/contact-verify.ts"
   },
   "dependencies": {
@@ -27,6 +28,8 @@
     "jose": "^5.9.6",
     "next": "^15.4.6",
     "postgres": "^3.4.7",
+    "posthog-js": "^1.435.7",
+    "posthog-node": "^5.55.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "server-only": "^0.0.1",

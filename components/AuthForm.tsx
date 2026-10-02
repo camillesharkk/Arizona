@@ -129,8 +129,8 @@ export function AuthForm({
         return;
       }
       if (mode === "register" && data.code === "VERIFICATION_EMAIL_FAILED") {
-        const { trackEvent } = await import("@/lib/analytics");
-        trackEvent("sign_up");
+        const { trackAnalyticsEvent } = await import("@/lib/analytics");
+        trackAnalyticsEvent("sign_up", { plan: "free" });
         setRegisterBlock("email-failed");
         if (typeof window !== "undefined") sessionStorage.setItem(VERIFY_EMAIL_KEY, email.trim().toLowerCase());
         setError("Your account was created, but we could not send the verification email.");
@@ -159,8 +159,8 @@ export function AuthForm({
       return;
     }
     if (mode === "register") {
-      const { trackEvent } = await import("@/lib/analytics");
-      trackEvent("sign_up");
+      const { trackAnalyticsEvent } = await import("@/lib/analytics");
+      trackAnalyticsEvent("sign_up", { plan: "free" });
       if (typeof window !== "undefined") sessionStorage.setItem(VERIFY_EMAIL_KEY, email.trim().toLowerCase());
       window.location.href = `${paths.verify}?sent=1`;
       return;
@@ -171,11 +171,11 @@ export function AuthForm({
   const hideCreate = mode === "register" && registerBlock !== null;
 
   return (
-    <form className="card" onSubmit={submit}>
+    <form className="card clarity-mask" onSubmit={submit}>
       {(mode === "login" || mode === "register" || mode === "forgot") && (
         <label className="field">
           Email
-          <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+          <input className="clarity-mask" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
         </label>
       )}
       {mode === "register" && !hideCreate && (

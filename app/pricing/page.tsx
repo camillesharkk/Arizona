@@ -9,10 +9,15 @@ import { PERSONAL_USE_NOTICE, PRO_DURATION_NOTICE, CREDIT_PER_ORDER_NOTICE, GUES
 import { STANDARD_PRICE_CENTS, NEWCOMER_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
 import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
+import { eligibleExamPool } from "@/lib/quiz";
+import { examConfig } from "@/data/exam-config";
+
+const pricingPool = eligibleExamPool();
+const pricingFreeCount = pricingPool.filter((q) => q.is_free).length;
 
 export const metadata = pageMeta({
   title: "Arizona Notary Exam Prep Pro — 60-Day Full Access",
-  description: "Free Arizona notary practice plus 60-day Pro: full bank, unlimited exams, weak-area training, and exam readiness. One-time payment, no subscription.",
+  description: `Free practice uses ${pricingFreeCount} of ${pricingPool.length} questions. Pro includes all ${pricingPool.length}. Each Full 45 draws ${examConfig.questionCount}. One-time 60-day access, no subscription.`,
   path: paths.pricing,
 });
 
@@ -25,6 +30,8 @@ const faqs = [
 ];
 
 export default function PricingPage() {
+  const pool = pricingPool;
+  const freeCount = pricingFreeCount;
   return (
     <main className="wrap hero">
       <PricingAnalytics />
@@ -44,7 +51,7 @@ export default function PricingPage() {
             <li>Official sources and last verified dates</li>
             <li>Full study guide, exam guide, and new laws</li>
             <li>Free account, cloud progress, basic wrong-answer notebook, favorites</li>
-            <li>Some exam questions</li>
+            <li>{freeCount} free practice questions for Quick 10 and topic practice</li>
             <li>AI Tutor — {AI_LIMIT_FREE} successful requests per day</li>
           </ul>
         </section>
@@ -60,7 +67,8 @@ export default function PricingPage() {
           <p className="notice">{CREDIT_PER_ORDER_NOTICE}</p>
           <p className="notice">{TAX_CHECKOUT_NOTICE}</p>
           <ul>
-            <li>Access the complete Arizona question bank</li>
+            <li>All {pool.length} practice questions, including the {pool.length - freeCount} that are Pro-only</li>
+            <li>Each additional Full {examConfig.questionCount} draws {examConfig.questionCount} questions from that bank</li>
             <li>Unlimited full-length exams</li>
             <li>Weak-area training</li>
             <li>Smart wrong-answer review</li>

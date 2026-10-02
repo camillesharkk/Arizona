@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type Ref } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
 import { examConfig } from "@/data/exam-config";
@@ -19,7 +19,8 @@ import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
 import { getSource } from "@/data/sources";
 import { paths } from "@/lib/paths";
-import { trackEvent } from "@/lib/analytics";
+import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
+import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
 
 type Mode = "quick" | "full" | "weak" | "practice";
 
@@ -78,13 +79,21 @@ export function ExamRunner({
   const [seconds, setSeconds] = useState(examConfig.timeLimitMinutes * 60);
   const weakReported = useRef(false);
   const startReported = useRef(false);
+  const startedAt = useRef<number | null>(null);
+  const choiceLock = useRef<string | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   useEffect(() => {
     if (startReported.current || !questions.length) return;
     startReported.current = true;
-    if (mode === "quick") trackEvent("quick10_start");
-    if (mode === "full") trackEvent("full45_start", { plan: isPro ? "pro" : "free" });
-  }, [questions.length, mode, isPro]);
+    startedAt.current = Date.now();
+    const plan = isPro ? "pro" : "free";
+    const start = examStartParams({ mode, practice, questionCount: questions.length, plan });
+    trackAnalyticsEvent("exam_start", start);
+    if (start.mode === "quick10") trackEvent("quick10_start");
+    if (start.mode === "full45") trackEvent("full45_start", { plan });
+  }, [questions.length, mode, isPro, practice]);
 
   useEffect(() => {
     if (!timed || done) return;
@@ -104,6 +113,11 @@ export function ExamRunner({
     if (timed && seconds === 0 && !done) finish();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds, timed, done]);
+
+  useEffect(() => {
+    if (done) return;
+    headingRef.current?.focus();
+  }, [idx, done]);
 
   const q = questions[idx];
   const selected = q ? answers[q.question_id] : undefined;
@@ -134,8 +148,17 @@ export function ExamRunner({
     return toOriginalRef.current[questionId]?.[display] ?? display;
   }
 
+  function goTo(nextIdx: number) {
+    cancelAutoAdvance();
+    setIdx(nextIdx);
+  }
+
   function choose(letter: "A" | "B" | "C" | "D") {
     if (!practice && timed && done) return;
+    if (practice) {
+      if (answers[q.question_id] || choiceLock.current === q.question_id) return;
+      choiceLock.current = q.question_id;
+    }
     setAnswers((a) => ({ ...a, [q.question_id]: letter }));
     if (practice) {
       recordAnswer(q.question_id, letter === q.correct_option);
@@ -152,10 +175,14 @@ export function ExamRunner({
           body: JSON.stringify({ featureCode: "weak_areas" }),
         }).catch(() => undefined);
       }
+      if (letter === q.correct_option) {
+        scheduleAfterCorrect(idx + 1 < questions.length, () => setIdx((i) => i + 1));
+      }
     }
   }
 
   function finish() {
+    cancelAutoAdvance();
     setDone(true);
     const results = questions.map((item) => ({
       question: item,
@@ -184,12 +211,20 @@ export function ExamRunner({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ kind: "exam", mode, score: pct, correctCount: results.filter((r) => r.correct).length, total: questions.length }),
     }).catch(() => undefined);
-    trackEvent("exam_complete", {
-      exam_type: mode === "quick" ? "quick10" : mode === "full" ? "full45" : "weak",
-      score_percent: pct,
-      passed: pct >= examConfig.passingScorePercent,
-      plan: isPro ? "pro" : "free",
-    });
+    const elapsed = startedAt.current == null ? undefined : Math.max(0, Math.round((Date.now() - startedAt.current) / 1000));
+    trackAnalyticsEvent(
+      "exam_complete",
+      examCompleteParams({
+        mode,
+        practice,
+        questionCount: questions.length,
+        answeredCount: Object.keys(answers).length,
+        score: pct,
+        passed: pct >= examConfig.passingScorePercent,
+        plan: isPro ? "pro" : "free",
+        durationSeconds: elapsed,
+      })
+    );
   }
 
   if (done) {
@@ -290,6 +325,8 @@ export function ExamRunner({
 
   const source = getSource(q.source_id);
   const remain = seconds;
+  const lastQuestion = idx + 1 >= questions.length;
+  const practiceLocked = Boolean(practice && selected);
 
   return (
     <div className="exam-pad">
@@ -313,6 +350,8 @@ export function ExamRunner({
         reveal={!!selected && (practice || showExplain)}
         onChoose={choose}
         lockPaid={false}
+        lockChoice={practiceLocked}
+        headingRef={headingRef}
         isPro={isPro}
         marked={marked.includes(q.question_id)}
         onMark={() => {
@@ -327,6 +366,11 @@ export function ExamRunner({
           You selected {selected}.
         </p>
       )}
+      {practice && selected === q.correct_option && !lastQuestion ? (
+        <p className="notice" role="status">
+          Correct. Moving to the next question.
+        </p>
+      ) : null}
       {!!selected && (practice || showExplain) && (
         <TutorPanel q={q} selected={originalLetter(q.question_id, selected)} />
       )}
@@ -335,16 +379,16 @@ export function ExamRunner({
       </p>
       <div className="sticky-nav">
         <div className="wrap row space">
-          <button className="btn btn-ghost" type="button" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
+          <button className="btn btn-ghost" type="button" disabled={idx === 0} onClick={() => goTo(idx - 1)}>
             Previous
           </button>
-          {idx + 1 < questions.length ? (
-            <button className="btn btn-primary" type="button" onClick={() => setIdx(idx + 1)}>
-              Next
+          {lastQuestion ? (
+            <button className="btn btn-sage" type="button" onClick={finish}>
+              {practice ? "View results" : "Submit exam"}
             </button>
           ) : (
-            <button className="btn btn-sage" type="button" onClick={finish}>
-              Submit exam
+            <button className="btn btn-primary" type="button" onClick={() => goTo(idx + 1)}>
+              Next
             </button>
           )}
         </div>
@@ -369,6 +413,8 @@ export function QuestionBlock({
   onMark,
   isPro,
   lockPaid = true,
+  lockChoice = false,
+  headingRef,
 }: {
   q: Question;
   index: number;
@@ -379,10 +425,13 @@ export function QuestionBlock({
   onMark?: () => void;
   isPro?: boolean;
   lockPaid?: boolean;
+  lockChoice?: boolean;
+  headingRef?: Ref<HTMLHeadingElement>;
 }) {
   const letters = ["A", "B", "C", "D"] as const;
   const map = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
   const locked = lockPaid && !q.is_free && !isPro;
+  const choiceDisabled = !onChoose || locked || lockChoice;
   return (
     <div className="card">
       <div className="row space">
@@ -396,7 +445,7 @@ export function QuestionBlock({
           </button>
         )}
       </div>
-      <h3>
+      <h3 ref={headingRef} tabIndex={-1}>
         {index + 1}. {q.question_text}
       </h3>
       {locked ? (
@@ -408,7 +457,7 @@ export function QuestionBlock({
           </Link>
         </div>
       ) : null}
-      <div className="q-options">
+      <div className="q-options" role="group" aria-label="Answer choices">
         {letters.map((l) => {
           let cls = "q-option";
           if (selected === l) cls += " selected";
@@ -416,22 +465,36 @@ export function QuestionBlock({
             if (l === q.correct_option) cls += " correct";
             else if (selected === l) cls += " wrong";
           }
+          const status =
+            reveal && l === q.correct_option
+              ? "Correct answer"
+              : reveal && selected === l
+                ? "Your answer — incorrect"
+                : null;
           return (
             <button
               key={l}
               className={cls}
               type="button"
               aria-pressed={selected === l}
-              disabled={!onChoose || locked}
+              aria-label={`${l}. ${map[l]}${status ? `. ${status}` : ""}`}
+              disabled={choiceDisabled}
               onClick={() => onChoose?.(l)}
             >
-              <strong>{l}.</strong> {map[l]}
+              <span className="q-option-inner">
+                <strong>{l}.</strong> {map[l]}
+                {status ? (
+                  <span className={l === q.correct_option ? "q-option-tag" : "q-option-tag q-option-tag-wrong"}>
+                    {status}
+                  </span>
+                ) : null}
+              </span>
             </button>
           );
         })}
       </div>
       {reveal && (
-        <div className="explain">
+        <div className="explain" role="status">
           <strong>{!selected ? "Unanswered" : selected === q.correct_option ? "Correct" : "Not quite"}.</strong>
           <p>Correct answer: {q.correct_option}. {map[q.correct_option]}</p>
           <p>{q.explanation}</p>

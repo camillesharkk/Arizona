@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { collectAndStorePaddleDailyReport } from "@/lib/operations/daily-report";
+import { collectAndStoreDailyOperationsReports } from "@/lib/operations/daily-report";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -16,8 +16,16 @@ export async function GET(req: Request) {
   }
 
   try {
-    const result = await collectAndStorePaddleDailyReport();
+    const result = await collectAndStoreDailyOperationsReports();
+    if (!result.summary.ok) {
+      console.error("[cron:operations-report] summary store failed");
+    }
+    if (!result.paddle.ok) console.error("[cron:operations-report] paddle source failed");
+    if (!result.google.ok && !("skipped" in result.google && result.google.skipped)) {
+      console.error("[cron:operations-report] google source failed");
+    }
     return NextResponse.json(result, {
+      status: result.summary.ok ? 200 : 500,
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });
   } catch (error) {

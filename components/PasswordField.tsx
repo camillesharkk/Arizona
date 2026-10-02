@@ -46,6 +46,7 @@ export function PasswordField({
       <span className="pw-wrap">
         <input
           id={inputId}
+          className="clarity-mask"
           name={name}
           type={visible ? "text" : "password"}
           required

@@ -13,6 +13,7 @@ import {
   type PaddleTransactionsClient,
 } from "./paddle.ts";
 import { reconcilePaddleCheckoutBinding } from "./paddle-reconcile.ts";
+import { reportCheckoutCreate } from "../analytics-server.ts";
 
 export async function ensurePaddleCheckout(opts: {
   repo: CommerceRepo;
@@ -102,8 +103,10 @@ export async function ensurePaddleCheckout(opts: {
 
   const created = await createPaddleTransaction(opts.config, payload, sdk);
   if (!created.ok) {
+    reportCheckoutCreate(false, quote.userId);
     return { ok: false, error: created.error, status: 502 };
   }
+  reportCheckoutCreate(true, quote.userId);
 
   const finished = await opts.repo.completeCheckoutBinding({
     quoteId: quote.id,

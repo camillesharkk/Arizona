@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
-  serverExternalPackages: ["postgres"],
+  serverExternalPackages: ["postgres", "posthog-node"],
   async redirects() {
     return [
       {
@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         destination: "https://arizonanotaryprep.com/:path*",
         permanent: true,
       },
+      { source: "/arizona-notary-exam-practice-test", destination: "/arizona-notary-practice-test/", permanent: true },
+      { source: "/arizona-notary-exam-practice-test/", destination: "/arizona-notary-practice-test/", permanent: true },
+      { source: "/arizona-notary-exam-questions-and-answers", destination: "/arizona-notary-exam-questions/", permanent: true },
+      { source: "/arizona-notary-exam-questions-and-answers/", destination: "/arizona-notary-exam-questions/", permanent: true },
       { source: "/arizona/practice-test", destination: "/arizona-notary-practice-test/", permanent: true },
       { source: "/arizona/practice-test/", destination: "/arizona-notary-practice-test/", permanent: true },
       { source: "/arizona/exam-questions", destination: "/arizona-notary-exam-questions/", permanent: true },

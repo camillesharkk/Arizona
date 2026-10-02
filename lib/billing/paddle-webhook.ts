@@ -13,6 +13,7 @@ import {
   type PaddleWebhookConfig,
 } from "./paddle.ts";
 import { adoptPaddleCreatingBinding } from "./paddle-reconcile.ts";
+import { reportPaddleFulfillment } from "../analytics-server.ts";
 
 export type PaddleWebhookResult = {
   status: number;
@@ -258,6 +259,12 @@ export async function handlePaddleWebhook(opts: {
       paddleLog("order_confirm_failed", { orderId: transactionId, quoteId: quote.id, event: result.error });
       return fail(503, result.error, { orderId: transactionId, quoteId: quote.id });
     }
+    reportPaddleFulfillment({
+      userId: quote.userId,
+      duplicate: Boolean(result.duplicate),
+      orderConfirmed: true,
+      entitlementId: result.order.entitlementId,
+    });
     return ok(
       {
         ok: true,
@@ -269,6 +276,12 @@ export async function handlePaddleWebhook(opts: {
     );
   } catch {
     paddleLog("order_confirm_exception", { orderId: transactionId, quoteId: quote.id });
+    reportPaddleFulfillment({
+      userId: quote.userId,
+      duplicate: false,
+      orderConfirmed: false,
+      entitlementFailed: true,
+    });
     return fail(503, "entitlement_failed", { orderId: transactionId, quoteId: quote.id });
   }
 }
