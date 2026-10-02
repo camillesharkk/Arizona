@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
 import { ProAccessNote } from "@/components/ProAccessNote";
@@ -58,6 +59,7 @@ export function SiteHeader() {
     setMe(null);
     setAuthStatus("signed-out");
     setOpen(false);
+    await resetAnalyticsUser();
     window.location.href = paths.home;
   }
 
