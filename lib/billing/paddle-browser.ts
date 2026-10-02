@@ -1,6 +1,7 @@
 "use client";
 
-import { getPaddleInstance, initializePaddle, type Environments, type Paddle } from "@paddle/paddle-js";
+import { getPaddleInstance, initializePaddle, type Environments, type Paddle, type PaddleEventData } from "@paddle/paddle-js";
+import { pauseClarityRecording, PRO_ITEM_ID, trackAnalyticsEvent } from "../analytics.ts";
 import { PADDLE_OVERLAY_SETTINGS, paddleSuccessUrl } from "./paddle-public.ts";
 
 export { PADDLE_OVERLAY_SETTINGS, paddleSuccessUrl };
@@ -26,16 +27,29 @@ export function paddleBrowserConfig():
 
 let paddleInit: Promise<Paddle | undefined> | null = null;
 
+function onPaddleCheckoutEvent(event: PaddleEventData) {
+  if (event?.name !== "checkout.loaded") return;
+  pauseClarityRecording();
+  trackAnalyticsEvent("checkout_open", { product_code: PRO_ITEM_ID, plan: "free" });
+}
+
 export function loadBrowserPaddle(): Promise<Paddle | undefined> {
-  const existing = getPaddleInstance();
-  if (existing) return Promise.resolve(existing);
   const cfg = paddleBrowserConfig();
   if (!cfg.ok) return Promise.resolve(undefined);
-  if (!paddleInit) {
-    paddleInit = initializePaddle({
-      environment: cfg.environment,
-      token: cfg.token,
-    });
-  }
-  return paddleInit;
+  const existing = getPaddleInstance();
+  const ready = existing
+    ? Promise.resolve(existing)
+    : (paddleInit ??= initializePaddle({
+        environment: cfg.environment,
+        token: cfg.token,
+        eventCallback: onPaddleCheckoutEvent,
+      }));
+  return ready.then((paddle) => {
+    try {
+      paddle?.Update({ eventCallback: onPaddleCheckoutEvent });
+    } catch {
+      /* overlay can still open; checkout_open is skipped if Paddle never reports loaded */
+    }
+    return paddle;
+  });
 }

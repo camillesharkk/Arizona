@@ -19,7 +19,7 @@ import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
 import { getSource } from "@/data/sources";
 import { paths } from "@/lib/paths";
-import { trackEvent } from "@/lib/analytics";
+import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
 
 type Mode = "quick" | "full" | "weak" | "practice";
@@ -79,6 +79,7 @@ export function ExamRunner({
   const [seconds, setSeconds] = useState(examConfig.timeLimitMinutes * 60);
   const weakReported = useRef(false);
   const startReported = useRef(false);
+  const startedAt = useRef<number | null>(null);
   const choiceLock = useRef<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
@@ -86,9 +87,13 @@ export function ExamRunner({
   useEffect(() => {
     if (startReported.current || !questions.length) return;
     startReported.current = true;
-    if (mode === "quick") trackEvent("quick10_start");
-    if (mode === "full") trackEvent("full45_start", { plan: isPro ? "pro" : "free" });
-  }, [questions.length, mode, isPro]);
+    startedAt.current = Date.now();
+    const plan = isPro ? "pro" : "free";
+    const start = examStartParams({ mode, practice, questionCount: questions.length, plan });
+    trackAnalyticsEvent("exam_start", start);
+    if (start.mode === "quick10") trackEvent("quick10_start");
+    if (start.mode === "full45") trackEvent("full45_start", { plan });
+  }, [questions.length, mode, isPro, practice]);
 
   useEffect(() => {
     if (!timed || done) return;
@@ -206,12 +211,20 @@ export function ExamRunner({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ kind: "exam", mode, score: pct, correctCount: results.filter((r) => r.correct).length, total: questions.length }),
     }).catch(() => undefined);
-    trackEvent("exam_complete", {
-      exam_type: mode === "quick" ? "quick10" : mode === "full" ? "full45" : "weak",
-      score_percent: pct,
-      passed: pct >= examConfig.passingScorePercent,
-      plan: isPro ? "pro" : "free",
-    });
+    const elapsed = startedAt.current == null ? undefined : Math.max(0, Math.round((Date.now() - startedAt.current) / 1000));
+    trackAnalyticsEvent(
+      "exam_complete",
+      examCompleteParams({
+        mode,
+        practice,
+        questionCount: questions.length,
+        answeredCount: Object.keys(answers).length,
+        score: pct,
+        passed: pct >= examConfig.passingScorePercent,
+        plan: isPro ? "pro" : "free",
+        durationSeconds: elapsed,
+      })
+    );
   }
 
   if (done) {

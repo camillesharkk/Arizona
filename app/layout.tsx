@@ -8,6 +8,8 @@ import { site } from "@/lib/site";
 import { siteUrl } from "@/lib/site";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { AnalyticsPageViews } from "@/components/AnalyticsPageViews";
+import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
+import { MicrosoftClarity } from "@/components/MicrosoftClarity";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
@@ -32,6 +34,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body>
         <GoogleAnalytics />
+        <MicrosoftClarity />
+        <AnalyticsIdentity />
         <Suspense fallback={null}>
           <AnalyticsPageViews />
         </Suspense>

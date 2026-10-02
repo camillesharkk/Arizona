@@ -9,3 +9,5 @@ out
 .env.local
 .env.*.local
 tsconfig.tsbuildinfo
+.vercel
+.env*

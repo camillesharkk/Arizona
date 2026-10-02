@@ -1,0 +1,74 @@
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+  color: #1c1917;
+}
+.page h1,
+.page h2 {
+  font-weight: 650;
+  letter-spacing: 0;
+}
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px solid #1c1917;
+  font-weight: 700;
+}
+.meta,
+.sources,
+.steps,
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 24px;
+}
+.meta td,
+.sources td,
+.steps td,
+.table td,
+.steps th,
+.table th {
+  border-bottom: 1px solid #e7e5e4;
+  padding: 8px 6px;
+  text-align: left;
+  vertical-align: top;
+}
+.grid {
+  display: grid;
+  gap: 12px;
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 12px 0 24px;
+}
+.links a,
+.nav a {
+  color: #1d4ed8;
+}
+.note,
+.warning {
+  background: #fffbeb;
+  padding: 10px 12px;
+  margin: 8px 0 16px;
+}
+.section {
+  margin-top: 28px;
+}
+.calc {
+  margin-top: 6px;
+}
+.page form {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  margin: 12px 0;
+}
+.page button {
+  padding: 6px 10px;
+}
+.na {
+  color: #9a3412;
+}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { resetAnalyticsUser } from "@/lib/analytics";
 import { currentEmail, loginAccount, logout, registerAccount, subscribeAuth } from "@/lib/account";
 import { loadProgress, subscribeProgress } from "@/lib/storage";
 
@@ -39,8 +40,8 @@ export function AccountClient() {
       return;
     }
     if (mode === "register") {
-      const { trackEvent } = await import("@/lib/analytics");
-      trackEvent("sign_up");
+      const { trackAnalyticsEvent } = await import("@/lib/analytics");
+      trackAnalyticsEvent("sign_up", { plan: "free" });
     }
     setPassword("");
   }
@@ -61,6 +62,7 @@ export function AccountClient() {
               type="button"
               onClick={() => {
                 logout();
+                void resetAnalyticsUser();
                 setEmail(null);
                 setProgress(loadProgress());
               }}

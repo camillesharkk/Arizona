@@ -13,7 +13,7 @@ import {
 } from "@/lib/pricing/copy";
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
-import { checkoutStartParams, trackEvent } from "@/lib/analytics";
+import { checkoutStartParams, pauseClarityRecording, PRO_ITEM_ID, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
 
 type Breakdown = {
   listPriceCents: number;
@@ -118,6 +118,7 @@ export function CheckoutButton() {
     } = await import("@/lib/billing/paddle-browser");
     const cfg = paddleBrowserConfig();
     if (!cfg.ok) return { ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" };
+    pauseClarityRecording();
     const paddle = await loadBrowserPaddle();
     if (!paddle) return { ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" };
     paddle.Checkout.open({
@@ -135,6 +136,7 @@ export function CheckoutButton() {
       setErr("Please confirm the refund and promotion terms before checkout.");
       return;
     }
+    trackAnalyticsEvent("checkout_click", { product_code: PRO_ITEM_ID, plan: "free" });
     setBusy(true);
     setErr("");
     setPriceChanged(false);
@@ -224,7 +226,7 @@ export function CheckoutButton() {
   const showDismiss = Boolean(signedIn && preview?.newcomerOffer.eligible && !dismissed);
 
   return (
-    <div className="pricing-buy">
+    <div className="pricing-buy clarity-mask">
       {signedIn && (preview?.referralCredits.available || 0) > 0 && (preview?.referralCredits.maxApplicable || 0) > 0 && (
         <label className="notice credit-apply">
           <input type="checkbox" checked={applyCredit} onChange={(e) => setApplyCredit(e.target.checked)} />{" "}

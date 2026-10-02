@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
-  serverExternalPackages: ["postgres"],
+  serverExternalPackages: ["postgres", "posthog-node"],
   async redirects() {
     return [
       {
