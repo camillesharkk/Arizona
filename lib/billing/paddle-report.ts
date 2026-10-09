@@ -87,7 +87,7 @@ export async function buildPaddleOperationsReport(range: ReportRange) {
   const refunded: MoneyByCurrency = {};
   let refundCount = 0;
   let adjustmentsScanned = 0;
-  const adjustments = paddle.adjustments.list({ perPage: 200, orderBy: "created_at[DESC]" });
+  const adjustments = paddle.adjustments.list({ perPage: 200 });
   for await (const adjustment of adjustments) {
     const item = adjustment as Adjustment;
     adjustmentsScanned += 1;
@@ -95,7 +95,7 @@ export async function buildPaddleOperationsReport(range: ReportRange) {
       refundCount += 1;
       addMoney(refunded, item.currencyCode, item.totals?.total);
     }
-    if (item.createdAt < range.startIso || adjustmentsScanned >= MAX_ADJUSTMENTS_SCANNED) break;
+    if (adjustmentsScanned >= MAX_ADJUSTMENTS_SCANNED) break;
   }
 
   return {

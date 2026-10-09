@@ -4,6 +4,9 @@
  * In-memory only. Mock Paddle Transactions API. No live Paddle network. No production DB.
  */
 import { randomUUID } from "crypto";
+import { readFileSync } from "fs";
+import path from "path";
+import { pathToFileURL } from "url";
 import { createMemoryCommerceRepo, type CommerceRepo } from "../lib/commerce/repo.ts";
 import { bindReferral, createQuote } from "../lib/commerce/service.ts";
 import type { GrantProFn } from "../lib/commerce/service.ts";
@@ -1007,6 +1010,30 @@ async function run() {
   ) {
     fail("G. mismatched remote transactions were adopted");
   } else ok("G. wrong product / user / amount cannot be reconciled or adopted");
+
+  const adjustmentFiles = ["lib/billing/paddle-report.ts", "lib/operations/summary-fetch.ts"];
+  const adjustmentCalls = adjustmentFiles.flatMap((file) => {
+    const source = readFileSync(path.join(process.cwd(), file), "utf8");
+    return [...source.matchAll(/adjustments\.list\(\{[\s\S]*?\}\)/g)].map((match) => match[0]);
+  });
+  const transactionCalls = adjustmentFiles.flatMap((file) => {
+    const source = readFileSync(path.join(process.cwd(), file), "utf8");
+    return [...source.matchAll(/transactions\.list\(\{[\s\S]*?\}\)/g)].map((match) => match[0]);
+  });
+  const { QueryParameters } = await import(
+    pathToFileURL(path.join(process.cwd(), "node_modules/@paddle/paddle-node-sdk/dist/esm/internal/base/query-parameters.js")).href
+  );
+  const adjustmentQueries = [new QueryParameters({ perPage: 200 }), new QueryParameters({ perPage: 100 })].map((query) =>
+    query.toQueryString()
+  );
+  const orderedQuery = new QueryParameters({ perPage: 200, orderBy: "created_at[DESC]" }).toQueryString();
+  if (adjustmentCalls.length !== 2) fail("adjustments list call count");
+  else if (adjustmentCalls.some((call) => /orderBy|order_by|created_at/.test(call))) fail("adjustments list still sends created_at order");
+  else if (adjustmentQueries.some((query) => query.includes("order_by"))) fail("unordered adjustments query gained order_by");
+  else if (!orderedQuery.includes("order_by=created_at")) fail("sdk would not encode created_at order");
+  else if (transactionCalls.length !== 2 || transactionCalls.some((call) => !call.includes('orderBy: "created_at[DESC]"'))) {
+    fail("transaction ordering was changed");
+  } else ok("adjustments requests do not send order_by=created_at");
 
   if (failures) {
     console.error(lines.join("\n"));
