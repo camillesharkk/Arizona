@@ -19,7 +19,7 @@ export default function GuidesIndexPage() {
       <p className="kicker">Search guides</p>
       <h1>Arizona Notary Exam Guides</h1>
       <p className="lede">
-        Start with the page that matches the question you searched. Free Quick 10 and the first Full 45 are on the practice test. There is no separate free-practice article.
+        Start with the page that matches the question you searched. Free Quick 10 and one free Full 45 in this browser are on the practice test. There is no separate free-practice article.
       </p>
       <p>
         <Link className="btn btn-primary" href={`${paths.practice}?mode=quick`}>

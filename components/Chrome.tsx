@@ -60,6 +60,7 @@ export function SiteHeader() {
     setMe(null);
     setAuthStatus("signed-out");
     setOpen(false);
+    await resetAnalyticsUser();
     window.location.href = paths.home;
   }
 

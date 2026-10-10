@@ -89,6 +89,7 @@ export async function activateDevice(
     userAgent?: string | null;
     now?: Date;
     revokeDeviceId?: string;
+    skipLimits?: boolean;
   }
 ): Promise<ActivateResult> {
   const now = opts.now ?? new Date();
@@ -107,7 +108,7 @@ export async function activateDevice(
     const active = rows.filter((s) => isDeviceActive(s, now));
 
     if (existing && !existing.revokedAt) {
-      if (!isDeviceActive(existing, now) && active.length >= MAX_ACTIVE_DEVICES) {
+      if (!opts.skipLimits && !isDeviceActive(existing, now) && active.length >= MAX_ACTIVE_DEVICES) {
         return { ok: false as const, error: "DEVICE_LIMIT_REACHED" as const, devices: publicDevices(rows, now) };
       }
       await repo.touchSession(existing.id, at, label, uaSummary);
@@ -116,7 +117,7 @@ export async function activateDevice(
     }
 
     if (existing && existing.revokedAt) {
-      if (active.length >= MAX_ACTIVE_DEVICES) {
+      if (!opts.skipLimits && active.length >= MAX_ACTIVE_DEVICES) {
         return { ok: false as const, error: "DEVICE_LIMIT_REACHED" as const, devices: publicDevices(rows, now) };
       }
       await repo.unrevokeSession(existing.id, at);
@@ -125,13 +126,13 @@ export async function activateDevice(
       return { ok: true as const, session: next || { ...existing, revokedAt: null, lastSeenAt: at, deviceLabel: label }, created: false };
     }
 
-    if (active.length >= MAX_ACTIVE_DEVICES) {
+    if (!opts.skipLimits && active.length >= MAX_ACTIVE_DEVICES) {
       return { ok: false as const, error: "DEVICE_LIMIT_REACHED" as const, devices: publicDevices(rows, now) };
     }
 
     const since = new Date(now.getTime() - DEVICE_CHURN_WINDOW_MS).toISOString();
     const recent = await repo.countActivationsSince(opts.userId, since);
-    if (recent >= MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW) {
+    if (!opts.skipLimits && recent >= MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW) {
       return { ok: false as const, error: "TOO_MANY_DEVICE_CHANGES" as const };
     }
 

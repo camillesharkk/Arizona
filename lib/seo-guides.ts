@@ -61,7 +61,7 @@ export const seoGuides: SeoGuide[] = [
       },
       {
         heading: "How to measure difficulty for yourself",
-        body: "Start with the free Quick 10. Write down every topic you miss. Study that chapter, then take your first Full 45 under the clock. If you cannot finish or cannot explain the official source on missed items, you are not guessing your way to 80%. Unlimited full exams and the rest of the bank are Pro.",
+        body: "Start with the free Quick 10. Write down every topic you miss. Study that chapter, then take the one free Full 45 in this browser. If you cannot finish or cannot explain the official source on missed items, you are not guessing your way to 80%. Another full exam in that browser, and the rest of the bank, are Pro.",
         href: `${paths.practice}?mode=quick`,
         hrefLabel: "Start the free Quick 10",
       },
@@ -129,7 +129,7 @@ export const seoGuides: SeoGuide[] = [
       },
       {
         heading: "How this site’s tests map to that length",
-        body: "Quick 10: ten free items with instant explanations. Full 45: forty-five distinct questions, timer on, explanations after you submit. Topic practice is study, not the exam length. Your first Full 45 is free; later unlimited full tests are Pro. Repeated questions on later attempts can inflate a score, so explain the source, not just the letter.",
+        body: "Quick 10: ten free items with instant explanations. Full 45: forty-five distinct questions, timer on, explanations after you submit. Topic practice is study, not the exam length. One free Full 45 in this browser; a later full exam in that same browser is Pro. Repeated questions on later attempts can inflate a score, so explain the source, not just the letter.",
         href: `${paths.practice}?mode=quick`,
         hrefLabel: "Start Quick 10",
       },
@@ -371,7 +371,7 @@ export const seoGuides: SeoGuide[] = [
       },
       {
         q: "What can I do for free?",
-        a: `Quick 10 and topic practice use ${freeBankCount} free questions. Your first Full 45 draws ${examConfig.questionCount} questions from the ${practiceBank.length}-question bank and can include Pro items. The Study Guide stays free. No registration is required to start.`,
+        a: `Quick 10 and topic practice use ${freeBankCount} free questions. One free Full 45 in this browser draws ${examConfig.questionCount} questions from the ${practiceBank.length}-question bank and can include Pro items. That browser reminder is not a per-person limit. The Study Guide stays free. No registration is required to start.`,
       },
       {
         q: "What does Pro add?",
@@ -401,7 +401,7 @@ export const seoGuides: SeoGuide[] = [
           "A.R.S. § 41-270 does not state those three numbers. Confirm them on the live SOS page before the official exam.",
           "Quick 10 shows the explanation immediately. Full 45 hides explanations until you submit.",
         ],
-        body: `About 80 seconds per item if you split an hour evenly. Your first Full 45 on this site is free and can include Pro questions. Pro is a separate one-time 60-day purchase, not a subscription: the standard price is $22.21, and new members may pay $19.99 during the first 72 hours after registration. Pro unlocks all ${practiceBank.length} practice questions, including the ${practiceBank.length - freeBankCount} that are Pro-only, and later full exams.`,
+        body: `About 80 seconds per item if you split an hour evenly. One free Full 45 in this browser can include Pro questions. Pro is a separate one-time 60-day purchase, not a subscription: the standard price is $22.21, and new members may pay $19.99 during the first 72 hours after registration. Pro unlocks all ${practiceBank.length} practice questions, including the ${practiceBank.length - freeBankCount} that are Pro-only, and later full exams.`,
         href: paths.passingScore,
         hrefLabel: "Why 80% is a practice target",
       },
@@ -521,13 +521,13 @@ export const seoGuides: SeoGuide[] = [
       { href: paths.cram, label: "Cram sheet" },
       { href: paths.questions, label: "Practice questions" },
       { href: paths.examPrep, label: "Seven-day study plan" },
-      { href: paths.pricing, label: "Pro question bank, after the free Full 45" },
+      { href: paths.pricing, label: "Pro question bank, after this browser’s free Full 45" },
     ],
   },
 ];
 
 export const searchMatrix: { title: string; href: string; blurb: string }[] = [
-  { title: "Arizona Notary Exam Practice Test", href: paths.practice, blurb: "Free Quick 10 and the first timed Full 45. No second “free test” article." },
+  { title: "Arizona Notary Exam Practice Test", href: paths.practice, blurb: "Free Quick 10 and one free Full 45 in this browser. No second “free test” article." },
   { title: "Arizona Notary Exam Questions and Answers", href: paths.questions, blurb: "Topic practice with explanations and official sources." },
   { title: "Arizona Notary Exam Study Guide", href: paths.study, blurb: "Rules, worked examples, and a link into each topic." },
   { title: "How to Become a Notary in Arizona", href: paths.become, blurb: "Eligibility, exam, oath, and the $5,000 bond." },

@@ -9,6 +9,8 @@ import { createMemoryCommerceRepo } from "../lib/commerce/repo.ts";
 import { createMemoryDeviceRepo } from "../lib/devices/repo.ts";
 import { registerAccount } from "../lib/auth/register.ts";
 import { checkLoginCredentials } from "../lib/auth/login.ts";
+import { consumeLoginAttempt, LOGIN_ATTEMPT_LIMIT } from "../lib/auth/login-policy.ts";
+import { operationsAccess } from "../lib/operations/report-view.ts";
 import { resendVerification } from "../lib/auth/resend.ts";
 import { confirmAndDeleteAccount } from "../lib/auth/deletion.ts";
 import { issueVerificationEmail } from "../lib/auth/verify-mail.ts";
@@ -650,6 +652,56 @@ async function run() {
     if (rebound) fail("re-register rebound a used referral discount");
     else ok("re-register does not bind a previously used referral");
   }
+
+  resetRateLimits();
+  const lockedIp = "203.0.113.10";
+  const adminAllow = "ops-admin@example.com";
+  for (let n = 0; n < LOGIN_ATTEMPT_LIMIT; n += 1) consumeLoginAttempt("member@example.com", lockedIp, adminAllow);
+  const memberLocked = consumeLoginAttempt("member@example.com", lockedIp, adminAllow);
+  const adminDuringLock = consumeLoginAttempt("ops-admin@example.com", lockedIp, adminAllow);
+  const adminAgain = consumeLoginAttempt("ops-admin@example.com", lockedIp, adminAllow);
+  if (memberLocked.ok) fail("member login stayed open after the attempt cap");
+  else if (!adminDuringLock.ok || !adminAgain.ok) fail("admin login was rejected by the attempt cap");
+  else ok("admin login ignores an already full attempt bucket");
+
+  const wrongAdmin = await checkLoginCredentials(delStore, delEmail, "not-the-password");
+  if (wrongAdmin.ok || wrongAdmin.status !== 401) fail("wrong admin password was accepted");
+  else ok("wrong password still fails");
+
+  if (operationsAccess(null, adminAllow) !== "anonymous") fail("anonymous admin access was allowed");
+  else if (operationsAccess("member@example.com", adminAllow) !== "forbidden") fail("member gained admin access");
+  else if (operationsAccess("ops-admin@example.com", adminAllow) !== "ok") fail("allowlisted admin was rejected");
+  else ok("anonymous and non-admin users stay out of the admin report");
+
+  const deviceRepo = createMemoryDeviceRepo();
+  const deviceNow = new Date("2026-10-10T12:00:00.000Z");
+  let deviceSetup = true;
+  for (let n = 0; n < 3; n += 1) {
+    const opened = await activateDevice(deviceRepo, {
+      userId: "ops-admin",
+      token: newDeviceToken(),
+      userAgent: "AdminDevice/1",
+      now: deviceNow,
+    });
+    if (!opened.ok) deviceSetup = false;
+  }
+  const fourthBlocked = await activateDevice(deviceRepo, {
+    userId: "ops-admin",
+    token: newDeviceToken(),
+    userAgent: "AdminDevice/4",
+    now: deviceNow,
+  });
+  const fourthAdmin = await activateDevice(deviceRepo, {
+    userId: "ops-admin",
+    token: newDeviceToken(),
+    userAgent: "AdminDevice/5",
+    now: deviceNow,
+    skipLimits: true,
+  });
+  if (!deviceSetup) fail("admin device fixture did not open");
+  else if (fourthBlocked.ok || fourthBlocked.error !== "DEVICE_LIMIT_REACHED") fail("ordinary device cap stopped working");
+  else if (!fourthAdmin.ok) fail("admin login was rejected by the device cap");
+  else ok("admin login ignores the active device cap");
 
   console.log(lines.join("\n"));
   if (failures) {

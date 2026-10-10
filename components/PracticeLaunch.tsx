@@ -82,7 +82,7 @@ export function PracticeLaunch() {
         </button>
         <button className="card" type="button" onClick={startFull} style={{ textAlign: "left", cursor: "pointer" }}>
           <h3>Full 45</h3>
-          <p>Timed exam mode. Your first full test is free. Unlimited full exams are Pro.</p>
+          <p>One free Full 45 in this browser. It can include Pro questions. Another full exam in this browser is Pro.</p>
         </button>
         <button className="card" type="button" onClick={() => setMode("weak")} style={{ textAlign: "left", cursor: "pointer" }}>
           <h3>Weak Areas</h3>
@@ -96,7 +96,11 @@ export function PracticeLaunch() {
     return (
       <div className="card">
         <h2>Know exactly what to study next.</h2>
-        <p>You already used your free full-length practice test. Pro adds unlimited full exams, weak-area training, and exam readiness.</p>
+        <p>
+          {signedIn
+            ? "This account already has its free full-length practice test on record. Pro adds unlimited full exams, weak-area training, and exam readiness."
+            : "This browser already started its one free Full 45. The reminder is stored in this browser when storage is available. It is not a per-person limit, and another browser does not see it. Pro adds unlimited full exams, weak-area training, and exam readiness."}
+        </p>
         <Link className="btn btn-primary" href={paths.pricing}>
           Unlock Pro
         </Link>

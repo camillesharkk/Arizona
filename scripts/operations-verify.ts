@@ -3,6 +3,12 @@
  * Run: npm run operations:verify
  */
 import { summarizeGa4, summarizeGsc } from "../lib/operations/google-summary.ts";
+import {
+  capturePaddleHttpErrors,
+  logPaddleFailure,
+  paddleFailedResponse,
+  withStage,
+} from "../lib/operations/paddle-failure.ts";
 
 let failures = 0;
 const lines: string[] = [];
@@ -222,6 +228,15 @@ else if (!cronSource.includes("result.summary.ok")) fail("cron still fails the w
 else if (PRODUCT_METRICS.length < 7) fail("phase 1 metric definitions missing");
 else ok("summary upsert is idempotent and cron survives a source failure");
 
+const paddleFn = reportSource.slice(
+  reportSource.indexOf("export async function collectAndStorePaddleDailyReport"),
+  reportSource.indexOf("export async function collectAndStoreGoogleDailyReports")
+);
+const paddleLog = cronSource.slice(cronSource.indexOf("paddle source failed"), cronSource.indexOf("result.google"));
+if (!paddleFn.includes("paddleFailedResponse") || !paddleFn.includes("logPaddleFailure")) fail("paddle exception is still discarded");
+else if (/\.message|headers|authorization|email|txn_/i.test(paddleFn + paddleLog)) fail("paddle diagnostic reads a raw error field");
+else ok("paddle daily report catch returns a safe diagnostic");
+
 import {
   ENTITLEMENT_CRITICAL,
   FUNNEL_NOTE,
@@ -355,6 +370,94 @@ else if (!middlewareSource.includes("status: 401") || !middlewareSource.includes
 else if (!pageSource.includes("operationsAccess") || pageSource.includes("OPERATIONS_ADMIN_EMAILS}")) fail("page exposes the allowlist");
 else if (/退款|补单|重放|发放权益|执行 SQL/.test(pageSource)) fail("report page exposes a write action");
 else ok("extension is a read-only launcher and the report route is server-gated");
+
+const apiKey = "pdl_live_apikey_TEST_NOT_REAL";
+const cronSecret = "cron_secret_TEST_NOT_REAL";
+const email = "customer@example.com";
+const customerName = "Jane Doe";
+const customerAddress = "123 Main Street";
+const txnId = "txn_01htestnotreal";
+const forbidden = [apiKey, cronSecret, "Authorization", "Bearer", email, customerName, customerAddress, txnId, "req_should_not_leak"];
+function containsForbidden(blob: string) {
+  return forbidden.some((item) => blob.includes(item));
+}
+
+await (async () => {
+  const calls: unknown[][] = [];
+  const previousError = console.error;
+  console.error = (...args: unknown[]) => {
+    calls.push(args);
+  };
+  try {
+  const configBody = paddleFailedResponse(new Error("PADDLE_CONFIG_INVALID"));
+  const embeddedBody = paddleFailedResponse(new Error(`PADDLE_CONFIG_INVALID ${email} ${apiKey}`));
+  const dirty = new Error(
+    `connect failed ${apiKey} Authorization: Bearer ${cronSecret} ${email} ${customerName} ${customerAddress} ${txnId}`
+  );
+  dirty.name = "TypeError";
+  const dirtyBody = paddleFailedResponse(dirty);
+
+  const raw = Symbol("response");
+  async function failList(stage: "paddle_transactions" | "paddle_adjustments", status: number, code: string) {
+    let stageName: "paddle_transactions" | "paddle_adjustments" = stage;
+    const client = {
+      async get(_url: string) {
+        return {
+          error: {
+            code,
+            detail: `${customerName} ${email} ${customerAddress} Authorization: Bearer ${apiKey} ${txnId}`,
+            errors: [{ field: "customer.email", message: email }],
+          },
+          meta: { request_id: "req_should_not_leak" },
+          [raw]: { status, headers: { Authorization: `Bearer ${apiKey}` } },
+        };
+      },
+    };
+    capturePaddleHttpErrors(client, () => stageName);
+    try {
+      await client.get(`/transactions/${txnId}`);
+      return null;
+    } catch (error) {
+      return withStage(error, "paddle_adjustments");
+    }
+  }
+
+  const transactionError = await failList("paddle_transactions", 403, "forbidden");
+  const adjustmentError = await failList("paddle_adjustments", 401, `txn_${txnId}`);
+  if (transactionError) logPaddleFailure(paddleFailedResponse(transactionError));
+  if (adjustmentError) logPaddleFailure(paddleFailedResponse(adjustmentError));
+  logPaddleFailure(configBody);
+  logPaddleFailure(embeddedBody);
+  logPaddleFailure(dirtyBody);
+
+  const transactionBody = transactionError ? paddleFailedResponse(transactionError) : null;
+  const adjustmentBody = adjustmentError ? paddleFailedResponse(adjustmentError) : null;
+  const errorText = [transactionError, adjustmentError]
+    .filter((error): error is Error => error instanceof Error)
+    .map((error) => `${error.name}\n${error.message}\n${error.stack ?? ""}`)
+    .join("\n");
+  const blob = JSON.stringify({ configBody, embeddedBody, dirtyBody, transactionBody, adjustmentBody, calls }) + errorText;
+  const logKeys = calls.map((call) => Object.keys((call[1] ?? {}) as object).sort().join(","));
+  if (!transactionBody || !adjustmentBody) fail("paddle http diagnostic did not throw");
+  else if (configBody.stage !== "paddle_config" || configBody.code !== "PADDLE_PRODUCT_ID_INVALID" || configBody.status !== null) {
+    fail("config failure diagnostic");
+  } else if (embeddedBody.code !== "PADDLE_UNKNOWN") {
+    fail("config code was matched as a substring");
+  } else if (dirtyBody.code !== "PADDLE_UNKNOWN" || dirtyBody.paddleCode !== null || dirtyBody.name !== "TypeError") {
+    fail("dirty error message was not replaced");
+  } else if (transactionBody.stage !== "paddle_transactions" || transactionBody.code !== "PADDLE_API_ERROR" || transactionBody.status !== 403 || transactionBody.paddleCode !== "forbidden" || transactionBody.name !== "ApiError") {
+    fail("transaction failure diagnostic");
+  } else if (adjustmentBody.stage !== "paddle_adjustments" || adjustmentBody.status !== 401 || adjustmentBody.paddleCode !== null) {
+    fail("adjustment failure diagnostic");
+  } else if (containsForbidden(blob) || logKeys.some((keys) => keys !== "code,name,paddleCode,stage,status")) {
+    fail("paddle diagnostic leaked a forbidden field");
+  } else if ("message" in transactionBody || JSON.stringify(transactionBody).includes("detail")) {
+    fail("paddle response included an error message");
+  } else ok("paddle diagnostic response and log omit secrets, customers, and transaction ids");
+  } finally {
+    console.error = previousError;
+  }
+})();
 
 console.log(lines.join("\n"));
 if (failures) {

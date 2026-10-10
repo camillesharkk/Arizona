@@ -29,7 +29,7 @@ export async function writeDeviceTokenCookie(token: string) {
 
 export async function issueUserSession(
   user: SessionUser,
-  opts: { req: Request; revokeDeviceId?: string; now?: Date }
+  opts: { req: Request; revokeDeviceId?: string; now?: Date; skipDeviceLimits?: boolean }
 ): Promise<ActivateResult> {
   const repo = await getDeviceRepo();
   let token = await readDeviceTokenCookie();
@@ -43,6 +43,7 @@ export async function issueUserSession(
     userAgent: opts.req.headers.get("user-agent"),
     revokeDeviceId: opts.revokeDeviceId,
     now: opts.now,
+    skipLimits: opts.skipDeviceLimits,
   });
   if (!result.ok) return result;
   await writeDeviceTokenCookie(token);

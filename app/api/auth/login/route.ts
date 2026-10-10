@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getStore } from "@/lib/store";
-import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/rate-limit";
 import { issueUserSession } from "@/lib/devices/http";
 import { MAX_ACTIVE_DEVICES } from "@/lib/devices/policy";
 import { checkLoginCredentials } from "@/lib/auth/login";
+import { consumeLoginAttempt } from "@/lib/auth/login-policy";
+import { operationsAccess } from "@/lib/operations/report-view";
 
 const schema = z.object({
   email: z.string().email(),
@@ -13,10 +15,13 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
-  const limited = rateLimit(`login:${clientIp(req)}`, 12, 60_000);
+  const raw = await req.json().catch(() => null);
+  const body = schema.safeParse(raw);
+  const email = body.success ? body.data.email : "";
+  const limited = consumeLoginAttempt(email, clientIp(req), process.env.OPERATIONS_ADMIN_EMAILS);
   if (!limited.ok) return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
-  const body = schema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid credentials" }, { status: 400 });
+  const admin = operationsAccess(body.data.email, process.env.OPERATIONS_ADMIN_EMAILS) === "ok";
   const store = await getStore();
   const checked = await checkLoginCredentials(store, body.data.email, body.data.password);
   if (!checked.ok) {
@@ -41,7 +46,7 @@ export async function POST(req: Request) {
       emailVerified: user.emailVerified,
       name: user.name,
     },
-    { req, revokeDeviceId: body.data.revokeDeviceId }
+    { req, revokeDeviceId: body.data.revokeDeviceId, skipDeviceLimits: admin }
   );
   if (!issued.ok && issued.error === "DEVICE_LIMIT_REACHED") {
     return NextResponse.json(

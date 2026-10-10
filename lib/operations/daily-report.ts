@@ -3,6 +3,7 @@ import "server-only";
 import { buildPaddleOperationsReport, reportRange } from "@/lib/billing/paddle-report";
 import { buildOperationsSnapshot } from "@/lib/operations/aggregate";
 import { fetchGoogleOperationsReport } from "@/lib/operations/google";
+import { logPaddleFailure, paddleFailedResponse } from "@/lib/operations/paddle-failure";
 import { loadSummaryParts } from "@/lib/operations/summary-fetch";
 import { reportWindows } from "@/lib/operations/windows";
 import { getPgSql } from "@/lib/store/pg-store";
@@ -99,7 +100,14 @@ async function upsertOperationsReport(row: {
 
 export async function collectAndStorePaddleDailyReport(now = new Date()) {
   const reportDate = previousShanghaiDate(now);
-  const report = await buildPaddleOperationsReport(reportRange(reportDate, reportDate));
+  let report;
+  try {
+    report = await buildPaddleOperationsReport(reportRange(reportDate, reportDate));
+  } catch (error) {
+    const failure = paddleFailedResponse(error);
+    logPaddleFailure(failure);
+    return failure;
+  }
   const completedTransactions = report.transactions.byStatus.completed || 0;
 
   await upsertOperationsReport({

@@ -1,6 +1,13 @@
 import "server-only";
 
 import type { Adjustment, Transaction } from "@paddle/paddle-node-sdk";
+import {
+  capturePaddleHttpErrors,
+  diagnosticError,
+  type PaddleFailureStage,
+  type PaddleGetClient,
+  withStage,
+} from "../operations/paddle-failure";
 import { createPaddleSdk, getPaddleCheckoutConfig } from "./paddle";
 
 const MAX_RANGE_DAYS = 31;
@@ -60,61 +67,80 @@ function inside(iso: string, range: ReportRange) {
   return iso >= range.startIso && iso < range.endIso;
 }
 
+function reportClient(paddle: object): PaddleGetClient | null {
+  const client = (paddle as { client?: { get?: unknown } }).client;
+  if (!client || typeof client.get !== "function") return null;
+  return client as PaddleGetClient;
+}
+
 export async function buildPaddleOperationsReport(range: ReportRange) {
   const config = getPaddleCheckoutConfig();
-  if (!config.ok) throw new Error(config.error);
-  const paddle = createPaddleSdk(config.config);
-
-  const statusCounts: Record<string, number> = {};
-  const completedGross: MoneyByCurrency = {};
-  let transactionCount = 0;
-
-  const transactions = paddle.transactions.list({
-    "createdAt[GTE]": range.startIso,
-    "createdAt[LT]": range.endIso,
-    perPage: 200,
-    orderBy: "created_at[DESC]",
-  });
-  for await (const transaction of transactions) {
-    const item = transaction as Transaction;
-    transactionCount += 1;
-    statusCounts[item.status] = (statusCounts[item.status] || 0) + 1;
-    if (item.status === "completed") {
-      addMoney(completedGross, item.currencyCode, item.details?.totals?.grandTotal);
-    }
+  if (!config.ok) {
+    const code = config.error === "PADDLE_CONFIG_INVALID" ? "PADDLE_PRODUCT_ID_INVALID" : config.error;
+    throw diagnosticError({ stage: "paddle_config", name: "Error", code, status: null, paddleCode: null });
   }
 
-  const refunded: MoneyByCurrency = {};
-  let refundCount = 0;
-  let adjustmentsScanned = 0;
-  const adjustments = paddle.adjustments.list({ perPage: 200, orderBy: "created_at[DESC]" });
-  for await (const adjustment of adjustments) {
-    const item = adjustment as Adjustment;
-    adjustmentsScanned += 1;
-    if (inside(item.createdAt, range) && item.status === "approved" && item.action === "refund") {
-      refundCount += 1;
-      addMoney(refunded, item.currencyCode, item.totals?.total);
-    }
-    if (item.createdAt < range.startIso || adjustmentsScanned >= MAX_ADJUSTMENTS_SCANNED) break;
-  }
+  let stage: PaddleFailureStage = "paddle_config";
+  try {
+    const paddle = createPaddleSdk(config.config);
+    const client = reportClient(paddle);
+    if (client) capturePaddleHttpErrors(client, () => stage);
 
-  return {
-    generatedAt: new Date().toISOString(),
-    environment: config.config.environment,
-    range,
-    transactions: {
-      created: transactionCount,
-      byStatus: statusCounts,
-      completedGross: presentMoney(completedGross),
-    },
-    refunds: {
-      approved: refundCount,
-      amount: presentMoney(refunded),
-    },
-    privacy: {
-      includesCustomerDetails: false,
-      includesTransactionIds: false,
-      includesUserIds: false,
-    },
-  };
+    const statusCounts: Record<string, number> = {};
+    const completedGross: MoneyByCurrency = {};
+    let transactionCount = 0;
+
+    stage = "paddle_transactions";
+    const transactions = paddle.transactions.list({
+      "createdAt[GTE]": range.startIso,
+      "createdAt[LT]": range.endIso,
+      perPage: 200,
+      orderBy: "created_at[DESC]",
+    });
+    for await (const transaction of transactions) {
+      const item = transaction as Transaction;
+      transactionCount += 1;
+      statusCounts[item.status] = (statusCounts[item.status] || 0) + 1;
+      if (item.status === "completed") {
+        addMoney(completedGross, item.currencyCode, item.details?.totals?.grandTotal);
+      }
+    }
+
+    const refunded: MoneyByCurrency = {};
+    let refundCount = 0;
+    let adjustmentsScanned = 0;
+    stage = "paddle_adjustments";
+    const adjustments = paddle.adjustments.list({ perPage: 200 });
+    for await (const adjustment of adjustments) {
+      const item = adjustment as Adjustment;
+      adjustmentsScanned += 1;
+      if (inside(item.createdAt, range) && item.status === "approved" && item.action === "refund") {
+        refundCount += 1;
+        addMoney(refunded, item.currencyCode, item.totals?.total);
+      }
+      if (adjustmentsScanned >= MAX_ADJUSTMENTS_SCANNED) break;
+    }
+
+    return {
+      generatedAt: new Date().toISOString(),
+      environment: config.config.environment,
+      range,
+      transactions: {
+        created: transactionCount,
+        byStatus: statusCounts,
+        completedGross: presentMoney(completedGross),
+      },
+      refunds: {
+        approved: refundCount,
+        amount: presentMoney(refunded),
+      },
+      privacy: {
+        includesCustomerDetails: false,
+        includesTransactionIds: false,
+        includesUserIds: false,
+      },
+    };
+  } catch (error) {
+    throw withStage(error, stage);
+  }
 }

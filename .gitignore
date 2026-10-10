@@ -11,3 +11,6 @@ out
 tsconfig.tsbuildinfo
 .vercel
 .env*
+.vscode/
+.worktrees/
+.cursor/

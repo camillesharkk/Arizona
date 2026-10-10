@@ -26,7 +26,7 @@ export default function PracticeTestPage() {
       <p className="kicker">Practice Test</p>
       <h1>Arizona Notary Exam Practice Test — Free Quick 10 & Full 45</h1>
       <p className="lede">
-        Free Quick 10 and your first {examConfig.questionCount}-question full practice test. No registration or email required to start.
+        Free Quick 10 and one free {examConfig.questionCount}-question Full 45 in this browser. No registration or email required to start.
         Get your score, topic accuracy, correct answers, explanations and official references when you finish.
       </p>
       <p>
@@ -35,8 +35,10 @@ export default function PracticeTestPage() {
           draws {examConfig.questionCount} distinct questions from that bank.
         </strong>{" "}
         Quick 10 and topic practice without Pro use only the {free.length} free questions. The other {pool.length - free.length} are
-        Pro-only. Your first Full 45 is free and can include Pro questions; later full exams are a Pro feature. Later attempts can
-        repeat questions.
+        Pro-only. One free Full 45 in this browser can include Pro questions. A later full exam in the same browser is a Pro
+        feature. The reminder lives in this browser’s storage; clearing it or using another browser starts a new reminder. It is
+        not a per-person or per-account limit. A signed-in free account still has one recorded full exam on the server. Later
+        attempts can repeat questions.
       </p>
       <PracticeLaunch />
       <p className="notice">Independent practice questions, not official exam questions. An account is optional for saving progress across devices.</p>

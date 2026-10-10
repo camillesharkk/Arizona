@@ -20,7 +20,16 @@ export async function GET(req: Request) {
     if (!result.summary.ok) {
       console.error("[cron:operations-report] summary store failed");
     }
-    if (!result.paddle.ok) console.error("[cron:operations-report] paddle source failed");
+    if (!result.paddle.ok) {
+      const failed = result.paddle;
+      console.error("[cron:operations-report] paddle source failed", {
+        stage: "stage" in failed ? failed.stage : null,
+        name: "name" in failed ? failed.name : null,
+        code: "code" in failed ? failed.code : null,
+        status: "status" in failed ? failed.status : null,
+        paddleCode: "paddleCode" in failed ? failed.paddleCode : null,
+      });
+    }
     if (!result.google.ok && !("skipped" in result.google && result.google.skipped)) {
       console.error("[cron:operations-report] google source failed");
     }

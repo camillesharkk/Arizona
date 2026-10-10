@@ -151,7 +151,7 @@ async function paddleWindow(windows: ReportWindows) {
     let refundCount = 0;
     let refundMinor = 0;
     let scanned = 0;
-    const adjustments = paddle.adjustments.list({ perPage: 100, orderBy: "created_at[DESC]" });
+    const adjustments = paddle.adjustments.list({ perPage: 100 });
     for await (const adjustment of adjustments) {
       const item = adjustment as Adjustment;
       scanned += 1;
@@ -159,7 +159,7 @@ async function paddleWindow(windows: ReportWindows) {
         refundCount += 1;
         if (item.totals?.total && /^-?\d+$/.test(item.totals.total)) refundMinor += Number(item.totals.total);
       }
-      if (item.createdAt < windows.trailing7.startIso || scanned >= 500) break;
+      if (scanned >= 500) break;
     }
     const webhook = { delivered: 0, failed: 0, needsRetry: 0, notAttempted: 0 };
     let notes = 0;
