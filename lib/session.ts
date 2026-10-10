@@ -5,13 +5,29 @@ import { evaluateBoundSession, touchIfNeeded } from "@/lib/devices/service";
 
 export { signSession, readSessionToken, SESSION_COOKIE, SESSION_AUTH_VERSION } from "@/lib/session-token";
 
+const READONLY_COOKIE_MESSAGE = "Cookies can only be modified in a Server Action or Route Handler";
+
+type CookieJar = Awaited<ReturnType<typeof cookies>>;
+
+function isReadonlySessionCookieError(error: unknown) {
+  return error instanceof Error && error.message.startsWith(READONLY_COOKIE_MESSAGE);
+}
+
+function clearInvalidSessionCookie(jar: CookieJar) {
+  try {
+    jar.delete(SESSION_COOKIE);
+  } catch (error) {
+    if (!isReadonlySessionCookieError(error)) throw error;
+  }
+}
+
 export async function getSession(): Promise<SessionUser | null> {
   const jar = await cookies();
   const token = jar.get(SESSION_COOKIE)?.value;
   if (!token) return null;
   const user = await readSessionToken(token);
   if (!user) {
-    jar.delete(SESSION_COOKIE);
+    clearInvalidSessionCookie(jar);
     return null;
   }
   try {
@@ -19,7 +35,7 @@ export async function getSession(): Promise<SessionUser | null> {
     const repo = await getDeviceRepo();
     const bound = await evaluateBoundSession(repo, user);
     if (!bound.ok) {
-      jar.delete(SESSION_COOKIE);
+      clearInvalidSessionCookie(jar);
       return null;
     }
     await touchIfNeeded(repo, user.deviceSessionId!);
@@ -27,12 +43,17 @@ export async function getSession(): Promise<SessionUser | null> {
     const store = await getStore();
     const row = await store.getUserById(user.id);
     if (!row || row.deletedAt || !row.emailVerified) {
-      jar.delete(SESSION_COOKIE);
+      clearInvalidSessionCookie(jar);
       return null;
     }
     return user;
-  } catch {
-    jar.delete(SESSION_COOKIE);
+  } catch (error) {
+    if (isReadonlySessionCookieError(error)) return null;
+    try {
+      clearInvalidSessionCookie(jar);
+    } catch {
+      throw error;
+    }
     return null;
   }
 }

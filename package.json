@@ -14,6 +14,7 @@
     "commerce:verify": "node --experimental-strip-types scripts/commerce-verify.ts",
     "devices:verify": "node --experimental-strip-types scripts/devices-verify.ts",
     "auth:verify": "node --experimental-strip-types scripts/auth-verify.ts",
+    "session:verify": "node --experimental-strip-types --import ./scripts/session-cookie-register.mjs scripts/session-cookie-verify.ts",
     "ai:verify": "node --experimental-strip-types scripts/ai-verify.ts",
     "lemon:verify": "node --experimental-strip-types scripts/lemon-verify.ts",
     "paddle:verify": "node --experimental-strip-types scripts/paddle-verify.ts",
