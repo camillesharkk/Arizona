@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import type { Difficulty, TopicId } from "@/lib/types";
@@ -9,6 +10,9 @@ import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress, toggleFlag } from "@/lib/storage";
+import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
+import { paths } from "@/lib/paths";
+import { isActiveQuestion } from "@/lib/question-status";
 
 export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [filter, setFilter] = useState<"all" | TopicId | "wrong" | "unanswered">(topic ?? "all");
@@ -21,6 +25,9 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [isPro, setIsPro] = useState(false);
   const sessionSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
+  const choiceLock = useRef<string | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   useEffect(() => subscribeProgress(() => setProgress(loadProgress())), []);
   useEffect(() => {
@@ -68,6 +75,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const safeIdx = Math.min(idx, Math.max(0, pool.length - 1));
   const q = pool[safeIdx];
   const selected = q ? answers[q.question_id] : undefined;
+  const lastQuestion = safeIdx + 1 >= pool.length;
   const answered = progress.answeredIds.length;
   const correctSession = pool.filter((item) => answers[item.question_id] === item.correct_option).length;
 
@@ -76,7 +84,24 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     return toOriginalRef.current[q.question_id]?.[display] ?? display;
   }
 
-  if (!q) {
+  function goTo(nextIdx: number) {
+    cancelAutoAdvance();
+    setIdx(nextIdx);
+  }
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, [safeIdx, q?.question_id]);
+
+  const selectedTopic: TopicId | null =
+    topic ?? (filter !== "all" && filter !== "wrong" && filter !== "unanswered" ? filter : null);
+  const topicQuestions = selectedTopic
+    ? publishedQuestions().filter((item) => item.topic === selectedTopic && isActiveQuestion(item))
+    : [];
+  const topicFreeCount = topicQuestions.filter((item) => item.is_free).length;
+  const proOnlyTopic = Boolean(selectedTopic && !isPro && topicFreeCount === 0 && topicQuestions.length > 0);
+
+  if (!q && !proOnlyTopic) {
     return <p>No questions match these filters.</p>;
   }
 
@@ -90,6 +115,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
               className={`chip ${filter === id ? "on" : ""}`}
               type="button"
               onClick={() => {
+                cancelAutoAdvance();
                 setFilter(id);
                 setIdx(0);
                 setResumed(true);
@@ -104,6 +130,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
             className={`chip ${difficulty === d ? "on" : ""}`}
             type="button"
             onClick={() => {
+              cancelAutoAdvance();
               setDifficulty(d);
               setIdx(0);
             }}
@@ -115,12 +142,32 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       <p className="notice">
         Answered {answered} · This session correct {correctSession} · Wrong notebook {progress.wrongIds.length}
       </p>
+      {proOnlyTopic ? (
+        <div className="card">
+          <h2>{topics.find((t) => t.id === selectedTopic)?.label} is in the Pro bank</h2>
+          <p>
+            This topic has {topicQuestions.length} practice questions and no free questions. Quick 10 still uses the free
+            pool, and topics with free questions can be practiced without Pro.
+          </p>
+          <Link className="btn btn-primary" href={paths.pricing}>
+            Unlock Pro
+          </Link>
+          <Link className="btn btn-ghost" href={`${paths.practice}?mode=quick`} style={{ marginLeft: 8 }}>
+            Free Quick 10
+          </Link>
+        </div>
+      ) : q ? (
+      <>
       <QuestionBlock
         q={q}
         index={safeIdx}
         selected={selected}
         reveal={!!selected}
+        lockChoice={!!selected}
+        headingRef={headingRef}
         onChoose={(l) => {
+          if (answers[q.question_id] || choiceLock.current === q.question_id) return;
+          choiceLock.current = q.question_id;
           setAnswers((a) => ({ ...a, [q.question_id]: l }));
           recordAnswer(q.question_id, l === q.correct_option);
           saveProgress({ lastQuestionId: q.question_id });
@@ -130,6 +177,9 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
             body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l) }),
           }).catch(() => undefined);
           setExplainOpen(true);
+          if (l === q.correct_option) {
+            scheduleAfterCorrect(!lastQuestion, () => setIdx((i) => Math.min(pool.length - 1, i + 1)));
+          }
         }}
         marked={progress.flaggedIds.includes(q.question_id)}
         onMark={() => toggleFlag(q.question_id)}
@@ -145,18 +195,21 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       <AccountInvite compact />
       <div className="sticky-nav">
         <div className="wrap row space">
-          <button className="btn btn-ghost" type="button" disabled={safeIdx === 0} onClick={() => setIdx(safeIdx - 1)}>
+          <button className="btn btn-ghost" type="button" disabled={safeIdx === 0} onClick={() => goTo(safeIdx - 1)}>
             Previous
           </button>
           <button
             className="btn btn-primary"
             type="button"
-            onClick={() => setIdx(Math.min(pool.length - 1, safeIdx + 1))}
+            disabled={lastQuestion}
+            onClick={() => goTo(Math.min(pool.length - 1, safeIdx + 1))}
           >
-            Next Question
+            {lastQuestion ? "Last question" : "Next Question"}
           </button>
         </div>
       </div>
+      </>
+      ) : null}
     </div>
   );
 }

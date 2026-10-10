@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
 import { ProAccessNote } from "@/components/ProAccessNote";
@@ -55,6 +56,7 @@ export function SiteHeader() {
 
   async function logout() {
     await fetch("/api/auth/logout/", { method: "POST" });
+    void resetAnalyticsUser();
     setMe(null);
     setAuthStatus("signed-out");
     setOpen(false);
@@ -127,6 +129,9 @@ export function SiteHeader() {
       </div>
       {open && <div className="nav-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />}
       <nav id="mobile-nav" className={open ? "nav-drawer open" : "nav-drawer"} aria-label="Mobile">
+        <Link className="btn btn-primary btn-wide drawer-start" href={paths.practice}>
+          Practice Test
+        </Link>
         {authStatus === "signed-in" && me ? (
           <div className="drawer-account">
             <p className="drawer-account-name">{me.name?.trim() || me.email}</p>
@@ -183,9 +188,6 @@ export function SiteHeader() {
             <Link href={paths.register}>Create Free Account</Link>
           </>
         ) : null}
-        <Link className="btn btn-primary btn-wide" href={paths.practice}>
-          Practice Test
-        </Link>
       </nav>
     </header>
   );
@@ -207,6 +209,8 @@ export function SiteFooter() {
           <p><Link href={paths.practice}>Practice Test</Link></p>
           <p><Link href={paths.questions}>Questions</Link></p>
           <p><Link href={paths.study}>Study Guide</Link></p>
+          <p><Link href={paths.guidesIndex}>Exam guides</Link></p>
+          <p><Link href={paths.passingScore}>Passing score</Link></p>
           <p><Link href={paths.mistakes}>Wrong Answers</Link></p>
         </div>
         <div>

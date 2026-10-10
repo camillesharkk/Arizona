@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { topics } from "@/data/exam-config";
 import { QuestionsClient } from "@/components/QuestionsClient";
+import { eligibleExamPool } from "@/lib/quiz";
 import type { TopicId } from "@/lib/types";
 
 export function generateStaticParams() {
@@ -21,12 +22,19 @@ export default async function TopicPage({ params }: { params: Promise<{ topic: s
   const { topic } = await params;
   const t = topics.find((x) => x.id === topic);
   if (!t) notFound();
+  const topicId = t.id as TopicId;
+  const freeCount = eligibleExamPool({ topic: topicId, freeOnly: true }).length;
+  const allCount = eligibleExamPool({ topic: topicId }).length;
   return (
     <main className="wrap hero">
       <p className="kicker">Topic Practice</p>
       <h1>{t.label}</h1>
-      <p className="lede">Filtered to this knowledge area. Explanations show as soon as you answer.</p>
-      <QuestionsClient topic={t.id as TopicId} />
+      <p className="lede">
+        {freeCount > 0
+          ? `${freeCount} of ${allCount} questions in this topic are free. Explanations show as soon as you answer. The rest are Pro.`
+          : `All ${allCount} questions in this topic are Pro-only. Free Quick 10 and topics that have free questions stay available.`}
+      </p>
+      <QuestionsClient topic={topicId} />
     </main>
   );
 }

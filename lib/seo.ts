@@ -5,6 +5,7 @@ export function pageMeta(opts: {
   description: string;
   path: string;
   keywords?: string;
+  index?: boolean;
 }) {
   const url = `${siteUrl()}${opts.path}`;
   return {
@@ -25,6 +26,6 @@ export function pageMeta(opts: {
       title: opts.title,
       description: opts.description,
     },
-    robots: { index: true, follow: true },
+    robots: { index: opts.index !== false, follow: true },
   };
 }

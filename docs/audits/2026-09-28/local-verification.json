@@ -1,0 +1,51 @@
+{
+  "reports": [
+    {
+      "path": "/arizona-notary-practice-test/",
+      "status": 200,
+      "canonical": "https://arizonanotaryprep.com/arizona-notary-practice-test/",
+      "bodyCharacters": 7988,
+      "h1": "Free Arizona Notary Practice Test 2026"
+    },
+    {
+      "path": "/arizona-notary-study-guide/",
+      "status": 200,
+      "canonical": "https://arizonanotaryprep.com/arizona-notary-study-guide/",
+      "bodyCharacters": 20734,
+      "h1": "Free Arizona Notary Study Guide 2026 — Rules, Examples &amp; Topic Practice"
+    },
+    {
+      "path": "/arizona-notary-exam-prep/",
+      "status": 200,
+      "canonical": "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+      "bodyCharacters": 4626,
+      "h1": "Arizona Notary Exam Prep 2026 — A Seven-Step Study Plan"
+    },
+    {
+      "path": "/arizona/new-laws/",
+      "status": 200,
+      "canonical": "https://arizonanotaryprep.com/arizona/new-laws/",
+      "bodyCharacters": 1947,
+      "h1": "Arizona Notary Law Change — SB 1479 Journal Thumbprint"
+    }
+  ],
+  "linkedPaths": [
+    "/arizona/questions/commission/",
+    "/arizona/questions/identification/",
+    "/arizona/questions/acknowledgments/",
+    "/arizona/questions/jurats/",
+    "/arizona/questions/seals-fees/",
+    "/arizona/questions/prohibited-acts/",
+    "/arizona-notary-study-guide/",
+    "/arizona-notary-exam-prep/",
+    "/arizona/new-laws/",
+    "/arizona-notary-practice-test/",
+    "/arizona/questions/journals/",
+    "/arizona/questions/new-laws/",
+    "/arizona/questions/copy-certification/",
+    "/arizona/questions/electronic-ron/",
+    "/arizona/become-a-notary/",
+    "/arizona/laws/sb1479-journal-thumbprint/"
+  ],
+  "result": "PASS"
+}

@@ -1,0 +1,981 @@
+{
+  "property": "sc-domain:arizonanotaryprep.com",
+  "range": {
+    "startDate": "2026-08-28",
+    "endDate": "2026-09-25",
+    "dataState": "final",
+    "type": "web",
+    "rowLimit": 25000
+  },
+  "pages": {
+    "rows": [
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-practice-test/"
+        ],
+        "clicks": 2,
+        "impressions": 18,
+        "ctr": 0.1111111111111111,
+        "position": 26.666666666666668
+      },
+      {
+        "keys": [
+          "http://arizonanotaryprep.com/"
+        ],
+        "clicks": 1,
+        "impressions": 8,
+        "ctr": 0.125,
+        "position": 40.75
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-courses/"
+        ],
+        "clicks": 0,
+        "impressions": 15,
+        "ctr": 0,
+        "position": 61.06666666666667
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/"
+        ],
+        "clicks": 0,
+        "impressions": 27,
+        "ctr": 0,
+        "position": 62.03703703703704
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-questions/"
+        ],
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 57.142857142857146
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam/"
+        ],
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 54.6
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-study-guide/"
+        ],
+        "clicks": 0,
+        "impressions": 16,
+        "ctr": 0,
+        "position": 25.5
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/become-a-notary/"
+        ],
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0,
+        "position": 69.42857142857143
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/flashcards/"
+        ],
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 72.33333333333333
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/laws/effective-date-discipline/"
+        ],
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 55.666666666666664
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/new-laws/"
+        ],
+        "clicks": 0,
+        "impressions": 22,
+        "ctr": 0,
+        "position": 10.636363636363637
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/acknowledgments/"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 74
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/copy-certification/"
+        ],
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 64
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/electronic-ron/"
+        ],
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0,
+        "position": 58
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/journals/"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 62
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/prohibited-acts/"
+        ],
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 10
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/legal/refund/"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 6
+      }
+    ],
+    "responseAggregationType": "byPage"
+  },
+  "queries": {
+    "rows": [
+      {
+        "keys": [
+          "http://arizonanotaryprep.com/",
+          "arizona notary exam practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 46
+      },
+      {
+        "keys": [
+          "http://arizonanotaryprep.com/",
+          "arizona notary practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 39
+      },
+      {
+        "keys": [
+          "http://arizonanotaryprep.com/",
+          "az notary exam"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 52
+      },
+      {
+        "keys": [
+          "http://arizonanotaryprep.com/",
+          "az notary practice test free"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 30
+      },
+      {
+        "keys": [
+          "http://arizonanotaryprep.com/",
+          "notary exam arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 26
+      },
+      {
+        "keys": [
+          "http://arizonanotaryprep.com/",
+          "notary test arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 37
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-courses/",
+          "american association of notaries arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 42
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-courses/",
+          "arizona notary exam practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 69
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-courses/",
+          "arizona notary practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 63
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-courses/",
+          "arizona notary public reference manual"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 60
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-courses/",
+          "arizona notary test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 64
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-courses/",
+          "az notary exam"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 79
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-courses/",
+          "az sos notary"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 59
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-courses/",
+          "national notary association arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 45
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-courses/",
+          "notary classes near me"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 81
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "arizona notary exam practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 73
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "arizona notary handbook"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 74
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "arizona notary practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 70
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "arizona notary public reference manual"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 68
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "arizona notary renewal"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 49
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "arizona notary requirements"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 67
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "az notary application"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 63
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "az notary practice test free"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 63
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "az sos notary"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 62
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "how to become a notary arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 63
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "how to become a notary in az"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 73
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "how to become notary in az"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 74
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "notary application arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 61
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "notary handbook arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 62
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "notary license arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 65
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "notary public application arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 77
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "notary test arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 67
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "prometric notary exam"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 49
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "secretary of state arizona notary"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 56
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-questions/",
+          "arizona notary exam practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 53
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-questions/",
+          "arizona notary practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 47
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-questions/",
+          "az notary exam"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 73
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-questions/",
+          "az notary practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 51
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-questions/",
+          "az notary practice test free"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 56
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam-questions/",
+          "notary test arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 63
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam/",
+          "arizona notary test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 49
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam/",
+          "az notary practice test free"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 40
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam/",
+          "prometric arizona notary exam"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 46
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-exam/",
+          "prometric notary exam"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 59
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-practice-test/",
+          "arizona notary exam practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 59
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-practice-test/",
+          "arizona notary practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 52
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-practice-test/",
+          "az notary exam"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 77
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-practice-test/",
+          "az notary exam practice test"
+        ],
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 18.5
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-practice-test/",
+          "az notary practice test free"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 48
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-practice-test/",
+          "notary test arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 53
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-study-guide/",
+          "arizona notary handbook"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 63
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-study-guide/",
+          "arizona notary public reference manual"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 51
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona-notary-study-guide/",
+          "az notary manual"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 46
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/become-a-notary/",
+          "az notary application"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 65
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/become-a-notary/",
+          "become a notary in arizona"
+        ],
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 73
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/become-a-notary/",
+          "become a notary in az"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 73
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/become-a-notary/",
+          "become an arizona notary"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 64
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/become-a-notary/",
+          "how to become notary in az"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 67
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/become-a-notary/",
+          "notary public application arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 71
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/flashcards/",
+          "arizona notary exam practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 75
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/flashcards/",
+          "arizona notary practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 71
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/flashcards/",
+          "az notary practice test free"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 71
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/laws/effective-date-discipline/",
+          "az notary exam"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 67
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/laws/effective-date-discipline/",
+          "notary test arizona"
+        ],
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 50
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/new-laws/",
+          "new notary laws 2026"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 8
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/acknowledgments/",
+          "arizona notary acknowledgement"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 74
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/copy-certification/",
+          "arizona process server practice test"
+        ],
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0,
+        "position": 65.66666666666667
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/copy-certification/",
+          "azsci practice test"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 77
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/electronic-ron/",
+          "arizona process server practice test"
+        ],
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 78.5
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/electronic-ron/",
+          "arizona ron"
+        ],
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0,
+        "position": 21.5
+      },
+      {
+        "keys": [
+          "https://arizonanotaryprep.com/arizona/questions/electronic-ron/",
+          "state board exam prep arizona"
+        ],
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0,
+        "position": 90
+      }
+    ],
+    "responseAggregationType": "byPage"
+  },
+  "inspections": [
+    {
+      "url": "https://arizonanotaryprep.com/arizona-notary-practice-test/",
+      "result": {
+        "inspectionResultLink": "https://search.google.com/search-console/inspect?resource_id=sc-domain:arizonanotaryprep.com&id=fYtnXi0EQUWnmQtXa1N59Q&utm_medium=link&utm_source=api",
+        "indexStatusResult": {
+          "verdict": "PASS",
+          "coverageState": "Submitted and indexed",
+          "robotsTxtState": "ALLOWED",
+          "indexingState": "INDEXING_ALLOWED",
+          "lastCrawlTime": "2026-09-20T15:18:35Z",
+          "pageFetchState": "SUCCESSFUL",
+          "googleCanonical": "https://arizonanotaryprep.com/arizona-notary-practice-test/",
+          "sitemap": [
+            "https://arizonanotaryprep.com/sitemap.xml"
+          ],
+          "referringUrls": [
+            "https://arizonanotaryprep.com/legal/affiliate-disclosure/"
+          ],
+          "crawledAs": "MOBILE"
+        },
+        "mobileUsabilityResult": {
+          "verdict": "VERDICT_UNSPECIFIED"
+        }
+      }
+    },
+    {
+      "url": "https://arizonanotaryprep.com/arizona-notary-study-guide/",
+      "result": {
+        "inspectionResultLink": "https://search.google.com/search-console/inspect?resource_id=sc-domain:arizonanotaryprep.com&id=ppzQ3_9uVPvvk6z5E8Pc3w&utm_medium=link&utm_source=api",
+        "indexStatusResult": {
+          "verdict": "PASS",
+          "coverageState": "Submitted and indexed",
+          "robotsTxtState": "ALLOWED",
+          "indexingState": "INDEXING_ALLOWED",
+          "lastCrawlTime": "2026-09-05T20:52:31Z",
+          "pageFetchState": "SUCCESSFUL",
+          "googleCanonical": "https://arizonanotaryprep.com/arizona-notary-study-guide/",
+          "userCanonical": "https://arizonanotaryprep.com/arizona-notary-study-guide/",
+          "referringUrls": [
+            "https://arizonanotaryprep.com/arizona/questions/journals/",
+            "https://arizonanotaryprep.com/legal/affiliate-disclosure/"
+          ],
+          "crawledAs": "MOBILE"
+        },
+        "mobileUsabilityResult": {
+          "verdict": "VERDICT_UNSPECIFIED"
+        }
+      }
+    },
+    {
+      "url": "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+      "result": {
+        "inspectionResultLink": "https://search.google.com/search-console/inspect?resource_id=sc-domain:arizonanotaryprep.com&id=4vmiywI2c5aleAA2CqXnyA&utm_medium=link&utm_source=api",
+        "indexStatusResult": {
+          "verdict": "PASS",
+          "coverageState": "Submitted and indexed",
+          "robotsTxtState": "ALLOWED",
+          "indexingState": "INDEXING_ALLOWED",
+          "lastCrawlTime": "2026-09-05T17:41:51Z",
+          "pageFetchState": "SUCCESSFUL",
+          "googleCanonical": "https://arizonanotaryprep.com/arizona-notary-exam-prep/",
+          "sitemap": [
+            "https://arizonanotaryprep.com/sitemap.xml"
+          ],
+          "referringUrls": [
+            "https://arizonanotaryprep.com/"
+          ],
+          "crawledAs": "MOBILE"
+        },
+        "mobileUsabilityResult": {
+          "verdict": "VERDICT_UNSPECIFIED"
+        }
+      }
+    },
+    {
+      "url": "https://arizonanotaryprep.com/arizona/new-laws/",
+      "result": {
+        "inspectionResultLink": "https://search.google.com/search-console/inspect?resource_id=sc-domain:arizonanotaryprep.com&id=9Ncfdepl-kTp5vH0drknHA&utm_medium=link&utm_source=api",
+        "indexStatusResult": {
+          "verdict": "PASS",
+          "coverageState": "Submitted and indexed",
+          "robotsTxtState": "ALLOWED",
+          "indexingState": "INDEXING_ALLOWED",
+          "lastCrawlTime": "2026-09-06T07:44:06Z",
+          "pageFetchState": "SUCCESSFUL",
+          "googleCanonical": "https://arizonanotaryprep.com/arizona/new-laws/",
+          "referringUrls": [
+            "https://arizonanotaryprep.com/"
+          ],
+          "crawledAs": "MOBILE"
+        },
+        "mobileUsabilityResult": {
+          "verdict": "VERDICT_UNSPECIFIED"
+        }
+      }
+    }
+  ]
+}
