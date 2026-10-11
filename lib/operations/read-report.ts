@@ -9,6 +9,26 @@ function day(value: unknown) {
   return text.slice(0, 10);
 }
 
+export type ReportSeriesPoint = {
+  reportDate: string;
+  sessions: number | null;
+  completedOrders: number | null;
+};
+
+function seriesPoint(row: StoredSummary): ReportSeriesPoint {
+  const root = row.snapshot && typeof row.snapshot === "object" ? (row.snapshot as Record<string, unknown>) : {};
+  const raw = Array.isArray(root.raw) ? root.raw : [];
+  const sessionsRow = raw.find((item) => item && typeof item === "object" && (item as { name?: string }).name === "Sessions") as
+    | { value?: unknown }
+    | undefined;
+  const paddle = root.paddle && typeof root.paddle === "object" ? (root.paddle as { completed?: unknown }) : null;
+  return {
+    reportDate: row.reportDate,
+    sessions: typeof sessionsRow?.value === "number" ? sessionsRow.value : null,
+    completedOrders: typeof paddle?.completed === "number" ? paddle.completed : null,
+  };
+}
+
 export async function readOperationsHistory(date: string | null) {
   if (!process.env.DATABASE_URL) return { ok: false as const, reason: "database_unconfigured" };
   try {
@@ -29,7 +49,8 @@ export async function readOperationsHistory(date: string | null) {
       dataAsOf: row.data_as_of ? new Date(row.data_as_of as string | Date).toISOString() : "",
       snapshot: row.snapshot,
     }));
-    return { ok: true as const, dates: stored.map((row) => row.reportDate), report: selectSummaryReport(stored, date) };
+    const series = [...stored].reverse().map(seriesPoint);
+    return { ok: true as const, dates: stored.map((row) => row.reportDate), report: selectSummaryReport(stored, date), series };
   } catch {
     return { ok: false as const, reason: "report_read_failed" };
   }

@@ -1,74 +1,171 @@
 .page {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 24px 16px 64px;
+  padding: 20px 16px 64px;
   color: #1c1917;
 }
-.page h1,
-.page h2 {
+.page h1 {
+  margin: 0;
+  font-size: 1.35rem;
   font-weight: 650;
-  letter-spacing: 0;
 }
-.status {
-  display: inline-block;
-  padding: 4px 10px;
-  border: 1px solid #1c1917;
-  font-weight: 700;
+.page h2 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 650;
 }
-.meta,
-.sources,
-.steps,
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 12px 0 24px;
+.times,
+.chips,
+.period,
+.fine {
+  margin: 4px 0 0;
+  color: #57534e;
+  font-size: 0.82rem;
 }
-.meta td,
-.sources td,
-.steps td,
-.table td,
-.steps th,
-.table th {
-  border-bottom: 1px solid #e7e5e4;
-  padding: 8px 6px;
-  text-align: left;
-  vertical-align: top;
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
 }
-.grid {
+.cards {
   display: grid;
-  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0;
 }
+.card,
+.brief,
+.panel {
+  border: 1px solid #e7e5e4;
+  border-radius: 8px;
+  padding: 12px;
+}
+.card span,
+.card small,
+.fine,
+.source {
+  display: block;
+  color: #78716c;
+  font-size: 0.78rem;
+}
+.card strong {
+  display: block;
+  margin: 4px 0;
+  font-size: 1.45rem;
+  font-weight: 650;
+}
+.briefs {
+  display: grid;
+  gap: 10px;
+}
+.kind {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+.nav,
+.page form,
 .links {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 12px;
-  margin: 12px 0 24px;
+  gap: 8px;
+  align-items: center;
+  margin: 12px 0;
 }
-.links a,
-.nav a {
+.nav a,
+.links a {
   color: #1d4ed8;
 }
-.note,
-.warning {
-  background: #fffbeb;
-  padding: 10px 12px;
-  margin: 8px 0 16px;
+.current {
+  font-weight: 650;
+  color: #1c1917;
+}
+.bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(9rem, 22rem) 1fr auto;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0;
+}
+.barSvg,
+.trend {
+  width: 100%;
+  height: 28px;
+  background: #f5f5f4;
+  border-radius: 4px;
+}
+.barFill,
+.trendLine {
+  fill: #1d4ed8;
+  stroke: #1d4ed8;
+  stroke-width: 1.5;
+}
+.trendLine {
+  fill: none;
+}
+.barValue {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.trendWrap {
+  margin: 8px 0 0;
+}
+.trendCaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 6px;
+  color: #57534e;
+  font-size: 0.82rem;
+}
+.compare {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+.compare div {
+  background: #fafaf9;
+  padding: 8px;
 }
 .section {
-  margin-top: 28px;
+  margin-top: 22px;
 }
-.calc {
-  margin-top: 6px;
+.metric {
+  padding: 10px 0;
+  border-bottom: 1px solid #f5f5f4;
 }
-.page form {
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-  margin: 12px 0;
+.metric p {
+  margin: 4px 0;
+}
+.warning {
+  color: #9a3412;
 }
 .page button {
   padding: 6px 10px;
 }
-.na {
-  color: #9a3412;
+.page details {
+  margin-top: 8px;
+}
+
+@media (max-width: 800px) {
+  .cards,
+  .compare {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .cards,
+  .compare,
+  .barRow {
+    grid-template-columns: 1fr;
+  }
+  .barSvg {
+    height: 22px;
+  }
 }

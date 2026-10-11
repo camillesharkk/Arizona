@@ -62,6 +62,9 @@ import {
   queryPositionChange,
   rankMovers,
   reconcileEntitlements,
+  coalesceLandingPages,
+  matchLandingPage,
+  sessionsFor,
   sortLandingPages,
   summarizeGa4Sources,
   uniqueCompleted,
@@ -102,6 +105,24 @@ const landing = sortLandingPages([
 ]);
 if (landing[0]?.page !== "/pricing/" || landing[1]?.page !== "/arizona-notary-practice-test/") fail("landing sort");
 else ok("landing pages sort by sessions");
+
+const practiceRows = [
+  { page: "/arizona-notary-practice-test", sessions: 4 },
+  { page: "/arizona-notary-practice-test/", sessions: 2 },
+  { page: "/arizona-notary-practice-test/?utm=1", sessions: 1 },
+  { page: "/arizona-notary-practice-test", sessions: 9 },
+];
+const mergedPractice = matchLandingPage(practiceRows, "/arizona-notary-practice-test/");
+const coalesced = coalesceLandingPages(practiceRows);
+const shortList = matchLandingPage([{ page: "/pricing/", sessions: 3 }], "/arizona-notary-practice-test/");
+const explicitZero = matchLandingPage([{ page: "/arizona-notary-practice-test/", sessions: 0 }], "/arizona-notary-practice-test/");
+if (mergedPractice.sessions !== 7 || mergedPractice.reason !== "merged") fail("slash and query were not merged once");
+else if (coalesced.length !== 1 || coalesced[0]?.sessions !== 7) fail("duplicate landing row was counted twice");
+else if (shortList.sessions !== null || shortList.reason !== "undetermined") fail("short landing list invented a zero");
+else if (explicitZero.sessions !== 0) fail("explicit zero landing session was dropped");
+else if (sessionsFor({ exam_start: { events: 1, users: 1, sessions: 0 } }, "exam_start") !== 0) fail("explicit zero session was dropped");
+else if (sessionsFor({ exam_start: { events: 1, users: 1, sessions: 1 } }, "practice_view") !== null) fail("missing event became zero");
+else ok("landing paths merge once, short lists stay unset, and missing events stay unset");
 
 if (gscCtr(1, 4) !== 0.25 || gscCtr(0, 0) !== null) fail("gsc ctr");
 else ok("Search Console CTR is clicks ÷ impressions, and 0 impressions is null");
@@ -243,6 +264,7 @@ import {
   judgeOperationsStatus,
   operationsAccess,
   operationsAdvice,
+  operationsBrief,
   operationsShortcuts,
   presentOperationsReport,
   selectSummaryReport,
@@ -352,6 +374,24 @@ const adviceText = JSON.stringify(advice);
 if (advice.some((item) => !item.evidence) || /改价|自动退款|自动补单|自动发放|自动部署|大规模修改 SEO/.test(adviceText) && !adviceText.includes("不要")) {
   fail("advice lacked evidence or proposed an automatic change");
 } else ok("advice cites evidence and does not automate pricing, SEO, refunds, or deploys");
+
+const brief = operationsBrief({
+  productionState: "READY",
+  completed: 2,
+  matched: 1,
+  posthogStatus: "unavailable",
+  yesterdayClicks: 0,
+  trailingClicks: 8,
+  practiceSessions: 5,
+  practiceVariants: ["/arizona-notary-practice-test"],
+  smallSampleName: "答题开始率",
+  smallSampleSize: 4,
+});
+const briefText = JSON.stringify(brief);
+if (brief.length !== 3) fail("brief did not keep three priorities");
+else if (!brief[0]?.evidence || briefText.includes("没有人答题") || briefText.includes("搜索效果变差")) fail("brief invented behavior or SEO failure");
+else if (!briefText.includes("/arizona-notary-practice-test")) fail("brief missed the path mismatch");
+else ok("brief keeps three evidenced items and does not invent missing behavior");
 
 const links = operationsShortcuts({ POSTHOG_PERSONAL_API_KEY: "phx_secret", POSTHOG_PROJECT_ID: "123" });
 if (JSON.stringify(links).includes("phx_secret") || links.length < 8) fail("shortcut leaked a key");

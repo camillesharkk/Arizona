@@ -81,7 +81,65 @@ const POSTHOG_RATES = new Set(["payment_success_rate", "entitlement_grant_rate"]
 
 export function sessionsFor(totals: Record<string, EventTotals> | null, event: string) {
   if (!totals) return null;
-  return totals[event]?.sessions ?? 0;
+  const row = totals[event];
+  if (!row || typeof row.sessions !== "number") return null;
+  return row.sessions;
+}
+
+/** GA4 landingPage is an entry path. Query strings and a missing slash are the same page. */
+export function reportPathKey(page: string) {
+  const path = (page.split(/[?#]/)[0] || "/").trim() || "/";
+  if (path === "/") return "/";
+  return path.endsWith("/") ? path : `${path}/`;
+}
+
+function landingIdentity(page: string) {
+  return page.split("#")[0].trim();
+}
+
+export function coalesceLandingPages(rows: Ga4LandingRow[]) {
+  const seenExact = new Set<string>();
+  const grouped = new Map<string, Ga4LandingRow & { variants: string[] }>();
+  for (const row of rows) {
+    const identity = landingIdentity(row.page);
+    if (seenExact.has(identity)) continue;
+    seenExact.add(identity);
+    const key = reportPathKey(row.page);
+    const current = grouped.get(key);
+    if (!current) grouped.set(key, { page: key, sessions: row.sessions, variants: [row.page] });
+    else {
+      current.sessions += row.sessions;
+      if (!current.variants.includes(row.page)) current.variants.push(row.page);
+    }
+  }
+  return sortLandingPages([...grouped.values()]).map((row) => ({
+    page: row.page,
+    sessions: row.sessions,
+    variants: grouped.get(row.page)?.variants || [row.page],
+  }));
+}
+
+/** A capped landing list is never treated as complete. Unmatched pages stay unset. */
+export function matchLandingPage(rows: Ga4LandingRow[] | null, page: string) {
+  if (!rows) return { sessions: null as number | null, variants: [] as string[], reason: "missing" as const };
+  const key = reportPathKey(page);
+  const seenExact = new Set<string>();
+  const variants: Ga4LandingRow[] = [];
+  for (const row of rows) {
+    if (reportPathKey(row.page) !== key) continue;
+    const identity = landingIdentity(row.page);
+    if (seenExact.has(identity)) continue;
+    seenExact.add(identity);
+    variants.push(row);
+  }
+  if (variants.length) {
+    return {
+      sessions: variants.reduce((sum, row) => sum + row.sessions, 0),
+      variants: variants.map((row) => row.page),
+      reason: variants.some((row) => row.page !== key) ? ("merged" as const) : ("exact" as const),
+    };
+  }
+  return { sessions: null, variants: [], reason: "undetermined" as const };
 }
 
 export function ga4Requests(window: ReportWindow) {
@@ -329,7 +387,8 @@ export function buildOperationsSnapshot(input: {
   const ga4Status = input.ga4.status;
   const sources = input.ga4.sources ? summarizeGa4Sources(input.ga4.sources) : null;
   const siteSessions = input.ga4.siteSessions ?? sources?.sessions ?? null;
-  const landing = input.ga4.landing ? sortLandingPages(input.ga4.landing) : null;
+  const landingRows = input.ga4.landing ? coalesceLandingPages(input.ga4.landing) : null;
+  const landing = landingRows ? landingRows.map(({ page, sessions }) => ({ page, sessions })) : null;
   const hasTxnDates = (input.paddle.transactions || []).some((txn) => txn.createdAt);
   const txnsIn = (window: ReportWindow, includeUndated: boolean) =>
     (input.paddle.transactions || []).filter((txn) => {
@@ -370,7 +429,7 @@ export function buildOperationsSnapshot(input: {
     ...FUNNEL_EVENTS.map((event) =>
       rawMetric({
         name: event,
-        value: input.posthog.totals ? (input.posthog.totals[event]?.events ?? 0) : null,
+        value: input.posthog.totals?.[event]?.events ?? null,
         unit: "events",
         source: "PostHog",
         window: view,
@@ -602,7 +661,7 @@ export function buildOperationsSnapshot(input: {
       window: view,
       sourceStatus: crossPayment,
       warning:
-        "前端漏斗为 Session 漏斗；付款和权益步骤为跨数据源趋势核对，不代表严格同一 Session 顺序。" +
+        "结账打开和成交来自不同数据源，各自计数，没有同一会话的先后顺序。" +
         (crossPayment === "unavailable" ? " WATCH：跨数据源缺少 PostHog 或 Paddle，不标为支付 CRITICAL。" : ""),
     }),
     calculatedRate({
@@ -613,7 +672,7 @@ export function buildOperationsSnapshot(input: {
       window: view,
       sourceStatus: crossGrant,
       warning:
-        "前端漏斗为 Session 漏斗；付款和权益步骤为跨数据源趋势核对，不代表严格同一 Session 顺序。" +
+        "成交和权益核对来自不同数据源，各自计数，没有同一会话的先后顺序。" +
         (entitlement && entitlement.completed > 0 && entitlement.matched !== entitlement.completed
           ? " CRITICAL：已完成的 Paddle 交易与 Neon 订单或 60 天 AZ 权益不一致。"
           : ""),
@@ -669,14 +728,10 @@ export function buildOperationsSnapshot(input: {
     calculated: [...calculated, ...landingShares],
     ga4: {
       landing: landing?.slice(0, 10) ?? null,
-      corePages: CORE_PAGES.map((page) => {
-        const found = landing?.find((row) => row.page === page);
-        const complete = landing != null && landing.length < 50;
-        return {
-          page,
-          sessions: !landing ? null : found ? found.sessions : complete ? 0 : null,
-        };
-      }),
+      corePages: CORE_PAGES.map((page) => ({
+        page,
+        sessions: matchLandingPage(input.ga4.landing, page).sessions,
+      })),
     },
     gsc: {
       totals: {
