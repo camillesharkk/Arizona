@@ -22,6 +22,8 @@ import {
   parseClarityProjectId,
   parseGaMeasurementId,
   parsePosthogProjectKey,
+  applyOpsAcceptance,
+  rememberOpsAcceptance,
   rememberOpsProbe,
   pickLatestPaidOrder,
   rememberPurchase,
@@ -271,8 +273,16 @@ else if (applyOpsProbe({ mode: "quick10" }, false).ops_probe) fail("probe flag l
 else if (!(() => {
   const bag = new Map<string, string>();
   const storage = { getItem: (key: string) => bag.get(key) || null, setItem: (key: string, value: string) => bag.set(key, value) };
-  return rememberOpsProbe("?ops_probe=1", storage) && rememberOpsProbe("", storage);
-})()) fail("probe was not remembered");
+  return rememberOpsProbe("?ops_probe=1", storage) && rememberOpsProbe("", storage) && !rememberOpsProbe("?ops_probe=0", storage);
+})()) fail("probe was not remembered or could not be turned off");
+else if (applyOpsAcceptance({ mode: "quick10" }, true).ops_acceptance !== "1" || applyOpsAcceptance({ mode: "quick10" }, true).ops_probe) fail("acceptance flag missing");
+else if (!(() => {
+  const bag = new Map<string, string>();
+  const storage = { getItem: (key: string) => bag.get(key) || null, setItem: (key: string, value: string) => bag.set(key, value) };
+  rememberOpsProbe("?ops_probe=1", storage);
+  const acceptance = rememberOpsAcceptance("?ops_acceptance=1", storage);
+  return acceptance && !rememberOpsProbe("", storage) && rememberOpsAcceptance("", storage);
+})()) fail("acceptance did not end probe mode");
 else ok("Quick 10、Full 45、Practice 参数正确，探测标记不进入普通参数");
 
 const granted = fulfillmentAnalyticsEvents({ duplicate: false, orderConfirmed: true, entitlementId: "ent-1" });

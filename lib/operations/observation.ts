@@ -13,9 +13,18 @@ export function posthogRegionName(host: string) {
   return "other" as const;
 }
 
-/** Business totals omit the controlled probe. The probe is diagnosed separately. */
+/** Business totals omit the controlled probe. Admin acceptance stays in the business query and is labeled separately. */
 export function posthogBusinessFilter() {
   return "(isNull(properties.ops_probe) OR toString(properties.ops_probe) != '1')";
+}
+
+export function historicalCaptureCopy(state: string | null) {
+  if (state === "query_failed") return "历史窗口查询失败";
+  if (state === "before_coverage") return "历史窗口在覆盖起点之前";
+  if (state === "zero_match") return "历史窗口已覆盖，这一周期没有业务事件";
+  if (state === "measured") return "历史窗口已有业务事件";
+  if (state === "unverified") return "历史窗口还没有业务事件，这不是实时探测的结果";
+  return "历史窗口还没有记录";
 }
 
 export function classifyPosthogWindow(input: {

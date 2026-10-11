@@ -77,11 +77,12 @@ import {
   observedCount,
   posthogBusinessFilter,
   posthogRegionName,
+  historicalCaptureCopy,
   recordedEventTime,
   scrubInventedPosthogZero,
 } from "../lib/operations/observation.ts";
 import { calculatedRate, metricWindow } from "../lib/operations/metrics.ts";
-import { phoenixDate, reportWindows, windowsOverlap } from "../lib/operations/windows.ts";
+import { instantInClosedReports, phoenixDate, phoenixReportDate, reportWindows, windowsOverlap } from "../lib/operations/windows.ts";
 import { redirectWithSearch } from "../lib/paths.ts";
 
 const july = phoenixDate(new Date("2026-07-15T06:30:00.000Z"));
@@ -150,6 +151,10 @@ else if (!posthogBusinessFilter().includes("ops_probe")) fail("business query ca
 else if (posthogRegionName("https://us.posthog.com") !== "us" || posthogRegionName("https://eu.posthog.com") !== "eu") fail("posthog region");
 else if (recordedEventTime("1970-01-01 00:00:00", 0) !== null || recordedEventTime("1970-01-01T00:00:00Z", 3) !== null) fail("empty probe time stayed at 1970");
 else if (recordedEventTime("2026-10-12 00:40:00", 2) !== "2026-10-12 00:40:00") fail("real probe time was dropped");
+else if (historicalCaptureCopy("unverified").includes("尚未验证")) fail("historical gap is still labeled unverified");
+else if (posthogBusinessFilter().includes("ops_acceptance")) fail("acceptance was removed from the business query");
+else if (phoenixReportDate("2026-10-11T17:07:00.000Z") !== "2026-10-11") fail("acceptance time lost its Phoenix report date");
+else if (instantInClosedReports("2026-10-11T17:07:00.000Z", new Date("2026-10-11T17:07:00.000Z"))) fail("an event during the open Phoenix day was written into a closed report");
 else ok("empty posthog results stay unknown until capture is verified");
 
 if (gscCtr(1, 4) !== 0.25 || gscCtr(0, 0) !== null) fail("gsc ctr");
@@ -450,11 +455,12 @@ else ok("recollect stays admin-only on production and records an audit");
 
 const probeRoute = readFileSync(path.join(process.cwd(), "app/admin/operations/probe/route.ts"), "utf8");
 const homeSource = readFileSync(path.join(process.cwd(), "app/page.tsx"), "utf8");
-if (!probeRoute.includes("operationsAccess") || !probeRoute.includes("production_only") || !probeRoute.includes("queryLiveProbe")) {
+if (!probeRoute.includes("operationsAccess") || !probeRoute.includes("production_only") || !probeRoute.includes("queryLiveProbe") || !probeRoute.includes("queryLiveBusiness")) {
   fail("live probe check is missing an admin or production guard");
 } else if (probeRoute.includes("collectAndStoreSummaryReport") || /退款|补单|重放|发放权益|执行 SQL/.test(probeRoute)) {
   fail("live probe check rewrites the report");
-} else if (!pageSource.includes("检查探测")) fail("report page cannot start a live probe check");
+} else if (!pageSource.includes("检查探测") || !pageSource.includes("实时探测") || !pageSource.includes("历史覆盖") || !pageSource.includes("新业务采集")) fail("report page cannot separate probe, history, and new business");
+else if (pageSource.includes("尚未验证")) fail("report page still uses one unverified label");
 else if (!homeSource.includes("redirectWithSearch")) fail("home redirect drops the probe query");
 else if (redirectWithSearch("/arizona-notary-exam/", { ops_probe: "1" }) !== "/arizona-notary-exam/?ops_probe=1") fail("probe query was not kept on the home redirect");
 else ok("live probe check is separate from the daily report, and the home redirect keeps ops_probe");

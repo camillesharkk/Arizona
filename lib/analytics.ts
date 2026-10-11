@@ -169,18 +169,38 @@ export function sanitizeEventParams(params?: Record<string, unknown>) {
 }
 
 export const OPS_PROBE_STORAGE = "az_ops_probe";
+export const OPS_ACCEPTANCE_STORAGE = "az_ops_acceptance";
 
-export function rememberOpsProbe(
-  search: string,
-  storage: { getItem: (key: string) => string | null; setItem: (key: string, value: string) => void }
-) {
-  if (new URLSearchParams(search).get("ops_probe") === "1") storage.setItem(OPS_PROBE_STORAGE, "1");
+type OpsFlagStorage = {
+  getItem: (key: string) => string | null;
+  setItem: (key: string, value: string) => void;
+};
+
+export function rememberOpsProbe(search: string, storage: OpsFlagStorage) {
+  const value = new URLSearchParams(search).get("ops_probe");
+  if (value === "1") storage.setItem(OPS_PROBE_STORAGE, "1");
+  if (value === "0") storage.setItem(OPS_PROBE_STORAGE, "0");
   return storage.getItem(OPS_PROBE_STORAGE) === "1";
+}
+
+export function rememberOpsAcceptance(search: string, storage: OpsFlagStorage) {
+  const value = new URLSearchParams(search).get("ops_acceptance");
+  if (value === "1") {
+    storage.setItem(OPS_ACCEPTANCE_STORAGE, "1");
+    storage.setItem(OPS_PROBE_STORAGE, "0");
+  }
+  if (value === "0") storage.setItem(OPS_ACCEPTANCE_STORAGE, "0");
+  return storage.getItem(OPS_ACCEPTANCE_STORAGE) === "1";
 }
 
 export function applyOpsProbe(params: Record<string, string | number | boolean>, enabled: boolean) {
   if (!enabled) return params;
   return { ...params, ops_probe: "1" };
+}
+
+export function applyOpsAcceptance(params: Record<string, string | number | boolean>, enabled: boolean) {
+  if (!enabled) return params;
+  return { ...params, ops_acceptance: "1" };
 }
 
 export function applyCommonParams(params?: Record<string, string | number | boolean>) {
@@ -193,14 +213,17 @@ export function applyCommonParams(params?: Record<string, string | number | bool
   }
   Object.assign(out, readAttribution(), params || {});
   let probe = false;
+  let acceptance = false;
   if (typeof window !== "undefined") {
     try {
-      probe = rememberOpsProbe(window.location.search, window.sessionStorage);
+      acceptance = rememberOpsAcceptance(window.location.search, window.sessionStorage);
+      probe = rememberOpsProbe(window.location.search, window.sessionStorage) && !acceptance;
     } catch {
       probe = false;
+      acceptance = false;
     }
   }
-  return applyOpsProbe(out, probe);
+  return applyOpsAcceptance(applyOpsProbe(out, probe), acceptance);
 }
 
 function readAttribution() {

@@ -13,6 +13,7 @@ import {
   presentOperationsReport,
 } from "@/lib/operations/report-view";
 import type { CalculatedMetric } from "@/lib/operations/metrics";
+import { historicalCaptureCopy } from "@/lib/operations/observation";
 import { BarChart, TrendChart } from "./charts";
 import styles from "./report.module.css";
 
@@ -87,14 +88,6 @@ function countText(value: number | null) {
   return value == null ? "未返回" : String(value);
 }
 
-const CAPTURE_LABEL: Record<string, string> = {
-  query_failed: "查询失败",
-  unverified: "尚未验证，空结果不是 0",
-  before_coverage: "这个周期在覆盖起点之前，空结果不是 0",
-  zero_match: "查询成功，这一周期没有业务事件",
-  measured: "查询成功，已有业务事件",
-};
-
 function probeCount(diagnostics: Record<string, unknown> | null) {
   const probe = diagnostics?.probe;
   if (!probe || typeof probe !== "object") return "未返回";
@@ -157,7 +150,23 @@ function MetricBlock({ metric }: { metric: CalculatedMetric }) {
 export default async function OperationsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ date?: string; window?: string; liveProbe?: string; probeError?: string; probeTotal?: string; probeLast?: string; probeOverlap?: string; probeEvents?: string }>;
+  searchParams: Promise<{
+    date?: string;
+    window?: string;
+    liveProbe?: string;
+    probeError?: string;
+    probeTotal?: string;
+    probeLast?: string;
+    probeOverlap?: string;
+    probeEvents?: string;
+    businessError?: string;
+    businessTotal?: string;
+    acceptanceTotal?: string;
+    acceptanceEvents?: string;
+    businessLast?: string;
+    reportDate?: string;
+    inHistory?: string;
+  }>;
 }) {
   const session = await getSession();
   const access = operationsAccess(session?.email, process.env.OPERATIONS_ADMIN_EMAILS);
@@ -456,12 +465,17 @@ export default async function OperationsPage({
 
       <section className={styles.section}>
         <h2>采集诊断</h2>
-        <p className={styles.period}>接口能否访问，和事件有没有采到，分开看。受控测试带 ops_probe=1，不计入上面的业务数字。</p>
+        <p className={styles.period}>实时探测、这份历史日报的覆盖、以及截止时间之后的新业务，分开看。受控测试带 ops_probe=1，不计入业务数字。管理员验收带 ops_acceptance=1，会计入覆盖该时刻的新日报，并单独标出。</p>
         <p>代码版本 {view.gitSha || "未记录"}，结构版本 {view.schemaVersion ?? "旧报告，还没有结构版本"}。</p>
         <p>
           PostHog 接口 {diagnostics && diagnostics.apiReachable === true ? "可访问" : diagnostics && diagnostics.apiReachable === false ? "没有访问成功" : "未记录"}
-          {typeof diagnostics?.captureState === "string" ? `，采集状态 ${CAPTURE_LABEL[String(diagnostics.captureState)] || diagnostics.captureState}` : ""}
           {diagnostics?.regionMatch === false ? "。浏览器上报区域和查询区域不一致。" : ""}
+        </p>
+        <p>实时探测：{params.liveProbe === "1" && !params.probeError && params.probeOverlap === "0" && Number(params.probeTotal) > 0 ? `已通过。最近 6 小时 ${params.probeTotal} 次，没有进入业务统计。` : params.probeError ? "这次查询没有成功。" : "这份日报截止前的探测次数见下一行。实时结果以检查探测为准。"}</p>
+        <p>历史覆盖：{historicalCaptureCopy(typeof diagnostics?.captureState === "string" ? diagnostics.captureState : null)}。这份日报不回填截止时间之后的操作。</p>
+        <p>
+          新业务采集：
+          {params.liveProbe === "1" && params.businessError ? "这次业务查询没有成功。" : params.liveProbe === "1" ? `最近 6 小时业务查询 ${params.businessTotal || "0"} 次，其中管理员验收 ${params.acceptanceTotal || "0"} 次。${params.acceptanceEvents ? `验收分项：${params.acceptanceEvents}。` : ""}${params.reportDate ? `这些事件属于凤凰城 ${params.reportDate}，会进入该日结束后的新日报。` : ""}${params.inHistory === "0" ? "当前这份历史日报不会写入这些事件。" : params.inHistory === "1" ? "该时刻已经落在当前已关闭的日报窗口内。" : ""}` : "还没有检查截止时间之后的业务事件。"}
         </p>
         <p className={styles.fine}>
           项目 {typeof diagnostics?.projectId === "string" ? diagnostics.projectId : "未记录"}
@@ -492,7 +506,7 @@ export default async function OperationsPage({
             {params.probeOverlap === "0" ? "这些探测事件没有进入业务统计。" : params.probeOverlap ? "业务过滤没有把探测事件排除。" : ""}
           </p>
         ) : null}
-        <p className={styles.fine}>刷新本页只读取已保存的正式报告。重新采集会再查一次数据源。检查探测只查询最近 6 小时的探测事件，不改这份日报。两者都只在正式环境对管理员开放。</p>
+        <p className={styles.fine}>刷新本页只读取已保存的正式报告。重新采集会再查一次数据源。检查探测另外查询最近 6 小时的探测和业务事件，不改这份日报。两者都只在正式环境对管理员开放。</p>
       </section>
 
       <section className={styles.section}>

@@ -73,3 +73,15 @@ export function containsInstant(iso: string, window: ReportWindow) {
   const time = Date.parse(iso);
   return Number.isFinite(time) && time >= Date.parse(window.startIso) && time < Date.parse(window.endIso);
 }
+
+export function phoenixReportDate(iso: string) {
+  const time = Date.parse(iso);
+  if (!Number.isFinite(time)) return null;
+  return phoenixDate(new Date(time));
+}
+
+/** Closed daily windows end at the start of the current Phoenix day. */
+export function instantInClosedReports(iso: string, now = new Date()) {
+  const windows = reportWindows(now);
+  return containsInstant(iso, windows.yesterday) || containsInstant(iso, windows.trailing7) || containsInstant(iso, windows.previous7);
+}

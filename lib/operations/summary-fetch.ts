@@ -264,6 +264,65 @@ export async function queryLiveProbe(sinceIso: string) {
   return { ok: true as const, httpStatus: queried.httpStatus, errorType: null, events: rows, total, lastEventAt: recordedEventTime(lastEventAt, total), businessOverlap };
 }
 
+export async function queryLiveBusiness(sinceIso: string) {
+  const events = FUNNEL_EVENTS.map((event) => `'${event}'`).join(", ");
+  const start = hogqlTime(sinceIso);
+  const end = hogqlTime(new Date().toISOString());
+  const queried = await posthogQuery(
+    `
+      SELECT event,
+        countIf(toString(properties.ops_acceptance) = '1') AS acceptance,
+        count() AS events,
+        max(timestamp) AS last_at,
+        maxIf(timestamp, toString(properties.ops_acceptance) = '1') AS acceptance_last
+      FROM events
+      WHERE timestamp >= toDateTime('${start}')
+        AND timestamp < toDateTime('${end}')
+        AND event IN (${events})
+        AND ${posthogBusinessFilter()}
+      GROUP BY event
+      LIMIT 20
+    `,
+    "operations live business"
+  );
+  if (!queried.ok || !("json" in queried)) {
+    return { ok: false as const, httpStatus: queried.httpStatus, errorType: queried.errorType, events: [], total: null, acceptanceTotal: null, lastEventAt: null, acceptanceLast: null };
+  }
+  const body = queried.json as { results?: unknown[][]; columns?: string[] };
+  const columns = body.columns || ["event", "acceptance", "events", "last_at", "acceptance_last"];
+  const rows = (body.results || []).flatMap((row) => {
+    const record = Object.fromEntries(columns.map((column, index) => [column, row[index]]));
+    const event = String(record.event || "");
+    const count = countOrNull(record.events);
+    const acceptance = countOrNull(record.acceptance);
+    if (!event || count == null) return [];
+    return [{
+      event,
+      count,
+      acceptance: acceptance ?? 0,
+      lastEventAt: recordedEventTime(record.last_at, count),
+      acceptanceLast: recordedEventTime(record.acceptance_last, acceptance),
+    }];
+  });
+  const total = rows.reduce((sum, row) => sum + row.count, 0);
+  const acceptanceTotal = rows.reduce((sum, row) => sum + row.acceptance, 0);
+  const latest = (field: "lastEventAt" | "acceptanceLast") => rows.reduce<string | null>((current, row) => {
+    const value = row[field];
+    if (!value) return current;
+    return !current || value > current ? value : current;
+  }, null);
+  return {
+    ok: true as const,
+    httpStatus: queried.httpStatus,
+    errorType: null,
+    events: rows,
+    total,
+    acceptanceTotal,
+    lastEventAt: recordedEventTime(latest("lastEventAt"), total),
+    acceptanceLast: recordedEventTime(latest("acceptanceLast"), acceptanceTotal),
+  };
+}
+
 function posthogDiagnosticWarning(query: PosthogQuery | undefined, state: CaptureState) {
   if (!query) return "POSTHOG_QUERY_MISSING";
   if (!query.ok) return query.errorType || "POSTHOG_QUERY_FAILED";
