@@ -72,6 +72,13 @@ import {
   type PaddleTxn,
 } from "../lib/operations/aggregate.ts";
 import { posthogQueryHost } from "../lib/operations/config.ts";
+import {
+  classifyPosthogWindow,
+  observedCount,
+  posthogBusinessFilter,
+  posthogRegionName,
+  scrubInventedPosthogZero,
+} from "../lib/operations/observation.ts";
 import { calculatedRate, metricWindow } from "../lib/operations/metrics.ts";
 import { phoenixDate, reportWindows, windowsOverlap } from "../lib/operations/windows.ts";
 
@@ -122,7 +129,24 @@ else if (shortList.sessions !== null || shortList.reason !== "undetermined") fai
 else if (explicitZero.sessions !== 0) fail("explicit zero landing session was dropped");
 else if (sessionsFor({ exam_start: { events: 1, users: 1, sessions: 0 } }, "exam_start") !== 0) fail("explicit zero session was dropped");
 else if (sessionsFor({ exam_start: { events: 1, users: 1, sessions: 1 } }, "practice_view") !== null) fail("missing event became zero");
-else ok("landing paths merge once, short lists stay unset, and missing events stay unset");
+else if (matchLandingPage([{ page: "/arizona-notary-practice-test", sessions: 4 }], "/arizona-notary-practice-test/").sessions !== 4) {
+  fail("four landing sessions were stored as zero");
+} else ok("landing paths merge once, short lists stay unset, and missing events stay unset");
+
+const unverified = classifyPosthogWindow({ httpOk: true, rowCount: 0, windowEndIso: "2026-10-11T07:00:00.000Z", coverageStartIso: null });
+const before = classifyPosthogWindow({ httpOk: true, rowCount: 0, windowEndIso: "2026-10-11T07:00:00.000Z", coverageStartIso: "2026-10-12T00:00:00.000Z" });
+const quiet = classifyPosthogWindow({ httpOk: true, rowCount: 0, windowEndIso: "2026-10-11T07:00:00.000Z", coverageStartIso: "2026-10-01T00:00:00.000Z" });
+const failed = classifyPosthogWindow({ httpOk: false, rowCount: 0, windowEndIso: "2026-10-11T07:00:00.000Z", coverageStartIso: "2026-10-01T00:00:00.000Z" });
+if (unverified !== "unverified" || before !== "before_coverage" || quiet !== "zero_match" || failed !== "query_failed") fail("posthog empty state was collapsed");
+else if (observedCount("unverified", {}, "practice_view", "sessions") !== null) fail("unverified empty query became zero");
+else if (observedCount("zero_match", {}, "practice_view", "sessions") !== 0) fail("verified empty query lost a real zero");
+else if (observedCount("measured", { exam_start: { events: 2, sessions: 2 } }, "practice_view", "sessions") !== 0) fail("missing measured event was left unknown");
+else if (observedCount("query_failed", { practice_view: { events: 0, sessions: 0 } }, "practice_view", "sessions") !== null) fail("failed query kept a zero");
+else if (scrubInventedPosthogZero(0, {}) !== null) fail("legacy empty history kept a calculated zero");
+else if (scrubInventedPosthogZero(0, { practice_view: { sessions: 0 } }) !== 0) fail("explicit stored zero was erased");
+else if (!posthogBusinessFilter().includes("ops_probe")) fail("business query can count the probe");
+else if (posthogRegionName("https://us.posthog.com") !== "us" || posthogRegionName("https://eu.posthog.com") !== "eu") fail("posthog region");
+else ok("empty posthog results stay unknown until capture is verified");
 
 if (gscCtr(1, 4) !== 0.25 || gscCtr(0, 0) !== null) fail("gsc ctr");
 else ok("Search Console CTR is clicks ÷ impressions, and 0 impressions is null");
@@ -245,6 +269,7 @@ else ok("PostHog query host is the app host, not the ingest host");
 const reportSource = readFileSync(path.join(process.cwd(), "lib/operations/daily-report.ts"), "utf8");
 const cronSource = readFileSync(path.join(process.cwd(), "app/api/cron/operations-report/route.ts"), "utf8");
 if (!reportSource.includes("on conflict (source, report_date)")) fail("upsert missing");
+else if (!reportSource.includes("production_protected") || !reportSource.includes("source_environment = 'production'")) fail("preview can overwrite production summary");
 else if (!cronSource.includes("result.summary.ok")) fail("cron still fails the whole job for one source");
 else if (PRODUCT_METRICS.length < 7) fail("phase 1 metric definitions missing");
 else ok("summary upsert is idempotent and cron survives a source failure");
@@ -409,7 +434,14 @@ else if (!popupJs.includes("/admin/operations/")) fail("extension does not open 
 else if (!middlewareSource.includes("status: 401") || !middlewareSource.includes("status: 403")) fail("admin route status codes");
 else if (!pageSource.includes("operationsAccess") || pageSource.includes("OPERATIONS_ADMIN_EMAILS}")) fail("page exposes the allowlist");
 else if (/退款|补单|重放|发放权益|执行 SQL/.test(pageSource)) fail("report page exposes a write action");
+else if (!pageSource.includes("重新采集") || pageSource.includes("collectAndStoreSummaryReport")) fail("refresh and recollect are not separate");
 else ok("extension is a read-only launcher and the report route is server-gated");
+
+const recollectSource = readFileSync(path.join(process.cwd(), "app/admin/operations/recollect/route.ts"), "utf8");
+if (!recollectSource.includes("operationsAccess") || !recollectSource.includes("production_only") || !recollectSource.includes("pg_try_advisory_lock")) {
+  fail("recollect is missing an admin, production, or overlap guard");
+} else if (/退款|补单|重放|发放权益|执行 SQL/.test(recollectSource)) fail("recollect exposes a write action");
+else ok("recollect stays admin-only on production and records an audit");
 
 const apiKey = "pdl_live_apikey_TEST_NOT_REAL";
 const cronSecret = "cron_secret_TEST_NOT_REAL";

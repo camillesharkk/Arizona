@@ -18,7 +18,14 @@ import {
   type PaddleTxn,
   type SourceState,
 } from "./aggregate.ts";
-import { reportConfig } from "./config.ts";
+import { reportConfig, posthogQueryHost } from "./config.ts";
+import {
+  classifyPosthogWindow,
+  countOrNull,
+  posthogBusinessFilter,
+  posthogRegionName,
+  type CaptureState,
+} from "./observation.ts";
 import type { ReportWindow, ReportWindows } from "./windows.ts";
 
 type Totals = Record<string, EventTotals>;
@@ -31,51 +38,83 @@ function hogqlTime(iso: string) {
   return iso.slice(0, 19).replace("T", " ");
 }
 
+type PosthogQuery = {
+  ok: boolean;
+  httpStatus: number | null;
+  errorType: string | null;
+  rowCount: number;
+  lastEventAt: string | null;
+  totals: Totals;
+};
+
 function posthogSql(window: ReportWindow) {
   const events = FUNNEL_EVENTS.map((event) => `'${event}'`).join(", ");
   const start = hogqlTime(window.startIso);
   const end = hogqlTime(window.endIso);
   return `
-    SELECT event, count() AS events, count(DISTINCT person_id) AS users, count(DISTINCT properties.$session_id) AS sessions
+    SELECT event, count() AS events, count(DISTINCT person_id) AS users, count(DISTINCT properties.$session_id) AS sessions, max(timestamp) AS last_at
     FROM events
     WHERE timestamp >= toDateTime('${start}')
       AND timestamp < toDateTime('${end}')
       AND event IN (${events})
+      AND ${posthogBusinessFilter()}
     GROUP BY event
     LIMIT 100
   `;
 }
 
-function readPosthog(json: unknown): Totals {
+function readPosthog(json: unknown): { totals: Totals; lastEventAt: string | null } {
   const body = json as { results?: unknown[][]; columns?: string[] };
-  const columns = body.columns || ["event", "events", "users", "sessions"];
+  const columns = body.columns || ["event", "events", "users", "sessions", "last_at"];
   const totals: Totals = {};
+  let lastEventAt: string | null = null;
   for (const row of body.results || []) {
     const record = Object.fromEntries(columns.map((column, index) => [column, row[index]]));
     const event = String(record.event || "");
     if (!event) continue;
-    totals[event] = {
-      events: Number(record.events || 0),
-      users: Number(record.users || 0),
-      sessions: Number(record.sessions || 0),
-    };
+    const events = countOrNull(record.events);
+    const users = countOrNull(record.users);
+    const sessions = countOrNull(record.sessions);
+    if (events == null || users == null || sessions == null) continue;
+    totals[event] = { events, users, sessions };
+    const last = record.last_at == null ? null : String(record.last_at);
+    if (last && (!lastEventAt || last > lastEventAt)) lastEventAt = last;
   }
-  return totals;
+  return { totals, lastEventAt };
 }
 
-async function posthogTotals(window: ReportWindow): Promise<{ ok: true; totals: Totals } | { ok: false }> {
+async function posthogQuery(query: string, name: string): Promise<{ ok: true; httpStatus: number; json: unknown } | PosthogQuery> {
   const cfg = reportConfig();
-  if (!cfg.posthogKey || !cfg.posthogProjectId) return { ok: false };
-  const res = await fetch(`${cfg.posthogHost}/api/projects/${encodeURIComponent(cfg.posthogProjectId)}/query/`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${cfg.posthogKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      query: { kind: "HogQLQuery", query: posthogSql(window) },
-      name: "operations funnel totals",
-    }),
-  });
-  if (!res.ok) return { ok: false };
-  return { ok: true, totals: readPosthog(await res.json()) };
+  if (!cfg.posthogKey || !cfg.posthogProjectId) {
+    return { ok: false, httpStatus: null, errorType: "not_configured", rowCount: 0, lastEventAt: null, totals: {} };
+  }
+  try {
+    const res = await fetch(`${cfg.posthogHost}/api/projects/${encodeURIComponent(cfg.posthogProjectId)}/query/`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${cfg.posthogKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ query: { kind: "HogQLQuery", query }, name }),
+    });
+    if (!res.ok) {
+      return { ok: false, httpStatus: res.status, errorType: `http_${res.status}`, rowCount: 0, lastEventAt: null, totals: {} };
+    }
+    return { ok: true, httpStatus: res.status, json: await res.json() };
+  } catch {
+    return { ok: false, httpStatus: null, errorType: "network", rowCount: 0, lastEventAt: null, totals: {} };
+  }
+}
+
+async function posthogTotals(window: ReportWindow): Promise<PosthogQuery> {
+  const queried = await posthogQuery(posthogSql(window), "operations funnel totals");
+  if (!queried.ok || !("json" in queried)) return queried;
+  const read = readPosthog(queried.json);
+  return {
+    ok: true,
+    httpStatus: queried.httpStatus,
+    errorType: null,
+    rowCount: Object.keys(read.totals).length,
+    lastEventAt: read.lastEventAt,
+    totals: read.totals,
+  };
 }
 
 async function posthogBreakdown(window: ReportWindow) {
@@ -97,6 +136,7 @@ async function posthogBreakdown(window: ReportWindow) {
     WHERE timestamp >= toDateTime('${start}')
       AND timestamp < toDateTime('${end}')
       AND event IN (${events})
+      AND ${posthogBusinessFilter()}
     GROUP BY event, state, mode, plan, product_code
     LIMIT 500
   `;
@@ -109,6 +149,120 @@ async function posthogBreakdown(window: ReportWindow) {
   const body = (await res.json()) as { results?: unknown[][]; columns?: string[] };
   const columns = body.columns || [];
   return (body.results || []).map((row) => Object.fromEntries(columns.map((column, index) => [column, row[index]])));
+}
+
+async function posthogCoverage(dataAsOf: string) {
+  const events = FUNNEL_EVENTS.map((event) => `'${event}'`).join(", ");
+  const end = hogqlTime(dataAsOf);
+  const queried = await posthogQuery(
+    `
+      SELECT count() AS events, min(timestamp) AS first_at, max(timestamp) AS last_at
+      FROM events
+      WHERE timestamp < toDateTime('${end}')
+        AND event IN (${events})
+        AND ${posthogBusinessFilter()}
+    `,
+    "operations coverage"
+  );
+  if (!queried.ok || !("json" in queried)) return { firstEventAt: null as string | null, eventCount: null as number | null, httpStatus: queried.httpStatus, errorType: queried.errorType };
+  const body = queried.json as { results?: unknown[][]; columns?: string[] };
+  const columns = body.columns || ["events", "first_at", "last_at"];
+  const row = body.results?.[0];
+  if (!row) return { firstEventAt: null, eventCount: 0, httpStatus: queried.httpStatus, errorType: null };
+  const record = Object.fromEntries(columns.map((column, index) => [column, row[index]]));
+  const eventCount = countOrNull(record.events);
+  return {
+    firstEventAt: eventCount && eventCount > 0 && record.first_at ? String(record.first_at) : null,
+    eventCount,
+    httpStatus: queried.httpStatus,
+    errorType: null,
+  };
+}
+
+async function posthogProbe(generatedAt: string) {
+  const events = FUNNEL_EVENTS.map((event) => `'${event}'`).join(", ");
+  const end = hogqlTime(generatedAt);
+  const queried = await posthogQuery(
+    `
+      SELECT count() AS events, max(timestamp) AS last_at
+      FROM events
+      WHERE timestamp < toDateTime('${end}')
+        AND event IN (${events})
+        AND toString(properties.ops_probe) = '1'
+    `,
+    "operations probe"
+  );
+  if (!queried.ok || !("json" in queried)) return { rowCount: null as number | null, lastEventAt: null as string | null, httpStatus: queried.httpStatus, errorType: queried.errorType };
+  const body = queried.json as { results?: unknown[][]; columns?: string[] };
+  const columns = body.columns || ["events", "last_at"];
+  const row = body.results?.[0];
+  const record = row ? Object.fromEntries(columns.map((column, index) => [column, row[index]])) : {};
+  return {
+    rowCount: countOrNull(record.events),
+    lastEventAt: record.last_at ? String(record.last_at) : null,
+    httpStatus: queried.httpStatus,
+    errorType: null,
+  };
+}
+
+function posthogDiagnosticWarning(query: PosthogQuery | undefined, state: CaptureState) {
+  if (!query) return "POSTHOG_QUERY_MISSING";
+  if (!query.ok) return query.errorType || "POSTHOG_QUERY_FAILED";
+  if (state === "unverified") return `POSTHOG_HTTP_${query.httpStatus ?? "unknown"}_EMPTY_UNVERIFIED`;
+  if (state === "before_coverage") return `POSTHOG_HTTP_${query.httpStatus ?? "unknown"}_BEFORE_COVERAGE`;
+  if (state === "zero_match") return null;
+  return null;
+}
+
+function windowDiagnostic(query: PosthogQuery | undefined, window: ReportWindow, coverageStart: string | null) {
+  const state = classifyPosthogWindow({
+    httpOk: Boolean(query?.ok),
+    rowCount: query?.rowCount ?? 0,
+    windowEndIso: window.endIso,
+    coverageStartIso: coverageStart,
+  });
+  return {
+    state,
+    start: window.startIso,
+    end: window.endIso,
+    httpStatus: query?.httpStatus ?? null,
+    errorType: query?.errorType ?? null,
+    rowCount: query?.ok ? query.rowCount : null,
+    lastEventAt: query?.ok ? query.lastEventAt : null,
+    totals: state === "query_failed" || state === "unverified" || state === "before_coverage" ? null : query?.totals ?? null,
+  };
+}
+
+function posthogDiagnostics(input: {
+  windows: ReportWindows;
+  settled: PosthogQuery[] | null;
+  coverage: { firstEventAt: string | null; eventCount: number | null; httpStatus: number | null; errorType: string | null };
+  probe: { rowCount: number | null; lastEventAt: string | null; httpStatus: number | null; errorType: string | null };
+  trailingState: CaptureState;
+}) {
+  const cfg = reportConfig();
+  const ingestHost = String(process.env.NEXT_PUBLIC_POSTHOG_HOST || "");
+  const queryHost = posthogQueryHost();
+  const ingestRegion = posthogRegionName(ingestHost || queryHost);
+  const queryRegion = posthogRegionName(queryHost);
+  return {
+    projectId: cfg.posthogProjectId || null,
+    queryRegion,
+    ingestRegion,
+    regionMatch: ingestRegion === queryRegion,
+    apiReachable: Boolean(input.settled?.[1]?.ok),
+    captureState: input.trailingState,
+    coverageStart: input.coverage.firstEventAt,
+    coverageEventCount: input.coverage.eventCount,
+    coverageHttpStatus: input.coverage.httpStatus,
+    coverageErrorType: input.coverage.errorType,
+    probe: input.probe,
+    windows: {
+      yesterday: windowDiagnostic(input.settled?.[0], input.windows.yesterday, input.coverage.firstEventAt),
+      trailing7: windowDiagnostic(input.settled?.[1], input.windows.trailing7, input.coverage.firstEventAt),
+      previous7: windowDiagnostic(input.settled?.[2], input.windows.previous7, input.coverage.firstEventAt),
+    },
+  };
 }
 
 async function ga4Json(propertyId: string, body: unknown) {
@@ -128,7 +282,7 @@ function inWindow(iso: string, window: ReportWindow) {
 
 async function paddleWindow(windows: ReportWindows) {
   const config = getPaddleCheckoutConfig();
-  if (!config.ok) return { state: unavailable("PADDLE_NOT_CONFIGURED"), transactions: null as PaddleTxn[] | null, refundCount: null, refundMinor: null, webhook: null };
+  if (!config.ok) return { state: unavailable("PADDLE_NOT_CONFIGURED"), transactions: null as PaddleTxn[] | null, refundCount: null, refundMinor: null, webhook: null, environment: null as string | null };
   try {
     const paddle = createPaddleSdk(config.config);
     const transactions: PaddleTxn[] = [];
@@ -177,9 +331,16 @@ async function paddleWindow(windows: ReportWindows) {
       else webhook.notAttempted += 1;
       if (notes >= 200) break;
     }
-    return { state: { status: "available" as const, warning: null }, transactions, refundCount, refundMinor, webhook };
+    return {
+      state: { status: "available" as const, warning: null },
+      transactions,
+      refundCount,
+      refundMinor,
+      webhook,
+      environment: config.config.environment,
+    };
   } catch {
-    return { state: unavailable("PADDLE_API_FAILED"), transactions: null, refundCount: null, refundMinor: null, webhook: null };
+    return { state: unavailable("PADDLE_API_FAILED"), transactions: null, refundCount: null, refundMinor: null, webhook: null, environment: config.config.environment };
   }
 }
 
@@ -267,28 +428,49 @@ export async function loadSummaryParts(windows: ReportWindows) {
       vercelStatus(windows),
     ]);
 
-  const posthogOk = Boolean(posthogSettled && posthogSettled[1]?.ok);
+  const trailingQuery = posthogSettled?.[1];
+  const coverage = await posthogCoverage(windows.yesterday.dataAsOf);
+  const probe = await posthogProbe(windows.generatedAt);
+  const trailingState = classifyPosthogWindow({
+    httpOk: Boolean(trailingQuery?.ok),
+    rowCount: trailingQuery?.rowCount ?? 0,
+    windowEndIso: windows.trailing7.endIso,
+    coverageStartIso: coverage.firstEventAt,
+  });
+  const posthogWarning = posthogDiagnosticWarning(trailingQuery, trailingState);
   const posthog: {
     status: "available" | "partial" | "unavailable";
     warning: string | null;
     totals: Record<string, { events: number; users: number; sessions: number }> | null;
     breakdown: Record<string, unknown>[] | null;
-  } = posthogOk
-    ? {
-        status: posthogSettled?.every((item) => item.ok) ? "available" : "partial",
-        warning: posthogSettled?.every((item) => item.ok) ? null : "WATCH",
-        totals: posthogSettled?.[1]?.ok ? posthogSettled[1].totals : null,
-        breakdown: null,
-      }
-    : { status: "unavailable", warning: "POSTHOG_UNAVAILABLE", totals: null, breakdown: null };
+    observation: { state: CaptureState; httpStatus: number | null; errorType: string | null; rowCount: number };
+  } = {
+    status: trailingState === "query_failed" ? "unavailable" : trailingState === "measured" || trailingState === "zero_match" ? "available" : "partial",
+    warning: posthogWarning,
+    totals: trailingState === "query_failed" || trailingState === "unverified" || trailingState === "before_coverage" ? null : trailingQuery?.totals ?? null,
+    breakdown: null,
+    observation: {
+      state: trailingState,
+      httpStatus: trailingQuery?.httpStatus ?? null,
+      errorType: trailingQuery?.errorType ?? null,
+      rowCount: trailingQuery?.rowCount ?? 0,
+    },
+  };
   if (posthog.status !== "unavailable") {
     const breakdown = await posthogBreakdown(windows.trailing7).catch(() => null);
     posthog.breakdown = breakdown;
-    if (!breakdown) {
+    if (!breakdown && posthog.status === "available") {
       posthog.status = "partial";
-      posthog.warning = "WATCH";
+      posthog.warning = posthog.warning || "POSTHOG_BREAKDOWN_FAILED";
     }
   }
+  const diagnostics = posthogDiagnostics({
+    windows,
+    settled: posthogSettled,
+    coverage,
+    probe,
+    trailingState,
+  });
 
   const ga4Ok = ga4Sources.ok && ga4Landing.ok && ga4Organic.ok;
   const ga4 = ga4Ok
@@ -341,6 +523,7 @@ export async function loadSummaryParts(windows: ReportWindows) {
       refundCount: paddle.refundCount,
       refundMinor: paddle.refundMinor,
       webhook: paddle.webhook,
+      environment: paddle.environment,
     },
     neon: { status: neon.state.status, warning: neon.state.warning, orders: neon.orders },
     vercel: {
@@ -352,10 +535,11 @@ export async function loadSummaryParts(windows: ReportWindows) {
     },
     history: {
       posthog: {
-        yesterday: posthogSettled?.[0]?.ok ? posthogSettled[0].totals : null,
-        trailing7: posthogSettled?.[1]?.ok ? posthogSettled[1].totals : null,
-        previous7: posthogSettled?.[2]?.ok ? posthogSettled[2].totals : null,
+        yesterday: diagnostics.windows.yesterday,
+        trailing7: diagnostics.windows.trailing7,
+        previous7: diagnostics.windows.previous7,
       },
     },
+    diagnostics,
   };
 }

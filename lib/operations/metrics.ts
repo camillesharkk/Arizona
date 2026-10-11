@@ -36,7 +36,7 @@ export type CalculatedMetric = {
   denominator: MetricSide;
   calculation: string;
   window: MetricWindow;
-  sampleSize: number;
+  sampleSize: number | null;
   sourceStatus: string;
   warning: string | null;
 };
@@ -75,7 +75,7 @@ export function calculatedRate(input: {
       denominator: input.denominator,
       calculation,
       window: input.window,
-      sampleSize: den && den > 0 ? den : 0,
+      sampleSize: den == null ? null : den > 0 ? den : 0,
       sourceStatus: input.sourceStatus,
       warning: input.warning ?? null,
     };
@@ -122,7 +122,7 @@ export function calculatedAverage(input: {
       denominator: input.denominator,
       calculation: den === 0 ? `${num ?? "null"} ÷ 0 = N/A` : "N/A",
       window: input.window,
-      sampleSize: den && den > 0 ? den : 0,
+      sampleSize: den == null ? null : den > 0 ? den : 0,
       sourceStatus: input.sourceStatus,
       warning: input.warning ?? null,
     };

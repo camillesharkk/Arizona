@@ -6,6 +6,7 @@ import {
   type CalculatedMetric,
   type SourceStatus,
 } from "./metrics.ts";
+import { historyTotals, scrubInventedPosthogZero } from "./observation.ts";
 import type { ReportWindows } from "./windows.ts";
 
 export const ENTITLEMENT_CRITICAL =
@@ -161,11 +162,13 @@ function asStatus(value: string | undefined): SourceStatus {
 
 function posthogCount(snapshot: Record<string, unknown>, key: "yesterday" | "trailing7" | "previous7", event: string) {
   const history = record(record(snapshot.history)?.posthog)?.[key];
-  const totals = record(history);
+  const totals = historyTotals(history);
   if (!totals) return null;
+  const state = history && typeof history === "object" && typeof (history as { state?: unknown }).state === "string" ? (history as { state: string }).state : null;
   const row = record(totals[event]);
-  if (!row || typeof row.sessions !== "number") return null;
-  return num(row.sessions);
+  const sessions = row && typeof row.sessions === "number" ? row.sessions : null;
+  if (sessions == null) return state === "measured" || state === "zero_match" ? 0 : null;
+  return scrubInventedPosthogZero(sessions, history);
 }
 
 export function presentOperationsReport(snapshot: unknown) {
@@ -179,7 +182,21 @@ export function presentOperationsReport(snapshot: unknown) {
   const vercel = record(root.vercel);
   const gsc = record(root.gsc);
   const gscTotals = record(gsc?.totals);
-  const calculated = Array.isArray(root.calculated) ? (root.calculated as CalculatedMetric[]) : [];
+  const historyPosthog = record(record(root.history)?.posthog);
+  const calculated = (Array.isArray(root.calculated) ? (root.calculated as CalculatedMetric[]) : []).map((metric) => {
+    const numeratorValue = metric.numerator.source === "PostHog" ? scrubInventedPosthogZero(metric.numerator.value, historyPosthog?.trailing7) : metric.numerator.value;
+    const denominatorValue = metric.denominator.source === "PostHog" ? scrubInventedPosthogZero(metric.denominator.value, historyPosthog?.trailing7) : metric.denominator.value;
+    if (numeratorValue === metric.numerator.value && denominatorValue === metric.denominator.value) return metric;
+    return {
+      ...metric,
+      value: null,
+      formattedValue: "N/A",
+      calculation: "N/A",
+      numerator: { ...metric.numerator, value: numeratorValue },
+      denominator: { ...metric.denominator, value: denominatorValue },
+      sampleSize: denominatorValue,
+    };
+  });
   const raw = Array.isArray(root.raw) ? root.raw : [];
   const smallSample = calculated.some((metric) => String(metric.warning || "").includes("小样本"));
   const yesterdayClicks = num(record(gscTotals?.yesterday)?.clicks);
@@ -268,6 +285,9 @@ export function presentOperationsReport(snapshot: unknown) {
     privacy: record(root.privacy),
     revenueSource: "Paddle",
     usesGa4Revenue: record(root.privacy)?.usesGa4Revenue === true,
+    diagnostics: record(root.diagnostics),
+    schemaVersion: typeof root.schemaVersion === "number" ? root.schemaVersion : null,
+    gitSha: typeof root.gitSha === "string" ? root.gitSha : null,
   };
 }
 

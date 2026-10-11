@@ -1,0 +1,81 @@
+/** How a PostHog window may be used in business metrics. Unknown stays null. */
+
+export const REPORT_SCHEMA_VERSION = 2;
+
+export type CaptureState = "query_failed" | "unverified" | "before_coverage" | "zero_match" | "measured";
+
+export type EventCount = { events: number | null; users: number | null; sessions: number | null };
+
+export function posthogRegionName(host: string) {
+  const value = host.toLowerCase();
+  if (value.includes("eu.")) return "eu" as const;
+  if (value.includes("us.")) return "us" as const;
+  return "other" as const;
+}
+
+/** Business totals omit the controlled probe. The probe is diagnosed separately. */
+export function posthogBusinessFilter() {
+  return "(isNull(properties.ops_probe) OR toString(properties.ops_probe) != '1')";
+}
+
+export function classifyPosthogWindow(input: {
+  httpOk: boolean;
+  rowCount: number;
+  windowEndIso: string;
+  coverageStartIso: string | null;
+}): CaptureState {
+  if (!input.httpOk) return "query_failed";
+  if (input.rowCount > 0) return "measured";
+  if (!input.coverageStartIso) return "unverified";
+  if (input.windowEndIso <= input.coverageStartIso) return "before_coverage";
+  return "zero_match";
+}
+
+export function countOrNull(value: unknown) {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim() && Number.isFinite(Number(value))) return Number(value);
+  return null;
+}
+
+/** Missing events stay null until the query is measured or a verified empty window. */
+export function observedCount(
+  state: CaptureState | null,
+  totals: Record<string, Partial<EventCount>> | null | undefined,
+  event: string,
+  field: "events" | "sessions"
+) {
+  if (state === "query_failed" || state === "unverified" || state === "before_coverage") return null;
+  const value = totals?.[event]?.[field];
+  if (typeof value === "number") return value;
+  if (state === "measured" || state === "zero_match") return 0;
+  return null;
+}
+
+export function historyTotals(value: unknown): Record<string, Partial<EventCount>> | null {
+  if (!value || typeof value !== "object") return null;
+  const row = value as Record<string, unknown>;
+  if ("totals" in row || "state" in row) {
+    const totals = row.totals;
+    if (!totals || typeof totals !== "object") return {};
+    return totals as Record<string, Partial<EventCount>>;
+  }
+  return row as Record<string, Partial<EventCount>>;
+}
+
+/** Legacy snapshots stored an empty query as {} and then wrote calculated zeros. */
+export function scrubInventedPosthogZero(value: number | null, historyWindow: unknown) {
+  if (value !== 0) return value;
+  if (!historyWindow || typeof historyWindow !== "object") return value;
+  const row = historyWindow as Record<string, unknown>;
+  const state = typeof row.state === "string" ? row.state : null;
+  if (state === "query_failed" || state === "unverified" || state === "before_coverage") return null;
+  const totals = historyTotals(historyWindow);
+  if (!state && totals && Object.keys(totals).length === 0) return null;
+  return value;
+}
+
+export function reportWriterEnvironment(vercelEnv: string | undefined) {
+  if (vercelEnv === "production") return "production";
+  if (vercelEnv === "preview") return "preview";
+  return "local";
+}

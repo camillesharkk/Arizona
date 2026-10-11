@@ -2,6 +2,7 @@ import "server-only";
 
 import { buildPaddleOperationsReport, reportRange } from "@/lib/billing/paddle-report";
 import { buildOperationsSnapshot } from "@/lib/operations/aggregate";
+import { REPORT_SCHEMA_VERSION, reportWriterEnvironment } from "@/lib/operations/observation";
 import { fetchGoogleOperationsReport } from "@/lib/operations/google";
 import { logPaddleFailure, paddleFailedResponse } from "@/lib/operations/paddle-failure";
 import { loadSummaryParts } from "@/lib/operations/summary-fetch";
@@ -145,7 +146,7 @@ export async function collectAndStoreGoogleDailyReports(now = new Date()) {
   }
 
   const generatedAt = new Date().toISOString();
-  const sourceEnvironment = process.env.VERCEL_ENV || "local";
+  const sourceEnvironment = reportWriterEnvironment(process.env.VERCEL_ENV);
   const ga4Channels = Object.fromEntries(
     fetched.ga4.yesterday.channels.map((channel) => [channel.channel, channel.sessions])
   );
@@ -203,12 +204,30 @@ async function upsertSummarySnapshot(row: {
   snapshot: unknown;
 }) {
   const sql = getPgSql();
+  const sourceEnvironment = reportWriterEnvironment(process.env.VERCEL_ENV);
+  const existing = await sql`
+    select source_environment, generated_at, snapshot
+    from operations_daily_reports
+    where source = 'summary' and report_date = ${row.reportDate}
+  `;
+  const current = existing[0] as { source_environment?: string; generated_at?: Date | string; snapshot?: unknown } | undefined;
+  if (current?.source_environment === "production" && sourceEnvironment !== "production") {
+    return { stored: false as const, reason: "production_protected" };
+  }
+  const isolatedPreview = current?.source_environment === "preview" && sourceEnvironment === "production"
+    ? {
+        sourceEnvironment: "preview",
+        generatedAt: current.generated_at ? new Date(current.generated_at).toISOString() : null,
+        snapshot: current.snapshot ?? null,
+      }
+    : null;
   const privacy = {
     includesCustomerDetails: false,
     includesTransactionIds: false,
     includesUserIds: false,
     includesCredentials: false,
     usesGa4Revenue: false,
+    isolatedPreview,
   };
   await sql`
     insert into operations_daily_reports (
@@ -233,14 +252,14 @@ async function upsertSummarySnapshot(row: {
       'America/Phoenix',
       ${row.generatedAt},
       ${row.dataAsOf},
-      ${process.env.VERCEL_ENV || "local"},
+      ${sourceEnvironment},
       null,
       ${sql.json({})},
       null,
       ${sql.json({})},
       null,
       ${sql.json({})},
-      ${sql.json(privacy)},
+      ${sql.json(JSON.parse(JSON.stringify(privacy)))},
       ${sql.json(JSON.parse(JSON.stringify(row.snapshot)))},
       now()
     )
@@ -252,16 +271,22 @@ async function upsertSummarySnapshot(row: {
       privacy = excluded.privacy,
       snapshot = excluded.snapshot,
       updated_at = now()
+    where operations_daily_reports.source_environment is distinct from 'production'
+      or excluded.source_environment = 'production'
   `;
+  return { stored: true as const };
 }
 
 export async function collectAndStoreSummaryReport(now = new Date()) {
   const windows = reportWindows(now);
   const parts = await loadSummaryParts(windows);
-  const { history, ...rest } = parts;
+  const { history, diagnostics, ...rest } = parts;
   const snapshot = {
+    schemaVersion: REPORT_SCHEMA_VERSION,
+    gitSha: process.env.VERCEL_GIT_COMMIT_SHA || null,
     ...buildOperationsSnapshot({ windows, ...rest }),
     history,
+    diagnostics,
   };
   await upsertSummarySnapshot({
     reportDate: windows.yesterday.end,

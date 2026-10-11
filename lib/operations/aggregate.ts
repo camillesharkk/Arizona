@@ -11,6 +11,7 @@ import {
   type RawMetric,
   type SourceStatus,
 } from "./metrics.ts";
+import { observedCount, type CaptureState } from "./observation.ts";
 import { containsInstant, type ReportWindow, type ReportWindows } from "./windows.ts";
 
 export const FUNNEL_EVENTS = [
@@ -340,14 +341,20 @@ function num(value: number | null | undefined) {
   return value == null ? null : value;
 }
 
-function posthogRates(window: ReportWindow, totals: Record<string, EventTotals> | null, status: SourceStatus, warning: string | null) {
+function posthogRates(
+  window: ReportWindow,
+  totals: Record<string, EventTotals> | null,
+  state: CaptureState | null,
+  status: SourceStatus,
+  warning: string | null
+) {
   const view = metricWindow(window);
   return PRODUCT_METRICS.filter((metric) => !POSTHOG_RATES.has(metric.id)).map((metric) =>
     calculatedRate({
       name: metric.nameZh,
       formula: metric.formula,
-      numerator: { label: metric.numeratorEvent, value: sessionsFor(totals, metric.numeratorEvent), source: "PostHog" },
-      denominator: { label: metric.denominatorEvent, value: sessionsFor(totals, metric.denominatorEvent), source: "PostHog" },
+      numerator: { label: metric.numeratorEvent, value: observedCount(state, totals, metric.numeratorEvent, "sessions"), source: "PostHog" },
+      denominator: { label: metric.denominatorEvent, value: observedCount(state, totals, metric.denominatorEvent, "sessions"), source: "PostHog" },
       window: view,
       sourceStatus: status,
       warning,
@@ -357,7 +364,11 @@ function posthogRates(window: ReportWindow, totals: Record<string, EventTotals> 
 
 export function buildOperationsSnapshot(input: {
   windows: ReportWindows;
-  posthog: SourceState & { totals: Record<string, EventTotals> | null; breakdown: unknown[] | null };
+  posthog: SourceState & {
+    totals: Record<string, EventTotals> | null;
+    breakdown: unknown[] | null;
+    observation?: { state: CaptureState };
+  };
   ga4: SourceState & {
     sources: Ga4SourceRow[] | null;
     landing: Ga4LandingRow[] | null;
@@ -378,6 +389,7 @@ export function buildOperationsSnapshot(input: {
     refundCount: number | null;
     refundMinor: number | null;
     webhook: { delivered: number; failed: number; needsRetry: number; notAttempted: number } | null;
+    environment?: string | null;
   };
   neon: SourceState & { orders: EntitlementOrder[] | null };
   vercel: SourceState & { productionState: string | null; errorDeployments: number | null; readyDeployments: number | null };
@@ -400,17 +412,20 @@ export function buildOperationsSnapshot(input: {
     ? [...new Set(trailingTx.filter((txn) => txn.status === "completed").map((txn) => txn.id))]
     : null;
   const completedIdsFor = (window: ReportWindow) => {
-    if (!input.paddle.transactions || !hasTxnDates) return null;
+    if (!input.paddle.transactions || input.paddle.status !== "available") return null;
+    if (!hasTxnDates) return [] as string[];
     return [...new Set(txnsIn(window, false).filter((txn) => txn.status === "completed" && txn.id).map((txn) => txn.id))];
   };
-  const completed = paddleIds ? paddleIds.length : null;
+  const completed = input.paddle.status === "available" && input.paddle.transactions ? paddleIds?.length ?? 0 : null;
   const incomplete = trailingTx
     ? new Set(trailingTx.filter((txn) => txn.status !== "completed" && txn.status !== "canceled").map((txn) => txn.id)).size
     : null;
   const gross = trailingTx ? grossCompletedMinor(trailingTx) : { minor: null, currency: null };
-  const entitlement = paddleIds && input.neon.orders && input.neon.status === "available" && input.paddle.status === "available"
-    ? reconcileEntitlements(paddleIds, input.neon.orders)
-    : null;
+  const entitlement = completed === 0
+    ? { completed: 0, matched: null, missingOrder: 0, mismatched: 0, note: "no_orders" as const }
+    : paddleIds && paddleIds.length > 0 && input.neon.orders && input.neon.status === "available" && input.paddle.status === "available"
+      ? reconcileEntitlements(paddleIds, input.neon.orders)
+      : null;
   const crossPayment = input.posthog.status === "available" && input.paddle.status === "available" ? "available" : "unavailable";
   const crossGrant = input.paddle.status === "available" && input.neon.status === "available" ? "available" : "unavailable";
   const gscCompare = input.gsc.trailing && input.gsc.previous && input.gsc.status !== "unavailable" ? "available" : input.gsc.status;
@@ -429,7 +444,7 @@ export function buildOperationsSnapshot(input: {
     ...FUNNEL_EVENTS.map((event) =>
       rawMetric({
         name: event,
-        value: input.posthog.totals?.[event]?.events ?? null,
+        value: observedCount(input.posthog.observation?.state ?? null, input.posthog.totals, event, "events"),
         unit: "events",
         source: "PostHog",
         window: view,
@@ -593,7 +608,7 @@ export function buildOperationsSnapshot(input: {
   ];
 
   const calculated: CalculatedMetric[] = [
-    ...posthogRates(trailing, input.posthog.totals, input.posthog.status, input.posthog.warning),
+    ...posthogRates(trailing, input.posthog.totals, input.posthog.observation?.state ?? null, input.posthog.status, input.posthog.warning),
     calculatedRate({
       name: "Direct session share",
       formula: "该来源 Sessions ÷ 全部 Sessions × 100%",
@@ -782,6 +797,7 @@ export function buildOperationsSnapshot(input: {
       refundCount: input.paddle.refundCount,
       refundMinor: input.paddle.refundMinor,
       webhook: input.paddle.webhook,
+      environment: input.paddle.environment ?? null,
       entitlement,
     },
     vercel: {

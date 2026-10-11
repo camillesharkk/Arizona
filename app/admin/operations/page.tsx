@@ -87,6 +87,28 @@ function countText(value: number | null) {
   return value == null ? "未返回" : String(value);
 }
 
+const CAPTURE_LABEL: Record<string, string> = {
+  query_failed: "查询失败",
+  unverified: "尚未验证，空结果不是 0",
+  before_coverage: "这个周期在覆盖起点之前，空结果不是 0",
+  zero_match: "查询成功，这一周期没有业务事件",
+  measured: "查询成功，已有业务事件",
+};
+
+function probeCount(diagnostics: Record<string, unknown> | null) {
+  const probe = diagnostics?.probe;
+  if (!probe || typeof probe !== "object") return "未返回";
+  const count = (probe as { rowCount?: unknown }).rowCount;
+  return typeof count === "number" ? String(count) : "未返回";
+}
+
+function probeLast(diagnostics: Record<string, unknown> | null) {
+  const probe = diagnostics?.probe;
+  if (!probe || typeof probe !== "object") return "";
+  const last = (probe as { lastEventAt?: unknown }).lastEventAt;
+  return typeof last === "string" ? last : "";
+}
+
 const EVENT_RATIO_TITLE: Record<string, string> = {
   答题开始率: "开始答题的事件数量比",
   答题完成率: "完成答题的事件数量比",
@@ -120,7 +142,7 @@ function MetricBlock({ metric }: { metric: CalculatedMetric }) {
         </p>
         <p>代入：{metric.calculation}</p>
         <p>
-          周期：{metric.window.start} 至 {metric.window.end}，时区凤凰城。样本量按分母计为 {metric.sampleSize}。
+          周期：{metric.window.start} 至 {metric.window.end}，时区凤凰城。样本量按分母计为 {metric.sampleSize ?? "未返回"}。
         </p>
         {metric.denominator.value === 0 ? <p className={styles.warning}>分母为 0，所以没有比率。</p> : null}
         {metric.denominator.value == null ? <p>分母没有返回。这是缺少数据，不是分母为 0。</p> : null}
@@ -155,7 +177,10 @@ export default async function OperationsPage({
     return (
       <main className={styles.page}>
         <h1>运营日报</h1>
-        <p>{history.ok ? "这一天还没有汇总日报。" : "日报暂时读不出来。确认数据库迁移已经应用到当前库。"}</p>
+        <p>{history.ok ? "这一天还没有正式环境的汇总日报。" : "日报暂时读不出来。确认数据库迁移已经应用到当前库。"}</p>
+        {history.ok && history.previewIsolated > 0 ? (
+          <p>已隔离 {history.previewIsolated} 条 Preview 汇总。这些记录还在库里，不删除，也不当作正式报告。</p>
+        ) : null}
         <details>
           <summary>外部后台</summary>
           <nav className={styles.links}>
@@ -197,6 +222,8 @@ export default async function OperationsPage({
   const gross = typeof paddleRecord?.grossMinor === "number" ? paddleRecord.grossMinor : null;
   const completed = typeof paddleRecord?.completed === "number" ? paddleRecord.completed : null;
   const matched = typeof entitlement?.matched === "number" ? entitlement.matched : null;
+  const paddleEnvironment = typeof paddleRecord?.environment === "string" ? paddleRecord.environment : null;
+  const diagnostics = view.diagnostics;
   const small = view.calculated.find((metric) => String(metric.warning || "").includes("小样本"));
   const gscTotals = (view.gsc?.totals || {}) as Record<string, { clicks?: number | null; impressions?: number | null; position?: number | null } | null>;
   const seo = gscTotals[active];
@@ -249,8 +276,12 @@ export default async function OperationsPage({
         </article>
         <article className={styles.card}>
           <span>近 7 日完成订单</span>
-          <strong>{countText(completed)}</strong>
-          <small>Paddle 成交笔数。权益核对是 {countText(matched)}，单独看，不接在浏览步骤后面。</small>
+          <strong>{completed === 0 ? "0" : countText(completed)}</strong>
+          <small>
+            {completed === 0
+              ? "查询成功，这一周期没有成交。无订单待核对。"
+              : `Paddle 成交笔数。权益核对是 ${countText(matched)}，单独看，不接在浏览步骤后面。`}
+          </small>
         </article>
       </section>
 
@@ -380,8 +411,8 @@ export default async function OperationsPage({
             <p>{gross == null ? "未返回" : `${(gross / 100).toFixed(2)} USD`}</p>
           </div>
           <div>
-            <strong>权益核对通过</strong>
-            <p>{countText(matched)}</p>
+            <strong>权益核对</strong>
+            <p>{completed === 0 ? "无订单待核对" : countText(matched)}</p>
             <p className={styles.fine}>前 7 日成交 {countText(view.steps.find((step) => step.event === "paddle_completed")?.previous7 ?? null)}</p>
           </div>
         </div>
@@ -419,6 +450,34 @@ export default async function OperationsPage({
         ) : (
           <p>目前没有两份以上带访问次数的日报，所以不画趋势线。上面的昨日、近 7 日、前 7 日是周期对比。</p>
         )}
+      </section>
+
+      <section className={styles.section}>
+        <h2>采集诊断</h2>
+        <p className={styles.period}>接口能否访问，和事件有没有采到，分开看。受控测试带 ops_probe=1，不计入上面的业务数字。</p>
+        <p>代码版本 {view.gitSha || "未记录"}，结构版本 {view.schemaVersion ?? "旧报告，还没有结构版本"}。</p>
+        <p>
+          PostHog 接口 {diagnostics && diagnostics.apiReachable === true ? "可访问" : diagnostics && diagnostics.apiReachable === false ? "没有访问成功" : "未记录"}
+          {typeof diagnostics?.captureState === "string" ? `，采集状态 ${CAPTURE_LABEL[String(diagnostics.captureState)] || diagnostics.captureState}` : ""}
+          {diagnostics?.regionMatch === false ? "。浏览器上报区域和查询区域不一致。" : ""}
+        </p>
+        <p className={styles.fine}>
+          项目 {typeof diagnostics?.projectId === "string" ? diagnostics.projectId : "未记录"}
+          {typeof diagnostics?.queryRegion === "string" ? `，查询区域 ${diagnostics.queryRegion}` : ""}
+          {typeof diagnostics?.ingestRegion === "string" ? `，上报区域 ${diagnostics.ingestRegion}` : ""}
+          {typeof diagnostics?.coverageStart === "string" ? `，业务事件覆盖起点 ${diagnostics.coverageStart}` : "，还没有确认到业务事件覆盖起点"}
+        </p>
+        <p className={styles.fine}>
+          探测事件 {probeCount(diagnostics)} 次
+          {probeLast(diagnostics) ? `，最后时间 ${probeLast(diagnostics)}` : ""}
+          。探测时间晚于本报告截止时间的，不会算进这份历史日报。
+        </p>
+        {paddleEnvironment ? <p className={styles.fine}>收款环境：{paddleEnvironment === "production" ? "正式" : paddleEnvironment}。</p> : null}
+        <form method="post" action="/admin/operations/recollect">
+          <input type="hidden" name="date" value={report.reportDate} />
+          <button type="submit">重新采集</button>
+        </form>
+        <p className={styles.fine}>刷新本页只读取已保存的正式报告。重新采集会再查一次数据源，只在正式环境对管理员开放，并留下不含个人信息的审计记录。</p>
       </section>
 
       <section className={styles.section}>

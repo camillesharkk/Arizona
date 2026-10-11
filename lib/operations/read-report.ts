@@ -40,9 +40,17 @@ export async function readOperationsHistory(date: string | null) {
              snapshot
       from operations_daily_reports
       where source = 'summary'
+        and source_environment = 'production'
       order by report_date desc
       limit 60
     `;
+    const isolated = await sql`
+      select count(*)::int as isolated
+      from operations_daily_reports
+      where source = 'summary'
+        and source_environment = 'preview'
+    `;
+    const previewIsolated = Number(isolated[0]?.isolated || 0);
     const stored: StoredSummary[] = rows.map((row) => ({
       reportDate: day(row.report_date),
       generatedAt: row.generated_at ? new Date(row.generated_at as string | Date).toISOString() : "",
@@ -50,7 +58,13 @@ export async function readOperationsHistory(date: string | null) {
       snapshot: row.snapshot,
     }));
     const series = [...stored].reverse().map(seriesPoint);
-    return { ok: true as const, dates: stored.map((row) => row.reportDate), report: selectSummaryReport(stored, date), series };
+    return {
+      ok: true as const,
+      dates: stored.map((row) => row.reportDate),
+      report: selectSummaryReport(stored, date),
+      series,
+      previewIsolated,
+    };
   } catch {
     return { ok: false as const, reason: "report_read_failed" };
   }

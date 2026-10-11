@@ -168,6 +168,21 @@ export function sanitizeEventParams(params?: Record<string, unknown>) {
   return out;
 }
 
+export const OPS_PROBE_STORAGE = "az_ops_probe";
+
+export function rememberOpsProbe(
+  search: string,
+  storage: { getItem: (key: string) => string | null; setItem: (key: string, value: string) => void }
+) {
+  if (new URLSearchParams(search).get("ops_probe") === "1") storage.setItem(OPS_PROBE_STORAGE, "1");
+  return storage.getItem(OPS_PROBE_STORAGE) === "1";
+}
+
+export function applyOpsProbe(params: Record<string, string | number | boolean>, enabled: boolean) {
+  if (!enabled) return params;
+  return { ...params, ops_probe: "1" };
+}
+
 export function applyCommonParams(params?: Record<string, string | number | boolean>) {
   const out: Record<string, string | number | boolean> = {
     state: ANALYTICS_STATE,
@@ -177,7 +192,15 @@ export function applyCommonParams(params?: Record<string, string | number | bool
     out.page_path = window.location.pathname;
   }
   Object.assign(out, readAttribution(), params || {});
-  return out;
+  let probe = false;
+  if (typeof window !== "undefined") {
+    try {
+      probe = rememberOpsProbe(window.location.search, window.sessionStorage);
+    } catch {
+      probe = false;
+    }
+  }
+  return applyOpsProbe(out, probe);
 }
 
 function readAttribution() {

@@ -5,6 +5,7 @@
 import { readFileSync, readdirSync, statSync } from "fs";
 import path from "path";
 import {
+  applyOpsProbe,
   anonymousDistinctId,
   checkoutStartParams,
   claimEventSend,
@@ -21,6 +22,7 @@ import {
   parseClarityProjectId,
   parseGaMeasurementId,
   parsePosthogProjectKey,
+  rememberOpsProbe,
   pickLatestPaidOrder,
   rememberPurchase,
   resetAnalyticsDedupe,
@@ -264,7 +266,14 @@ if (quick.mode !== "quick10" || quick.question_count !== 10 || quick.plan !== "f
 else if (full.mode !== "full45" || full.question_count !== 45 || full.plan !== "pro") fail("Full 45 params");
 else if (practice.mode !== "practice" || practice.answered_count !== 4 || practice.duration_seconds !== 42 || "question" in practice) {
   fail("Practice params");
-} else ok("Quick 10、Full 45、Practice 参数正确");
+} else if (applyOpsProbe({ mode: "quick10" }, true).ops_probe !== "1") fail("probe flag missing");
+else if (applyOpsProbe({ mode: "quick10" }, false).ops_probe) fail("probe flag leaked into business params");
+else if (!(() => {
+  const bag = new Map<string, string>();
+  const storage = { getItem: (key: string) => bag.get(key) || null, setItem: (key: string, value: string) => bag.set(key, value) };
+  return rememberOpsProbe("?ops_probe=1", storage) && rememberOpsProbe("", storage);
+})()) fail("probe was not remembered");
+else ok("Quick 10、Full 45、Practice 参数正确，探测标记不进入普通参数");
 
 const granted = fulfillmentAnalyticsEvents({ duplicate: false, orderConfirmed: true, entitlementId: "ent-1" });
 const missing = fulfillmentAnalyticsEvents({ duplicate: false, orderConfirmed: false, entitlementFailed: true });
