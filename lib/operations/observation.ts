@@ -74,6 +74,14 @@ export function scrubInventedPosthogZero(value: number | null, historyWindow: un
   return value;
 }
 
+/** ClickHouse max(timestamp) is 1970-01-01 when the match set is empty. That is not an event time. */
+export function recordedEventTime(value: unknown, count: number | null) {
+  if (count == null || count <= 0) return null;
+  const text = String(value ?? "").trim();
+  if (!text || text.startsWith("1970-01-01")) return null;
+  return text;
+}
+
 export function reportWriterEnvironment(vercelEnv: string | undefined) {
   if (vercelEnv === "production") return "production";
   if (vercelEnv === "preview") return "preview";

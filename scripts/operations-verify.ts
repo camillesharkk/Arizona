@@ -77,10 +77,12 @@ import {
   observedCount,
   posthogBusinessFilter,
   posthogRegionName,
+  recordedEventTime,
   scrubInventedPosthogZero,
 } from "../lib/operations/observation.ts";
 import { calculatedRate, metricWindow } from "../lib/operations/metrics.ts";
 import { phoenixDate, reportWindows, windowsOverlap } from "../lib/operations/windows.ts";
+import { redirectWithSearch } from "../lib/paths.ts";
 
 const july = phoenixDate(new Date("2026-07-15T06:30:00.000Z"));
 const march = phoenixDate(new Date("2026-03-08T07:00:00.000Z"));
@@ -146,6 +148,8 @@ else if (scrubInventedPosthogZero(0, {}) !== null) fail("legacy empty history ke
 else if (scrubInventedPosthogZero(0, { practice_view: { sessions: 0 } }) !== 0) fail("explicit stored zero was erased");
 else if (!posthogBusinessFilter().includes("ops_probe")) fail("business query can count the probe");
 else if (posthogRegionName("https://us.posthog.com") !== "us" || posthogRegionName("https://eu.posthog.com") !== "eu") fail("posthog region");
+else if (recordedEventTime("1970-01-01 00:00:00", 0) !== null || recordedEventTime("1970-01-01T00:00:00Z", 3) !== null) fail("empty probe time stayed at 1970");
+else if (recordedEventTime("2026-10-12 00:40:00", 2) !== "2026-10-12 00:40:00") fail("real probe time was dropped");
 else ok("empty posthog results stay unknown until capture is verified");
 
 if (gscCtr(1, 4) !== 0.25 || gscCtr(0, 0) !== null) fail("gsc ctr");
@@ -435,6 +439,7 @@ else if (!middlewareSource.includes("status: 401") || !middlewareSource.includes
 else if (!pageSource.includes("operationsAccess") || pageSource.includes("OPERATIONS_ADMIN_EMAILS}")) fail("page exposes the allowlist");
 else if (/退款|补单|重放|发放权益|执行 SQL/.test(pageSource)) fail("report page exposes a write action");
 else if (!pageSource.includes("重新采集") || pageSource.includes("collectAndStoreSummaryReport")) fail("refresh and recollect are not separate");
+else if (!pageSource.includes("尚无探测事件")) fail("empty probe time still prints 1970");
 else ok("extension is a read-only launcher and the report route is server-gated");
 
 const recollectSource = readFileSync(path.join(process.cwd(), "app/admin/operations/recollect/route.ts"), "utf8");
@@ -442,6 +447,17 @@ if (!recollectSource.includes("operationsAccess") || !recollectSource.includes("
   fail("recollect is missing an admin, production, or overlap guard");
 } else if (/退款|补单|重放|发放权益|执行 SQL/.test(recollectSource)) fail("recollect exposes a write action");
 else ok("recollect stays admin-only on production and records an audit");
+
+const probeRoute = readFileSync(path.join(process.cwd(), "app/admin/operations/probe/route.ts"), "utf8");
+const homeSource = readFileSync(path.join(process.cwd(), "app/page.tsx"), "utf8");
+if (!probeRoute.includes("operationsAccess") || !probeRoute.includes("production_only") || !probeRoute.includes("queryLiveProbe")) {
+  fail("live probe check is missing an admin or production guard");
+} else if (probeRoute.includes("collectAndStoreSummaryReport") || /退款|补单|重放|发放权益|执行 SQL/.test(probeRoute)) {
+  fail("live probe check rewrites the report");
+} else if (!pageSource.includes("检查探测")) fail("report page cannot start a live probe check");
+else if (!homeSource.includes("redirectWithSearch")) fail("home redirect drops the probe query");
+else if (redirectWithSearch("/arizona-notary-exam/", { ops_probe: "1" }) !== "/arizona-notary-exam/?ops_probe=1") fail("probe query was not kept on the home redirect");
+else ok("live probe check is separate from the daily report, and the home redirect keeps ops_probe");
 
 const apiKey = "pdl_live_apikey_TEST_NOT_REAL";
 const cronSecret = "cron_secret_TEST_NOT_REAL";

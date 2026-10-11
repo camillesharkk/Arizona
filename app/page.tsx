@@ -1,6 +1,10 @@
 import { redirect } from "next/navigation";
-import { paths } from "@/lib/paths";
+import { paths, redirectWithSearch } from "@/lib/paths";
 
-export default function Home() {
-  redirect(paths.home);
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  redirect(redirectWithSearch(paths.home, await searchParams));
 }

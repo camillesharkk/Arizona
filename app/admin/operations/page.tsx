@@ -105,8 +105,10 @@ function probeCount(diagnostics: Record<string, unknown> | null) {
 function probeLast(diagnostics: Record<string, unknown> | null) {
   const probe = diagnostics?.probe;
   if (!probe || typeof probe !== "object") return "";
+  const count = (probe as { rowCount?: unknown }).rowCount;
   const last = (probe as { lastEventAt?: unknown }).lastEventAt;
-  return typeof last === "string" ? last : "";
+  if (count === 0 || typeof last !== "string" || last.startsWith("1970-01-01")) return "";
+  return last;
 }
 
 const EVENT_RATIO_TITLE: Record<string, string> = {
@@ -155,7 +157,7 @@ function MetricBlock({ metric }: { metric: CalculatedMetric }) {
 export default async function OperationsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ date?: string; window?: string }>;
+  searchParams: Promise<{ date?: string; window?: string; liveProbe?: string; probeError?: string; probeTotal?: string; probeLast?: string; probeOverlap?: string; probeEvents?: string }>;
 }) {
   const session = await getSession();
   const access = operationsAccess(session?.email, process.env.OPERATIONS_ADMIN_EMAILS);
@@ -468,16 +470,29 @@ export default async function OperationsPage({
           {typeof diagnostics?.coverageStart === "string" ? `，业务事件覆盖起点 ${diagnostics.coverageStart}` : "，还没有确认到业务事件覆盖起点"}
         </p>
         <p className={styles.fine}>
-          探测事件 {probeCount(diagnostics)} 次
-          {probeLast(diagnostics) ? `，最后时间 ${probeLast(diagnostics)}` : ""}
-          。探测时间晚于本报告截止时间的，不会算进这份历史日报。
+          探测事件 {probeCount(diagnostics)} 次。
+          {probeLast(diagnostics) ? `最后时间 ${probeLast(diagnostics)}。` : "尚无探测事件。"}
+          探测时间晚于本报告截止时间的，不会算进这份历史日报。
         </p>
         {paddleEnvironment ? <p className={styles.fine}>收款环境：{paddleEnvironment === "production" ? "正式" : paddleEnvironment}。</p> : null}
         <form method="post" action="/admin/operations/recollect">
           <input type="hidden" name="date" value={report.reportDate} />
           <button type="submit">重新采集</button>
         </form>
-        <p className={styles.fine}>刷新本页只读取已保存的正式报告。重新采集会再查一次数据源，只在正式环境对管理员开放，并留下不含个人信息的审计记录。</p>
+        <form method="post" action="/admin/operations/probe">
+          <button type="submit">检查探测</button>
+        </form>
+        {params.liveProbe === "1" ? (
+          <p>
+            这次检查看的是最近 6 小时，不改历史日报。
+            {params.probeError
+              ? "查询没有成功。"
+              : `探测事件 ${params.probeTotal || "0"} 次。${params.probeLast && !params.probeLast.startsWith("1970-01-01") ? `最后时间 ${params.probeLast}。` : "尚无探测事件。"}`}
+            {params.probeEvents ? `分项：${params.probeEvents}。` : ""}
+            {params.probeOverlap === "0" ? "这些探测事件没有进入业务统计。" : params.probeOverlap ? "业务过滤没有把探测事件排除。" : ""}
+          </p>
+        ) : null}
+        <p className={styles.fine}>刷新本页只读取已保存的正式报告。重新采集会再查一次数据源。检查探测只查询最近 6 小时的探测事件，不改这份日报。两者都只在正式环境对管理员开放。</p>
       </section>
 
       <section className={styles.section}>

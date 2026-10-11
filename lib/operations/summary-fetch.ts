@@ -23,6 +23,7 @@ import {
   classifyPosthogWindow,
   countOrNull,
   posthogBusinessFilter,
+  recordedEventTime,
   posthogRegionName,
   type CaptureState,
 } from "./observation.ts";
@@ -197,12 +198,70 @@ async function posthogProbe(generatedAt: string) {
   const columns = body.columns || ["events", "last_at"];
   const row = body.results?.[0];
   const record = row ? Object.fromEntries(columns.map((column, index) => [column, row[index]])) : {};
+  const rowCount = countOrNull(record.events);
   return {
-    rowCount: countOrNull(record.events),
-    lastEventAt: record.last_at ? String(record.last_at) : null,
+    rowCount,
+    lastEventAt: recordedEventTime(record.last_at, rowCount),
     httpStatus: queried.httpStatus,
     errorType: null,
   };
+}
+
+export async function queryLiveProbe(sinceIso: string) {
+  const events = FUNNEL_EVENTS.map((event) => `'${event}'`).join(", ");
+  const start = hogqlTime(sinceIso);
+  const end = hogqlTime(new Date().toISOString());
+  const where = `
+    timestamp >= toDateTime('${start}')
+    AND timestamp < toDateTime('${end}')
+    AND event IN (${events})
+    AND toString(properties.ops_probe) = '1'
+  `;
+  const queried = await posthogQuery(
+    `
+      SELECT event, count() AS events, max(timestamp) AS last_at
+      FROM events
+      WHERE ${where}
+      GROUP BY event
+      LIMIT 20
+    `,
+    "operations live probe"
+  );
+  const overlap = await posthogQuery(
+    `
+      SELECT count() AS events
+      FROM events
+      WHERE ${where}
+        AND ${posthogBusinessFilter()}
+    `,
+    "operations live probe overlap"
+  );
+  if (!queried.ok || !("json" in queried)) {
+    return { ok: false as const, httpStatus: queried.httpStatus, errorType: queried.errorType, events: [], total: null, lastEventAt: null, businessOverlap: null };
+  }
+  const body = queried.json as { results?: unknown[][]; columns?: string[] };
+  const columns = body.columns || ["event", "events", "last_at"];
+  const rows = (body.results || []).flatMap((row) => {
+    const record = Object.fromEntries(columns.map((column, index) => [column, row[index]]));
+    const event = String(record.event || "");
+    const count = countOrNull(record.events);
+    if (!event || count == null) return [];
+    return [{ event, count, lastEventAt: recordedEventTime(record.last_at, count) }];
+  });
+  const total = rows.reduce((sum, row) => sum + row.count, 0);
+  const lastEventAt = rows.reduce<string | null>((latest, row) => {
+    if (!row.lastEventAt) return latest;
+    return !latest || row.lastEventAt > latest ? row.lastEventAt : latest;
+  }, null);
+  let businessOverlap: number | null = null;
+  if (overlap.ok && "json" in overlap) {
+    const overlapBody = overlap.json as { results?: unknown[][]; columns?: string[] };
+    const overlapColumns = overlapBody.columns || ["events"];
+    const overlapRow = overlapBody.results?.[0];
+    const record = overlapRow ? Object.fromEntries(overlapColumns.map((column, index) => [column, overlapRow[index]])) : {};
+    businessOverlap = countOrNull(record.events);
+  }
+  return { ok: true as const, httpStatus: queried.httpStatus, errorType: null, events: rows, total, lastEventAt: recordedEventTime(lastEventAt, total), businessOverlap };
 }
 
 function posthogDiagnosticWarning(query: PosthogQuery | undefined, state: CaptureState) {
