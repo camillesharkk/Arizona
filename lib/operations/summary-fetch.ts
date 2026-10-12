@@ -207,37 +207,25 @@ async function posthogProbe(generatedAt: string) {
   };
 }
 
-export async function queryLiveProbe(sinceIso: string) {
+export async function queryLiveCohort(startIso: string, endIso: string, whereExtra: string, name: string) {
   const events = FUNNEL_EVENTS.map((event) => `'${event}'`).join(", ");
-  const start = hogqlTime(sinceIso);
-  const end = hogqlTime(new Date().toISOString());
-  const where = `
-    timestamp >= toDateTime('${start}')
-    AND timestamp < toDateTime('${end}')
-    AND event IN (${events})
-    AND toString(properties.ops_probe) = '1'
-  `;
+  const start = hogqlTime(startIso);
+  const end = hogqlTime(endIso);
   const queried = await posthogQuery(
     `
       SELECT event, count() AS events, max(timestamp) AS last_at
       FROM events
-      WHERE ${where}
+      WHERE timestamp >= toDateTime('${start}')
+        AND timestamp < toDateTime('${end}')
+        AND event IN (${events})
+        AND ${whereExtra}
       GROUP BY event
       LIMIT 20
     `,
-    "operations live probe"
-  );
-  const overlap = await posthogQuery(
-    `
-      SELECT count() AS events
-      FROM events
-      WHERE ${where}
-        AND ${posthogBusinessFilter()}
-    `,
-    "operations live probe overlap"
+    name
   );
   if (!queried.ok || !("json" in queried)) {
-    return { ok: false as const, httpStatus: queried.httpStatus, errorType: queried.errorType, events: [], total: null, lastEventAt: null, businessOverlap: null };
+    return { ok: false as const, httpStatus: queried.httpStatus, errorType: queried.errorType, events: [] as { event: string; count: number; lastEventAt: string | null }[], total: null as number | null, lastEventAt: null as string | null };
   }
   const body = queried.json as { results?: unknown[][]; columns?: string[] };
   const columns = body.columns || ["event", "events", "last_at"];
@@ -253,74 +241,7 @@ export async function queryLiveProbe(sinceIso: string) {
     if (!row.lastEventAt) return latest;
     return !latest || row.lastEventAt > latest ? row.lastEventAt : latest;
   }, null);
-  let businessOverlap: number | null = null;
-  if (overlap.ok && "json" in overlap) {
-    const overlapBody = overlap.json as { results?: unknown[][]; columns?: string[] };
-    const overlapColumns = overlapBody.columns || ["events"];
-    const overlapRow = overlapBody.results?.[0];
-    const record = overlapRow ? Object.fromEntries(overlapColumns.map((column, index) => [column, overlapRow[index]])) : {};
-    businessOverlap = countOrNull(record.events);
-  }
-  return { ok: true as const, httpStatus: queried.httpStatus, errorType: null, events: rows, total, lastEventAt: recordedEventTime(lastEventAt, total), businessOverlap };
-}
-
-export async function queryLiveBusiness(sinceIso: string) {
-  const events = FUNNEL_EVENTS.map((event) => `'${event}'`).join(", ");
-  const start = hogqlTime(sinceIso);
-  const end = hogqlTime(new Date().toISOString());
-  const queried = await posthogQuery(
-    `
-      SELECT event,
-        countIf(toString(properties.ops_acceptance) = '1') AS acceptance,
-        count() AS events,
-        max(timestamp) AS last_at,
-        maxIf(timestamp, toString(properties.ops_acceptance) = '1') AS acceptance_last
-      FROM events
-      WHERE timestamp >= toDateTime('${start}')
-        AND timestamp < toDateTime('${end}')
-        AND event IN (${events})
-        AND ${posthogBusinessFilter()}
-      GROUP BY event
-      LIMIT 20
-    `,
-    "operations live business"
-  );
-  if (!queried.ok || !("json" in queried)) {
-    return { ok: false as const, httpStatus: queried.httpStatus, errorType: queried.errorType, events: [], total: null, acceptanceTotal: null, lastEventAt: null, acceptanceLast: null };
-  }
-  const body = queried.json as { results?: unknown[][]; columns?: string[] };
-  const columns = body.columns || ["event", "acceptance", "events", "last_at", "acceptance_last"];
-  const rows = (body.results || []).flatMap((row) => {
-    const record = Object.fromEntries(columns.map((column, index) => [column, row[index]]));
-    const event = String(record.event || "");
-    const count = countOrNull(record.events);
-    const acceptance = countOrNull(record.acceptance);
-    if (!event || count == null) return [];
-    return [{
-      event,
-      count,
-      acceptance: acceptance ?? 0,
-      lastEventAt: recordedEventTime(record.last_at, count),
-      acceptanceLast: recordedEventTime(record.acceptance_last, acceptance),
-    }];
-  });
-  const total = rows.reduce((sum, row) => sum + row.count, 0);
-  const acceptanceTotal = rows.reduce((sum, row) => sum + row.acceptance, 0);
-  const latest = (field: "lastEventAt" | "acceptanceLast") => rows.reduce<string | null>((current, row) => {
-    const value = row[field];
-    if (!value) return current;
-    return !current || value > current ? value : current;
-  }, null);
-  return {
-    ok: true as const,
-    httpStatus: queried.httpStatus,
-    errorType: null,
-    events: rows,
-    total,
-    acceptanceTotal,
-    lastEventAt: recordedEventTime(latest("lastEventAt"), total),
-    acceptanceLast: recordedEventTime(latest("acceptanceLast"), acceptanceTotal),
-  };
+  return { ok: true as const, httpStatus: queried.httpStatus, errorType: null, events: rows, total, lastEventAt: recordedEventTime(lastEventAt, total) };
 }
 
 function posthogDiagnosticWarning(query: PosthogQuery | undefined, state: CaptureState) {

@@ -13,9 +13,17 @@ export function posthogRegionName(host: string) {
   return "other" as const;
 }
 
-/** Business totals omit the controlled probe. Admin acceptance stays in the business query and is labeled separately. */
+/** Real visitor totals omit controlled probes and labeled admin acceptance. */
 export function posthogBusinessFilter() {
-  return "(isNull(properties.ops_probe) OR toString(properties.ops_probe) != '1')";
+  return "(isNull(properties.ops_probe) OR toString(properties.ops_probe) != '1') AND (isNull(properties.ops_acceptance) OR toString(properties.ops_acceptance) != '1')";
+}
+
+export function posthogProbeFilter() {
+  return "toString(properties.ops_probe) = '1'";
+}
+
+export function posthogAcceptanceFilter() {
+  return "toString(properties.ops_acceptance) = '1' AND (isNull(properties.ops_probe) OR toString(properties.ops_probe) != '1')";
 }
 
 export function historicalCaptureCopy(state: string | null) {

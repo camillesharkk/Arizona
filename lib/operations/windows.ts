@@ -80,6 +80,16 @@ export function phoenixReportDate(iso: string) {
   return phoenixDate(new Date(time));
 }
 
+/** Covers the 2026-10-11 17:17 UTC admin acceptance even after a 6-hour or 24-hour lookback has moved on. */
+export const ACCEPTANCE_QUERY_START = "2026-10-11T17:00:00.000Z";
+
+export function liveCheckWindow(now = new Date()) {
+  const endIso = now.toISOString();
+  const dayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
+  const startIso = dayAgo < ACCEPTANCE_QUERY_START ? dayAgo : ACCEPTANCE_QUERY_START;
+  return { startIso, endIso };
+}
+
 /** Closed daily windows end at the start of the current Phoenix day. */
 export function instantInClosedReports(iso: string, now = new Date()) {
   const windows = reportWindows(now);

@@ -157,13 +157,17 @@ export default async function OperationsPage({
     probeError?: string;
     probeTotal?: string;
     probeLast?: string;
-    probeOverlap?: string;
     probeEvents?: string;
-    businessError?: string;
-    businessTotal?: string;
+    acceptanceError?: string;
     acceptanceTotal?: string;
     acceptanceEvents?: string;
-    businessLast?: string;
+    acceptanceLast?: string;
+    visitorError?: string;
+    visitorTotal?: string;
+    visitorEvents?: string;
+    visitorLast?: string;
+    queryStart?: string;
+    queryEnd?: string;
     reportDate?: string;
     inHistory?: string;
   }>;
@@ -465,18 +469,23 @@ export default async function OperationsPage({
 
       <section className={styles.section}>
         <h2>采集诊断</h2>
-        <p className={styles.period}>实时探测、这份历史日报的覆盖、以及截止时间之后的新业务，分开看。受控测试带 ops_probe=1，不计入业务数字。管理员验收带 ops_acceptance=1，会计入覆盖该时刻的新日报，并单独标出。</p>
+        <p className={styles.period}>实时探测、管理员验收和真实访客分开查询。验收带 ops_acceptance=1，单独列出，不计入真实访客转化。2026-10-10 的历史日报不回填。</p>
         <p>代码版本 {view.gitSha || "未记录"}，结构版本 {view.schemaVersion ?? "旧报告，还没有结构版本"}。</p>
         <p>
           PostHog 接口 {diagnostics && diagnostics.apiReachable === true ? "可访问" : diagnostics && diagnostics.apiReachable === false ? "没有访问成功" : "未记录"}
           {diagnostics?.regionMatch === false ? "。浏览器上报区域和查询区域不一致。" : ""}
         </p>
-        <p>实时探测：{params.liveProbe === "1" && !params.probeError && params.probeOverlap === "0" && Number(params.probeTotal) > 0 ? `已通过。最近 6 小时 ${params.probeTotal} 次，没有进入业务统计。` : params.probeError ? "这次查询没有成功。" : "这份日报截止前的探测次数见下一行。实时结果以检查探测为准。"}</p>
         <p>历史覆盖：{historicalCaptureCopy(typeof diagnostics?.captureState === "string" ? diagnostics.captureState : null)}。这份日报不回填截止时间之后的操作。</p>
-        <p>
-          新业务采集：
-          {params.liveProbe === "1" && params.businessError ? "这次业务查询没有成功。" : params.liveProbe === "1" ? `最近 6 小时业务查询 ${params.businessTotal || "0"} 次，其中管理员验收 ${params.acceptanceTotal || "0"} 次。${params.acceptanceEvents ? `验收分项：${params.acceptanceEvents}。` : ""}${params.reportDate ? `这些事件属于凤凰城 ${params.reportDate}，会进入该日结束后的新日报。` : ""}${params.inHistory === "0" ? "当前这份历史日报不会写入这些事件。" : params.inHistory === "1" ? "该时刻已经落在当前已关闭的日报窗口内。" : ""}` : "还没有检查截止时间之后的业务事件。"}
-        </p>
+        {params.liveProbe === "1" ? (
+          <>
+            <p>查询区间：{params.queryStart || "未返回"} 至 {params.queryEnd || "未返回"}，不含结束时刻。</p>
+            <p>探测事件：{params.probeError ? "查询没有成功。" : `${params.probeTotal || "0"} 次。${params.probeLast ? `最后时间 ${params.probeLast}。` : "尚无探测事件。"}` }{params.probeEvents ? `分项：${params.probeEvents}。` : ""}这些事件带 ops_probe=1，不计入真实访客。</p>
+            <p>管理员验收：{params.acceptanceError ? "查询没有成功。" : `${params.acceptanceTotal || "0"} 次。${params.acceptanceLast ? `最后时间 ${params.acceptanceLast}。` : "这个区间没有验收事件。"}` }{params.acceptanceEvents ? `分项：${params.acceptanceEvents}。` : ""}{params.reportDate ? `所属报告日是凤凰城 ${params.reportDate}。` : ""}这是管理员验收，不是真实用户转化。{params.inHistory === "0" ? "当前这份历史日报不会写入这些事件。" : params.inHistory === "1" ? "该时刻已经落在当前已关闭的日报窗口内。" : ""}</p>
+            <p>真实访客：{params.visitorError ? "查询没有成功。" : `${params.visitorTotal || "0"} 次。${params.visitorLast ? `最后时间 ${params.visitorLast}。` : ""}` }{params.visitorEvents ? `分项：${params.visitorEvents}。` : ""}已排除探测和管理员验收。</p>
+          </>
+        ) : (
+          <p>还没有做这次检查。检查探测会查询覆盖 2026-10-11 17:17 UTC 验收时刻的区间，并在结果里写明实际起止时间。</p>
+        )}
         <p className={styles.fine}>
           项目 {typeof diagnostics?.projectId === "string" ? diagnostics.projectId : "未记录"}
           {typeof diagnostics?.queryRegion === "string" ? `，查询区域 ${diagnostics.queryRegion}` : ""}
@@ -496,17 +505,7 @@ export default async function OperationsPage({
         <form method="post" action="/admin/operations/probe">
           <button type="submit">检查探测</button>
         </form>
-        {params.liveProbe === "1" ? (
-          <p>
-            这次检查看的是最近 6 小时，不改历史日报。
-            {params.probeError
-              ? "查询没有成功。"
-              : `探测事件 ${params.probeTotal || "0"} 次。${params.probeLast && !params.probeLast.startsWith("1970-01-01") ? `最后时间 ${params.probeLast}。` : "尚无探测事件。"}`}
-            {params.probeEvents ? `分项：${params.probeEvents}。` : ""}
-            {params.probeOverlap === "0" ? "这些探测事件没有进入业务统计。" : params.probeOverlap ? "业务过滤没有把探测事件排除。" : ""}
-          </p>
-        ) : null}
-        <p className={styles.fine}>刷新本页只读取已保存的正式报告。重新采集会再查一次数据源。检查探测另外查询最近 6 小时的探测和业务事件，不改这份日报。两者都只在正式环境对管理员开放。</p>
+        <p className={styles.fine}>刷新本页只读取已保存的正式报告。重新采集会再查一次数据源。检查探测只做上面的三次查询，不改这份日报。两者都只在正式环境对管理员开放。</p>
       </section>
 
       <section className={styles.section}>
