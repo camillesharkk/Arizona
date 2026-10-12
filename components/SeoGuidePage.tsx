@@ -65,6 +65,16 @@ export function SeoGuidePage({ id }: { id: string }) {
           <Link href={ctas[1].href}>{ctas[1].label}</Link>
         </p>
       ) : null}
+      <section className="card" style={{ marginTop: 24 }} aria-label="Choose your next study step">
+        <h2>Put this guide into practice</h2>
+        <p>Start with a short diagnostic, review the rules you miss, then practice under a timer. Our questions are independently written.</p>
+        <ul>
+          <li><Link href={`${paths.practice}?mode=quick`}>Free Quick 10: find a weak topic</Link></li>
+          <li><Link href={`${paths.practice}?mode=full`}>Full 45: practice pacing</Link> — one free attempt in this browser; signed-in free accounts have one recorded attempt.</li>
+          <li><Link href={paths.study}>Study Guide: understand the rule</Link></li>
+          <li><Link href={paths.pricing}>Pro question bank: compare additional practice access</Link></li>
+        </ul>
+      </section>
       <section className="card" style={{ marginTop: 24 }}>
         <h2>Related reading</h2>
         <ul>
@@ -75,7 +85,7 @@ export function SeoGuidePage({ id }: { id: string }) {
           ))}
         </ul>
       </section>
-      <p className="notice">{examConfig.disclaimer}</p>
+      <p className="notice">{examConfig.disclaimer} <a href={examConfig.officialExamUrl}>Check the official Arizona SOS exam notice.</a></p>
     </main>
   );
 }

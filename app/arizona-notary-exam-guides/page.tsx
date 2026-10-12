@@ -8,7 +8,7 @@ import { searchMatrix } from "@/lib/seo-guides";
 export const metadata = pageMeta({
   title: `Arizona Notary Exam Guides ${examConfig.year}`,
   description:
-    "Arizona notary exam guides that answer one question each: practice test, passing score, fees, bond, remote notarization, a cram sheet, and mistakes to avoid.",
+    "Arizona notary exam guides that answer one question each: free practice, exam format, requirements, fees, bond, remote notarization, retakes and study schedules.",
   path: paths.guidesIndex,
 });
 
@@ -19,7 +19,7 @@ export default function GuidesIndexPage() {
       <p className="kicker">Search guides</p>
       <h1>Arizona Notary Exam Guides</h1>
       <p className="lede">
-        Start with the page that matches the question you searched. Free Quick 10 and one free Full 45 in this browser are on the practice test. There is no separate free-practice article.
+        Start with the page that matches the question you searched. Free Quick 10 and one free Full 45 in this browser are on the practice test. Choose a format answer, a focused rule guide or a study schedule below.
       </p>
       <p>
         <Link className="btn btn-primary" href={`${paths.practice}?mode=quick`}>
