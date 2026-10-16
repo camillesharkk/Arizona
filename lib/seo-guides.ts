@@ -1,3 +1,4 @@
+import { expandedGuides } from "@/lib/seo-expansion";
 import { examConfig } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
@@ -34,158 +35,7 @@ export type SeoGuide = {
 
 const passCount = Math.ceil((examConfig.questionCount * examConfig.passingScorePercent) / 100);
 
-export const seoGuides: SeoGuide[] = [
-  {
-    id: "how-hard",
-    index: false,
-    path: paths.howHard,
-    title: `How Hard Is the Arizona Notary Exam? ${examConfig.year}`,
-    description:
-      "How hard the Arizona notary exam feels depends on applying the statutes under a time limit. This site’s Full 45 is a practice setting, not a fresh SOS exam bulletin.",
-    kicker: "Exam difficulty",
-    h1: `How Hard Is the Arizona Notary Exam?`,
-    lede: `A.R.S. § 41-270 does not set the question count, time limit, or cut score. This site’s Full 45 uses ${examConfig.questionCount} questions, ${examConfig.timeLimitMinutes} minutes, and ${examConfig.passingScorePercent}% as practice settings. Those figures are not a re-check of the SOS exam page.`,
-    sections: [
-      {
-        heading: "What the official format actually tests",
-        body: "Older SOS notices described a timed exam with the manual on screen and no physical book. azsos.gov did not load on 2026-09-29, so this page does not treat the format, time limit, vendor, or fee as re-checked. The scored skills are still the statute: identification, the notarial act, the journal, fees, and prohibited acts. Read the live SOS page before you pay.",
-        sourceId: "sos_new_notary",
-        href: examConfig.officialExamUrl,
-        hrefLabel: "Arizona SOS notary exam page",
-      },
-      {
-        heading: "Why people fail an open-book test",
-        body: "Common misses are damaged identification, mixing acknowledgments with jurats, informal video calls treated as remote notarization, conflicts of interest, and charging more than the fee rule allows. Those are application errors. A high practice score that you cannot explain is not readiness.",
-        href: paths.mistakesGuide,
-        hrefLabel: "Mistakes to avoid on the exam",
-      },
-      {
-        heading: "How to measure difficulty for yourself",
-        body: "Start with the free Quick 10. Write down every topic you miss. Study that chapter, then take the one free Full 45 in this browser. If you cannot finish or cannot explain the official source on missed items, you are not guessing your way to 80%. Another full exam in that browser, and the rest of the bank, are Pro.",
-        href: `${paths.practice}?mode=quick`,
-        hrefLabel: "Start the free Quick 10",
-      },
-    ],
-    related: [
-      { href: paths.passingScore, label: "Passing score" },
-      { href: paths.practice, label: "Practice test" },
-      { href: paths.examPrep, label: "Seven-day study plan" },
-      { href: paths.cram, label: "Cram sheet" },
-    ],
-  },
-  {
-    id: "passing-score",
-    path: paths.passingScore,
-    title: `Arizona Notary Exam Passing Score ${examConfig.year}`,
-    description: `Arizona statute does not set the notary exam cut score. This site marks a practice pass at ${examConfig.passingScorePercent}% (${passCount} of ${examConfig.questionCount}). Confirm the live SOS instructions before you book.`,
-    kicker: "Passing score",
-    h1: "Arizona Notary Exam Passing Score",
-    lede: `The statute does not set a passing percent. This site’s Full 45 marks a practice pass at ${examConfig.passingScorePercent}% — ${passCount} of ${examConfig.questionCount}. That is a study target, not an SOS score report and not a commission.`,
-    checked:
-      "A.R.S. § 41-270 was read on azleg.gov on 2026-09-29. It lets the Secretary of State require an exam and charge a fee. It does not state the question count, the time limit, or the cut score. azsos.gov did not load that day because of a Cloudflare check. A local audit dated 2026-09-28 reported 45 questions, 60 minutes, and 80% on the SOS notary page, and also reported older and newer vendor notices on that same page. Read the live SOS page before you pay for the official exam.",
-    sections: [
-      {
-        heading: "What the statute says",
-        body: "A.R.S. § 41-270(A) says the Secretary of State may require a new applicant, a renewing notary, or a notary with a suspended commission to pass an exam based on the laws, rules, procedures, and ethics of notarial acts. Subsection C lets the SOS set and collect a fee for the course and exam. None of that text is a passing score.",
-        sourceId: "ars_41_270",
-      },
-      {
-        heading: "The number this practice test uses",
-        body: `Full 45 on this website uses ${examConfig.questionCount} questions, ${examConfig.timeLimitMinutes} minutes, and ${examConfig.passingScorePercent}% to show PASS. ${passCount} correct answers meet that practice target. These are the format fields stored for practice. They are not a printout of today’s SOS bulletin, and the questions are original practice items, not official exam forms.`,
-        sourceId: "sos_new_notary",
-      },
-      {
-        heading: "A practice pass still is not a commission",
-        body: "A.R.S. § 41-269(C) and (D) still require the oath of office and a $5,000 surety bond on file before the Secretary of State issues a commission. A green score on this site does not file either one.",
-        sourceId: "ars_41_269",
-        href: paths.become,
-        hrefLabel: "Commission steps after the exam",
-      },
-    ],
-    ctas: [{ href: `${paths.practice}?mode=quick`, label: "Try 10 free questions" }],
-    related: [
-      { href: paths.practice, label: "Practice test" },
-      { href: paths.examPrep, label: "Seven-day study plan" },
-      { href: paths.bond, label: "Bond requirements" },
-      { href: paths.study, label: "Study Guide" },
-    ],
-  },
-  {
-    id: "question-count",
-    index: false,
-    path: paths.questionCount,
-    title: `How Many Questions Are on the Arizona Notary Exam? ${examConfig.year}`,
-    description: `A.R.S. § 41-270 does not set the official question count. This site’s Full 45 draws ${examConfig.questionCount} practice questions. Quick 10 draws 10 from the free pool.`,
-    kicker: "Exam length",
-    h1: "How Many Questions Are on the Arizona Notary Exam?",
-    lede: `A.R.S. § 41-270 lets the Secretary of State require an exam. It does not set the question count, and this page does not treat an SOS count as re-checked. On this site, Quick 10 draws 10 questions from the free pool. Full 45 draws ${examConfig.questionCount} practice questions from the bank.`,
-    sections: [
-      {
-        heading: "Official exam length",
-        body: `This site’s Full 45 uses ${examConfig.questionCount} questions and ${examConfig.timeLimitMinutes} minutes as practice settings. A.R.S. § 41-270 does not set those numbers, and the SOS exam page was not re-read for this sentence. Confirm the live exam before booking.`,
-        sourceId: "sos_new_notary",
-        href: examConfig.officialExamUrl,
-        hrefLabel: "Arizona SOS exam page",
-      },
-      {
-        heading: "How this site’s tests map to that length",
-        body: "Quick 10: ten free items with instant explanations. Full 45: forty-five distinct questions, timer on, explanations after you submit. Topic practice is study, not the exam length. One free Full 45 in this browser; a later full exam in that same browser is Pro. Repeated questions on later attempts can inflate a score, so explain the source, not just the letter.",
-        href: `${paths.practice}?mode=quick`,
-        hrefLabel: "Start Quick 10",
-      },
-      {
-        heading: "After you know the count, practice the acts",
-        body: "Length is the easy fact. The hard part is choosing the right notarial act and citing the statute. Use exam questions by topic when you miss identification, journals, or fees, then return to a full timed set.",
-        href: paths.questions,
-        hrefLabel: "Arizona notary exam questions",
-      },
-    ],
-    related: [
-      { href: paths.passingScore, label: "Passing score" },
-      { href: paths.practice, label: "Practice test" },
-      { href: paths.examPrep, label: "Study plan" },
-      { href: paths.study, label: "Study Guide" },
-    ],
-  },
-  {
-    id: "exam-requirements",
-    index: false,
-    path: paths.examRequirements,
-    title: `Arizona Notary Exam Requirements ${examConfig.year}`,
-    description:
-      "Arizona notary exam and commission requirements: eligibility under A.R.S. § 41-269, the exam if required, oath, $5,000 bond, and SOS issuance.",
-    kicker: "Exam & commission requirements",
-    h1: "Arizona Notary Exam Requirements",
-    lede: "The exam is one qualification if the Secretary of State requires it. A commission still needs eligibility, an oath, a $5,000 surety-bond assurance on file, and issuance by the SOS.",
-    sections: [
-      {
-        heading: "Who may apply",
-        body: "Under A.R.S. § 41-269(B), an applicant must be at least 18, a U.S. citizen or permanent legal resident, an Arizona resident for income-tax purposes who claims Arizona as the primary residence on tax returns, and able to read, write, and understand English. The applicant must also meet disqualification, examination, and SOS-approved reference-manual requirements. Working in Arizona without that residency is not enough.",
-        sourceId: "ars_41_269",
-        href: paths.study + "#commission",
-        hrefLabel: "Study the commission chapter",
-      },
-      {
-        heading: "What the exam is for",
-        body: "A.R.S. § 41-269(B)(6) treats passing the examination in § 41-270 as one qualification if the Secretary of State requires it. This website is independent practice, not the official exam. Check SOS New Notary for current scheduling, identification at the test center, remote options, and fees. Full 45 on this site uses this site’s practice settings of 45 questions, 60 minutes, and 80%. Those three figures were not re-read from the SOS page on 2026-09-29.",
-        sourceId: "sos_new_notary",
-        href: `${paths.practice}?mode=full`,
-        hrefLabel: "Take a Full 45 practice exam",
-      },
-      {
-        heading: "After a passing official score",
-        body: "A.R.S. § 41-269(C)–(E) still require the oath of office and the $5,000 surety-bond assurance before the Secretary of State issues the commission. Buying a stamp because a practice test went well is not commissioning. Use the become-a-notary checklist for bond, oath, and supplies.",
-        href: paths.become,
-        hrefLabel: "Commission checklist",
-      },
-    ],
-    related: [
-      { href: paths.bond, label: "Bond requirements" },
-      { href: paths.become, label: "How to become a notary" },
-      { href: paths.passingScore, label: "Passing score" },
-      { href: paths.study, label: "Study Guide" },
-    ],
-  },
+const existingGuides: SeoGuide[] = [
   {
     id: "fees",
     path: paths.fees,
@@ -327,60 +177,6 @@ export const seoGuides: SeoGuide[] = [
       { href: paths.laws, label: "Law updates" },
       { href: paths.questions, label: "Exam questions" },
       { href: paths.practice, label: "Practice test" },
-    ],
-  },
-  {
-    id: "faq",
-    index: false,
-    path: paths.examFaq,
-    title: `Arizona Notary Exam FAQ ${examConfig.year}`,
-    description: `Answers to Arizona notary exam questions: length, passing score, open book, free practice, Full 45, Study Guide, and Pro. Independent of the SOS.`,
-    kicker: "FAQ",
-    h1: "Arizona Notary Exam FAQ",
-    lede: "Short answers to the searches people use before they book the official exam. Then take a practice test so the answers are not just trivia.",
-    sections: [
-      {
-        heading: "Use the list, then prove it under a timer",
-        body: "If you only needed a number, you already have it. The remaining risk is applying the rule. Take Quick 10, open the matching Study Guide chapter, then run Full 45.",
-        href: `${paths.practice}?mode=quick`,
-        hrefLabel: "Start the free 10-question test",
-      },
-    ],
-    related: [
-      { href: paths.examPrep, label: "Study plan" },
-      { href: paths.practice, label: "Practice test" },
-      { href: paths.cram, label: "Cram sheet" },
-      { href: paths.guidesIndex, label: "All exam guides" },
-    ],
-    faqs: [
-      {
-        q: "How many questions are on the Arizona notary exam?",
-        a: `A.R.S. § 41-270 does not set the official count. This site’s Full 45 draws ${examConfig.questionCount} practice questions. Quick 10 draws 10 from the free pool.`,
-      },
-      {
-        q: "What is the passing score?",
-        a: `This site uses ${examConfig.passingScorePercent}% (${passCount} of ${examConfig.questionCount}) as the practice cut score. Confirm the official exam on the Arizona SOS site. A practice PASS is not a commission.`,
-      },
-      {
-        q: "Is the exam open book?",
-        a: "Older SOS notices described an on-screen manual and no physical manual. azsos.gov did not load on 2026-09-29, so this page does not treat that format, the time limit, or the vendor as re-checked. This site’s Full 45 hides explanations until you submit and uses a 60-minute practice timer.",
-      },
-      {
-        q: "Is this the official SOS exam?",
-        a: "No. This website is independent practice. The official exam and commission are on the Arizona Secretary of State site.",
-      },
-      {
-        q: "What can I do for free?",
-        a: `Quick 10 and topic practice use ${freeBankCount} free questions. One free Full 45 in this browser draws ${examConfig.questionCount} questions from the ${practiceBank.length}-question bank and can include Pro items. That browser reminder is not a per-person limit. The Study Guide stays free. No registration is required to start.`,
-      },
-      {
-        q: "What does Pro add?",
-        a: `Arizona Notary Exam Prep Pro is a one-time 60-day purchase. It unlocks all ${practiceBank.length} practice questions, including the ${practiceBank.length - freeBankCount} that are not free, plus unlimited full exams and weak-area training. It is not a subscription.`,
-      },
-      {
-        q: "Does passing the exam make me a notary that day?",
-        a: "No. A.R.S. § 41-269 still requires the oath and a $5,000 surety-bond assurance, among other steps, before the SOS issues a commission.",
-      },
     ],
   },
   {
@@ -526,18 +322,18 @@ export const seoGuides: SeoGuide[] = [
   },
 ];
 
+export const seoGuides: SeoGuide[] = [
+  ...existingGuides.filter((guide) => !expandedGuides.some((updated) => updated.id === guide.id)),
+  ...expandedGuides,
+];
+
 export const searchMatrix: { title: string; href: string; blurb: string }[] = [
-  { title: "Arizona Notary Exam Practice Test", href: paths.practice, blurb: "Free Quick 10 and one free Full 45 in this browser. No second “free test” article." },
-  { title: "Arizona Notary Exam Questions and Answers", href: paths.questions, blurb: "Topic practice with explanations and official sources." },
-  { title: "Arizona Notary Exam Study Guide", href: paths.study, blurb: "Rules, worked examples, and a link into each topic." },
-  { title: "How to Become a Notary in Arizona", href: paths.become, blurb: "Eligibility, exam, oath, and the $5,000 bond." },
-  { title: "Arizona Notary Exam Passing Score", href: paths.passingScore, blurb: "The statute does not set the percent. This site uses 80% for practice." },
-  { title: "Arizona Notary Fees and Allowed Charges", href: paths.fees, blurb: "No charge up to $10, said out loud before the act." },
-  { title: "Arizona Notary Bond Requirements", href: paths.bond, blurb: "$5,000 surety bond on file before you notarize." },
-  { title: "Arizona Remote Online Notary Requirements", href: paths.ron, blurb: "§ 41-263. A video call is only the start." },
-  { title: "Arizona Notary Exam Cram Sheet", href: paths.cram, blurb: "One-page checklist, then Quick 10." },
-  { title: "Arizona Notary Exam Mistakes to Avoid", href: paths.mistakesGuide, blurb: "ID, verification, RON, fees, and conflicts." },
-  { title: "Seven-day exam plan", href: paths.examPrep, blurb: "Where “how hard is it?” goes until that page is more than a restatement." },
+  { title: "Arizona Notary Exam Practice Test", href: paths.practice, blurb: "Start Quick 10 or a timed Full 45." },
+  { title: "Arizona Notary Exam Questions and Answers", href: paths.questions, blurb: "Learn from topic questions, explanations and sources." },
+  { title: "Arizona Notary Exam Study Guide", href: paths.study, blurb: "Review rules and worked examples." },
+  { title: "How to Become a Notary in Arizona", href: paths.become, blurb: "Follow the application and commission checklist." },
+  ...seoGuides.filter((guide) => guide.index !== false).map((guide) => ({ title: guide.h1, href: guide.path, blurb: guide.description })),
+  { title: "Seven-day exam plan", href: paths.examPrep, blurb: "Spread review and practice across a week." },
 ];
 
 export function seoGuideById(id: string) {

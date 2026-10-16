@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { seoGuides } from "@/lib/seo-guides";
 import { paths } from "@/lib/paths";
 import { siteUrl } from "@/lib/site";
 
@@ -28,5 +29,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     paths.disclaimer,
     paths.contact,
   ];
-  return urls.map((path) => ({ url: `${siteUrl()}${path}`, changeFrequency: "weekly" as const, priority: 0.8 }));
+  const indexed = [...new Set([...urls, ...seoGuides.filter((guide) => guide.index !== false).map((guide) => guide.path)])];
+  return indexed.map((path) => ({ url: `${siteUrl()}${path}`, changeFrequency: "weekly" as const, priority: 0.8 }));
 }
