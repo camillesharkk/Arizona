@@ -3,7 +3,7 @@
  * Run: npm run quiz:verify
  */
 import { publishedQuestions, questions as allQuestions } from "../data/questions.ts";
-import { examConfig } from "../data/exam-config.ts";
+import { examConfig, topics } from "../data/exam-config.ts";
 import { isActiveQuestion } from "../lib/question-status.ts";
 import {
   buildBalancedAnswerSequence,
@@ -16,6 +16,18 @@ import {
   type Letter,
 } from "../lib/answer-sequence.ts";
 import { buildQuickExam, pickQuickExam } from "../lib/quiz.ts";
+import { freeQuestions } from "../data/questions.ts";
+import {
+  arizonaDiagnostic,
+  blankSession,
+  diagnosticReady,
+  parseDiagnosticSession,
+  pickDiagnosticQuestions,
+  profileForState,
+  recommendFor,
+  scoreDiagnostic,
+  type DiagnosticChoice,
+} from "../lib/diagnostic.ts";
 import type { Question } from "../lib/types.ts";
 
 const LETTERS: Letter[] = ["A", "B", "C", "D"];
@@ -233,6 +245,89 @@ else {
 const proQuick = pickQuickExam(606, false);
 if (proQuick.length !== 10) fail("Pro Quick10 should still pick 10");
 else ok("Pro Quick10 keeps existing full-pool behavior");
+
+const freeBank = freeQuestions();
+const diagA = pickDiagnosticQuestions(freeBank, 10, 7, "AZ");
+const diagB = pickDiagnosticQuestions(freeBank, 10, 7, "AZ");
+if (diagA.length !== 10 || new Set(diagA.map((q) => q.question_id)).size !== 10) fail("diagnostic did not return 10 unique questions");
+else if (diagA.some((q) => q.state !== "AZ" || !q.is_free || !isActiveQuestion(q))) fail("diagnostic left the free Arizona pool");
+else if (diagA.map((q) => q.question_id).join() !== diagB.map((q) => q.question_id).join()) fail("diagnostic seed was unstable");
+else ok("diagnostic draw stays in the free Arizona pool");
+if (new Set(diagA.map((q) => q.topic)).size < 2) fail("diagnostic did not cover more than one topic");
+else ok("diagnostic covers more than one topic");
+if (pickDiagnosticQuestions(freeBank.slice(0, 9), 10, 1, "AZ").length !== 0) fail("short diagnostic pool was padded");
+else ok("short diagnostic pool is not padded");
+const proItemForDiag = publishedQuestions().find((q) => !q.is_free && isActiveQuestion(q));
+if (!proItemForDiag) fail("need a Pro question for diagnostic access test");
+else if (pickDiagnosticQuestions([proItemForDiag, ...freeBank], 10, 3, "AZ").some((q) => !q.is_free)) fail("diagnostic included a Pro question");
+else ok("diagnostic does not read Pro questions");
+const otherState = freeBank.slice(0, 12).map((q) => ({ ...q, state: "TX" as Question["state"] }));
+if (pickDiagnosticQuestions(otherState, 10, 1, "AZ").length !== 0) fail("diagnostic accepted another state");
+else if (profileForState("TX") || diagnosticReady("TX")) fail("another state was enabled without its own profile");
+else ok("diagnostic stays on Arizona");
+
+function diagQuestion(id: string, topic: Question["topic"], text: string): Question {
+  return {
+    question_id: id,
+    state: "AZ",
+    topic,
+    difficulty: "medium",
+    question_text: text,
+    option_a: "One",
+    option_b: "Two",
+    option_c: "Three",
+    option_d: "Four",
+    correct_option: "A",
+    explanation: "Reviewed explanation.",
+    option_feedback: { A: "Right.", B: "Wrong.", C: "Wrong.", D: "Wrong." },
+    source_id: "sos_handbook",
+    source_reference: "Handbook",
+    effective_from: "2024-01-01",
+    effective_to: null,
+    last_verified_at: "2026-08-01",
+    version: 1,
+    is_free: true,
+    status: "published",
+  };
+}
+const sample = topics.slice(0, 10).map((topic, index) => diagQuestion(`diag-${index}`, topic.id, `Distinct rule ${index} for ${topic.id}`));
+const twin = diagQuestion("diag-twin", sample[0].topic, sample[0].question_text);
+const spread = pickDiagnosticQuestions([...sample, twin], 10, 5, "AZ");
+if (spread.filter((q) => q.question_text === sample[0].question_text).length > 1) fail("diagnostic kept two copies of the same question");
+else ok("diagnostic does not repeat the same question text when alternatives exist");
+
+const scored = sample;
+function answersFor(correctCount: number, unsure = false): Record<string, DiagnosticChoice> {
+  const out: Record<string, DiagnosticChoice> = {};
+  scored.forEach((q, index) => {
+    out[q.question_id] = index < correctCount ? q.correct_option : unsure ? "unsure" : "B";
+  });
+  return out;
+}
+if (scoreDiagnostic(scored, answersFor(0, true)).correct !== 0) fail("unsure counted as correct");
+else ok("unsure is not correct");
+if (scoreDiagnostic(scored, {}).correct !== 0) fail("blank answer counted as correct");
+else ok("unanswered is not correct");
+const bands: [number, string][] = [
+  [5, "basics"],
+  [6, "review"],
+  [8, "review"],
+  [9, "full"],
+];
+for (const [correct, band] of bands) {
+  if (recommendFor(correct) !== band) fail(`score ${correct} recommended ${recommendFor(correct)} instead of ${band}`);
+  else ok(`score ${correct} recommends ${band}`);
+}
+const saved = blankSession(spread.length === 10 ? spread : sample);
+saved.answers[saved.questionIds[0]] = "unsure";
+const lookup = (id: string) => (spread.length === 10 ? spread : sample).find((q) => q.question_id === id) ?? null;
+if (!parseDiagnosticSession(JSON.stringify(saved), arizonaDiagnostic, lookup)) fail("valid diagnostic session was rejected");
+else ok("diagnostic session restores");
+if (parseDiagnosticSession(JSON.stringify({ ...saved, version: 99 }), arizonaDiagnostic, lookup)) fail("old diagnostic version was kept");
+else ok("incompatible diagnostic version resets");
+const tampered = { ...saved, questionIds: [...saved.questionIds.slice(0, 9), proItemForDiag?.question_id ?? "missing"] };
+if (parseDiagnosticSession(JSON.stringify(tampered), arizonaDiagnostic, () => proItemForDiag ?? null)) fail("pro question restored into a diagnostic");
+else ok("restored diagnostic rejects a question outside the free pool");
 
 const reportSeeds = [101, 202, 303];
 lines.push("");

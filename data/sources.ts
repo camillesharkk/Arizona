@@ -295,3 +295,8 @@ export const sources: Record<string, Source> = {
 export function getSource(id: string): Source {
   return sources[id] ?? sources.sos_handbook;
 }
+
+/** Missing registry entries stay missing. Do not substitute another source. */
+export function findSource(id: string): Source | null {
+  return sources[id] ?? null;
+}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
 import { FlashcardsClient } from "@/components/FlashcardsClient";
+import { DiagnosticFlow, savedDiagnosticKind } from "@/components/DiagnosticFlow";
 import { examConfig } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 import { FREE_FULL_EXAMS } from "@/lib/product";
@@ -11,10 +12,14 @@ import { loadProgress } from "@/lib/storage";
 
 const ANON_FULL_KEY = "az-anon-full-started";
 
-type Tab = "practice" | "full" | "cards";
+type View = "menu" | "diagnostic" | "full" | "cards";
 
-export function HomeStudy() {
-  const [tab, setTab] = useState<Tab>("practice");
+export function HomeStudy({ diagnosticReady }: { diagnosticReady: boolean }) {
+  const [view, setView] = useState<View>("menu");
+  const [fresh, setFresh] = useState(true);
+  const [showResult, setShowResult] = useState(false);
+  const [runId, setRunId] = useState(0);
+  const [savedKind, setSavedKind] = useState<"none" | "active" | "complete">("none");
   const [fullOpen, setFullOpen] = useState(false);
   const [isPro, setIsPro] = useState(false);
   const [fullExamCount, setFullExamCount] = useState(0);
@@ -22,11 +27,11 @@ export function HomeStudy() {
   const [anonFullUsed, setAnonFullUsed] = useState(false);
   const [gateReady, setGateReady] = useState(false);
   const [authReady, setAuthReady] = useState(false);
-  const [ready, setReady] = useState(false);
   const [resumeHref, setResumeHref] = useState<string | null>(null);
   const anonFullThisVisit = useRef(false);
 
   useEffect(() => {
+    setSavedKind(savedDiagnosticKind());
     try {
       setAnonFullUsed(localStorage.getItem(ANON_FULL_KEY) === "1");
     } catch {
@@ -39,7 +44,6 @@ export function HomeStudy() {
       }
     }
     setGateReady(true);
-    setReady(true);
     fetch("/api/auth/me/")
       .then((r) => r.json())
       .then((d) => {
@@ -69,43 +73,83 @@ export function HomeStudy() {
     if (!authReady || !gateReady || fullLocked) return;
     if (!isPro && !signedIn && !anonFullUsed) consumeAnonFull();
     setFullOpen(true);
-    setTab("full");
+  }
+
+  function leaveDiagnostic() {
+    setSavedKind(savedDiagnosticKind());
+    setView("menu");
   }
 
   return (
-    <section className="home-quiz" aria-label="Practice">
-      <div className="study-switch" role="tablist" aria-label="Study mode">
-        <button className={`chip ${tab === "practice" ? "on" : ""}`} type="button" role="tab" aria-selected={tab === "practice"} onClick={() => setTab("practice")}>
-          Practice
-        </button>
-        <button className={`chip ${tab === "full" ? "on" : ""}`} type="button" role="tab" aria-selected={tab === "full"} onClick={() => setTab("full")}>
-          Full Exam
-        </button>
-        <button className={`chip ${tab === "cards" ? "on" : ""}`} type="button" role="tab" aria-selected={tab === "cards"} onClick={() => setTab("cards")}>
-          Flashcards
-        </button>
-      </div>
-      {resumeHref ? (
+    <section className="home-quiz" aria-label="Study choices">
+      {resumeHref && view === "menu" ? (
         <p className="notice">
           <Link href={resumeHref}>Continue saved practice</Link>
         </p>
       ) : null}
-      <div hidden={tab !== "practice"}>
-        {ready ? (
-          <ExamRunner mode="quick" practice isPro={isPro} reportStart="answer" layout="compact" />
-        ) : (
-          <div className="card" aria-busy="true">
-            <p className="notice">Question 1 of 10</p>
-            <div className="skeleton skeleton-line" />
-            <div className="skeleton skeleton-line" />
-          </div>
-        )}
-      </div>
-      {tab === "full" && !fullOpen ? (
+      {view === "menu" ? (
+        <div className="home-choice">
+          {diagnosticReady ? (
+            <>
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={() => {
+                  setFresh(savedKind !== "active");
+                  setShowResult(false);
+                  setRunId((n) => n + 1);
+                  setView("diagnostic");
+                }}
+              >
+                {savedKind === "active" ? "Continue check" : "Check My Knowledge"}
+              </button>
+              <p className="home-choice-note">10 questions · No sign-up required</p>
+            </>
+          ) : null}
+          {diagnosticReady && savedKind === "complete" ? (
+            <button
+              className="home-text-btn"
+              type="button"
+              onClick={() => {
+                setFresh(false);
+                setShowResult(true);
+                setView("diagnostic");
+              }}
+            >
+              See last result
+            </button>
+          ) : null}
+          <button className="btn btn-ghost" type="button" onClick={() => setView("cards")}>
+            Study with Flashcards
+          </button>
+          <button className="btn btn-ghost" type="button" onClick={() => setView("full")}>
+            Take a Full Practice Exam
+          </button>
+          <p className="notice">
+            <Link href={paths.practice}>Practice 10 questions with instant feedback</Link>
+          </p>
+        </div>
+      ) : null}
+      {view === "diagnostic" ? (
+        <DiagnosticFlow
+          key={runId}
+          fresh={fresh}
+          showResult={showResult}
+          onOpenFull={() => setView("full")}
+          onOpenCards={() => setView("cards")}
+          onExit={leaveDiagnostic}
+          onRestart={() => {
+            setFresh(true);
+            setShowResult(false);
+            setRunId((n) => n + 1);
+          }}
+        />
+      ) : null}
+      {view === "full" && !fullOpen ? (
         <div className="card">
           <p>
             {examConfig.questionCount} questions, {examConfig.timeLimitMinutes} minutes, {examConfig.passingScorePercent}% practice target.
-            Explanations stay hidden until you submit.
+            Explanations stay hidden until you submit. Starting this uses your free full exam if you have one left.
           </p>
           {fullLocked ? (
             <>
@@ -117,14 +161,27 @@ export function HomeStudy() {
               Start full exam
             </button>
           )}
+          <button className="btn btn-ghost" type="button" onClick={() => setView("menu")}>
+            Back
+          </button>
         </div>
       ) : null}
       {fullOpen ? (
-        <div hidden={tab !== "full"}>
+        <div hidden={view !== "full"}>
           <ExamRunner mode="full" isPro={isPro} layout="compact" />
+          <button className="btn btn-ghost" type="button" onClick={() => setView("menu")}>
+            Back
+          </button>
         </div>
       ) : null}
-      {tab === "cards" ? <FlashcardsClient /> : null}
+      {view === "cards" ? (
+        <div>
+          <FlashcardsClient />
+          <button className="btn btn-ghost" type="button" onClick={() => setView("menu")}>
+            Back
+          </button>
+        </div>
+      ) : null}
     </section>
   );
 }

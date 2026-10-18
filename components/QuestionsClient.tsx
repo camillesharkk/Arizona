@@ -192,6 +192,11 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
           <p>{q.option_feedback[selected]}</p>
         </details>
       )}
+      {selected && selected !== q.correct_option ? (
+        <p>
+          <Link href={`${paths.study}#${q.topic}`}>Review this topic in the study guide</Link>
+        </p>
+      ) : null}
       <AccountInvite compact />
       <div className="sticky-nav">
         <div className="wrap row space">

@@ -529,8 +529,8 @@ details.explain summary { cursor: pointer; font-weight: 700; }
   .footer-grid { grid-template-columns: 1fr; }
   .nav-desktop, .header-cta, .header-auth-placeholder, .account-menu { display: none; }
   .menu-btn { display: inline-flex; }
-  .hero-cta-row { flex-direction: column; align-items: stretch; width: 100%; }
-  .hero-cta-row .btn { width: 100%; }
+  .hero-cta-row, .home-choice { flex-direction: column; align-items: stretch; width: 100%; }
+  .hero-cta-row .btn, .home-choice .btn { width: 100%; }
   .header-signin { font-size: 0.88rem; }
 }
 @media (max-width: 640px) {
@@ -553,6 +553,17 @@ details.explain summary { cursor: pointer; font-weight: 700; }
   .grid-4 { grid-template-columns: 1fr 1fr; }
 }
 
+.home-choice { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin: 16px 0 8px; }
+.home-choice .btn-primary { min-width: min(100%, 320px); }
+.home-choice-note { margin: -4px 0 4px; color: var(--muted); }
+.home-text-btn {
+  background: none; border: 0; padding: 0; color: var(--brand);
+  font: inherit; font-weight: 500; cursor: pointer; min-height: 44px;
+}
+.diagnostic-options { border: 0; margin: 16px 0; padding: 0; }
+.diagnostic-option { display: flex; gap: 10px; align-items: flex-start; }
+.diagnostic-option input { margin-top: 4px; }
+.diagnostic-option:focus-within { outline: 2px solid var(--brand); outline-offset: 2px; }
 .home-main { padding-top: 20px; }
 .home-main > h1 { margin-top: 4px; font-size: clamp(1.75rem, 3vw, 2.25rem); }
 .study-switch { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
@@ -566,4 +577,6 @@ details.explain summary { cursor: pointer; font-weight: 700; }
 .bar { display: none; }
 @media (max-width: 900px) {
   .bar { display: inline-flex; }
+  .home-choice { align-items: stretch; width: 100%; }
+  .home-choice .btn { width: 100%; }
 }

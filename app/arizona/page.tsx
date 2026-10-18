@@ -8,9 +8,11 @@ import { AccountStatusBanner } from "@/components/AccountStatusBanner";
 import { HomeStudy } from "@/components/HomeStudy";
 import { searchMatrix } from "@/lib/seo-guides";
 import { eligibleExamPool } from "@/lib/quiz";
+import { diagnosticReady } from "@/lib/diagnostic";
 
 const bank = eligibleExamPool();
 const freeCount = bank.filter((q) => q.is_free).length;
+const showDiagnostic = diagnosticReady("AZ");
 
 export const metadata = pageMeta({
   title: "Arizona Notary Exam 2026",
@@ -24,12 +26,22 @@ export default function ArizonaHub() {
     <main className="wrap home-main">
       <JsonLd data={quizJson()} />
       <AccountStatusBanner />
-      <h1>Arizona Notary Practice</h1>
+      <h1>Prepare for the Arizona Notary Exam</h1>
       <p className="lede">
-        Quick 10 uses {freeCount} free questions. One full exam of {examConfig.questionCount} stays unused until you start it.
-        Pro includes all {bank.length}.
+        {showDiagnostic
+          ? "Start with 10 questions to see what to review."
+          : "Study the guide, use flashcards, or take a practice exam."}
       </p>
-      <HomeStudy />
+      <HomeStudy diagnosticReady={showDiagnostic} />
+
+      <section className="home-next">
+        <h2>How practice works</h2>
+        <p>
+          The knowledge check, when it is offered, uses free published questions and does not use your one free full exam.
+          Quick 10 on the <Link href={paths.practice}>practice test</Link> shows the answer after each question.
+          A full practice exam is {examConfig.questionCount} questions. {freeCount} questions are free. Pro includes all {bank.length}.
+        </p>
+      </section>
 
       <section className="home-next">
         <h2>Keep going</h2>
