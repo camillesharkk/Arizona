@@ -8,11 +8,23 @@ import { AccountStatusBanner } from "@/components/AccountStatusBanner";
 import { HomeStudy } from "@/components/HomeStudy";
 import { searchMatrix } from "@/lib/seo-guides";
 import { eligibleExamPool } from "@/lib/quiz";
-import { diagnosticReady } from "@/lib/diagnostic";
+import { flashcards } from "@/data/flashcards";
+import { getSource } from "@/data/sources";
+import { FREE_FLASHCARD_PREVIEW } from "@/lib/product";
 
 const bank = eligibleExamPool();
 const freeCount = bank.filter((q) => q.is_free).length;
-const showDiagnostic = diagnosticReady("AZ");
+const previewCards = flashcards.slice(0, FREE_FLASHCARD_PREVIEW).map((card) => {
+  const source = getSource(card.source_id);
+  return {
+    id: card.id,
+    category: card.category,
+    front: card.front,
+    back: card.back,
+    source: source.reference,
+    sourceUrl: source.url,
+  };
+});
 
 export const metadata = pageMeta({
   title: "Arizona Notary Exam 2026",
@@ -23,28 +35,26 @@ export const metadata = pageMeta({
 
 export default function ArizonaHub() {
   return (
-    <main className="wrap home-main">
+    <main className="home-canvas">
+    <div className="wrap home-main">
       <JsonLd data={quizJson()} />
       <AccountStatusBanner />
-      <h1>Prepare for the Arizona Notary Exam</h1>
-      <p className="lede">
-        {showDiagnostic
-          ? "Start with 10 questions to see what to review."
-          : "Study the guide, use flashcards, or take a practice exam."}
-      </p>
-      <HomeStudy diagnosticReady={showDiagnostic} />
+      <h1>Arizona Notary Study &amp; Practice</h1>
+      <HomeStudy cards={previewCards} />
 
-      <section className="home-next">
-        <h2>How practice works</h2>
+      <section className="home-after">
+        <h2>Exam practice details</h2>
         <p>
-          The knowledge check, when it is offered, uses free published questions and does not use your one free full exam.
-          Quick 10 on the <Link href={paths.practice}>practice test</Link> shows the answer after each question.
-          A full practice exam is {examConfig.questionCount} questions. {freeCount} questions are free. Pro includes all {bank.length}.
+          Quick Practice above is 10 free questions. An explanation appears after you answer, and it does not use your one free full exam.
+          A full practice exam is {examConfig.questionCount} questions and starts only when you choose it.
+          {freeCount} questions are free. Pro includes all {bank.length}. The flashcards above are a free preview; the rest of that deck is part of Pro.
         </p>
-      </section>
-
-      <section className="home-next">
-        <h2>Keep going</h2>
+        <p className="notice">
+          Independent practice, not the Arizona Secretary of State.{" "}
+          <a href={examConfig.officialExamUrl}>Check the official notary page</a> before you apply.
+        </p>
+        <p className="notice">{examConfig.disclaimer}</p>
+        <h2>Keep studying</h2>
         <ul className="home-links">
           <li><Link href={paths.study}>Study guide</Link></li>
           <li><Link href={paths.examPrep}>Exam format and registration</Link></li>
@@ -53,14 +63,6 @@ export default function ArizonaHub() {
           <li><Link href={paths.laws}>2026 law updates</Link></li>
           <li><Link href={paths.pricing}>Free and Pro access</Link></li>
         </ul>
-        <p className="notice">
-          Independent practice, not the Arizona Secretary of State.{" "}
-          <a href={examConfig.officialExamUrl}>Check the official notary page</a> before you apply.
-        </p>
-        <p className="notice">{examConfig.disclaimer}</p>
-      </section>
-
-      <section className="home-next">
         <h2>Practice by topic</h2>
         <ul className="home-links">
           {topics.map((topic) => (
@@ -69,9 +71,6 @@ export default function ArizonaHub() {
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className="home-next">
         <h2>Guides</h2>
         <ul className="home-links">
           {searchMatrix.map((item) => (
@@ -83,6 +82,7 @@ export default function ArizonaHub() {
       </section>
 
       <HomeProCta />
+    </div>
     </main>
   );
 }

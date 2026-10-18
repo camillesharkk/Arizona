@@ -399,7 +399,7 @@ export function ExamRunner({
         {source.title} · {q.source_reference} · Last verified {q.last_verified_at}
       </p>
       <div className={layout === "compact" ? "home-exam-nav" : "sticky-nav"}>
-        <div className="wrap row space">
+        <div className={layout === "compact" ? "row space" : "wrap row space"}>
           <button className="btn btn-ghost" type="button" disabled={idx === 0} onClick={() => goTo(idx - 1)}>
             Previous
           </button>

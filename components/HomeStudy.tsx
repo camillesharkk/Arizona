@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
-import { FlashcardsClient } from "@/components/FlashcardsClient";
-import { DiagnosticFlow, savedDiagnosticKind } from "@/components/DiagnosticFlow";
 import { examConfig } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 import { FREE_FULL_EXAMS } from "@/lib/product";
@@ -12,26 +10,32 @@ import { loadProgress } from "@/lib/storage";
 
 const ANON_FULL_KEY = "az-anon-full-started";
 
-type View = "menu" | "diagnostic" | "full" | "cards";
+export type StudyPreviewCard = {
+  id: string;
+  category: string;
+  front: string;
+  back: string;
+  source: string;
+  sourceUrl: string;
+};
 
-export function HomeStudy({ diagnosticReady }: { diagnosticReady: boolean }) {
-  const [view, setView] = useState<View>("menu");
-  const [fresh, setFresh] = useState(true);
-  const [showResult, setShowResult] = useState(false);
-  const [runId, setRunId] = useState(0);
-  const [savedKind, setSavedKind] = useState<"none" | "active" | "complete">("none");
-  const [fullOpen, setFullOpen] = useState(false);
+export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
+  const [cardIndex, setCardIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [ready, setReady] = useState(false);
   const [isPro, setIsPro] = useState(false);
   const [fullExamCount, setFullExamCount] = useState(0);
   const [signedIn, setSignedIn] = useState(false);
   const [anonFullUsed, setAnonFullUsed] = useState(false);
   const [gateReady, setGateReady] = useState(false);
   const [authReady, setAuthReady] = useState(false);
+  const [fullGate, setFullGate] = useState(false);
+  const [fullOpen, setFullOpen] = useState(false);
   const [resumeHref, setResumeHref] = useState<string | null>(null);
   const anonFullThisVisit = useRef(false);
+  const card = cards[Math.min(cardIndex, Math.max(cards.length - 1, 0))];
 
   useEffect(() => {
-    setSavedKind(savedDiagnosticKind());
     try {
       setAnonFullUsed(localStorage.getItem(ANON_FULL_KEY) === "1");
     } catch {
@@ -44,6 +48,7 @@ export function HomeStudy({ diagnosticReady }: { diagnosticReady: boolean }) {
       }
     }
     setGateReady(true);
+    setReady(true);
     fetch("/api/auth/me/")
       .then((r) => r.json())
       .then((d) => {
@@ -75,113 +80,120 @@ export function HomeStudy({ diagnosticReady }: { diagnosticReady: boolean }) {
     setFullOpen(true);
   }
 
-  function leaveDiagnostic() {
-    setSavedKind(savedDiagnosticKind());
-    setView("menu");
+  function moveCard(next: number) {
+    setCardIndex(next);
+    setFlipped(false);
   }
 
   return (
-    <section className="home-quiz" aria-label="Study choices">
-      {resumeHref && view === "menu" ? (
-        <p className="notice">
-          <Link href={resumeHref}>Continue saved practice</Link>
-        </p>
-      ) : null}
-      {view === "menu" ? (
-        <div className="home-choice">
-          {diagnosticReady ? (
-            <>
+    <div className="study-stack">
+      <section
+        className="study-module"
+        aria-label="Flashcards"
+        onKeyDown={(event) => {
+          if (event.key === "ArrowRight" && cardIndex < cards.length - 1) {
+            event.preventDefault();
+            moveCard(cardIndex + 1);
+          }
+          if (event.key === "ArrowLeft" && cardIndex > 0) {
+            event.preventDefault();
+            moveCard(cardIndex - 1);
+          }
+        }}
+      >
+        {card ? (
+          <>
+            <div className="study-module-bar">
+              <h2>Flashcards</h2>
+              <span className="study-category">{card.category}</span>
+              <span className="badge">Free preview</span>
+              <Link href={paths.flashcards}>Full deck</Link>
+            </div>
+            <div className="study-face" onClick={() => setFlipped((open) => !open)}>
+              <p className="kicker">{flipped ? "Answer" : "Question"}</p>
+              <h3>{flipped ? card.back : card.front}</h3>
+              {flipped ? (
+                <p className="notice">
+                  Official basis:{" "}
+                  <a href={card.sourceUrl} onClick={(event) => event.stopPropagation()}>
+                    {card.source}
+                  </a>
+                </p>
+              ) : null}
               <button
-                className="btn btn-primary"
+                className="btn btn-ghost study-reveal"
                 type="button"
-                onClick={() => {
-                  setFresh(savedKind !== "active");
-                  setShowResult(false);
-                  setRunId((n) => n + 1);
-                  setView("diagnostic");
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setFlipped((open) => !open);
                 }}
               >
-                {savedKind === "active" ? "Continue check" : "Check My Knowledge"}
+                {flipped ? "Show question" : "Show answer"}
               </button>
-              <p className="home-choice-note">10 questions · No sign-up required</p>
-            </>
-          ) : null}
-          {diagnosticReady && savedKind === "complete" ? (
-            <button
-              className="home-text-btn"
-              type="button"
-              onClick={() => {
-                setFresh(false);
-                setShowResult(true);
-                setView("diagnostic");
-              }}
-            >
-              See last result
+            </div>
+            <div className="study-pager">
+              <button className="btn btn-ghost" type="button" onClick={() => moveCard(cardIndex - 1)} disabled={cardIndex === 0}>
+                Previous
+              </button>
+              <span>
+                {cardIndex + 1} / {cards.length}
+              </span>
+              <button
+                className="btn btn-ghost"
+                type="button"
+                onClick={() => moveCard(cardIndex + 1)}
+                disabled={cardIndex >= cards.length - 1}
+              >
+                Next
+              </button>
+            </div>
+          </>
+        ) : (
+          <p>No free flashcards are available.</p>
+        )}
+      </section>
+
+      <section className="study-module" aria-label="Quick Practice">
+        <div className="study-module-bar">
+          <h2>Quick Practice</h2>
+          {resumeHref ? <Link href={resumeHref}>Continue saved practice</Link> : null}
+        </div>
+        {ready ? (
+          <ExamRunner mode="quick" practice isPro={isPro} reportStart="answer" layout="compact" />
+        ) : (
+          <div className="card" aria-busy="true">
+            <p className="notice">Question 1 of 10</p>
+            <div className="skeleton skeleton-line" />
+            <div className="skeleton skeleton-line" />
+          </div>
+        )}
+        <div className="study-secondary">
+          {!fullGate && !fullOpen ? (
+            <button className="home-text-btn" type="button" onClick={() => setFullGate(true)}>
+              Take a full practice exam
             </button>
           ) : null}
-          <button className="btn btn-ghost" type="button" onClick={() => setView("cards")}>
-            Study with Flashcards
-          </button>
-          <button className="btn btn-ghost" type="button" onClick={() => setView("full")}>
-            Take a Full Practice Exam
-          </button>
-          <p className="notice">
-            <Link href={paths.practice}>Practice 10 questions with instant feedback</Link>
-          </p>
+          {fullGate && !fullOpen ? (
+            <div className="card">
+              <p>
+                {examConfig.questionCount} questions, {examConfig.timeLimitMinutes} minutes. Explanations stay hidden until you submit.
+                Starting this uses your free full exam if you have one left.
+              </p>
+              {fullLocked ? (
+                <>
+                  <p>This browser or account already used its free full exam. Another full exam is part of Pro.</p>
+                  <Link className="btn btn-ghost" href={paths.pricing}>See Pro access</Link>
+                </>
+              ) : (
+                <button className="btn btn-ghost" type="button" onClick={startFull} disabled={!authReady || !gateReady}>
+                  Start full exam
+                </button>
+              )}
+            </div>
+          ) : null}
+          {fullOpen ? <ExamRunner mode="full" isPro={isPro} layout="compact" /> : null}
         </div>
-      ) : null}
-      {view === "diagnostic" ? (
-        <DiagnosticFlow
-          key={runId}
-          fresh={fresh}
-          showResult={showResult}
-          onOpenFull={() => setView("full")}
-          onOpenCards={() => setView("cards")}
-          onExit={leaveDiagnostic}
-          onRestart={() => {
-            setFresh(true);
-            setShowResult(false);
-            setRunId((n) => n + 1);
-          }}
-        />
-      ) : null}
-      {view === "full" && !fullOpen ? (
-        <div className="card">
-          <p>
-            {examConfig.questionCount} questions, {examConfig.timeLimitMinutes} minutes, {examConfig.passingScorePercent}% practice target.
-            Explanations stay hidden until you submit. Starting this uses your free full exam if you have one left.
-          </p>
-          {fullLocked ? (
-            <>
-              <p>This browser or account already used its free full exam. Another full exam is part of Pro.</p>
-              <Link className="btn btn-primary" href={paths.pricing}>See Pro access</Link>
-            </>
-          ) : (
-            <button className="btn btn-primary" type="button" onClick={startFull} disabled={!authReady || !gateReady}>
-              Start full exam
-            </button>
-          )}
-          <button className="btn btn-ghost" type="button" onClick={() => setView("menu")}>
-            Back
-          </button>
-        </div>
-      ) : null}
-      {fullOpen ? (
-        <div hidden={view !== "full"}>
-          <ExamRunner mode="full" isPro={isPro} layout="compact" />
-          <button className="btn btn-ghost" type="button" onClick={() => setView("menu")}>
-            Back
-          </button>
-        </div>
-      ) : null}
-      {view === "cards" ? (
-        <div>
-          <FlashcardsClient />
-          <button className="btn btn-ghost" type="button" onClick={() => setView("menu")}>
-            Back
-          </button>
-        </div>
-      ) : null}
-    </section>
+      </section>
+    </div>
   );
 }
