@@ -64,6 +64,7 @@ export function SiteHeader() {
     window.location.href = paths.home;
   }
 
+  const onHome = pathname === paths.home || pathname === "/";
   const study = [
     { href: paths.practice, label: "Practice Test" },
     { href: paths.questions, label: "Questions" },
@@ -96,9 +97,6 @@ export function SiteHeader() {
           </Link>
         </div>
         <nav className="nav nav-desktop" aria-label="Primary">
-          <Link href={paths.home} className={active(pathname, paths.home) ? "active" : ""}>
-            Arizona Exam
-          </Link>
           <Link href={paths.practice} className={active(pathname, paths.practice) ? "active" : ""}>
             Practice
           </Link>
@@ -108,9 +106,6 @@ export function SiteHeader() {
           <Link href={paths.laws} className={active(pathname, paths.laws) ? "active" : ""}>
             Laws
           </Link>
-          <Link href={paths.become} className={active(pathname, paths.become) ? "active" : ""}>
-            Become a Notary
-          </Link>
         </nav>
         <div className="header-right">
           {authStatus === "signed-out" && (
@@ -119,20 +114,26 @@ export function SiteHeader() {
             </Link>
           )}
           {authStatus === "loading" && <span className="header-auth-placeholder" aria-hidden="true" />}
-          <Link className="btn btn-primary header-cta" href={paths.practice}>
-            Start Free Test
-          </Link>
+          {!onHome && (
+            <Link className="btn btn-primary header-cta" href={paths.practice}>
+              Start Free Test
+            </Link>
+          )}
           {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} />}
-          <Link className="btn btn-primary bar" href={paths.practice}>
-            Practice Test
-          </Link>
+          {!onHome && (
+            <Link className="btn btn-primary bar" href={paths.practice}>
+              Practice Test
+            </Link>
+          )}
         </div>
       </div>
       {open && <div className="nav-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />}
       <nav id="mobile-nav" className={open ? "nav-drawer open" : "nav-drawer"} aria-label="Mobile">
-        <Link className="btn btn-primary btn-wide drawer-start" href={paths.practice}>
-          Practice Test
-        </Link>
+        {onHome ? null : (
+          <Link className="btn btn-primary btn-wide drawer-start" href={paths.practice}>
+            Practice Test
+          </Link>
+        )}
         {authStatus === "signed-in" && me ? (
           <div className="drawer-account">
             <p className="drawer-account-name">{me.name?.trim() || me.email}</p>

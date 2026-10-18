@@ -29,14 +29,21 @@ export function ExamRunner({
   practice,
   preset,
   isPro = false,
+  reportStart = "mount",
+  layout = "page",
 }: {
   mode: Mode;
   practice?: boolean;
   preset?: Question[];
   isPro?: boolean;
+  /** Homepage can show a question before a real attempt begins. */
+  reportStart?: "mount" | "answer";
+  layout?: "page" | "compact";
 }) {
   const sessionSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
+  const poolLocked = useRef(false);
+  const [poolIsPro, setPoolIsPro] = useState(isPro);
   const count = mode === "quick" ? 10 : mode === "full" ? examConfig.questionCount : 10;
   const questions = useMemo(() => {
     const present = (list: Question[]) => {
@@ -45,7 +52,7 @@ export function ExamRunner({
       return out;
     };
     if (mode === "quick") {
-      const picked = buildQuickExam({ isPro, seed: sessionSeed, stale: preset });
+      const picked = buildQuickExam({ isPro: reportStart === "answer" ? poolIsPro : isPro, seed: sessionSeed, stale: preset });
       if (picked.length !== 10) {
         console.error("[exam] Quick exam requires 10 questions; pool returned", picked.length);
         return [];
@@ -69,7 +76,12 @@ export function ExamRunner({
       return [];
     }
     return present(pickExamSet(count, { seed: sessionSeed }));
-  }, [count, mode, preset, isPro, sessionSeed]);
+  }, [count, mode, preset, isPro, poolIsPro, reportStart, sessionSeed]);
+
+  useEffect(() => {
+    if (reportStart !== "answer" || poolLocked.current) return;
+    setPoolIsPro(isPro);
+  }, [isPro, reportStart]);
 
   const timed = mode === "full" && !practice;
   const [idx, setIdx] = useState(0);
@@ -84,16 +96,22 @@ export function ExamRunner({
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
-  useEffect(() => {
+  function reportExamStart() {
     if (startReported.current || !questions.length) return;
     startReported.current = true;
+    poolLocked.current = true;
     startedAt.current = Date.now();
     const plan = isPro ? "pro" : "free";
     const start = examStartParams({ mode, practice, questionCount: questions.length, plan });
     trackAnalyticsEvent("exam_start", start);
     if (start.mode === "quick10") trackEvent("quick10_start");
     if (start.mode === "full45") trackEvent("full45_start", { plan });
-  }, [questions.length, mode, isPro, practice]);
+  }
+
+  useEffect(() => {
+    if (reportStart !== "mount") return;
+    reportExamStart();
+  }, [questions.length, mode, isPro, practice, reportStart]);
 
   useEffect(() => {
     if (!timed || done) return;
@@ -154,6 +172,7 @@ export function ExamRunner({
   }
 
   function choose(letter: "A" | "B" | "C" | "D") {
+    if (reportStart === "answer") reportExamStart();
     if (!practice && timed && done) return;
     if (practice) {
       if (answers[q.question_id] || choiceLock.current === q.question_id) return;
@@ -182,6 +201,8 @@ export function ExamRunner({
   }
 
   function finish() {
+    if (reportStart === "answer" && Object.keys(answers).length === 0) return;
+    if (reportStart === "answer") reportExamStart();
     cancelAutoAdvance();
     setDone(true);
     const results = questions.map((item) => ({
@@ -299,7 +320,7 @@ export function ExamRunner({
           </div>
           <AccountInvite />
           {mode === "weak" && !isPro && (
-            <div className="card" style={{ marginTop: 16, background: "#fff8ef" }}>
+            <div className="card" style={{ marginTop: 16 }}>
               <strong>Turn your weak topics into passing scores.</strong>
               <p>Know exactly what to study next with weak-area training, smart review, and exam readiness.</p>
               <Link className="btn btn-primary" href={paths.pricing}>
@@ -329,7 +350,7 @@ export function ExamRunner({
   const practiceLocked = Boolean(practice && selected);
 
   return (
-    <div className="exam-pad">
+    <div className={layout === "compact" ? "home-exam" : "exam-pad"}>
       <div className="row space">
         <span className="notice">
           Question {idx + 1} of {questions.length}
@@ -377,7 +398,7 @@ export function ExamRunner({
       <p className="notice">
         {source.title} · {q.source_reference} · Last verified {q.last_verified_at}
       </p>
-      <div className="sticky-nav">
+      <div className={layout === "compact" ? "home-exam-nav" : "sticky-nav"}>
         <div className="wrap row space">
           <button className="btn btn-ghost" type="button" disabled={idx === 0} onClick={() => goTo(idx - 1)}>
             Previous

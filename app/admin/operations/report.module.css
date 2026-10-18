@@ -2,7 +2,7 @@
   max-width: 1080px;
   margin: 0 auto;
   padding: 20px 16px 64px;
-  color: #1c1917;
+  color: #1d1d1f;
 }
 .page h1 {
   margin: 0;
@@ -19,7 +19,7 @@
 .period,
 .fine {
   margin: 4px 0 0;
-  color: #57534e;
+  color: #6e6e73;
   font-size: 0.82rem;
 }
 .chips {
@@ -36,8 +36,9 @@
 .card,
 .brief,
 .panel {
-  border: 1px solid #e7e5e4;
-  border-radius: 8px;
+  border: 1px solid #d2d2d7;
+  border-radius: 12px;
+  background: #ffffff;
   padding: 12px;
 }
 .card span,
@@ -45,7 +46,7 @@
 .fine,
 .source {
   display: block;
-  color: #78716c;
+  color: #6e6e73;
   font-size: 0.78rem;
 }
 .card strong {
@@ -73,11 +74,11 @@
 }
 .nav a,
 .links a {
-  color: #1d4ed8;
+  color: #0071e3;
 }
 .current {
   font-weight: 650;
-  color: #1c1917;
+  color: #1d1d1f;
 }
 .bars {
   list-style: none;
@@ -95,13 +96,13 @@
 .trend {
   width: 100%;
   height: 28px;
-  background: #f5f5f4;
+  background: #f5f5f7;
   border-radius: 4px;
 }
 .barFill,
 .trendLine {
-  fill: #1d4ed8;
-  stroke: #1d4ed8;
+  fill: #0071e3;
+  stroke: #0071e3;
   stroke-width: 1.5;
 }
 .trendLine {
@@ -119,7 +120,7 @@
   flex-wrap: wrap;
   gap: 8px 14px;
   margin-top: 6px;
-  color: #57534e;
+  color: #6e6e73;
   font-size: 0.82rem;
 }
 .compare {
@@ -129,7 +130,7 @@
   margin-top: 8px;
 }
 .compare div {
-  background: #fafaf9;
+  background: #f5f5f7;
   padding: 8px;
 }
 .section {
@@ -137,16 +138,31 @@
 }
 .metric {
   padding: 10px 0;
-  border-bottom: 1px solid #f5f5f4;
+  border-bottom: 1px solid #d2d2d7;
 }
 .metric p {
   margin: 4px 0;
 }
 .warning {
-  color: #9a3412;
+  color: #9a4d00;
 }
 .page button {
-  padding: 6px 10px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid #d2d2d7;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #1d1d1f;
+  font: inherit;
+  cursor: pointer;
+}
+.page button:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 2px;
+}
+.page button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 .page details {
   margin-top: 8px;
