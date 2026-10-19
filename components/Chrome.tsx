@@ -198,27 +198,27 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="footer">
-      <div className="wrap footer-grid">
-        <div>
-          <strong>Arizona Exam</strong>
-        </div>
-        <div>
-          <strong>Study</strong>
-          <p><Link href={paths.practice}>Practice Test</Link></p>
-          <p><Link href={paths.questions}>Questions</Link></p>
-          <p><Link href={paths.study}>Study Guide</Link></p>
-          <p><Link href={paths.guidesIndex}>Exam guides</Link></p>
-          <p><Link href={paths.passingScore}>Passing score</Link></p>
-          <p><Link href={paths.mistakes}>Wrong Answers</Link></p>
-        </div>
-        <div>
-          <strong>Company</strong>
-          <p><Link href={paths.privacy}>Privacy</Link></p>
-          <p><Link href={paths.terms}>Terms</Link></p>
-          <p><Link href={paths.refund}>Refund Policy</Link></p>
-          <p><Link href={paths.affiliate}>Affiliate Disclosure</Link></p>
-          <p><Link href={paths.disclaimer}>Disclaimer</Link></p>
-          <p><Link href={paths.contact}>Contact</Link></p>
+      <div className="wrap">
+        <strong className="footer-brand">Arizona Exam</strong>
+        <div className="footer-grid">
+          <div>
+            <strong>Study</strong>
+            <p><Link href={paths.practice}>Practice Test</Link></p>
+            <p><Link href={paths.questions}>Questions</Link></p>
+            <p><Link href={paths.study}>Study Guide</Link></p>
+            <p><Link href={paths.guidesIndex}>Exam guides</Link></p>
+            <p><Link href={paths.passingScore}>Passing score</Link></p>
+            <p><Link href={paths.mistakes}>Wrong Answers</Link></p>
+          </div>
+          <div>
+            <strong>Company</strong>
+            <p><Link href={paths.privacy}>Privacy</Link></p>
+            <p><Link href={paths.terms}>Terms</Link></p>
+            <p><Link href={paths.refund}>Refund Policy</Link></p>
+            <p><Link href={paths.affiliate}>Affiliate Disclosure</Link></p>
+            <p><Link href={paths.disclaimer}>Disclaimer</Link></p>
+            <p><Link href={paths.contact}>Contact</Link></p>
+          </div>
         </div>
       </div>
     </footer>

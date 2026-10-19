@@ -209,10 +209,22 @@ h2 { font-size: 1.5rem; }
 .badge-pro { background: var(--brand-soft); color: var(--brand-dark); }
 
 .footer {
-  margin-top: 56px; padding: 28px 0 40px;
+  margin-top: 40px; padding: 20px 0 28px;
   border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem;
 }
-.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; }
+.footer-brand { display: block; margin: 0 0 14px; }
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 32px;
+  align-items: start;
+}
+.footer-grid strong { display: block; margin: 0 0 4px; }
+.footer-grid p { margin: 0; }
+.footer-grid a { display: inline-block; padding: 7px 0; line-height: 1.4; }
+@media (max-width: 240px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
 
 .q-options { display: grid; gap: 10px; margin: 16px 0; }
 .q-option {
@@ -530,7 +542,6 @@ h2 { font-size: 1.5rem; }
 
 @media (max-width: 900px) {
   .grid-4, .grid-3 { grid-template-columns: 1fr 1fr; }
-  .footer-grid { grid-template-columns: 1fr; }
   .nav-desktop, .header-cta, .header-auth-placeholder, .account-menu { display: none; }
   .menu-btn { display: inline-flex; }
   .hero-cta-row, .home-choice { flex-direction: column; align-items: stretch; width: 100%; }
