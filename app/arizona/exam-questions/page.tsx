@@ -3,7 +3,8 @@ import { QuestionsClient } from "@/components/QuestionsClient";
 import { QuestionPageCtas } from "@/components/QuestionPageCtas";
 import { PrepCtas } from "@/components/PrepCtas";
 import { HomeProCta } from "@/components/HomeProCta";
-import { examConfig } from "@/data/exam-config";
+import { examConfig, officialExam } from "@/data/exam-config";
+import { AnswerExplain } from "@/components/AnswerExplain";
 import { getSource } from "@/data/sources";
 import { eligibleExamPool } from "@/lib/quiz";
 import { pageMeta } from "@/lib/seo";
@@ -33,9 +34,9 @@ export default function ExamQuestionsPage() {
       </p>
       <p>
         This page uses the practice bank: {pool.length} questions, of which {free.length} are free. Pro can use all {pool.length}.
-        Topics with no free questions stay in the Pro bank. A.R.S. § 41-270 allows the Secretary of State to require an exam; the
-        statute does not set the official question count, and this site has not re-read that count from the SOS page. Each Full 45
-        here draws {examConfig.questionCount} practice questions. These are not official exam questions. Take a{" "}
+        Topics with no free questions stay in the Pro bank. A.R.S. § 41-270 allows the Secretary of State to require an exam and does
+        not set the question count. The SOS notice checked on {officialExam.checkedOn} says the official exam has {officialExam.questionCount} questions.
+        Each Full 45 here draws {examConfig.questionCount} practice questions from this bank. These are not official exam questions. Take a{" "}
         <Link href={`${paths.practice}?mode=quick`}>free 10-question test</Link> or a{" "}
         <Link href={`${paths.practice}?mode=full`}>timed Full 45</Link>.
       </p>
@@ -54,8 +55,7 @@ export default function ExamQuestionsPage() {
               <h3>{i + 1}. {q.question_text}</h3>
               <ol type="A">{Object.entries(options).map(([letter, text]) => <li key={letter}>{text}</li>)}</ol>
               <p><strong>Answer: {q.correct_option}. {options[q.correct_option]}</strong></p>
-              <p>{q.explanation}</p>
-              <p>Official basis: <a href={getSource(q.source_id).url}>{q.source_reference}</a></p>
+              <AnswerExplain explanation={q.explanation} sourceUrl={getSource(q.source_id).url} sourceLabel={q.source_reference} />
               <Link href={paths.topic(q.topic)}>More questions on this topic</Link>
             </article>
           );

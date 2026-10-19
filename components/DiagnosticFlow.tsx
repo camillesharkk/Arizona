@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { chapters } from "@/data/study-guide";
 import { findSource } from "@/data/sources";
+import { AnswerExplain } from "@/components/AnswerExplain";
 import {
   arizonaDiagnostic,
   bandAction,
@@ -408,7 +409,6 @@ function QuestionReview({ q, index, choice }: { q: Question; index: number; choi
   const study = chapterHref(q.topic);
   const options = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
   const status = !choice ? "Not answered" : choice === "unsure" ? "Unsure" : correct ? "Correct" : "Not correct";
-  const missingFeedback = (["A", "B", "C", "D"] as const).filter((letter) => letter !== q.correct_option && !q.option_feedback[letter]?.trim());
 
   return (
     <details className="card" style={{ marginTop: 12 }}>
@@ -428,27 +428,13 @@ function QuestionReview({ q, index, choice }: { q: Question; index: number; choi
       ) : (
         <p>Your answer: {choice === "unsure" ? "I'm not sure" : "Not answered"}</p>
       )}
-      <p>{q.explanation.trim() ? q.explanation : "Explanation not on file."}</p>
-      {q.option_feedback[q.correct_option]?.trim() ? <p>Why this is correct: {q.option_feedback[q.correct_option]}</p> : null}
-      {(["A", "B", "C", "D"] as const)
-        .filter((letter) => letter !== q.correct_option && q.option_feedback[letter]?.trim())
-        .map((letter) => (
-          <p key={letter}>
-            Why {letter} is wrong: {q.option_feedback[letter]}
-          </p>
-        ))}
-      {missingFeedback.length ? <p>Explanation for {missingFeedback.join(", ")} is not on file.</p> : null}
-      {source ? (
-        <p>
-          Official basis:{" "}
-          <a href={source.url}>
-            {source.title}
-          </a>{" "}
-          · {q.source_reference}
-        </p>
-      ) : (
-        <p>Official source not on file.{q.source_reference ? ` Cited reference: ${q.source_reference}` : ""}</p>
-      )}
+      <AnswerExplain
+        explanation={q.explanation}
+        wrongNote={choice && choice !== "unsure" && choice !== q.correct_option ? q.option_feedback[choice] : undefined}
+        sourceUrl={source?.url}
+        sourceLabel={source ? `${source.title} · ${q.source_reference}` : q.source_reference}
+      />
+      {!source ? <p>Official source not on file.{q.source_reference ? ` Cited reference: ${q.source_reference}` : ""}</p> : null}
       {study ? <p><Link href={study}>Review this chapter</Link></p> : <p>No study chapter is mapped for this topic.</p>}
     </details>
   );

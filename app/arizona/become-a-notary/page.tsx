@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { examConfig } from "@/data/exam-config";
+import { examConfig, officialExam } from "@/data/exam-config";
 import { PrepCtas } from "@/components/PrepCtas";
 import { HomeProCta } from "@/components/HomeProCta";
 import { pageMeta } from "@/lib/seo";
@@ -24,7 +24,7 @@ const steps = [
   },
   {
     t: "Exam",
-    d: "Pass the official exam if the Secretary of State requires it under A.R.S. § 41-270. That statute does not set the question count, time limit, or cut score, and this page does not treat those figures as re-checked on the SOS site. Practice here first.",
+    d: `The SOS notice checked on ${officialExam.checkedOn} requires the exam for new and renewing notaries. It lists ${officialExam.questionCount} questions, ${officialExam.timeLimitMinutes} minutes, and ${officialExam.passingScorePercent}% to pass, administered by ${officialExam.provider} for $${officialExam.examFeeUsd} per proctored exam. A.R.S. § 41-270 does not set those figures. Practice on this site is separate.`,
   },
   {
     t: "Bond",
@@ -52,17 +52,30 @@ export default function BecomePage() {
         <h2>Exam and commission requirements</h2>
         <p>
           A.R.S. § 41-269(B) is the eligibility list: at least 18, a U.S. citizen or permanent legal resident, an
-          Arizona resident for income-tax purposes who claims Arizona as the primary residence, able to read and write
-          English, not disqualified under § 41-271, passage of the § 41-270 examination if the Secretary of State
-          requires it, and an SOS-approved manual kept as a reference. § 41-270 does not state how many questions are
-          on the exam or what percent passes. Before the commission is issued, § 41-269(C) and (D) still require the
-          oath and a $5,000 surety bond.
+          Arizona resident for income-tax purposes who claims Arizona as the primary residence, able to read, write and
+          understand English, not disqualified under § 41-271, passage of the § 41-270 examination if the Secretary of State
+          requires it, and an SOS-approved manual kept as a reference. The statute does not set the question count or the
+          passing score. The SOS exam notice checked on {officialExam.checkedOn} does: {officialExam.questionCount} questions,{" "}
+          {officialExam.timeLimitMinutes} minutes, {officialExam.passingScorePercent}%, {officialExam.provider}, ${officialExam.examFeeUsd} per
+          proctored exam, {officialExam.attemptsBeforeWait} attempts, then a {officialExam.waitDaysAfterLimit}-day wait. This site’s Full{" "}
+          {examConfig.questionCount} copies those counts for practice only.
+        </p>
+        <p>
+          Before the commission is issued, § 41-269(C) and (D) still require the oath and a ${officialExam.bondUsd} surety
+          bond. The SOS filing page lists a ${officialExam.applicationFeeUsd} standard application fee. That fee, the ${officialExam.examFeeUsd} exam
+          charge, and the bond amount are three different things. The Secretary of State
+          commissions notaries. {officialExam.provider} runs the proctored exam in the current notice. A surety company
+          issues the bond. The notice does not name a required third-party training school.
         </p>
         <p className="notice">
-          Official source: <a href="https://www.azleg.gov/ars/41/00269.htm">A.R.S. § 41-269</a>
-          {" and "}
-          <a href="https://www.azleg.gov/ars/41/00270.htm">A.R.S. § 41-270</a>. Statutes checked 2026-09-29. The SOS
-          exam page did not load that day.
+          Official source: <a href={officialExam.commissionStatuteUrl}>A.R.S. § 41-269</a>
+          {", "}
+          <a href={officialExam.statuteUrl}>A.R.S. § 41-270</a>
+          {", "}
+          <a href={officialExam.noticeUrl}>SOS exam notice</a>
+          {", and "}
+          <a href={officialExam.filingUrl}>SOS filing page</a>. Checked {officialExam.checkedOn}. The filing page still
+          also cites A.R.S. § 41-312(E) in one block; the qualification text used here is the current § 41-269(B).
         </p>
         <p>
           <Link href={`${paths.practice}?mode=quick`}>Try 10 free questions</Link>

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { examConfig } from "@/data/exam-config";
+import { examConfig, officialExam } from "@/data/exam-config";
+import { AnswerExplain } from "@/components/AnswerExplain";
 import { PracticeLaunch } from "@/components/PracticeLaunch";
 import { paths } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
@@ -50,10 +51,10 @@ export default function PracticeTestPage() {
           answer explanation for every question. Missed topics link back to the free study guide.
         </p>
         <p>
-          The simulation uses an {examConfig.passingScorePercent}% practice target ({Math.ceil(examConfig.questionCount * examConfig.passingScorePercent / 100)} of {examConfig.questionCount}).
-          A practice pass is not a commission or an official exam result. Older SOS notices described an on-screen manual and no
-          physical manual. That format was not re-read from the SOS page on 2026-09-29. Check the{" "}
-          <a href={examConfig.officialExamUrl}>Arizona SOS exam instructions</a> before booking.
+          This simulation uses an {examConfig.passingScorePercent}% practice target ({Math.ceil(examConfig.questionCount * examConfig.passingScorePercent / 100)} of {examConfig.questionCount}).
+          The SOS notice checked on {officialExam.checkedOn} also lists {officialExam.questionCount} questions, {officialExam.timeLimitMinutes} minutes, and {officialExam.passingScorePercent}%, with the manual built into the exam and no physical copy.
+          A practice pass is not that exam and not a commission. Check the{" "}
+          <a href={examConfig.officialExamUrl}>Arizona SOS exam notice</a> before booking.
         </p>
       </section>
       <section aria-labelledby="sample-questions">
@@ -66,8 +67,7 @@ export default function PracticeTestPage() {
               <h3>{i + 1}. {q.question_text}</h3>
               <ol type="A">{Object.entries(options).map(([letter, text]) => <li key={letter}>{text}</li>)}</ol>
               <p><strong>Answer: {q.correct_option}. {options[q.correct_option]}</strong></p>
-              <p>{q.explanation}</p>
-              <p>Official basis: <a href={getSource(q.source_id).url}>{q.source_reference}</a></p>
+              <AnswerExplain explanation={q.explanation} sourceUrl={getSource(q.source_id).url} sourceLabel={q.source_reference} />
               <Link href={paths.topic(q.topic)}>Practice more questions on this topic</Link>
             </article>
           );

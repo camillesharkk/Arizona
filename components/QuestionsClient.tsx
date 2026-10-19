@@ -20,7 +20,6 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, "A" | "B" | "C" | "D">>({});
   const [progress, setProgress] = useState(() => loadProgress());
-  const [explainOpen, setExplainOpen] = useState(false);
   const [resumed, setResumed] = useState(false);
   const [isPro, setIsPro] = useState(false);
   const sessionSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
@@ -176,7 +175,6 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l) }),
           }).catch(() => undefined);
-          setExplainOpen(true);
           if (l === q.correct_option) {
             scheduleAfterCorrect(!lastQuestion, () => setIdx((i) => Math.min(pool.length - 1, i + 1)));
           }
@@ -186,12 +184,6 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
         isPro={isPro}
       />
       {selected && <TutorPanel q={q} selected={originalLetter(selected)} />}
-      {selected && (
-        <details className="explain" open={explainOpen}>
-          <summary>Why this option is right or wrong</summary>
-          <p>{q.option_feedback[selected]}</p>
-        </details>
-      )}
       {selected && selected !== q.correct_option ? (
         <p>
           <Link href={`${paths.study}#${q.topic}`}>Review this topic in the study guide</Link>

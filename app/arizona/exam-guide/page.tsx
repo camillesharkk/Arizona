@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { examConfig } from "@/data/exam-config";
-import { getSource } from "@/data/sources";
+import { examConfig, officialExam } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
 import { PrepCtas } from "@/components/PrepCtas";
@@ -38,9 +37,9 @@ export default function ExamGuidePage() {
       </section>)}
       <section className="card" style={{ marginTop: 18 }}>
         <h2>Use the official format to plan your time</h2>
-        <p>The SOS publishes {examConfig.questionCount} questions in {examConfig.timeLimitMinutes} minutes with an {examConfig.passingScorePercent}% passing score. That leaves about 80 seconds per question on average. Practice locating rules efficiently, then return to difficult questions.</p>
-        <p>The official exam’s manual is provided on screen. A physical manual is not allowed at the test. Read the <a href={getSource("sos_manual_2026_08").url}>official Reference Manual</a> while studying.</p>
-        <p>Booking details can change. The <a href={examConfig.officialExamUrl}>SOS notary page</a> currently contains both newer and older provider notices; follow its live registration link and confirm fees, remote availability and retake instructions with the provider. Checked September 28, 2026.</p>
+        <p>The SOS exam notice checked on {officialExam.checkedOn} says {officialExam.questionCount} questions, {officialExam.timeLimitMinutes} minutes, and {officialExam.passingScorePercent}% to pass. This site’s Full {examConfig.questionCount} uses those same counts as practice. It is not the official exam, and A.R.S. § 41-270 does not set the counts. About 80 seconds per question is a pacing estimate, not an official limit.</p>
+        <p>The notice says the {officialExam.manualTitle} is built into the exam. A physical copy is not allowed. The Secretary of State commissions notaries and may require the exam. {officialExam.provider} administers the proctored exam under the current notice. The same pages still contain an older {officialExam.legacyProviderStillOnPage} block. A third-party training school is not named as required.</p>
+        <p>The notice lists ${officialExam.examFeeUsd} for every proctored exam, up to {officialExam.attemptsBeforeWait} attempts, then a {officialExam.waitDaysAfterLimit}-day wait. The filing page lists a ${officialExam.applicationFeeUsd} standard application fee. The ${officialExam.bondUsd} bond is a separate statutory assurance. <a href={examConfig.officialExamUrl}>Read the live SOS exam notice</a> before you pay or book.</p>
       </section>
       <section className="card" style={{ marginTop: 18 }}>
         <h2>What to do after a practice pass</h2>

@@ -1,4 +1,5 @@
 import type { SeoGuide } from "@/lib/seo-guides";
+import { officialExamChecked } from "@/data/exam-config";
 
 export const expandedGuides: SeoGuide[] = [
   {
@@ -9,7 +10,7 @@ export const expandedGuides: SeoGuide[] = [
     "kicker": "How Hard Is the Arizona Notary Exam?",
     "h1": "How Hard Is the Arizona Notary Exam?",
     "lede": "The difficulty is applying notary rules accurately while watching the clock. Open-book access helps you check a rule, but it does not replace knowing which rule applies. We do not have an official pass-rate dataset and do not promise an easy pass.",
-    "checked": "Exam notice checked on the Arizona Secretary of State New Notary page on October 12, 2026. Check the live notice before booking; it currently contains both Pearson and older Prometric links.",
+    checked: officialExamChecked,
     "sections": [
       {
         "heading": "What makes a question difficult",
@@ -65,7 +66,7 @@ export const expandedGuides: SeoGuide[] = [
     "kicker": "How Many Questions Are on the Arizona Notary Exam?",
     "h1": "How Many Questions Are on the Arizona Notary Exam?",
     "lede": "The current Arizona SOS exam notice specifies 45 questions in 60 minutes. This website\u2019s Full 45 is an independent simulation of that length, not the official examination.",
-    "checked": "Exam notice checked on the Arizona Secretary of State New Notary page on October 12, 2026. Check the live notice before booking; it currently contains both Pearson and older Prometric links.",
+    checked: officialExamChecked,
     "sections": [
       {
         "heading": "Plan time for both answers and lookups",
@@ -114,7 +115,7 @@ export const expandedGuides: SeoGuide[] = [
     "kicker": "Arizona Notary Exam Passing Score",
     "h1": "Arizona Notary Exam Passing Score",
     "lede": "The current Arizona SOS exam notice lists an 80% passing score. On this site, 36 correct answers out of 45 meet the 80% practice target. Your official result is determined by the examination provider.",
-    "checked": "Exam notice checked on the Arizona Secretary of State New Notary page on October 12, 2026. Check the live notice before booking; it currently contains both Pearson and older Prometric links.",
+    checked: officialExamChecked,
     "sections": [
       {
         "heading": "How the practice calculation works",
@@ -163,7 +164,7 @@ export const expandedGuides: SeoGuide[] = [
     "kicker": "Arizona Notary Exam Requirements",
     "h1": "Arizona Notary Exam Requirements",
     "lede": "New and renewing Arizona notaries must pass the competency examination under the current SOS notice. Exam registration and a notary commission are separate steps; completing practice on this website satisfies neither.",
-    "checked": "Exam notice checked on the Arizona Secretary of State New Notary page on October 12, 2026. Check the live notice before booking; it currently contains both Pearson and older Prometric links.",
+    checked: officialExamChecked,
     "sections": [
       {
         "heading": "Before you book",
@@ -218,7 +219,7 @@ export const expandedGuides: SeoGuide[] = [
     "kicker": "Arizona Notary Exam FAQ",
     "h1": "Arizona Notary Exam FAQ",
     "lede": "Use these answers to plan your preparation, then verify booking instructions on the live SOS page. Our tests are original study material, not released official exam questions.",
-    "checked": "Exam notice checked on the Arizona Secretary of State New Notary page on October 12, 2026. Check the live notice before booking; it currently contains both Pearson and older Prometric links.",
+    checked: officialExamChecked,
     "sections": [
       {
         "heading": "Before booking or paying",
@@ -287,7 +288,7 @@ export const expandedGuides: SeoGuide[] = [
     "kicker": "Free Arizona Notary Practice Test",
     "h1": "Free Arizona Notary Practice Test",
     "lede": "Start with 10 free Arizona notary practice questions. No registration is required to begin. Use the explanations and official references to decide what to study next.",
-    "checked": "Exam notice checked on the Arizona Secretary of State New Notary page on October 12, 2026. Check the live notice before booking; it currently contains both Pearson and older Prometric links.",
+    checked: officialExamChecked,
     "sections": [
       {
         "heading": "What the free practice includes",
@@ -343,7 +344,7 @@ export const expandedGuides: SeoGuide[] = [
     "kicker": "Is the Arizona Notary Exam Open Book?",
     "h1": "Is the Arizona Notary Exam Open Book?",
     "lede": "Yes. The SOS notice says the manual is built into the examination, while physical copies are prohibited at test centers and during remote testing.",
-    "checked": "Exam notice checked on the Arizona Secretary of State New Notary page on October 12, 2026. Check the live notice before booking; it currently contains both Pearson and older Prometric links.",
+    checked: officialExamChecked,
     "sections": [
       {
         "heading": "Practice finding a rule, not just a keyword",
@@ -392,7 +393,7 @@ export const expandedGuides: SeoGuide[] = [
     "kicker": "Arizona Notary Exam Retake Rules",
     "h1": "Arizona Notary Exam Retake Rules",
     "lede": "The current SOS notice says the exam can be taken three times; after the third failure, you must wait 30 days to reschedule. The notice also lists a $35 charge for each proctored examination. Verify current instructions before booking again.",
-    "checked": "Exam notice checked on the Arizona Secretary of State New Notary page on October 12, 2026. Check the live notice before booking; it currently contains both Pearson and older Prometric links.",
+    checked: officialExamChecked,
     "sections": [
       {
         "heading": "Check the booking rule before another attempt",
@@ -441,7 +442,7 @@ export const expandedGuides: SeoGuide[] = [
     "kicker": "Arizona Notary Exam Three-Day Study Plan",
     "h1": "Arizona Notary Exam Three-Day Study Plan",
     "lede": "Use this three-day plan for focused review when your test date is near. It is a suggested schedule, not a guarantee that three days is enough. Move the test if you cannot explain the rules or finish practice confidently.",
-    "checked": "Exam notice checked on the Arizona Secretary of State New Notary page on October 12, 2026. Check the live notice before booking; it currently contains both Pearson and older Prometric links.",
+    checked: officialExamChecked,
     "sections": [
       {
         "heading": "Day 1: establish a baseline",

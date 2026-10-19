@@ -1,5 +1,5 @@
 import { expandedGuides } from "@/lib/seo-expansion";
-import { examConfig } from "@/data/exam-config";
+import { examConfig, officialExam, officialExamChecked } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
 import { eligibleExamPool } from "@/lib/quiz";
@@ -46,7 +46,7 @@ const existingGuides: SeoGuide[] = [
     h1: "Arizona Notary Fees and Allowed Charges",
     lede: "For an acknowledgment, jurat, or oath, the reprinted fee rule allows no charge, or a charge up to $10. Copy certification is up to $10 per page certified. Tell the signer the fee before you start. Calling it a rush fee does not raise the cap.",
     checked:
-      "A.R.S. § 41-316 was read on azleg.gov on 2026-09-29. R2-12-1102 was read the same day on the Cornell reprint of the Arizona Administrative Code (amendment noted there as 24 A.A.R. 137, effective March 5, 2018). The official code host at apps.azsos.gov did not load. Confirm the rule posted by the Secretary of State before you charge a customer.",
+      "A.R.S. § 41-316 was read on azleg.gov on 2026-10-19. R2-12-1102 was read on 2026-09-29 on the Cornell reprint (amendment noted there as 24 A.A.R. 137, effective March 5, 2018). On 2026-10-19, https://apps.azsos.gov/public_services/Title_02/2-12.htm returned 404, so the $10 ceilings are not reconfirmed from the official code host. Confirm the rule posted by the Secretary of State before you charge a customer.",
     sections: [
       {
         heading: "The statute sets the fence, not the price list",
@@ -92,7 +92,7 @@ const existingGuides: SeoGuide[] = [
     h1: "Arizona Notary Bond Requirements",
     lede: `Before a commission is issued, A.R.S. § 41-269(D) requires a $5,000 surety bond filed with the Secretary of State. You may perform notarial acts in Arizona only while that assurance is on file. The bond is the surety’s promise to claimants. It is not an insurance policy that pays you.`,
     checked:
-      "A.R.S. § 41-269 was read on azleg.gov on 2026-09-29, including subsections D, E, F, and G. The SOS Notary Resources page did not load that day, so this page does not quote an SOS slogan about the bond. The $5,000 figure below is the amount in the statute, not a vendor quote.",
+      "A.R.S. § 41-269 was read on azleg.gov on 2026-10-19, including subsections B, D, E, F, and G. The SOS Notary Resources page was not re-opened that day, so this page does not quote an SOS slogan about the bond. The $5,000 figure below is the amount in the statute, not a vendor quote.",
     sections: [
       {
         heading: "The filing the statute requires",
@@ -140,7 +140,7 @@ const existingGuides: SeoGuide[] = [
     h1: "Arizona Remote Online Notary Requirements",
     lede: "You may notarize for someone who is not in the room only if you are in Arizona and you meet A.R.S. § 41-263: prove identity as that section requires, confirm you have the same record, record the session, and say on the certificate that communication technology was used. A video call by itself is not that process. Notify the Secretary of State before the first remote act.",
     checked:
-      "A.R.S. §§ 41-263 and 41-254 were read on azleg.gov on 2026-09-29. The SOS Remote & eNotary page did not load that day, so technology-vendor rules are not restated here. Follow the live SOS instructions before the first remote act.",
+      "A.R.S. §§ 41-263, 41-254, 41-255, and 41-252 were read on azleg.gov on 2026-10-19. The SOS Remote & eNotary page was not re-opened that day, so technology-vendor approval rules are not restated here. Follow the live SOS instructions before the first remote act.",
     sections: [
       {
         heading: "Conditions in § 41-263",
@@ -187,14 +187,14 @@ const existingGuides: SeoGuide[] = [
     kicker: "Cram sheet",
     h1: "Arizona Notary Exam Cram Sheet",
     lede: "Use this as a last pass, then take a timed practice exam. It is a checklist of rules checked in statute. It is not the SOS manual, and these are not official exam questions.",
-    checked:
-      "Eligibility, bond, ID, fee statute, stamp, spouse conflict, RON, and the deed thumbprint were read on azleg.gov on 2026-09-29. The $10 ceilings were read the same day on the Cornell reprint of R2-12-1102. The SOS exam page did not load, so the 45-question practice format is labeled as this site’s setting, not as a figure re-read from SOS on that date.",
+    checked: `${officialExamChecked} Eligibility, bond, identification, the fee statute, the stamp, the spouse conflict, remote notarization, the journal, and the deed thumbprint were read on azleg.gov on October 19, 2026. The $10 notarial-act ceilings were not re-opened: the official code URL tried that day returned 404, and the Cornell reprint of R2-12-1102 was last read on 2026-09-29. Confirm that rule before you charge a customer.`,
     sections: [
       {
         heading: "Practice format on this site",
         points: [
-          `${examConfig.questionCount} practice questions, ${examConfig.timeLimitMinutes} minutes, ${examConfig.passingScorePercent}% to mark a practice pass (${passCount} correct).`,
-          "A.R.S. § 41-270 does not state those three numbers. Confirm them on the live SOS page before the official exam.",
+          `This site: ${examConfig.questionCount} practice questions, ${examConfig.timeLimitMinutes} minutes, ${examConfig.passingScorePercent}% to mark a practice pass (${passCount} correct).`,
+          `SOS exam notice (${officialExam.checkedOn}): ${officialExam.questionCount} questions, ${officialExam.timeLimitMinutes} minutes, ${officialExam.passingScorePercent}% to pass, ${officialExam.provider}, $${officialExam.examFeeUsd} per proctored exam. A.R.S. § 41-270 does not set those figures.`,
+          `Filing fee on the SOS notary page: $${officialExam.applicationFeeUsd}. Bond amount in § 41-269(D): $${officialExam.bondUsd}. Those are not the exam fee.`,
           "Quick 10 shows the explanation immediately. Full 45 hides explanations until you submit.",
         ],
         body: `About 80 seconds per item if you split an hour evenly. One free Full 45 in this browser can include Pro questions. Pro is a separate one-time 60-day purchase, not a subscription: the standard price is $22.21, and new members may pay $19.99 during the first 72 hours after registration. Pro unlocks all ${practiceBank.length} practice questions, including the ${practiceBank.length - freeBankCount} that are Pro-only, and later full exams.`,
@@ -204,8 +204,8 @@ const existingGuides: SeoGuide[] = [
       {
         heading: "Commission and bond",
         points: [
-          "18 or older, U.S. citizen or permanent legal resident, Arizona tax resident who claims Arizona as the primary residence, and able to read and write English.",
-          "Pass the exam if the SOS requires it, and keep an SOS-approved manual.",
+          "18 or older, U.S. citizen or permanent legal resident, Arizona tax resident who claims Arizona as the primary residence, and able to read, write and understand English.",
+          `The SOS notice requires the exam for new and renewing notaries beginning July 1, 2025. Keep a manual the Secretary of State approves. The notice names the ${officialExam.manualTitle}.`,
           "Oath, then a $5,000 surety bond, before the commission is issued. Term: four years.",
           "An employer who pays does not own the commission or the stamp.",
         ],

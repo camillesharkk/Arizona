@@ -171,7 +171,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--brand); width:
   font-weight: 600; color: var(--muted);
 }
 h1, h2, h3 { font-family: var(--font); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; margin: 8px 0; }
-h3:focus { outline: 2px solid var(--brand); outline-offset: 4px; }
+h3:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; }
 h1 { font-size: clamp(2rem, 4vw, 2.75rem); }
 h2 { font-size: 1.5rem; }
 .lede { font-size: 1.125rem; color: var(--muted); max-width: 62ch; }
@@ -224,7 +224,6 @@ h2 { font-size: 1.5rem; }
 .q-option.selected {
   border-color: var(--brand);
   background: var(--brand-soft);
-  box-shadow: var(--focus);
 }
 .q-option.correct { border-color: var(--sage); background: var(--sage-soft); }
 .q-option.wrong { border-color: var(--danger); background: var(--danger-soft); }
@@ -258,7 +257,10 @@ h2 { font-size: 1.5rem; }
   background: var(--bg-2); border: 1px solid var(--line);
   border-radius: 12px; padding: 14px; margin-top: 8px;
 }
-details.explain summary { cursor: pointer; font-weight: 700; }
+.explain summary, details.explain summary {
+  cursor: pointer; font-weight: 700; min-height: 44px;
+  display: flex; align-items: center;
+}
 
 .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 20px; }
 .chip {

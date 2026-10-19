@@ -201,10 +201,6 @@ export function SiteFooter() {
       <div className="wrap footer-grid">
         <div>
           <strong>Arizona Exam</strong>
-          <p>
-            Independent study tool. This website is not affiliated with, endorsed by, or operated by the Arizona
-            Secretary of State.
-          </p>
         </div>
         <div>
           <strong>Study</strong>

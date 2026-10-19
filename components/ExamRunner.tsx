@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type Ref } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
-import { examConfig } from "@/data/exam-config";
+import { examConfig, officialExam } from "@/data/exam-config";
 import {
   buildQuickExam,
   pickExamSet,
@@ -18,6 +18,7 @@ import { recordAnswer, saveProgress, toggleFlag, loadProgress } from "@/lib/stor
 import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
 import { getSource } from "@/data/sources";
+import { AnswerExplain } from "@/components/AnswerExplain";
 import { paths } from "@/lib/paths";
 import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
@@ -273,8 +274,8 @@ export function ExamRunner({
             {pct}% — {pass ? "PASS" : "NEEDS REVIEW"}
           </h2>
           <p className="lede">
-            {correct} of {questions.length} correct. Official passing score modeled at{" "}
-            {examConfig.passingScorePercent}%. This is practice, not an SOS result.
+            {correct} of {questions.length} correct. Practice target {examConfig.passingScorePercent}%. The SOS notice
+            checked {officialExam.checkedOn} lists {officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.
           </p>
           <h3>Topic accuracy</h3>
           {[...topicAcc.entries()].map(([id, v]) => (
@@ -514,20 +515,15 @@ export function QuestionBlock({
           );
         })}
       </div>
-      {reveal && (
-        <div className="explain" role="status">
-          <strong>{!selected ? "Unanswered" : selected === q.correct_option ? "Correct" : "Not quite"}.</strong>
-          <p>Correct answer: {q.correct_option}. {map[q.correct_option]}</p>
-          <p>{q.explanation}</p>
-          {selected && selected !== q.correct_option && <p>{q.option_feedback[selected]}</p>}
-          <details>
-            <summary>Official source</summary>
-            <p>
-              <a href={getSource(q.source_id).url}>{q.source_reference}</a>
-            </p>
-          </details>
-        </div>
-      )}
+      {reveal && !locked ? (
+        <AnswerExplain
+          status={!selected ? "Unanswered" : selected === q.correct_option ? "Correct" : "Not quite"}
+          explanation={q.explanation}
+          wrongNote={selected && selected !== q.correct_option ? q.option_feedback[selected] : undefined}
+          sourceUrl={getSource(q.source_id).url}
+          sourceLabel={q.source_reference}
+        />
+      ) : null}
     </div>
   );
 }

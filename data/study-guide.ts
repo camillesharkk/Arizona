@@ -1,4 +1,5 @@
 import type { StudyChapter } from "../lib/types.ts";
+import { officialExam } from "./exam-config.ts";
 
 export const chapters: StudyChapter[] = [
   {
@@ -21,9 +22,9 @@ export const chapters: StudyChapter[] = [
       },
     ],
     keyFacts: [
-      "Typical commission term: 4 years (verify before you apply).",
-      "Commissioning authority: Arizona Secretary of State.",
-      "Exam on this platform: timed, open-book model matching published SOS format fields.",
+      `Commission term: ${officialExam.commissionYears} years under A.R.S. § 41-269(E). The SOS filing page also states ${officialExam.commissionYears} years (checked ${officialExam.checkedOn}).`,
+      "Commissioning authority: Arizona Secretary of State. The current exam notice names Pearson as the proctor. A surety issues the bond.",
+      `This site’s Full practice exam: ${officialExam.questionCount} questions, ${officialExam.timeLimitMinutes} minutes, ${officialExam.passingScorePercent}% practice target. The SOS notice checked ${officialExam.checkedOn} states those same counts. A practice pass is not an official result.`,
     ],
     source_id: "ars_41_269",
     example: {

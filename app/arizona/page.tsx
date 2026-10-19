@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { examConfig, topics } from "@/data/exam-config";
+import { examConfig, officialExam, topics } from "@/data/exam-config";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
 import { JsonLd, quizJson } from "@/components/JsonLd";
@@ -51,7 +51,7 @@ export default function ArizonaHub() {
         </p>
         <p className="notice">
           Independent practice, not the Arizona Secretary of State.{" "}
-          <a href={examConfig.officialExamUrl}>Check the official notary page</a> before you apply.
+          <a href={officialExam.filingUrl}>Check the official notary page</a> before you apply.
         </p>
         <p className="notice">{examConfig.disclaimer}</p>
         <h2>Keep studying</h2>

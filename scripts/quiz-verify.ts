@@ -3,7 +3,8 @@
  * Run: npm run quiz:verify
  */
 import { publishedQuestions, questions as allQuestions } from "../data/questions.ts";
-import { examConfig, topics } from "../data/exam-config.ts";
+import { examConfig, officialExam, topics } from "../data/exam-config.ts";
+import { presentExplanation } from "../lib/explanation.ts";
 import { isActiveQuestion } from "../lib/question-status.ts";
 import {
   buildBalancedAnswerSequence,
@@ -328,6 +329,17 @@ else ok("incompatible diagnostic version resets");
 const tampered = { ...saved, questionIds: [...saved.questionIds.slice(0, 9), proItemForDiag?.question_id ?? "missing"] };
 if (parseDiagnosticSession(JSON.stringify(tampered), arizonaDiagnostic, () => proItemForDiag ?? null)) fail("pro question restored into a diagnostic");
 else ok("restored diagnostic rejects a question outside the free pool");
+
+const layered = presentExplanation(
+  "The signer must appear in person. A phone call does not count. Mail does not count. This item tests appearance only. A later exception stays in the detail."
+);
+if (!layered.short.startsWith("The signer must appear") || layered.short.includes("This item")) {
+  fail("short answer still includes question-item notes");
+} else if (!layered.why.includes("later exception")) fail("later detail was dropped");
+else ok("explanation layers hide item notes and keep the rule");
+if (officialExam.questionCount !== examConfig.questionCount) {
+  info(`official question count ${officialExam.questionCount} differs from practice ${examConfig.questionCount}`);
+} else ok("official notice and practice Full length currently match, and they are stored separately");
 
 const reportSeeds = [101, 202, 303];
 lines.push("");
