@@ -1,0 +1,182 @@
+import type { ExpansionDraft } from "./question-bank-expansion.ts";
+
+/** Workplace scenarios checked against azleg.gov on 2026-10-19. Practice items, not official exam questions. */
+const checked = "2026-10-19";
+
+export const scenarioDrafts: ExpansionDraft[] = [
+  {
+    question_id: "az-201",
+    topic: "prohibited-acts",
+    difficulty: "medium",
+    is_free: true,
+    concept_ids: ["kc-spouse"],
+    question_text:
+      "You are covering a bank signing. Your spouse is the borrower named on the deed of trust, and the closer asks you to notarize that signature. What should you do next?",
+    option_a: "Notarize it. You are not the person signing, so there is no conflict.",
+    option_b: "Decline. You may not notarize a record your spouse is a party to, or a record in which either of you has a direct beneficial interest. That act is voidable.",
+    option_c: "Notarize it if the bank's closing instructions say a relative may be the notary.",
+    option_d: "Notarize it, then have your spouse initial a note that you stayed neutral.",
+    correct_option: "B",
+    explanation:
+      "Say no. You may not notarize a record that you or your spouse is a party to, or a record in which either of you has a direct stake. Doing it anyway makes the notarization voidable. A bank checklist does not replace that rule.",
+    option_feedback: {
+      A: "Staying off the signature line does not fix it. Your spouse is a party to the record.",
+      B: "Correct. A.R.S. § 41-252(B) bars the act when you or your spouse is a party or has a direct beneficial interest, and the act is voidable.",
+      C: "An employer's or bank's instruction is not an exception in the statute.",
+      D: "A side note does not remove the disqualification.",
+    },
+    source_id: "ars_41_252",
+    source_reference: "A.R.S. § 41-252(B), read on azleg.gov 2026-10-19",
+    last_verified_at: checked,
+  },
+  {
+    question_id: "az-202",
+    topic: "identification",
+    difficulty: "medium",
+    is_free: true,
+    concept_ids: ["kc-appearance", "cmp-appearance-remote"],
+    question_text:
+      "A patient's adult child calls from a hospital hallway and puts you on speakerphone. The patient is down the hall, not with you, and they want an acknowledgment finished now. What is the right next step?",
+    option_a: "Finish the acknowledgment. A live phone call counts as personal appearance.",
+    option_b: "Let the child sign the patient's name, because the family requested it.",
+    option_c: "Do not finish it on that call. The signer has to appear before you. A phone call is not personal appearance, and it is not a remote notarization.",
+    option_d: "Finish it if a nurse says they know the patient.",
+    correct_option: "C",
+    explanation:
+      "Stop. If the notarization depends on a signature or a statement, that person has to appear before you. A speakerphone has no simultaneous sight and sound, so it is not the remote process either. Wait for a real appearance, or use a remote notarization only when every remote requirement is met.",
+    option_feedback: {
+      A: "Hearing someone on a phone is not appearing before the notary.",
+      B: "A relative cannot sign the patient's name in the patient's place for this acknowledgment.",
+      C: "Correct. A.R.S. § 41-254(A) requires personal appearance. A remote act under § 41-263 needs communication technology with simultaneous sight and sound, plus the rest of that section.",
+      D: "A nurse's familiarity does not replace the signer's appearance.",
+    },
+    source_id: "ars_41_254",
+    source_reference: "A.R.S. § 41-254(A); compare § 41-263(A) and (I)(1), read on azleg.gov 2026-10-19",
+    last_verified_at: checked,
+  },
+  {
+    question_id: "az-203",
+    topic: "journals",
+    difficulty: "medium",
+    is_free: true,
+    concept_ids: ["kc-thumbprint"],
+    question_text:
+      "At a real-estate signing the document is a deed. The signer is in front of you, but the right thumb was amputated years ago. What do you do about the journal print?",
+    option_a: "Skip any print. A missing right thumb cancels the journal rule.",
+    option_b: "Use the left thumb, or any finger the signer can use, and note in the journal which one you used.",
+    option_c: "Have another person at the table give a thumbprint instead.",
+    option_d: "Refuse every deed whenever the right thumb is unavailable.",
+    correct_option: "B",
+    explanation:
+      "Still take a print. For a deed, if the right thumb is not available, use the left thumb or any finger the signer can provide, and write that down in the journal. Someone else's print does not stand in for the signer.",
+    option_feedback: {
+      A: "The statute tells you what to use when the right thumb is unavailable. It does not say to skip the print.",
+      B: "Correct. A.R.S. § 41-254(C): left thumb or any available finger, and indicate that in the journal.",
+      C: "The print has to come from the person signing the document.",
+      D: "You do not refuse the deed solely because the right thumb cannot be used.",
+    },
+    source_id: "ars_41_254",
+    source_reference: "A.R.S. § 41-254(C), read on azleg.gov 2026-10-19",
+    last_verified_at: checked,
+  },
+  {
+    question_id: "az-204",
+    topic: "identification",
+    difficulty: "easy",
+    is_free: true,
+    concept_ids: ["kc-id"],
+    question_text:
+      "A customer you do not know wants an acknowledgment. The only ID they brought is an Arizona driver license that expired last month. What now?",
+    option_a: "Accept it. A license that expired recently is still satisfactory evidence.",
+    option_b: "Accept it if the photo still looks like the customer.",
+    option_c: "Do not treat that expired license as the ID the statute lists. Ask for an unexpired credential the statute allows, use another method the statute actually allows, or stop.",
+    option_d: "Accept a business card together with the expired license.",
+    correct_option: "C",
+    explanation:
+      "That license does not qualify. Satisfactory evidence from a state driver license means the license is unexpired. A close photo, or a business card next to an expired license, does not turn it into that credential.",
+    option_feedback: {
+      A: "The statute says unexpired. Last month is still expired.",
+      B: "A resemblance is not a substitute for an unexpired credential or another method the statute lists.",
+      C: "Correct. A.R.S. § 41-255(B)(1)(a) lists an unexpired state driver license, not an expired one.",
+      D: "A business card is not one of the listed credentials.",
+    },
+    source_id: "ars_41_255",
+    source_reference: "A.R.S. § 41-255(B)(1)(a), read on azleg.gov 2026-10-19",
+    last_verified_at: checked,
+  },
+  {
+    question_id: "az-205",
+    topic: "prohibited-acts",
+    difficulty: "medium",
+    is_free: true,
+    concept_ids: ["kc-advice"],
+    question_text:
+      "A signer at your desk asks you to pick the legal form, draft the deed, and say which wording will hold up in court. They also want the signature notarized. What may you do?",
+    option_a: "Draft the deed and give that advice. A notary commission includes practicing law.",
+    option_b: "Do not draft the legal record or give that legal advice. Filling in a notarial certificate for an act they already chose is a separate step, and only if the notarization itself is allowed.",
+    option_c: "Draft it as long as you do not charge a fee.",
+    option_d: "Tell them the winning wording, then let them copy it in their own handwriting.",
+    correct_option: "B",
+    explanation:
+      "A commission does not let you draft someone's legal papers or tell them which wording will win in court. Not charging a fee does not change that. Completing the notarial certificate for an act the signer has already chosen is not the same thing as choosing their legal form.",
+    option_feedback: {
+      A: "The commission does not authorize drafting legal records or giving legal advice.",
+      B: "Correct. A.R.S. § 41-273(A) withholds drafting, legal advice, and law practice. The certificate is part of the notarial act they requested, not a license to design the deed.",
+      C: "Doing the work for free is still drafting and legal advice.",
+      D: "Telling them the winning wording is legal advice, whether or not you hold the pen.",
+    },
+    source_id: "ars_41_273",
+    source_reference: "A.R.S. § 41-273(A), read on azleg.gov 2026-10-19",
+    last_verified_at: checked,
+  },
+  {
+    question_id: "az-206",
+    topic: "electronic-ron",
+    difficulty: "hard",
+    is_free: true,
+    concept_ids: ["kc-thumbprint", "cmp-thumbprint"],
+    question_text:
+      "You are in Arizona on a remote notarization of a deed. You plan to keep the audiovisual recording for five years. The journal does not list the signer's ID credential number. The signer asks you to skip the thumbprint because the session is remote. What applies?",
+    option_a: "Skip it. Every remote notarization is exempt from the thumbprint rule.",
+    option_b: "Skip it. Five years of recording is enough on its own.",
+    option_c: "The exemption does not apply. It applies only when the journal has the credential number and the recording is kept at least seven years. This deed still needs the print.",
+    option_d: "Skip it if the signing platform's policy says remote deeds do not need a print.",
+    correct_option: "C",
+    explanation:
+      "Do not skip the print on those facts. A remote deed skips the thumbprint only when both things are true: the journal includes the ID credential number, and you keep the recording for at least seven years. Five years without that number misses both. A vendor policy is not the statute.",
+    option_feedback: {
+      A: "Remote, by itself, is not the exemption.",
+      B: "Five years is the usual recording period. The thumbprint exemption asks for seven years, and it also asks for the credential number.",
+      C: "Correct. A.R.S. § 41-254(D)(3) requires both the credential number and at least seven years of recording. § 41-263(E) is the separate five-year floor.",
+      D: "A platform rule does not create an exemption the statute does not give.",
+    },
+    source_id: "ars_41_254",
+    source_reference: "A.R.S. § 41-254(D)(3) and § 41-263(E), read on azleg.gov 2026-10-19",
+    last_verified_at: checked,
+  },
+  {
+    question_id: "az-207",
+    topic: "seals-fees",
+    difficulty: "medium",
+    is_free: true,
+    concept_ids: ["kc-fee"],
+    question_text:
+      "After you name the fee for an acknowledgment, a customer at the bank slides over an extra $20 and says it is only because they are in a hurry. Can you keep that extra $20 for the acknowledgment?",
+    option_a: "Yes. A voluntary tip is not a notary fee.",
+    option_b: "No. You may not charge or accept a fee for the notarial act except as a rule specifically allows. Extra money for that acknowledgment is still a fee for the act.",
+    option_c: "Yes, if you write \"rush\" on the receipt.",
+    option_d: "Yes, if the bank's own fee sheet allows employee tips.",
+    correct_option: "B",
+    explanation:
+      "Leave the extra $20. You may not advertise, charge, or accept a fee for a notarial act except where a rule specifically allows it. Calling it a tip or a rush payment does not make it something else. The statute tells the Secretary of State to set the dollar amounts by rule. A reprinted schedule is not a substitute for that official text.",
+    option_feedback: {
+      A: "Money paid for performing the acknowledgment is a fee for the act, even if the customer calls it a tip.",
+      B: "Correct. A.R.S. § 41-316(C) forbids a fee for the notarial act unless a rule specifically authorizes it.",
+      C: "Relabeling the payment does not create an authorization.",
+      D: "A bank tip policy is not the fee rule.",
+    },
+    source_id: "ars_41_316",
+    source_reference: "A.R.S. § 41-316(C), read on azleg.gov 2026-10-19. Dollar caps in the fee rule were not reconfirmed from the official code host that day.",
+    last_verified_at: checked,
+  },
+];

@@ -7,22 +7,65 @@ import { getSource } from "@/data/sources";
 import { loadProgress, saveProgress } from "@/lib/storage";
 import { paths } from "@/lib/paths";
 import { FREE_FLASHCARD_PREVIEW } from "@/lib/product";
+import { categoryLabel, StudyCardBody } from "@/components/StudyCardBody";
 
-const cats = ["all", "fees", "dates", "definitions", "acts"] as const;
+const FLASH_KEY = "az-flash-place";
+const categoryOrder = ["identification", "appearance", "journal", "conflicts", "fees", "dates", "definitions", "acts"];
 
 export function FlashcardsClient() {
-  const [cat, setCat] = useState<(typeof cats)[number]>("all");
+  const [cat, setCat] = useState("all");
   const [i, setI] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [isPro, setIsPro] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [fullReported, setFullReported] = useState(false);
   const [finished, setFinished] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(FLASH_KEY) || "");
+      if (typeof saved?.cat === "string") setCat(saved.cat);
+      if (typeof saved?.index === "number") setI(saved.index);
+    } catch {
+      /* first visit */
+    }
+    const requested = new URLSearchParams(window.location.search).get("card");
+    if (!requested) return;
+    const allowed = flashcards.slice(0, FREE_FLASHCARD_PREVIEW).map((card) => card.id);
+    const pool = flashcards.filter((card) => allowed.includes(card.id) || false);
+    const at = (pool.length ? pool : flashcards).findIndex((card) => card.id === requested);
+    if (at >= 0 && allowed.includes(requested)) {
+      setCat("all");
+      setI(at);
+      setFlipped(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(FLASH_KEY, JSON.stringify({ cat, index: i }));
+    } catch {
+      /* storage can be blocked */
+    }
+  }, [cat, i]);
+
+  useEffect(() => {
+    if (!isPro) return;
+    const requested = new URLSearchParams(window.location.search).get("card");
+    if (!requested) return;
+    const at = flashcards.findIndex((card) => card.id === requested);
+    if (at < 0) return;
+    setCat("all");
+    setI(at);
+    setFlipped(true);
+  }, [isPro]);
 
   useEffect(() => {
     fetch("/api/auth/me/")
       .then((r) => r.json())
       .then((d) => setIsPro(Boolean(d.user?.arizonaPro || d.user?.plan === "pro")))
-      .catch(() => undefined);
+      .catch(() => undefined)
+      .finally(() => setAuthChecked(true));
   }, []);
 
   useEffect(() => {
@@ -35,11 +78,22 @@ export function FlashcardsClient() {
     }).catch(() => undefined);
   }, [isPro, fullReported, i]);
 
+  const allowed = useMemo(() => {
+    const freeIds = new Set(flashcards.slice(0, FREE_FLASHCARD_PREVIEW).map((card) => card.id));
+    return flashcards.filter((card) => isPro || freeIds.has(card.id));
+  }, [isPro]);
+  const categories = ["all", ...categoryOrder.filter((category) => allowed.some((card) => card.category === category))];
   const full = useMemo(
-    () => (cat === "all" ? flashcards : flashcards.filter((c) => c.category === cat)),
-    [cat]
+    () => (cat === "all" ? allowed : allowed.filter((card) => card.category === cat)),
+    [allowed, cat]
   );
-  const deck = isPro ? full : full.slice(0, FREE_FLASHCARD_PREVIEW);
+  const deck = full;
+
+  useEffect(() => {
+    if (!authChecked || i < deck.length) return;
+    setI(0);
+  }, [authChecked, deck.length, i]);
+
   const card = deck[i];
   if (!deck.length) return <p>No cards in this set.</p>;
   if (finished || !card) {
@@ -79,7 +133,7 @@ export function FlashcardsClient() {
   return (
     <div>
       <div className="filter-row">
-        {cats.map((c) => (
+        {categories.map((c) => (
           <button
             key={c}
             className={`chip ${cat === c ? "on" : ""}`}
@@ -91,13 +145,14 @@ export function FlashcardsClient() {
               setFinished(false);
             }}
           >
-            {c}
+            {c === "all" ? "In order" : categoryLabel(c)}
           </button>
         ))}
       </div>
       <p className="notice">
         Mastered {known} · Review pile {p.reviewCards.length}
-        {!isPro ? ` · Free preview ${deck.length} of ${full.length} cards` : ""}
+        {` · ${Math.min(i + 1, deck.length)} of ${deck.length} in this set`}
+        {!isPro ? ` · Free preview ${allowed.length} of ${flashcards.length} cards` : ""}
       </p>
       <div
         className="card flash-card"
@@ -112,9 +167,16 @@ export function FlashcardsClient() {
         aria-pressed={flipped}
       >
         <div>
-          <span className="kicker">{flipped ? "Answer" : "Question"}</span>
-          <h2>{flipped ? card.back : card.front}</h2>
-          <p className="notice">Tap, click, or press Enter to flip · {getSource(card.source_id).reference}</p>
+          <StudyCardBody
+            card={{
+              ...card,
+              sourceLabel: getSource(card.source_id).reference,
+              sourceUrl: getSource(card.source_id).url,
+              practiceHref: card.topic ? paths.topic(card.topic) : undefined,
+            }}
+            flipped={flipped}
+          />
+          <p className="notice">Tap, click, or press Enter to flip.</p>
         </div>
       </div>
       <div className="row" style={{ marginTop: 14 }}>

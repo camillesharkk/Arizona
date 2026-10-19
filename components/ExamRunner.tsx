@@ -32,6 +32,7 @@ export function ExamRunner({
   isPro = false,
   reportStart = "mount",
   layout = "page",
+  persistKey,
 }: {
   mode: Mode;
   practice?: boolean;
@@ -40,8 +41,11 @@ export function ExamRunner({
   /** Homepage can show a question before a real attempt begins. */
   reportStart?: "mount" | "answer";
   layout?: "page" | "compact";
+  /** Keep this sitting's question order and answers if the learner leaves and comes back. */
+  persistKey?: string;
 }) {
-  const sessionSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
+  const generatedSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
+  const [sessionSeed, setSessionSeed] = useState(generatedSeed);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const poolLocked = useRef(false);
   const [poolIsPro, setPoolIsPro] = useState(isPro);
@@ -87,6 +91,33 @@ export function ExamRunner({
   const timed = mode === "full" && !practice;
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, "A" | "B" | "C" | "D">>({});
+  const hydratedSession = useRef(false);
+
+  useEffect(() => {
+    if (!persistKey) return;
+    if (!hydratedSession.current) {
+      hydratedSession.current = true;
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(persistKey) || "null") as {
+          seed?: number;
+          idx?: number;
+          answers?: Record<string, "A" | "B" | "C" | "D">;
+        } | null;
+        if (!saved) return;
+        if (typeof saved.seed === "number") setSessionSeed(saved.seed);
+        if (typeof saved.idx === "number") setIdx(Math.max(0, saved.idx));
+        if (saved.answers && typeof saved.answers === "object") setAnswers(saved.answers);
+      } catch {
+        /* keep the new sitting */
+      }
+      return;
+    }
+    try {
+      sessionStorage.setItem(persistKey, JSON.stringify({ seed: sessionSeed, idx, answers }));
+    } catch {
+      /* storage can be blocked */
+    }
+  }, [persistKey, sessionSeed, idx, answers]);
   const [marked, setMarked] = useState<string[]>([]);
   const [done, setDone] = useState(false);
   const [seconds, setSeconds] = useState(examConfig.timeLimitMinutes * 60);
@@ -135,7 +166,7 @@ export function ExamRunner({
 
   useEffect(() => {
     if (done) return;
-    headingRef.current?.focus();
+    headingRef.current?.focus({ preventScroll: true });
   }, [idx, done]);
 
   const q = questions[idx];
@@ -467,7 +498,7 @@ export function QuestionBlock({
           </button>
         )}
       </div>
-      <h3 ref={headingRef} tabIndex={-1}>
+      <h3 className="quiz-heading" ref={headingRef} tabIndex={-1}>
         {index + 1}. {q.question_text}
       </h3>
       {locked ? (
@@ -522,6 +553,10 @@ export function QuestionBlock({
           wrongNote={selected && selected !== q.correct_option ? q.option_feedback[selected] : undefined}
           sourceUrl={getSource(q.source_id).url}
           sourceLabel={q.source_reference}
+          reviewLinks={q.concept_ids?.slice(0, 2).map((id, index) => ({
+            href: `${paths.flashcards}?card=${id}`,
+            label: index === 0 ? "Review this rule" : "See the comparison",
+          }))}
         />
       ) : null}
     </div>

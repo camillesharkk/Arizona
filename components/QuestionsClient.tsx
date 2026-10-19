@@ -89,7 +89,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   }
 
   useEffect(() => {
-    headingRef.current?.focus();
+    headingRef.current?.focus({ preventScroll: true });
   }, [safeIdx, q?.question_id]);
 
   const selectedTopic: TopicId | null =

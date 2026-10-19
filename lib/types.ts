@@ -47,6 +47,8 @@ export type Question = {
   };
   source_id: string;
   source_reference: string;
+  /** Knowledge-card ids. Optional so older items keep their ids and records. */
+  concept_ids?: string[];
   effective_from: string;
   effective_to: string | null;
   last_verified_at: string;
@@ -55,12 +57,42 @@ export type Question = {
   status: QuestionStatus;
 };
 
+export type FlashcardCategory =
+  | "identification"
+  | "appearance"
+  | "journal"
+  | "conflicts"
+  | "fees"
+  | "dates"
+  | "definitions"
+  | "acts";
+
 export type Flashcard = {
   id: string;
-  category: "fees" | "dates" | "definitions" | "acts";
+  category: FlashcardCategory;
+  /** Workplace prompt or the question on the front. */
   front: string;
+  /** Short answer used when the card has no separate rule field. */
   back: string;
   source_id: string;
+  title?: string;
+  rule?: string;
+  boundary?: string;
+  example?: string;
+  mixup?: string;
+  /** A memory line, kept separate from the legal rule. */
+  memory?: string;
+  topic?: TopicId;
+  question_ids?: string[];
+  kind?: "core" | "compare";
+  compare?: {
+    left: string;
+    right: string;
+    shared: string;
+    rows: { label: string; a: string; b: string }[];
+    mistake: string;
+    twist: string;
+  };
 };
 
 export type StudyChapter = {

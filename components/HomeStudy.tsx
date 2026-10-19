@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
+import { categoryLabel, StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
 import { examConfig } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 import { FREE_FULL_EXAMS } from "@/lib/product";
@@ -10,17 +11,17 @@ import { loadProgress } from "@/lib/storage";
 
 const ANON_FULL_KEY = "az-anon-full-started";
 
-export type StudyPreviewCard = {
-  id: string;
-  category: string;
-  front: string;
-  back: string;
+export type StudyPreviewCard = StudyCardView & {
   source: string;
   sourceUrl: string;
 };
 
+const HOME_CARD_KEY = "az-home-card";
+
 export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
   const [cardIndex, setCardIndex] = useState(0);
+  const [cardCategory, setCardCategory] = useState("all");
+  const [shuffled, setShuffled] = useState(false);
   const [flipped, setFlipped] = useState(false);
   const [ready, setReady] = useState(false);
   const [isPro, setIsPro] = useState(false);
@@ -33,7 +34,38 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
   const [fullOpen, setFullOpen] = useState(false);
   const [resumeHref, setResumeHref] = useState<string | null>(null);
   const anonFullThisVisit = useRef(false);
-  const card = cards[Math.min(cardIndex, Math.max(cards.length - 1, 0))];
+  const deck = (() => {
+    const list = cards.filter((item) => cardCategory === "all" || item.category === cardCategory);
+    if (!shuffled) return list;
+    const out = list.slice();
+    let seed = 20261019;
+    for (let i = out.length - 1; i > 0; i -= 1) {
+      seed = (seed * 16807) % 2147483647;
+      const j = seed % (i + 1);
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    return out;
+  })();
+  const categories = ["all", ...Array.from(new Set(cards.map((item) => item.category)))];
+  const card = deck[Math.min(cardIndex, Math.max(deck.length - 1, 0))];
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(HOME_CARD_KEY) || "");
+      if (saved && typeof saved.index === "number") setCardIndex(saved.index);
+      if (typeof saved?.category === "string") setCardCategory(saved.category);
+    } catch {
+      /* first visit */
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(HOME_CARD_KEY, JSON.stringify({ index: cardIndex, category: cardCategory }));
+    } catch {
+      /* storage can be blocked */
+    }
+  }, [cardIndex, cardCategory]);
 
   useEffect(() => {
     try {
@@ -91,7 +123,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
         className="study-module"
         aria-label="Flashcards"
         onKeyDown={(event) => {
-          if (event.key === "ArrowRight" && cardIndex < cards.length - 1) {
+          if (event.key === "ArrowRight" && cardIndex < deck.length - 1) {
             event.preventDefault();
             moveCard(cardIndex + 1);
           }
@@ -105,21 +137,35 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
           <>
             <div className="study-module-bar">
               <h2>Flashcards</h2>
-              <span className="study-category">{card.category}</span>
+              <span className="study-category">{categoryLabel(card.category)}</span>
               <span className="badge">Free preview</span>
               <Link href={paths.flashcards}>Full deck</Link>
             </div>
+            <div className="filter-row">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  className={`chip ${cardCategory === category ? "on" : ""}`}
+                  type="button"
+                  onClick={() => {
+                    setCardCategory(category);
+                    setCardIndex(0);
+                    setFlipped(false);
+                    setShuffled(false);
+                  }}
+                >
+                  {category === "all" ? "In order" : categoryLabel(category)}
+                </button>
+              ))}
+              <button className="chip" type="button" onClick={() => { setShuffled((on) => !on); setCardIndex(0); setFlipped(false); }}>
+                {shuffled ? "Back to order" : "Shuffle"}
+              </button>
+            </div>
             <div className="study-face" onClick={() => setFlipped((open) => !open)}>
-              <p className="kicker">{flipped ? "Answer" : "Question"}</p>
-              <h3>{flipped ? card.back : card.front}</h3>
-              {flipped ? (
-                <p className="notice">
-                  Official basis:{" "}
-                  <a href={card.sourceUrl} onClick={(event) => event.stopPropagation()}>
-                    {card.source}
-                  </a>
-                </p>
-              ) : null}
+              <StudyCardBody
+                card={{ ...card, sourceLabel: card.source, sourceUrl: card.sourceUrl }}
+                flipped={flipped}
+              />
               <button
                 className="btn btn-ghost study-reveal"
                 type="button"
@@ -136,13 +182,13 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
                 Previous
               </button>
               <span>
-                {cardIndex + 1} / {cards.length}
+                {Math.min(cardIndex, deck.length - 1) + 1} / {deck.length}
               </span>
               <button
                 className="btn btn-ghost"
                 type="button"
                 onClick={() => moveCard(cardIndex + 1)}
-                disabled={cardIndex >= cards.length - 1}
+                disabled={cardIndex >= deck.length - 1}
               >
                 Next
               </button>
@@ -159,7 +205,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
           {resumeHref ? <Link href={resumeHref}>Continue saved practice</Link> : null}
         </div>
         {ready ? (
-          <ExamRunner mode="quick" practice isPro={isPro} reportStart="answer" layout="compact" />
+          <ExamRunner mode="quick" practice isPro={isPro} reportStart="answer" layout="compact" persistKey="az-home-quick" />
         ) : (
           <div className="card" aria-busy="true">
             <p className="notice">Question 1 of 10</p>

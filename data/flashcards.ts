@@ -1,6 +1,7 @@
 import type { Flashcard } from "@/lib/types";
+import { knowledgeCards } from "./knowledge-cards.ts";
 
-export const flashcards: Flashcard[] = [
+const legacyCards: Flashcard[] = [
   {
     id: "fc-01",
     category: "dates",
@@ -114,3 +115,5 @@ export const flashcards: Flashcard[] = [
     source_id: "sos_exam",
   },
 ];
+
+export const flashcards: Flashcard[] = [...knowledgeCards, ...legacyCards];

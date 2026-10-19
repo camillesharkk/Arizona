@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cleanExplanation, presentExplanation } from "@/lib/explanation";
 
 export function AnswerExplain({
@@ -6,12 +7,14 @@ export function AnswerExplain({
   sourceLabel,
   wrongNote,
   status,
+  reviewLinks,
 }: {
   explanation: string;
   sourceUrl?: string;
   sourceLabel?: string;
   wrongNote?: string;
   status?: string;
+  reviewLinks?: { href: string; label: string }[];
 }) {
   const { short, why } = presentExplanation(explanation);
   const note = wrongNote ? cleanExplanation(wrongNote) : "";
@@ -26,6 +29,11 @@ export function AnswerExplain({
       <p>
         <strong>Short answer.</strong> {visible}
       </p>
+      {reviewLinks?.map((link) => (
+        <p key={link.href}>
+          <Link href={link.href}>{link.label}</Link>
+        </p>
+      ))}
       <details>
         <summary>Why / Official source</summary>
         {why ? <p>{why}</p> : null}

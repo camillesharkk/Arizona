@@ -172,6 +172,8 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--brand); width:
 }
 h1, h2, h3 { font-family: var(--font); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; margin: 8px 0; }
 h3:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; }
+h3.quiz-heading:focus,
+h3.quiz-heading:focus-visible { outline: none; }
 h1 { font-size: clamp(2rem, 4vw, 2.75rem); }
 h2 { font-size: 1.5rem; }
 .lede { font-size: 1.125rem; color: var(--muted); max-width: 62ch; }
@@ -584,7 +586,12 @@ h2 { font-size: 1.5rem; }
   flex-direction: column;
   cursor: pointer;
 }
-.study-face h3 { font-size: 1.55rem; line-height: 1.3; margin: 6px 0 12px; }
+.study-face h3 { font-size: 1.35rem; line-height: 1.35; margin: 6px 0 12px; }
+.study-card-title { margin: 0; font-weight: 600; }
+.study-source { margin-top: 8px; }
+.compare-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 8px 0 12px; }
+.compare-table th, .compare-table td { border-bottom: 1px solid var(--line); text-align: left; padding: 8px 6px; vertical-align: top; }
+.study-compare { overflow-x: auto; }
 .study-reveal { align-self: flex-start; margin-top: auto; }
 .study-pager {
   display: grid;
