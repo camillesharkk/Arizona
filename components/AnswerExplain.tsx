@@ -8,6 +8,7 @@ export function AnswerExplain({
   wrongNote,
   status,
   reviewLinks,
+  expanded,
 }: {
   explanation: string;
   sourceUrl?: string;
@@ -15,6 +16,7 @@ export function AnswerExplain({
   wrongNote?: string;
   status?: string;
   reviewLinks?: { href: string; label: string }[];
+  expanded?: boolean;
 }) {
   const { short, why } = presentExplanation(explanation);
   const note = wrongNote ? cleanExplanation(wrongNote) : "";
@@ -34,16 +36,24 @@ export function AnswerExplain({
           <Link href={link.href}>{link.label}</Link>
         </p>
       ))}
-      <details>
-        <summary>Why / Official source</summary>
-        {why ? <p>{why}</p> : null}
-        {note ? <p>{note}</p> : null}
-        {sourceUrl ? (
-          <p>
-            <a href={sourceUrl}>{sourceLabel || "Official source"}</a>
-          </p>
-        ) : null}
-      </details>
+      {expanded ? (
+        <>
+          {why ? <p>{why}</p> : null}
+          {note ? <p><strong>Why that choice is wrong. </strong>{note}</p> : null}
+          {sourceUrl ? <p><a href={sourceUrl}>{sourceLabel || "Official source"}</a></p> : sourceLabel ? <p>{sourceLabel}</p> : null}
+        </>
+      ) : (
+        <details>
+          <summary>Why / Official source</summary>
+          {why ? <p>{why}</p> : null}
+          {note ? <p>{note}</p> : null}
+          {sourceUrl ? (
+            <p>
+              <a href={sourceUrl}>{sourceLabel || "Official source"}</a>
+            </p>
+          ) : null}
+        </details>
+      )}
     </div>
   );
 }

@@ -1,39 +1,10 @@
 import Link from "next/link";
-import { examConfig, officialExam, topics } from "@/data/exam-config";
+import { officialExam } from "@/data/exam-config";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
 import { JsonLd, quizJson } from "@/components/JsonLd";
-import { HomeProCta } from "@/components/HomeProCta";
 import { AccountStatusBanner } from "@/components/AccountStatusBanner";
-import { HomeStudy } from "@/components/HomeStudy";
-import { searchMatrix } from "@/lib/seo-guides";
-import { eligibleExamPool } from "@/lib/quiz";
-import { flashcards } from "@/data/flashcards";
-import { getSource } from "@/data/sources";
-import { FREE_FLASHCARD_PREVIEW } from "@/lib/product";
-
-const bank = eligibleExamPool();
-const freeCount = bank.filter((q) => q.is_free).length;
-const previewCards = flashcards.slice(0, FREE_FLASHCARD_PREVIEW).map((card) => {
-  const source = getSource(card.source_id);
-  return {
-    id: card.id,
-    category: card.category,
-    front: card.front,
-    back: card.back,
-    title: card.title,
-    rule: card.rule,
-    boundary: card.boundary,
-    example: card.example,
-    mixup: card.mixup,
-    memory: card.memory,
-    kind: card.kind,
-    compare: card.compare,
-    practiceHref: card.topic ? paths.topic(card.topic) : undefined,
-    source: source.reference,
-    sourceUrl: source.url,
-  };
-});
+import { HomeEntry } from "@/components/HomeEntry";
 
 export const metadata = pageMeta({
   title: "Arizona Notary Exam 2026",
@@ -45,53 +16,29 @@ export const metadata = pageMeta({
 export default function ArizonaHub() {
   return (
     <main className="home-canvas">
-    <div className="wrap home-main">
-      <JsonLd data={quizJson()} />
-      <AccountStatusBanner />
-      <h1>Arizona Notary Study &amp; Practice</h1>
-      <HomeStudy cards={previewCards} />
-
-      <section className="home-after">
-        <h2>Exam practice details</h2>
-        <p>
-          Quick Practice above is 10 free questions. An explanation appears after you answer, and it does not use your one free full exam.
-          A full practice exam is {examConfig.questionCount} questions and starts only when you choose it.
-          {freeCount} questions are free. Pro includes all {bank.length}. The flashcards above are a free preview; the rest of that deck is part of Pro.
-        </p>
-        <p className="notice">
-          Independent practice, not the Arizona Secretary of State.{" "}
-          <a href={officialExam.filingUrl}>Check the official notary page</a> before you apply.
-        </p>
-        <p className="notice">{examConfig.disclaimer}</p>
-        <h2>Keep studying</h2>
-        <ul className="home-links">
-          <li><Link href={paths.study}>Study guide</Link></li>
-          <li><Link href={paths.examPrep}>Exam format and registration</Link></li>
-          <li><Link href={paths.questions}>Questions and explanations</Link></li>
-          <li><Link href={paths.become}>How to become a notary</Link></li>
-          <li><Link href={paths.laws}>2026 law updates</Link></li>
-          <li><Link href={paths.pricing}>Free and Pro access</Link></li>
-        </ul>
-        <h2>Practice by topic</h2>
-        <ul className="home-links">
-          {topics.map((topic) => (
-            <li key={topic.id}>
-              <Link href={paths.topic(topic.id)}>{topic.label}</Link>
-            </li>
-          ))}
-        </ul>
-        <h2>Guides</h2>
-        <ul className="home-links">
-          {searchMatrix.map((item) => (
-            <li key={item.href}>
-              <Link href={item.href}>{item.title}</Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <HomeProCta />
-    </div>
+      <div className="wrap home-main">
+        <JsonLd data={quizJson()} />
+        <AccountStatusBanner />
+        <HomeEntry
+          note={
+            <>
+              <p>
+                Independent Arizona practice. The 10-question check is free and does not start a full practice exam.
+                Flashcards open with a free preview. The full practice exam is a separate start.
+              </p>
+              <p>
+                <Link href={paths.study}>Study guide</Link>
+                {" · "}
+                <Link href={paths.examPrep}>Exam guide</Link>
+                {" · "}
+                <Link href={paths.pricing}>Free and Pro access</Link>
+                {" · "}
+                <a href={officialExam.filingUrl}>Official notary page</a>
+              </p>
+            </>
+          }
+        />
+      </div>
     </main>
   );
 }

@@ -8,6 +8,8 @@ import type { Difficulty, TopicId } from "@/lib/types";
 import { QuestionBlock } from "@/components/ExamRunner";
 import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
+import { CardStage } from "@/components/CardStage";
+import { AnswerReview } from "@/components/AnswerReview";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress, toggleFlag } from "@/lib/storage";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
@@ -21,11 +23,16 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [answers, setAnswers] = useState<Record<string, "A" | "B" | "C" | "D">>({});
   const [progress, setProgress] = useState(() => loadProgress());
   const [resumed, setResumed] = useState(false);
+  const [done, setDone] = useState(false);
+  const [wrongId, setWrongId] = useState<string | null>(null);
+  const [pastIndex, setPastIndex] = useState<number | null>(null);
   const [isPro, setIsPro] = useState(false);
   const sessionSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const choiceLock = useRef<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const reviewScroll = useRef(0);
+  const doneOnce = useRef(false);
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   useEffect(() => subscribeProgress(() => setProgress(loadProgress())), []);
@@ -85,7 +92,29 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
 
   function goTo(nextIdx: number) {
     cancelAutoAdvance();
+    setPastIndex(null);
+    setWrongId(null);
     setIdx(nextIdx);
+  }
+
+  function finishSet() {
+    if (doneOnce.current) return;
+    doneOnce.current = true;
+    cancelAutoAdvance();
+    setDone(true);
+  }
+
+  function openPast() {
+    if (safeIdx < 1) return;
+    cancelAutoAdvance();
+    reviewScroll.current = window.scrollY;
+    setPastIndex(safeIdx - 1);
+  }
+
+  function closePast() {
+    const y = reviewScroll.current;
+    setPastIndex(null);
+    requestAnimationFrame(() => window.scrollTo(0, y));
   }
 
   useEffect(() => {
@@ -117,6 +146,10 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
                 cancelAutoAdvance();
                 setFilter(id);
                 setIdx(0);
+                setDone(false);
+                doneOnce.current = false;
+                setWrongId(null);
+                setPastIndex(null);
                 setResumed(true);
               }}
             >
@@ -132,6 +165,10 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
               cancelAutoAdvance();
               setDifficulty(d);
               setIdx(0);
+              setDone(false);
+              doneOnce.current = false;
+              setWrongId(null);
+              setPastIndex(null);
             }}
           >
             {d}
@@ -155,57 +192,72 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
             Free Quick 10
           </Link>
         </div>
-      ) : q ? (
-      <>
-      <QuestionBlock
-        q={q}
-        index={safeIdx}
-        selected={selected}
-        reveal={!!selected}
-        lockChoice={!!selected}
-        headingRef={headingRef}
-        onChoose={(l) => {
-          if (answers[q.question_id] || choiceLock.current === q.question_id) return;
-          choiceLock.current = q.question_id;
-          setAnswers((a) => ({ ...a, [q.question_id]: l }));
-          recordAnswer(q.question_id, l === q.correct_option);
-          saveProgress({ lastQuestionId: q.question_id });
-          fetch("/api/progress/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l) }),
-          }).catch(() => undefined);
-          if (l === q.correct_option) {
-            scheduleAfterCorrect(!lastQuestion, () => setIdx((i) => Math.min(pool.length - 1, i + 1)));
-          }
-        }}
-        marked={progress.flaggedIds.includes(q.question_id)}
-        onMark={() => toggleFlag(q.question_id)}
-        isPro={isPro}
-      />
-      {selected && <TutorPanel q={q} selected={originalLetter(selected)} />}
-      {selected && selected !== q.correct_option ? (
-        <p>
-          <Link href={`${paths.study}#${q.topic}`}>Review this topic in the study guide</Link>
-        </p>
-      ) : null}
-      <AccountInvite compact />
-      <div className="sticky-nav">
-        <div className="wrap row space">
-          <button className="btn btn-ghost" type="button" disabled={safeIdx === 0} onClick={() => goTo(safeIdx - 1)}>
-            Previous
-          </button>
-          <button
-            className="btn btn-primary"
-            type="button"
-            disabled={lastQuestion}
-            onClick={() => goTo(Math.min(pool.length - 1, safeIdx + 1))}
-          >
-            {lastQuestion ? "Last question" : "Next Question"}
-          </button>
+      ) : done ? (
+        <div className="card">
+          <h2>You finished this set.</h2>
+          <p>{correctSession} of {pool.length} correct in this sitting.</p>
+          <Link className="btn btn-primary" href={paths.study}>Review the study guide</Link>
         </div>
-      </div>
-      </>
+      ) : q ? (
+      <CardStage
+        onPrev={() => goTo(safeIdx - 1)}
+        prevDisabled={safeIdx === 0 || pastIndex != null}
+        onNext={() => (lastQuestion ? finishSet() : goTo(safeIdx + 1))}
+        nextDisabled={pastIndex != null || !selected}
+        nextLabel={lastQuestion ? "See results" : "Next"}
+        corner={
+          safeIdx > 0 && pastIndex == null ? (
+            <button className="card-corner-btn" type="button" onClick={openPast}>Previous answer</button>
+          ) : null
+        }
+      >
+        {pastIndex != null && pool[pastIndex] ? (
+          <AnswerReview q={pool[pastIndex]} index={pastIndex} selected={answers[pool[pastIndex].question_id]} onBack={closePast} />
+        ) : selected && selected !== q.correct_option && wrongId === q.question_id ? (
+          <AnswerReview q={q} index={safeIdx} selected={selected} />
+        ) : (
+          <>
+            <QuestionBlock
+              q={q}
+              index={safeIdx}
+              selected={selected}
+              reveal={!!selected}
+              explain={false}
+              lockChoice={!!selected}
+              headingRef={headingRef}
+              onChoose={(l) => {
+                if (answers[q.question_id] || choiceLock.current === q.question_id) return;
+                choiceLock.current = q.question_id;
+                setAnswers((a) => ({ ...a, [q.question_id]: l }));
+                recordAnswer(q.question_id, l === q.correct_option);
+                saveProgress({ lastQuestionId: q.question_id });
+                fetch("/api/progress/", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l) }),
+                }).catch(() => undefined);
+                if (l === q.correct_option) {
+                  setWrongId(null);
+                  const at = safeIdx;
+                  scheduleAfterCorrect(() => {
+                    if (at + 1 < pool.length) setIdx(at + 1);
+                    else finishSet();
+                  });
+                } else {
+                  cancelAutoAdvance();
+                  setWrongId(q.question_id);
+                }
+              }}
+              marked={progress.flaggedIds.includes(q.question_id)}
+              onMark={() => toggleFlag(q.question_id)}
+              isPro={isPro}
+            />
+            {selected === q.correct_option ? <p className="notice" role="status">Correct.</p> : null}
+            {selected === q.correct_option ? <TutorPanel q={q} selected={originalLetter(selected)} /> : null}
+            <AccountInvite compact />
+          </>
+        )}
+      </CardStage>
       ) : null}
     </div>
   );

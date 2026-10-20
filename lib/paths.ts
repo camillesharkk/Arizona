@@ -20,6 +20,7 @@ export const paths = {
   courses: "/arizona-notary-courses/",
   training: "/arizona-notary-training/",
   flashcards: "/arizona/flashcards/",
+  resources: "/arizona/resources/",
   laws: "/arizona/new-laws/",
   become: "/arizona/become-a-notary/",
   examGuide: "/arizona-notary-exam-prep/",

@@ -17,6 +17,8 @@ import {
 import { recordAnswer, saveProgress, toggleFlag, loadProgress } from "@/lib/storage";
 import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
+import { CardStage } from "@/components/CardStage";
+import { AnswerReview } from "@/components/AnswerReview";
 import { getSource } from "@/data/sources";
 import { AnswerExplain } from "@/components/AnswerExplain";
 import { paths } from "@/lib/paths";
@@ -126,6 +128,12 @@ export function ExamRunner({
   const startedAt = useRef<number | null>(null);
   const choiceLock = useRef<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const answersRef = useRef(answers);
+  const finishOnce = useRef(false);
+  const reviewScroll = useRef(0);
+  const [wrongId, setWrongId] = useState<string | null>(null);
+  const [pastIndex, setPastIndex] = useState<number | null>(null);
+  answersRef.current = answers;
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   function reportExamStart() {
@@ -171,7 +179,6 @@ export function ExamRunner({
 
   const q = questions[idx];
   const selected = q ? answers[q.question_id] : undefined;
-  const showExplain = practice || done;
 
   if (!q) {
     return (
@@ -200,17 +207,34 @@ export function ExamRunner({
 
   function goTo(nextIdx: number) {
     cancelAutoAdvance();
+    setPastIndex(null);
+    setWrongId(null);
     setIdx(nextIdx);
+  }
+
+  function openPast() {
+    if (idx < 1) return;
+    cancelAutoAdvance();
+    reviewScroll.current = window.scrollY;
+    setPastIndex(idx - 1);
+  }
+
+  function closePast() {
+    const y = reviewScroll.current;
+    setPastIndex(null);
+    requestAnimationFrame(() => window.scrollTo(0, y));
   }
 
   function choose(letter: "A" | "B" | "C" | "D") {
     if (reportStart === "answer") reportExamStart();
     if (!practice && timed && done) return;
     if (practice) {
-      if (answers[q.question_id] || choiceLock.current === q.question_id) return;
+      if (answersRef.current[q.question_id] || choiceLock.current === q.question_id) return;
       choiceLock.current = q.question_id;
     }
-    setAnswers((a) => ({ ...a, [q.question_id]: letter }));
+    const nextAnswers = { ...answersRef.current, [q.question_id]: letter };
+    answersRef.current = nextAnswers;
+    setAnswers(nextAnswers);
     if (practice) {
       recordAnswer(q.question_id, letter === q.correct_option);
       fetch("/api/progress/", {
@@ -227,21 +251,32 @@ export function ExamRunner({
         }).catch(() => undefined);
       }
       if (letter === q.correct_option) {
-        scheduleAfterCorrect(idx + 1 < questions.length, () => setIdx((i) => i + 1));
+        setWrongId(null);
+        const at = idx;
+        scheduleAfterCorrect(() => {
+          if (at + 1 < questions.length) setIdx(at + 1);
+          else finish();
+        });
+      } else {
+        cancelAutoAdvance();
+        setWrongId(q.question_id);
       }
     }
   }
 
   function finish() {
-    if (reportStart === "answer" && Object.keys(answers).length === 0) return;
+    if (finishOnce.current) return;
+    if (reportStart === "answer" && Object.keys(answersRef.current).length === 0) return;
+    finishOnce.current = true;
     if (reportStart === "answer") reportExamStart();
     cancelAutoAdvance();
     setDone(true);
+    const current = answersRef.current;
     const results = questions.map((item) => ({
       question: item,
-      correct: answers[item.question_id] === item.correct_option,
+      correct: current[item.question_id] === item.correct_option,
     }));
-    results.forEach((r) => recordAnswer(r.question.question_id, r.correct));
+    if (!practice) results.forEach((r) => recordAnswer(r.question.question_id, r.correct));
     const pct = scorePercent(results.filter((r) => r.correct).length, questions.length);
     const prev = loadProgress();
     saveProgress({
@@ -249,8 +284,8 @@ export function ExamRunner({
       lastMode: mode,
       scores: [{ at: new Date().toISOString(), score: pct, mode }, ...prev.scores].slice(0, 20),
     });
-    results.forEach((r) => {
-      const letter = answers[r.question.question_id];
+    if (!practice) results.forEach((r) => {
+      const letter = current[r.question.question_id];
       if (letter) {
         fetch("/api/progress/", {
           method: "POST",
@@ -380,6 +415,9 @@ export function ExamRunner({
   const remain = seconds;
   const lastQuestion = idx + 1 >= questions.length;
   const practiceLocked = Boolean(practice && selected);
+  const showingWrong = Boolean(practice && wrongId === q.question_id && selected && selected !== q.correct_option);
+  const past = pastIndex != null ? questions[pastIndex] : null;
+  const nextLabel = lastQuestion ? (practice ? "See results" : "Submit exam") : "Next";
 
   return (
     <div className={layout === "compact" ? "home-exam" : "exam-pad"}>
@@ -396,56 +434,57 @@ export function ExamRunner({
       <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
         <span style={{ width: `${((idx + 1) / questions.length) * 100}%` }} />
       </div>
-      <QuestionBlock
-        q={q}
-        index={idx}
-        selected={selected}
-        reveal={!!selected && (practice || showExplain)}
-        onChoose={choose}
-        lockPaid={false}
-        lockChoice={practiceLocked}
-        headingRef={headingRef}
-        isPro={isPro}
-        marked={marked.includes(q.question_id)}
-        onMark={() => {
-          toggleFlag(q.question_id);
-          setMarked((m) =>
-            m.includes(q.question_id) ? m.filter((x) => x !== q.question_id) : [...m, q.question_id]
-          );
-        }}
-      />
-      {selected && !showExplain && !done && (
-        <p className="notice" aria-live="polite">
-          You selected {selected}.
-        </p>
-      )}
-      {practice && selected === q.correct_option && !lastQuestion ? (
-        <p className="notice" role="status">
-          Correct. Moving to the next question.
-        </p>
-      ) : null}
-      {!!selected && (practice || showExplain) && (
-        <TutorPanel q={q} selected={originalLetter(q.question_id, selected)} />
-      )}
-      <p className="notice">
-        {source.title} · {q.source_reference} · Last verified {q.last_verified_at}
-      </p>
-      <div className={layout === "compact" ? "home-exam-nav" : "sticky-nav"}>
-        <div className={layout === "compact" ? "row space" : "wrap row space"}>
-          <button className="btn btn-ghost" type="button" disabled={idx === 0} onClick={() => goTo(idx - 1)}>
-            Previous
-          </button>
-          {lastQuestion ? (
-            <button className="btn btn-sage" type="button" onClick={finish}>
-              {practice ? "View results" : "Submit exam"}
+      <CardStage
+        onPrev={() => goTo(idx - 1)}
+        prevDisabled={idx === 0 || pastIndex != null}
+        onNext={() => (lastQuestion ? finish() : goTo(idx + 1))}
+        nextDisabled={pastIndex != null || (practice ? !selected : false)}
+        nextLabel={nextLabel}
+        corner={
+          practice && idx > 0 && pastIndex == null ? (
+            <button className="card-corner-btn" type="button" onClick={openPast}>
+              Previous answer
             </button>
-          ) : (
-            <button className="btn btn-primary" type="button" onClick={() => goTo(idx + 1)}>
-              Next
-            </button>
-          )}
-        </div>
-      </div>
+          ) : null
+        }
+      >
+        {past && pastIndex != null ? (
+          <AnswerReview q={past} index={pastIndex} selected={answers[past.question_id]} onBack={closePast} />
+        ) : showingWrong && selected ? (
+          <AnswerReview q={q} index={idx} selected={selected} />
+        ) : (
+          <>
+            <QuestionBlock
+              q={q}
+              index={idx}
+              selected={selected}
+              reveal={Boolean(practice && selected)}
+              explain={false}
+              onChoose={choose}
+              lockPaid={false}
+              lockChoice={practiceLocked}
+              headingRef={headingRef}
+              isPro={isPro}
+              marked={marked.includes(q.question_id)}
+              onMark={() => {
+                toggleFlag(q.question_id);
+                setMarked((m) =>
+                  m.includes(q.question_id) ? m.filter((x) => x !== q.question_id) : [...m, q.question_id]
+                );
+              }}
+            />
+            {practice && selected === q.correct_option ? (
+              <p className="notice" role="status">Correct.</p>
+            ) : null}
+            {!!selected && practice ? <TutorPanel q={q} selected={originalLetter(q.question_id, selected)} /> : null}
+            {!practice ? (
+              <p className="notice">
+                {source.title} · {q.source_reference} · Last verified {q.last_verified_at}
+              </p>
+            ) : null}
+          </>
+        )}
+      </CardStage>
     </div>
   );
 }
@@ -468,6 +507,7 @@ export function QuestionBlock({
   lockPaid = true,
   lockChoice = false,
   headingRef,
+  explain,
 }: {
   q: Question;
   index: number;
@@ -480,11 +520,13 @@ export function QuestionBlock({
   lockPaid?: boolean;
   lockChoice?: boolean;
   headingRef?: Ref<HTMLHeadingElement>;
+  explain?: boolean;
 }) {
   const letters = ["A", "B", "C", "D"] as const;
   const map = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
   const locked = lockPaid && !q.is_free && !isPro;
   const choiceDisabled = !onChoose || locked || lockChoice;
+  const showWriteup = explain ?? Boolean(reveal);
   return (
     <div className="card">
       <div className="row space">
@@ -498,7 +540,7 @@ export function QuestionBlock({
           </button>
         )}
       </div>
-      <h3 className="quiz-heading" ref={headingRef} tabIndex={-1}>
+      <h3 className="quiz-heading quiz-stem" ref={headingRef} tabIndex={-1}>
         {index + 1}. {q.question_text}
       </h3>
       {locked ? (
@@ -546,7 +588,7 @@ export function QuestionBlock({
           );
         })}
       </div>
-      {reveal && !locked ? (
+      {showWriteup && !locked ? (
         <AnswerExplain
           status={!selected ? "Unanswered" : selected === q.correct_option ? "Correct" : "Not quite"}
           explanation={q.explanation}

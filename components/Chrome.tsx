@@ -70,6 +70,7 @@ export function SiteHeader() {
     { href: paths.questions, label: "Questions" },
     { href: paths.study, label: "Study Guide" },
     { href: paths.flashcards, label: "Flashcards" },
+    { href: paths.resources, label: "Resources" },
   ];
   const exam = [
     { href: paths.examPrep, label: "Exam Guide" },
@@ -102,6 +103,9 @@ export function SiteHeader() {
           </Link>
           <Link href={paths.study} className={active(pathname, paths.study) ? "active" : ""}>
             Study Guide
+          </Link>
+          <Link href={paths.resources} className={active(pathname, paths.resources) ? "active" : ""}>
+            Resources
           </Link>
           <Link href={paths.laws} className={active(pathname, paths.laws) ? "active" : ""}>
             Laws
@@ -198,28 +202,22 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="footer">
-      <div className="wrap">
-        <strong className="footer-brand">Arizona Exam</strong>
-        <div className="footer-grid">
-          <div>
-            <strong>Study</strong>
-            <p><Link href={paths.practice}>Practice Test</Link></p>
-            <p><Link href={paths.questions}>Questions</Link></p>
-            <p><Link href={paths.study}>Study Guide</Link></p>
-            <p><Link href={paths.guidesIndex}>Exam guides</Link></p>
-            <p><Link href={paths.passingScore}>Passing score</Link></p>
-            <p><Link href={paths.mistakes}>Wrong Answers</Link></p>
-          </div>
-          <div>
-            <strong>Company</strong>
-            <p><Link href={paths.privacy}>Privacy</Link></p>
-            <p><Link href={paths.terms}>Terms</Link></p>
-            <p><Link href={paths.refund}>Refund Policy</Link></p>
-            <p><Link href={paths.affiliate}>Affiliate Disclosure</Link></p>
-            <p><Link href={paths.disclaimer}>Disclaimer</Link></p>
-            <p><Link href={paths.contact}>Contact</Link></p>
-          </div>
-        </div>
+      <div className="wrap footer-bar">
+        <p className="footer-brand">Arizona Exam. Independent practice.</p>
+        <nav className="footer-links" aria-label="Help and legal">
+          <Link href={paths.practice}>Practice Test</Link>
+          <Link href={paths.questions}>Questions</Link>
+          <Link href={paths.study}>Study Guide</Link>
+          <Link href={paths.guidesIndex}>Exam guides</Link>
+          <Link href={paths.passingScore}>Passing score</Link>
+          <Link href={paths.mistakes}>Wrong Answers</Link>
+          <Link href={paths.privacy}>Privacy</Link>
+          <Link href={paths.terms}>Terms</Link>
+          <Link href={paths.refund}>Refund Policy</Link>
+          <Link href={paths.affiliate}>Affiliate Disclosure</Link>
+          <Link href={paths.disclaimer}>Disclaimer</Link>
+          <Link href={paths.contact}>Contact</Link>
+        </nav>
       </div>
     </footer>
   );

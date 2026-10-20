@@ -8,6 +8,7 @@ import { loadProgress, saveProgress } from "@/lib/storage";
 import { paths } from "@/lib/paths";
 import { FREE_FLASHCARD_PREVIEW } from "@/lib/product";
 import { categoryLabel, StudyCardBody } from "@/components/StudyCardBody";
+import { CardStage } from "@/components/CardStage";
 
 const FLASH_KEY = "az-flash-place";
 const categoryOrder = ["identification", "appearance", "journal", "conflicts", "fees", "dates", "definitions", "acts"];
@@ -130,30 +131,52 @@ export function FlashcardsClient() {
   const p = loadProgress();
   const known = p.knownCards.length;
 
+  function pickCategory(next: string) {
+    setCat(next);
+    setI(0);
+    setFlipped(false);
+    setFinished(false);
+  }
+
   return (
-    <div>
-      <div className="filter-row">
+    <div className="flash-layout">
+      <nav className="flash-topics" aria-label="Topics">
         {categories.map((c) => (
           <button
             key={c}
-            className={`chip ${cat === c ? "on" : ""}`}
+            className={cat === c ? "on" : ""}
             type="button"
-            onClick={() => {
-              setCat(c);
-              setI(0);
-              setFlipped(false);
-              setFinished(false);
-            }}
+            onClick={() => pickCategory(c)}
           >
             {c === "all" ? "In order" : categoryLabel(c)}
           </button>
         ))}
-      </div>
+      </nav>
+      <label className="flash-select">
+        Topic
+        <select value={cat} onChange={(event) => pickCategory(event.target.value)}>
+          {categories.map((c) => (
+            <option key={c} value={c}>
+              {c === "all" ? "In order" : categoryLabel(c)}
+            </option>
+          ))}
+        </select>
+      </label>
+      <div>
       <p className="notice">
         Mastered {known} · Review pile {p.reviewCards.length}
         {` · ${Math.min(i + 1, deck.length)} of ${deck.length} in this set`}
         {!isPro ? ` · Free preview ${allowed.length} of ${flashcards.length} cards` : ""}
       </p>
+      <CardStage
+        onPrev={() => { setI(i - 1); setFlipped(false); }}
+        prevDisabled={i === 0}
+        onNext={() => {
+          if (i + 1 >= deck.length) setFinished(true);
+          else { setI(i + 1); setFlipped(false); }
+        }}
+        nextLabel={i + 1 >= deck.length ? "Done studying" : "Next"}
+      >
       <div
         className="card flash-card"
         onClick={() => setFlipped(!flipped)}
@@ -189,8 +212,6 @@ export function FlashcardsClient() {
               knownCards,
               reviewCards: loadProgress().reviewCards.filter((id) => id !== card.id),
             });
-            if (i + 1 >= deck.length) setFinished(true);
-            else setI(i + 1);
             setFlipped(false);
           }}
         >
@@ -202,23 +223,19 @@ export function FlashcardsClient() {
           onClick={() => {
             const reviewCards = [...new Set([...loadProgress().reviewCards, card.id])];
             saveProgress({ reviewCards });
-            if (i + 1 >= deck.length) setFinished(true);
-            else setI(i + 1);
             setFlipped(false);
           }}
         >
           Review Again
         </button>
       </div>
-      {!isPro && (
-        <div className="card" style={{ marginTop: 16 }}>
-          <strong>Know exactly what to study next.</strong>
-          <p>Full flashcards are included with 60-day Pro.</p>
-          <Link className="btn btn-primary" href={paths.pricing}>
-            Unlock Pro
-          </Link>
-        </div>
-      )}
+      {!isPro ? (
+        <p className="notice">
+          This preview is free. <Link href={paths.pricing}>The rest of the deck is part of Pro.</Link>
+        </p>
+      ) : null}
+      </CardStage>
+      </div>
     </div>
   );
 }

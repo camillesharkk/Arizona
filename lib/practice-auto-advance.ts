@@ -16,9 +16,8 @@ export function usePracticeAutoAdvance() {
   useEffect(() => cancel, [cancel]);
 
   const scheduleAfterCorrect = useCallback(
-    (hasNext: boolean, goNext: () => void) => {
+    (goNext: () => void) => {
       cancel();
-      if (!hasNext) return;
       timer.current = setTimeout(() => {
         timer.current = null;
         goNext();

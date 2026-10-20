@@ -5,6 +5,7 @@ import Link from "next/link";
 import { chapters } from "@/data/study-guide";
 import { findSource } from "@/data/sources";
 import { AnswerExplain } from "@/components/AnswerExplain";
+import { CardStage } from "@/components/CardStage";
 import {
   arizonaDiagnostic,
   bandAction,
@@ -25,7 +26,6 @@ import { currentEmail } from "@/lib/account";
 import { paths } from "@/lib/paths";
 import { eligibleExamPool } from "@/lib/quiz";
 import type { Question, TopicId } from "@/lib/types";
-import { FREE_FLASHCARD_PREVIEW } from "@/lib/product";
 
 const profile = arizonaDiagnostic;
 
@@ -203,7 +203,15 @@ export function DiagnosticFlow({
       >
         <span style={{ width: `${((session.index + 1) / questions.length) * 100}%` }} />
       </div>
-      <h2 ref={headingRef} tabIndex={-1}>
+      <CardStage
+        onPrev={() => persist({ ...session, index: session.index - 1 })}
+        prevDisabled={session.index === 0}
+        onNext={() => (last ? submit() : persist({ ...session, index: session.index + 1 }))}
+        nextDisabled={!selected}
+        nextLabel={last ? "Submit check" : "Next"}
+      >
+      <div className="card">
+      <h2 className="quiz-stem" ref={headingRef} tabIndex={-1}>
         {q.question_text}
       </h2>
       <fieldset className="q-options diagnostic-options">
@@ -238,38 +246,11 @@ export function DiagnosticFlow({
       </fieldset>
       {!selected ? (
         <p className="notice" id="diagnostic-need-answer">
-          Choose an answer to continue. You will not see whether it is correct until you submit.
+          Choose an answer to continue.
         </p>
-      ) : (
-        <p className="notice">Answer saved. Correctness stays hidden until you submit.</p>
-      )}
-      <div className="home-exam-nav">
-        <div className="row space">
-          <button
-            className="btn btn-ghost"
-            type="button"
-            disabled={session.index === 0}
-            onClick={() => persist({ ...session, index: session.index - 1 })}
-          >
-            Previous
-          </button>
-          {last ? (
-            <button className="btn btn-primary" type="button" disabled={!selected} aria-describedby={selected ? undefined : "diagnostic-need-answer"} onClick={submit}>
-              Submit check
-            </button>
-          ) : (
-            <button
-              className="btn btn-primary"
-              type="button"
-              disabled={!selected}
-              aria-describedby={selected ? undefined : "diagnostic-need-answer"}
-              onClick={() => persist({ ...session, index: session.index + 1 })}
-            >
-              Next
-            </button>
-          )}
-        </div>
+      ) : null}
       </div>
+      </CardStage>
     </div>
   );
 }
@@ -299,6 +280,13 @@ function DiagnosticResult({
   const missed = missedTopics(scores);
   const focus = missed[0];
   const focusStudy = focus ? chapterHref(focus.topic) : null;
+  const advice = !missed.length
+    ? "Every answer in this check was correct."
+    : missed.length === 1
+      ? `Review ${missed[0].label}. That is the topic you missed.`
+      : missed.length === 2
+        ? `Review ${missed[0].label} and ${missed[1].label}. Those are the topics you missed.`
+        : `Review ${missed[0].label} and ${missed[1].label} first. You also missed ${missed.length - 2} other topics.`;
   const clicked = useRef(new Set<string>());
 
   function recommend(next: string, run: () => void) {
@@ -316,10 +304,6 @@ function DiagnosticResult({
       <button className="btn btn-primary" type="button" onClick={() => recommend("full", onOpenFull)}>
         {bandAction("full")}
       </button>
-    ) : band === "review" && missed.length !== 1 ? (
-      <a className="btn btn-primary" href="#diagnostic-topics" onClick={() => recommend("review", () => undefined)}>
-        {bandAction("review")}
-      </a>
     ) : (
       <Link
         className="btn btn-primary"
@@ -332,73 +316,63 @@ function DiagnosticResult({
 
   return (
     <div>
-      <h2 ref={headingRef} tabIndex={-1}>
+      <h2 className="quiz-result" ref={headingRef} tabIndex={-1}>
         {correct} of {total} correct
       </h2>
-      <p>This short check suggests what to review. It does not predict your official exam result.</p>
-      <div className="home-choice">{primary}</div>
-      <h3 id="diagnostic-topics">Topics in this check</h3>
-      <ul className="home-links">
-        {scores.map((item) => {
-          const study = chapterHref(item.topic);
-          const freePractice = eligibleExamPool({ topic: item.topic, freeOnly: true }).length > 0;
-          return (
-            <li key={item.topic}>
-              {item.label}: {item.correct} of {item.total} correct
-              {study ? (
-                <>
-                  {" "}
-                  <Link href={study} onClick={() => recommend(`study-${item.topic}`, () => undefined)}>
-                    Study
-                  </Link>
-                </>
-              ) : null}
-              {freePractice ? (
-                <>
-                  {" "}
-                  <Link href={paths.topic(item.topic)} onClick={() => recommend(`practice-${item.topic}`, () => undefined)}>
-                    Practice
-                  </Link>
-                </>
-              ) : (
-                <span> · Practice for this topic is part of Pro. The study chapter is free.</span>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-      <p className="notice">Topics that did not appear in this check are not scored.</p>
-      <p className="notice">
+      <p className="home-lead">{advice}</p>
+      <div className="home-actions">{primary}</div>
+      <details className="home-more" id="diagnostic-topics">
+        <summary>Topics in this check</summary>
+        <ul className="home-links">
+          {scores.map((item) => {
+            const study = chapterHref(item.topic);
+            const freePractice = eligibleExamPool({ topic: item.topic, freeOnly: true }).length > 0;
+            return (
+              <li key={item.topic}>
+                {item.label}: {item.correct} of {item.total} correct
+                {study ? (
+                  <>
+                    {" "}
+                    <Link href={study} onClick={() => recommend(`study-${item.topic}`, () => undefined)}>
+                      Study
+                    </Link>
+                  </>
+                ) : null}
+                {freePractice ? (
+                  <>
+                    {" "}
+                    <Link href={paths.topic(item.topic)} onClick={() => recommend(`practice-${item.topic}`, () => undefined)}>
+                      Practice
+                    </Link>
+                  </>
+                ) : (
+                  <span> · Practice for this topic is part of Pro. The study chapter is free.</span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+        <p className="notice">Topics that did not appear in this check are not scored.</p>
+      </details>
+      <details className="home-more" id="diagnostic-review">
+        <summary>Review answers</summary>
+        {questions.map((q, index) => (
+          <QuestionReview key={q.question_id} q={q} index={index} choice={session.answers[q.question_id]} />
+        ))}
+      </details>
+      <p className="home-sub">
         <button className="home-text-btn" type="button" onClick={() => recommend("flashcards", onOpenCards)}>
-          Study with Flashcards
+          Study Flashcards
         </button>
-        {" · "}
-        Free preview is the first {FREE_FLASHCARD_PREVIEW} cards. Those cards are not matched to these topics. The rest of the deck is part of Pro.
-      </p>
-      {band !== "full" ? (
-        <p>
-          <button className="home-text-btn" type="button" onClick={() => recommend("full", onOpenFull)}>
-            Take a Full Practice Exam
-          </button>
-        </p>
-      ) : null}
-      <p>
-        <Link href={paths.practice} onClick={() => recommend("quick10", () => undefined)}>
-          Practice 10 questions with instant feedback
-        </Link>
-      </p>
-      <h3 id="diagnostic-review">Question review</h3>
-      {questions.map((q, index) => (
-        <QuestionReview key={q.question_id} q={q} index={index} choice={session.answers[q.question_id]} />
-      ))}
-      <div className="row" style={{ marginTop: 16 }}>
-        <button className="btn btn-ghost" type="button" onClick={onRetake}>
-          Check again
+        <span aria-hidden="true"> · </span>
+        <button className="home-text-btn home-restart" type="button" onClick={onRetake}>
+          Start over
         </button>
-        <button className="btn btn-ghost" type="button" onClick={onExit}>
+        <span aria-hidden="true"> · </span>
+        <button className="home-text-btn home-restart" type="button" onClick={onExit}>
           Back
         </button>
-      </div>
+      </p>
     </div>
   );
 }
@@ -411,7 +385,7 @@ function QuestionReview({ q, index, choice }: { q: Question; index: number; choi
   const status = !choice ? "Not answered" : choice === "unsure" ? "Unsure" : correct ? "Correct" : "Not correct";
 
   return (
-    <details className="card" style={{ marginTop: 12 }}>
+    <details className="home-review">
       <summary>
         Question {index + 1}: {status}
       </summary>
