@@ -30,7 +30,6 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
   const [anonFullUsed, setAnonFullUsed] = useState(false);
   const [gateReady, setGateReady] = useState(false);
   const [authReady, setAuthReady] = useState(false);
-  const [fullGate, setFullGate] = useState(false);
   const [fullOpen, setFullOpen] = useState(false);
   const [resumeHref, setResumeHref] = useState<string | null>(null);
   const anonFullThisVisit = useRef(false);
@@ -217,32 +216,31 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
             <div className="skeleton skeleton-line" />
           </div>
         )}
-        <div className="study-secondary">
-          {!fullGate && !fullOpen ? (
-            <button className="home-text-btn" type="button" onClick={() => setFullGate(true)}>
-              Take a full practice exam
-            </button>
-          ) : null}
-          {fullGate && !fullOpen ? (
-            <div className="card">
-              <p>
+        <div className="q-options">
+          {fullLocked ? (
+            <Link className="q-option" href={paths.pricing}>
+              <strong className="q-option-inner">Take a full practice exam</strong>
+              <span className="notice q-option-inner">This browser or account already used its free full exam. Another full exam is part of Pro.</span>
+            </Link>
+          ) : (
+            <button
+              className={`q-option${fullOpen ? " selected" : ""}`}
+              type="button"
+              aria-pressed={fullOpen}
+              disabled={!authReady || !gateReady}
+              onClick={() => {
+                if (!fullOpen) startFull();
+              }}
+            >
+              <strong className="q-option-inner">Take a full practice exam</strong>
+              <span className="notice q-option-inner">
                 {examConfig.questionCount} questions, {examConfig.timeLimitMinutes} minutes. Explanations stay hidden until you submit.
                 Starting this uses your free full exam if you have one left.
-              </p>
-              {fullLocked ? (
-                <>
-                  <p>This browser or account already used its free full exam. Another full exam is part of Pro.</p>
-                  <Link className="btn btn-ghost" href={paths.pricing}>See Pro access</Link>
-                </>
-              ) : (
-                <button className="btn btn-ghost" type="button" onClick={startFull} disabled={!authReady || !gateReady}>
-                  Start full exam
-                </button>
-              )}
-            </div>
-          ) : null}
-          {fullOpen ? <ExamRunner mode="full" isPro={isPro} layout="compact" /> : null}
+              </span>
+            </button>
+          )}
         </div>
+        {fullOpen ? <ExamRunner mode="full" isPro={isPro} layout="compact" /> : null}
       </section>
     </div>
   );
