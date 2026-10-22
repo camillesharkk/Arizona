@@ -56,6 +56,7 @@ export type QuestionStat = {
   lastWrongAt: string | null;
   lastReviewedAt: string | null;
   nextReviewAt: string | null;
+  reviewPlan?: string | null;
   state: string;
   lastSelected: string | null;
   lastCorrectOption: string | null;
@@ -151,6 +152,8 @@ export type Store = {
   revokeActiveArizonaEntitlements(userId: string): Promise<number>;
   deleteTokensForUser(userId: string, type?: TokenRow["type"]): Promise<void>;
   clearLearningData(userId: string): Promise<void>;
+  getStudyPlan(userId: string, state: string): Promise<{ userId: string; state: string; document: unknown } | null>;
+  saveStudyPlan(row: { userId: string; state: string; document: unknown }): Promise<void>;
   getTombstone(emailHmac: string): Promise<AccountDeletionTombstone | null>;
   upsertTombstone(row: AccountDeletionTombstone): Promise<void>;
 };

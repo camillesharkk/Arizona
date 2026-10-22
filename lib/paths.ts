@@ -39,6 +39,7 @@ export const paths = {
   billing: "/account/billing/",
   accountDelete: "/account/delete/",
   mistakes: "/wrong-answers/",
+  daily: "/daily-study/",
   pricing: "/pricing/",
   contact: "/contact/",
   privacy: "/legal/privacy/",

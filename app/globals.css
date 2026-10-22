@@ -758,3 +758,8 @@ h2 { font-size: 1.5rem; }
   .home-choice { align-items: stretch; width: 100%; }
   .home-choice .btn { width: 100%; }
 }
+.daily-meta { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; margin: 8px 0 16px; }
+.daily-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+@media (max-width: 800px) {
+  .daily-grid { grid-template-columns: 1fr; }
+}

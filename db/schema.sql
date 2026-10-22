@@ -63,6 +63,7 @@ create table if not exists question_stats (
   last_wrong_at timestamptz,
   last_reviewed_at timestamptz,
   next_review_at timestamptz,
+  review_plan text,
   state text not null default 'AZ',
   last_selected text,
   last_correct_option text,
@@ -82,6 +83,14 @@ create index if not exists question_stats_user_favorited_idx on question_stats (
 create index if not exists question_stats_user_mistakes_idx
   on question_stats (user_id, last_at desc)
   where wrong_count > 0;
+
+create table if not exists study_plans (
+  user_id text not null references users (id) on delete cascade,
+  state text not null,
+  document text not null,
+  updated_at timestamptz not null default now(),
+  primary key (user_id, state)
+);
 
 create table if not exists answer_attempts (
   user_id text not null references users (id) on delete cascade,

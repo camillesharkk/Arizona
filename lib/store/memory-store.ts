@@ -23,6 +23,7 @@ type Mem = {
   emailLogs: { userId: string; emailType: EmailType; periodKey: string; status: string; messageId?: string | null }[];
   entitlements: EntitlementRow[];
   tombstones: AccountDeletionTombstone[];
+  studyPlans: { userId: string; state: string; document: unknown }[];
 };
 
 function empty(): Mem {
@@ -38,6 +39,7 @@ function empty(): Mem {
     emailLogs: [],
     entitlements: [],
     tombstones: [],
+    studyPlans: [],
   };
 }
 
@@ -283,9 +285,18 @@ export function createMemoryStore(): Store {
     async deleteTokensForUser(userId, type) {
       db.tokens = db.tokens.filter((t) => t.userId !== userId || (type && t.type !== type));
     },
+    async getStudyPlan(userId, state) {
+      return db.studyPlans.find((item) => item.userId === userId && item.state === state) ?? null;
+    },
+    async saveStudyPlan(row) {
+      const index = db.studyPlans.findIndex((item) => item.userId === row.userId && item.state === row.state);
+      if (index < 0) db.studyPlans.push(row);
+      else db.studyPlans[index] = row;
+    },
     async clearLearningData(userId) {
       db.stats = db.stats.filter((s) => s.userId !== userId);
       db.attempts = db.attempts.filter((item) => item.userId !== userId);
+      db.studyPlans = db.studyPlans.filter((item) => item.userId !== userId);
       db.exams = db.exams.filter((e) => e.userId !== userId);
       db.ai = db.ai.filter((a) => a.userId !== userId);
       db.emailLogs = db.emailLogs.filter((l) => l.userId !== userId);

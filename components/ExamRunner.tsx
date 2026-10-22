@@ -37,6 +37,7 @@ export function ExamRunner({
   layout = "page",
   persistKey,
   review = false,
+  onRecorded,
 }: {
   mode: Mode;
   practice?: boolean;
@@ -49,6 +50,7 @@ export function ExamRunner({
   persistKey?: string;
   /** Wrong-answer practice. A normal practice correct does not move the review plan. */
   review?: boolean;
+  onRecorded?: () => void;
 }) {
   const generatedSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
   const [sessionSeed, setSessionSeed] = useState(generatedSeed);
@@ -256,7 +258,7 @@ export function ExamRunner({
           attemptId: attemptId(q.question_id),
           review,
         }),
-      }).catch(() => undefined);
+      }).then(() => onRecorded?.()).catch(() => undefined);
       if (mode === "weak" && isPro && !weakReported.current) {
         weakReported.current = true;
         fetch("/api/billing/pro-usage/", {

@@ -83,6 +83,9 @@ export function AccountMenu({ me, onLogout }: { me: HeaderUser; onLogout: () => 
           <Link role="menuitem" href={paths.mistakes} onClick={() => setOpen(false)}>
             Wrong Answers
           </Link>
+          <Link role="menuitem" href={`${paths.account}#study-settings`} onClick={() => setOpen(false)}>
+            Study Settings
+          </Link>
           <Link role="menuitem" href={paths.account} onClick={() => setOpen(false)}>
             Account Settings
           </Link>

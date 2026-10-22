@@ -92,6 +92,7 @@ function mapStat(r: Record<string, unknown>): QuestionStat {
     lastWrongAt: r.last_wrong_at ? iso(r.last_wrong_at) : null,
     lastReviewedAt: r.last_reviewed_at ? iso(r.last_reviewed_at) : null,
     nextReviewAt: r.next_review_at ? iso(r.next_review_at) : null,
+    reviewPlan: r.review_plan ? String(r.review_plan) : null,
     state: r.state ? String(r.state) : "AZ",
     lastSelected: r.last_selected ? String(r.last_selected) : null,
     lastCorrectOption: r.last_correct_option ? String(r.last_correct_option) : null,
@@ -169,12 +170,12 @@ export const pgStore: Store = {
     await assertSchema();
     await db()`insert into question_stats (
       user_id, question_id, topic, bank, chapter, state, first_correct, last_correct, wrong_count, right_count,
-      review_count, consecutive_correct, review_stage, last_wrong_at, last_reviewed_at, next_review_at,
+      review_count, consecutive_correct, review_stage, last_wrong_at, last_reviewed_at, next_review_at, review_plan,
       last_selected, last_correct_option, first_at, last_at, mastered, favorited
     ) values (
       ${stat.userId}, ${stat.questionId}, ${stat.topic}, ${stat.bank}, ${stat.chapter}, ${stat.state},
       ${stat.firstCorrect}, ${stat.lastCorrect}, ${stat.wrongCount}, ${stat.rightCount},
-      ${stat.reviewCount}, ${stat.consecutiveCorrect}, ${stat.reviewStage}, ${stat.lastWrongAt}, ${stat.lastReviewedAt}, ${stat.nextReviewAt},
+      ${stat.reviewCount}, ${stat.consecutiveCorrect}, ${stat.reviewStage}, ${stat.lastWrongAt}, ${stat.lastReviewedAt}, ${stat.nextReviewAt}, ${stat.reviewPlan || "v2"},
       ${stat.lastSelected}, ${stat.lastCorrectOption}, ${stat.firstAt}, ${stat.lastAt}, ${stat.mastered}, ${stat.favorited}
     ) on conflict (user_id, question_id) do update set
       last_correct = excluded.last_correct,
@@ -186,6 +187,7 @@ export const pgStore: Store = {
       last_wrong_at = excluded.last_wrong_at,
       last_reviewed_at = excluded.last_reviewed_at,
       next_review_at = excluded.next_review_at,
+      review_plan = excluded.review_plan,
       state = excluded.state,
       last_selected = excluded.last_selected,
       last_correct_option = excluded.last_correct_option,
@@ -417,10 +419,26 @@ export const pgStore: Store = {
     if (type) await db()`delete from tokens where user_id = ${userId} and type = ${type}`;
     else await db()`delete from tokens where user_id = ${userId}`;
   },
+  async getStudyPlan(userId, state) {
+    await assertSchema();
+    const rows = await db()`select document from study_plans where user_id = ${userId} and state = ${state} limit 1`;
+    const row = rows[0] as { document?: unknown } | undefined;
+    if (!row) return null;
+    const document = typeof row.document === "string" ? JSON.parse(row.document) : row.document;
+    return { userId, state, document };
+  },
+  async saveStudyPlan(row) {
+    await assertSchema();
+    const document = JSON.stringify(row.document);
+    await db()`insert into study_plans (user_id, state, document)
+      values (${row.userId}, ${row.state}, ${document})
+      on conflict (user_id, state) do update set document = excluded.document, updated_at = now()`;
+  },
   async clearLearningData(userId) {
     await assertSchema();
     await db()`delete from question_stats where user_id = ${userId}`;
     await db()`delete from answer_attempts where user_id = ${userId}`;
+    await db()`delete from study_plans where user_id = ${userId}`;
     await db()`delete from exams where user_id = ${userId}`;
     await db()`delete from ai_usage where user_id = ${userId}`;
     await db()`delete from email_logs where user_id = ${userId}`;

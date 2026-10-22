@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { StudySettings } from "@/components/StudySettings";
 import { PERSONAL_USE_NOTICE } from "@/lib/pricing/copy";
 import { paths } from "@/lib/paths";
 
@@ -93,6 +94,7 @@ export function AccountSettings() {
   }
 
   return (
+    <>
     <div className="grid grid-2">
       <form className="card" onSubmit={savePrefs}>
         <h2>Profile</h2>
@@ -158,5 +160,7 @@ export function AccountSettings() {
         </section>
       </div>
     </div>
+      <StudySettings />
+    </>
   );
 }

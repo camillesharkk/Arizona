@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     paths.questions,
     paths.study,
     paths.studyCards,
+    paths.daily,
     paths.examPrep,
     paths.guidesIndex,
     paths.passingScore,

@@ -108,10 +108,13 @@ export function SiteHeader() {
           <Link href={paths.resources} className={active(pathname, paths.resources) ? "active" : ""}>
             Resources
           </Link>
+          <WrongAnswersLink className={active(pathname, paths.mistakes) ? "active" : ""} />
+          <Link href={paths.daily} className={active(pathname, paths.daily) ? "active" : ""}>
+            Daily Study
+          </Link>
           <Link href={paths.laws} className={active(pathname, paths.laws) ? "active" : ""}>
             Laws
           </Link>
-          <WrongAnswersLink className={active(pathname, paths.mistakes) ? "active" : ""} />
         </nav>
         <div className="header-right">
           {authStatus === "signed-out" && (
@@ -167,6 +170,9 @@ export function SiteHeader() {
               </Link>
             ))}
             <WrongAnswersLink className={active(pathname, paths.mistakes) ? "active" : ""} />
+            <Link href={paths.daily} className={active(pathname, paths.daily) ? "active" : ""}>
+              Daily Study
+            </Link>
           </>
         )}
         <button className="chip" type="button" onClick={() => setAccountOpen((v) => !v)}>

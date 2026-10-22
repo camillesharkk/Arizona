@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
-import { REVIEW_INTERVALS_MS } from "../review-schedule.ts";
+import { migrateReviewFields } from "../review-schedule.ts";
 import type { AccountDeletionTombstone, EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
 
 type FileDb = {
@@ -16,6 +16,7 @@ type FileDb = {
   emailLogs: { userId: string; emailType: EmailType; periodKey: string; status: string; messageId?: string | null }[];
   entitlements: EntitlementRow[];
   tombstones: AccountDeletionTombstone[];
+  studyPlans: { userId: string; state: string; document: unknown }[];
 };
 
 const empty = (): FileDb => ({
@@ -29,7 +30,8 @@ const empty = (): FileDb => ({
   webhooks: [],
   emailLogs: [],
   entitlements: [],
-  tombstones: [],
+    tombstones: [],
+    studyPlans: [],
 });
 
 const filePath = () => path.join(process.cwd(), ".data", "store.json");
@@ -41,21 +43,18 @@ async function load(): Promise<FileDb> {
     const parsed = { ...empty(), ...JSON.parse(raw) } as FileDb;
     if (!Array.isArray(parsed.siteQuota)) parsed.siteQuota = [];
     if (!Array.isArray(parsed.attempts)) parsed.attempts = [];
-    parsed.stats = parsed.stats.map((stat) => {
-      const wrongCount = stat.wrongCount ?? 0;
-      const lastAt = stat.lastAt || new Date().toISOString();
-      const needsPlan = wrongCount > 0 && !stat.nextReviewAt;
-      return {
-        ...stat,
-        reviewCount: stat.reviewCount ?? 0,
-        consecutiveCorrect: stat.consecutiveCorrect ?? 0,
-        reviewStage: needsPlan ? 0 : stat.reviewStage ?? 0,
-        lastWrongAt: stat.lastWrongAt ?? (needsPlan ? lastAt : null),
-        lastReviewedAt: stat.lastReviewedAt ?? null,
-        nextReviewAt: needsPlan ? new Date(Date.parse(lastAt) + REVIEW_INTERVALS_MS[0]).toISOString() : stat.nextReviewAt ?? null,
-        state: stat.state || "AZ",
-      };
-    });
+    if (!Array.isArray(parsed.studyPlans)) parsed.studyPlans = [];
+    const now = new Date().toISOString();
+    parsed.stats = parsed.stats.map((stat) => migrateReviewFields({
+      ...stat,
+      reviewCount: stat.reviewCount ?? 0,
+      consecutiveCorrect: stat.consecutiveCorrect ?? 0,
+      reviewStage: stat.reviewStage ?? 0,
+      lastWrongAt: stat.lastWrongAt ?? null,
+      lastReviewedAt: stat.lastReviewedAt ?? null,
+      nextReviewAt: stat.nextReviewAt ?? null,
+      state: stat.state || "AZ",
+    }, now));
     return parsed;
   } catch {
     return empty();
@@ -362,10 +361,21 @@ export const fileStore: Store = {
       db.tokens = db.tokens.filter((t) => t.userId !== userId || (type && t.type !== type));
     });
   },
+  getStudyPlan(userId, state) {
+    return load().then((db) => db.studyPlans.find((item) => item.userId === userId && item.state === state) ?? null);
+  },
+  saveStudyPlan(row) {
+    return mutate((db) => {
+      const index = db.studyPlans.findIndex((item) => item.userId === row.userId && item.state === row.state);
+      if (index < 0) db.studyPlans.push(row);
+      else db.studyPlans[index] = row;
+    });
+  },
   clearLearningData(userId) {
     return mutate((db) => {
       db.stats = db.stats.filter((s) => s.userId !== userId);
       db.attempts = db.attempts.filter((item) => item.userId !== userId);
+      db.studyPlans = db.studyPlans.filter((item) => item.userId !== userId);
       db.exams = db.exams.filter((e) => e.userId !== userId);
       db.ai = db.ai.filter((a) => a.userId !== userId);
       db.emailLogs = db.emailLogs.filter((l) => l.userId !== userId);

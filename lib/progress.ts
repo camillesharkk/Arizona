@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { publishedQuestions } from "@/data/questions";
-import { applyReviewAnswer } from "@/lib/review-schedule";
+import { applyReviewAnswer, DEFAULT_STUDY_TIME_ZONE, migrateReviewFields } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
 import type { QuestionStat } from "@/lib/store/types";
 import type { UserRow } from "@/lib/store/types";
@@ -36,7 +36,11 @@ export async function recordQuestionAnswer(opts: {
   }
   const prev = await store.getStat(opts.userId, opts.questionId);
   const now = new Date().toISOString();
-  const review = applyReviewAnswer(prev, { correct: opts.correct, review: Boolean(opts.review), now });
+  const savedPlan = await store.getStudyPlan(opts.userId, "AZ");
+  const savedSettings = (savedPlan?.document as { settings?: { timeZone?: string } } | undefined)?.settings;
+  const timeZone = savedSettings?.timeZone || DEFAULT_STUDY_TIME_ZONE;
+  const migrated = prev ? migrateReviewFields(prev, now, timeZone) : null;
+  const review = applyReviewAnswer(migrated, { correct: opts.correct, review: Boolean(opts.review), now, timeZone });
   const next: QuestionStat = {
     userId: opts.userId,
     questionId: opts.questionId,
