@@ -100,10 +100,12 @@ export default async function StudyGuidePage() {
                   <Link href={`${paths.practice}?mode=quick`}>Start free Quick 10</Link>
                 </p>
               )}
-              <Link className="btn btn-ghost" href={`${paths.studyCards}?topic=${topic}`}>
+              <Link className="btn btn-primary" href={`${paths.studyCards}?topic=${topic}`}>
                 Study this topic
               </Link>
-              <Link href={`${paths.mistakes}?topic=${topic}`}>Review wrong answers</Link>
+              <Link className="btn btn-primary" href={`${paths.mistakes}?topic=${topic}`}>
+                Review wrong answers
+              </Link>
             </div>
           </article>
         );
