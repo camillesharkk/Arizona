@@ -1,10 +1,12 @@
-import { Suspense } from "react";
+import { Fragment, Suspense } from "react";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { PricingAnalytics } from "@/components/PricingAnalytics";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd, faqJson } from "@/components/JsonLd";
+import { ExamOutcomeComparison } from "@/components/ExamOutcomeComparison";
+import { officialSosFaqAnswer, SHOW_SIMULATED_OUTCOME_DATA } from "@/lib/content/exam-outcome-demo";
 import { PERSONAL_USE_NOTICE, PRO_DURATION_NOTICE, CREDIT_PER_ORDER_NOTICE, GUEST_NEWCOMER_HINT, TAX_CHECKOUT_NOTICE } from "@/lib/pricing/copy";
 import { STANDARD_PRICE_CENTS, NEWCOMER_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
@@ -22,7 +24,7 @@ export const metadata = pageMeta({
 });
 
 const faqs = [
-  { q: "Is this the official SOS exam?", a: "No. This is independent practice. The official exam and commission are on the Arizona Secretary of State site." },
+  { q: "Is this the official SOS exam?", a: officialSosFaqAnswer() },
   { q: "Is Pro a subscription?", a: `No. Arizona Notary Exam Prep Pro is a one-time payment for 60-Day Full Access. The standard price is ${formatUsd(STANDARD_PRICE_CENTS)}. New members may pay ${formatUsd(NEWCOMER_PRICE_CENTS)} for 72 hours after registration. No subscription. No automatic renewal. Your Pro access lasts for 60 days from activation. If you purchase additional 60-day access while Pro is still active, the additional time is added after your current expiration date.` },
   { q: "What is the refund policy?", a: "You may request a refund within 3 days of purchase only if you have not used any Pro-only feature. One-time New Member and Referral discounts are not restored after a refund. An eligible unused full refund restores the Referral Credit(s) used on that order. Up to 3 Referral Credits can be applied per order, subject to the purchase amount. Subject to applicable law and payment-provider requirements." },
   { q: "Can I share my Pro account?", a: "Pro access is for the personal use of the account holder. Account sharing or resale is not permitted. Your account may be active on up to 3 devices at a time." },
@@ -59,13 +61,6 @@ export default function PricingPage() {
           <h2>Arizona Notary Exam Prep Pro</h2>
           <p className="kicker">60-Day Full Access</p>
           <p>One-time payment. 60-day access. No subscription. No automatic renewal.</p>
-          <p className="notice">Standard price {formatUsd(STANDARD_PRICE_CENTS)}.</p>
-          <p className="notice">New Member price {formatUsd(NEWCOMER_PRICE_CENTS)} for 72 hours after registration.</p>
-          <p className="notice">{GUEST_NEWCOMER_HINT}</p>
-          <p className="notice">{PRO_DURATION_NOTICE}</p>
-          <p className="notice">{PERSONAL_USE_NOTICE}</p>
-          <p className="notice">{CREDIT_PER_ORDER_NOTICE}</p>
-          <p className="notice">{TAX_CHECKOUT_NOTICE}</p>
           <ul>
             <li>All {pool.length} practice questions, including the {pool.length - freeCount} that are Pro-only</li>
             <li>Each additional Full {examConfig.questionCount} draws {examConfig.questionCount} questions from that bank</li>
@@ -84,15 +79,34 @@ export default function PricingPage() {
             <strong>Turn your weak topics into passing scores.</strong> Know exactly what to study next.
           </p>
           <Suspense fallback={<p>Loading checkout…</p>}>
-            <CheckoutButton />
+            <CheckoutButton
+              belowCta={
+                <div className="pricing-notes">
+                  <p>Standard price {formatUsd(STANDARD_PRICE_CENTS)}.</p>
+                  <p>
+                    <strong>New Member price {formatUsd(NEWCOMER_PRICE_CENTS)}</strong> for 72 hours after registration.
+                  </p>
+                  <p>{GUEST_NEWCOMER_HINT}</p>
+                  <p>{PRO_DURATION_NOTICE}</p>
+                  <p>{PERSONAL_USE_NOTICE}</p>
+                  <p>{CREDIT_PER_ORDER_NOTICE}</p>
+                  <p>{TAX_CHECKOUT_NOTICE}</p>
+                </div>
+              }
+            />
           </Suspense>
         </section>
       </div>
       {faqs.map((f) => (
-        <details className="card" key={f.q} style={{ marginTop: 12 }}>
-          <summary><strong>{f.q}</strong></summary>
-          <p>{f.a}</p>
-        </details>
+        <Fragment key={f.q}>
+          <details className="card" style={{ marginTop: 12 }}>
+            <summary><strong>{f.q}</strong></summary>
+            {f.a.split("\n\n").map((paragraph) => (
+              <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+            ))}
+          </details>
+          {f.q === "Is this the official SOS exam?" && SHOW_SIMULATED_OUTCOME_DATA ? <ExamOutcomeComparison /> : null}
+        </Fragment>
       ))}
     </main>
   );

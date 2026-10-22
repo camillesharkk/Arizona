@@ -20,7 +20,8 @@
     "paddle:verify": "node --experimental-strip-types scripts/paddle-verify.ts",
     "analytics:verify": "node --experimental-strip-types scripts/analytics-verify.ts",
     "operations:verify": "node --experimental-strip-types scripts/operations-verify.ts",
-    "contact:verify": "node --experimental-strip-types scripts/contact-verify.ts"
+    "contact:verify": "node --experimental-strip-types scripts/contact-verify.ts",
+    "outcome:verify": "node --experimental-strip-types scripts/exam-outcome-verify.ts"
   },
   "dependencies": {
     "@paddle/paddle-js": "^1.6.5",

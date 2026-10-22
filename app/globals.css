@@ -527,6 +527,45 @@ h2 { font-size: 1.5rem; }
   padding: 14px 32px;
   font-size: 1.05rem;
 }
+.pricing-notes { margin-top: 16px; }
+.pricing-notes p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.pricing-notes p:last-child { margin-bottom: 0; }
+.pricing-notes strong { font-weight: 600; }
+.outcome-demo { margin-top: 16px; }
+.outcome-demo h2 { margin: 0 0 4px; }
+.outcome-sub, .outcome-label, .outcome-disclaimer, .outcome-method p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.outcome-label { font-weight: 600; }
+.outcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+.outcome-card h3 { margin: 0 0 12px; font-size: 1rem; }
+.outcome-row { margin: 0 0 12px; }
+.outcome-row:last-child { margin-bottom: 0; }
+.outcome-row-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.outcome-meta { color: var(--muted); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; text-align: right; }
+.outcome-line { display: grid; grid-template-columns: minmax(0, 1fr) 6.8rem; gap: 8px; align-items: center; margin-top: 6px; }
+.outcome-track { height: 8px; background: var(--bg-2); border-radius: 99px; overflow: hidden; }
+.outcome-fill { display: block; height: 100%; border-radius: 99px; }
+.outcome-fill.is-control { background: var(--line); }
+.outcome-fill.is-treatment { background: var(--brand); }
+.outcome-lift { font-size: 13px; font-weight: 600; color: var(--brand); line-height: 1.4; }
+.outcome-method { margin-top: 12px; }
+.outcome-method summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+@media (max-width: 700px) {
+  .outcome-grid { grid-template-columns: 1fr; }
+  .outcome-row-head { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .outcome-meta { text-align: left; }
+}
 .pricing-policy-card { margin-top: 20px; }
 .pricing-policy-card h3 { margin-top: 0; }
 @media (max-width: 640px) {

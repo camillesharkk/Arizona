@@ -1,15 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
 import {
-  CREDIT_PER_ORDER_NOTICE,
   CREDIT_RESTORE_NOTICE,
-  GUEST_NEWCOMER_HINT,
   ONE_TIME_DISCOUNT_NOTICE,
   REFUND_POLICY_SUMMARY,
-  TAX_CHECKOUT_NOTICE,
 } from "@/lib/pricing/copy";
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
@@ -60,7 +57,7 @@ function formatRemaining(ms: number) {
   return d > 0 ? `${d}d ${clock}` : clock;
 }
 
-export function CheckoutButton() {
+export function CheckoutButton({ belowCta }: { belowCta?: ReactNode }) {
   const [preview, setPreview] = useState<Preview | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [applyCredit, setApplyCredit] = useState(false);
@@ -237,10 +234,6 @@ export function CheckoutButton() {
             : `${preview?.referralCredits.maxApplicable} Referral Credit${(preview?.referralCredits.maxApplicable || 0) === 1 ? "" : "s"}`}
         </label>
       )}
-      {signedIn && (preview?.referralCredits.available || 0) > 0 && (
-        <p className="notice">{CREDIT_PER_ORDER_NOTICE}</p>
-      )}
-
       <section className="price-summary-card" aria-label="Price summary">
         {showDismiss && (
           <button
@@ -296,7 +289,6 @@ export function CheckoutButton() {
             </>
           )}
         </dl>
-        {isGuest && <p className="price-guest-hint">{GUEST_NEWCOMER_HINT}</p>}
         {showCountdown && (
           <p className="offer-ends">
             Offer ends in <strong>{formatRemaining(remainingMs)}</strong>
@@ -331,7 +323,7 @@ export function CheckoutButton() {
           {busy ? "Working…" : `Get 60-Day Pro — ${ctaPrice}`}
         </button>
       )}
-      <p className="notice">{TAX_CHECKOUT_NOTICE}</p>
+      {belowCta}
       {priceChanged && <p className="notice">Your available price has changed.</p>}
       {err && (
         <p className="notice">
