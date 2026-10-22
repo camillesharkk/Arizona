@@ -418,9 +418,83 @@ export function ExamRunner({
   const showingWrong = Boolean(practice && wrongId === q.question_id && selected && selected !== q.correct_option);
   const past = pastIndex != null ? questions[pastIndex] : null;
   const nextLabel = lastQuestion ? (practice ? "See results" : "Submit exam") : "Next";
+  const questionBody =
+    past && pastIndex != null ? (
+      <AnswerReview q={past} index={pastIndex} selected={answers[past.question_id]} onBack={closePast} />
+    ) : showingWrong && selected ? (
+      <AnswerReview q={q} index={idx} selected={selected} />
+    ) : (
+      <>
+        <QuestionBlock
+          q={q}
+          index={idx}
+          selected={selected}
+          reveal={Boolean(practice && selected)}
+          explain={false}
+          onChoose={choose}
+          lockPaid={false}
+          lockChoice={practiceLocked}
+          headingRef={headingRef}
+          isPro={isPro}
+          marked={marked.includes(q.question_id)}
+          onMark={() => {
+            toggleFlag(q.question_id);
+            setMarked((m) =>
+              m.includes(q.question_id) ? m.filter((x) => x !== q.question_id) : [...m, q.question_id]
+            );
+          }}
+        />
+        {practice && selected === q.correct_option ? (
+          <p className="notice" role="status">Correct.</p>
+        ) : null}
+        {!!selected && practice ? <TutorPanel q={q} selected={originalLetter(q.question_id, selected)} /> : null}
+        {layout === "compact" || !practice ? (
+          <p className="notice">
+            {source.title} · {q.source_reference} · Last verified {q.last_verified_at}
+          </p>
+        ) : null}
+      </>
+    );
+  const previousAnswer =
+    practice && idx > 0 && pastIndex == null ? (
+      <button className="card-corner-btn" type="button" onClick={openPast}>
+        Previous answer
+      </button>
+    ) : null;
+
+  if (layout === "compact") {
+    return (
+      <div className="home-exam">
+        <div className="row space">
+          <span className="notice">Question {idx + 1} of {questions.length}</span>
+          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">Practice mode — instant feedback</span>}
+        </div>
+        <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
+          <span style={{ width: `${((idx + 1) / questions.length) * 100}%` }} />
+        </div>
+        {previousAnswer}
+        {questionBody}
+        <div className="home-exam-nav">
+          <div className="row space">
+            <button className="btn btn-ghost" type="button" disabled={idx === 0 || pastIndex != null} onClick={() => goTo(idx - 1)}>
+              Previous
+            </button>
+            <button
+              className={lastQuestion && !practice ? "btn btn-sage" : "btn btn-primary"}
+              type="button"
+              disabled={pastIndex != null}
+              onClick={() => (lastQuestion ? finish() : goTo(idx + 1))}
+            >
+              {nextLabel}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className={layout === "compact" ? "home-exam" : "exam-pad"}>
+    <div className="exam-pad">
       <div className="row space">
         <span className="notice">
           Question {idx + 1} of {questions.length}
@@ -440,50 +514,9 @@ export function ExamRunner({
         onNext={() => (lastQuestion ? finish() : goTo(idx + 1))}
         nextDisabled={pastIndex != null || (practice ? !selected : false)}
         nextLabel={nextLabel}
-        corner={
-          practice && idx > 0 && pastIndex == null ? (
-            <button className="card-corner-btn" type="button" onClick={openPast}>
-              Previous answer
-            </button>
-          ) : null
-        }
+        corner={previousAnswer}
       >
-        {past && pastIndex != null ? (
-          <AnswerReview q={past} index={pastIndex} selected={answers[past.question_id]} onBack={closePast} />
-        ) : showingWrong && selected ? (
-          <AnswerReview q={q} index={idx} selected={selected} />
-        ) : (
-          <>
-            <QuestionBlock
-              q={q}
-              index={idx}
-              selected={selected}
-              reveal={Boolean(practice && selected)}
-              explain={false}
-              onChoose={choose}
-              lockPaid={false}
-              lockChoice={practiceLocked}
-              headingRef={headingRef}
-              isPro={isPro}
-              marked={marked.includes(q.question_id)}
-              onMark={() => {
-                toggleFlag(q.question_id);
-                setMarked((m) =>
-                  m.includes(q.question_id) ? m.filter((x) => x !== q.question_id) : [...m, q.question_id]
-                );
-              }}
-            />
-            {practice && selected === q.correct_option ? (
-              <p className="notice" role="status">Correct.</p>
-            ) : null}
-            {!!selected && practice ? <TutorPanel q={q} selected={originalLetter(q.question_id, selected)} /> : null}
-            {!practice ? (
-              <p className="notice">
-                {source.title} · {q.source_reference} · Last verified {q.last_verified_at}
-              </p>
-            ) : null}
-          </>
-        )}
+        {questionBody}
       </CardStage>
     </div>
   );

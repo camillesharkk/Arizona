@@ -632,7 +632,8 @@ h2 { font-size: 1.5rem; }
 .diagnostic-option input { margin-top: 4px; }
 .diagnostic-option:focus-within { outline: 2px solid var(--brand); outline-offset: 2px; }
 .home-canvas { background: var(--bg); padding: 0 0 24px; }
-.home-main { width: min(960px, calc(100% - 40px)); padding: 36px 0 8px; }
+.home-main { width: min(960px, calc(100% - 40px)); padding: 28px 0 8px; }
+.home-main > h1 { margin: 8px 0 14px; }
 .home-entry h1 { margin: 0 0 8px; font-size: 36px; line-height: 1.15; }
 .home-lead { margin: 0 0 16px; font-size: 17px; line-height: 1.5; max-width: 38rem; }
 .home-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
@@ -684,6 +685,7 @@ h2 { font-size: 1.5rem; }
   gap: 8px;
   margin-top: 10px;
 }
+.study-pager .btn:first-child { width: 100%; }
 .study-pager .btn:last-child { justify-self: end; }
 .study-secondary { margin-top: 10px; }
 .resource-page h2 { margin: 28px 0 8px; font-size: 1.15rem; }
@@ -694,8 +696,8 @@ h2 { font-size: 1.5rem; }
   .flash-select select { min-height: 44px; font: inherit; font-size: 16px; }
 }
 @media (max-width: 640px) {
-  .home-main { padding-top: 32px; }
-  .home-entry h1 { font-size: 30px; }
+  .home-main { padding-top: 20px; }
+  .home-main > h1, .home-entry h1 { font-size: 30px; }
   .home-actions .btn-primary { width: 100%; }
   .quiz-result { font-size: 28px; }
   .study-face { min-height: 240px; padding: 16px; }
