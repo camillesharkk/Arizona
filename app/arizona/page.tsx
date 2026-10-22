@@ -2,14 +2,17 @@ import { flashcards } from "@/data/flashcards";
 import { getSource } from "@/data/sources";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
+import { HOME_STUDY_CARD_IDS } from "@/lib/study-cards";
 import { JsonLd, quizJson } from "@/components/JsonLd";
 import { AccountStatusBanner } from "@/components/AccountStatusBanner";
 import { HomeStudy } from "@/components/HomeStudy";
-import { FREE_FLASHCARD_PREVIEW } from "@/lib/product";
 
-const previewCards = flashcards.slice(0, FREE_FLASHCARD_PREVIEW).map((card) => {
+const cardsById = new Map(flashcards.map((card) => [card.id, card]));
+const previewCards = HOME_STUDY_CARD_IDS.flatMap((id) => {
+  const card = cardsById.get(id);
+  if (!card) return [];
   const source = getSource(card.source_id);
-  return {
+  return [{
     id: card.id,
     category: card.category,
     front: card.front,
@@ -25,7 +28,7 @@ const previewCards = flashcards.slice(0, FREE_FLASHCARD_PREVIEW).map((card) => {
     practiceHref: card.topic ? paths.topic(card.topic) : undefined,
     source: source.reference,
     sourceUrl: source.url,
-  };
+  }];
 });
 
 export const metadata = pageMeta({

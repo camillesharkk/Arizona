@@ -57,6 +57,13 @@ create table if not exists question_stats (
   last_correct boolean,
   wrong_count integer not null default 0,
   right_count integer not null default 0,
+  review_count integer not null default 0,
+  consecutive_correct integer not null default 0,
+  review_stage integer not null default 0,
+  last_wrong_at timestamptz,
+  last_reviewed_at timestamptz,
+  next_review_at timestamptz,
+  state text not null default 'AZ',
   last_selected text,
   last_correct_option text,
   first_at timestamptz,
@@ -75,6 +82,14 @@ create index if not exists question_stats_user_favorited_idx on question_stats (
 create index if not exists question_stats_user_mistakes_idx
   on question_stats (user_id, last_at desc)
   where wrong_count > 0;
+
+create table if not exists answer_attempts (
+  user_id text not null references users (id) on delete cascade,
+  attempt_id text not null,
+  question_id text not null,
+  created_at timestamptz not null default now(),
+  primary key (user_id, attempt_id)
+);
 
 create table if not exists exams (
   id text primary key,

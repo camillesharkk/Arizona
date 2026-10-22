@@ -1,12 +1,14 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
+import { REVIEW_INTERVALS_MS } from "../review-schedule.ts";
 import type { AccountDeletionTombstone, EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
 
 type FileDb = {
   users: UserRow[];
   tokens: TokenRow[];
   stats: QuestionStat[];
+  attempts: { userId: string; attemptId: string; questionId: string }[];
   exams: ExamRow[];
   ai: { userId: string; day: string; n: number }[];
   siteQuota: { scope: string; day: string; n: number; tokens: string[] }[];
@@ -19,8 +21,9 @@ type FileDb = {
 const empty = (): FileDb => ({
   users: [],
   tokens: [],
-  stats: [],
-  exams: [],
+    stats: [],
+    attempts: [],
+    exams: [],
   ai: [],
   siteQuota: [],
   webhooks: [],
@@ -37,6 +40,22 @@ async function load(): Promise<FileDb> {
     const raw = await readFile(filePath(), "utf8");
     const parsed = { ...empty(), ...JSON.parse(raw) } as FileDb;
     if (!Array.isArray(parsed.siteQuota)) parsed.siteQuota = [];
+    if (!Array.isArray(parsed.attempts)) parsed.attempts = [];
+    parsed.stats = parsed.stats.map((stat) => {
+      const wrongCount = stat.wrongCount ?? 0;
+      const lastAt = stat.lastAt || new Date().toISOString();
+      const needsPlan = wrongCount > 0 && !stat.nextReviewAt;
+      return {
+        ...stat,
+        reviewCount: stat.reviewCount ?? 0,
+        consecutiveCorrect: stat.consecutiveCorrect ?? 0,
+        reviewStage: needsPlan ? 0 : stat.reviewStage ?? 0,
+        lastWrongAt: stat.lastWrongAt ?? (needsPlan ? lastAt : null),
+        lastReviewedAt: stat.lastReviewedAt ?? null,
+        nextReviewAt: needsPlan ? new Date(Date.parse(lastAt) + REVIEW_INTERVALS_MS[0]).toISOString() : stat.nextReviewAt ?? null,
+        state: stat.state || "AZ",
+      };
+    });
     return parsed;
   } catch {
     return empty();
@@ -143,6 +162,13 @@ export const fileStore: Store = {
       if (i < 0) db.stats.push(stat);
       else db.stats[i] = { ...stat, userId: db.stats[i].userId };
       return stat;
+    });
+  },
+  claimAttempt(userId, attemptId, questionId) {
+    return mutate((db) => {
+      if (db.attempts.some((item) => item.userId === userId && item.attemptId === attemptId)) return false;
+      db.attempts.push({ userId, attemptId, questionId });
+      return true;
     });
   },
   async getStat(userId, questionId) {
@@ -339,6 +365,7 @@ export const fileStore: Store = {
   clearLearningData(userId) {
     return mutate((db) => {
       db.stats = db.stats.filter((s) => s.userId !== userId);
+      db.attempts = db.attempts.filter((item) => item.userId !== userId);
       db.exams = db.exams.filter((e) => e.userId !== userId);
       db.ai = db.ai.filter((a) => a.userId !== userId);
       db.emailLogs = db.emailLogs.filter((l) => l.userId !== userId);

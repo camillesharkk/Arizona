@@ -1,18 +1,27 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import { ExamRunner } from "@/components/ExamRunner";
 import { topicLabel } from "@/lib/quiz";
 import { paths } from "@/lib/paths";
+import type { Question } from "@/lib/types";
 import type { QuestionStat } from "@/lib/store/types";
 
-export function CloudMistakes() {
+const topicIds = new Set<string>(topics.map((topic) => topic.id));
+
+function dueNow(stat: QuestionStat) {
+  return Boolean(stat.nextReviewAt) && Date.parse(stat.nextReviewAt as string) <= Date.now();
+}
+
+export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
+  const router = useRouter();
   const [stats, setStats] = useState<QuestionStat[]>([]);
-  const [topic, setTopic] = useState("all");
-  const [drill, setDrill] = useState(false);
+  const [topic, setTopic] = useState(initialTopic && topicIds.has(initialTopic) ? initialTopic : "all");
+  const [queue, setQueue] = useState<Question[] | null>(null);
   const [isPro, setIsPro] = useState(false);
   const [needAuth, setNeedAuth] = useState(false);
 
@@ -31,27 +40,50 @@ export function CloudMistakes() {
     load();
   }, []);
 
+  useEffect(() => {
+    setTopic(initialTopic && topicIds.has(initialTopic) ? initialTopic : "all");
+  }, [initialTopic]);
+
   const filtered = stats.filter((s) => topic === "all" || s.topic === topic);
-  const qs = publishedQuestions().filter((q) => filtered.some((s) => s.questionId === q.question_id));
+  const due = filtered.filter(dueNow);
+  const nextReview = filtered
+    .map((s) => s.nextReviewAt)
+    .filter((value): value is string => Boolean(value))
+    .sort()[0];
+  const returnTo = topic === "all" ? paths.mistakes : `${paths.mistakes}?topic=${topic}`;
+
+  function selectTopic(id: string) {
+    setTopic(id);
+    router.replace(id === "all" ? paths.mistakes : `${paths.mistakes}?topic=${id}`, { scroll: false });
+  }
+
+  function begin() {
+    const byId = new Map(publishedQuestions().map((question) => [question.question_id, question]));
+    const next = filtered.flatMap((stat) => {
+      const question = byId.get(stat.questionId);
+      return question ? [question] : [];
+    });
+    setQueue(next);
+  }
 
   if (needAuth) {
     return (
       <div className="card">
-        <p>Sign in to save a cloud wrong-answer notebook that follows you across browsers.</p>
-        <Link className="btn btn-primary" href={paths.register}>
-          Create Free Account
+        <p>Sign in to practice the questions you missed. Your place is saved.</p>
+        <Link className="btn btn-primary" href={`${paths.login}?next=${encodeURIComponent(returnTo)}`}>
+          Sign in
         </Link>
       </div>
     );
   }
 
-  if (drill) {
+  if (queue) {
     return (
       <div>
-        <button className="btn btn-ghost" type="button" onClick={() => setDrill(false)}>
+        <button className="btn btn-ghost" type="button" onClick={() => { setQueue(null); load(); }}>
           Back
         </button>
-        <ExamRunner mode="weak" practice preset={qs.slice(0, 10)} isPro={isPro} />
+        <ExamRunner mode="weak" practice review preset={queue} isPro={isPro} />
       </div>
     );
   }
@@ -59,32 +91,40 @@ export function CloudMistakes() {
   return (
     <div>
       <div className="filter-row">
-        <button className={`chip ${topic === "all" ? "on" : ""}`} type="button" onClick={() => setTopic("all")}>
+        <button className={`chip ${topic === "all" ? "on" : ""}`} type="button" onClick={() => selectTopic("all")}>
           All
         </button>
-        {topics.map((t) => (
-          <button key={t.id} className={`chip ${topic === t.id ? "on" : ""}`} type="button" onClick={() => setTopic(t.id)}>
-            {t.short}
+        {topics.map((item) => (
+          <button key={item.id} className={`chip ${topic === item.id ? "on" : ""}`} type="button" onClick={() => selectTopic(item.id)}>
+            {item.short}
           </button>
         ))}
       </div>
-      <button className="btn btn-primary" type="button" disabled={!qs.length} onClick={() => setDrill(true)}>
-        Practice Wrong Answers
-      </button>
-      {!qs.length && <p className="lede">No missed items in this filter.</p>}
+      {!filtered.length ? (
+        <div className="card">
+          <p>No missed questions in this set yet.</p>
+          <Link className="btn btn-primary" href={paths.practice}>Start a practice test</Link>
+        </div>
+      ) : (
+        <>
+          {due.length === 0 && nextReview ? <p className="notice">Next review {new Date(nextReview).toLocaleString()}.</p> : null}
+          <button className="btn btn-primary" type="button" onClick={begin}>
+            {due.length === 0 ? "Practice all wrong answers" : "Practice wrong answers"}
+          </button>
+        </>
+      )}
       {filtered.map((s) => {
         const q = publishedQuestions().find((x) => x.question_id === s.questionId);
         if (!q) return null;
-        const acc = s.rightCount + s.wrongCount ? Math.round((s.rightCount / (s.rightCount + s.wrongCount)) * 100) : 0;
         return (
           <article className="card" key={s.questionId} style={{ marginTop: 12 }}>
             <span className="kicker">
-              {topicLabel(q.topic)} · bank {s.bank} · chapter {s.chapter}
+              {topicLabel(q.topic)} · {dueNow(s) ? "Due" : "Later"}
             </span>
             <h3>{q.question_text}</h3>
             <p>
-              Last pick {s.lastSelected} · Correct {s.lastCorrectOption} · First {s.firstCorrect ? "correct" : "wrong"} ·
-              Last {s.lastCorrect ? "correct" : "wrong"} · Wrong {s.wrongCount} · Right {s.rightCount} · Accuracy {acc}%
+              Wrong {s.wrongCount} {s.wrongCount === 1 ? "time" : "times"}
+              {s.nextReviewAt ? ` · Next review ${new Date(s.nextReviewAt).toLocaleString()}` : ""}
             </p>
             <div className="row">
               <button

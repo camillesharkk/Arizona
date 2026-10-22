@@ -8,6 +8,7 @@ import type { TopicId } from "@/lib/types";
 import { readinessScore } from "@/lib/stats";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 import { ProAccessNote } from "@/components/ProAccessNote";
+import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { hasRememberedPurchase, pickLatestPaidOrder, rememberPurchase, trackPurchase } from "@/lib/analytics";
 
 const ACCESS_POLL_MS = 1000;
@@ -263,7 +264,7 @@ export function DashboardClient() {
       </div>
       <div className="row">
         <Link className="btn btn-primary" href={paths.practice}>Continue Practice</Link>
-        <Link className="btn btn-ghost" href={paths.mistakes}>Wrong Answers</Link>
+        <WrongAnswersLink className="btn btn-ghost" />
         <Link className="btn btn-ghost" href={paths.study}>Study Guide</Link>
       </div>
     </div>

@@ -9,12 +9,17 @@ export const metadata = pageMeta({
   path: paths.mistakes,
 });
 
-export default function MistakesPage() {
+export default async function MistakesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ topic?: string }>;
+}) {
+  const { topic } = await searchParams;
   return (
     <main className="wrap hero">
       <Breadcrumb items={[{ name: "Home", path: paths.home }, { name: "Wrong Answers", path: paths.mistakes }]} />
       <h1>Wrong-answer notebook</h1>
-      <CloudMistakes />
+      <CloudMistakes initialTopic={topic} />
     </main>
   );
 }

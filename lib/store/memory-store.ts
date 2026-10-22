@@ -15,6 +15,7 @@ type Mem = {
   users: UserRow[];
   tokens: TokenRow[];
   stats: QuestionStat[];
+  attempts: { userId: string; attemptId: string; questionId: string }[];
   exams: ExamRow[];
   ai: { userId: string; day: string; n: number }[];
   siteQuota: { scope: string; day: string; n: number; tokens: string[] }[];
@@ -29,6 +30,7 @@ function empty(): Mem {
     users: [],
     tokens: [],
     stats: [],
+    attempts: [],
     exams: [],
     ai: [],
     siteQuota: [],
@@ -121,6 +123,11 @@ export function createMemoryStore(): Store {
       if (i < 0) db.stats.push(stat);
       else db.stats[i] = { ...stat, userId: db.stats[i].userId };
       return stat;
+    },
+    async claimAttempt(userId, attemptId, questionId) {
+      if (db.attempts.some((item) => item.userId === userId && item.attemptId === attemptId)) return false;
+      db.attempts.push({ userId, attemptId, questionId });
+      return true;
     },
     async getStat(userId, questionId) {
       return db.stats.find((s) => s.userId === userId && s.questionId === questionId) ?? null;
@@ -278,6 +285,7 @@ export function createMemoryStore(): Store {
     },
     async clearLearningData(userId) {
       db.stats = db.stats.filter((s) => s.userId !== userId);
+      db.attempts = db.attempts.filter((item) => item.userId !== userId);
       db.exams = db.exams.filter((e) => e.userId !== userId);
       db.ai = db.ai.filter((a) => a.userId !== userId);
       db.emailLogs = db.emailLogs.filter((l) => l.userId !== userId);

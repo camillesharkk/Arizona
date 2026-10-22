@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
+import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { categoryLabel, StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
 import { examConfig } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
@@ -124,6 +125,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
           <h2>Flashcards</h2>
           {card ? <span className="study-category">{categoryLabel(card.category)}</span> : null}
           <span className="badge">Free preview</span>
+          <Link href={paths.studyCards}>View all study cards</Link>
           <Link href={paths.flashcards}>Full deck</Link>
         </div>
         <div className="filter-row">
@@ -206,6 +208,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
         <div className="study-module-bar">
           <h2>Quick Practice</h2>
           {resumeHref ? <Link href={resumeHref}>Continue saved practice</Link> : null}
+          <WrongAnswersLink />
         </div>
         {ready ? (
           <ExamRunner mode="quick" practice isPro={isPro} reportStart="answer" layout="compact" persistKey="az-home-quick" />

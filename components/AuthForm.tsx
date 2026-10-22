@@ -155,7 +155,8 @@ export function AuthForm({
     else if (data.resetToken) setInfo(`Dev reset token: ${data.resetToken}`);
     else if (mode === "forgot") setInfo("If that email is registered, a reset link is on the way.");
     if (mode === "login") {
-      window.location.href = paths.dashboard;
+      const next = new URLSearchParams(window.location.search).get("next");
+      window.location.href = next && next.startsWith("/") && !next.startsWith("//") ? next : paths.dashboard;
       return;
     }
     if (mode === "register") {

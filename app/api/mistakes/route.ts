@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { compareMistakes, isDue } from "@/lib/review-schedule";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import type { QuestionStat } from "@/lib/store/types";
@@ -38,9 +39,13 @@ export async function GET() {
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const store = await getStore();
   const stats = await store.listStats(session.id);
-  const mistakes = stats.filter((s) => s.wrongCount > 0 && !s.mastered);
+  const now = Date.now();
+  const mistakes = stats
+    .filter((s) => s.state === "AZ" && s.bank === "arizona-notary-exam" && s.wrongCount > 0 && !s.mastered)
+    .sort((a, b) => compareMistakes(a, b, now));
   return NextResponse.json({
     mistakes: mistakes.map(toClientStat),
+    dueCount: mistakes.filter((s) => isDue(s, now)).length,
     truncated: false,
     favorites: stats.filter((s) => s.favorited).map(toClientStat),
   });

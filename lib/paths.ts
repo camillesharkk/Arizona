@@ -5,6 +5,7 @@ export const paths = {
   practiceFree: "/arizona-notary-practice-test-free/",
   questions: "/arizona-notary-exam-questions/",
   study: "/arizona-notary-study-guide/",
+  studyCards: "/arizona-notary-study-cards/",
   examPrep: "/arizona-notary-exam-prep/",
   guidesIndex: "/arizona-notary-exam-guides/",
   howHard: "/how-hard-is-the-arizona-notary-exam/",

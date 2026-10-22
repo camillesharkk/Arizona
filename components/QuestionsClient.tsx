@@ -13,6 +13,7 @@ import { AnswerReview } from "@/components/AnswerReview";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress, toggleFlag } from "@/lib/storage";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
+import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { paths } from "@/lib/paths";
 import { isActiveQuestion } from "@/lib/question-status";
 
@@ -33,6 +34,8 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const reviewScroll = useRef(0);
   const doneOnce = useRef(false);
+  const attemptIds = useRef<Record<string, string>>({});
+  const pendingSaves = useRef<Promise<unknown>[]>([]);
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   useEffect(() => subscribeProgress(() => setProgress(loadProgress())), []);
@@ -97,11 +100,16 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     setIdx(nextIdx);
   }
 
+  function attemptId(questionId: string) {
+    if (!attemptIds.current[questionId]) attemptIds.current[questionId] = crypto.randomUUID();
+    return attemptIds.current[questionId];
+  }
+
   function finishSet() {
     if (doneOnce.current) return;
     doneOnce.current = true;
     cancelAutoAdvance();
-    setDone(true);
+    void Promise.allSettled(pendingSaves.current).finally(() => setDone(true));
   }
 
   function openPast() {
@@ -196,7 +204,10 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
         <div className="card">
           <h2>You finished this set.</h2>
           <p>{correctSession} of {pool.length} correct in this sitting.</p>
-          <Link className="btn btn-primary" href={paths.study}>Review the study guide</Link>
+          <div className="row">
+            <Link className="btn btn-primary" href={paths.study}>Review the study guide</Link>
+            <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
+          </div>
         </div>
       ) : q ? (
       <CardStage
@@ -231,11 +242,11 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
                 setAnswers((a) => ({ ...a, [q.question_id]: l }));
                 recordAnswer(q.question_id, l === q.correct_option);
                 saveProgress({ lastQuestionId: q.question_id });
-                fetch("/api/progress/", {
+                pendingSaves.current.push(fetch("/api/progress/", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l) }),
-                }).catch(() => undefined);
+                  body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l), attemptId: attemptId(q.question_id) }),
+                }).catch(() => undefined));
                 if (l === q.correct_option) {
                   setWrongId(null);
                   const at = safeIdx;

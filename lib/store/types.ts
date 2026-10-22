@@ -50,6 +50,13 @@ export type QuestionStat = {
   lastCorrect: boolean | null;
   wrongCount: number;
   rightCount: number;
+  reviewCount: number;
+  consecutiveCorrect: number;
+  reviewStage: number;
+  lastWrongAt: string | null;
+  lastReviewedAt: string | null;
+  nextReviewAt: string | null;
+  state: string;
   lastSelected: string | null;
   lastCorrectOption: string | null;
   firstAt: string | null;
@@ -101,6 +108,7 @@ export type Store = {
   putToken(row: TokenRow): Promise<void>;
   takeToken(token: string, type: TokenRow["type"]): Promise<TokenRow | null>;
   upsertStat(stat: QuestionStat): Promise<QuestionStat>;
+  claimAttempt(userId: string, attemptId: string, questionId: string): Promise<boolean>;
   getStat(userId: string, questionId: string): Promise<QuestionStat | null>;
   listStats(userId: string): Promise<QuestionStat[]>;
   addExam(row: ExamRow): Promise<void>;

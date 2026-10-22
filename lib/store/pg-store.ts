@@ -86,6 +86,13 @@ function mapStat(r: Record<string, unknown>): QuestionStat {
     lastCorrect: r.last_correct == null ? null : Boolean(r.last_correct),
     wrongCount: Number(r.wrong_count),
     rightCount: Number(r.right_count),
+    reviewCount: Number(r.review_count || 0),
+    consecutiveCorrect: Number(r.consecutive_correct || 0),
+    reviewStage: Number(r.review_stage || 0),
+    lastWrongAt: r.last_wrong_at ? iso(r.last_wrong_at) : null,
+    lastReviewedAt: r.last_reviewed_at ? iso(r.last_reviewed_at) : null,
+    nextReviewAt: r.next_review_at ? iso(r.next_review_at) : null,
+    state: r.state ? String(r.state) : "AZ",
     lastSelected: r.last_selected ? String(r.last_selected) : null,
     lastCorrectOption: r.last_correct_option ? String(r.last_correct_option) : null,
     firstAt: iso(r.first_at),
@@ -161,16 +168,25 @@ export const pgStore: Store = {
   async upsertStat(stat) {
     await assertSchema();
     await db()`insert into question_stats (
-      user_id, question_id, topic, bank, chapter, first_correct, last_correct, wrong_count, right_count,
+      user_id, question_id, topic, bank, chapter, state, first_correct, last_correct, wrong_count, right_count,
+      review_count, consecutive_correct, review_stage, last_wrong_at, last_reviewed_at, next_review_at,
       last_selected, last_correct_option, first_at, last_at, mastered, favorited
     ) values (
-      ${stat.userId}, ${stat.questionId}, ${stat.topic}, ${stat.bank}, ${stat.chapter},
+      ${stat.userId}, ${stat.questionId}, ${stat.topic}, ${stat.bank}, ${stat.chapter}, ${stat.state},
       ${stat.firstCorrect}, ${stat.lastCorrect}, ${stat.wrongCount}, ${stat.rightCount},
+      ${stat.reviewCount}, ${stat.consecutiveCorrect}, ${stat.reviewStage}, ${stat.lastWrongAt}, ${stat.lastReviewedAt}, ${stat.nextReviewAt},
       ${stat.lastSelected}, ${stat.lastCorrectOption}, ${stat.firstAt}, ${stat.lastAt}, ${stat.mastered}, ${stat.favorited}
     ) on conflict (user_id, question_id) do update set
       last_correct = excluded.last_correct,
       wrong_count = excluded.wrong_count,
       right_count = excluded.right_count,
+      review_count = excluded.review_count,
+      consecutive_correct = excluded.consecutive_correct,
+      review_stage = excluded.review_stage,
+      last_wrong_at = excluded.last_wrong_at,
+      last_reviewed_at = excluded.last_reviewed_at,
+      next_review_at = excluded.next_review_at,
+      state = excluded.state,
       last_selected = excluded.last_selected,
       last_correct_option = excluded.last_correct_option,
       last_at = excluded.last_at,
@@ -179,6 +195,14 @@ export const pgStore: Store = {
       updated_at = now()
       where question_stats.user_id = excluded.user_id`;
     return stat;
+  },
+  async claimAttempt(userId, attemptId, questionId) {
+    await assertSchema();
+    const rows = await db()`insert into answer_attempts (user_id, attempt_id, question_id)
+      values (${userId}, ${attemptId}, ${questionId})
+      on conflict (user_id, attempt_id) do nothing
+      returning attempt_id`;
+    return rows.length > 0;
   },
   async getStat(userId, questionId) {
     await assertSchema();
@@ -396,6 +420,7 @@ export const pgStore: Store = {
   async clearLearningData(userId) {
     await assertSchema();
     await db()`delete from question_stats where user_id = ${userId}`;
+    await db()`delete from answer_attempts where user_id = ${userId}`;
     await db()`delete from exams where user_id = ${userId}`;
     await db()`delete from ai_usage where user_id = ${userId}`;
     await db()`delete from email_logs where user_id = ${userId}`;

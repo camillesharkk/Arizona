@@ -16,6 +16,7 @@ import {
 } from "@/lib/quiz";
 import { recordAnswer, saveProgress, toggleFlag, loadProgress } from "@/lib/storage";
 import { AccountInvite } from "@/components/AccountInvite";
+import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { TutorPanel } from "@/components/TutorPanel";
 import { CardStage } from "@/components/CardStage";
 import { AnswerReview } from "@/components/AnswerReview";
@@ -35,6 +36,7 @@ export function ExamRunner({
   reportStart = "mount",
   layout = "page",
   persistKey,
+  review = false,
 }: {
   mode: Mode;
   practice?: boolean;
@@ -45,6 +47,8 @@ export function ExamRunner({
   layout?: "page" | "compact";
   /** Keep this sitting's question order and answers if the learner leaves and comes back. */
   persistKey?: string;
+  /** Wrong-answer practice. A normal practice correct does not move the review plan. */
+  review?: boolean;
 }) {
   const generatedSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
   const [sessionSeed, setSessionSeed] = useState(generatedSeed);
@@ -130,6 +134,7 @@ export function ExamRunner({
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const answersRef = useRef(answers);
   const finishOnce = useRef(false);
+  const attemptIds = useRef<Record<string, string>>({});
   const reviewScroll = useRef(0);
   const [wrongId, setWrongId] = useState<string | null>(null);
   const [pastIndex, setPastIndex] = useState<number | null>(null);
@@ -201,6 +206,11 @@ export function ExamRunner({
     );
   }
 
+  function attemptId(questionId: string) {
+    if (!attemptIds.current[questionId]) attemptIds.current[questionId] = crypto.randomUUID();
+    return attemptIds.current[questionId];
+  }
+
   function originalLetter(questionId: string, display: Letter): Letter {
     return toOriginalRef.current[questionId]?.[display] ?? display;
   }
@@ -240,7 +250,12 @@ export function ExamRunner({
       fetch("/api/progress/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(q.question_id, letter) }),
+        body: JSON.stringify({
+          questionId: q.question_id,
+          selected: originalLetter(q.question_id, letter),
+          attemptId: attemptId(q.question_id),
+          review,
+        }),
       }).catch(() => undefined);
       if (mode === "weak" && isPro && !weakReported.current) {
         weakReported.current = true;
@@ -270,7 +285,6 @@ export function ExamRunner({
     finishOnce.current = true;
     if (reportStart === "answer") reportExamStart();
     cancelAutoAdvance();
-    setDone(true);
     const current = answersRef.current;
     const results = questions.map((item) => ({
       question: item,
@@ -284,21 +298,28 @@ export function ExamRunner({
       lastMode: mode,
       scores: [{ at: new Date().toISOString(), score: pct, mode }, ...prev.scores].slice(0, 20),
     });
+    const saves: Promise<unknown>[] = [];
     if (!practice) results.forEach((r) => {
       const letter = current[r.question.question_id];
       if (letter) {
-        fetch("/api/progress/", {
+        saves.push(fetch("/api/progress/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ questionId: r.question.question_id, selected: originalLetter(r.question.question_id, letter) }),
-        }).catch(() => undefined);
+          body: JSON.stringify({
+            questionId: r.question.question_id,
+            selected: originalLetter(r.question.question_id, letter),
+            attemptId: attemptId(r.question.question_id),
+            review: false,
+          }),
+        }).catch(() => undefined));
       }
     });
-    fetch("/api/progress/", {
+    saves.push(fetch("/api/progress/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ kind: "exam", mode, score: pct, correctCount: results.filter((r) => r.correct).length, total: questions.length }),
-    }).catch(() => undefined);
+    }).catch(() => undefined));
+    void Promise.allSettled(saves).finally(() => setDone(true));
     const elapsed = startedAt.current == null ? undefined : Math.max(0, Math.round((Date.now() - startedAt.current) / 1000));
     trackAnalyticsEvent(
       "exam_complete",
@@ -378,9 +399,7 @@ export function ExamRunner({
                 Continue Practice
               </Link>
             )}
-            <Link className="btn btn-ghost" href={paths.mistakes}>
-              Review Wrong Answers
-            </Link>
+            <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
             <Link className="btn btn-ghost" href={paths.study}>
               Review Study Guide
             </Link>

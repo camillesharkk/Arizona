@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
+import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { ProAccessNote } from "@/components/ProAccessNote";
 
 type AuthStatus = "loading" | "signed-in" | "signed-out";
@@ -110,6 +111,7 @@ export function SiteHeader() {
           <Link href={paths.laws} className={active(pathname, paths.laws) ? "active" : ""}>
             Laws
           </Link>
+          <WrongAnswersLink className={active(pathname, paths.mistakes) ? "active" : ""} />
         </nav>
         <div className="header-right">
           {authStatus === "signed-out" && (
@@ -157,12 +159,16 @@ export function SiteHeader() {
         <button className="chip" type="button" onClick={() => setStudyOpen((v) => !v)}>
           Study {studyOpen ? "▾" : "▸"}
         </button>
-        {studyOpen &&
-          study.map((l) => (
-            <Link key={l.href} href={l.href} className={active(pathname, l.href) ? "active" : ""}>
-              {l.label}
-            </Link>
-          ))}
+        {studyOpen && (
+          <>
+            {study.map((l) => (
+              <Link key={l.href} href={l.href} className={active(pathname, l.href) ? "active" : ""}>
+                {l.label}
+              </Link>
+            ))}
+            <WrongAnswersLink className={active(pathname, paths.mistakes) ? "active" : ""} />
+          </>
+        )}
         <button className="chip" type="button" onClick={() => setAccountOpen((v) => !v)}>
           Exam & career {accountOpen ? "▾" : "▸"}
         </button>
@@ -176,7 +182,6 @@ export function SiteHeader() {
         {authStatus === "signed-in" && me ? (
           <>
             <Link href={paths.dashboard}>Dashboard</Link>
-            <Link href={paths.mistakes}>Wrong Answers</Link>
             <Link href={paths.account}>Account Settings</Link>
             <Link href={paths.referrals}>Invite & Credits</Link>
             <Link href={paths.billing}>Billing & Access</Link>

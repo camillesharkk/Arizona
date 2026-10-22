@@ -28,6 +28,15 @@ const labels: Record<string, string> = {
   dates: "Dates",
   definitions: "Definitions",
   acts: "Acts",
+  commission: "Commission",
+  acknowledgments: "Acknowledgments",
+  jurats: "Jurats",
+  journals: "Journals",
+  "seals-fees": "Seal & fees",
+  "prohibited-acts": "Prohibited acts",
+  "new-laws": "2026 changes",
+  "copy-certification": "Copy certification",
+  "electronic-ron": "Electronic & RON",
 };
 
 export function categoryLabel(category: string) {

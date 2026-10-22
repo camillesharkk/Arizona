@@ -12,6 +12,8 @@ import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 const answerSchema = z.object({
   questionId: z.string(),
   selected: z.enum(["A", "B", "C", "D"]),
+  attemptId: z.string().min(8).max(80).optional(),
+  review: z.boolean().optional(),
 });
 
 export async function POST(req: Request) {
@@ -44,7 +46,10 @@ export async function POST(req: Request) {
     questionId: q.question_id,
     selected: parsed.data.selected,
     correct,
+    review: parsed.data.review,
+    attemptId: parsed.data.attemptId,
   });
+  if (!stat) return NextResponse.json({ ok: true, duplicate: true, correct });
   if (!q.is_free) {
     await recordProUsage(session.id, "pro_question");
   }

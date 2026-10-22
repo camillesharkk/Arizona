@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { paths } from "@/lib/paths";
 
-export function PrepCtas() {
+export function PrepCtas({ studyCards = false }: { studyCards?: boolean }) {
   return (
     <div className="row" style={{ margin: "20px 0" }}>
       <Link className="btn btn-primary" href={`${paths.practice}?mode=quick`}>
@@ -16,6 +16,11 @@ export function PrepCtas() {
       <Link className="btn btn-ghost" href={paths.pricing}>
         Pro question bank
       </Link>
+      {studyCards ? (
+        <Link className="btn btn-ghost" href={paths.studyCards}>
+          Study Cards
+        </Link>
+      ) : null}
     </div>
   );
 }

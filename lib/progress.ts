@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import { publishedQuestions } from "@/data/questions";
+import { applyReviewAnswer } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
 import type { QuestionStat } from "@/lib/store/types";
 import type { UserRow } from "@/lib/store/types";
@@ -23,22 +24,29 @@ export async function recordQuestionAnswer(opts: {
   questionId: string;
   selected: "A" | "B" | "C" | "D";
   correct: boolean;
+  review?: boolean;
+  attemptId?: string;
 }) {
   const store = await getStore();
   const q = publishedQuestions().find((x) => x.question_id === opts.questionId);
   if (!q) throw new Error("unknown_question");
+  if (opts.attemptId) {
+    const fresh = await store.claimAttempt(opts.userId, opts.attemptId, opts.questionId);
+    if (!fresh) return (await store.getStat(opts.userId, opts.questionId)) ?? null;
+  }
   const prev = await store.getStat(opts.userId, opts.questionId);
   const now = new Date().toISOString();
+  const review = applyReviewAnswer(prev, { correct: opts.correct, review: Boolean(opts.review), now });
   const next: QuestionStat = {
     userId: opts.userId,
     questionId: opts.questionId,
     topic: q.topic,
     bank: "arizona-notary-exam",
     chapter: q.topic,
+    state: "AZ",
     firstCorrect: prev?.firstCorrect ?? opts.correct,
     lastCorrect: opts.correct,
-    wrongCount: (prev?.wrongCount || 0) + (opts.correct ? 0 : 1),
-    rightCount: (prev?.rightCount || 0) + (opts.correct ? 1 : 0),
+    ...review,
     lastSelected: opts.selected,
     lastCorrectOption: q.correct_option,
     firstAt: prev?.firstAt || now,
