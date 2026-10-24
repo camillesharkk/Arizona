@@ -22,14 +22,26 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
   if (body?.kind === "exam") {
     const exam = z
-      .object({ mode: z.string(), score: z.number(), correctCount: z.number(), total: z.number() })
+      .object({
+        mode: z.string(),
+        score: z.number(),
+        correctCount: z.number(),
+        total: z.number(),
+        examId: z.string().uuid().optional(),
+      })
       .safeParse(body);
     if (!exam.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
+    const store = await getStore();
+    if (exam.data.examId) {
+      const existing = (await store.listExams(session.id)).some((row) => row.id === exam.data.examId);
+      if (existing) return NextResponse.json({ ok: true, duplicate: true });
+    }
     if (exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
       return NextResponse.json({ error: "Pro required for additional full exams" }, { status: 402 });
     }
     const priorFull = exam.data.mode === "full" ? await fullExamCount(session.id) : 0;
-    await recordExam({ ...exam.data, userId: session.id });
+    const inserted = await recordExam({ ...exam.data, userId: session.id });
+    if (!inserted) return NextResponse.json({ ok: true, duplicate: true });
     if (exam.data.mode === "full" && priorFull >= FREE_FULL_EXAMS) {
       await recordProUsage(session.id, "full_exam_extra");
     }

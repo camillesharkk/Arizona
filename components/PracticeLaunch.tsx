@@ -82,7 +82,7 @@ export function PracticeLaunch() {
         </button>
         <button className="card" type="button" onClick={startFull} style={{ textAlign: "left", cursor: "pointer" }}>
           <h3>Full 45</h3>
-          <p>One free Full 45 in this browser. It can include Pro questions. Another full exam in this browser is Pro.</p>
+          <p>A free account can record {FREE_FULL_EXAMS} full exam. Before sign-in, this browser can start {FREE_FULL_EXAMS}. That is not one exam per person. Pro removes the cap.</p>
         </button>
         <button className="card" type="button" onClick={() => setMode("weak")} style={{ textAlign: "left", cursor: "pointer" }}>
           <h3>Weak Areas</h3>

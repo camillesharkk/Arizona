@@ -38,6 +38,8 @@ export type TokenRow = {
   type: "verify" | "reset";
   userId: string;
   expiresAt: string;
+  /** Email the reset message was sent to. Missing on older tokens. */
+  sentToEmail?: string | null;
 };
 
 export type QuestionStat = {
@@ -64,6 +66,7 @@ export type QuestionStat = {
   lastAt: string | null;
   mastered: boolean;
   favorited: boolean;
+  savedForReview?: boolean;
 };
 
 export type ExamRow = {
@@ -112,7 +115,7 @@ export type Store = {
   claimAttempt(userId: string, attemptId: string, questionId: string): Promise<boolean>;
   getStat(userId: string, questionId: string): Promise<QuestionStat | null>;
   listStats(userId: string): Promise<QuestionStat[]>;
-  addExam(row: ExamRow): Promise<void>;
+  addExam(row: ExamRow): Promise<boolean>;
   listExams(userId: string): Promise<ExamRow[]>;
   aiCount(userId: string, day: string): Promise<number>;
   bumpAi(userId: string, day: string): Promise<number>;

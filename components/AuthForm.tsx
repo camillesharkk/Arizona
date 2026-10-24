@@ -153,7 +153,9 @@ export function AuthForm({
     setRevokeDeviceId("");
     if (data.verifyToken) setInfo(`Dev verify link token: ${data.verifyToken}`);
     else if (data.resetToken) setInfo(`Dev reset token: ${data.resetToken}`);
-    else if (mode === "forgot") setInfo("If that email is registered, a reset link is on the way.");
+    else if (mode === "forgot") {
+      setInfo("If that email is registered, a reset link is on the way. If you don't see the email, check your spam or junk folder.");
+    }
     if (mode === "login") {
       const next = new URLSearchParams(window.location.search).get("next");
       window.location.href = next && next.startsWith("/") && !next.startsWith("//") ? next : paths.dashboard;

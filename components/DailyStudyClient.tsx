@@ -20,6 +20,10 @@ type View = {
   projectReason: string | null;
   entitlementExpiresAt: string | null;
   freeOnly: boolean;
+  freeQuestionCount: number;
+  questionCount: number;
+  freeCardCount: number;
+  cardCount: number;
   reason: string | null;
   practiceCards: Card[];
   reviewCards: Card[];
@@ -106,7 +110,14 @@ export function DailyStudyClient() {
         <span>Target {view.targetDate}</span>
         <Link href={`${paths.account}#study-settings`}>Study Settings</Link>
       </div>
-      {view.freeOnly ? <p className="notice">This plan covers the free set. It is not the full Pro bank.</p> : null}
+      {view.freeOnly ? (
+        <p className="notice">
+          Today’s plan uses the free set: {view.freeQuestionCount} questions and {view.freeCardCount} study cards. Pro uses all {view.questionCount} questions and {view.cardCount} study cards.{" "}
+          <Link href={paths.pricing}>View Pro</Link>
+        </p>
+      ) : (
+        <p className="notice">Pro is active. Today’s plan uses the full question bank and study cards.</p>
+      )}
       {entitlement && entitlement < view.targetDate ? <p className="notice">Pro access ends {entitlement}. The study target stays {view.targetDate}.</p> : null}
       {view.projectedDate && view.projectedDate > view.targetDate ? <p className="notice">At the current pace the plan finishes {view.projectedDate}.</p> : null}
       {view.projectReason ? <p className="notice">{view.projectReason}</p> : null}
@@ -131,6 +142,9 @@ export function DailyStudyClient() {
         </section>
         <section className="card" aria-label="Today’s Review">
           <h2>Today’s Review</h2>
+          {reviewCard || reviewQuestions.length || view.yesterdayWaiting.length ? (
+            <p>Your review is personalized using your account’s missed questions, questions you saved, and spaced repetition. Review daily to reinforce what you’ve learned and prepare for your exam.</p>
+          ) : null}
           {view.yesterdayWaiting.length ? (
             <p className="notice">
               {view.yesterdayWaiting.length} missed {view.yesterdayWaiting.length === 1 ? "question is" : "questions are"} not due until {new Date(view.yesterdayWaiting[0].nextReviewAt).toLocaleString()}.

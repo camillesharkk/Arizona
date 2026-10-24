@@ -7,6 +7,7 @@ import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { getDeviceRepo } from "@/lib/devices";
 import { revokeAllDevices, revokeOthersKeepCurrent } from "@/lib/devices/service";
 import { refreshUserSession } from "@/lib/devices/http";
+import { completePasswordReset } from "@/lib/auth/password-reset";
 
 export async function POST(req: Request) {
   const limited = rateLimit(`reset:${clientIp(req)}`, 8, 60_000);
@@ -17,14 +18,11 @@ export async function POST(req: Request) {
   if (!body.success) return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   const store = await getStore();
   if (body.data.token) {
-    const row = await store.takeToken(body.data.token, "reset");
-    if (!row) return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
-    const target = await store.getUserById(row.userId);
-    if (!target || target.deletedAt) return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
     const hash = await bcrypt.hash(body.data.password, 12);
-    await store.updateUser(row.userId, { passwordHash: hash });
+    const reset = await completePasswordReset(store, body.data.token, hash);
+    if (!reset.ok) return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
     const devices = await getDeviceRepo();
-    await revokeAllDevices(devices, { userId: row.userId });
+    await revokeAllDevices(devices, { userId: reset.userId });
     return NextResponse.json({ ok: true });
   }
   const session = await getSession();

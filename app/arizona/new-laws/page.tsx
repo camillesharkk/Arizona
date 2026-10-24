@@ -3,6 +3,7 @@ import { hubLawChanges, lawIndexAsOf, lawStatus } from "@/data/laws";
 import { getSource } from "@/data/sources";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
+import { ProNudge } from "@/components/ProNudge";
 
 export const metadata = pageMeta({
   title: "Arizona Notary Law Change: SB 1479 (Sept. 12, 2026)",
@@ -34,6 +35,9 @@ export default function NewLawsPage() {
           Study Guide
         </Link>
       </div>
+      <ProNudge>
+        Practice this change with the question bank. The Secretary of State notice above stays free.
+      </ProNudge>
       {listed.map((c) => {
         const status = lawStatus(c);
         const src = getSource(c.source_id);

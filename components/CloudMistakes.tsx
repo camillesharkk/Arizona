@@ -24,16 +24,20 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
   const [queue, setQueue] = useState<Question[] | null>(null);
   const [isPro, setIsPro] = useState(false);
   const [needAuth, setNeedAuth] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [source, setSource] = useState<"all" | "incorrect" | "saved">("all");
 
   async function load() {
     const me = await fetch("/api/auth/me/").then((r) => r.json());
     if (!me.user) {
       setNeedAuth(true);
+      setReady(true);
       return;
     }
     setIsPro(Boolean(me.user.arizonaPro || me.user.plan === "pro"));
     const data = await fetch("/api/mistakes/").then((r) => r.json());
     setStats(data.mistakes || []);
+    setReady(true);
   }
 
   useEffect(() => {
@@ -44,7 +48,12 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
     setTopic(initialTopic && topicIds.has(initialTopic) ? initialTopic : "all");
   }, [initialTopic]);
 
-  const filtered = stats.filter((s) => topic === "all" || s.topic === topic);
+  const byTopic = stats.filter((s) => topic === "all" || s.topic === topic);
+  const filtered = byTopic.filter((s) => {
+    if (source === "incorrect") return s.wrongCount > 0;
+    if (source === "saved") return Boolean(s.savedForReview);
+    return true;
+  });
   const due = filtered.filter(dueNow);
   const nextReview = filtered
     .map((s) => s.nextReviewAt)
@@ -90,6 +99,20 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
 
   return (
     <div>
+      {ready && isPro ? (
+        <p className="notice">Pro is active. Missed questions and questions you save stay on this account.</p>
+      ) : null}
+      {ready && !isPro ? (
+        <p className="notice">
+          Missed questions and questions you save stay on this account. Pro adds the rest of the practice bank.{" "}
+          <Link href={paths.pricing}>View Pro</Link>
+        </p>
+      ) : null}
+      <div className="filter-row" aria-label="Review source">
+        <button className={`chip ${source === "all" ? "on" : ""}`} type="button" onClick={() => setSource("all")}>All</button>
+        <button className={`chip ${source === "incorrect" ? "on" : ""}`} type="button" onClick={() => setSource("incorrect")}>Incorrect</button>
+        <button className={`chip ${source === "saved" ? "on" : ""}`} type="button" onClick={() => setSource("saved")}>Saved by you</button>
+      </div>
       <div className="filter-row">
         <button className={`chip ${topic === "all" ? "on" : ""}`} type="button" onClick={() => selectTopic("all")}>
           All
@@ -102,7 +125,13 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
       </div>
       {!filtered.length ? (
         <div className="card">
-          <p>No missed questions in this set yet.</p>
+          <p>
+            {source === "saved"
+              ? "No questions saved for review yet."
+              : source === "incorrect"
+                ? "No missed questions in this set yet."
+                : "No missed or saved questions in this set yet."}
+          </p>
           <Link className="btn btn-primary" href={paths.practice}>Start a practice test</Link>
         </div>
       ) : (
@@ -120,10 +149,12 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
           <article className="card" key={s.questionId} style={{ marginTop: 12 }}>
             <span className="kicker">
               {topicLabel(q.topic)} · {dueNow(s) ? "Due" : "Later"}
+              {s.wrongCount > 0 ? " · Incorrect" : ""}
+              {s.savedForReview ? " · Saved by you" : ""}
             </span>
             <h3>{q.question_text}</h3>
             <p>
-              Wrong {s.wrongCount} {s.wrongCount === 1 ? "time" : "times"}
+              {s.wrongCount > 0 ? `Wrong ${s.wrongCount} ${s.wrongCount === 1 ? "time" : "times"}` : "Saved for review"}
               {s.nextReviewAt ? ` · Next review ${new Date(s.nextReviewAt).toLocaleString()}` : ""}
             </p>
             <div className="row">

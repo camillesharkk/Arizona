@@ -100,6 +100,7 @@ function mapStat(r: Record<string, unknown>): QuestionStat {
     lastAt: iso(r.last_at),
     mastered: Boolean(r.mastered),
     favorited: Boolean(r.favorited),
+    savedForReview: Boolean(r.saved_for_review),
   };
 }
 
@@ -154,8 +155,8 @@ export const pgStore: Store = {
   async putToken(row) {
     await assertSchema();
     await db()`delete from tokens where user_id = ${row.userId} and type = ${row.type}`;
-    await db()`insert into tokens (token, type, user_id, expires_at)
-      values (${row.token}, ${row.type}, ${row.userId}, ${row.expiresAt})`;
+    await db()`insert into tokens (token, type, user_id, expires_at, sent_to_email)
+      values (${row.token}, ${row.type}, ${row.userId}, ${row.expiresAt}, ${row.sentToEmail ?? null})`;
   },
   async takeToken(token, type) {
     await assertSchema();
@@ -164,19 +165,25 @@ export const pgStore: Store = {
     await db()`delete from tokens where token = ${token}`;
     const r = rows[0] as Record<string, unknown>;
     if (new Date(String(iso(r.expires_at))) < new Date()) return null;
-    return { token, type, userId: String(r.user_id), expiresAt: iso(r.expires_at) as string };
+    return {
+      token,
+      type,
+      userId: String(r.user_id),
+      expiresAt: iso(r.expires_at) as string,
+      sentToEmail: r.sent_to_email ? String(r.sent_to_email) : null,
+    };
   },
   async upsertStat(stat) {
     await assertSchema();
     await db()`insert into question_stats (
       user_id, question_id, topic, bank, chapter, state, first_correct, last_correct, wrong_count, right_count,
       review_count, consecutive_correct, review_stage, last_wrong_at, last_reviewed_at, next_review_at, review_plan,
-      last_selected, last_correct_option, first_at, last_at, mastered, favorited
+      last_selected, last_correct_option, first_at, last_at, mastered, favorited, saved_for_review
     ) values (
       ${stat.userId}, ${stat.questionId}, ${stat.topic}, ${stat.bank}, ${stat.chapter}, ${stat.state},
       ${stat.firstCorrect}, ${stat.lastCorrect}, ${stat.wrongCount}, ${stat.rightCount},
       ${stat.reviewCount}, ${stat.consecutiveCorrect}, ${stat.reviewStage}, ${stat.lastWrongAt}, ${stat.lastReviewedAt}, ${stat.nextReviewAt}, ${stat.reviewPlan || "v2"},
-      ${stat.lastSelected}, ${stat.lastCorrectOption}, ${stat.firstAt}, ${stat.lastAt}, ${stat.mastered}, ${stat.favorited}
+      ${stat.lastSelected}, ${stat.lastCorrectOption}, ${stat.firstAt}, ${stat.lastAt}, ${stat.mastered}, ${stat.favorited}, ${Boolean(stat.savedForReview)}
     ) on conflict (user_id, question_id) do update set
       last_correct = excluded.last_correct,
       wrong_count = excluded.wrong_count,
@@ -194,6 +201,7 @@ export const pgStore: Store = {
       last_at = excluded.last_at,
       mastered = excluded.mastered,
       favorited = excluded.favorited,
+      saved_for_review = excluded.saved_for_review,
       updated_at = now()
       where question_stats.user_id = excluded.user_id`;
     return stat;
@@ -218,8 +226,11 @@ export const pgStore: Store = {
   },
   async addExam(row: ExamRow) {
     await assertSchema();
-    await db()`insert into exams (id, user_id, mode, score, correct_count, total, at)
-      values (${row.id}, ${row.userId}, ${row.mode}, ${row.score}, ${row.correctCount}, ${row.total}, ${row.at})`;
+    const rows = await db()`insert into exams (id, user_id, mode, score, correct_count, total, at)
+      values (${row.id}, ${row.userId}, ${row.mode}, ${row.score}, ${row.correctCount}, ${row.total}, ${row.at})
+      on conflict (id) do nothing
+      returning id`;
+    return rows.length > 0;
   },
   async listExams(userId) {
     await assertSchema();

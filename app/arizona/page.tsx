@@ -10,6 +10,7 @@ import { HomeStudy } from "@/components/HomeStudy";
 import { eligibleExamPool } from "@/lib/quiz";
 import { FREE_FULL_EXAMS, FREE_FLASHCARD_PREVIEW, PRO_DURATION_DAYS } from "@/lib/product";
 import Link from "next/link";
+import { ProNudge } from "@/components/ProNudge";
 
 const cardsById = new Map(flashcards.map((card) => [card.id, card]));
 const previewCards = HOME_STUDY_CARD_IDS.flatMap((id) => {
@@ -51,7 +52,7 @@ export default function ArizonaHub() {
         <JsonLd data={quizJson()} />
         <AccountStatusBanner />
         <h1>Arizona Notary Exam Prep</h1>
-        <p className="home-lead">Learn the rules. Practice with scenarios. Review your mistakes.</p>
+        <p className="home-lead">Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams.</p>
         <HomeStudy cards={previewCards} />
 
         <section className="home-block" aria-labelledby="free-pro-heading">
@@ -62,7 +63,7 @@ export default function ArizonaHub() {
               <ul className="home-plain">
                 <li>{freeQuestionCount} practice questions</li>
                 <li>{FREE_FLASHCARD_PREVIEW} study cards to start</li>
-                <li>{FREE_FULL_EXAMS} full practice exam</li>
+                <li>{FREE_FULL_EXAMS} full practice exam on a free account. Before sign-in, this browser can start {FREE_FULL_EXAMS}. That limit is not one exam per person.</li>
               </ul>
             </div>
             <div>
@@ -74,7 +75,7 @@ export default function ArizonaHub() {
               </ul>
             </div>
           </div>
-          <p><Link href={paths.pricing}>View Plans</Link></p>
+          <ProNudge>These counts are the free and Pro sets on this site.</ProNudge>
         </section>
 
         <section className="home-block" aria-labelledby="resources-heading">

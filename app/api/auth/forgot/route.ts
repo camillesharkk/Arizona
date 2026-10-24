@@ -13,7 +13,13 @@ export async function POST(req: Request) {
   const user = await store.getUserByEmail(body.data.email.trim().toLowerCase());
   if (user && !user.deletedAt) {
     const token = newToken();
-    await store.putToken({ token, type: "reset", userId: user.id, expiresAt: new Date(Date.now() + 1000 * 60 * 30).toISOString() });
+    await store.putToken({
+      token,
+      type: "reset",
+      userId: user.id,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 30).toISOString(),
+      sentToEmail: user.email,
+    });
     const mail = await sendMail(user.email, RESET_SUBJECT, resetEmailHtml(resetUrl(token)));
     if (!mail.ok) {
       return NextResponse.json({ error: mail.error }, { status: 502 });

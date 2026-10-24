@@ -232,11 +232,11 @@ export function DashboardClient() {
         <h2>Exam readiness {showAsPro ? `${ready}%` : ""}</h2>
         <p>Best score {user.bestScore ?? "—"}% · Tests taken {exams.length} · Last study {user.lastStudyAt?.slice(0, 10) || "—"}</p>
         {!showAsPro && !hideFreePlan && (
-          <p>Exam readiness score is included with Pro — know exactly what to study next.</p>
+          <p>Free practice uses the free question pool. Pro adds the rest of the bank, the full study-card deck, more full exams, and the exam readiness score.</p>
         )}
         {!showAsPro && !hideFreePlan && (
           <Link className="btn btn-primary" href={paths.pricing}>
-            Unlock Pro
+            View Pro
           </Link>
         )}
       </div>

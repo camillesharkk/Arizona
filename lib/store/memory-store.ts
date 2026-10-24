@@ -138,7 +138,9 @@ export function createMemoryStore(): Store {
       return db.stats.filter((s) => s.userId === userId);
     },
     async addExam(row) {
+      if (db.exams.some((exam) => exam.id === row.id)) return false;
       db.exams.push(row);
+      return true;
     },
     async listExams(userId) {
       return db.exams.filter((e) => e.userId === userId);

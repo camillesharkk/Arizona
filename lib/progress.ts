@@ -57,6 +57,7 @@ export async function recordQuestionAnswer(opts: {
     lastAt: now,
     mastered: prev?.mastered && opts.correct ? true : false,
     favorited: prev?.favorited ?? false,
+    savedForReview: prev?.savedForReview ?? false,
   };
   await store.upsertStat(next);
   const user = await store.getUserById(opts.userId);
@@ -70,10 +71,11 @@ export async function recordExam(opts: {
   score: number;
   correctCount: number;
   total: number;
+  examId?: string;
 }) {
   const store = await getStore();
-  await store.addExam({
-    id: randomUUID(),
+  const inserted = await store.addExam({
+    id: opts.examId || randomUUID(),
     userId: opts.userId,
     mode: opts.mode,
     score: opts.score,
@@ -81,9 +83,11 @@ export async function recordExam(opts: {
     total: opts.total,
     at: new Date().toISOString(),
   });
+  if (!inserted) return false;
   const user = await store.getUserById(opts.userId);
   if (user) {
     const best = user.bestScore == null ? opts.score : Math.max(user.bestScore, opts.score);
     await store.updateUser(opts.userId, { ...applyStreak(user), bestScore: best });
   }
+  return true;
 }

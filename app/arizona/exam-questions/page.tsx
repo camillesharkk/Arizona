@@ -2,7 +2,7 @@ import Link from "next/link";
 import { QuestionsClient } from "@/components/QuestionsClient";
 import { QuestionPageCtas } from "@/components/QuestionPageCtas";
 import { PrepCtas } from "@/components/PrepCtas";
-import { HomeProCta } from "@/components/HomeProCta";
+import { ProNudge } from "@/components/ProNudge";
 import { examConfig, officialExam } from "@/data/exam-config";
 import { AnswerExplain } from "@/components/AnswerExplain";
 import { getSource } from "@/data/sources";
@@ -64,7 +64,9 @@ export default function ExamQuestionsPage() {
       <p className="notice" style={{ marginTop: 24 }}>
         Progress is saved on this device. Create a free account to keep the cloud notebook.
       </p>
-      <HomeProCta />
+      <ProNudge>
+        {questionFreeCount} questions on this page are free. Pro opens the other {questionPool.length - questionFreeCount}.
+      </ProNudge>
     </main>
   );
 }

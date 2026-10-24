@@ -4,11 +4,11 @@ import { getSource } from "@/data/sources";
 import { ChapterProgress, Readiness } from "@/components/StudyProgress";
 import { paths } from "@/lib/paths";
 import { eligibleExamPool } from "@/lib/quiz";
-import { chapterTopic } from "@/lib/study-cards";
+import { chapterTopic, publicStudyCards } from "@/lib/study-cards";
 import { pageMeta } from "@/lib/seo";
 import { PrepCtas } from "@/components/PrepCtas";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
-import { HomeProCta } from "@/components/HomeProCta";
+import { ProNudge } from "@/components/ProNudge";
 
 const chapterReferences: Record<string, string[]> = {
   identification: ["ars_41_253", "ars_41_254", "ars_41_256"],
@@ -110,7 +110,11 @@ export default async function StudyGuidePage() {
           </article>
         );
       })}
-      <HomeProCta />
+      <ProNudge>
+        The study guide stays free. Pro adds the rest of the practice bank
+        {" "}({eligibleExamPool().length - eligibleExamPool().filter((question) => question.is_free).length} more questions)
+        and {publicStudyCards(true).filter((card) => !card.pending).length - publicStudyCards(false).filter((card) => !card.locked && !card.pending).length} more study cards.
+      </ProNudge>
     </main>
   );
 }

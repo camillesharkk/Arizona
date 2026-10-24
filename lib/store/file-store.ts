@@ -180,7 +180,9 @@ export const fileStore: Store = {
   },
   addExam(row) {
     return mutate((db) => {
+      if (db.exams.some((exam) => exam.id === row.id)) return false;
       db.exams.push(row);
+      return true;
     });
   },
   async listExams(userId) {

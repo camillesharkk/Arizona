@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { examConfig, officialExam } from "@/data/exam-config";
 import { PrepCtas } from "@/components/PrepCtas";
-import { HomeProCta } from "@/components/HomeProCta";
+import { ProNudge } from "@/components/ProNudge";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
 
@@ -133,7 +133,9 @@ export default function BecomePage() {
         </p>
         <p className="notice">No live affiliate partners in MVP. Buttons are placeholders.</p>
       </section>
-      <HomeProCta />
+      <ProNudge>
+        Practice the exam on this site before you file. The Secretary of State application stays free to read. Pro adds the rest of this site’s practice questions.
+      </ProNudge>
     </main>
   );
 }

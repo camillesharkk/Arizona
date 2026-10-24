@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type Ref } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
 import { examConfig, officialExam } from "@/data/exam-config";
@@ -22,9 +22,12 @@ import { CardStage } from "@/components/CardStage";
 import { AnswerReview } from "@/components/AnswerReview";
 import { getSource } from "@/data/sources";
 import { AnswerExplain } from "@/components/AnswerExplain";
+import { FREE_FULL_EXAMS } from "@/lib/product";
 import { paths } from "@/lib/paths";
 import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
+import { SaveForReview } from "@/components/SaveForReview";
+import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
 
 type Mode = "quick" | "full" | "weak" | "practice";
 
@@ -136,6 +139,11 @@ export function ExamRunner({
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const answersRef = useRef(answers);
   const finishOnce = useRef(false);
+  const localSaved = useRef(false);
+  const examSaveId = useRef<string | null>(null);
+  const completeReported = useRef(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const attemptIds = useRef<Record<string, string>>({});
   const reviewScroll = useRef(0);
   const [wrongId, setWrongId] = useState<string | null>(null);
@@ -281,10 +289,12 @@ export function ExamRunner({
     }
   }
 
-  function finish() {
-    if (finishOnce.current) return;
+  async function finish() {
+    if (finishOnce.current || submitting) return;
     if (reportStart === "answer" && Object.keys(answersRef.current).length === 0) return;
     finishOnce.current = true;
+    setSubmitError("");
+    setSubmitting(true);
     if (reportStart === "answer") reportExamStart();
     cancelAutoAdvance();
     const current = answersRef.current;
@@ -292,15 +302,19 @@ export function ExamRunner({
       question: item,
       correct: current[item.question_id] === item.correct_option,
     }));
-    if (!practice) results.forEach((r) => recordAnswer(r.question.question_id, r.correct));
     const pct = scorePercent(results.filter((r) => r.correct).length, questions.length);
-    const prev = loadProgress();
-    saveProgress({
-      lastScore: pct,
-      lastMode: mode,
-      scores: [{ at: new Date().toISOString(), score: pct, mode }, ...prev.scores].slice(0, 20),
-    });
-    const saves: Promise<unknown>[] = [];
+    if (!localSaved.current) {
+      localSaved.current = true;
+      if (!practice) results.forEach((r) => recordAnswer(r.question.question_id, r.correct));
+      const prev = loadProgress();
+      saveProgress({
+        lastScore: pct,
+        lastMode: mode,
+        scores: [{ at: new Date().toISOString(), score: pct, mode }, ...prev.scores].slice(0, 20),
+      });
+    }
+    if (!examSaveId.current) examSaveId.current = crypto.randomUUID();
+    const saves: Promise<Response>[] = [];
     if (!practice) results.forEach((r) => {
       const letter = current[r.question.question_id];
       if (letter) {
@@ -313,29 +327,47 @@ export function ExamRunner({
             attemptId: attemptId(r.question.question_id),
             review: false,
           }),
-        }).catch(() => undefined));
+        }));
       }
     });
     saves.push(fetch("/api/progress/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ kind: "exam", mode, score: pct, correctCount: results.filter((r) => r.correct).length, total: questions.length }),
-    }).catch(() => undefined));
-    void Promise.allSettled(saves).finally(() => setDone(true));
-    const elapsed = startedAt.current == null ? undefined : Math.max(0, Math.round((Date.now() - startedAt.current) / 1000));
-    trackAnalyticsEvent(
-      "exam_complete",
-      examCompleteParams({
+      body: JSON.stringify({
+        kind: "exam",
         mode,
-        practice,
-        questionCount: questions.length,
-        answeredCount: Object.keys(answers).length,
         score: pct,
-        passed: pct >= examConfig.passingScorePercent,
-        plan: isPro ? "pro" : "free",
-        durationSeconds: elapsed,
-      })
-    );
+        correctCount: results.filter((r) => r.correct).length,
+        total: questions.length,
+        examId: examSaveId.current,
+      }),
+    }));
+    const outcomes = await Promise.all(saves.map((save) => settleSave(save)));
+    if (outcomes.some((outcome) => outcome === "fail")) {
+      finishOnce.current = false;
+      setSubmitting(false);
+      setSubmitError("We couldn't save this exam. Your answers are still here.");
+      return;
+    }
+    setSubmitting(false);
+    setDone(true);
+    if (!completeReported.current) {
+      completeReported.current = true;
+      const elapsed = startedAt.current == null ? undefined : Math.max(0, Math.round((Date.now() - startedAt.current) / 1000));
+      trackAnalyticsEvent(
+        "exam_complete",
+        examCompleteParams({
+          mode,
+          practice,
+          questionCount: questions.length,
+          answeredCount: Object.keys(current).length,
+          score: pct,
+          passed: pct >= examConfig.passingScorePercent,
+          plan: isPro ? "pro" : "free",
+          durationSeconds: elapsed,
+        })
+      );
+    }
   }
 
   if (done) {
@@ -407,14 +439,13 @@ export function ExamRunner({
             </Link>
           </div>
           <AccountInvite />
-          {mode === "weak" && !isPro && (
-            <div className="card" style={{ marginTop: 16 }}>
-              <strong>Turn your weak topics into passing scores.</strong>
-              <p>Know exactly what to study next with weak-area training, smart review, and exam readiness.</p>
-              <Link className="btn btn-primary" href={paths.pricing}>
-                Unlock Pro
-              </Link>
-            </div>
+          {isPro ? (
+            <p className="notice">Pro is active. Keep practicing the topics you missed.</p>
+          ) : (
+            <p className="notice">
+              Free practice uses the free question pool. A free account can record {FREE_FULL_EXAMS} full exam, and this browser can start one before you sign in. Pro opens the rest of the bank and more full exams.{" "}
+              <Link href={paths.pricing}>View Pro</Link>
+            </p>
           )}
         </div>
         {results.map((r, i) => (
@@ -426,6 +457,7 @@ export function ExamRunner({
             reveal
             isPro={isPro}
             lockPaid={false}
+            extra={<SaveForReview questionId={r.question.question_id} hint={false} />}
           />
         ))}
       </div>
@@ -482,6 +514,21 @@ export function ExamRunner({
         Previous answer
       </button>
     ) : null;
+  const currentSave = pastIndex == null ? <SaveForReview questionId={q.question_id} /> : null;
+  const previousSave = idx > 0 && pastIndex == null ? (
+    <SaveForReview questionId={questions[idx - 1].question_id} label="Save previous question for review" hint={false} />
+  ) : null;
+  const submitStatus = (
+    <>
+      {submitting ? <SubmitStatus /> : null}
+      {submitError ? (
+        <p className="form-error" role="alert">
+          {submitError}{" "}
+          <button className="btn btn-ghost" type="button" onClick={() => void finish()}>Try again</button>
+        </p>
+      ) : null}
+    </>
+  );
 
   if (layout === "compact") {
     return (
@@ -494,17 +541,20 @@ export function ExamRunner({
           <span style={{ width: `${((idx + 1) / questions.length) * 100}%` }} />
         </div>
         {previousAnswer}
+        {currentSave}
+        {previousSave}
         {questionBody}
+        {submitStatus}
         <div className="home-exam-nav">
           <div className="row space">
-            <button className="btn btn-ghost" type="button" disabled={idx === 0 || pastIndex != null} onClick={() => goTo(idx - 1)}>
+            <button className="btn btn-ghost" type="button" disabled={idx === 0 || pastIndex != null || submitting} onClick={() => goTo(idx - 1)}>
               Previous
             </button>
             <button
               className={lastQuestion && !practice ? "btn btn-sage" : "btn btn-primary"}
               type="button"
-              disabled={pastIndex != null}
-              onClick={() => (lastQuestion ? finish() : goTo(idx + 1))}
+              disabled={pastIndex != null || submitting}
+              onClick={() => (lastQuestion ? void finish() : goTo(idx + 1))}
             >
               {nextLabel}
             </button>
@@ -533,11 +583,14 @@ export function ExamRunner({
         onPrev={() => goTo(idx - 1)}
         prevDisabled={idx === 0 || pastIndex != null}
         onNext={() => (lastQuestion ? finish() : goTo(idx + 1))}
-        nextDisabled={pastIndex != null || (practice ? !selected : false)}
+        nextDisabled={pastIndex != null || submitting || (practice ? !selected : false)}
         nextLabel={nextLabel}
         corner={previousAnswer}
       >
+        {currentSave}
+        {previousSave}
         {questionBody}
+        {submitStatus}
       </CardStage>
     </div>
   );
@@ -562,6 +615,7 @@ export function QuestionBlock({
   lockChoice = false,
   headingRef,
   explain,
+  extra,
 }: {
   q: Question;
   index: number;
@@ -575,6 +629,7 @@ export function QuestionBlock({
   lockChoice?: boolean;
   headingRef?: Ref<HTMLHeadingElement>;
   explain?: boolean;
+  extra?: ReactNode;
 }) {
   const letters = ["A", "B", "C", "D"] as const;
   const map = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
@@ -594,6 +649,7 @@ export function QuestionBlock({
           </button>
         )}
       </div>
+      {extra}
       <h3 className="quiz-heading quiz-stem" ref={headingRef} tabIndex={-1}>
         {index + 1}. {q.question_text}
       </h3>

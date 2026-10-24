@@ -72,7 +72,7 @@ export function SeoGuidePage({ id }: { id: string }) {
           <li><Link href={`${paths.practice}?mode=quick`}>Free Quick 10: find a weak topic</Link></li>
           <li><Link href={`${paths.practice}?mode=full`}>Full 45: practice pacing</Link> — one free attempt in this browser; signed-in free accounts have one recorded attempt.</li>
           <li><Link href={paths.study}>Study Guide: understand the rule</Link></li>
-          <li><Link href={paths.pricing}>Pro question bank: compare additional practice access</Link></li>
+          <li><Link href={paths.pricing}>View Pro</Link> for the rest of this site’s practice bank. Official sources on this page stay free.</li>
         </ul>
       </section>
       <section className="card" style={{ marginTop: 24 }}>

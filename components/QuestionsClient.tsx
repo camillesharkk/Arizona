@@ -13,6 +13,8 @@ import { AnswerReview } from "@/components/AnswerReview";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress, toggleFlag } from "@/lib/storage";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
+import { SaveForReview } from "@/components/SaveForReview";
+import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { paths } from "@/lib/paths";
 import { isActiveQuestion } from "@/lib/question-status";
@@ -25,6 +27,8 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [progress, setProgress] = useState(() => loadProgress());
   const [resumed, setResumed] = useState(false);
   const [done, setDone] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [wrongId, setWrongId] = useState<string | null>(null);
   const [pastIndex, setPastIndex] = useState<number | null>(null);
   const [isPro, setIsPro] = useState(false);
@@ -35,7 +39,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const reviewScroll = useRef(0);
   const doneOnce = useRef(false);
   const attemptIds = useRef<Record<string, string>>({});
-  const pendingSaves = useRef<Promise<unknown>[]>([]);
+  const pendingSaves = useRef<Promise<Response>[]>([]);
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   useEffect(() => subscribeProgress(() => setProgress(loadProgress())), []);
@@ -105,11 +109,21 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     return attemptIds.current[questionId];
   }
 
-  function finishSet() {
-    if (doneOnce.current) return;
+  async function finishSet() {
+    if (doneOnce.current || submitting) return;
     doneOnce.current = true;
+    setSubmitError("");
+    setSubmitting(true);
     cancelAutoAdvance();
-    void Promise.allSettled(pendingSaves.current).finally(() => setDone(true));
+    const outcomes = await Promise.all(pendingSaves.current.map((save) => settleSave(save)));
+    if (outcomes.some((outcome) => outcome === "fail")) {
+      doneOnce.current = false;
+      setSubmitting(false);
+      setSubmitError("We couldn't save this set. Your answers are still here.");
+      return;
+    }
+    setSubmitting(false);
+    setDone(true);
   }
 
   function openPast() {
@@ -212,9 +226,9 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       ) : q ? (
       <CardStage
         onPrev={() => goTo(safeIdx - 1)}
-        prevDisabled={safeIdx === 0 || pastIndex != null}
-        onNext={() => (lastQuestion ? finishSet() : goTo(safeIdx + 1))}
-        nextDisabled={pastIndex != null || !selected}
+        prevDisabled={safeIdx === 0 || pastIndex != null || submitting}
+        onNext={() => (lastQuestion ? void finishSet() : goTo(safeIdx + 1))}
+        nextDisabled={pastIndex != null || submitting || !selected}
         nextLabel={lastQuestion ? "See results" : "Next"}
         corner={
           safeIdx > 0 && pastIndex == null ? (
@@ -246,7 +260,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l), attemptId: attemptId(q.question_id) }),
-                }).catch(() => undefined));
+                }));
                 if (l === q.correct_option) {
                   setWrongId(null);
                   const at = safeIdx;
@@ -262,12 +276,23 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
               marked={progress.flaggedIds.includes(q.question_id)}
               onMark={() => toggleFlag(q.question_id)}
               isPro={isPro}
+              extra={<SaveForReview questionId={q.question_id} />}
             />
             {selected === q.correct_option ? <p className="notice" role="status">Correct.</p> : null}
             {selected === q.correct_option ? <TutorPanel q={q} selected={originalLetter(selected)} /> : null}
             <AccountInvite compact />
           </>
         )}
+        {safeIdx > 0 && pastIndex == null ? (
+          <SaveForReview questionId={pool[safeIdx - 1].question_id} label="Save previous question for review" hint={false} />
+        ) : null}
+        {submitting ? <SubmitStatus /> : null}
+        {submitError ? (
+          <p className="form-error" role="alert">
+            {submitError}{" "}
+            <button className="btn btn-ghost" type="button" onClick={() => void finishSet()}>Try again</button>
+          </p>
+        ) : null}
       </CardStage>
       ) : null}
     </div>

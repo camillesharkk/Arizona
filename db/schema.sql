@@ -40,6 +40,7 @@ create table if not exists tokens (
   type text not null check (type in ('verify', 'reset')),
   user_id text not null references users (id) on delete cascade,
   expires_at timestamptz not null,
+  sent_to_email text,
   created_at timestamptz not null default now()
 );
 
@@ -71,6 +72,7 @@ create table if not exists question_stats (
   last_at timestamptz,
   mastered boolean not null default false,
   favorited boolean not null default false,
+  saved_for_review boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   primary key (user_id, question_id)
