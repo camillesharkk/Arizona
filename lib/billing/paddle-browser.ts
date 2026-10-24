@@ -27,7 +27,29 @@ export function paddleBrowserConfig():
 
 let paddleInit: Promise<Paddle | undefined> | null = null;
 
+export type PaddleCheckoutNotice = {
+  name?: string;
+  code?: string;
+  detail?: string;
+};
+
+const checkoutWatchers = new Set<(event: PaddleCheckoutNotice) => void>();
+
+export function watchPaddleCheckout(cb: (event: PaddleCheckoutNotice) => void) {
+  checkoutWatchers.add(cb);
+  return () => {
+    checkoutWatchers.delete(cb);
+  };
+}
+
 function onPaddleCheckoutEvent(event: PaddleEventData) {
+  const raw = event as PaddleEventData & { code?: string; detail?: string; data?: { code?: string; detail?: string } };
+  const notice: PaddleCheckoutNotice = {
+    name: event?.name,
+    code: raw.code || raw.data?.code,
+    detail: raw.detail || raw.data?.detail,
+  };
+  for (const cb of checkoutWatchers) cb(notice);
   if (event?.name !== "checkout.loaded") return;
   pauseClarityRecording();
   trackAnalyticsEvent("checkout_open", { product_code: PRO_ITEM_ID, plan: "free" });

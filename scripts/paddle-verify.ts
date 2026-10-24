@@ -30,7 +30,7 @@ import { ensurePaddleCheckout } from "../lib/billing/paddle-checkout.ts";
 import { handlePaddleWebhook, type PaddleWebhookEventLike } from "../lib/billing/paddle-webhook.ts";
 import type { PaddleTxnSnapshot } from "../lib/billing/paddle.ts";
 import { reconcilePaddleCheckoutBinding } from "../lib/billing/paddle-reconcile.ts";
-import { PADDLE_OVERLAY_SETTINGS, paddleSuccessPath } from "../lib/billing/paddle-public.ts";
+import { PADDLE_OVERLAY_SETTINGS, paddleCheckoutFallback, paddleSuccessPath } from "../lib/billing/paddle-public.ts";
 import { REFERRAL_CREDIT_CENTS } from "../lib/pricing/catalog.ts";
 import { Environment } from "@paddle/paddle-node-sdk";
 
@@ -202,6 +202,24 @@ async function run() {
   if (PADDLE_OVERLAY_SETTINGS.showAddDiscounts !== false) fail("showAddDiscounts must be false");
   if (paddleSuccessPath() !== "/dashboard/?checkout=success") fail("success path");
   else ok("success URL path is dashboard checkout=success");
+
+  const txn = "txn_domainblockexample01";
+  const approved = paddleCheckoutFallback(
+    `https://pay.example.com/?_ptxn=${txn}`,
+    txn,
+    "arizonanotaryprep.com"
+  );
+  if (approved !== `https://pay.example.com/?_ptxn=${txn}`) fail("approved host should be used when the page host is blocked");
+  else ok("checkout on an unapproved host falls back to the Paddle payment link");
+  if (paddleCheckoutFallback(`https://arizonanotaryprep.com/?_ptxn=${txn}`, txn, "arizonanotaryprep.com")) {
+    fail("same host must stay in the overlay");
+  } else ok("approved page host opens the overlay in place");
+  if (paddleCheckoutFallback("http://pay.example.com/?_ptxn=" + txn, txn, "arizonanotaryprep.com")) fail("http payment link rejected");
+  if (paddleCheckoutFallback(`https://pay.example.com/?_ptxn=txn_other`, txn, "arizonanotaryprep.com")) fail("mismatched transaction rejected");
+  else ok("payment link must belong to this transaction");
+  const added = paddleCheckoutFallback("https://pay.example.com/pricing/", txn, "arizonanotaryprep.com");
+  if (added !== `https://pay.example.com/pricing/?_ptxn=${txn}`) fail("missing _ptxn should be bound to this transaction");
+  else ok("payment link without _ptxn is bound to the created transaction");
 
   if (isPaddleProvider({ MOR_PROVIDER: "paddle" }) !== true) fail("isPaddleProvider paddle");
   else ok("MOR_PROVIDER=paddle selects Paddle");

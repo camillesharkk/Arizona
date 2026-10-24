@@ -22,7 +22,7 @@ export async function ensurePaddleCheckout(opts: {
   now?: Date;
   sdk?: PaddleTransactionsClient;
 }): Promise<
-  | { ok: true; transactionId: string; quoteId: string; finalPriceCents: number }
+  | { ok: true; transactionId: string; quoteId: string; finalPriceCents: number; checkoutUrl: string | null }
   | { ok: false; error: string; status: number }
 > {
   const quote = opts.quote;
@@ -41,6 +41,7 @@ export async function ensurePaddleCheckout(opts: {
       transactionId: existing.providerCheckoutId,
       quoteId: quote.id,
       finalPriceCents: quote.finalPriceCents,
+      checkoutUrl: existing.checkoutUrl,
     };
   }
 
@@ -53,11 +54,13 @@ export async function ensurePaddleCheckout(opts: {
   });
   if (!recon.ok) return { ok: false, error: recon.error, status: recon.status };
   if (recon.kind === "ready") {
+    const bound = await opts.repo.getCheckoutBinding(quote.id);
     return {
       ok: true,
       transactionId: recon.transactionId,
       quoteId: quote.id,
       finalPriceCents: quote.finalPriceCents,
+      checkoutUrl: bound?.checkoutUrl ?? null,
     };
   }
   if (recon.kind === "in_progress") {
@@ -87,6 +90,7 @@ export async function ensurePaddleCheckout(opts: {
         transactionId: claimed.binding.providerCheckoutId,
         quoteId: quote.id,
         finalPriceCents: quote.finalPriceCents,
+        checkoutUrl: claimed.binding.checkoutUrl,
       };
     }
     paddleLog("checkout_in_progress", { quoteId: quote.id });
@@ -122,6 +126,7 @@ export async function ensurePaddleCheckout(opts: {
         transactionId: current.providerCheckoutId,
         quoteId: quote.id,
         finalPriceCents: quote.finalPriceCents,
+        checkoutUrl: current.checkoutUrl,
       };
     }
     return { ok: false, error: "checkout_in_progress", status: 409 };
@@ -132,5 +137,6 @@ export async function ensurePaddleCheckout(opts: {
     transactionId: finished.providerCheckoutId,
     quoteId: quote.id,
     finalPriceCents: quote.finalPriceCents,
+    checkoutUrl: finished.checkoutUrl,
   };
 }

@@ -11,6 +11,7 @@ import {
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
 import { checkoutStartParams, pauseClarityRecording, PRO_ITEM_ID, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
+import { paddleCheckoutFallback } from "@/lib/billing/paddle-public";
 
 type Breakdown = {
   listPriceCents: number;
@@ -112,20 +113,75 @@ export function CheckoutButton({ belowCta }: { belowCta?: ReactNode }) {
       loadBrowserPaddle,
       paddleBrowserConfig,
       paddleSuccessUrl,
+      watchPaddleCheckout,
     } = await import("@/lib/billing/paddle-browser");
     const cfg = paddleBrowserConfig();
     if (!cfg.ok) return { ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" };
     pauseClarityRecording();
     const paddle = await loadBrowserPaddle();
     if (!paddle) return { ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" };
-    paddle.Checkout.open({
-      transactionId,
-      settings: {
-        ...PADDLE_OVERLAY_SETTINGS,
-        successUrl: paddleSuccessUrl(window.location.origin),
-      },
+    return await new Promise<{ ok: true } | { ok: false; error: string }>((resolve) => {
+      let settled = false;
+      const finish = (result: { ok: true } | { ok: false; error: string }) => {
+        if (settled) return;
+        settled = true;
+        stop();
+        resolve(result);
+      };
+      const stop = watchPaddleCheckout((event) => {
+        if (event.name === "checkout.loaded") finish({ ok: true });
+        else if (event.name === "checkout.error" || event.name === "checkout.failed") {
+          finish({ ok: false, error: "CHECKOUT_OPEN_FAILED" });
+        }
+      });
+      paddle.Checkout.open({
+        transactionId,
+        settings: {
+          ...PADDLE_OVERLAY_SETTINGS,
+          successUrl: paddleSuccessUrl(window.location.origin),
+        },
+      });
+      window.setTimeout(() => finish({ ok: false, error: "CHECKOUT_OPEN_FAILED" }), 8000);
     });
-    return { ok: true as const };
+  }
+
+  async function finishPaddle(
+    data: { transactionId?: string; checkoutUrl?: string | null; url?: string; error?: string },
+    breakdown: { finalPriceCents?: number; newcomerApplied?: boolean; referralApplied?: boolean; creditApplied?: boolean } | null
+  ) {
+    if (data.error === "PRICE_CHANGED") {
+      setPriceChanged(true);
+      await load(applyCredit);
+      setBusy(false);
+      return;
+    }
+    if (data.transactionId) {
+      trackEvent("checkout_start", checkoutStartParams(breakdown));
+      const fallback = paddleCheckoutFallback(data.checkoutUrl, String(data.transactionId), window.location.host);
+      if (fallback) {
+        window.location.assign(fallback);
+        return;
+      }
+      const overlay = await openPaddleOverlay(String(data.transactionId));
+      if (!overlay.ok) {
+        setErr("Checkout couldn't be opened. Please try again.");
+        setBusy(false);
+        return;
+      }
+      setBusy(false);
+      return;
+    }
+    if (!data.url) {
+      setErr(
+        data.error === "checkout_in_progress"
+          ? "Checkout is already starting. Please try again."
+          : data.error || "Could not start checkout"
+      );
+      setBusy(false);
+      return;
+    }
+    trackEvent("checkout_start", checkoutStartParams(breakdown));
+    window.location.href = data.url;
   }
 
   async function go() {
@@ -172,44 +228,8 @@ export function CheckoutButton({ belowCta }: { belowCta?: ReactNode }) {
         setBusy(false);
         return;
       }
-      if (retry.ok && data.transactionId) {
-        trackEvent("checkout_start", checkoutStartParams(quote.breakdown));
-        const overlay = await openPaddleOverlay(String(data.transactionId));
-        if (!overlay.ok) {
-          setErr("Checkout is currently unavailable");
-          setBusy(false);
-          return;
-        }
-        setBusy(false);
-        return;
-      }
-      if (retry.ok && data.url) {
-        trackEvent("checkout_start", checkoutStartParams(quote.breakdown));
-        window.location.href = data.url;
-        return;
-      }
     }
-    setBusy(false);
-    if (data.error === "PRICE_CHANGED") {
-      setPriceChanged(true);
-      await load(applyCredit);
-      return;
-    }
-    if (data.transactionId) {
-      trackEvent("checkout_start", checkoutStartParams(quote.breakdown));
-      const overlay = await openPaddleOverlay(String(data.transactionId));
-      if (!overlay.ok) {
-        setErr("Checkout is currently unavailable");
-        return;
-      }
-      return;
-    }
-    if (!data.url) {
-      setErr(data.error || "Could not start checkout");
-      return;
-    }
-    trackEvent("checkout_start", checkoutStartParams(quote.breakdown));
-    window.location.href = data.url;
+    await finishPaddle(data, quote.breakdown);
   }
 
   const b = preview?.breakdown;
@@ -324,10 +344,19 @@ export function CheckoutButton({ belowCta }: { belowCta?: ReactNode }) {
         </button>
       )}
       {belowCta}
+      <p className="notice">
+        <Link href={paths.contact}>Contact support</Link>
+      </p>
       {priceChanged && <p className="notice">Your available price has changed.</p>}
       {err && (
         <p className="notice">
-          {err}. <Link href={paths.login}>Sign in</Link>
+          {err} <Link href={paths.contact}>Contact support</Link>
+          {signedIn !== true && (
+            <>
+              {" "}
+              <Link href={paths.login}>Sign in</Link>
+            </>
+          )}
         </p>
       )}
       {isGuest && (

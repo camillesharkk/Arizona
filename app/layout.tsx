@@ -10,6 +10,7 @@ import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { AnalyticsPageViews } from "@/components/AnalyticsPageViews";
 import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { MicrosoftClarity } from "@/components/MicrosoftClarity";
+import { PaddleCheckoutResume } from "@/components/PaddleCheckoutResume";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </Suspense>
         <JsonLd data={defaultGraph()} />
         <SiteHeader />
+        <PaddleCheckoutResume successOrigin={siteUrl()} />
         {children}
         <SiteFooter />
       </body>

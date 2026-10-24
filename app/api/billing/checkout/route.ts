@@ -43,6 +43,7 @@ export async function POST(req: Request) {
       transactionId: paddle.transactionId,
       quoteId: paddle.quoteId,
       finalPriceCents: paddle.finalPriceCents,
+      checkoutUrl: paddle.checkoutUrl,
       provider: "paddle",
     });
   }
