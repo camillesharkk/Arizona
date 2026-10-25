@@ -19,7 +19,7 @@ export default function GuidesIndexPage() {
       <p className="kicker">Search guides</p>
       <h1>Arizona Notary Exam Guides</h1>
       <p className="lede">
-        Start with the page that matches the question you searched. Free Quick 10 and one free Full 45 in this browser are on the practice test. Choose a format answer, a focused rule guide or a study schedule below.
+        Guides for the exam format, fees, bond, remote notarization, retakes, and a study schedule.
       </p>
       <p>
         <Link className="btn btn-primary" href={`${paths.practice}?mode=quick`}>

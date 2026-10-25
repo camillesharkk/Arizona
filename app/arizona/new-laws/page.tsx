@@ -3,7 +3,6 @@ import { hubLawChanges, lawIndexAsOf, lawStatus } from "@/data/laws";
 import { getSource } from "@/data/sources";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
-import { ProNudge } from "@/components/ProNudge";
 
 export const metadata = pageMeta({
   title: "Arizona Notary Law Change: SB 1479 (Sept. 12, 2026)",
@@ -23,10 +22,7 @@ export default function NewLawsPage() {
         effective September 12, 2026. Read the exceptions before applying the rule.
       </p>
       <p>Effective-date confirmation: <a href="https://azsos.gov/business/notary">Arizona Secretary of State SB 1479 notice</a>. Signed April 9, 2026.</p>
-      <p className="notice">
-        Status uses each item’s statutory effective date (as of {lawIndexAsOf}). Re-read the chaptered session law
-        before you rely on it.
-      </p>
+      <p className="notice">Status as of {lawIndexAsOf}.</p>
       <div className="row">
         <Link className="btn btn-primary" href="/arizona/questions/new-laws/">
           Practice SB 1479 Questions
@@ -35,9 +31,6 @@ export default function NewLawsPage() {
           Study Guide
         </Link>
       </div>
-      <ProNudge>
-        Practice this change with the question bank. The Secretary of State notice above stays free.
-      </ProNudge>
       {listed.map((c) => {
         const status = lawStatus(c);
         const src = getSource(c.source_id);

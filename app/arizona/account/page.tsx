@@ -11,8 +11,7 @@ export default function AccountPage() {
       <p className="kicker">Account</p>
       <h1>Create a free study account</h1>
       <p className="lede">
-        Optional. Practice without signing in. Create an account when you want scores, a wrong-answer
-        notebook, favorites, and a resume point saved under your email on this browser.
+        Optional. Practice without an account, or create one to keep scores and the wrong-answer notebook.
       </p>
       <AccountClient />
     </main>

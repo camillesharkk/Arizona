@@ -40,7 +40,6 @@ export default function PricingPage() {
       <JsonLd data={faqJson(faqs)} />
       <Breadcrumb items={[{ name: "Home", path: paths.home }, { name: "Pricing", path: paths.pricing }]} />
       <h1>Free vs Arizona Notary Exam Prep Pro</h1>
-      <p className="lede">Free builds trust with real practice. Pro is 60-day access to study faster toward a passing score.</p>
       <div className="grid grid-2">
         <section className="card">
           <h2>Free</h2>
@@ -66,18 +65,14 @@ export default function PricingPage() {
             <li>Each additional Full {examConfig.questionCount} draws {examConfig.questionCount} questions from that bank</li>
             <li>Unlimited full-length exams</li>
             <li>Weak-area training</li>
-            <li>Smart wrong-answer review</li>
+            <li>Wrong-answer review</li>
             <li>Full flashcards</li>
             <li>Exam readiness score</li>
-            <li>Advanced analytics</li>
-            <li>Personalized study plan</li>
+            <li>Study plan from your weak topics</li>
             <li>AI Tutor — {AI_LIMIT_PRO} successful requests per day</li>
-            <li>Advanced weekly progress</li>
+            <li>Weekly progress email</li>
             <li>Cross-device progress</li>
           </ul>
-          <p>
-            <strong>Turn your weak topics into passing scores.</strong> Know exactly what to study next.
-          </p>
           <Suspense fallback={<p>Loading checkout…</p>}>
             <CheckoutButton
               belowCta={

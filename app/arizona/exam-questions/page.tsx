@@ -28,7 +28,7 @@ export default function ExamQuestionsPage() {
       <p className="kicker">Exam Questions</p>
       <h1>Arizona Notary Exam Questions and Answers</h1>
       <p className="lede">
-        Practice one rule at a time. Every item stores an official source, not just a letter key. Filter by topic or missed items below.
+        Practice one rule at a time. Every item cites an official source, not just a letter. Filter by topic or missed items below.
       </p>
       <p>
         This page uses the practice bank: {pool.length} questions, of which {free.length} are free. Pro can use all {pool.length}.

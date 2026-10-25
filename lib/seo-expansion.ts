@@ -272,7 +272,7 @@ export const expandedGuides: SeoGuide[] = [
       },
       {
         "q": "What can I use for free?",
-        "a": "Start Quick 10 without registration. Free topic practice uses the free pool. One free Full 45 is available in the current browser; a signed-in free account has one full exam recorded by the server."
+        "a": "Start Quick 10 without registration. Free topic practice uses the free questions. One free Full 45 in this browser can include Pro questions."
       },
       {
         "q": "Why use Pro?",
@@ -298,7 +298,7 @@ export const expandedGuides: SeoGuide[] = [
       },
       {
         "heading": "What one free full exam means",
-        "body": "Anonymous access includes one free Full 45 in the current browser. The reminder is stored in that browser, so it is not a per-person limit. A signed-in free account has one full exam recorded on the server. Full 45 can include Pro questions and shows explanations after submission.",
+        "body": "One free Full 45 in this browser can include Pro questions. Explanations appear after you submit.",
         "href": "/arizona-notary-practice-test/?mode=full",
         "hrefLabel": "Try the full simulation"
       },

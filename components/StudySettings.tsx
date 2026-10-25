@@ -63,7 +63,7 @@ export function StudySettings() {
   return (
     <section id="study-settings" className="card">
       <h2>Study Settings</h2>
-      <p>{payload.introduced + payload.reviewed} of {payload.total * 2} first studies and reviews recorded.</p>
+      <p>{payload.introduced} cards introduced · {payload.reviewed} reviews finished.</p>
       <p className="notice">
         Recommended today: {payload.recommended.newCards} new cards, {payload.recommended.newQuestions} new questions, {payload.recommended.reviews} reviews.
         {payload.projectedDate ? ` Estimated finish ${payload.projectedDate}.` : ""}

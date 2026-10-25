@@ -66,10 +66,9 @@ export function SeoGuidePage({ id }: { id: string }) {
       ) : null}
       <section className="card" style={{ marginTop: 24 }} aria-label="Choose your next study step">
         <h2>Put this guide into practice</h2>
-        <p>Start with a short diagnostic, review the rules you miss, then practice under a timer.</p>
         <ul>
           <li><Link href={`${paths.practice}?mode=quick`}>Free Quick 10: find a weak topic</Link></li>
-          <li><Link href={`${paths.practice}?mode=full`}>Full 45: practice pacing</Link> — one free attempt in this browser; signed-in free accounts have one recorded attempt.</li>
+          <li><Link href={`${paths.practice}?mode=full`}>Full 45: practice pacing</Link> — one free Full 45 in this browser.</li>
           <li><Link href={paths.study}>Study Guide: understand the rule</Link></li>
           <li><Link href={paths.pricing}>View Pro</Link> for the rest of this site’s practice bank. Official sources on this page stay free.</li>
         </ul>

@@ -18,7 +18,6 @@ import { recordAnswer, saveProgress, toggleFlag, loadProgress, subscribeProgress
 import { AccountInvite } from "@/components/AccountInvite";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { AnswerResult } from "@/components/AnswerResult";
-import { FREE_FULL_EXAMS } from "@/lib/product";
 import { paths } from "@/lib/paths";
 import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
@@ -440,7 +439,7 @@ export function ExamRunner({
             <p className="notice">Pro is active. Keep practicing the topics you missed.</p>
           ) : (
             <p className="notice">
-              Free practice uses the free question pool. A free account can record {FREE_FULL_EXAMS} full exam, and this browser can start one before you sign in. Pro opens the rest of the bank and more full exams.{" "}
+              Free practice uses the free question pool. Pro opens the rest of the bank and more full exams.{" "}
               <Link href={paths.pricing}>View Pro</Link>
             </p>
           )}

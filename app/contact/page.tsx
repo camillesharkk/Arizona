@@ -15,13 +15,6 @@ export default function Page() {
     <main className="wrap hero">
       <p className="kicker">Support</p>
       <h1>Contact Arizona Notary Prep</h1>
-      <p className="lede">
-        Have a question about the practice tests, your account, or the study platform? Send us a message.
-      </p>
-      <p>
-        <a href="#contact-form">Contact Support</a>
-      </p>
-      <h2>Contact Support</h2>
       <ContactForm />
     </main>
   );

@@ -1,13 +1,8 @@
 import Link from "next/link";
-import { examConfig, officialExam, topics } from "@/data/exam-config";
-import { FREE_FLASHCARD_PREVIEW } from "@/lib/product";
-import { eligibleExamPool } from "@/lib/quiz";
+import { officialExam, topics } from "@/data/exam-config";
 import { pageMeta } from "@/lib/seo";
 import { searchMatrix } from "@/lib/seo-guides";
 import { paths } from "@/lib/paths";
-
-const bank = eligibleExamPool();
-const freeCount = bank.filter((q) => q.is_free).length;
 
 export const metadata = pageMeta({
   title: "Arizona Notary Study Resources",
@@ -21,10 +16,7 @@ export default function ResourcesPage() {
     <main className="wrap hero resource-page">
       <h1>Study resources</h1>
       <p className="lede">
-        The 10-question check is free. Open the explanation after you answer; it does not use your one free full exam.
-        A full practice exam is {examConfig.questionCount} questions and starts only when you choose it. {freeCount} questions
-        are free. Pro includes all {bank.length}. Flashcards open with a free preview of {FREE_FLASHCARD_PREVIEW} cards; the
-        rest of that deck is part of Pro.
+        Quick 10, the study guide, and the links below are free. Pro opens the rest of the question bank and study cards.
       </p>
       <p>
         <Link href={paths.home}>Back to practice</Link>

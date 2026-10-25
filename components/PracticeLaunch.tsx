@@ -78,15 +78,15 @@ export function PracticeLaunch() {
       <div className="grid grid-3">
         <button className="card" type="button" onClick={() => setMode("quick")} style={{ textAlign: "left", cursor: "pointer" }}>
           <h3>Quick 10</h3>
-          <p>Warm up with instant explanations. Best first visit.</p>
+          <p>10 questions. The result shows after each answer.</p>
         </button>
         <button className="card" type="button" onClick={startFull} style={{ textAlign: "left", cursor: "pointer" }}>
           <h3>Full 45</h3>
-          <p>A free account can record {FREE_FULL_EXAMS} full exam. Before sign-in, this browser can start {FREE_FULL_EXAMS}. That is not one exam per person. Pro removes the cap.</p>
+          <p>45 questions, 60 minutes. Results show after you submit.</p>
         </button>
         <button className="card" type="button" onClick={() => setMode("weak")} style={{ textAlign: "left", cursor: "pointer" }}>
           <h3>Weak Areas</h3>
-          <p>Free preview of missed items. Unlock Pro to keep training weak topics to a passing score.</p>
+          <p>Questions you missed. The longer set is part of Pro.</p>
         </button>
       </div>
     );
@@ -95,11 +95,11 @@ export function PracticeLaunch() {
   if (mode === "full" && fullLocked) {
     return (
       <div className="card">
-        <h2>Know exactly what to study next.</h2>
+        <h2>Free Full 45 already used</h2>
         <p>
           {signedIn
-            ? "This account already has its free full-length practice test on record. Pro adds unlimited full exams, weak-area training, and exam readiness."
-            : "This browser already started its one free Full 45. The reminder is stored in this browser when storage is available. It is not a per-person limit, and another browser does not see it. Pro adds unlimited full exams, weak-area training, and exam readiness."}
+            ? "This account has used its free Full 45. Pro includes more full exams."
+            : "This browser has used its free Full 45. Pro includes more full exams."}
         </p>
         <Link className="btn btn-primary" href={paths.pricing}>
           Unlock Pro

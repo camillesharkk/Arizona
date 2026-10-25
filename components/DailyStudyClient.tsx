@@ -122,7 +122,7 @@ export function DailyStudyClient() {
       {view.projectedDate && view.projectedDate > view.targetDate ? <p className="notice">At the current pace the plan finishes {view.projectedDate}.</p> : null}
       {view.projectReason ? <p className="notice">{view.projectReason}</p> : null}
       {view.reason ? <p className="notice">{view.reason}</p> : null}
-      {view.unmappedQuestionIds.length ? <p className="notice">{view.unmappedQuestionIds.length} missed questions have no knowledge card yet.</p> : null}
+      {view.unmappedQuestionIds.length ? <p className="notice">{view.unmappedQuestionIds.length} missed questions are not on a study card yet.</p> : null}
       <div className="daily-grid">
         <section className="card daily-practice-card" aria-label="Today’s Practice">
           <h2>Today’s Practice</h2>
@@ -142,7 +142,7 @@ export function DailyStudyClient() {
         <section className="card daily-review-card" aria-label="Today’s Review">
           <h2>Today’s Review</h2>
           {reviewCard || reviewQuestions.length || view.yesterdayWaiting.length ? (
-            <p>Your review is personalized using your account’s missed questions, questions you saved, and spaced repetition. Review daily to reinforce what you’ve learned and prepare for your exam.</p>
+            <p>Reviews use questions you missed and questions you saved.</p>
           ) : null}
           {view.yesterdayWaiting.length ? (
             <p className="notice">

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { examConfig, officialExam } from "@/data/exam-config";
 import { PrepCtas } from "@/components/PrepCtas";
-import { ProNudge } from "@/components/ProNudge";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
 
@@ -46,7 +45,7 @@ export default function BecomePage() {
       <p className="kicker">Become a Notary</p>
       <h1>How to Become a Notary in Arizona — Step-by-Step {examConfig.year}</h1>
       <p className="lede">
-        Required legal steps vs optional purchases. Pass a practice exam before you shop for a prettier stamp.
+        Required steps, and which purchases are optional.
       </p>
       <section className="card">
         <h2>Exam and commission requirements</h2>
@@ -131,11 +130,7 @@ export default function BecomePage() {
           Related: <Link href={paths.fees}>notary fees</Link>, <Link href={paths.examRequirements}>exam requirements</Link>,{" "}
           <Link href={paths.ron}>remote online notary rules</Link>.
         </p>
-        <p className="notice">No live affiliate partners in MVP. Buttons are placeholders.</p>
       </section>
-      <ProNudge>
-        Practice the exam on this site before you file. The Secretary of State application stays free to read. Pro adds the rest of this site’s practice questions.
-      </ProNudge>
     </main>
   );
 }

@@ -189,7 +189,6 @@ export function FlashcardsClient() {
             }}
             flipped={flipped}
           />
-          <p className="notice">Tap, click, or press Enter to flip.</p>
         </div>
       </div>
       <div className="row" style={{ marginTop: 14 }}>
@@ -221,7 +220,7 @@ export function FlashcardsClient() {
       </div>
       {!isPro ? (
         <p className="notice">
-          This preview is free. <Link href={paths.pricing}>The rest of the deck is part of Pro.</Link>
+          <Link href={paths.pricing}>The rest of the deck is part of Pro.</Link>
         </p>
       ) : null}
       <div className="home-exam-nav">

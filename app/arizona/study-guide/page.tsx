@@ -37,7 +37,7 @@ export default async function StudyGuidePage() {
         Every chapter includes a worked scenario, an official source and topic practice. The core guide is free and requires no login.
       </p>
       <p>
-        Use this independently written guide alongside the <a href={getSource("sos_manual_2026_08").url}>official SOS Reference Manual</a>.
+        Use this guide alongside the <a href={getSource("sos_manual_2026_08").url}>official SOS Reference Manual</a>.
         The current SOS download is named “Notary-Manual-Aug-2026.pdf”; its cover says January 2025.
         For later changes, use the <Link href={paths.laws}>verified Arizona law updates</Link> and chaptered statutes.
       </p>

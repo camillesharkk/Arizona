@@ -62,7 +62,7 @@ export default function ArizonaHub() {
               <ul className="home-plain">
                 <li>{freeQuestionCount} practice questions</li>
                 <li>{FREE_FLASHCARD_PREVIEW} study cards to start</li>
-                <li>{FREE_FULL_EXAMS} full practice exam on a free account. Before sign-in, this browser can start {FREE_FULL_EXAMS}. That limit is not one exam per person.</li>
+                <li>{FREE_FULL_EXAMS} full practice exam before sign-in, and {FREE_FULL_EXAMS} on a free account.</li>
               </ul>
             </div>
             <div>

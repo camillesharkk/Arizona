@@ -9,7 +9,7 @@ export default function Page() {
   return (
     <LegalCopy title="Terms of Service" path={paths.terms}>
       <p>Practice scores are not official SOS results. You must verify fees, eligibility, and procedures on azsos.gov before applying or notarizing.</p>
-      <p>Pro access depends on Paddle (Merchant of Record) payment status stored on the server, not on hidden buttons in the browser.</p>
+      <p>Paddle is the Merchant of Record. Pro access starts after Paddle confirms payment.</p>
       <p>
         Arizona Notary Exam Prep Pro is a one-time purchase for 60-Day Full Access. It is not a lifetime membership
         and does not renew automatically. Your Pro access lasts for 60 days from activation. If you purchase additional

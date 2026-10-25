@@ -26,19 +26,15 @@ export default function PracticeTestPage() {
     <main className="wrap hero">
       <p className="kicker">Practice Test</p>
       <h1>Arizona Notary Exam Practice Test — Free Quick 10 & Full 45</h1>
-      <p className="lede">
-        Free Quick 10 and one free {examConfig.questionCount}-question Full 45 in this browser. No registration or email required to start.
-      </p>
       <p>
         <strong>
           The practice bank has {pool.length} questions. {free.length} are free. Pro can use all {pool.length}. Each Full 45
           draws {examConfig.questionCount} distinct questions from that bank.
-        </strong>{" "}
+        </strong>
+      </p>
+      <p>
         Quick 10 and topic practice without Pro use only the {free.length} free questions. The other {pool.length - free.length} are
-        Pro-only. One free Full 45 in this browser can include Pro questions. A later full exam in the same browser is a Pro
-        feature. The reminder lives in this browser’s storage; clearing it or using another browser starts a new reminder. It is
-        not a per-person or per-account limit. A signed-in free account still has one recorded full exam on the server. Later
-        attempts can repeat questions.
+        Pro-only. One free Full 45 in this browser can include Pro questions.
       </p>
       <PracticeLaunch />
       <section className="card" style={{ margin: "20px 0" }}>
@@ -51,7 +47,7 @@ export default function PracticeTestPage() {
       </section>
       <section aria-labelledby="sample-questions">
         <h2 id="sample-questions">Sample Arizona notary questions with answers and explanations</h2>
-        <p>These are actual items from this site’s practice bank. Read every answer here without starting a quiz or creating an account.</p>
+        <p>These items are from the free set.</p>
         {samples.map((q, i) => {
           const options = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
           return (
@@ -65,18 +61,15 @@ export default function PracticeTestPage() {
           );
         })}
       </section>
-      <section className="card" style={{ marginTop: 24 }}>
-        <h2>Choose your next step</h2>
-        <p>
-          <Link href={paths.study}>Study Guide</Link>
-          {" · "}
-          <Link href={paths.examPrep}>Exam preparation plan</Link>
-          {" · "}
-          <Link href={paths.guidesIndex}>Exam guides</Link>
-          {" · "}
-          <Link href={paths.pricing}>Pro</Link>
-        </p>
-      </section>
+      <p style={{ marginTop: 24 }}>
+        <Link href={paths.study}>Study Guide</Link>
+        {" · "}
+        <Link href={paths.examPrep}>Exam preparation plan</Link>
+        {" · "}
+        <Link href={paths.guidesIndex}>Exam guides</Link>
+        {" · "}
+        <Link href={paths.pricing}>Pro</Link>
+      </p>
     </main>
   );
 }

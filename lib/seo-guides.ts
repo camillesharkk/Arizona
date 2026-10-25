@@ -317,7 +317,7 @@ const existingGuides: SeoGuide[] = [
       { href: paths.cram, label: "Cram sheet" },
       { href: paths.questions, label: "Practice questions" },
       { href: paths.examPrep, label: "Seven-day study plan" },
-      { href: paths.pricing, label: "Pro question bank, after this browser’s free Full 45" },
+      { href: paths.pricing, label: "Pro question bank" },
     ],
   },
 ];

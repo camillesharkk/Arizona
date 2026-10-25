@@ -52,7 +52,7 @@ export function AccountClient() {
         <section className="card">
           <p className="kicker">Free account</p>
           <h2>{email}</h2>
-          <p>Study data stays in this browser. Only learning progress is stored—no extra personal profile.</p>
+          <p>Scores and the wrong-answer list stay in this browser.</p>
           <div className="row">
             <Link className="btn btn-primary" href="/arizona/wrong-answers/">
               Open Wrong Answers
@@ -128,10 +128,6 @@ export function AccountClient() {
         <button className="btn btn-primary" type="submit" disabled={busy}>
           {busy ? "Working…" : mode === "register" ? "Create Free Account" : "Sign in"}
         </button>
-        <p className="notice">
-          Password is hashed on this device. The account is for saving scores, the wrong-answer list,
-          favorites, and your last question—not for sending data to a server.
-        </p>
       </form>
       <aside className="card">
         <h3>What a free account keeps</h3>
