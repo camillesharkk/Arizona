@@ -71,7 +71,6 @@ export function SiteHeader() {
     { href: paths.questions, label: "Questions" },
     { href: paths.study, label: "Study Guide" },
     { href: paths.flashcards, label: "Flashcards" },
-    { href: paths.resources, label: "Resources" },
   ];
   const exam = [
     { href: paths.examPrep, label: "Exam Guide" },
@@ -105,12 +104,12 @@ export function SiteHeader() {
           <Link href={paths.study} className={active(pathname, paths.study) ? "active" : ""}>
             Study Guide
           </Link>
-          <Link href={paths.resources} className={active(pathname, paths.resources) ? "active" : ""}>
-            Resources
-          </Link>
           <WrongAnswersLink className={active(pathname, paths.mistakes) ? "active" : ""} />
           <Link href={paths.daily} className={active(pathname, paths.daily) ? "active" : ""}>
             Daily Study
+          </Link>
+          <Link href={paths.resources} className={active(pathname, paths.resources) ? "active" : ""}>
+            Resources
           </Link>
           <Link href={paths.laws} className={active(pathname, paths.laws) ? "active" : ""}>
             Laws
@@ -172,6 +171,9 @@ export function SiteHeader() {
             <WrongAnswersLink className={active(pathname, paths.mistakes) ? "active" : ""} />
             <Link href={paths.daily} className={active(pathname, paths.daily) ? "active" : ""}>
               Daily Study
+            </Link>
+            <Link href={paths.resources} className={active(pathname, paths.resources) ? "active" : ""}>
+              Resources
             </Link>
           </>
         )}
