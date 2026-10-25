@@ -300,7 +300,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The card counts only if a military ID is also shown",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-255(B)(1)(a) lists an unexpired United States passport or a state-issued driver license or nonoperating identification license. This item tests the nonoperating identification license. It is not the armed-forces card in paragraph (b) and it is not an expired driver license.",
+      "A.R.S. § 41-255(B)(1)(a) lists an unexpired United States passport or a state-issued driver license or nonoperating identification license. It is not the armed-forces card in paragraph (b) and it is not an expired driver license.",
     option_feedback: {
       A: "The paragraph names the nonoperating identification license alongside the driver license.",
       B: "Correct. An unexpired state nonoperating identification license is listed in paragraph (a).",
@@ -415,7 +415,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "A tribal card is satisfactory only when it has no photograph",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-255(B)(1)(c) covers another form of unexpired government identification issued by the United States, a state, or a tribal government. This item is the unexpired requirement for that tribal or other government card. It is not the expired-passport test in paragraph (a) and it is not the expired driver-license test.",
+      "A.R.S. § 41-255(B)(1)(c) covers another form of unexpired government identification issued by the United States, a state, or a tribal government. It is not the expired-passport test in paragraph (a) and it is not the expired driver-license test.",
     option_feedback: {
       A: "A clear photo does not remove the word unexpired.",
       B: "Correct. The government identification in paragraph (c) must be unexpired.",
@@ -461,7 +461,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The witness requirement is waived if the signer looks familiar",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-255(B)(2) requires the credible witness to appear personally and to be known to the officer, or identifiable on the basis of satisfactory evidence under paragraph 1. A stranger with no listed credential fails that test. This item is about who may serve as the witness. It is not the personal-knowledge definition and it is not a telephone appearance.",
+      "A.R.S. § 41-255(B)(2) requires the credible witness to appear personally and to be known to the officer, or identifiable on the basis of satisfactory evidence under paragraph 1. A stranger with no listed credential fails that test. It is not the personal-knowledge definition and it is not a telephone appearance.",
     option_feedback: {
       A: "Being an adult in the room is not paragraph 2.",
       B: "Correct. The witness must be known to the officer or identifiable under paragraph 1.",
@@ -484,12 +484,12 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The officer must ignore the card and use personal knowledge instead",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-255(B)(1)(c) requires the other government identification to contain a signature or a photograph and physical description and to be satisfactory to the notarial officer. This item is that satisfaction element. It is not the separate authority in subsection D to demand additional credentials after a listed document is already in hand.",
+      "A.R.S. § 41-255(B)(1)(c) requires the other government identification to contain a signature or a photograph and physical description and to be satisfactory to the notarial officer. It is not the separate authority in subsection D to demand additional credentials after a listed document is already in hand.",
     option_feedback: {
       A: "The paragraph adds 'satisfactory to the notarial officer.'",
       B: "Correct. A paragraph (c) card must be satisfactory to the officer.",
       C: "A library card is not the identification described in paragraph (c).",
-      D: "Personal knowledge is a different method. This item is whether the card itself meets paragraph (c).",
+      D: "Personal knowledge is a different method. It does not decide whether a paragraph (c) card is satisfactory.",
     },
     source_id: "ars_41_255",
     source_reference: "A.R.S. § 41-255(B)(1)(c)",
@@ -756,7 +756,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The signer may describe the certificate from memory",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-264(F) requires the certificate for an electronic record to be affixed to or logically associated with that record. If the secretary of state has established standards under section 41-275 for that association, the process must conform to them. This question does not invent what those standards say.",
+      "A.R.S. § 41-264(F) requires the certificate for an electronic record to be affixed to or logically associated with that record. If the secretary of state has established standards under section 41-275 for that association, the process must conform to them.",
     option_feedback: {
       A: "An unassociated email is not what the statute calls logical association.",
       B: "Correct. Affix or logically associate the certificate, and follow § 41-275 standards if they exist.",
@@ -984,7 +984,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The presumption applies only if the notary ignored the loss notice",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-323(D) gives a presumption of the validity of the signer's identity when that identity is in question, the official journal is lost, stolen, or compromised, and the notary complied with the section. The same subsection says no presumption applies if the journal never existed or the notary failed to comply. This item is the presumption. It is not the ten-day notice itself.",
+      "A.R.S. § 41-323(D) gives a presumption of the validity of the signer's identity when that identity is in question, the official journal is lost, stolen, or compromised, and the notary complied with the section. The same subsection says no presumption applies if the journal never existed or the notary failed to comply. It is not the ten-day notice itself.",
     option_feedback: {
       A: "Compliance plus a missing journal supports a presumption of identity validity, not falsity.",
       B: "Correct. Compliance with the section plus a lost, stolen, or compromised journal supports that presumption.",
@@ -1007,7 +1007,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Neither penalty can be collected",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-323(C) treats failure to comply with subsection A or B as failure to fully and faithfully discharge notary duties. The secretary of state may impose $25 for an address-notice failure and shall impose $1,000 for a loss, theft, or compromise notice failure. Any civil penalty imposed under that subsection must be paid before renewal. This item is the penalty contrast. It is not the question of whether a county move ends the commission.",
+      "A.R.S. § 41-323(C) treats failure to comply with subsection A or B as failure to fully and faithfully discharge notary duties. The secretary of state may impose $25 for an address-notice failure and shall impose $1,000 for a loss, theft, or compromise notice failure. Any civil penalty imposed under that subsection must be paid before renewal. It is not the question of whether a county move ends the commission.",
     option_feedback: {
       A: "The $1,000 figure is for the subsection B notice failure, not for both.",
       B: "Correct. Address notice: up to a $25 penalty. Loss notice: a $1,000 penalty, payable before renewal.",
@@ -1139,7 +1139,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The fee is recorded only on a separate tax form, never in the journal",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-319(A)(7) requires each journal entry to include the fee, if any, charged for the notarial act. This question does not set the lawful amount of that fee.",
+      "A.R.S. § 41-319(A)(7) requires each journal entry to include the fee, if any, charged for the notarial act.",
     option_feedback: {
       A: "Paragraph 7 requires the fee if one was charged.",
       B: "Correct. Record the fee charged for the act.",
@@ -1231,7 +1231,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Destroy the journal if one still exists",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-323(E) says that in an action where the validity of a notarized document is at issue and the notary did not comply with the section, the court shall notify the secretary of state and the county attorney for the county in which the violation occurred. This item is that court notice. It is not the public-inspection request in § 41-319(F).",
+      "A.R.S. § 41-323(E) says that in an action where the validity of a notarized document is at issue and the notary did not comply with the section, the court shall notify the secretary of state and the county attorney for the county in which the violation occurred. It is not the public-inspection request in § 41-319(F).",
     option_feedback: {
       A: "The subsection requires notice outside the case file.",
       B: "Correct. Notify the Secretary of State and the county attorney.",
@@ -1277,7 +1277,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "May set a personal fee schedule that overrides the rule",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-316(C) says a notary shall not advertise, charge, or receive a fee for performing a notarial act except as specifically authorized by rule. This question does not state the dollar amount in the current rule, because that rule text was not re-read from the official code host on the check date.",
+      "A.R.S. § 41-316(C) says a notary shall not advertise, charge, or receive a fee for performing a notarial act except as specifically authorized by rule.",
     option_feedback: {
       A: "Volunteer extra pay for the act is still a fee for the act.",
       B: "Correct. Do not receive a notarial-act fee the rule does not authorize.",
@@ -1300,7 +1300,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Of nothing, because travel can never be discussed",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-316(B) says notaries public may be paid an amount up to the amount authorized for mileage expenses and per diem subsistence for state employees as prescribed by title 38, chapter 4, article 2. This question does not restate the current mileage rate.",
+      "A.R.S. § 41-316(B) says notaries public may be paid an amount up to the amount authorized for mileage expenses and per diem subsistence for state employees as prescribed by title 38, chapter 4, article 2.",
     option_feedback: {
       A: "A napkin amount is not the statutory cap.",
       B: "Correct. Travel pay is limited to the state-employee mileage and per diem amounts.",
@@ -1390,7 +1390,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Automatically renews the commission",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-317(B) requires delivery of the physical stamping device, journal, and records, except nonpublic records, on resignation, revocation, or death, and on expiration if the notary does not apply for reappointment. A notary who neglects for three months thereafter to deposit them forfeits to the state not less than $50 or more than $500. This item is that forfeiture. It is not the separate duty to deliver the items.",
+      "A.R.S. § 41-317(B) requires delivery of the physical stamping device, journal, and records, except nonpublic records, on resignation, revocation, or death, and on expiration if the notary does not apply for reappointment. A notary who neglects for three months thereafter to deposit them forfeits to the state not less than $50 or more than $500. It is not the separate duty to deliver the items.",
     option_feedback: {
       A: "The subsection states a forfeiture.",
       B: "Correct. Three months of neglect forfeits not less than $50 or more than $500.",
@@ -1547,7 +1547,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "A radio spot may use the size exception and skip the statement",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-273(D) requires the stated non-attorney sentence, or an alternative the secretary of state authorizes or requires, prominently and in each language used, when a non-attorney advertises notarial services orally or in a record, including broadcast media. The size exception applies only when the form is not broadcast, print, or internet and cannot include the statement because of size. A website advertisement is a different medium already covered by the same duty. This item is the broadcast.",
+      "A.R.S. § 41-273(D) requires the stated non-attorney sentence, or an alternative the secretary of state authorizes or requires, prominently and in each language used, when a non-attorney advertises notarial services orally or in a record, including broadcast media. The size exception applies only when the form is not broadcast, print, or internet and cannot include the statement because of size. A website advertisement is a different medium already covered by the same duty.",
     option_feedback: {
       A: "The subsection expressly includes oral advertising and broadcast media.",
       B: "Correct. The radio advertisement must carry the statement.",
@@ -1570,7 +1570,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "May act only if the other state used the word notario",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-271(A)(8) lists denial, refusal to renew, revocation, suspension, or conditioning of a notary commission in another state as a ground for Arizona commission action. This item is out-of-state discipline. It is not an Arizona felony conviction and it is not the immigration-consultant limit.",
+      "A.R.S. § 41-271(A)(8) lists denial, refusal to renew, revocation, suspension, or conditioning of a notary commission in another state as a ground for Arizona commission action. It is not an Arizona felony conviction and it is not the immigration-consultant limit.",
     option_feedback: {
       A: "Paragraph 8 is specifically about another state's commission action.",
       B: "Correct. Another state's commission discipline is a listed ground.",
@@ -1706,7 +1706,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The admission matters only if it happened in another country and was never written down",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-271(A)(4) lists a finding against, or an admission of liability by, the applicant or notary in any legal proceeding or disciplinary action based on fraud, dishonesty, or deceit. This item is that civil or disciplinary finding. It is not the criminal-conviction ground in paragraph 3.",
+      "A.R.S. § 41-271(A)(4) lists a finding against, or an admission of liability by, the applicant or notary in any legal proceeding or disciplinary action based on fraud, dishonesty, or deceit. It is not the criminal-conviction ground in paragraph 3.",
     option_feedback: {
       A: "Paragraph 4 is separate from the conviction ground.",
       B: "Correct. An admission of liability for deceit in a legal proceeding is a listed ground.",
@@ -1865,7 +1865,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Is waived whenever the signer prefers a fingerprint",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-254(D)(2), read on the Arizona Legislature site on 2026-09-29, says subsection C does not apply to a deed of release and reconveyance. A covered deed that is not in that list is a different document. This item is only the release-and-reconveyance exception.",
+      "A.R.S. § 41-254(D)(2), read on the Arizona Legislature site on 2026-09-29, says subsection C does not apply to a deed of release and reconveyance. A covered deed that is not in that list is a different document.",
     option_feedback: {
       A: "Subsection D lists documents to which the thumbprint does not apply.",
       B: "Correct. A deed of release and reconveyance is exempt from the subsection C thumbprint.",
@@ -1913,7 +1913,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The thumbprint goes on the power of attorney instead of in the journal",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-254(C) covers a deed, quitclaim deed, deed of trust, other document that affects real property, or a power of attorney document. This item is the in-person power of attorney. An in-person deed is the same subsection but a different document. The journal is where the thumbprint is placed.",
+      "A.R.S. § 41-254(C) covers a deed, quitclaim deed, deed of trust, other document that affects real property, or a power of attorney document. An in-person deed is the same subsection but a different document. The journal is where the thumbprint is placed.",
     option_feedback: {
       A: "A power of attorney document is named in subsection C.",
       B: "Correct. An in-person power of attorney is a subsection C document.",
@@ -1937,7 +1937,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "May use the notary's own thumb instead",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-254(C) says that if the right thumbprint is not available, the notary shall have the party use the left thumb, or any available finger, and shall so indicate in the journal. This item is only the missing-right-thumb alternative. Physical inability to provide any thumbprint or fingerprint is the next sentence, not this one.",
+      "A.R.S. § 41-254(C) says that if the right thumbprint is not available, the notary shall have the party use the left thumb, or any available finger, and shall so indicate in the journal. A signer who cannot provide any fingerprint is covered by a later sentence in § 41-254(C).",
     option_feedback: {
       A: "The statute gives a left-thumb or other-finger alternative.",
       B: "Correct. Use the left thumb or any available finger and indicate that in the journal.",
@@ -2054,7 +2054,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Shall determine the matters set forth in A.R.S. § 47-3505(B)",
     correct_option: "D",
     explanation:
-      "A.R.S. § 41-253(E) says a notarial officer who makes or notes a protest of a negotiable instrument shall determine the matters set forth in section 47-3505, subsection B. This item stops at that duty. It does not restate what § 47-3505(B) lists, because that section was not the text used to write the answer choices.",
+      "A.R.S. § 41-253(E) says a notarial officer who makes or notes a protest of a negotiable instrument shall determine the matters set forth in section 47-3505, subsection B.",
     option_feedback: {
       A: "The officer determines the matters the cited section sets forth, not homemade grounds.",
       B: "Noting a protest is a listed notarial act in § 41-251(6). The duty here is the determination in § 41-253(E).",
@@ -2077,7 +2077,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Shall post the entire journal online first",
     correct_option: "C",
     explanation:
-      "A.R.S. § 41-319(A) says the notary shall furnish, when requested, a certified copy of any public record in the notary's journal. Records that violate the attorney-client privilege or that are confidential under federal or state law are not a public record. This item is that furnishing duty. It is not permission to certify a copy of some other Arizona public record under § 41-253(D).",
+      "A.R.S. § 41-319(A) says the notary shall furnish, when requested, a certified copy of any public record in the notary's journal. Records that violate the attorney-client privilege or that are confidential under federal or state law are not a public record. It is not permission to certify a copy of some other Arizona public record under § 41-253(D).",
     option_feedback: {
       A: "Public journal records are the records the sentence tells the notary to furnish.",
       B: "A court judgment is not a public record in the notary's journal.",
@@ -2123,7 +2123,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "A short form is sufficient only when completed with the information required by § 41-264(A) and (B)",
     correct_option: "D",
     explanation:
-      "A.R.S. § 41-265 says its short forms are sufficient if completed with the information required by § 41-264(A) and (B). Those subsections include the officer's signature and date, the jurisdiction, the title of office, the commission expiration when the officer is a notary, and, for a notary's tangible-record act, the official stamp. A two-word note omits that information. This item is completion of the certificate, not the wording of the copy sentence itself.",
+      "A.R.S. § 41-265 says its short forms are sufficient if completed with the information required by § 41-264(A) and (B). Those subsections include the officer's signature and date, the jurisdiction, the title of office, the commission expiration when the officer is a notary, and, for a notary's tangible-record act, the official stamp. A two-word note omits that information.",
     option_feedback: {
       A: "The short form is not sufficient until the § 41-264 information is added.",
       B: "Customer agreement does not complete the certificate.",
@@ -2146,7 +2146,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Must be refused for five years",
     correct_option: "C",
     explanation:
-      "A.R.S. § 41-317(C) says that on receipt of records and journals from a notary who is no longer commissioned, the secretary of state keeps them for five years, gives certified copies when required, receives the same fees allowed by law to notaries, and those copy certifications are as valid and effectual as if given by a notary. This item is the Secretary of State's copy after deposit. It is not the commissioned notary's duty to furnish a journal copy under § 41-319(A).",
+      "A.R.S. § 41-317(C) says that on receipt of records and journals from a notary who is no longer commissioned, the secretary of state keeps them for five years, gives certified copies when required, receives the same fees allowed by law to notaries, and those copy certifications are as valid and effectual as if given by a notary. It is not the commissioned notary's duty to furnish a journal copy under § 41-319(A).",
     option_feedback: {
       A: "The subsection gives the deposited-journal certifications the same effect as a notary's.",
       B: "The former notary's presence is not the condition.",
@@ -2212,7 +2212,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "A social-media profile the notary already follows",
     correct_option: "C",
     explanation:
-      "A.R.S. § 41-263(I)(3) defines identity proofing as a process or service by which a third person provides the notary with a means to verify the identity of a remotely located individual by a review of personal information from public or private data sources. Personal knowledge and a credible witness are other identification methods in § 41-263(B)(1). They are not this definition. This item does not restate how many types of identity proofing a remote act requires.",
+      "A.R.S. § 41-263(I)(3) defines identity proofing as a process or service by which a third person provides the notary with a means to verify the identity of a remotely located individual by a review of personal information from public or private data sources. Personal knowledge and a credible witness are other identification methods in § 41-263(B)(1). They are not this definition.",
     option_feedback: {
       A: "Personal knowledge is § 41-255(A), used in § 41-263(B)(1)(a), not the identity-proofing definition.",
       B: "A credible witness is § 41-263(B)(1)(b), not this definition.",
@@ -2235,7 +2235,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Requires the signer to travel to the notary",
     correct_option: "A",
     explanation:
-      "A.R.S. § 41-263(I)(1)(b) says communication technology, when necessary and consistent with other applicable law, facilitates communication with a remotely located individual who has a vision, hearing, or speech impairment. Paragraph (a) remains the simultaneous sight-and-sound definition. This item is the impairment accommodation, not the identity-proofing count.",
+      "A.R.S. § 41-263(I)(1)(b) says communication technology, when necessary and consistent with other applicable law, facilitates communication with a remotely located individual who has a vision, hearing, or speech impairment. Paragraph (a) remains the simultaneous sight-and-sound definition.",
     option_feedback: {
       A: "Correct. The definition includes that accommodation when it is necessary and consistent with other law.",
       B: "Paragraph (b) facilitates communication. It does not delete paragraph (a).",
@@ -2280,7 +2280,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Nobody, if the certificate mentions technology",
     correct_option: "C",
     explanation:
-      "A.R.S. § 41-263(B)(3) says the notary public, or a person acting on behalf of the notary public, creates an audiovisual recording of the performance of the notarial act. A certificate statement does not replace the recording. This item is who creates it, not how many years it is kept.",
+      "A.R.S. § 41-263(B)(3) says the notary public, or a person acting on behalf of the notary public, creates an audiovisual recording of the performance of the notarial act. A certificate statement does not replace the recording.",
     option_feedback: {
       A: "The signer alone, with no recording kept for the notary, is not the paragraph.",
       B: "A person who is not acting for the notary is outside the sentence.",
@@ -2303,7 +2303,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Only the audiovisual recording may mention technology",
     correct_option: "A",
     explanation:
-      "A.R.S. § 41-263(C) says the certificate required by § 41-264 and the short form in § 41-265 must indicate that the notarial act was performed using communication technology. This item is that missing indication. How long the recording is kept is a different subsection.",
+      "A.R.S. § 41-263(C) says the certificate required by § 41-264 and the short form in § 41-265 must indicate that the notarial act was performed using communication technology. How long the recording is kept is a different subsection.",
     option_feedback: {
       A: "Correct. The certificate has to show that communication technology was used.",
       B: "Hiding the technology use is the opposite of subsection C.",
@@ -2349,7 +2349,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Must be retained for twenty-four hours only",
     correct_option: "C",
     explanation:
-      "A.R.S. § 41-263(E) says a notary, a guardian, conservator, or agent of a notary, or a personal representative of a deceased notary shall retain the audiovisual recording created under subsection B, paragraph 3, or cause it to be retained by a repository designated by or on behalf of the person required to retain it. This item is who keeps it after death. The five-year default period, unless a rule or § 41-254 provides otherwise, is the next sentence.",
+      "A.R.S. § 41-263(E) says a notary, a guardian, conservator, or agent of a notary, or a personal representative of a deceased notary shall retain the audiovisual recording created under subsection B, paragraph 3, or cause it to be retained by a repository designated by or on behalf of the person required to retain it. Unless a rule or § 41-254 provides otherwise, the default retention period is five years.",
     option_feedback: {
       A: "Death does not erase the retention duty.",
       B: "The last signer is not the person named in subsection E.",
@@ -2395,7 +2395,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The signer may email a nickname after the call and cure the gap",
     correct_option: "A",
     explanation:
-      "A.R.S. § 41-263(A) says a remotely located individual may comply with § 41-254 by using communication technology to appear before a notary. Subsection B allows the act only if identification is by personal knowledge, a credible witness, or at least two different types of identity proofing, along with the other subsection B conditions. A video that misses paragraph 1 does not meet subsection B, so it does not complete the subsection A appearance. This item is that failed identification. It is not the separate question of whether an electronic record with a person standing in the office is a remote act.",
+      "A.R.S. § 41-263(A) says a remotely located individual may comply with § 41-254 by using communication technology to appear before a notary. Subsection B allows the act only if identification is by personal knowledge, a credible witness, or at least two different types of identity proofing, along with the other subsection B conditions. A video that misses paragraph 1 does not meet subsection B, so it does not complete the subsection A appearance. It is not the separate question of whether an electronic record with a person standing in the office is a remote act.",
     option_feedback: {
       A: "Correct. Remote appearance under subsection A still has to meet subsection B.",
       B: "Live video without the identification methods is not enough.",
@@ -2418,7 +2418,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The notary public must be located in this state, so this vacation location does not qualify",
     correct_option: "D",
     explanation:
-      "A.R.S. § 41-263(B) allows a notary public located in this state to perform the remote act. The signer in Phoenix is the remotely located individual only if that person is not in the notary's physical presence. The notary's own location is still Arizona. A platform server does not relocate the notary. This item applies the location rule to a notary who has left the state while the signer remains in Arizona.",
+      "A.R.S. § 41-263(B) allows the remote act only when the notary public is located in this state. The signer's presence in Phoenix does not place the notary in Arizona, and neither does a platform server.",
     option_feedback: {
       A: "The signer's location does not move the notary into Arizona.",
       B: "The statute locates the notary, not the server.",

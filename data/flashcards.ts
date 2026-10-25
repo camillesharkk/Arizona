@@ -13,7 +13,7 @@ const legacyCards: Flashcard[] = [
     id: "fc-02",
     category: "fees",
     front: "Who sets the maximum notary fee?",
-    back: "Arizona statute. Charging more than the cap can be a violation. Rush jobs do not create an exception.",
+    back: "The Secretary of State sets the maximum by rule. The current ceiling for a notarial act is $10. A rush does not raise it.",
     source_id: "ars_41_311",
   },
   {
@@ -96,8 +96,8 @@ const legacyCards: Flashcard[] = [
   {
     id: "fc-14",
     category: "fees",
-    front: "Typical statutory bond amount modeled on this site?",
-    back: "$5,000 as a configured field. Re-verify in A.R.S. / SOS materials before purchase.",
+    front: "What surety bond is required before an Arizona commission is issued?",
+    back: "$5,000. The bond protects the public. It is not errors-and-omissions insurance.",
     source_id: "ars_41_311",
   },
   {

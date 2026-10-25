@@ -137,7 +137,7 @@ const drafts: Draft[] = [
     option_d: "Only records signed in Maricopa County remain valid after the move",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-269(B)(3) requires the applicant to be a resident of this state for income-tax purposes and to claim this state as the primary residence. Remaining an Arizona resident after a Phoenix-to-Tucson move can satisfy that qualification, but it is not a reason to skip address reporting. A.R.S. § 41-323(A) requires that within 30 days after a change of mailing, business, or residential address, the notary deliver to the secretary of state, by certified mail or other means providing a receipt, a signed notice with the old and new addresses. Failure to comply with subsection A is treated as failure to fully and faithfully discharge the duties of a notary public, and § 41-323(C) authorizes a $25 civil penalty for an address-notice failure. A.R.S. § 41-269(D) and (F) authorize notarial acts in this state while a valid assurance is on file; they do not say that changing counties automatically ends the commission. This item does not claim a separate 'statewide commission' slogan beyond those sections, and it does not require an immediate stamp replacement under § 41-266.",
+      "A.R.S. § 41-269(B)(3) requires the applicant to be a resident of this state for income-tax purposes and to claim this state as the primary residence. Remaining an Arizona resident after a Phoenix-to-Tucson move can satisfy that qualification, but it is not a reason to skip address reporting. A.R.S. § 41-323(A) requires that within 30 days after a change of mailing, business, or residential address, the notary deliver to the secretary of state, by certified mail or other means providing a receipt, a signed notice with the old and new addresses. Failure to comply with subsection A is treated as failure to fully and faithfully discharge the duties of a notary public, and § 41-323(C) authorizes a $25 civil penalty for an address-notice failure. A.R.S. § 41-269(D) and (F) authorize notarial acts in this state while a valid assurance is on file; they do not say that changing counties automatically ends the commission. Those sections do not require an immediate stamp replacement under § 41-266.",
     option_feedback: {
       A: "A county change is not listed as automatic termination in A.R.S. § 41-269 or § 41-323.",
       B: "Correct. Stay eligible under § 41-269(B); still give the 30-day signed address notice under § 41-323(A).",
@@ -161,7 +161,7 @@ const drafts: Draft[] = [
     option_d: "Optional if the applicant already has a stamp",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-270 is the statutory basis: the secretary of state may require a competency examination covering notary laws, rules, procedures, and ethics. It does not itself prescribe 45 questions, 60 minutes, 80%, or open-book format. Those operational numbers come from the current Arizona SOS Notary exam page (New Notary): 45 questions, 60 minutes, 80% to pass, and an open-book format in which a link to the official manual is built into the exam; a physical copy is not allowed at testing sites or during remote testing. Exam vendor, exam fee, and whether remote testing is available are operational details that have appeared with conflicting SOS wording and are not tested by this item.",
+      "A.R.S. § 41-270 is the statutory basis: the secretary of state may require a competency examination covering notary laws, rules, procedures, and ethics. It does not itself prescribe 45 questions, 60 minutes, 80%, or open-book format. Those operational numbers come from the current Arizona SOS Notary exam page (New Notary): 45 questions, 60 minutes, 80% to pass, and an open-book format in which a link to the official manual is built into the exam; a physical copy is not allowed at testing sites or during remote testing.",
     option_feedback: {
       A: "SOS describes the exam as open book, with the official manual linked inside the exam—not a closed book with no manual.",
       B: "Correct. SOS New Notary notices list 45 questions, 60 minutes, 80%, and a built-in manual (no physical copy).",
@@ -210,7 +210,7 @@ const drafts: Draft[] = [
     option_d: "Ask the signer to describe what the ID used to look like",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-255 does not use the words 'damaged ID.' Section 41-255(B)(1) lists credentials that must be unexpired (and otherwise meet the statutory description). If a photograph and expiration date cannot be read, the officer cannot determine that those requirements are met from that card. Section 41-255(D) allows the officer to require additional information or credentials to be assured of identity. Other permitted methods include personal knowledge (§ 41-255(A)) or a credible witness (§ 41-255(B)(2)). This item does not create a damaged-ID exception, a temporary exception, or an expired-document grace period.",
+      "A.R.S. § 41-255 does not use the words 'damaged ID.' Section 41-255(B)(1) lists credentials that must be unexpired (and otherwise meet the statutory description). If a photograph and expiration date cannot be read, the officer cannot determine that those requirements are met from that card. Section 41-255(D) allows the officer to require additional information or credentials to be assured of identity. Other permitted methods include personal knowledge (§ 41-255(A)) or a credible witness (§ 41-255(B)(2)). The statute does not create a damaged-ID exception, a temporary exception, or an expired-document grace period.",
     option_feedback: {
       A: "That the card was once a government ID does not establish the unexpired listed credential in § 41-255(B).",
       B: "Correct. An unreadable photograph and expiration date cannot satisfy the listed credential; use another statutory method if available.",
@@ -282,7 +282,7 @@ const drafts: Draft[] = [
     option_d: "Appear by audio-only telephone or by a pre-recorded video for every act",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-254(A) requires the individual making the statement or executing the signature to appear personally before the notarial officer. A.R.S. § 41-263(A) allows a remotely located individual to comply with § 41-254 by using communication technology. Ordinary mail, an audio-only telephone call, or a pre-recorded video is not that statutory appearance. This item tests appearance only. Current § 41-254(C) journal-thumbprint rules (effective September 12, 2026) apply to listed real-property and power-of-attorney documents and are not this question.",
+      "A.R.S. § 41-254(A) requires the individual making the statement or executing the signature to appear personally before the notarial officer. A.R.S. § 41-263(A) allows a remotely located individual to comply with § 41-254 by using communication technology. Ordinary mail, an audio-only telephone call, or a pre-recorded video is not that statutory appearance.",
     option_feedback: {
       A: "Mail without personal appearance does not satisfy A.R.S. § 41-254(A).",
       B: "Correct. Section 41-254(A) requires personal appearance; § 41-263(A) is the authorized remote path.",
@@ -401,7 +401,7 @@ const drafts: Draft[] = [
     option_d: "Provide two extra copies of the document",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-251(16) defines verification on oath or affirmation as a declaration, on oath or affirmation before a notarial officer, that a statement in a record is true. It does not, by itself, use the words 'must sign in the notary's presence.' A.R.S. § 41-253(B) requires the individual to appear and make the verification, and a determination that the signature on the statement is that individual's. A.R.S. § 41-265(3) supplies a sufficient short form: 'Signed and sworn to (or affirmed) before me.' This item does not invent a Manual page number. An acknowledgment under § 41-251(1) is a different act.",
+      "A.R.S. § 41-251(16) defines verification on oath or affirmation as a declaration, on oath or affirmation before a notarial officer, that a statement in a record is true. It does not, by itself, use the words 'must sign in the notary's presence.' A.R.S. § 41-253(B) requires the individual to appear and make the verification, and a determination that the signature on the statement is that individual's. A.R.S. § 41-265(3) supplies a sufficient short form: 'Signed and sworn to (or affirmed) before me.' An acknowledgment under § 41-251(1) is a different act.",
     option_feedback: {
       A: "That is an acknowledgment (§ 41-251(1)), not a verification on oath or affirmation.",
       B: "Correct. Section 41-251(16) is the oath/affirmation declaration; § 41-265(3) is the 'signed and sworn to (or affirmed) before me' short form.",
@@ -426,7 +426,7 @@ const drafts: Draft[] = [
     option_d: "Tell the signer certificates never matter",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-264(D) provides that executing a certificate certifies compliance with the requirements of the act performed. Section 41-264(C) and § 41-265 supply different sufficient short forms for acknowledgment versus verification on oath or affirmation. Do not execute an acknowledgment certificate for a verification. The notary does not give legal advice about which act the customer should request; this item assumes the act being performed is a verification. A stamp without a matching certificate is not enough (§ 41-264(A)–(B)).",
+      "A.R.S. § 41-264(D) provides that executing a certificate certifies compliance with the requirements of the act performed. Section 41-264(C) and § 41-265 supply different sufficient short forms for acknowledgment versus verification on oath or affirmation. Do not execute an acknowledgment certificate for a verification. Choosing the customer's legal form is separate from completing the certificate that matches the act. A stamp without a matching certificate is not enough (§ 41-264(A)–(B)).",
     option_feedback: {
       A: "Stamping a mismatched acknowledgment certificate does not satisfy § 41-264(D).",
       B: "Correct. Use a certificate for the verification actually performed (§ 41-265(3)), not a false acknowledgment form.",
@@ -472,7 +472,7 @@ const drafts: Draft[] = [
     option_d: "Only by a county recording stamp",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-251(16) states that a verification on oath or affirmation is a declaration made on oath or affirmation before a notarial officer that a statement in a record is true. The statute allows either oath or affirmation; it does not define affirmation as always nonreligious and does not require an oath to name a deity. A.R.S. § 41-265(3) uses 'sworn to (or affirmed).' This item does not add Manual theology that is not in the statute.",
+      "A.R.S. § 41-251(16) states that a verification on oath or affirmation is a declaration made on oath or affirmation before a notarial officer that a statement in a record is true. The statute allows either oath or affirmation; it does not define affirmation as always nonreligious and does not require an oath to name a deity. A.R.S. § 41-265(3) uses 'sworn to (or affirmed).'",
     option_feedback: {
       A: "Section 41-251(16) allows affirmation as well as oath and does not require naming a deity.",
       B: "Correct. A.R.S. § 41-251(16) is oath or affirmation before the notarial officer.",
@@ -495,7 +495,7 @@ const drafts: Draft[] = [
     option_d: "It is used only for remote notarizations",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-319(A) requires a notary public to keep the required journal and to record notarial acts in chronological order, with specified entry contents. Tangible records are chronicled in a paper journal; electronic records may be chronicled in a paper journal or one or more electronic journals. The statute does not say the journal replaces the seal, and it is not limited to remote notarizations. Policy language about 'protecting the public' is not the pin-cite for this item.",
+      "A.R.S. § 41-319(A) requires a notary public to keep the required journal and to record notarial acts in chronological order, with specified entry contents. Tangible records are chronicled in a paper journal; electronic records may be chronicled in a paper journal or one or more electronic journals. The statute does not say the journal replaces the seal, and it is not limited to remote notarizations.",
     option_feedback: {
       A: "A journal is a statutory record, not advertising.",
       B: "Correct. A.R.S. § 41-319 requires recording notarial acts in the required journal.",
@@ -544,7 +544,7 @@ const drafts: Draft[] = [
     option_d: "Stop using a journal forever",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-323(B) requires, within ten days after loss, theft, or compromise of an official journal or stamping device, a signed notice to the secretary of state by certified mail or other means providing a receipt. In the case of theft, the notary also shall inform the appropriate law-enforcement agency. Phone photos and fabricated replacement history are not that notice. The journal duty continues. This item does not test the civil penalty in § 41-323(C).",
+      "A.R.S. § 41-323(B) requires, within ten days after loss, theft, or compromise of an official journal or stamping device, a signed notice to the secretary of state by certified mail or other means providing a receipt. In the case of theft, the notary also shall inform the appropriate law-enforcement agency. Phone photos and fabricated replacement history are not that notice. The journal duty continues.",
     option_feedback: {
       A: "Photos of pages do not satisfy the 10-day SOS notice in § 41-323(B).",
       B: "Correct. A.R.S. § 41-323(B): 10 days, signed SOS notice with a receipt, and law enforcement if stolen.",
@@ -616,7 +616,7 @@ const drafts: Draft[] = [
     option_d: "May be replaced with a generic store-bought 'Notary' sticker",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-266(A)(2) requires the official stamp to be capable of being copied together with the record. An electronic official stamp must be legible when reproduced (§ 41-266(B)). Section 41-266(C) forbids affixing the stamp over the notary's signature or any other signature on the record. The statute does not use the words 're-stamp a faint impression.' This item does not invent a Manual re-stamp procedure. A novelty sticker is not the official stamp described in § 41-266.",
+      "A.R.S. § 41-266(A)(2) requires the official stamp to be capable of being copied together with the record. An electronic official stamp must be legible when reproduced (§ 41-266(B)). Section 41-266(C) forbids affixing the stamp over the notary's signature or any other signature on the record. A novelty sticker is not the official stamp described in § 41-266.",
     option_feedback: {
       A: "An unreadable stamp does not meet the copyable/legible requirements in § 41-266(A)–(B).",
       B: "Correct. A.R.S. § 41-266(A)(2) and (C): copyable with the record, and not over signatures.",
@@ -662,7 +662,7 @@ const drafts: Draft[] = [
     option_d: "Notarize only for family",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-269(E) issues a commission for a four-year term. Section 41-269(F) states that a commission authorizes the notary public to perform notarial acts. After expiration, that authority has ended; a stamp does not extend the term. A.R.S. § 41-267(A) forbids allowing another individual to use the stamping device to perform a notarial act. Family transactions still require a current commission and are separately limited by § 41-252(B). Physical-device delivery after expiration is covered in A.R.S. § 41-317 and is not this item's test.",
+      "A.R.S. § 41-269(E) issues a commission for a four-year term. Section 41-269(F) states that a commission authorizes the notary public to perform notarial acts. After expiration, that authority has ended; a stamp does not extend the term. A.R.S. § 41-267(A) forbids allowing another individual to use the stamping device to perform a notarial act. Family transactions still require a current commission and are separately limited by § 41-252(B). Physical-device delivery after expiration is a separate duty in A.R.S. § 41-317.",
     option_feedback: {
       A: "The stamp does not extend the four-year commission in § 41-269(E).",
       B: "Correct. After expiration, § 41-269(F) no longer authorizes notarial acts until a new commission is issued.",
@@ -685,7 +685,7 @@ const drafts: Draft[] = [
     option_d: "Issued automatically with every stamp purchase",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-269(D) requires a $5,000 surety-bond assurance before a commission is issued. Arizona SOS Notary Resources state that the bond protects the public, not the notary; E&O insurance protects the notary and is not mandatory when applying. This item does not claim that E&O automatically repays every claim or provides unlimited protection. E&O is not a journal substitute, and a stamp vendor does not issue the statutory bond.",
+      "A.R.S. § 41-269(D) requires a $5,000 surety-bond assurance before a commission is issued. Arizona SOS Notary Resources state that the bond protects the public, not the notary; E&O insurance protects the notary and is not mandatory when applying. E&O is not a journal substitute, and a stamp vendor does not issue the statutory bond.",
     option_feedback: {
       A: "The required assurance is § 41-269(D). SOS resources treat E&O as separate, optional coverage for the notary.",
       B: "Correct. SOS Notary Resources: bond required and protects the public; E&O optional and protects the notary.",
@@ -735,7 +735,7 @@ const drafts: Draft[] = [
     option_d: "The same as completing a certificate for a notarial act the customer has already requested",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-273(A) states that a notary commission does not authorize assisting persons in drafting legal records, giving legal advice, otherwise practicing law, or acting as an immigration consultant. Completing the certificate for a notarial act the individual has requested is not the same as choosing the customer's legal form or legal strategy. This item does not forbid a high-level description of what an acknowledgment is versus a verification when that is not legal advice about the customer's transaction.",
+      "A.R.S. § 41-273(A) states that a notary commission does not authorize assisting persons in drafting legal records, giving legal advice, otherwise practicing law, or acting as an immigration consultant. Completing the certificate for a notarial act the individual has requested is not the same as choosing the customer's legal form or legal strategy.",
     option_feedback: {
       A: "A notary is not the customer's lawyer (§ 41-273(A)).",
       B: "Correct. A.R.S. § 41-273(A) does not authorize legal advice or selecting legal records for others.",
@@ -783,7 +783,7 @@ const drafts: Draft[] = [
     option_d: "Allowed on weekends only",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-264(A)(1) requires the certificate to be executed contemporaneously with the performance of the notarial act. Section 41-264(A)(2) requires the certificate to be signed and dated by the notarial officer. A private agreement or industry request cannot change the date of the act. Failure to comply with this article can be a ground for commission action under A.R.S. § 41-271(A)(1); this item tests the contemporaneous-date rule, not a specific penalty amount.",
+      "A.R.S. § 41-264(A)(1) requires the certificate to be executed contemporaneously with the performance of the notarial act. Section 41-264(A)(2) requires the certificate to be signed and dated by the notarial officer. A private agreement or industry request cannot change the date of the act. Failure to comply with this article can be a ground for commission action under A.R.S. § 41-271(A)(1). That ground does not set a specific penalty amount.",
     option_feedback: {
       A: "Private agreement does not replace contemporaneous execution under § 41-264(A)(1).",
       B: "Correct. A.R.S. § 41-264(A)(1)–(2): contemporaneous execution and dating by the officer.",
@@ -904,7 +904,7 @@ const drafts: Draft[] = [
     option_d: "Registration with the postal service completes commissioning",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-269(B)(6) requires the applicant to have passed the examination in § 41-270 if required by the secretary of state. That is one qualification, not the commissioning act. Before issuance, the applicant must execute an oath of office and submit it to the secretary of state (§ 41-269(C)) and submit a $5,000 surety-bond assurance (§ 41-269(D)). On compliance with the section, the secretary of state shall issue the commission (§ 41-269(E)). Purchasing a stamp is not listed as a legal condition of issuance in § 41-269. SOS New Notary describes the current application/exam operational flow after the exam; exam vendor, fee, and remote-testing details are not tested here.",
+      "A.R.S. § 41-269(B)(6) requires the applicant to have passed the examination in § 41-270 if required by the secretary of state. That is one qualification, not the commissioning act. Before issuance, the applicant must execute an oath of office and submit it to the secretary of state (§ 41-269(C)) and submit a $5,000 surety-bond assurance (§ 41-269(D)). On compliance with the section, the secretary of state shall issue the commission (§ 41-269(E)). Purchasing a stamp is not listed as a legal condition of issuance in § 41-269.",
     option_feedback: {
       A: "A.R.S. § 41-269(E) issues the commission only on compliance with the section, not on the exam score alone.",
       B: "Correct. Exam (if required) is one of § 41-269(B); oath, $5,000 assurance, and SOS issuance still follow.",
@@ -928,7 +928,7 @@ const drafts: Draft[] = [
     option_d: "Accept it only on Sundays",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-255(B)(1)(a) lists an unexpired United States passport or a state-issued driver license or nonoperating identification license. The statute does not treat an ordinary expired driver license as that listed credential. Personal knowledge (§ 41-255(A)) and a credible witness (§ 41-255(B)(2)) are separate methods; a photo resemblance on an expired license does not create them. This item does not invent extra exceptions the statute does not state.",
+      "A.R.S. § 41-255(B)(1)(a) lists an unexpired United States passport or a state-issued driver license or nonoperating identification license. The statute does not treat an ordinary expired driver license as that listed credential. Personal knowledge (§ 41-255(A)) and a credible witness (§ 41-255(B)(2)) are separate methods; a photo resemblance on an expired license does not create them.",
     option_feedback: {
       A: "A resemblance is not enough. Section 41-255(B)(1)(a) uses unexpired credentials.",
       B: "Correct. An ordinary expired driver license is not the unexpired credential listed in A.R.S. § 41-255(B)(1)(a).",
@@ -974,7 +974,7 @@ const drafts: Draft[] = [
     option_d: "Signed in pencil so it can be changed",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-251(16) defines the verification as a declaration on oath or affirmation before the officer that a statement in the record is true; that subsection does not itself say 'must sign in the notary's presence.' A.R.S. § 41-253(B) requires the individual to appear and make the verification. A.R.S. § 41-265(3) states the sufficient short form: 'Signed and sworn to (or affirmed) before me.' An acknowledgment under § 41-251(1) may concern a signature already on the record. No August 2026 Manual page is cited. Pencil or the notary signing for the individual is not authorized.",
+      "A.R.S. § 41-251(16) defines the verification as a declaration on oath or affirmation before the officer that a statement in the record is true; that subsection does not itself say 'must sign in the notary's presence.' A.R.S. § 41-253(B) requires the individual to appear and make the verification. A.R.S. § 41-265(3) states the sufficient short form: 'Signed and sworn to (or affirmed) before me.' An acknowledgment under § 41-251(1) may concern a signature already on the record. Pencil, or the notary signing for the individual, is not authorized.",
     option_feedback: {
       A: "No appearance would violate § 41-254(A) and is not a verification under § 41-251(16).",
       B: "Correct. The statutory short form in § 41-265(3) is 'signed and sworn to (or affirmed) before me,' together with appearance under § 41-253(B).",
@@ -997,12 +997,12 @@ const drafts: Draft[] = [
     option_d: "Destroyed after 24 hours",
     correct_option: "A",
     explanation:
-      "A.R.S. § 41-319(A) requires the notary public to record all notarial acts in chronological order. The statute does not require a separate serial-number system beyond that chronological record. Monthly summaries, customer email, and 24-hour destruction are not authorized. Retention while commissioned is at least five years after the act under A.R.S. § 41-317(C), which is outside this item's main pin-cite.",
+      "A.R.S. § 41-319(A) requires the notary public to record all notarial acts in chronological order. The statute does not require a separate serial-number system beyond that chronological record. Monthly summaries, customer email, and 24-hour destruction are not authorized. Retention while commissioned is at least five years after the act under A.R.S. § 41-317(C).",
     option_feedback: {
       A: "Correct. A.R.S. § 41-319(A) requires chronological order.",
       B: "A monthly summary is not recording each act in chronological order.",
       C: "Customer email is not the journal required by § 41-319.",
-      D: "Premature destruction is not authorized; this item tests chronological recording, not the five-year rule.",
+      D: "Premature destruction is not authorized. The five-year retention rule is a separate duty.",
     },
     source_id: "ars_41_319",
     source_reference: "A.R.S. § 41-319(A)",
@@ -1020,7 +1020,7 @@ const drafts: Draft[] = [
     option_d: "May exceed the maximum for rush jobs",
     correct_option: "A",
     explanation:
-      "Ariz. Admin. Code R2-12-1102(B) directs a notary to select a standard fee from no charge up to the maximum $10 fee for a notarial act and to be consistent. A.R.S. § 41-316(C) forbids charging a fee except as the rule authorizes, so exceeding the maximum is the violation. The maximum is a ceiling, not a mandatory price. Copy certification is billed per page certified under R2-12-1102(E); this item tests the ceiling principle, not every unit.",
+      "Ariz. Admin. Code R2-12-1102(B) directs a notary to select a standard fee from no charge up to the maximum $10 fee for a notarial act and to be consistent. A.R.S. § 41-316(C) forbids charging a fee except as the rule authorizes, so exceeding the maximum is the violation. The maximum is a ceiling, not a mandatory price. Copy certification is charged per page under R2-12-1102(E).",
     option_feedback: {
       A: "Correct. R2-12-1102 allows no charge up to the maximum; A.R.S. § 41-316(C) does not allow exceeding the rule.",
       B: "The maximum is a ceiling, not a required price.",
@@ -1044,7 +1044,7 @@ const drafts: Draft[] = [
     option_d: "Notaries may never communicate in a language other than English",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-273(A) does not authorize drafting legal records, giving legal advice, otherwise practicing law, or immigration consulting. Translation by itself is not listed as illegal in that subsection. Communication in a language both understand is addressed in A.R.S. § 41-253(F). This item does not expand into the separate 'notario' advertising rules in § 41-273(C)–(D).",
+      "A.R.S. § 41-273(A) does not authorize drafting legal records, giving legal advice, otherwise practicing law, or immigration consulting. Translation by itself is not listed as illegal in that subsection. Communication in a language both understand is addressed in A.R.S. § 41-253(F).",
     option_feedback: {
       A: "Translation itself is not listed as prohibited in § 41-273(A).",
       B: "Correct. The UPL risk is legal advice / selecting a legal record, not the translation step.",
@@ -1069,7 +1069,7 @@ const drafts: Draft[] = [
     option_d: "Wait until a signer complains before checking the official text",
     correct_option: "B",
     explanation:
-      "Legal text and effective dates come from the Arizona Legislature (current A.R.S. and session laws). A.R.S. § 1-241 and § 1-244 control timing and non-retroactivity. SOS notary pages may describe filing, exam, and name/address operations, and some still display recodified/old section numbers; those pages do not replace the current Legislature numbering. Illustration: Laws 2026, Chapter 31 (SB 1479) took effect September 12, 2026, so its § 41-254 journal-thumbprint amendments are current law for acts on or after that date. The online A.R.S. compilation may lag a session; use the chaptered session law until the compilation is updated. This item does not ask which commercial study page to use.",
+      "Legal text and effective dates come from the Arizona Legislature (current A.R.S. and session laws). A.R.S. § 1-241 and § 1-244 control timing and non-retroactivity. SOS notary pages may describe filing, exam, and name/address operations, and some still display recodified/old section numbers; those pages do not replace the current Legislature numbering. Illustration: Laws 2026, Chapter 31 (SB 1479) took effect September 12, 2026, so its § 41-254 journal-thumbprint amendments are current law for acts on or after that date. The online A.R.S. compilation may lag a session; use the chaptered session law until the compilation is updated.",
     option_feedback: {
       A: "Unofficial recaps are not the official text or effective date.",
       B: "Correct. Current A.R.S. + stated effective date; SOS pages are operational only; apply law in force on the act date.",
@@ -1095,7 +1095,7 @@ const drafts: Draft[] = [
     option_d: "A practice-test score automatically purchases and files the $5,000 surety-bond assurance",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-269(B)(6) treats the § 41-270 examination as one qualification if the secretary of state requires it. Subsections C and D still require the oath of office and the $5,000 assurance. Subsection E: on compliance with the section, the secretary of state shall issue the commission. An unofficial practice test is not the examination in § 41-270 and is not issuance under § 41-269(E). This item is an Arizona commissioning rule, not a statement about any particular commercial website.",
+      "A.R.S. § 41-269(B)(6) treats the § 41-270 examination as one qualification if the secretary of state requires it. Subsections C and D still require the oath of office and the $5,000 assurance. Subsection E: on compliance with the section, the secretary of state shall issue the commission. An unofficial practice test is not the examination in § 41-270 and is not issuance under § 41-269(E).",
     option_feedback: {
       A: "Section 41-269(E) issues the commission on statutory compliance, not on an unofficial practice score.",
       B: "Correct. Practice ≠ § 41-270 exam ≠ SOS issuance under § 41-269(E).",

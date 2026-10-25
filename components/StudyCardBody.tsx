@@ -85,7 +85,6 @@ export function StudyCardBody({ card, flipped }: { card: StudyCardView; flipped:
           <p><strong>Change one fact. </strong>{card.compare.twist}</p>
         </div>
       ) : null}
-      {card.memory ? <p className="notice"><strong>Memory line, not the rule. </strong>{card.memory}</p> : null}
       {card.sourceUrl ? (
         <details className="study-source" onClick={(event) => event.stopPropagation()}>
           <summary>Official source</summary>

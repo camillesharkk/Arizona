@@ -96,7 +96,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "Paying for supplies transfers the commission to the company",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-269(G) applies without regard to who paid commissioning costs. The stamping device, commission, and any journal that contains only public record entries remain the notary's property. The notary may perform notarial acts outside the workplace except during times normally designated as hours of duty for that employer. Fees for off-duty notarial services remain the notary's property. An employer may not limit the notary's services to customers or other persons designated by the employer. A journal with non-public entries is treated separately in A.R.S. § 41-319(E) and is not this item.",
+      "A.R.S. § 41-269(G) applies without regard to who paid commissioning costs. The stamping device, commission, and any journal that contains only public record entries remain the notary's property. The notary may perform notarial acts outside the workplace except during times normally designated as hours of duty for that employer. Fees for off-duty notarial services remain the notary's property. An employer may not limit the notary's services to customers or other persons designated by the employer. A journal with non-public entries is treated separately in A.R.S. § 41-319(E).",
     option_feedback: {
       A: "Payment by the employer does not transfer those items. Section 41-269(G)(3) also forbids limiting services to the employer's designated persons.",
       B: "Correct. A.R.S. § 41-269(G)(1)–(3): notary property, off-duty acts and fees, and no employer-designated-customer limit.",
@@ -243,7 +243,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "Use a jurisdiction the title company prefers, even if the act occurred elsewhere",
     correct_option: "A",
     explanation:
-      "A.R.S. § 41-264(A)(3) requires the certificate to identify the jurisdiction in which the notarial act is performed. That is the place of the act, not a marketing preference. A dark stamp does not waive the jurisdiction element. Other certificate elements in § 41-264(A) remain; this item isolates jurisdiction.",
+      "A.R.S. § 41-264(A)(3) requires the certificate to identify the jurisdiction in which the notarial act is performed. That is the place of the act, not a marketing preference. A dark stamp does not waive the jurisdiction element.",
     option_feedback: {
       A: "Correct. A.R.S. § 41-264(A)(3) requires the jurisdiction where the notarial act is performed.",
       B: "Sports teams are not a certificate element.",
@@ -340,7 +340,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "A photocopy of a birth certificate mailed to the notary",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-255(B)(1)(b) lists an unexpired identification card issued by any branch of the United States armed forces. A library card, loyalty card, and a mailed photocopy of a birth certificate are not that listed means. Other listed means in (B)(1) are not this item's test.",
+      "A.R.S. § 41-255(B)(1)(b) lists an unexpired identification card issued by any branch of the United States armed forces. A library card, loyalty card, and a mailed photocopy of a birth certificate are not that listed means.",
     option_feedback: {
       A: "An expired library card is not listed in § 41-255(B)(1).",
       B: "Correct. A.R.S. § 41-255(B)(1)(b): unexpired U.S. armed-forces identification card.",
@@ -390,7 +390,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "Have a bystander take the oath for the individual",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-251(16) and § 41-253(B) require the individual to make the verification on oath or affirmation. A.R.S. § 41-251(16) allows affirmation as well as oath; refusing both is not a completed verification. Completing a verification certificate after a refused oath is a false certificate problem under § 41-264. An acknowledgment is a different act (§ 41-251(1)) and must not be silently relabeled. A bystander cannot make the individual's verification. The officer may refuse a notarial act under § 41-256 when the statutory satisfaction standard is not met; this item tests the verification elements, not a penalty amount.",
+      "A.R.S. § 41-251(16) and § 41-253(B) require the individual to make the verification on oath or affirmation. A.R.S. § 41-251(16) allows affirmation as well as oath; refusing both is not a completed verification. Completing a verification certificate after a refused oath is a false certificate problem under § 41-264. An acknowledgment is a different act (§ 41-251(1)) and must not be silently relabeled. A bystander cannot make the individual's verification. The officer may refuse a notarial act under § 41-256 when the statutory satisfaction standard is not met. That refusal power does not set a penalty amount.",
     option_feedback: {
       A: "A verification certificate after a refused oath/affirmation is not the act described in § 41-253(B).",
       B: "Correct. No oath or affirmation means no verification; do not relabel an acknowledgment unless that different act is actually performed.",
@@ -438,7 +438,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "Only the county name",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-319(A)(1)–(7) list those minimum contents. The signature requirement in paragraph 4 applies if a paper journal is used. Personal-knowledge notation is in paragraph 5 as an alternative to the type of satisfactory evidence presented. This item does not test the personal-knowledge copy-retention alternative in subsection (B) or the six-month rule in subsection (C).",
+      "A.R.S. § 41-319(A)(1)–(7) list those minimum contents. The signature requirement in paragraph 4 applies if a paper journal is used. Personal-knowledge notation is in paragraph 5 as an alternative to the type of satisfactory evidence presented. Subsections (B) and (C) are narrower alternatives. They do not erase these fields when the notary makes a journal entry.",
     option_feedback: {
       A: "Color and doodles are not the statutory contents.",
       B: "Correct. A.R.S. § 41-319(A)(1)–(7) are the minimum entry fields.",
@@ -535,7 +535,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "A QR code instead of the commissioned name",
     correct_option: "A",
     explanation:
-      "A.R.S. § 41-266(A)(1) lists those required contents. A decorative image or QR code is not a substitute for the commissioned name and other listed items. The stamp must also be capable of being copied with the record (§ 41-266(A)(2)), which is not this item's focus.",
+      "A.R.S. § 41-266(A)(1) lists those required contents. A decorative image or QR code is not a substitute for the commissioned name and other listed items.",
     option_feedback: {
       A: "Correct. A.R.S. § 41-266(A)(1) lists those required stamp elements.",
       B: "A decoration is not the statutory contents.",
@@ -927,7 +927,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "A notarial act may never concern an electronic record",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-251(6)(a) defines a notarial act as an act performed with respect to a tangible or electronic record. A.R.S. § 41-254(A) requires personal appearance for a statement or signature on a record. A.R.S. § 41-263(I)(5) defines a remotely located individual as one who is not in the physical presence of the notary; subsection (A) allows that individual to comply with § 41-254 by using communication technology, and subsection (B) requires the notary to be located in this state. An electronic record plus physical presence is not a § 41-263 remote act. Arizona SOS Remote & eNotary uses the operational labels electronic notarization versus remote online notarization for that same distinction; this item is scored on the statute.",
+      "A.R.S. § 41-251(6)(a) defines a notarial act as an act performed with respect to a tangible or electronic record. A.R.S. § 41-254(A) requires personal appearance for a statement or signature on a record. A.R.S. § 41-263(I)(5) defines a remotely located individual as one who is not in the physical presence of the notary; subsection (A) allows that individual to comply with § 41-254 by using communication technology, and subsection (B) requires the notary to be located in this state. An electronic record plus physical presence is not a § 41-263 remote act.",
     option_feedback: {
       A: "A phone photo is not personal appearance under § 41-254 and is not a § 41-263 remote act.",
       B: "Correct. Electronic record ≠ remote act. Remote appearance is § 41-263 for a person not physically present.",
@@ -1025,7 +1025,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "The certificate may never mention communication technology",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-263(B)(3) requires an audiovisual recording of the performance of the notarial act. Section 41-263(E) requires retention for at least five years after the recording is made unless a different period is required by rule under subsection (G)(4). Section 41-263(C) requires the certificate to indicate that communication technology was used. A sufficient short-form addition is substantially: 'This notarial act involved the use of communication technology' (§ 41-263(D)(2)). The seven-year audiovisual-recording condition in current § 41-254(D) applies only to the listed remote-act exception to the journal-thumbprint rule; it is not this item's general § 41-263 retention rule.",
+      "A.R.S. § 41-263(B)(3) requires an audiovisual recording of the performance of the notarial act. Section 41-263(E) requires retention for at least five years after the recording is made unless a different period is required by rule under subsection (G)(4). Section 41-263(C) requires the certificate to indicate that communication technology was used. A sufficient short-form addition is substantially: 'This notarial act involved the use of communication technology' (§ 41-263(D)(2)). The seven-year audiovisual-recording condition in current § 41-254(D) applies only to the listed remote-act exception to the journal-thumbprint rule. It does not replace the general retention rule in § 41-263(E).",
     option_feedback: {
       A: "Recording is required, and the certificate must indicate communication technology.",
       B: "Correct. Create the recording, keep it at least five years unless a rule sets a different period, and say so on the certificate.",
@@ -1033,7 +1033,7 @@ export const expansionDrafts: ExpansionDraft[] = [
       D: "Section 41-263(C) requires the certificate to indicate use of communication technology.",
     },
     source_id: "ars_41_263",
-    source_reference: "A.R.S. § 41-263(B)(3), (C), (D)(2), (E); A.R.S. § 41-254(D) (thumbprint exception, not this item)",
+    source_reference: "A.R.S. § 41-263(B)(3), (C), (D)(2), (E); A.R.S. § 41-254(D) (journal-thumbprint exception)",
     last_verified_at: "2026-09-13",
     is_free: false,
   },

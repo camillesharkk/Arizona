@@ -14,7 +14,6 @@ export const knowledgeCards: Flashcard[] = [
     boundary: "This is one listed credential. Personal knowledge and a qualified credible witness are different methods. A business card does not fill the gap.",
     example: "At your desk, a customer you do not know offers an Arizona license that expired last month. That card is not the listed credential.",
     mixup: "Do not confuse \"the photo still looks right\" with an unexpired credential. Looks are not the test in this paragraph.",
-    memory: "Think of it like a bus pass: once the date has passed, it does not get you on.",
     question_ids: ["az-204"],
     source_id: "ars_41_255",
   },

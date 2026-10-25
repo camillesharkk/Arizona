@@ -149,7 +149,7 @@ export const chapters: StudyChapter[] = [
     source_id: "ars_41_319",
     example: {
       heading: "Worked example: “skip the journal, I’m a regular”",
-      body: "A repeat customer asks you to skip the journal to save time. A.R.S. § 41-319 requires notarial acts to be recorded in the required journal, in chronological order, unless a specific statutory alternative actually applies. Being a regular is not a waiver. For deeds, quitclaim deeds, deeds of trust, other real-property documents, and powers of attorney, also apply the journal-thumbprint rule in Laws 2026, Chapter 31 (SB 1479), effective September 12, 2026—details live on the law-change page, not as a second copy of that statute here.",
+      body: "A repeat customer asks you to skip the journal to save time. A.R.S. § 41-319 requires notarial acts to be recorded in the required journal, in chronological order, unless a specific statutory alternative actually applies. Being a regular is not a waiver. For deeds, quitclaim deeds, deeds of trust, other real-property documents, and powers of attorney, also apply the journal-thumbprint rule in Laws 2026, Chapter 31 (SB 1479), effective September 12, 2026.",
     },
   },
   {
@@ -216,7 +216,7 @@ export const chapters: StudyChapter[] = [
     id: "new-laws",
     title: "Keeping Up With 2026 Changes",
     topic: "new-laws",
-    summary: "Apply the statute in force on the date of the act. Session-law details live on the law-change page so this guide does not copy them twice.",
+    summary: "Apply the statute in force on the date of the act.",
     sections: [
       {
         heading: "Where to read verified changes",
@@ -229,7 +229,7 @@ export const chapters: StudyChapter[] = [
     ],
     keyFacts: [
       "Official legislature text and stated effective dates beat social posts.",
-      "This chapter points to the law page instead of reprinting the same SB 1479 write-up.",
+      "Laws 2026, Chapter 31 (SB 1479) journal thumbprints took effect September 12, 2026.",
     ],
     source_id: "az_sb_1479_2026",
     example: {
@@ -318,7 +318,7 @@ export const chapters: StudyChapter[] = [
     ],
     keyFacts: [
       "Flag weak topics and drill them in Exam Questions.",
-      "Passing percent is a configured official field—re-verify before test day.",
+      `SOS notice checked ${officialExam.checkedOn}: ${officialExam.passingScorePercent}% to pass.`,
       "Timebox: do not spend the whole clock on one fact pattern.",
     ],
     source_id: "sos_exam",
@@ -347,7 +347,7 @@ export const chapters: StudyChapter[] = [
       },
     ],
     keyFacts: [
-      "Statutory bond amount is a configured high-risk field.",
+      `$${officialExam.bondUsd.toLocaleString("en-US")} surety bond before the commission is issued (A.R.S. § 41-269(D)).`,
       "Stamp vendors do not issue commissions.",
       "Compare products after you understand which purchases are mandatory.",
     ],
