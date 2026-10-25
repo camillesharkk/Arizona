@@ -4,11 +4,10 @@ import { getSource } from "@/data/sources";
 import { ChapterProgress, Readiness } from "@/components/StudyProgress";
 import { paths } from "@/lib/paths";
 import { eligibleExamPool } from "@/lib/quiz";
-import { chapterTopic, publicStudyCards } from "@/lib/study-cards";
+import { chapterTopic } from "@/lib/study-cards";
 import { pageMeta } from "@/lib/seo";
 import { PrepCtas } from "@/components/PrepCtas";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
-import { ProNudge } from "@/components/ProNudge";
 
 const chapterReferences: Record<string, string[]> = {
   identification: ["ars_41_253", "ars_41_254", "ars_41_256"],
@@ -42,7 +41,7 @@ export default async function StudyGuidePage() {
         The current SOS download is named “Notary-Manual-Aug-2026.pdf”; its cover says January 2025.
         For later changes, use the <Link href={paths.laws}>verified Arizona law updates</Link> and chaptered statutes.
       </p>
-      <PrepCtas studyCards />
+      <PrepCtas studyCards guide={false} pro={false} />
       <p className="notice" style={{ marginTop: 0 }}>
         <WrongAnswersLink />
       </p>
@@ -110,11 +109,11 @@ export default async function StudyGuidePage() {
           </article>
         );
       })}
-      <ProNudge>
-        The study guide stays free. Pro adds the rest of the practice bank
-        {" "}({eligibleExamPool().length - eligibleExamPool().filter((question) => question.is_free).length} more questions)
-        and {publicStudyCards(true).filter((card) => !card.pending).length - publicStudyCards(false).filter((card) => !card.locked && !card.pending).length} more study cards.
-      </ProNudge>
+      <section className="study-pro" aria-labelledby="study-pro-heading">
+        <h2 id="study-pro-heading">Put what you’ve learned into practice</h2>
+        <p>Use Pro to practice more questions on the topics in this guide and prepare with full practice exams.</p>
+        <p><Link href={paths.pricing}>Explore Pro</Link></p>
+      </section>
     </main>
   );
 }

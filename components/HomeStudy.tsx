@@ -211,10 +211,10 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
             >
               {shuffled ? "Back to order" : "Shuffle"}
             </button>
-            <Link href={paths.studyCards}>All study cards</Link>
+            <Link className="btn btn-ghost home-all-cards" href={paths.studyCards}>All study cards</Link>
           </div>
           {card ? (
-            <>
+            <div className="home-card-column">
               <div
                 className="study-face"
                 onClick={() => setFlipped((open) => !open)}
@@ -249,19 +249,21 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
                   {flipped ? "Show question" : "Show answer"}
                 </button>
               </div>
-              <div className="study-pager">
-                <button className="btn btn-ghost" type="button" onClick={() => moveCard(safeIndex - 1)} disabled={safeIndex === 0}>
-                  Previous
-                </button>
-                <span>
-                  {safeIndex + 1} / {deck.length}
-                </span>
-                <button className="btn btn-ghost" type="button" onClick={() => moveCard(safeIndex + 1)} disabled={safeIndex >= deck.length - 1}>
-                  Next
-                </button>
+              <div className="home-card-actions">
+                <div className="study-pager">
+                  <button className="btn btn-ghost" type="button" onClick={() => moveCard(safeIndex - 1)} disabled={safeIndex === 0}>
+                    Previous
+                  </button>
+                  <span>
+                    {safeIndex + 1} / {deck.length}
+                  </span>
+                  <button className="btn btn-ghost" type="button" onClick={() => moveCard(safeIndex + 1)} disabled={safeIndex >= deck.length - 1}>
+                    Next
+                  </button>
+                </div>
+                {card.practiceHref ? <Link className="btn btn-ghost" href={card.practiceHref}>Practice this topic</Link> : null}
               </div>
-              {card.practiceHref ? <p className="home-topic-link"><Link href={card.practiceHref}>Practice this topic</Link></p> : null}
-            </>
+            </div>
           ) : (
             <p>No study cards are available.</p>
           )}

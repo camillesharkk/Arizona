@@ -88,23 +88,17 @@ export default function ArizonaHub() {
           </ul>
         </section>
 
-        <section className="home-block" aria-labelledby="trust-heading">
+        <section className="home-block home-about" aria-labelledby="trust-heading">
           <h2 id="trust-heading">About this prep</h2>
-          <ul className="home-links">
-            <li>
-              Independent exam preparation, not the Arizona Secretary of State.{" "}
-              <Link href={paths.disclaimer}>Disclaimer</Link>
-            </li>
-            <li>
-              Items cite an official source and the date it was checked.{" "}
-              <a href={examConfig.officialFilingUrl}>Secretary of State</a>
-              {" · "}
-              <a href={examConfig.officialManualUrl}>Notary manual</a>
-            </li>
-            <li>
-              <Link href={paths.contact}>Contact us about a correction</Link>
-            </li>
-          </ul>
+          <p className="home-about-copy">Items cite an official source and the date it was checked.</p>
+          <div className="home-about-sources">
+            <a href={examConfig.officialFilingUrl}>Secretary of State</a>
+            <a href={examConfig.officialManualUrl}>Notary manual</a>
+          </div>
+          <div className="home-about-links">
+            <Link href={paths.disclaimer}>Disclaimer</Link>
+            <Link href={paths.contact}>Contact us about a correction</Link>
+          </div>
         </section>
       </div>
     </main>

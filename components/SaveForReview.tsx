@@ -20,6 +20,29 @@ function writePending(ids: string[]) {
   sessionStorage.setItem(PENDING_KEY, JSON.stringify([...new Set(ids)]));
 }
 
+let savedKnown: Promise<void> | null = null;
+const localSaveChoice = new Map<string, boolean>();
+
+function rememberServerSaves(rows: { questionId?: string; savedForReview?: boolean }[]) {
+  for (const row of rows) {
+    if (!row?.questionId || localSaveChoice.has(row.questionId)) continue;
+    if (row.savedForReview) savedIds.add(row.questionId);
+  }
+}
+
+function loadSavedReviews() {
+  if (!savedKnown) {
+    savedKnown = fetch("/api/mistakes/")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        const rows = Array.isArray(data?.mistakes) ? data.mistakes : [];
+        rememberServerSaves(rows);
+      })
+      .catch(() => undefined);
+  }
+  return savedKnown;
+}
+
 async function postSave(questionId: string, saveForReview: boolean) {
   return fetch("/api/mistakes/", {
     method: "POST",
@@ -57,9 +80,17 @@ export function SaveForReview({
   const [next, setNext] = useState<string>(paths.login);
 
   useEffect(() => {
+    let cancel = false;
     setSaved(savedIds.has(questionId));
     setNext(`${paths.login}?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
-    flushPendingReviewSaves().then(() => setSaved(savedIds.has(questionId))).catch(() => undefined);
+    Promise.all([flushPendingReviewSaves(), loadSavedReviews()])
+      .then(() => {
+        if (!cancel) setSaved(savedIds.has(questionId));
+      })
+      .catch(() => undefined);
+    return () => {
+      cancel = true;
+    };
   }, [questionId]);
 
   async function toggle() {
@@ -85,6 +116,7 @@ export function SaveForReview({
     }
     if (nextSaved) savedIds.add(questionId);
     else savedIds.delete(questionId);
+    localSaveChoice.set(questionId, nextSaved);
     writePending(readPending().filter((id) => id !== questionId));
     setSaved(nextSaved);
   }

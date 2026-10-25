@@ -1,4 +1,5 @@
 import { AnswerExplain } from "@/components/AnswerExplain";
+import { SaveForReview } from "@/components/SaveForReview";
 import { getSource } from "@/data/sources";
 import type { Question } from "@/lib/types";
 
@@ -18,7 +19,12 @@ export function AnswerReview({
   const wrong = selected && selected !== q.correct_option ? q.option_feedback[selected] : undefined;
   return (
     <div className="card">
-      <p className="kicker">Answer explanation</p>
+      <div className="quiz-meta">
+        <p className="kicker">Answer explanation</p>
+        <div className="quiz-meta-actions">
+          <SaveForReview questionId={q.question_id} hint={false} />
+        </div>
+      </div>
       <h3 className="quiz-stem">
         {index + 1}. {q.question_text}
       </h3>

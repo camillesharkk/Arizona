@@ -14,7 +14,7 @@ import {
   weakTopics,
   type Letter,
 } from "@/lib/quiz";
-import { recordAnswer, saveProgress, toggleFlag, loadProgress } from "@/lib/storage";
+import { recordAnswer, saveProgress, toggleFlag, loadProgress, subscribeProgress } from "@/lib/storage";
 import { AccountInvite } from "@/components/AccountInvite";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { TutorPanel } from "@/components/TutorPanel";
@@ -130,6 +130,10 @@ export function ExamRunner({
     }
   }, [persistKey, sessionSeed, idx, answers]);
   const [marked, setMarked] = useState<string[]>([]);
+  useEffect(() => {
+    setMarked(loadProgress().flaggedIds);
+    return subscribeProgress(() => setMarked(loadProgress().flaggedIds));
+  }, []);
   const [done, setDone] = useState(false);
   const [seconds, setSeconds] = useState(examConfig.timeLimitMinutes * 60);
   const weakReported = useRef(false);
@@ -490,12 +494,8 @@ export function ExamRunner({
           headingRef={headingRef}
           isPro={isPro}
           marked={marked.includes(q.question_id)}
-          onMark={() => {
-            toggleFlag(q.question_id);
-            setMarked((m) =>
-              m.includes(q.question_id) ? m.filter((x) => x !== q.question_id) : [...m, q.question_id]
-            );
-          }}
+          onMark={() => toggleFlag(q.question_id)}
+          extra={<SaveForReview questionId={q.question_id} hint={false} />}
         />
         {practice && selected === q.correct_option ? (
           <p className="notice" role="status">Correct.</p>
@@ -514,10 +514,6 @@ export function ExamRunner({
         Previous answer
       </button>
     ) : null;
-  const currentSave = pastIndex == null ? <SaveForReview questionId={q.question_id} /> : null;
-  const previousSave = idx > 0 && pastIndex == null ? (
-    <SaveForReview questionId={questions[idx - 1].question_id} label="Save previous question for review" hint={false} />
-  ) : null;
   const submitStatus = (
     <>
       {submitting ? <SubmitStatus /> : null}
@@ -541,8 +537,6 @@ export function ExamRunner({
           <span style={{ width: `${((idx + 1) / questions.length) * 100}%` }} />
         </div>
         {previousAnswer}
-        {currentSave}
-        {previousSave}
         {questionBody}
         {submitStatus}
         <div className="home-exam-nav">
@@ -587,8 +581,6 @@ export function ExamRunner({
         nextLabel={nextLabel}
         corner={previousAnswer}
       >
-        {currentSave}
-        {previousSave}
         {questionBody}
         {submitStatus}
       </CardStage>
@@ -638,18 +630,20 @@ export function QuestionBlock({
   const showWriteup = explain ?? Boolean(reveal);
   return (
     <div className="card">
-      <div className="row space">
+      <div className="quiz-meta">
         <span className="kicker">
           {topicLabel(q.topic)} · {q.difficulty}
           {!q.is_free ? " · Pro" : ""}
         </span>
-        {onMark && (
-          <button className="btn btn-ghost" type="button" onClick={onMark}>
-            {marked ? "Marked" : "Mark for Review"}
-          </button>
-        )}
+        <div className="quiz-meta-actions">
+          {extra}
+          {onMark && (
+            <button className="btn btn-ghost" type="button" onClick={onMark} aria-pressed={Boolean(marked)}>
+              {marked ? "Flagged" : "Flag question"}
+            </button>
+          )}
+        </div>
       </div>
-      {extra}
       <h3 className="quiz-heading quiz-stem" ref={headingRef} tabIndex={-1}>
         {index + 1}. {q.question_text}
       </h3>

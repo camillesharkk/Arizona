@@ -276,16 +276,13 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
               marked={progress.flaggedIds.includes(q.question_id)}
               onMark={() => toggleFlag(q.question_id)}
               isPro={isPro}
-              extra={<SaveForReview questionId={q.question_id} />}
+              extra={<SaveForReview questionId={q.question_id} hint={false} />}
             />
             {selected === q.correct_option ? <p className="notice" role="status">Correct.</p> : null}
             {selected === q.correct_option ? <TutorPanel q={q} selected={originalLetter(selected)} /> : null}
             <AccountInvite compact />
           </>
         )}
-        {safeIdx > 0 && pastIndex == null ? (
-          <SaveForReview questionId={pool[safeIdx - 1].question_id} label="Save previous question for review" hint={false} />
-        ) : null}
         {submitting ? <SubmitStatus /> : null}
         {submitError ? (
           <p className="form-error" role="alert">
