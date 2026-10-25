@@ -124,7 +124,7 @@ export function DailyStudyClient() {
       {view.reason ? <p className="notice">{view.reason}</p> : null}
       {view.unmappedQuestionIds.length ? <p className="notice">{view.unmappedQuestionIds.length} missed questions have no knowledge card yet.</p> : null}
       <div className="daily-grid">
-        <section className="card" aria-label="Today’s Practice">
+        <section className="card daily-practice-card" aria-label="Today’s Practice">
           <h2>Today’s Practice</h2>
           {practiceCard ? (
             <>
@@ -138,9 +138,8 @@ export function DailyStudyClient() {
               </div>
             </>
           ) : <p>No new cards left in today’s goal.</p>}
-          {practiceQuestions.length ? <ExamRunner mode="practice" practice preset={practiceQuestions} onRecorded={load} /> : null}
         </section>
-        <section className="card" aria-label="Today’s Review">
+        <section className="card daily-review-card" aria-label="Today’s Review">
           <h2>Today’s Review</h2>
           {reviewCard || reviewQuestions.length || view.yesterdayWaiting.length ? (
             <p>Your review is personalized using your account’s missed questions, questions you saved, and spaced repetition. Review daily to reinforce what you’ve learned and prepare for your exam.</p>
@@ -168,8 +167,17 @@ export function DailyStudyClient() {
               </div>
             </>
           ) : null}
-          {reviewQuestions.length ? <ExamRunner mode="weak" practice review preset={reviewQuestions} onRecorded={load} /> : null}
         </section>
+        {practiceQuestions.length ? (
+          <div className="daily-practice-quiz">
+            <ExamRunner mode="practice" practice preset={practiceQuestions} onRecorded={load} />
+          </div>
+        ) : null}
+        {reviewQuestions.length ? (
+          <div className="daily-review-quiz">
+            <ExamRunner mode="weak" practice review preset={reviewQuestions} onRecorded={load} />
+          </div>
+        ) : null}
       </div>
       <p style={{ marginTop: 16 }}>
         <button className="btn btn-ghost" type="button" onClick={async () => {

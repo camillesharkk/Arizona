@@ -8,7 +8,6 @@ import { loadProgress, saveProgress } from "@/lib/storage";
 import { paths } from "@/lib/paths";
 import { FREE_FLASHCARD_PREVIEW } from "@/lib/product";
 import { categoryLabel, StudyCardBody } from "@/components/StudyCardBody";
-import { CardStage } from "@/components/CardStage";
 
 const FLASH_KEY = "az-flash-place";
 const categoryOrder = ["identification", "appearance", "journal", "conflicts", "fees", "dates", "definitions", "acts"];
@@ -168,15 +167,6 @@ export function FlashcardsClient() {
         {` · ${Math.min(i + 1, deck.length)} of ${deck.length} in this set`}
         {!isPro ? ` · Free preview ${allowed.length} of ${flashcards.length} cards` : ""}
       </p>
-      <CardStage
-        onPrev={() => { setI(i - 1); setFlipped(false); }}
-        prevDisabled={i === 0}
-        onNext={() => {
-          if (i + 1 >= deck.length) setFinished(true);
-          else { setI(i + 1); setFlipped(false); }
-        }}
-        nextLabel={i + 1 >= deck.length ? "Done studying" : "Next"}
-      >
       <div
         className="card flash-card"
         onClick={() => setFlipped(!flipped)}
@@ -234,7 +224,19 @@ export function FlashcardsClient() {
           This preview is free. <Link href={paths.pricing}>The rest of the deck is part of Pro.</Link>
         </p>
       ) : null}
-      </CardStage>
+      <div className="home-exam-nav">
+        <div className="row space">
+          <button className="btn btn-ghost" type="button" disabled={i === 0} onClick={() => { setI(i - 1); setFlipped(false); }}>
+            Previous
+          </button>
+          <button className="btn btn-primary" type="button" onClick={() => {
+            if (i + 1 >= deck.length) setFinished(true);
+            else { setI(i + 1); setFlipped(false); }
+          }}>
+            {i + 1 >= deck.length ? "Done studying" : "Next"}
+          </button>
+        </div>
+      </div>
       </div>
     </div>
   );

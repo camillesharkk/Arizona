@@ -5,7 +5,6 @@ import Link from "next/link";
 import { chapters } from "@/data/study-guide";
 import { findSource } from "@/data/sources";
 import { AnswerExplain } from "@/components/AnswerExplain";
-import { CardStage } from "@/components/CardStage";
 import {
   arizonaDiagnostic,
   bandAction,
@@ -203,13 +202,6 @@ export function DiagnosticFlow({
       >
         <span style={{ width: `${((session.index + 1) / questions.length) * 100}%` }} />
       </div>
-      <CardStage
-        onPrev={() => persist({ ...session, index: session.index - 1 })}
-        prevDisabled={session.index === 0}
-        onNext={() => (last ? submit() : persist({ ...session, index: session.index + 1 }))}
-        nextDisabled={!selected}
-        nextLabel={last ? "Submit check" : "Next"}
-      >
       <div className="card">
       <h2 className="quiz-stem" ref={headingRef} tabIndex={-1}>
         {q.question_text}
@@ -250,7 +242,16 @@ export function DiagnosticFlow({
         </p>
       ) : null}
       </div>
-      </CardStage>
+      <div className="home-exam-nav">
+        <div className="row space">
+          <button className="btn btn-ghost" type="button" disabled={session.index === 0} onClick={() => persist({ ...session, index: session.index - 1 })}>
+            Previous
+          </button>
+          <button className="btn btn-primary" type="button" disabled={!selected} onClick={() => (last ? submit() : persist({ ...session, index: session.index + 1 }))}>
+            {last ? "Submit check" : "Next"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

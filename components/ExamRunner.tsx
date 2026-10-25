@@ -18,7 +18,6 @@ import { recordAnswer, saveProgress, toggleFlag, loadProgress, subscribeProgress
 import { AccountInvite } from "@/components/AccountInvite";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { TutorPanel } from "@/components/TutorPanel";
-import { CardStage } from "@/components/CardStage";
 import { AnswerReview } from "@/components/AnswerReview";
 import { getSource } from "@/data/sources";
 import { AnswerExplain } from "@/components/AnswerExplain";
@@ -526,64 +525,35 @@ export function ExamRunner({
     </>
   );
 
-  if (layout === "compact") {
-    return (
-      <div className="home-exam">
-        <div className="row space">
-          <span className="notice">Question {idx + 1} of {questions.length}</span>
-          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">Practice mode — instant feedback</span>}
-        </div>
-        <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
-          <span style={{ width: `${((idx + 1) / questions.length) * 100}%` }} />
-        </div>
-        {previousAnswer}
-        {questionBody}
-        {submitStatus}
-        <div className="home-exam-nav">
-          <div className="row space">
-            <button className="btn btn-ghost" type="button" disabled={idx === 0 || pastIndex != null || submitting} onClick={() => goTo(idx - 1)}>
-              Previous
-            </button>
-            <button
-              className={lastQuestion && !practice ? "btn btn-sage" : "btn btn-primary"}
-              type="button"
-              disabled={pastIndex != null || submitting}
-              onClick={() => (lastQuestion ? void finish() : goTo(idx + 1))}
-            >
-              {nextLabel}
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
+  const prevLocked = idx === 0 || pastIndex != null || (layout === "compact" && submitting);
+  const nextLocked = pastIndex != null || submitting || (layout === "compact" ? false : practice ? !selected : false);
   return (
-    <div className="exam-pad">
+    <div className="home-exam">
       <div className="row space">
-        <span className="notice">
-          Question {idx + 1} of {questions.length}
-        </span>
-        {timed ? (
-          <span className="badge">{formatTime(remain)}</span>
-        ) : (
-          <span className="badge">Practice mode — instant feedback</span>
-        )}
+        <span className="notice">Question {idx + 1} of {questions.length}</span>
+        {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">Practice mode — instant feedback</span>}
       </div>
       <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
         <span style={{ width: `${((idx + 1) / questions.length) * 100}%` }} />
       </div>
-      <CardStage
-        onPrev={() => goTo(idx - 1)}
-        prevDisabled={idx === 0 || pastIndex != null}
-        onNext={() => (lastQuestion ? finish() : goTo(idx + 1))}
-        nextDisabled={pastIndex != null || submitting || (practice ? !selected : false)}
-        nextLabel={nextLabel}
-        corner={previousAnswer}
-      >
-        {questionBody}
-        {submitStatus}
-      </CardStage>
+      {previousAnswer}
+      {questionBody}
+      {submitStatus}
+      <div className="home-exam-nav">
+        <div className="row space">
+          <button className="btn btn-ghost" type="button" disabled={prevLocked} onClick={() => goTo(idx - 1)}>
+            Previous
+          </button>
+          <button
+            className={lastQuestion && !practice ? "btn btn-sage" : "btn btn-primary"}
+            type="button"
+            disabled={nextLocked}
+            onClick={() => (lastQuestion ? void finish() : goTo(idx + 1))}
+          >
+            {nextLabel}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

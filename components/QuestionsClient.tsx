@@ -8,7 +8,6 @@ import type { Difficulty, TopicId } from "@/lib/types";
 import { QuestionBlock } from "@/components/ExamRunner";
 import { AccountInvite } from "@/components/AccountInvite";
 import { TutorPanel } from "@/components/TutorPanel";
-import { CardStage } from "@/components/CardStage";
 import { AnswerReview } from "@/components/AnswerReview";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress, toggleFlag } from "@/lib/storage";
@@ -156,7 +155,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   }
 
   return (
-    <div className="exam-pad">
+    <div>
       <div className="filter-row">
         {!topic &&
           (["all", "wrong", "unanswered", ...topics.map((t) => t.id)] as const).map((id) => (
@@ -224,18 +223,16 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
           </div>
         </div>
       ) : q ? (
-      <CardStage
-        onPrev={() => goTo(safeIdx - 1)}
-        prevDisabled={safeIdx === 0 || pastIndex != null || submitting}
-        onNext={() => (lastQuestion ? void finishSet() : goTo(safeIdx + 1))}
-        nextDisabled={pastIndex != null || submitting || !selected}
-        nextLabel={lastQuestion ? "See results" : "Next"}
-        corner={
-          safeIdx > 0 && pastIndex == null ? (
-            <button className="card-corner-btn" type="button" onClick={openPast}>Previous answer</button>
-          ) : null
-        }
-      >
+      <div className="home-exam">
+        <div className="row space">
+          <span className="notice">Question {safeIdx + 1} of {pool.length}</span>
+        </div>
+        <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
+          <span style={{ width: `${((safeIdx + 1) / pool.length) * 100}%` }} />
+        </div>
+        {safeIdx > 0 && pastIndex == null ? (
+          <button className="card-corner-btn" type="button" onClick={openPast}>Previous answer</button>
+        ) : null}
         {pastIndex != null && pool[pastIndex] ? (
           <AnswerReview q={pool[pastIndex]} index={pastIndex} selected={answers[pool[pastIndex].question_id]} onBack={closePast} />
         ) : selected && selected !== q.correct_option && wrongId === q.question_id ? (
@@ -290,7 +287,17 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
             <button className="btn btn-ghost" type="button" onClick={() => void finishSet()}>Try again</button>
           </p>
         ) : null}
-      </CardStage>
+        <div className="home-exam-nav">
+          <div className="row space">
+            <button className="btn btn-ghost" type="button" disabled={safeIdx === 0 || pastIndex != null || submitting} onClick={() => goTo(safeIdx - 1)}>
+              Previous
+            </button>
+            <button className="btn btn-primary" type="button" disabled={pastIndex != null || submitting || !selected} onClick={() => (lastQuestion ? void finishSet() : goTo(safeIdx + 1))}>
+              {lastQuestion ? "See results" : "Next"}
+            </button>
+          </div>
+        </div>
+      </div>
       ) : null}
     </div>
   );
