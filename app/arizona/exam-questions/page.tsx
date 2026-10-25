@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { QuestionsClient } from "@/components/QuestionsClient";
 import { QuestionPageCtas } from "@/components/QuestionPageCtas";
-import { PrepCtas } from "@/components/PrepCtas";
-import { ProNudge } from "@/components/ProNudge";
 import { examConfig, officialExam } from "@/data/exam-config";
 import { AnswerExplain } from "@/components/AnswerExplain";
 import { getSource } from "@/data/sources";
@@ -36,18 +34,17 @@ export default function ExamQuestionsPage() {
         This page uses the practice bank: {pool.length} questions, of which {free.length} are free. Pro can use all {pool.length}.
         Topics with no free questions stay in the Pro bank. A.R.S. § 41-270 allows the Secretary of State to require an exam and does
         not set the question count. The SOS notice checked on {officialExam.checkedOn} says the official exam has {officialExam.questionCount} questions.
-        Each Full 45 here draws {examConfig.questionCount} practice questions from this bank. These are not official exam questions. Take a{" "}
+        Each Full 45 here draws {examConfig.questionCount} practice questions from this bank. Take a{" "}
         <Link href={`${paths.practice}?mode=quick`}>free 10-question test</Link> or a{" "}
         <Link href={`${paths.practice}?mode=full`}>timed Full 45</Link>.
       </p>
-      <PrepCtas />
       <QuestionPageCtas />
       <div id="start">
         <QuestionsClient />
       </div>
       <section aria-labelledby="sample-qa" style={{ marginTop: 28 }}>
         <h2 id="sample-qa">Sample questions with answers (no account required)</h2>
-        <p>These are live free-bank items. Read the answer and the statute, then start the interactive set above.</p>
+        <p>These are live free-bank items.</p>
         {samples.map((q, i) => {
           const options = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
           return (
@@ -64,9 +61,6 @@ export default function ExamQuestionsPage() {
       <p className="notice" style={{ marginTop: 24 }}>
         Progress is saved on this device. Create a free account to keep the cloud notebook.
       </p>
-      <ProNudge>
-        {questionFreeCount} questions on this page are free. Pro opens the other {questionPool.length - questionFreeCount}.
-      </ProNudge>
     </main>
   );
 }

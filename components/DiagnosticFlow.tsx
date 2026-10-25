@@ -120,7 +120,7 @@ export function DiagnosticFlow({
   }, [fresh, showResult]);
 
   useEffect(() => {
-    headingRef.current?.focus();
+    headingRef.current?.focus({ preventScroll: true });
   }, [session?.index, session?.status]);
 
   function persist(next: DiagnosticSession) {
@@ -274,7 +274,7 @@ function DiagnosticResult({
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const { correct, total } = scoreDiagnostic(questions, session.answers);
   useEffect(() => {
-    headingRef.current?.focus();
+    headingRef.current?.focus({ preventScroll: true });
   }, []);
   const band = recommendFor(correct);
   const scores = topicScores(questions, session.answers);

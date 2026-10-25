@@ -28,7 +28,6 @@ export default function PracticeTestPage() {
       <h1>Arizona Notary Exam Practice Test — Free Quick 10 & Full 45</h1>
       <p className="lede">
         Free Quick 10 and one free {examConfig.questionCount}-question Full 45 in this browser. No registration or email required to start.
-        Get your score, topic accuracy, correct answers, explanations and official references when you finish.
       </p>
       <p>
         <strong>
@@ -42,19 +41,12 @@ export default function PracticeTestPage() {
         attempts can repeat questions.
       </p>
       <PracticeLaunch />
-      <p className="notice">Independent practice questions, not official exam questions. An account is optional for saving progress across devices.</p>
       <section className="card" style={{ margin: "20px 0" }}>
         <h2>What happens during and after the test?</h2>
         <p>
-          Quick 10 shows feedback after each answer. Full 45 gives you {examConfig.timeLimitMinutes} minutes and hides
-          explanations until submission. Results show the number correct, percentage, accuracy by topic and the
-          answer explanation for every question. Missed topics link back to the free study guide.
-        </p>
-        <p>
-          This simulation uses an {examConfig.passingScorePercent}% practice target ({Math.ceil(examConfig.questionCount * examConfig.passingScorePercent / 100)} of {examConfig.questionCount}).
-          The SOS notice checked on {officialExam.checkedOn} also lists {officialExam.questionCount} questions, {officialExam.timeLimitMinutes} minutes, and {officialExam.passingScorePercent}%, with the manual built into the exam and no physical copy.
-          A practice pass is not that exam and not a commission. Check the{" "}
-          <a href={examConfig.officialExamUrl}>Arizona SOS exam notice</a> before booking.
+          Quick 10 shows whether the answer is correct after each question. Full 45 gives you {examConfig.timeLimitMinutes} minutes and hides explanations until you submit.
+          The practice target is {examConfig.passingScorePercent}%. The SOS notice checked on {officialExam.checkedOn} lists the same question count, time, and passing score.{" "}
+          <a href={examConfig.officialExamUrl}>Arizona SOS exam notice</a>
         </p>
       </section>
       <section aria-labelledby="sample-questions">
@@ -75,10 +67,15 @@ export default function PracticeTestPage() {
       </section>
       <section className="card" style={{ marginTop: 24 }}>
         <h2>Choose your next step</h2>
-        <p>Need the rules explained? Read the <Link href={paths.study}>free Arizona Notary Study Guide</Link>.</p>
-        <p>Need a study schedule? Follow the <Link href={paths.examPrep}>seven-step exam preparation plan</Link>.</p>
-        <p>Need a number, not a full test yet? Open the <Link href={paths.guidesIndex}>exam guide matrix</Link> (passing score, question count, fees, bond, RON).</p>
-        <p>Ready for the rest of the bank? See <Link href={paths.pricing}>Arizona Notary Exam Prep Pro</Link>.</p>
+        <p>
+          <Link href={paths.study}>Study Guide</Link>
+          {" · "}
+          <Link href={paths.examPrep}>Exam preparation plan</Link>
+          {" · "}
+          <Link href={paths.guidesIndex}>Exam guides</Link>
+          {" · "}
+          <Link href={paths.pricing}>Pro</Link>
+        </p>
       </section>
     </main>
   );

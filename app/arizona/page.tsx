@@ -10,7 +10,6 @@ import { HomeStudy } from "@/components/HomeStudy";
 import { eligibleExamPool } from "@/lib/quiz";
 import { FREE_FULL_EXAMS, FREE_FLASHCARD_PREVIEW, PRO_DURATION_DAYS } from "@/lib/product";
 import Link from "next/link";
-import { ProNudge } from "@/components/ProNudge";
 
 const cardsById = new Map(flashcards.map((card) => [card.id, card]));
 const previewCards = HOME_STUDY_CARD_IDS.flatMap((id) => {
@@ -75,7 +74,7 @@ export default function ArizonaHub() {
               </ul>
             </div>
           </div>
-          <ProNudge>These counts are the free and Pro sets on this site.</ProNudge>
+          <p><Link href={paths.pricing}>View Pro</Link></p>
         </section>
 
         <section className="home-block" aria-labelledby="resources-heading">

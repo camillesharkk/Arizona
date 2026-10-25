@@ -21,7 +21,7 @@ export default function ResourcesPage() {
     <main className="wrap hero resource-page">
       <h1>Study resources</h1>
       <p className="lede">
-        The 10-question check is free. An explanation appears after you answer, and it does not use your one free full exam.
+        The 10-question check is free. Open the explanation after you answer; it does not use your one free full exam.
         A full practice exam is {examConfig.questionCount} questions and starts only when you choose it. {freeCount} questions
         are free. Pro includes all {bank.length}. Flashcards open with a free preview of {FREE_FLASHCARD_PREVIEW} cards; the
         rest of that deck is part of Pro.
@@ -30,10 +30,8 @@ export default function ResourcesPage() {
         <Link href={paths.home}>Back to practice</Link>
       </p>
       <p>
-        Independent practice, not the Arizona Secretary of State.{" "}
-        <a href={officialExam.filingUrl}>Check the official notary page</a> before you apply.
+        <a href={officialExam.filingUrl}>Official notary page</a>
       </p>
-      <p>{examConfig.disclaimer}</p>
 
       <h2>Keep studying</h2>
       <ul className="home-links">

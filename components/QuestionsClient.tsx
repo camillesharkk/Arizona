@@ -6,9 +6,6 @@ import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import type { Difficulty, TopicId } from "@/lib/types";
 import { QuestionBlock } from "@/components/ExamRunner";
-import { AccountInvite } from "@/components/AccountInvite";
-import { TutorPanel } from "@/components/TutorPanel";
-import { AnswerReview } from "@/components/AnswerReview";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress, toggleFlag } from "@/lib/storage";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
@@ -28,9 +25,9 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [wrongId, setWrongId] = useState<string | null>(null);
   const [pastIndex, setPastIndex] = useState<number | null>(null);
   const [isPro, setIsPro] = useState(false);
+  const [explainOpen, setExplainOpen] = useState<Record<string, boolean>>({});
   const sessionSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const choiceLock = useRef<string | null>(null);
@@ -99,7 +96,6 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   function goTo(nextIdx: number) {
     cancelAutoAdvance();
     setPastIndex(null);
-    setWrongId(null);
     setIdx(nextIdx);
   }
 
@@ -169,7 +165,6 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
                 setIdx(0);
                 setDone(false);
                 doneOnce.current = false;
-                setWrongId(null);
                 setPastIndex(null);
                 setResumed(true);
               }}
@@ -188,7 +183,6 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
               setIdx(0);
               setDone(false);
               doneOnce.current = false;
-              setWrongId(null);
               setPastIndex(null);
             }}
           >
@@ -234,20 +228,32 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
           <button className="card-corner-btn" type="button" onClick={openPast}>Previous answer</button>
         ) : null}
         {pastIndex != null && pool[pastIndex] ? (
-          <AnswerReview q={pool[pastIndex]} index={pastIndex} selected={answers[pool[pastIndex].question_id]} onBack={closePast} />
-        ) : selected && selected !== q.correct_option && wrongId === q.question_id ? (
-          <AnswerReview q={q} index={safeIdx} selected={selected} />
-        ) : (
           <>
             <QuestionBlock
-              q={q}
-              index={safeIdx}
-              selected={selected}
-              reveal={!!selected}
-              explain={false}
-              lockChoice={!!selected}
-              headingRef={headingRef}
-              onChoose={(l) => {
+              q={pool[pastIndex]}
+              index={pastIndex}
+              selected={answers[pool[pastIndex].question_id]}
+              reveal
+              lockChoice
+              isPro={isPro}
+              extra={<SaveForReview questionId={pool[pastIndex].question_id} hint={false} />}
+              explainOpen={Boolean(explainOpen[pool[pastIndex].question_id])}
+              onToggleExplain={() => {
+                const id = pool[pastIndex].question_id;
+                setExplainOpen((current) => ({ ...current, [id]: !current[id] }));
+              }}
+            />
+            <button className="card-corner-btn" type="button" onClick={closePast}>Back to this question</button>
+          </>
+        ) : (
+          <QuestionBlock
+            q={q}
+            index={safeIdx}
+            selected={selected}
+            reveal={!!selected}
+            lockChoice={!!selected}
+            headingRef={headingRef}
+            onChoose={(l) => {
                 if (answers[q.question_id] || choiceLock.current === q.question_id) return;
                 choiceLock.current = q.question_id;
                 setAnswers((a) => ({ ...a, [q.question_id]: l }));
@@ -259,7 +265,6 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
                   body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l), attemptId: attemptId(q.question_id) }),
                 }));
                 if (l === q.correct_option) {
-                  setWrongId(null);
                   const at = safeIdx;
                   scheduleAfterCorrect(() => {
                     if (at + 1 < pool.length) setIdx(at + 1);
@@ -267,18 +272,16 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
                   });
                 } else {
                   cancelAutoAdvance();
-                  setWrongId(q.question_id);
                 }
               }}
               marked={progress.flaggedIds.includes(q.question_id)}
               onMark={() => toggleFlag(q.question_id)}
               isPro={isPro}
               extra={<SaveForReview questionId={q.question_id} hint={false} />}
+              explainOpen={Boolean(explainOpen[q.question_id])}
+              onToggleExplain={() => setExplainOpen((current) => ({ ...current, [q.question_id]: !current[q.question_id] }))}
+              tutor
             />
-            {selected === q.correct_option ? <p className="notice" role="status">Correct.</p> : null}
-            {selected === q.correct_option ? <TutorPanel q={q} selected={originalLetter(selected)} /> : null}
-            <AccountInvite compact />
-          </>
         )}
         {submitting ? <SubmitStatus /> : null}
         {submitError ? (

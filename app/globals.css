@@ -295,6 +295,17 @@ h2 { font-size: 1.5rem; }
   background: var(--bg-2); border: 1px solid var(--line);
   border-radius: 12px; padding: 14px; margin-top: 8px;
 }
+.answer-result { margin-top: 8px; }
+.answer-result-line { margin: 0; line-height: 1.5; }
+.answer-result.is-correct .answer-result-line { color: var(--sage); }
+.answer-result.is-wrong .answer-result-line { color: var(--danger); }
+.explain-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: 4px 0 0; padding: 8px 0; min-height: 44px;
+  border: 0; background: transparent; color: var(--ink);
+  font: inherit; font-weight: 600; cursor: pointer;
+}
+.explain-toggle:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 .explain summary, details.explain summary {
   cursor: pointer; font-weight: 700; min-height: 44px;
   display: flex; align-items: center;

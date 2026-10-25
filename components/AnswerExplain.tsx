@@ -1,4 +1,6 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
 import { cleanExplanation, presentExplanation } from "@/lib/explanation";
 
 export function AnswerExplain({
@@ -6,9 +8,6 @@ export function AnswerExplain({
   sourceUrl,
   sourceLabel,
   wrongNote,
-  status,
-  reviewLinks,
-  expanded,
 }: {
   explanation: string;
   sourceUrl?: string;
@@ -18,42 +17,23 @@ export function AnswerExplain({
   reviewLinks?: { href: string; label: string }[];
   expanded?: boolean;
 }) {
+  const [open, setOpen] = useState(false);
   const { short, why } = presentExplanation(explanation);
   const note = wrongNote ? cleanExplanation(wrongNote) : "";
-  const visible = short || "Explanation not on file.";
   return (
-    <div className="explain" role="status">
-      {status ? (
-        <p>
-          <strong>{status}.</strong>
-        </p>
-      ) : null}
-      <p>
-        <strong>Short answer.</strong> {visible}
-      </p>
-      {reviewLinks?.map((link) => (
-        <p key={link.href}>
-          <Link href={link.href}>{link.label}</Link>
-        </p>
-      ))}
-      {expanded ? (
-        <>
-          {why ? <p>{why}</p> : null}
-          {note ? <p><strong>Why that choice is wrong. </strong>{note}</p> : null}
-          {sourceUrl ? <p><a href={sourceUrl}>{sourceLabel || "Official source"}</a></p> : sourceLabel ? <p>{sourceLabel}</p> : null}
-        </>
-      ) : (
-        <details>
-          <summary>Why / Official source</summary>
+    <div className="answer-result">
+      <button className="explain-toggle" type="button" aria-expanded={open} onClick={() => setOpen((value) => !value)}>
+        {open ? "Hide explanation" : "Show explanation"}
+        <span aria-hidden="true">{open ? "▴" : "▾"}</span>
+      </button>
+      {open ? (
+        <div className="explain">
+          <p>{short || "Explanation not on file."}</p>
           {why ? <p>{why}</p> : null}
           {note ? <p>{note}</p> : null}
-          {sourceUrl ? (
-            <p>
-              <a href={sourceUrl}>{sourceLabel || "Official source"}</a>
-            </p>
-          ) : null}
-        </details>
-      )}
+          {sourceUrl ? <p><a href={sourceUrl}>{sourceLabel || "Official source"}</a></p> : sourceLabel ? <p>{sourceLabel}</p> : null}
+        </div>
+      ) : null}
     </div>
   );
 }

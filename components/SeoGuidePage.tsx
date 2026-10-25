@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd, faqJson } from "@/components/JsonLd";
-import { examConfig } from "@/data/exam-config";
 import { getSource } from "@/data/sources";
 import { paths } from "@/lib/paths";
 import { seoGuideById } from "@/lib/seo-guides";
@@ -67,7 +66,7 @@ export function SeoGuidePage({ id }: { id: string }) {
       ) : null}
       <section className="card" style={{ marginTop: 24 }} aria-label="Choose your next study step">
         <h2>Put this guide into practice</h2>
-        <p>Start with a short diagnostic, review the rules you miss, then practice under a timer. Our questions are independently written.</p>
+        <p>Start with a short diagnostic, review the rules you miss, then practice under a timer.</p>
         <ul>
           <li><Link href={`${paths.practice}?mode=quick`}>Free Quick 10: find a weak topic</Link></li>
           <li><Link href={`${paths.practice}?mode=full`}>Full 45: practice pacing</Link> — one free attempt in this browser; signed-in free accounts have one recorded attempt.</li>
@@ -85,7 +84,6 @@ export function SeoGuidePage({ id }: { id: string }) {
           ))}
         </ul>
       </section>
-      <p className="notice">{examConfig.disclaimer} <a href={examConfig.officialExamUrl}>Check the official Arizona SOS exam notice.</a></p>
     </main>
   );
 }

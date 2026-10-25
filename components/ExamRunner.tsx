@@ -17,10 +17,7 @@ import {
 import { recordAnswer, saveProgress, toggleFlag, loadProgress, subscribeProgress } from "@/lib/storage";
 import { AccountInvite } from "@/components/AccountInvite";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
-import { TutorPanel } from "@/components/TutorPanel";
-import { AnswerReview } from "@/components/AnswerReview";
-import { getSource } from "@/data/sources";
-import { AnswerExplain } from "@/components/AnswerExplain";
+import { AnswerResult } from "@/components/AnswerResult";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { paths } from "@/lib/paths";
 import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
@@ -128,6 +125,7 @@ export function ExamRunner({
       /* storage can be blocked */
     }
   }, [persistKey, sessionSeed, idx, answers]);
+  const [explainOpen, setExplainOpen] = useState<Record<string, boolean>>({});
   const [marked, setMarked] = useState<string[]>([]);
   useEffect(() => {
     setMarked(loadProgress().flaggedIds);
@@ -149,7 +147,6 @@ export function ExamRunner({
   const [submitError, setSubmitError] = useState("");
   const attemptIds = useRef<Record<string, string>>({});
   const reviewScroll = useRef(0);
-  const [wrongId, setWrongId] = useState<string | null>(null);
   const [pastIndex, setPastIndex] = useState<number | null>(null);
   answersRef.current = answers;
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
@@ -231,7 +228,6 @@ export function ExamRunner({
   function goTo(nextIdx: number) {
     cancelAutoAdvance();
     setPastIndex(null);
-    setWrongId(null);
     setIdx(nextIdx);
   }
 
@@ -279,7 +275,6 @@ export function ExamRunner({
         }).catch(() => undefined);
       }
       if (letter === q.correct_option) {
-        setWrongId(null);
         const at = idx;
         scheduleAfterCorrect(() => {
           if (at + 1 < questions.length) setIdx(at + 1);
@@ -287,7 +282,6 @@ export function ExamRunner({
         });
       } else {
         cancelAutoAdvance();
-        setWrongId(q.question_id);
       }
     }
   }
@@ -467,46 +461,40 @@ export function ExamRunner({
     );
   }
 
-  const source = getSource(q.source_id);
   const remain = seconds;
   const lastQuestion = idx + 1 >= questions.length;
   const practiceLocked = Boolean(practice && selected);
-  const showingWrong = Boolean(practice && wrongId === q.question_id && selected && selected !== q.correct_option);
   const past = pastIndex != null ? questions[pastIndex] : null;
+  const view = past ?? q;
+  const viewIndex = past && pastIndex != null ? pastIndex : idx;
+  const viewSelected = past ? answers[past.question_id] : selected;
   const nextLabel = lastQuestion ? (practice ? "See results" : "Submit exam") : "Next";
-  const questionBody =
-    past && pastIndex != null ? (
-      <AnswerReview q={past} index={pastIndex} selected={answers[past.question_id]} onBack={closePast} />
-    ) : showingWrong && selected ? (
-      <AnswerReview q={q} index={idx} selected={selected} />
-    ) : (
-      <>
-        <QuestionBlock
-          q={q}
-          index={idx}
-          selected={selected}
-          reveal={Boolean(practice && selected)}
-          explain={false}
-          onChoose={choose}
-          lockPaid={false}
-          lockChoice={practiceLocked}
-          headingRef={headingRef}
-          isPro={isPro}
-          marked={marked.includes(q.question_id)}
-          onMark={() => toggleFlag(q.question_id)}
-          extra={<SaveForReview questionId={q.question_id} hint={false} />}
-        />
-        {practice && selected === q.correct_option ? (
-          <p className="notice" role="status">Correct.</p>
-        ) : null}
-        {!!selected && practice ? <TutorPanel q={q} selected={originalLetter(q.question_id, selected)} /> : null}
-        {layout === "compact" || !practice ? (
-          <p className="notice">
-            {source.title} · {q.source_reference} · Last verified {q.last_verified_at}
-          </p>
-        ) : null}
-      </>
-    );
+  const questionBody = (
+    <>
+      <QuestionBlock
+        q={view}
+        index={viewIndex}
+        selected={viewSelected}
+        reveal={Boolean((practice && viewSelected) || past)}
+        onChoose={past ? undefined : choose}
+        lockPaid={false}
+        lockChoice={practiceLocked && !past}
+        headingRef={past ? undefined : headingRef}
+        isPro={isPro}
+        marked={marked.includes(view.question_id)}
+        onMark={past ? undefined : () => toggleFlag(view.question_id)}
+        extra={<SaveForReview questionId={view.question_id} hint={false} />}
+        explainOpen={Boolean(explainOpen[view.question_id])}
+        onToggleExplain={() => setExplainOpen((current) => ({ ...current, [view.question_id]: !current[view.question_id] }))}
+        tutor
+      />
+      {past ? (
+        <button className="card-corner-btn" type="button" onClick={closePast}>
+          Back to this question
+        </button>
+      ) : null}
+    </>
+  );
   const previousAnswer =
     practice && idx > 0 && pastIndex == null ? (
       <button className="card-corner-btn" type="button" onClick={openPast}>
@@ -576,8 +564,10 @@ export function QuestionBlock({
   lockPaid = true,
   lockChoice = false,
   headingRef,
-  explain,
   extra,
+  explainOpen,
+  onToggleExplain,
+  tutor = false,
 }: {
   q: Question;
   index: number;
@@ -592,12 +582,14 @@ export function QuestionBlock({
   headingRef?: Ref<HTMLHeadingElement>;
   explain?: boolean;
   extra?: ReactNode;
+  explainOpen?: boolean;
+  onToggleExplain?: () => void;
+  tutor?: boolean;
 }) {
   const letters = ["A", "B", "C", "D"] as const;
   const map = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
   const locked = lockPaid && !q.is_free && !isPro;
   const choiceDisabled = !onChoose || locked || lockChoice;
-  const showWriteup = explain ?? Boolean(reveal);
   return (
     <div className="card">
       <div className="quiz-meta">
@@ -636,9 +628,9 @@ export function QuestionBlock({
           }
           const status =
             reveal && l === q.correct_option
-              ? "Correct answer"
-              : reveal && selected === l
-                ? "Your answer — incorrect"
+              ? "Correct"
+              : reveal && selected === l && selected !== q.correct_option
+                ? "Incorrect"
                 : null;
           return (
             <button
@@ -662,18 +654,8 @@ export function QuestionBlock({
           );
         })}
       </div>
-      {showWriteup && !locked ? (
-        <AnswerExplain
-          status={!selected ? "Unanswered" : selected === q.correct_option ? "Correct" : "Not quite"}
-          explanation={q.explanation}
-          wrongNote={selected && selected !== q.correct_option ? q.option_feedback[selected] : undefined}
-          sourceUrl={getSource(q.source_id).url}
-          sourceLabel={q.source_reference}
-          reviewLinks={q.concept_ids?.slice(0, 2).map((id, index) => ({
-            href: `${paths.flashcards}?card=${id}`,
-            label: index === 0 ? "Review this rule" : "See the comparison",
-          }))}
-        />
+      {reveal && !locked ? (
+        <AnswerResult q={q} selected={selected} open={explainOpen} onToggle={onToggleExplain} tutor={tutor} />
       ) : null}
     </div>
   );

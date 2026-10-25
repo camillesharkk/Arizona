@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
-import { getSource } from "@/data/sources";
 import { paths } from "@/lib/paths";
 import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
 import { trackEvent } from "@/lib/analytics";
@@ -99,9 +98,7 @@ export function TutorPanel({ q, selected }: { q: Question; selected?: "A" | "B" 
         </p>
       )}
       <p className="notice">
-        Grounded in this site&apos;s handbook notes and {getSource(q.source_id).reference}. Core answer explanations
-        above are always free and unlimited. Each Tutor button uses 1 request when a response is successfully delivered.
-        Limits apply per account per day, not per question.
+        Explanations stay free. Each Tutor button uses 1 request. Free accounts get {AI_LIMIT_FREE} a day; Pro gets {AI_LIMIT_PRO}.
       </p>
       {atLimit && usage?.plan === "free" && (
         <div className="ai-limit-notice">
