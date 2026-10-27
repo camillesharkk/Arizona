@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
+import { publishedQuestions } from "@/data/questions";
 import { examConfig, officialExam } from "@/data/exam-config";
 import {
   buildQuickExam,
@@ -14,15 +15,18 @@ import {
   weakTopics,
   type Letter,
 } from "@/lib/quiz";
-import { recordAnswer, saveProgress, toggleFlag, loadProgress, subscribeProgress } from "@/lib/storage";
+import { recordAnswer, saveProgress, loadProgress } from "@/lib/storage";
 import { AccountInvite } from "@/components/AccountInvite";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { AnswerResult } from "@/components/AnswerResult";
+import { ExamNav, FlagIcon, LoadingNote, QuestionJump } from "@/components/QuizChrome";
 import { paths } from "@/lib/paths";
 import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
 import { SaveForReview } from "@/components/SaveForReview";
 import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
+import { clearSitting, readSitting, remainingSeconds, writeSitting, type Sitting } from "@/lib/sitting";
+import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
 
 type Mode = "quick" | "full" | "weak" | "practice";
 
@@ -33,7 +37,7 @@ export function ExamRunner({
   isPro = false,
   reportStart = "mount",
   layout = "page",
-  persistKey,
+  sittingMode,
   review = false,
   onRecorded,
 }: {
@@ -44,50 +48,34 @@ export function ExamRunner({
   /** Homepage can show a question before a real attempt begins. */
   reportStart?: "mount" | "answer";
   layout?: "page" | "compact";
-  /** Keep this sitting's question order and answers if the learner leaves and comes back. */
-  persistKey?: string;
+  /** Separate saved progress for this account, state, and practice mode. */
+  sittingMode?: string;
   /** Wrong-answer practice. A normal practice correct does not move the review plan. */
   review?: boolean;
   onRecorded?: () => void;
 }) {
-  const generatedSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
-  const [sessionSeed, setSessionSeed] = useState(generatedSeed);
+  const modeKey = sittingMode || mode;
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const poolLocked = useRef(false);
   const [poolIsPro, setPoolIsPro] = useState(isPro);
   const count = mode === "quick" ? 10 : mode === "full" ? examConfig.questionCount : 10;
+  const byId = useMemo(() => new Map(publishedQuestions().map((item) => [item.question_id, item])), []);
+  const [owner, setOwner] = useState<string | null>(null);
+  const [bootError, setBootError] = useState(false);
+  const [bootTry, setBootTry] = useState(0);
+  const [activeSeed, setActiveSeed] = useState<number | null>(null);
+  const [lockedIds, setLockedIds] = useState<string[] | null>(null);
+  const [restored, setRestored] = useState(false);
   const questions = useMemo(() => {
-    const present = (list: Question[]) => {
-      const { questions: out, maps } = presentExamQuestions(list, sessionSeed);
-      toOriginalRef.current = maps;
-      return out;
-    };
-    if (mode === "quick") {
-      const picked = buildQuickExam({ isPro: reportStart === "answer" ? poolIsPro : isPro, seed: sessionSeed, stale: preset });
-      if (picked.length !== 10) {
-        console.error("[exam] Quick exam requires 10 questions; pool returned", picked.length);
-        return [];
-      }
-      return present(picked);
-    }
-    if (preset?.length) return present(preset);
-    if (mode === "full") {
-      const picked = pickFullExam(sessionSeed);
-      if (picked.length !== examConfig.questionCount) {
-        console.error("[exam] Full exam requires", examConfig.questionCount, "questions; pool returned", picked.length);
-        return [];
-      }
-      return present(picked);
-    }
-    if (mode === "weak") {
-      const ids = loadProgress().wrongIds;
-      const pool = pickExamSet(200, { seed: sessionSeed }).filter((q) => ids.includes(q.question_id));
-      const preview = isPro ? 10 : 5;
-      if (pool.length >= 3) return present(pool.slice(0, preview));
-      return [];
-    }
-    return present(pickExamSet(count, { seed: sessionSeed }));
-  }, [count, mode, preset, isPro, poolIsPro, reportStart, sessionSeed]);
+    if (activeSeed == null || !lockedIds?.length) return [];
+    const list = lockedIds.flatMap((id) => {
+      const question = byId.get(id);
+      return question ? [question] : [];
+    });
+    const { questions: out, maps } = presentExamQuestions(list, activeSeed);
+    toOriginalRef.current = maps;
+    return out;
+  }, [activeSeed, lockedIds, byId]);
 
   useEffect(() => {
     if (reportStart !== "answer" || poolLocked.current) return;
@@ -97,44 +85,15 @@ export function ExamRunner({
   const timed = mode === "full" && !practice;
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, "A" | "B" | "C" | "D">>({});
-  const hydratedSession = useRef(false);
-
-  useEffect(() => {
-    if (!persistKey) return;
-    if (!hydratedSession.current) {
-      hydratedSession.current = true;
-      try {
-        const saved = JSON.parse(sessionStorage.getItem(persistKey) || "null") as {
-          seed?: number;
-          idx?: number;
-          answers?: Record<string, "A" | "B" | "C" | "D">;
-        } | null;
-        if (!saved) return;
-        if (typeof saved.seed === "number") setSessionSeed(saved.seed);
-        if (typeof saved.idx === "number") setIdx(Math.max(0, saved.idx));
-        if (saved.answers && typeof saved.answers === "object") setAnswers(saved.answers);
-      } catch {
-        /* keep the new sitting */
-      }
-      return;
-    }
-    try {
-      sessionStorage.setItem(persistKey, JSON.stringify({ seed: sessionSeed, idx, answers }));
-    } catch {
-      /* storage can be blocked */
-    }
-  }, [persistKey, sessionSeed, idx, answers]);
   const [explainOpen, setExplainOpen] = useState<Record<string, boolean>>({});
   const [marked, setMarked] = useState<string[]>([]);
-  useEffect(() => {
-    setMarked(loadProgress().flaggedIds);
-    return subscribeProgress(() => setMarked(loadProgress().flaggedIds));
-  }, []);
   const [done, setDone] = useState(false);
   const [seconds, setSeconds] = useState(examConfig.timeLimitMinutes * 60);
+  const [startedAt, setStartedAt] = useState<number | null>(null);
+  const recordedIds = useRef<string[]>([]);
+  const booted = owner != null && activeSeed != null && lockedIds != null;
   const weakReported = useRef(false);
   const startReported = useRef(false);
-  const startedAt = useRef<number | null>(null);
   const choiceLock = useRef<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const answersRef = useRef(answers);
@@ -150,11 +109,112 @@ export function ExamRunner({
   answersRef.current = answers;
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
+  function drawQuestionIds(seed: number) {
+    if (mode === "quick") {
+      const picked = buildQuickExam({ isPro: reportStart === "answer" ? poolIsPro : isPro, seed, stale: preset });
+      return picked.length === 10 ? picked.map((item) => item.question_id) : [];
+    }
+    if (preset?.length) return preset.map((item) => item.question_id);
+    if (mode === "full") {
+      const picked = pickFullExam(seed);
+      return picked.length === examConfig.questionCount ? picked.map((item) => item.question_id) : [];
+    }
+    if (mode === "weak") {
+      const missed = loadProgress().wrongIds;
+      const pool = pickExamSet(200, { seed }).filter((item) => missed.includes(item.question_id));
+      const preview = isPro ? 10 : 5;
+      return pool.length >= 3 ? pool.slice(0, preview).map((item) => item.question_id) : [];
+    }
+    return pickExamSet(count, { seed }).map((item) => item.question_id);
+  }
+
+  function currentSitting(patch: Partial<Sitting> = {}): Sitting | null {
+    if (!owner || activeSeed == null || !lockedIds) return null;
+    return {
+      version: 1,
+      owner,
+      state: "AZ",
+      mode: modeKey,
+      seed: activeSeed,
+      questionIds: lockedIds,
+      idx,
+      answers,
+      explainOpen,
+      flaggedIds: marked,
+      startedAt,
+      timeLimitSeconds: timed ? examConfig.timeLimitMinutes * 60 : null,
+      done,
+      examId: examSaveId.current,
+      attemptIds: attemptIds.current,
+      recordedIds: recordedIds.current,
+      scored: localSaved.current,
+      ...patch,
+    };
+  }
+
+  function persistSitting(patch: Partial<Sitting> = {}) {
+    const sitting = currentSitting(patch);
+    if (!sitting) return;
+    try {
+      writeSitting(sessionStorage, sitting);
+    } catch {
+      /* storage can be blocked */
+    }
+  }
+
+  useEffect(() => {
+    let cancel = false;
+    setBootError(false);
+    fetch("/api/auth/me/")
+      .then((response) => (response.ok ? response.json() : Promise.reject(new Error("account"))))
+      .then((data) => {
+        if (cancel) return;
+        const nextOwner = data.user?.id || "guest";
+        const existing = readSitting(sessionStorage, nextOwner, modeKey);
+        const seed = existing?.seed ?? Math.floor(Math.random() * 1_000_000_000);
+        const ids = existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed);
+        setOwner(nextOwner);
+        setActiveSeed(seed);
+        setLockedIds(ids);
+        if (!existing) return;
+        setIdx(Math.min(existing.idx, Math.max(0, ids.length - 1)));
+        setAnswers(existing.answers);
+        answersRef.current = existing.answers;
+        setExplainOpen(existing.explainOpen);
+        setMarked(existing.flaggedIds);
+        setDone(existing.done);
+        attemptIds.current = existing.attemptIds;
+        recordedIds.current = existing.recordedIds;
+        examSaveId.current = existing.examId;
+        localSaved.current = existing.scored;
+        if (existing.startedAt != null) {
+          startReported.current = true;
+          poolLocked.current = true;
+          setStartedAt(existing.startedAt);
+          if (existing.timeLimitSeconds) setSeconds(remainingSeconds(existing.startedAt, existing.timeLimitSeconds, Date.now()));
+        }
+        setRestored(true);
+      })
+      .catch(() => {
+        if (!cancel) setBootError(true);
+      });
+    return () => {
+      cancel = true;
+    };
+    // Draw once for this mode. A restored sitting keeps its own question ids.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bootTry, modeKey]);
+
+  useEffect(() => {
+    persistSitting();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [owner, activeSeed, lockedIds, idx, answers, explainOpen, marked, startedAt, done, modeKey]);
+
   function reportExamStart() {
     if (startReported.current || !questions.length) return;
     startReported.current = true;
     poolLocked.current = true;
-    startedAt.current = Date.now();
+    setStartedAt((current) => current ?? Date.now());
     const plan = isPro ? "pro" : "free";
     const start = examStartParams({ mode, practice, questionCount: questions.length, plan });
     trackAnalyticsEvent("exam_start", start);
@@ -163,36 +223,54 @@ export function ExamRunner({
   }
 
   useEffect(() => {
-    if (reportStart !== "mount") return;
+    if (!booted || reportStart !== "mount" || startedAt) return;
     reportExamStart();
-  }, [questions.length, mode, isPro, practice, reportStart]);
-
-  useEffect(() => {
-    if (!timed || done) return;
-    const t = window.setInterval(() => {
-      setSeconds((s) => {
-        if (s <= 1) {
-          window.clearInterval(t);
-          return 0;
-        }
-        return s - 1;
-      });
-    }, 1000);
-    return () => window.clearInterval(t);
-  }, [timed, done]);
-
-  useEffect(() => {
-    if (timed && seconds === 0 && !done) finish();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seconds, timed, done]);
+  }, [booted, questions.length, reportStart, startedAt]);
 
   useEffect(() => {
-    if (done) return;
-    headingRef.current?.focus({ preventScroll: true });
-  }, [idx, done]);
+    if (!timed || done || !startedAt) return;
+    const limit = examConfig.timeLimitMinutes * 60;
+    const tick = () => setSeconds(remainingSeconds(startedAt, limit, Date.now()));
+    tick();
+    const timer = window.setInterval(tick, 1000);
+    return () => window.clearInterval(timer);
+  }, [timed, done, startedAt]);
+
+  useEffect(() => {
+    if (booted && timed && seconds === 0 && startedAt && !done) finish();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seconds, timed, done, booted, startedAt]);
 
   const q = questions[idx];
   const selected = q ? answers[q.question_id] : undefined;
+
+  const scrollIdx = useRef<number | null>(null);
+  const scrollExplain = useRef(false);
+  useEffect(() => {
+    if (!booted || done || !q) return;
+    const open = Boolean(explainOpen[q.question_id]);
+    const idxChanged = scrollIdx.current !== idx;
+    const explainOpened = open && !scrollExplain.current;
+    scrollIdx.current = idx;
+    scrollExplain.current = open;
+    if (!idxChanged && !explainOpened) return;
+    headingRef.current?.focus({ preventScroll: true });
+    const explain = open ? document.querySelector(".home-exam .explain") : null;
+    scrollUnderHeaderAfterLayout(idxChanged && !open ? headingRef.current : explain || headingRef.current);
+  }, [idx, booted, done, q, explainOpen]);
+
+  if (!booted) {
+    if (bootError) {
+      return (
+        <div className="card">
+          <p className="form-error" role="alert">Could not load this practice set.</p>
+          <button className="btn btn-primary" type="button" onClick={() => setBootTry((n) => n + 1)}>Retry</button>
+        </div>
+      );
+    }
+    return <LoadingNote />;
+  }
 
   if (!q) {
     return (
@@ -247,8 +325,9 @@ export function ExamRunner({
     if (reportStart === "answer") reportExamStart();
     if (!practice && timed && done) return;
     if (practice) {
-      if (answersRef.current[q.question_id] || choiceLock.current === q.question_id) return;
+      if (recordedIds.current.includes(q.question_id) || answersRef.current[q.question_id] || choiceLock.current === q.question_id) return;
       choiceLock.current = q.question_id;
+      recordedIds.current = [...recordedIds.current, q.question_id];
     }
     const nextAnswers = { ...answersRef.current, [q.question_id]: letter };
     answersRef.current = nextAnswers;
@@ -299,6 +378,7 @@ export function ExamRunner({
       correct: current[item.question_id] === item.correct_option,
     }));
     const pct = scorePercent(results.filter((r) => r.correct).length, questions.length);
+    if (!examSaveId.current) examSaveId.current = crypto.randomUUID();
     if (!localSaved.current) {
       localSaved.current = true;
       if (!practice) results.forEach((r) => recordAnswer(r.question.question_id, r.correct));
@@ -309,7 +389,7 @@ export function ExamRunner({
         scores: [{ at: new Date().toISOString(), score: pct, mode }, ...prev.scores].slice(0, 20),
       });
     }
-    if (!examSaveId.current) examSaveId.current = crypto.randomUUID();
+    persistSitting({ examId: examSaveId.current, scored: true });
     const saves: Promise<Response>[] = [];
     if (!practice) results.forEach((r) => {
       const letter = current[r.question.question_id];
@@ -338,6 +418,7 @@ export function ExamRunner({
         examId: examSaveId.current,
       }),
     }));
+    persistSitting({ examId: examSaveId.current, scored: localSaved.current });
     const outcomes = await Promise.all(saves.map((save) => settleSave(save)));
     if (outcomes.some((outcome) => outcome === "fail")) {
       finishOnce.current = false;
@@ -349,7 +430,7 @@ export function ExamRunner({
     setDone(true);
     if (!completeReported.current) {
       completeReported.current = true;
-      const elapsed = startedAt.current == null ? undefined : Math.max(0, Math.round((Date.now() - startedAt.current) / 1000));
+      const elapsed = startedAt == null ? undefined : Math.max(0, Math.round((Date.now() - startedAt) / 1000));
       trackAnalyticsEvent(
         "exam_complete",
         examCompleteParams({
@@ -481,10 +562,13 @@ export function ExamRunner({
         headingRef={past ? undefined : headingRef}
         isPro={isPro}
         marked={marked.includes(view.question_id)}
-        onMark={past ? undefined : () => toggleFlag(view.question_id)}
+        onMark={past ? undefined : () => toggleMark(view.question_id)}
         extra={<SaveForReview questionId={view.question_id} hint={false} />}
         explainOpen={Boolean(explainOpen[view.question_id])}
-        onToggleExplain={() => setExplainOpen((current) => ({ ...current, [view.question_id]: !current[view.question_id] }))}
+        onToggleExplain={() => {
+          const id = view.question_id;
+          setExplainOpen((current) => ({ ...current, [id]: !current[id] }));
+        }}
         tutor
       />
       {past ? (
@@ -512,35 +596,75 @@ export function ExamRunner({
     </>
   );
 
+  function startNew() {
+    if (!owner) return;
+    if (!window.confirm("Start a new set? This replaces the unfinished one.")) return;
+    clearSitting(sessionStorage, owner, modeKey);
+    const seed = Math.floor(Math.random() * 1_000_000_000);
+    const ids = drawQuestionIds(seed);
+    setActiveSeed(seed);
+    setLockedIds(ids);
+    setIdx(0);
+    setAnswers({});
+    answersRef.current = {};
+    setExplainOpen({});
+    setMarked([]);
+    setDone(false);
+    setStartedAt(null);
+    startReported.current = false;
+    poolLocked.current = false;
+    localSaved.current = false;
+    examSaveId.current = null;
+    attemptIds.current = {};
+    recordedIds.current = [];
+    finishOnce.current = false;
+    completeReported.current = false;
+    choiceLock.current = null;
+    setSeconds(examConfig.timeLimitMinutes * 60);
+    setRestored(false);
+    setPastIndex(null);
+    setSubmitError("");
+  }
+
+  function toggleMark(questionId: string) {
+    setMarked((current) => (current.includes(questionId) ? current.filter((id) => id !== questionId) : [...current, questionId]));
+  }
+
   const prevLocked = idx === 0 || pastIndex != null || (layout === "compact" && submitting);
   const nextLocked = pastIndex != null || submitting || (layout === "compact" ? false : practice ? !selected : false);
   return (
     <div className="home-exam">
       <div className="row space">
-        <span className="notice">Question {idx + 1} of {questions.length}</span>
-        {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">Practice mode — instant feedback</span>}
+        <span className="notice">
+          Question {idx + 1} of {questions.length}
+          {restored ? " · Resumed" : ""}
+        </span>
+        <span className="row">
+          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">Practice mode — instant feedback</span>}
+          <button className="btn btn-ghost" type="button" onClick={startNew}>Start new</button>
+        </span>
       </div>
       <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
         <span style={{ width: `${((idx + 1) / questions.length) * 100}%` }} />
       </div>
+      <QuestionJump
+        ids={questions.map((item) => item.question_id)}
+        index={viewIndex}
+        flagged={marked}
+        onJump={goTo}
+      />
       {previousAnswer}
       {questionBody}
       {submitStatus}
-      <div className="home-exam-nav">
-        <div className="row space">
-          <button className="btn btn-ghost" type="button" disabled={prevLocked} onClick={() => goTo(idx - 1)}>
-            Previous
-          </button>
-          <button
-            className={lastQuestion && !practice ? "btn btn-sage" : "btn btn-primary"}
-            type="button"
-            disabled={nextLocked}
-            onClick={() => (lastQuestion ? void finish() : goTo(idx + 1))}
-          >
-            {nextLabel}
-          </button>
-        </div>
-      </div>
+      <ExamNav
+        prevDisabled={prevLocked}
+        nextDisabled={nextLocked}
+        onPrev={() => goTo(idx - 1)}
+        onNext={() => (lastQuestion ? void finish() : goTo(idx + 1))}
+        nextLabel={nextLabel}
+        progress={`${idx + 1} / ${questions.length}`}
+        submit={lastQuestion && !practice}
+      />
     </div>
   );
 }
@@ -599,13 +723,14 @@ export function QuestionBlock({
         <div className="quiz-meta-actions">
           {extra}
           {onMark && (
-            <button className="btn btn-ghost" type="button" onClick={onMark} aria-pressed={Boolean(marked)}>
-              {marked ? "Flagged" : "Flag question"}
+            <button className={`btn btn-ghost${marked ? " is-on" : ""}`} type="button" onClick={onMark} aria-pressed={Boolean(marked)}>
+              <FlagIcon /> {marked ? "Flagged" : "Flag question"}
             </button>
           )}
         </div>
       </div>
       <h3 className="quiz-heading quiz-stem" ref={headingRef} tabIndex={-1}>
+        {marked ? <span className="flagged-note"><FlagIcon /> Flagged</span> : null}
         {index + 1}. {q.question_text}
       </h3>
       {locked ? (

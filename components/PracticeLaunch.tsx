@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
 import { paths } from "@/lib/paths";
 import { FREE_FULL_EXAMS } from "@/lib/product";
+import { clearSitting, openSitting } from "@/lib/sitting";
 
 const ANON_FULL_KEY = "az-anon-full-started";
 
@@ -16,6 +17,8 @@ export function PracticeLaunch() {
   const [anonFullUsed, setAnonFullUsed] = useState(false);
   const [gateReady, setGateReady] = useState(false);
   const [authReady, setAuthReady] = useState(false);
+  const [owner, setOwner] = useState("guest");
+  const [openModes, setOpenModes] = useState<Record<string, boolean>>({});
   const anonFullThisVisit = useRef(false);
 
   useEffect(() => {
@@ -33,6 +36,13 @@ export function PracticeLaunch() {
         setIsPro(Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
         setFullExamCount(Number(d.user?.fullExamCount || 0));
         setSignedIn(Boolean(d.user));
+        setOwner(d.user?.id || "guest");
+        const nextOwner = d.user?.id || "guest";
+        setOpenModes({
+          quick: Boolean(openSitting(sessionStorage, nextOwner, "quick")),
+          full: Boolean(openSitting(sessionStorage, nextOwner, "full")),
+          weak: Boolean(openSitting(sessionStorage, nextOwner, "weak")),
+        });
       })
       .catch(() => undefined)
       .finally(() => setAuthReady(true));
@@ -40,7 +50,8 @@ export function PracticeLaunch() {
 
   const inThisAnonFull = anonFullThisVisit.current && mode === "full";
   const anonBlocked = !isPro && !signedIn && anonFullUsed && !inThisAnonFull;
-  const fullLocked = !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || anonBlocked);
+  const fullResume = mode === "full" && typeof window !== "undefined" && Boolean(openSitting(sessionStorage, owner, "full"));
+  const fullLocked = !fullResume && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || anonBlocked);
 
   function consumeAnonFull() {
     anonFullThisVisit.current = true;
@@ -54,13 +65,41 @@ export function PracticeLaunch() {
 
   function leaveExam() {
     anonFullThisVisit.current = false;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("mode");
+    window.history.replaceState(null, "", url);
+    setOpenModes({
+      quick: Boolean(openSitting(sessionStorage, owner, "quick")),
+      full: Boolean(openSitting(sessionStorage, owner, "full")),
+      weak: Boolean(openSitting(sessionStorage, owner, "weak")),
+    });
     setMode("pick");
+  }
+
+  function enter(next: "quick" | "full" | "weak") {
+    const url = new URL(window.location.href);
+    url.searchParams.set("mode", next);
+    window.history.replaceState(null, "", url);
+    setMode(next);
+  }
+
+  function resume(next: "quick" | "full" | "weak") {
+    if (next === "full" && !isPro && !signedIn) anonFullThisVisit.current = true;
+    enter(next);
+  }
+
+  function beginNew(next: "quick" | "full" | "weak") {
+    if (openModes[next] && !window.confirm("Start a new set? This replaces the unfinished one.")) return;
+    clearSitting(sessionStorage, owner, next);
+    setOpenModes((current) => ({ ...current, [next]: false }));
+    if (next === "full") startFull();
+    else enter(next);
   }
 
   function startFull() {
     if (!authReady) return;
     if (!isPro && !signedIn && !anonFullUsed) consumeAnonFull();
-    setMode("full");
+    enter("full");
   }
 
   useEffect(() => {
@@ -76,18 +115,27 @@ export function PracticeLaunch() {
   if (mode === "pick") {
     return (
       <div className="grid grid-3">
-        <button className="card" type="button" onClick={() => setMode("quick")} style={{ textAlign: "left", cursor: "pointer" }}>
-          <h3>Quick 10</h3>
-          <p>10 questions. The result shows after each answer.</p>
-        </button>
-        <button className="card" type="button" onClick={startFull} style={{ textAlign: "left", cursor: "pointer" }}>
-          <h3>Full 45</h3>
-          <p>45 questions, 60 minutes. Results show after you submit.</p>
-        </button>
-        <button className="card" type="button" onClick={() => setMode("weak")} style={{ textAlign: "left", cursor: "pointer" }}>
-          <h3>Weak Areas</h3>
-          <p>Questions you missed. The longer set is part of Pro.</p>
-        </button>
+        {(["quick", "full", "weak"] as const).map((id) => {
+          const copy = {
+            quick: ["Quick 10", "10 questions. The result shows after each answer."],
+            full: ["Full 45", "45 questions, 60 minutes. Results show after you submit."],
+            weak: ["Weak Areas", "Questions you missed. The longer set is part of Pro."],
+          }[id];
+          return (
+            <div className="card" key={id}>
+              <h3>{copy[0]}</h3>
+              <p>{copy[1]}</p>
+              {openModes[id] ? (
+                <div className="row">
+                  <button className="btn btn-primary" type="button" onClick={() => resume(id)}>Resume</button>
+                  <button className="btn btn-ghost" type="button" onClick={() => beginNew(id)}>Start new</button>
+                </div>
+              ) : (
+                <button className="btn btn-primary" type="button" onClick={() => (id === "full" ? startFull() : enter(id))}>Start</button>
+              )}
+            </div>
+          );
+        })}
       </div>
     );
   }
@@ -116,7 +164,7 @@ export function PracticeLaunch() {
       <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginBottom: 16 }}>
         Change mode
       </button>
-      <ExamRunner mode={mode} practice={mode !== "full"} isPro={isPro} />
+      <ExamRunner mode={mode} practice={mode !== "full"} isPro={isPro} sittingMode={mode} />
     </div>
   );
 }

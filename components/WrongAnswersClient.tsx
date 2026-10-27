@@ -6,17 +6,25 @@ import { publishedQuestions } from "@/data/questions";
 import { topicLabel } from "@/lib/quiz";
 import { ExamRunner } from "@/components/ExamRunner";
 import { loadProgress, removeWrong, subscribeProgress, toggleFlag } from "@/lib/storage";
+import { LoadingNote } from "@/components/QuizChrome";
 import { currentEmail } from "@/lib/account";
 
 export function WrongAnswersClient() {
   const [tick, setTick] = useState(0);
+  const [ready, setReady] = useState(false);
   const [drill, setDrill] = useState(false);
   const progress = useMemo(() => loadProgress(), [tick]);
 
-  useEffect(() => subscribeProgress(() => setTick((n) => n + 1)), []);
+  useEffect(() => {
+    setTick(1);
+    setReady(true);
+    return subscribeProgress(() => setTick((n) => n + 1));
+  }, []);
 
   const wrong = publishedQuestions().filter((q) => progress.wrongIds.includes(q.question_id));
   const flagged = publishedQuestions().filter((q) => progress.flaggedIds.includes(q.question_id));
+
+  if (!ready) return <LoadingNote />;
 
   if (drill) {
     if (!wrong.length) {
@@ -34,7 +42,7 @@ export function WrongAnswersClient() {
         <button className="btn btn-ghost" type="button" onClick={() => setDrill(false)} style={{ marginBottom: 16 }}>
           Back to notebook
         </button>
-        <ExamRunner mode="weak" practice preset={wrong.slice(0, 10)} />
+        <ExamRunner mode="weak" practice preset={wrong.slice(0, 10)} sittingMode="local-weak" />
       </div>
     );
   }

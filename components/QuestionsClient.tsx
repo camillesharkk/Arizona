@@ -6,8 +6,11 @@ import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import type { Difficulty, TopicId } from "@/lib/types";
 import { QuestionBlock } from "@/components/ExamRunner";
+import { ExamNav, LoadingNote, QuestionJump } from "@/components/QuizChrome";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
-import { loadProgress, recordAnswer, saveProgress, subscribeProgress, toggleFlag } from "@/lib/storage";
+import { loadProgress, recordAnswer, saveProgress, subscribeProgress } from "@/lib/storage";
+import { clearSitting, readSitting, writeSitting } from "@/lib/sitting";
+import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
 import { SaveForReview } from "@/components/SaveForReview";
 import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
@@ -27,8 +30,17 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const [submitError, setSubmitError] = useState("");
   const [pastIndex, setPastIndex] = useState<number | null>(null);
   const [isPro, setIsPro] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
+  const [owner, setOwner] = useState("guest");
+  const [seed, setSeed] = useState<number | null>(null);
+  const [order, setOrder] = useState<string[] | null>(null);
+  const [marked, setMarked] = useState<string[]>([]);
   const [explainOpen, setExplainOpen] = useState<Record<string, boolean>>({});
-  const sessionSeed = useMemo(() => Math.floor(Math.random() * 1_000_000_000), []);
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  const [bootError, setBootError] = useState(false);
+  const [bootTry, setBootTry] = useState(0);
+  const recordedIds = useRef<string[]>([]);
+  const modeKey = `questions:${topic || filter}:${difficulty}`;
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const choiceLock = useRef<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
@@ -36,15 +48,54 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const doneOnce = useRef(false);
   const attemptIds = useRef<Record<string, string>>({});
   const pendingSaves = useRef<Promise<Response>[]>([]);
+  const scrollIdx = useRef<number | null>(null);
+  const scrollExplain = useRef(false);
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   useEffect(() => subscribeProgress(() => setProgress(loadProgress())), []);
   useEffect(() => {
+    let cancel = false;
+    setAuthReady(false);
+    setBootError(false);
     fetch("/api/auth/me/")
-      .then((r) => r.json())
-      .then((d) => setIsPro(Boolean(d.user?.arizonaPro || d.user?.plan === "pro")))
-      .catch(() => undefined);
-  }, []);
+      .then((response) => (response.ok ? response.json() : Promise.reject(new Error("account"))))
+      .then((data) => {
+        if (cancel) return;
+        const nextOwner = data.user?.id || "guest";
+        const pro = Boolean(data.user?.arizonaPro || data.user?.plan === "pro");
+        const existing = readSitting(sessionStorage, nextOwner, modeKey);
+        setOwner(nextOwner);
+        setIsPro(pro);
+        setSeed(existing?.seed ?? Math.floor(Math.random() * 1_000_000_000));
+        setOrder(existing?.questionIds ?? null);
+        if (existing) {
+          setIdx(existing.idx);
+          setAnswers(existing.answers);
+          setExplainOpen(existing.explainOpen);
+          setMarked(existing.flaggedIds);
+          recordedIds.current = existing.recordedIds;
+          attemptIds.current = existing.attemptIds;
+          setDone(existing.done);
+          setResumed(true);
+        } else {
+          setIdx(0);
+          setAnswers({});
+          setExplainOpen({});
+          setMarked([]);
+          recordedIds.current = [];
+          attemptIds.current = {};
+          setDone(false);
+        }
+        setAuthReady(true);
+        setLoadedKey(modeKey);
+      })
+      .catch(() => {
+        if (!cancel) setBootError(true);
+      });
+    return () => {
+      cancel = true;
+    };
+  }, [modeKey, bootTry]);
 
   const rawPool = useMemo(() => {
     let list = publishedQuestions().filter((q) => q.is_free || isPro);
@@ -61,32 +112,63 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const pool = useMemo(() => {
     const maps: Record<string, Record<Letter, Letter>> = {};
     const out = rawPool.map((item) => {
-      const { question, toOriginal } = shuffleQuestionOptions(item, sessionSeed);
+      const { question, toOriginal } = shuffleQuestionOptions(item, seed ?? 0);
       maps[item.question_id] = toOriginal;
       return question;
     });
     toOriginalRef.current = maps;
     return out;
-  }, [rawPool, sessionSeed]);
+  }, [rawPool, seed]);
+
+  const orderedPool = useMemo(() => {
+    if (!order?.length) return pool;
+    const byId = new Map(pool.map((item) => [item.question_id, item]));
+    const kept = order.flatMap((id) => {
+      const question = byId.get(id);
+      return question ? [question] : [];
+    });
+    return kept.length ? kept : pool;
+  }, [pool, order]);
 
   useEffect(() => {
-    if (resumed || topic) return;
-    const last = progress.lastQuestionId;
-    if (!last) {
-      setResumed(true);
-      return;
-    }
-    const i = pool.findIndex((q) => q.question_id === last);
-    if (i >= 0) setIdx(i);
-    setResumed(true);
-  }, [pool, progress.lastQuestionId, resumed, topic]);
+    if (!authReady || loadedKey !== modeKey || order) return;
+    if (pool.length) setOrder(pool.map((item) => item.question_id));
+  }, [authReady, loadedKey, modeKey, order, pool]);
 
-  const safeIdx = Math.min(idx, Math.max(0, pool.length - 1));
-  const q = pool[safeIdx];
+  useEffect(() => {
+    if (!authReady || loadedKey !== modeKey || seed == null || !order?.length) return;
+    try {
+      writeSitting(sessionStorage, {
+        version: 1,
+        owner,
+        state: "AZ",
+        mode: modeKey,
+        seed,
+        questionIds: order,
+        idx,
+        answers,
+        explainOpen,
+        flaggedIds: marked,
+        startedAt: null,
+        timeLimitSeconds: null,
+        done,
+        examId: null,
+        attemptIds: attemptIds.current,
+        recordedIds: recordedIds.current,
+        scored: false,
+      });
+    } catch {
+      /* storage can be blocked */
+    }
+  }, [authReady, loadedKey, modeKey, seed, order, idx, answers, explainOpen, marked, done, owner]);
+
+  const active = orderedPool;
+  const safeIdx = Math.min(idx, Math.max(0, active.length - 1));
+  const q = active[safeIdx];
   const selected = q ? answers[q.question_id] : undefined;
-  const lastQuestion = safeIdx + 1 >= pool.length;
+  const lastQuestion = safeIdx + 1 >= active.length;
   const answered = progress.answeredIds.length;
-  const correctSession = pool.filter((item) => answers[item.question_id] === item.correct_option).length;
+  const correctSession = active.filter((item) => answers[item.question_id] === item.correct_option).length;
 
   function originalLetter(display: Letter): Letter {
     if (!q) return display;
@@ -135,8 +217,17 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   }
 
   useEffect(() => {
+    if (!authReady || !q) return;
+    const open = Boolean(explainOpen[q.question_id]);
+    const idxChanged = scrollIdx.current !== safeIdx;
+    const explainOpened = open && !scrollExplain.current;
+    scrollIdx.current = safeIdx;
+    scrollExplain.current = open;
+    if (!idxChanged && !explainOpened) return;
     headingRef.current?.focus({ preventScroll: true });
-  }, [safeIdx, q?.question_id]);
+    const explain = open ? document.querySelector(".home-exam .explain") : null;
+    scrollUnderHeaderAfterLayout(open ? explain || headingRef.current : headingRef.current);
+  }, [safeIdx, authReady, q, explainOpen]);
 
   const selectedTopic: TopicId | null =
     topic ?? (filter !== "all" && filter !== "wrong" && filter !== "unanswered" ? filter : null);
@@ -145,6 +236,17 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     : [];
   const topicFreeCount = topicQuestions.filter((item) => item.is_free).length;
   const proOnlyTopic = Boolean(selectedTopic && !isPro && topicFreeCount === 0 && topicQuestions.length > 0);
+
+  if (bootError) {
+    return (
+      <div className="card">
+        <p className="form-error" role="alert">Could not load this practice set.</p>
+        <button className="btn btn-primary" type="button" onClick={() => setBootTry((n) => n + 1)}>Retry</button>
+      </div>
+    );
+  }
+
+  if (!authReady) return <LoadingNote />;
 
   if (!q && !proOnlyTopic) {
     return <p>No questions match these filters.</p>;
@@ -210,7 +312,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       ) : done ? (
         <div className="card">
           <h2>You finished this set.</h2>
-          <p>{correctSession} of {pool.length} correct in this sitting.</p>
+          <p>{correctSession} of {active.length} correct in this sitting.</p>
           <div className="row">
             <Link className="btn btn-primary" href={paths.study}>Review the study guide</Link>
             <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
@@ -219,27 +321,44 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       ) : q ? (
       <div className="home-exam">
         <div className="row space">
-          <span className="notice">Question {safeIdx + 1} of {pool.length}</span>
+          <span className="notice">Question {safeIdx + 1} of {active.length}{resumed ? " · Resumed" : ""}</span>
+          <button className="btn btn-ghost" type="button" onClick={() => {
+            if (!window.confirm("Start a new set? This replaces the unfinished one.")) return;
+            clearSitting(sessionStorage, owner, modeKey);
+            setSeed(Math.floor(Math.random() * 1_000_000_000));
+            setOrder(null);
+            setIdx(0);
+            setAnswers({});
+            setExplainOpen({});
+            setMarked([]);
+            setDone(false);
+            setResumed(false);
+            recordedIds.current = [];
+            attemptIds.current = {};
+            doneOnce.current = false;
+          }}>Start new</button>
         </div>
         <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
-          <span style={{ width: `${((safeIdx + 1) / pool.length) * 100}%` }} />
+          <span style={{ width: `${((safeIdx + 1) / active.length) * 100}%` }} />
         </div>
+        <QuestionJump ids={active.map((item) => item.question_id)} index={pastIndex ?? safeIdx} flagged={marked} onJump={goTo} />
         {safeIdx > 0 && pastIndex == null ? (
           <button className="card-corner-btn" type="button" onClick={openPast}>Previous answer</button>
         ) : null}
-        {pastIndex != null && pool[pastIndex] ? (
+        {pastIndex != null && active[pastIndex] ? (
           <>
             <QuestionBlock
-              q={pool[pastIndex]}
+              q={active[pastIndex]}
               index={pastIndex}
-              selected={answers[pool[pastIndex].question_id]}
+              selected={answers[active[pastIndex].question_id]}
               reveal
               lockChoice
               isPro={isPro}
-              extra={<SaveForReview questionId={pool[pastIndex].question_id} hint={false} />}
-              explainOpen={Boolean(explainOpen[pool[pastIndex].question_id])}
+              marked={marked.includes(active[pastIndex].question_id)}
+              extra={<SaveForReview questionId={active[pastIndex].question_id} hint={false} />}
+              explainOpen={Boolean(explainOpen[active[pastIndex].question_id])}
               onToggleExplain={() => {
-                const id = pool[pastIndex].question_id;
+                const id = active[pastIndex].question_id;
                 setExplainOpen((current) => ({ ...current, [id]: !current[id] }));
               }}
             />
@@ -254,8 +373,9 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
             lockChoice={!!selected}
             headingRef={headingRef}
             onChoose={(l) => {
-                if (answers[q.question_id] || choiceLock.current === q.question_id) return;
+                if (recordedIds.current.includes(q.question_id) || answers[q.question_id] || choiceLock.current === q.question_id) return;
                 choiceLock.current = q.question_id;
+                recordedIds.current = [...recordedIds.current, q.question_id];
                 setAnswers((a) => ({ ...a, [q.question_id]: l }));
                 recordAnswer(q.question_id, l === q.correct_option);
                 saveProgress({ lastQuestionId: q.question_id });
@@ -267,15 +387,15 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
                 if (l === q.correct_option) {
                   const at = safeIdx;
                   scheduleAfterCorrect(() => {
-                    if (at + 1 < pool.length) setIdx(at + 1);
+                    if (at + 1 < active.length) setIdx(at + 1);
                     else finishSet();
                   });
                 } else {
                   cancelAutoAdvance();
                 }
               }}
-              marked={progress.flaggedIds.includes(q.question_id)}
-              onMark={() => toggleFlag(q.question_id)}
+              marked={marked.includes(q.question_id)}
+              onMark={() => setMarked((current) => current.includes(q.question_id) ? current.filter((id) => id !== q.question_id) : [...current, q.question_id])}
               isPro={isPro}
               extra={<SaveForReview questionId={q.question_id} hint={false} />}
               explainOpen={Boolean(explainOpen[q.question_id])}
@@ -290,16 +410,14 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
             <button className="btn btn-ghost" type="button" onClick={() => void finishSet()}>Try again</button>
           </p>
         ) : null}
-        <div className="home-exam-nav">
-          <div className="row space">
-            <button className="btn btn-ghost" type="button" disabled={safeIdx === 0 || pastIndex != null || submitting} onClick={() => goTo(safeIdx - 1)}>
-              Previous
-            </button>
-            <button className="btn btn-primary" type="button" disabled={pastIndex != null || submitting || !selected} onClick={() => (lastQuestion ? void finishSet() : goTo(safeIdx + 1))}>
-              {lastQuestion ? "See results" : "Next"}
-            </button>
-          </div>
-        </div>
+        <ExamNav
+          prevDisabled={safeIdx === 0 || pastIndex != null || submitting}
+          nextDisabled={pastIndex != null || submitting || !selected}
+          onPrev={() => goTo(safeIdx - 1)}
+          onNext={() => (lastQuestion ? void finishSet() : goTo(safeIdx + 1))}
+          nextLabel={lastQuestion ? "See results" : "Next"}
+          progress={`${safeIdx + 1} / ${active.length}`}
+        />
       </div>
       ) : null}
     </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { BookmarkIcon } from "@/components/QuizChrome";
 import { paths } from "@/lib/paths";
 
 const PENDING_KEY = "az-pending-review-saves";
@@ -114,17 +115,23 @@ export function SaveForReview({
       setError("Could not save this question. Try again.");
       return;
     }
+    const body = await res.json().catch(() => null);
+    if (!body?.ok || Boolean(body.savedForReview) !== nextSaved) {
+      setError("Could not save this question. Try again.");
+      return;
+    }
     if (nextSaved) savedIds.add(questionId);
     else savedIds.delete(questionId);
     localSaveChoice.set(questionId, nextSaved);
     writePending(readPending().filter((id) => id !== questionId));
     setSaved(nextSaved);
+    window.dispatchEvent(new CustomEvent("az-review-save", { detail: { questionId, saved: nextSaved } }));
   }
 
   return (
     <div className="save-review">
-      <button className="btn btn-ghost" type="button" onClick={toggle} disabled={busy} aria-pressed={saved}>
-        {busy ? "Saving…" : saved ? "Saved for review" : label}
+      <button className={`btn btn-ghost${saved ? " is-on" : ""}`} type="button" onClick={toggle} disabled={busy} aria-pressed={saved}>
+        <BookmarkIcon /> {busy ? "Saving…" : saved ? "Saved for review" : label}
       </button>
       {hint && !saved ? <p className="notice">Guessed or unsure? Save this question to review later.</p> : null}
       {needLogin ? (

@@ -271,7 +271,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
 
         <section className="home-quiz" hidden={mode !== "practice" || fullOpen} aria-label="Practice questions">
           {ready ? (
-            <ExamRunner mode="quick" practice isPro={isPro} reportStart="answer" layout="compact" persistKey="az-home-quick" />
+            <ExamRunner mode="quick" practice isPro={isPro} reportStart="answer" layout="compact" sittingMode="home-quick" />
           ) : (
             <div className="card" aria-busy="true">
               <p className="notice">Question 1 of 10</p>
@@ -283,7 +283,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
 
         {fullOpen ? (
           <section hidden={mode !== "practice"} aria-label="Full practice exam">
-            <ExamRunner mode="full" isPro={isPro} layout="compact" />
+            <ExamRunner mode="full" isPro={isPro} layout="compact" sittingMode="home-full" />
           </section>
         ) : null}
       </div>

@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import { ExamRunner } from "@/components/ExamRunner";
+import { LoadingNote } from "@/components/QuizChrome";
 import { topicLabel } from "@/lib/quiz";
 import { paths } from "@/lib/paths";
+import { listPhase } from "@/lib/list-phase";
 import type { Question } from "@/lib/types";
 import type { QuestionStat } from "@/lib/store/types";
 
@@ -25,23 +27,47 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
   const [isPro, setIsPro] = useState(false);
   const [needAuth, setNeedAuth] = useState(false);
   const [ready, setReady] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [source, setSource] = useState<"all" | "incorrect" | "saved">("all");
+  const requestId = useRef(0);
 
   async function load() {
-    const me = await fetch("/api/auth/me/").then((r) => r.json());
-    if (!me.user) {
-      setNeedAuth(true);
+    const id = ++requestId.current;
+    setLoadError(false);
+    try {
+      const meResponse = await fetch("/api/auth/me/");
+      if (id !== requestId.current) return;
+      if (!meResponse.ok) throw new Error("account");
+      const me = await meResponse.json();
+      if (!me.user) {
+        setNeedAuth(true);
+        setReady(true);
+        return;
+      }
+      setNeedAuth(false);
+      setIsPro(Boolean(me.user.arizonaPro || me.user.plan === "pro"));
+      const response = await fetch("/api/mistakes/");
+      if (id !== requestId.current) return;
+      if (!response.ok) throw new Error("mistakes");
+      const data = await response.json();
+      if (!Array.isArray(data.mistakes)) throw new Error("mistakes");
+      setStats(data.mistakes);
       setReady(true);
-      return;
+    } catch {
+      if (id !== requestId.current) return;
+      setLoadError(true);
+      setReady(true);
     }
-    setIsPro(Boolean(me.user.arizonaPro || me.user.plan === "pro"));
-    const data = await fetch("/api/mistakes/").then((r) => r.json());
-    setStats(data.mistakes || []);
-    setReady(true);
   }
 
   useEffect(() => {
     load();
+    function onSave() {
+      load();
+    }
+    window.addEventListener("az-review-save", onSave);
+    return () => window.removeEventListener("az-review-save", onSave);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -59,6 +85,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
     .map((s) => s.nextReviewAt)
     .filter((value): value is string => Boolean(value))
     .sort()[0];
+  const phase = listPhase(loadError ? "error" : ready ? "ready" : "loading", filtered.length);
   const returnTo = topic === "all" ? paths.mistakes : `${paths.mistakes}?topic=${topic}`;
 
   function selectTopic(id: string) {
@@ -92,7 +119,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
         <button className="btn btn-ghost" type="button" onClick={() => { setQueue(null); load(); }}>
           Back
         </button>
-        <ExamRunner mode="weak" practice review preset={queue} isPro={isPro} />
+        <ExamRunner mode="weak" practice review preset={queue} isPro={isPro} sittingMode={`review-${source}-${topic}`} />
       </div>
     );
   }
@@ -111,7 +138,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
       <div className="filter-row" aria-label="Review source">
         <button className={`chip ${source === "all" ? "on" : ""}`} type="button" onClick={() => setSource("all")}>All</button>
         <button className={`chip ${source === "incorrect" ? "on" : ""}`} type="button" onClick={() => setSource("incorrect")}>Incorrect</button>
-        <button className={`chip ${source === "saved" ? "on" : ""}`} type="button" onClick={() => setSource("saved")}>Saved by you</button>
+        <button className={`chip ${source === "saved" ? "on" : ""}`} type="button" onClick={() => setSource("saved")}>Saved</button>
       </div>
       <div className="filter-row">
         <button className={`chip ${topic === "all" ? "on" : ""}`} type="button" onClick={() => selectTopic("all")}>
@@ -123,25 +150,39 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
           </button>
         ))}
       </div>
-      {!filtered.length ? (
+      {phase === "loading" ? <LoadingNote /> : null}
+      {phase === "error" ? (
+        <div className="card">
+          <p className="form-error" role="alert">Could not load your questions.</p>
+          <button className="btn btn-primary" type="button" onClick={() => { setReady(false); load(); }}>Retry</button>
+        </div>
+      ) : null}
+      {loadError && phase === "list" ? (
+        <p className="form-error" role="alert">
+          Could not refresh this list.{" "}
+          <button className="btn btn-ghost" type="button" onClick={() => load()}>Retry</button>
+        </p>
+      ) : null}
+      {phase === "empty" ? (
         <div className="card">
           <p>
             {source === "saved"
-              ? "No questions saved for review yet."
+              ? "No questions saved."
               : source === "incorrect"
-                ? "No missed questions in this set yet."
+                ? "No missed questions."
                 : "No missed or saved questions in this set yet."}
           </p>
           <Link className="btn btn-primary" href={paths.practice}>Start a practice test</Link>
         </div>
-      ) : (
+      ) : null}
+      {phase === "list" ? (
         <>
           {due.length === 0 && nextReview ? <p className="notice">Next review {new Date(nextReview).toLocaleString()}.</p> : null}
           <button className="btn btn-primary" type="button" onClick={begin}>
             {due.length === 0 ? "Practice all wrong answers" : "Practice wrong answers"}
           </button>
         </>
-      )}
+      ) : null}
       {filtered.map((s) => {
         const q = publishedQuestions().find((x) => x.question_id === s.questionId);
         if (!q) return null;
@@ -150,7 +191,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
             <span className="kicker">
               {topicLabel(q.topic)} · {dueNow(s) ? "Due" : "Later"}
               {s.wrongCount > 0 ? " · Incorrect" : ""}
-              {s.savedForReview ? " · Saved by you" : ""}
+              {s.savedForReview ? " · Saved" : ""}
             </span>
             <h3>{q.question_text}</h3>
             <p>

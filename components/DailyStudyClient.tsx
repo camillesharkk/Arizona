@@ -5,6 +5,7 @@ import Link from "next/link";
 import { publishedQuestions } from "@/data/questions";
 import { ExamRunner } from "@/components/ExamRunner";
 import { StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
+import { LoadingNote } from "@/components/QuizChrome";
 import { paths } from "@/lib/paths";
 
 type Card = StudyCardView & { id: string };
@@ -37,6 +38,7 @@ type View = {
 
 export function DailyStudyClient() {
   const [view, setView] = useState<View | null>(null);
+  const [loadError, setLoadError] = useState(false);
   const [practiceIndex, setPracticeIndex] = useState(0);
   const [reviewIndex, setReviewIndex] = useState(0);
   const [flipped, setFlipped] = useState<"practice" | "review" | null>(null);
@@ -44,12 +46,19 @@ export function DailyStudyClient() {
   const visibleStart = useRef<number | null>(null);
 
   async function load() {
-    const data = await fetch(`/api/daily-study/?timeZone=${encodeURIComponent(zone)}`).then((response) => response.json());
-    if (data.error) {
-      window.location.href = `${paths.login}?next=${encodeURIComponent(paths.daily)}`;
-      return;
+    try {
+      const response = await fetch(`/api/daily-study/?timeZone=${encodeURIComponent(zone)}`);
+      if (!response.ok) throw new Error("daily");
+      const data = await response.json();
+      if (data.error) {
+        window.location.href = `${paths.login}?next=${encodeURIComponent(paths.daily)}`;
+        return;
+      }
+      setView(data);
+      setLoadError(false);
+    } catch {
+      setLoadError(true);
     }
-    setView(data);
   }
 
   useEffect(() => {
@@ -90,7 +99,15 @@ export function DailyStudyClient() {
     setFlipped(null);
   }
 
-  if (!view) return <p className="notice">Loading today’s plan…</p>;
+  if (loadError && !view) {
+    return (
+      <div className="card">
+        <p className="form-error" role="alert">Could not load today’s plan.</p>
+        <button className="btn btn-primary" type="button" onClick={() => load()}>Retry</button>
+      </div>
+    );
+  }
+  if (!view) return <LoadingNote text="Loading today’s plan…" />;
   const pending = (kind: string) => new Set(view.taskStatus.filter((task) => task.kind === kind && task.status === "pending").map((task) => task.key));
   const practiceCards = view.practiceCards.filter((card) => pending("new-card").has(`card:${card.id}`));
   const reviewCards = view.reviewCards.filter((card) => pending("review-card").has(`card:${card.id}`));
@@ -170,12 +187,12 @@ export function DailyStudyClient() {
         </section>
         {practiceQuestions.length ? (
           <div className="daily-practice-quiz">
-            <ExamRunner mode="practice" practice preset={practiceQuestions} onRecorded={load} />
+            <ExamRunner mode="practice" practice preset={practiceQuestions} onRecorded={load} sittingMode="daily-practice" />
           </div>
         ) : null}
         {reviewQuestions.length ? (
           <div className="daily-review-quiz">
-            <ExamRunner mode="weak" practice review preset={reviewQuestions} onRecorded={load} />
+            <ExamRunner mode="weak" practice review preset={reviewQuestions} onRecorded={load} sittingMode="daily-review" />
           </div>
         ) : null}
       </div>

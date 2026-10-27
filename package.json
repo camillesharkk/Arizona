@@ -11,6 +11,7 @@
     "db:verify": "node db/verify.mjs",
     "questions:verify": "node --experimental-strip-types scripts/questions-verify.ts",
     "quiz:verify": "node --experimental-strip-types scripts/quiz-verify.ts",
+    "sitting:verify": "node --experimental-strip-types scripts/sitting-verify.ts",
     "commerce:verify": "node --experimental-strip-types scripts/commerce-verify.ts",
     "devices:verify": "node --experimental-strip-types scripts/devices-verify.ts",
     "auth:verify": "node --experimental-strip-types scripts/auth-verify.ts",
