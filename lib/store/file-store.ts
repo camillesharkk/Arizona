@@ -163,6 +163,14 @@ export const fileStore: Store = {
       return stat;
     });
   },
+  updateReviewStat(userId, questionId, patch) {
+    return mutate((db) => {
+      const stat = db.stats.find((s) => s.userId === userId && s.questionId === questionId);
+      if (!stat) return null;
+      Object.assign(stat, patch);
+      return stat;
+    });
+  },
   claimAttempt(userId, attemptId, questionId) {
     return mutate((db) => {
       if (db.attempts.some((item) => item.userId === userId && item.attemptId === attemptId)) return false;

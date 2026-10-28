@@ -37,27 +37,23 @@ export async function POST(req: Request) {
     await store.upsertStat(next);
     return NextResponse.json({ ok: true, savedForReview: Boolean(next.savedForReview) });
   }
-  const stat = await store.getStat(session.id, body.data.questionId);
-  if (!stat) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (body.data.remove) {
-    await store.upsertStat({
-      ...stat,
-      userId: session.id,
-      wrongCount: 0,
-      lastCorrect: true,
-      mastered: true,
-      savedForReview: false,
-      nextReviewAt: null,
-    });
-    return NextResponse.json({ ok: true });
+  if (body.data.mastered === undefined && body.data.favorited === undefined && !body.data.remove) {
+    return NextResponse.json({ error: "Choose an action" }, { status: 400 });
   }
-  await store.upsertStat({
-    ...stat,
-    userId: session.id,
-    mastered: body.data.mastered ?? stat.mastered,
-    favorited: body.data.favorited ?? stat.favorited,
-  });
-  return NextResponse.json({ ok: true });
+  const patch = body.data.remove
+    ? { wrongCount: 0, mastered: true, favorited: false, savedForReview: false, nextReviewAt: null }
+    : {
+        ...(body.data.mastered !== undefined ? { mastered: body.data.mastered, ...(body.data.mastered ? { nextReviewAt: null } : {}) } : {}),
+        ...(body.data.favorited !== undefined ? { favorited: body.data.favorited } : {}),
+      };
+  try {
+    const stat = await store.updateReviewStat(session.id, body.data.questionId, patch);
+    if (!stat) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    return NextResponse.json({ ok: true, stat: toClientStat(stat) });
+  } catch (error) {
+    console.error("Could not update wrong-answer record", error);
+    return NextResponse.json({ error: "Could not update this question. Please try again." }, { status: 500 });
+  }
 }
 
 export async function GET() {

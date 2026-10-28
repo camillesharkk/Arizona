@@ -206,6 +206,21 @@ export const pgStore: Store = {
       where question_stats.user_id = excluded.user_id`;
     return stat;
   },
+  async updateReviewStat(userId, questionId, patch) {
+    await assertSchema();
+    // Update only review flags, preserving answer history and avoiding a full-row upsert.
+    const values: Record<string, boolean | number | string | null> = {};
+    if (patch.mastered !== undefined) values.mastered = patch.mastered;
+    if (patch.favorited !== undefined) values.favorited = patch.favorited;
+    if (patch.wrongCount !== undefined) values.wrong_count = patch.wrongCount;
+    if (patch.savedForReview !== undefined) values.saved_for_review = patch.savedForReview;
+    if (patch.nextReviewAt !== undefined) values.next_review_at = patch.nextReviewAt;
+    if (!Object.keys(values).length) return this.getStat(userId, questionId);
+    const sql = db();
+    const rows = await sql`update question_stats set ${sql(values)}, updated_at = now()
+      where user_id = ${userId} and question_id = ${questionId} returning *`;
+    return rows[0] ? mapStat(rows[0] as Record<string, unknown>) : null;
+  },
   async claimAttempt(userId, attemptId, questionId) {
     await assertSchema();
     const rows = await db()`insert into answer_attempts (user_id, attempt_id, question_id)

@@ -30,15 +30,21 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
   const [loadError, setLoadError] = useState(false);
   const [source, setSource] = useState<"all" | "incorrect" | "saved">("all");
   const requestId = useRef(0);
+  const pendingIds = useRef(new Set<string>());
+  const [pending, setPending] = useState<Record<string, string>>({});
+  const [actionErrors, setActionErrors] = useState<Record<string, string>>({});
+  const [actionMessage, setActionMessage] = useState("");
 
   async function load() {
+    if (pendingIds.current.size) return;
     const id = ++requestId.current;
     setLoadError(false);
     try {
-      const meResponse = await fetch("/api/auth/me/");
-      if (id !== requestId.current) return;
+      const meResponse = await fetch("/api/auth/me/", { cache: "no-store", signal: AbortSignal.timeout(30000) });
+      if (id !== requestId.current || pendingIds.current.size) return;
       if (!meResponse.ok) throw new Error("account");
       const me = await meResponse.json();
+      if (id !== requestId.current || pendingIds.current.size) return;
       if (!me.user) {
         setNeedAuth(true);
         setReady(true);
@@ -46,17 +52,64 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
       }
       setNeedAuth(false);
       setIsPro(Boolean(me.user.arizonaPro || me.user.plan === "pro"));
-      const response = await fetch("/api/mistakes/");
-      if (id !== requestId.current) return;
+      const response = await fetch("/api/mistakes/", { cache: "no-store", signal: AbortSignal.timeout(30000) });
+      if (id !== requestId.current || pendingIds.current.size) return;
       if (!response.ok) throw new Error("mistakes");
       const data = await response.json();
+      if (id !== requestId.current || pendingIds.current.size) return;
       if (!Array.isArray(data.mistakes)) throw new Error("mistakes");
       setStats(data.mistakes);
       setReady(true);
     } catch {
-      if (id !== requestId.current) return;
+      if (id !== requestId.current || pendingIds.current.size) return;
       setLoadError(true);
       setReady(true);
+    }
+  }
+
+  async function updateRecord(stat: QuestionStat, action: "mastered" | "favorite" | "remove") {
+    const questionId = stat.questionId;
+    if (pendingIds.current.has(questionId)) return;
+    pendingIds.current.add(questionId);
+    setPending((current) => ({ ...current, [questionId]: action }));
+    setActionErrors((current) => ({ ...current, [questionId]: "" }));
+    setActionMessage("");
+    // An earlier refresh must not overwrite a successful mutation.
+    ++requestId.current;
+    try {
+      const patch = action === "mastered" ? { mastered: true }
+        : action === "remove" ? { remove: true } : { favorited: !stat.favorited };
+      const response = await fetch("/api/mistakes/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ questionId, ...patch }),
+        signal: AbortSignal.timeout(30000),
+      });
+      if (response.status === 401) {
+        setNeedAuth(true);
+        return;
+      }
+      const data = await response.json().catch(() => null);
+      if (!response.ok || data?.ok !== true) {
+        throw new Error(data?.error || "Could not update this question. Please try again.");
+      }
+      ++requestId.current;
+      setStats((current) => action === "favorite"
+        ? current.map((row) => row.questionId === questionId ? { ...row, favorited: !stat.favorited } : row)
+        : current.filter((row) => row.questionId !== questionId));
+      setActionMessage(action === "mastered" ? "Question marked as mastered."
+        : action === "remove" ? "Record deleted." : stat.favorited ? "Favorite removed." : "Question favorited.");
+      window.dispatchEvent(new Event("az-mistakes-change"));
+      router.refresh();
+    } catch (error) {
+      setActionErrors((current) => ({ ...current, [questionId]:
+        error instanceof Error && error.name === "TimeoutError"
+          ? "This request timed out. Refresh the list to check whether the change was saved."
+          : error instanceof Error && error.name !== "TypeError"
+            ? error.message : "Could not update this question. Check your connection and try again." }));
+    } finally {
+      pendingIds.current.delete(questionId);
+      setPending((current) => ({ ...current, [questionId]: "" }));
     }
   }
 
@@ -183,6 +236,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
           </button>
         </>
       ) : null}
+      <p role="status" aria-live="polite">{actionMessage}</p>
       {filtered.map((s) => {
         const q = publishedQuestions().find((x) => x.question_id === s.questionId);
         if (!q) return null;
@@ -198,38 +252,39 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
               {s.wrongCount > 0 ? `Wrong ${s.wrongCount} ${s.wrongCount === 1 ? "time" : "times"}` : "Saved for review"}
               {s.nextReviewAt ? ` · Next review ${new Date(s.nextReviewAt).toLocaleString()}` : ""}
             </p>
-            <div className="row">
+            <div className="row" aria-busy={Boolean(pending[s.questionId])}>
               <button
                 className="chip"
                 type="button"
-                onClick={async () => {
-                  await fetch("/api/mistakes/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: s.questionId, mastered: true }) });
-                  load();
-                }}
+                disabled={Boolean(pending[s.questionId])}
+                onClick={() => updateRecord(s, "mastered")}
               >
-                Mark mastered
+                {pending[s.questionId] === "mastered" ? "Saving…" : "Mark mastered"}
               </button>
               <button
                 className="chip"
                 type="button"
-                onClick={async () => {
-                  await fetch("/api/mistakes/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: s.questionId, favorited: !s.favorited }) });
-                  load();
-                }}
+                disabled={Boolean(pending[s.questionId])}
+                aria-pressed={s.favorited}
+                onClick={() => updateRecord(s, "favorite")}
               >
-                {s.favorited ? "Favorited" : "Favorite"}
+                {pending[s.questionId] === "favorite" ? "Saving…" : s.favorited ? "Favorited" : "Favorite"}
               </button>
               <button
                 className="chip"
                 type="button"
-                onClick={async () => {
-                  await fetch("/api/mistakes/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: s.questionId, remove: true }) });
-                  load();
-                }}
+                disabled={Boolean(pending[s.questionId])}
+                onClick={() => updateRecord(s, "remove")}
               >
-                Delete record
+                {pending[s.questionId] === "remove" ? "Deleting…" : "Delete record"}
               </button>
             </div>
+            {actionErrors[s.questionId] ? (
+              <div className="form-error" role="alert">
+                <p>{actionErrors[s.questionId]}</p>
+                <button className="chip" type="button" disabled={Boolean(pending[s.questionId])} onClick={() => load()}>Refresh list</button>
+              </div>
+            ) : null}
           </article>
         );
       })}

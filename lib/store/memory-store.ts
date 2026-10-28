@@ -126,6 +126,12 @@ export function createMemoryStore(): Store {
       else db.stats[i] = { ...stat, userId: db.stats[i].userId };
       return stat;
     },
+    async updateReviewStat(userId, questionId, patch) {
+      const stat = db.stats.find((s) => s.userId === userId && s.questionId === questionId);
+      if (!stat) return null;
+      Object.assign(stat, patch);
+      return stat;
+    },
     async claimAttempt(userId, attemptId, questionId) {
       if (db.attempts.some((item) => item.userId === userId && item.attemptId === attemptId)) return false;
       db.attempts.push({ userId, attemptId, questionId });
