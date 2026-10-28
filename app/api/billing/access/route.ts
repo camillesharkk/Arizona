@@ -18,6 +18,8 @@ export async function GET() {
     const el = await refundEligibility(repo, { userId: session.id, orderId: order.id });
     items.push({
       orderId: order.id,
+      providerOrderId: order.providerOrderId,
+      entitlementId: order.entitlementId,
       productCode: order.productCode,
       status: order.status,
       paidAt: order.paidAt,

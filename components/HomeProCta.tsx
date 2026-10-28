@@ -60,7 +60,7 @@ export function HomeProCta() {
       </p>
       <p className="notice">One-time payment. No subscription. No automatic renewal.</p>
       {!signedIn && <p className="notice">{GUEST_NEWCOMER_HINT}</p>}
-      <Link className="btn btn-ghost" href={paths.pricing}>
+      <Link className="btn btn-ghost" href={paths.pricing} data-upgrade-source="home_pro">
         View Pro &amp; Pricing
       </Link>
     </section>

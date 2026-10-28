@@ -9,7 +9,7 @@ import { readinessScore } from "@/lib/stats";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 import { ProAccessNote } from "@/components/ProAccessNote";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
-import { hasRememberedPurchase, pickLatestPaidOrder, rememberPurchase, trackPurchase } from "@/lib/analytics";
+import { recoverPendingPurchase, type AnalyticsPaidOrder } from "@/lib/analytics";
 
 const ACCESS_POLL_MS = 1000;
 const ACCESS_POLL_MAX = 10;
@@ -26,7 +26,7 @@ type CheckoutPhase = "boot" | "off" | "activating" | "activated" | "timeout" | "
 type AccessPayload = {
   arizonaPro?: boolean;
   planExpiresAt?: string | null;
-  orders?: { orderId?: string; status?: string; amountCents?: number; paidAt?: string }[];
+  orders?: AnalyticsPaidOrder[];
 };
 
 function clearCheckoutQuery() {
@@ -38,11 +38,7 @@ function clearCheckoutQuery() {
 }
 
 function trackPaidAccess(access: AccessPayload) {
-  const latest = pickLatestPaidOrder(Array.isArray(access.orders) ? access.orders : []);
-  if (latest?.orderId && !hasRememberedPurchase(latest.orderId, window.localStorage)) {
-    rememberPurchase(latest.orderId, window.localStorage);
-    trackPurchase({ transactionId: latest.orderId, valueCents: Number(latest.amountCents || 0) });
-  }
+  recoverPendingPurchase(Array.isArray(access.orders) ? access.orders : []);
 }
 
 async function readAccess(res: Response): Promise<AccessPayload | null> {

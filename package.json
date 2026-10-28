@@ -19,7 +19,7 @@
     "ai:verify": "node --experimental-strip-types scripts/ai-verify.ts",
     "lemon:verify": "node --experimental-strip-types scripts/lemon-verify.ts",
     "paddle:verify": "node --experimental-strip-types scripts/paddle-verify.ts",
-    "analytics:verify": "node --experimental-strip-types scripts/analytics-verify.ts",
+    "analytics:verify": "node --experimental-strip-types scripts/analytics-verify.ts && node --experimental-strip-types scripts/analytics-funnel-verify.ts",
     "operations:verify": "node --experimental-strip-types scripts/operations-verify.ts",
     "contact:verify": "node --experimental-strip-types scripts/contact-verify.ts",
     "outcome:verify": "node --experimental-strip-types scripts/exam-outcome-verify.ts",

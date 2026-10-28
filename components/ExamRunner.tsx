@@ -521,7 +521,7 @@ export function ExamRunner({
           ) : (
             <p className="notice">
               Free practice uses the free question pool. Pro opens the rest of the bank and more full exams.{" "}
-              <Link href={paths.pricing}>View Pro</Link>
+              <Link href={paths.pricing} data-upgrade-source="exam_results">View Pro</Link>
             </p>
           )}
         </div>
@@ -737,7 +737,7 @@ export function QuestionBlock({
         <div className="explain">
           <strong>Pro question</strong>
           <p>This item is in the full question bank. Unlock Pro to turn weak topics into passing scores.</p>
-          <Link className="btn btn-primary" href={paths.pricing}>
+          <Link className="btn btn-primary" href={paths.pricing} data-upgrade-source="locked_question">
             Unlock Pro
           </Link>
         </div>

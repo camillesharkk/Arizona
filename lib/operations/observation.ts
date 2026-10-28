@@ -15,7 +15,7 @@ export function posthogRegionName(host: string) {
 
 /** Real visitor totals omit controlled probes and labeled admin acceptance. */
 export function posthogBusinessFilter() {
-  return "(isNull(properties.ops_probe) OR toString(properties.ops_probe) != '1') AND (isNull(properties.ops_acceptance) OR toString(properties.ops_acceptance) != '1')";
+  return "(isNull(properties.ops_probe) OR toString(properties.ops_probe) != '1') AND (isNull(properties.ops_acceptance) OR toString(properties.ops_acceptance) != '1') AND (isNull(properties.traffic_type) OR toString(properties.traffic_type) != 'internal')";
 }
 
 export function posthogProbeFilter() {

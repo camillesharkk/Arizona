@@ -1,7 +1,7 @@
 "use client";
 
 import { getPaddleInstance, initializePaddle, type Environments, type Paddle, type PaddleEventData } from "@paddle/paddle-js";
-import { pauseClarityRecording, PRO_ITEM_ID, trackAnalyticsEvent } from "../analytics.ts";
+import { notifyCheckoutChange, pauseClarityRecording, PRO_ITEM_ID, trackAnalyticsEvent } from "../analytics.ts";
 import { PADDLE_OVERLAY_SETTINGS, paddleSuccessUrl } from "./paddle-public.ts";
 
 export { PADDLE_OVERLAY_SETTINGS, paddleSuccessUrl };
@@ -50,6 +50,8 @@ function onPaddleCheckoutEvent(event: PaddleEventData) {
     detail: raw.detail || raw.data?.detail,
   };
   for (const cb of checkoutWatchers) cb(notice);
+  // This only requests server verification. The browser completion event is not proof of payment.
+  if (event?.name === "checkout.completed") notifyCheckoutChange();
   if (event?.name !== "checkout.loaded") return;
   pauseClarityRecording();
   trackAnalyticsEvent("checkout_open", { product_code: PRO_ITEM_ID, plan: "free" });

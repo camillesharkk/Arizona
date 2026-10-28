@@ -185,7 +185,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
       {ready && !isPro ? (
         <p className="notice">
           Missed questions and questions you save stay on this account. Pro adds the rest of the practice bank.{" "}
-          <Link href={paths.pricing}>View Pro</Link>
+          <Link href={paths.pricing} data-upgrade-source="wrong_answers">View Pro</Link>
         </p>
       ) : null}
       <div className="filter-row" aria-label="Review source">

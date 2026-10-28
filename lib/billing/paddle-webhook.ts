@@ -259,11 +259,14 @@ export async function handlePaddleWebhook(opts: {
       paddleLog("order_confirm_failed", { orderId: transactionId, quoteId: quote.id, event: result.error });
       return fail(503, result.error, { orderId: transactionId, quoteId: quote.id });
     }
-    reportPaddleFulfillment({
+    await reportPaddleFulfillment({
       userId: quote.userId,
       duplicate: Boolean(result.duplicate),
       orderConfirmed: true,
       entitlementId: result.order.entitlementId,
+      transactionId,
+      orderId: result.order.id,
+      amountCents: result.order.amountCents,
     });
     return ok(
       {
@@ -276,11 +279,12 @@ export async function handlePaddleWebhook(opts: {
     );
   } catch {
     paddleLog("order_confirm_exception", { orderId: transactionId, quoteId: quote.id });
-    reportPaddleFulfillment({
+    await reportPaddleFulfillment({
       userId: quote.userId,
       duplicate: false,
       orderConfirmed: false,
       entitlementFailed: true,
+      transactionId,
     });
     return fail(503, "entitlement_failed", { orderId: transactionId, quoteId: quote.id });
   }

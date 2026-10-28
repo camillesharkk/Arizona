@@ -149,7 +149,7 @@ export function PracticeLaunch() {
             ? "This account has used its free Full 45. Pro includes more full exams."
             : "This browser has used its free Full 45. Pro includes more full exams."}
         </p>
-        <Link className="btn btn-primary" href={paths.pricing}>
+        <Link className="btn btn-primary" href={paths.pricing} data-upgrade-source="practice_limit">
           Unlock Pro
         </Link>
         <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginLeft: 8 }}>

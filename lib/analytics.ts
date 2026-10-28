@@ -170,6 +170,37 @@ export function sanitizeEventParams(params?: Record<string, unknown>) {
 
 export const OPS_PROBE_STORAGE = "az_ops_probe";
 export const OPS_ACCEPTANCE_STORAGE = "az_ops_acceptance";
+const DEBUG_STORAGE = "az_analytics_debug";
+const UPGRADE_STORAGE = "az_upgrade_source";
+const PENDING_CHECKOUT_STORAGE = "az_pending_checkout";
+
+function browserDebugMode() {
+  if (typeof window === "undefined") return false;
+  try {
+    const value = new URLSearchParams(window.location.search).get("analytics_debug");
+    if (value === "1" || value === "0") window.sessionStorage.setItem(DEBUG_STORAGE, value);
+    return analyticsDebugEnabled() || window.sessionStorage.getItem(DEBUG_STORAGE) === "1";
+  } catch {
+    return analyticsDebugEnabled();
+  }
+}
+
+export function rememberUpgradeSource(entryPoint: string) {
+  try {
+    if (!/^[a-z0-9_]{1,60}$/.test(entryPoint)) return;
+    window.sessionStorage.setItem(UPGRADE_STORAGE, JSON.stringify({
+      upgrade_source: entryPoint, upgrade_page: window.location.pathname, at: Date.now(),
+    }));
+  } catch { /* storage is optional */ }
+}
+
+function readUpgradeSource(): Record<string, string> {
+  try {
+    const source = JSON.parse(window.sessionStorage.getItem(UPGRADE_STORAGE) || "null");
+    if (!source || Date.now() - source.at > 30 * 60 * 1000 || !/^[a-z0-9_]{1,60}$/.test(source.upgrade_source)) return {};
+    return { upgrade_source: source.upgrade_source, upgrade_page: String(source.upgrade_page).split("?")[0].slice(0, 120) };
+  } catch { return {}; }
+}
 
 type OpsFlagStorage = {
   getItem: (key: string) => string | null;
@@ -211,7 +242,7 @@ export function applyCommonParams(params?: Record<string, string | number | bool
   if (typeof window !== "undefined" && window.location?.pathname) {
     out.page_path = window.location.pathname;
   }
-  Object.assign(out, readAttribution(), params || {});
+  Object.assign(out, readAttribution(), readUpgradeSource(), params || {});
   let probe = false;
   let acceptance = false;
   if (typeof window !== "undefined") {
@@ -223,6 +254,9 @@ export function applyCommonParams(params?: Record<string, string | number | bool
       acceptance = false;
     }
   }
+  const debug = browserDebugMode();
+  if (debug) out.debug_mode = true;
+  if (debug || probe || acceptance || process.env.NEXT_PUBLIC_PADDLE_ENV === "sandbox") out.traffic_type = "internal";
   return applyOpsAcceptance(applyOpsProbe(out, probe), acceptance);
 }
 
@@ -296,7 +330,7 @@ export function hasRememberedPurchase(orderId: string, storage?: Pick<Storage, "
   try {
     return Boolean(storage?.getItem(purchaseStorageKey(id)));
   } catch {
-    return true;
+    return false;
   }
 }
 
@@ -417,7 +451,7 @@ export function resetAnalyticsDedupe(store: Map<string, number> = recentEvents) 
 }
 
 function dedupeKey(name: string, params: Record<string, string | number | boolean>) {
-  return [name, String(params.page_path || ""), String(params.mode || ""), String(params.product_code || "")].join("|");
+  return [name, params.page_path, params.mode, params.product_code, params.entry_point, params.transaction_id].join("|");
 }
 
 export function claimEventSend(
@@ -494,32 +528,116 @@ export function trackAnalyticsEvent(name: string, params?: Record<string, unknow
   }
 }
 
-export function trackPurchase(opts: { transactionId: string; valueCents: number }) {
+/** Standard Google command queue; safe before the remote script loads or React effects run. */
+export function initializeGa() {
+  if (typeof window === "undefined" || !shouldLoadGa({ hostname: window.location.hostname })) return false;
+  const id = parseGaMeasurementId(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID)!;
+  window.dataLayer = window.dataLayer || [];
+  if (typeof window.gtag !== "function") {
+    window.gtag = function () { window.dataLayer!.push(arguments); };
+  }
+  if (window.azGaMeasurementId !== id) {
+    window.gtag("js", new Date());
+    window.gtag("config", id, {
+      send_page_view: false,
+      page_location: `${window.location.origin}${window.location.pathname}`,
+    });
+    window.azGaMeasurementId = id;
+  }
+  return true;
+}
+
+function ecommerceItem(valueCents: number) {
+  return { item_id: PRO_ITEM_ID, item_name: PRO_ITEM_NAME, price: Number((valueCents / 100).toFixed(2)), quantity: 1 };
+}
+
+export function notifyCheckoutChange() {
+  try { window.dispatchEvent(new Event("az:checkout-change")); } catch { /* SSR/storage optional */ }
+}
+
+export function trackBeginCheckout(b: Parameters<typeof checkoutStartParams>[0], transactionId?: string) {
+  // Remember only a provider-created transaction, never infer payment from a redirect.
+  if (transactionId && /^txn_[a-z0-9]+$/i.test(transactionId)) {
+    try {
+      window.localStorage.setItem(PENDING_CHECKOUT_STORAGE, JSON.stringify({
+        transactionId, at: Date.now(), ...readUpgradeSource(),
+      }));
+      notifyCheckoutChange();
+    } catch { /* payment must not depend on storage */ }
+  }
+  trackEvent("checkout_start", checkoutStartParams(b)); // Existing reports retain their event.
+  const amount = b?.finalPriceCents;
+  if (typeof amount !== "number" || !Number.isSafeInteger(amount) || amount < 0) return;
   try {
-    if (typeof window === "undefined") return;
-    if (!shouldLoadGa({ hostname: window.location.hostname })) return;
-    if (typeof window.gtag !== "function") return;
+    sendGa("begin_checkout", {
+      ...applyCommonParams(checkoutStartParams(b)),
+      entry_point: "pricing", items: [ecommerceItem(amount)],
+    });
+  } catch { /* analytics must not block checkout */ }
+}
+
+export function trackPurchase(opts: { transactionId: string; valueCents: number; params?: Record<string, unknown> }) {
+  try {
+    if (typeof window === "undefined") return false;
     const transaction_id = String(opts.transactionId || "").trim();
-    if (!transaction_id || transaction_id.includes("@")) return;
-    window.gtag("event", "purchase", {
+    if (!/^[a-zA-Z0-9_-]{1,100}$/.test(transaction_id) || !Number.isSafeInteger(opts.valueCents) || opts.valueCents < 0) return false;
+    if (window.azGaPurchases?.has(transaction_id)) return true;
+    // A stored flag means queued, not acknowledged by GA. Paddle remains the payment source of truth.
+    let storage: Storage | null = null;
+    try { storage = window.localStorage; } catch { /* in-page dedupe remains available */ }
+    if (hasRememberedPurchase(transaction_id, storage)) return true;
+    const queued = sendGa("purchase", {
+      ...applyCommonParams(sanitizeEventParams(opts.params)),
       transaction_id,
       value: Number((opts.valueCents / 100).toFixed(2)),
       currency: "USD",
-      items: [{ item_id: PRO_ITEM_ID, item_name: PRO_ITEM_NAME }],
+      items: [ecommerceItem(opts.valueCents)],
     });
+    if (!queued) return false;
+    (window.azGaPurchases ??= new Set()).add(transaction_id);
+    rememberPurchase(transaction_id, storage);
+    return true;
   } catch {
-    /* historical GA purchase is best-effort */
+    return false;
   }
 }
 
-function sendGa(name: string, params?: Record<string, string | number | boolean>) {
-  if (typeof window === "undefined") return;
-  if (!shouldLoadGa({ hostname: window.location.hostname })) return;
-  const gtag = window.gtag;
-  if (typeof gtag !== "function") return;
+function sendGa(name: string, params?: Record<string, unknown>) {
   const event = String(name || "").trim();
-  if (!event) return;
-  gtag("event", event, params || {});
+  if (!event || !initializeGa()) return false;
+  window.gtag!("event", event, { ...params, send_to: window.azGaMeasurementId });
+  return true;
+}
+
+export function pendingAnalyticsCheckout(): { transactionId: string; upgrade_source?: string; upgrade_page?: string } | null {
+  try {
+    const pending = JSON.parse(window.localStorage.getItem(PENDING_CHECKOUT_STORAGE) || "null");
+    if (!pending || !/^txn_[a-z0-9]+$/i.test(pending.transactionId) || !Number.isFinite(pending.at)) return null;
+    if (Date.now() - pending.at > 72 * 60 * 60 * 1000) {
+      window.localStorage.removeItem(PENDING_CHECKOUT_STORAGE);
+      return null;
+    }
+    return pending;
+  } catch { return null; }
+}
+
+export type AnalyticsPaidOrder = {
+  orderId?: string; providerOrderId?: string; status?: string; amountCents?: number; entitlementId?: string | null;
+};
+
+/** Input comes exclusively from the signed-in billing/access endpoint. */
+export function recoverPendingPurchase(orders: AnalyticsPaidOrder[]) {
+  const pending = pendingAnalyticsCheckout();
+  if (!pending) return false;
+  const order = orders.find((item) => item.providerOrderId === pending.transactionId && item.status === "paid");
+  if (!order || typeof order.amountCents !== "number") return false;
+  const queued = trackPurchase({ transactionId: pending.transactionId, valueCents: order.amountCents, params: {
+    upgrade_source: pending.upgrade_source, upgrade_page: pending.upgrade_page,
+  } });
+  if (!queued || !order.entitlementId) return false;
+  trackEvent("entitlement_granted", { transaction_id: pending.transactionId, plan: "pro" });
+  try { window.localStorage.removeItem(PENDING_CHECKOUT_STORAGE); } catch { /* optional */ }
+  return true;
 }
 
 type PosthogLike = {
@@ -635,6 +753,8 @@ export function pauseClarityRecording() {
 
 declare global {
   interface Window {
+    azGaMeasurementId?: string;
+    azGaPurchases?: Set<string>;
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
     clarity?: (...args: unknown[]) => void;

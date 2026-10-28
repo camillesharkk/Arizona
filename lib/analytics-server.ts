@@ -43,7 +43,7 @@ export async function trackServerAnalyticsEvent(
     const host = parsePosthogHost(process.env.NEXT_PUBLIC_POSTHOG_HOST);
     if (!key || !host) return;
     const { PostHog } = await import("posthog-node");
-    const client = new PostHog(key, { host, flushAt: 1, flushInterval: 0 });
+    const client = new PostHog(key, { host, flushAt: 1, flushInterval: 0, requestTimeout: 2000, fetchRetryCount: 0 });
     try {
       client.capture({
         distinctId,
@@ -67,20 +67,28 @@ export function reportCheckoutCreate(ok: boolean, userId: string) {
   });
 }
 
-export function reportPaddleFulfillment(input: {
+export async function reportPaddleFulfillment(input: {
   userId: string;
   duplicate: boolean;
   orderConfirmed: boolean;
   entitlementId?: string | null;
   entitlementFailed?: boolean;
+  transactionId?: string;
+  orderId?: string;
+  amountCents?: number;
 }) {
   const events = fulfillmentAnalyticsEvents(input);
-  for (const name of events) {
-    void trackServerAnalyticsEvent(name, input.userId, {
+  await Promise.all(events.map((name) =>
+    trackServerAnalyticsEvent(name, input.userId, {
       product_code: AZ_PRO_PRODUCT_CODE,
       plan: "pro",
       state: ANALYTICS_STATE,
       site: ANALYTICS_SITE,
-    });
-  }
+      transaction_id: input.transactionId,
+      order_id: input.orderId,
+      value: typeof input.amountCents === "number" ? input.amountCents / 100 : undefined,
+      currency: "USD",
+      ...(process.env.PADDLE_ENVIRONMENT === "sandbox" ? { traffic_type: "internal" } : {}),
+    })
+  ));
 }

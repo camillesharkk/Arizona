@@ -10,7 +10,7 @@ import {
 } from "@/lib/pricing/copy";
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
-import { checkoutStartParams, pauseClarityRecording, PRO_ITEM_ID, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
+import { pauseClarityRecording, PRO_ITEM_ID, trackAnalyticsEvent, trackBeginCheckout } from "@/lib/analytics";
 import { paddleCheckoutFallback } from "@/lib/billing/paddle-public";
 
 type Breakdown = {
@@ -156,7 +156,7 @@ export function CheckoutButton({ belowCta }: { belowCta?: ReactNode }) {
       return;
     }
     if (data.transactionId) {
-      trackEvent("checkout_start", checkoutStartParams(breakdown));
+      trackBeginCheckout(breakdown, String(data.transactionId));
       const fallback = paddleCheckoutFallback(data.checkoutUrl, String(data.transactionId), window.location.host);
       if (fallback) {
         window.location.assign(fallback);
@@ -180,7 +180,7 @@ export function CheckoutButton({ belowCta }: { belowCta?: ReactNode }) {
       setBusy(false);
       return;
     }
-    trackEvent("checkout_start", checkoutStartParams(breakdown));
+    trackBeginCheckout(breakdown);
     window.location.href = data.url;
   }
 
@@ -189,7 +189,7 @@ export function CheckoutButton({ belowCta }: { belowCta?: ReactNode }) {
       setErr("Please confirm the refund and promotion terms before checkout.");
       return;
     }
-    trackAnalyticsEvent("checkout_click", { product_code: PRO_ITEM_ID, plan: "free" });
+    trackAnalyticsEvent("checkout_click", { product_code: PRO_ITEM_ID, plan: "free", entry_point: "pricing" });
     setBusy(true);
     setErr("");
     setPriceChanged(false);

@@ -9,6 +9,7 @@ import { siteUrl } from "@/lib/site";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { AnalyticsPageViews } from "@/components/AnalyticsPageViews";
 import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
+import { AnalyticsFunnel } from "@/components/AnalyticsFunnel";
 import { MicrosoftClarity } from "@/components/MicrosoftClarity";
 import { PaddleCheckoutResume } from "@/components/PaddleCheckoutResume";
 
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <GoogleAnalytics />
         <MicrosoftClarity />
         <AnalyticsIdentity />
+        <AnalyticsFunnel />
         <Suspense fallback={null}>
           <AnalyticsPageViews />
         </Suspense>
