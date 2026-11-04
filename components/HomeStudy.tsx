@@ -20,7 +20,7 @@ export type StudyPreviewCard = StudyCardView & {
 type Mode = "learn" | "practice";
 
 export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
-  const [mode, setMode] = useState<Mode>("practice");
+  const [mode, setMode] = useState<Mode>("learn");
   const [cardIndex, setCardIndex] = useState(0);
   const [cardCategory, setCardCategory] = useState("all");
   const [shuffled, setShuffled] = useState(false);
