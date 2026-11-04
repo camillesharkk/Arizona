@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { createRequire } from "node:module";
 import ts from "typescript";
+import { markMistakePromptSeen, mistakePrompt, readMistakePrompts } from "../lib/mistake-prompts.ts";
 import { createMemoryStore } from "../lib/store/memory-store.ts";
 import type { QuestionStat } from "../lib/store/types.ts";
 
@@ -81,4 +82,21 @@ try {
 } finally {
   console.error = originalError;
 }
+const unseen = { favorited: false, seenMastered: false, seenFavorite: false };
+assert.equal(mistakePrompt("mastered", unseen)?.title, "Mark as mastered?");
+assert.equal(mistakePrompt("mastered", { ...unseen, seenMastered: true }), null);
+assert.equal(mistakePrompt("favorite", unseen)?.confirm, "Add to Favorites");
+assert.equal(mistakePrompt("favorite", { ...unseen, favorited: true }), null);
+assert.equal(mistakePrompt("favorite", { ...unseen, seenFavorite: true }), null);
+assert.equal(mistakePrompt("remove", { favorited: true, seenMastered: true, seenFavorite: true })?.title, "Delete this record?");
+const flags = new Map<string, string>();
+const storage = { getItem: (key: string) => flags.get(key) ?? null, setItem: (key: string, value: string) => { flags.set(key, value); } };
+assert.deepEqual(readMistakePrompts(storage, "owner"), { mastered: false, favorite: false });
+markMistakePromptSeen(storage, "owner", "mastered");
+assert.deepEqual(readMistakePrompts(storage, "owner"), { mastered: true, favorite: false });
+assert.deepEqual(readMistakePrompts(storage, "other"), { mastered: false, favorite: false });
+markMistakePromptSeen(storage, "owner", "favorite");
+const seen = readMistakePrompts(storage, "owner");
+assert.equal(mistakePrompt("favorite", { favorited: false, seenMastered: seen.mastered, seenFavorite: seen.favorite }), null);
+assert.equal(mistakePrompt("remove", { favorited: false, seenMastered: seen.mastered, seenFavorite: seen.favorite })?.confirm, "Delete record");
 console.log("Wrong-answer mutations: favorite/unfavorite, master, remove, ownership, history, auth, and failure checks passed.");

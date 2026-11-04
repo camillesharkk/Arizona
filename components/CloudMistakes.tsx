@@ -10,6 +10,7 @@ import { LoadingNote } from "@/components/QuizChrome";
 import { topicLabel } from "@/lib/quiz";
 import { paths } from "@/lib/paths";
 import { listPhase } from "@/lib/list-phase";
+import { markMistakePromptSeen, mistakePrompt, readMistakePrompts, type MistakeAction, type MistakePrompt } from "@/lib/mistake-prompts";
 import type { Question } from "@/lib/types";
 import type { QuestionStat } from "@/lib/store/types";
 
@@ -34,6 +35,10 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
   const [pending, setPending] = useState<Record<string, string>>({});
   const [actionErrors, setActionErrors] = useState<Record<string, string>>({});
   const [actionMessage, setActionMessage] = useState("");
+  const [seen, setSeen] = useState({ mastered: false, favorite: false });
+  const [prompt, setPrompt] = useState<{ stat: QuestionStat; action: MistakeAction; copy: MistakePrompt } | null>(null);
+  const userIdRef = useRef("");
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   async function load() {
     if (pendingIds.current.size) return;
@@ -51,6 +56,8 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
         return;
       }
       setNeedAuth(false);
+      userIdRef.current = me.user.id;
+      setSeen(readMistakePrompts(window.localStorage, me.user.id));
       setIsPro(Boolean(me.user.arizonaPro || me.user.plan === "pro"));
       const response = await fetch("/api/mistakes/", { cache: "no-store", signal: AbortSignal.timeout(30000) });
       if (id !== requestId.current || pendingIds.current.size) return;
@@ -97,6 +104,10 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
       setStats((current) => action === "favorite"
         ? current.map((row) => row.questionId === questionId ? { ...row, favorited: !stat.favorited } : row)
         : current.filter((row) => row.questionId !== questionId));
+      if (userIdRef.current && (action === "mastered" || (action === "favorite" && !stat.favorited))) {
+        markMistakePromptSeen(window.localStorage, userIdRef.current, action === "mastered" ? "mastered" : "favorite");
+        setSeen(readMistakePrompts(window.localStorage, userIdRef.current));
+      }
       setActionMessage(action === "mastered" ? "Question marked as mastered."
         : action === "remove" ? "Record deleted." : stat.favorited ? "Favorite removed." : "Question favorited.");
       window.dispatchEvent(new Event("az-mistakes-change"));
@@ -127,6 +138,18 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
     setTopic(initialTopic && topicIds.has(initialTopic) ? initialTopic : "all");
   }, [initialTopic]);
 
+  useEffect(() => {
+    if (!prompt) return;
+    dialogRef.current?.focus();
+    function onKey(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      setPrompt(null);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [prompt]);
+
   const byTopic = stats.filter((s) => topic === "all" || s.topic === topic);
   const filtered = byTopic.filter((s) => {
     if (source === "incorrect") return s.wrongCount > 0;
@@ -144,6 +167,16 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
   function selectTopic(id: string) {
     setTopic(id);
     router.replace(id === "all" ? paths.mistakes : `${paths.mistakes}?topic=${id}`, { scroll: false });
+  }
+
+  function requestAction(stat: QuestionStat, action: MistakeAction) {
+    if (pendingIds.current.has(stat.questionId)) return;
+    const copy = mistakePrompt(action, { favorited: stat.favorited, seenMastered: seen.mastered, seenFavorite: seen.favorite });
+    if (copy) {
+      setPrompt({ stat, action, copy });
+      return;
+    }
+    void updateRecord(stat, action);
   }
 
   function begin() {
@@ -236,7 +269,24 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
           </button>
         </>
       ) : null}
-      <p role="status" aria-live="polite">{actionMessage}</p>
+      <p
+        className="card"
+        role="status"
+        aria-live="polite"
+        style={{
+          position: "fixed",
+          zIndex: 45,
+          left: 16,
+          right: 16,
+          top: 80,
+          margin: "0 auto",
+          maxWidth: 480,
+          background: "#fff",
+          display: actionMessage ? "block" : "none",
+        }}
+      >
+        {actionMessage}
+      </p>
       {filtered.map((s) => {
         const q = publishedQuestions().find((x) => x.question_id === s.questionId);
         if (!q) return null;
@@ -257,7 +307,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
                 className="chip"
                 type="button"
                 disabled={Boolean(pending[s.questionId])}
-                onClick={() => updateRecord(s, "mastered")}
+                onClick={() => requestAction(s, "mastered")}
               >
                 {pending[s.questionId] === "mastered" ? "Saving…" : "Mark mastered"}
               </button>
@@ -266,7 +316,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
                 type="button"
                 disabled={Boolean(pending[s.questionId])}
                 aria-pressed={s.favorited}
-                onClick={() => updateRecord(s, "favorite")}
+                onClick={() => requestAction(s, "favorite")}
               >
                 {pending[s.questionId] === "favorite" ? "Saving…" : s.favorited ? "Favorited" : "Favorite"}
               </button>
@@ -274,7 +324,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
                 className="chip"
                 type="button"
                 disabled={Boolean(pending[s.questionId])}
-                onClick={() => updateRecord(s, "remove")}
+                onClick={() => requestAction(s, "remove")}
               >
                 {pending[s.questionId] === "remove" ? "Deleting…" : "Delete record"}
               </button>
@@ -288,6 +338,39 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
           </article>
         );
       })}
+      {prompt ? (
+        <div className="nav-backdrop" style={{ inset: 0, zIndex: 50 }} onClick={() => setPrompt(null)}>
+          <div
+            ref={dialogRef}
+            className="card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mistake-prompt-title"
+            tabIndex={-1}
+            style={{ maxWidth: 480, margin: "18vh auto", background: "#fff" }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <h2 id="mistake-prompt-title">{prompt.copy.title}</h2>
+            <p>{prompt.copy.body}</p>
+            <div className="row">
+              <button className="btn btn-ghost" type="button" onClick={() => setPrompt(null)}>
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={() => {
+                  const current = prompt;
+                  setPrompt(null);
+                  void updateRecord(current.stat, current.action);
+                }}
+              >
+                {prompt.copy.confirm}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
