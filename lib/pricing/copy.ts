@@ -26,7 +26,7 @@ export const REFERRAL_CREDIT_RULES = [
 ] as const;
 
 export const PERSONAL_USE_NOTICE =
-  "Pro access is for the personal use of the account holder. Account sharing or resale is not permitted. Your account may be active on up to 3 devices at a time.";
+  "Pro access is for the personal use of the account holder. Account sharing or resale is not permitted.";
 
 export const PRO_DURATION_NOTICE =
   "Your Pro access lasts for 60 days from activation. If you purchase additional 60-day access while Pro is still active, the additional time is added after your current expiration date.";

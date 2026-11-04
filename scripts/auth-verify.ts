@@ -713,9 +713,8 @@ async function run() {
     skipLimits: true,
   });
   if (!deviceSetup) fail("admin device fixture did not open");
-  else if (fourthBlocked.ok || fourthBlocked.error !== "DEVICE_LIMIT_REACHED") fail("ordinary device cap stopped working");
-  else if (!fourthAdmin.ok) fail("admin login was rejected by the device cap");
-  else ok("admin login ignores the active device cap");
+  else if (!fourthBlocked.ok || !fourthAdmin.ok) fail("extra devices were rejected");
+  else ok("an account can sign in on more than three devices");
 
   console.log(lines.join("\n"));
   if (failures) {

@@ -25,8 +25,6 @@ export function AuthForm({
   const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
   const [resendBusy, setResendBusy] = useState(false);
-  const [limitDevices, setLimitDevices] = useState<{ id: string; deviceLabel: string; lastSeenAt: string }[] | null>(null);
-  const [revokeDeviceId, setRevokeDeviceId] = useState("");
   const [registerBlock, setRegisterBlock] = useState<"email-failed" | "unverified-exists" | null>(null);
   const [needVerify, setNeedVerify] = useState(false);
 
@@ -109,16 +107,11 @@ export function AuthForm({
           ? { email }
           : mode === "register"
             ? { email, password, name, referralCode: referralCode.trim() || undefined }
-            : { email, password, name, ...(revokeDeviceId ? { revokeDeviceId } : {}) };
+            : { email, password, name };
     const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const data = await res.json();
     setBusy(false);
     if (!res.ok) {
-      if (mode === "login" && data.code === "DEVICE_LIMIT_REACHED") {
-        setLimitDevices(data.devices || []);
-        setError(data.message || "Device limit reached");
-        return;
-      }
       if (mode === "login" && data.code === "TOO_MANY_DEVICE_CHANGES") {
         setError(data.message || "Too many new devices");
         return;
@@ -149,8 +142,6 @@ export function AuthForm({
       setError(data.error || "Request failed");
       return;
     }
-    setLimitDevices(null);
-    setRevokeDeviceId("");
     if (data.verifyToken) setInfo(`Dev verify link token: ${data.verifyToken}`);
     else if (data.resetToken) setInfo(`Dev reset token: ${data.resetToken}`);
     else if (mode === "forgot") {
@@ -246,24 +237,6 @@ export function AuthForm({
           />
         </>
       )}
-      {mode === "login" && limitDevices && (
-        <div className="card" style={{ marginBottom: 12 }}>
-          <h2>Device limit reached</h2>
-          <p>Your account can be active on up to 3 devices at a time. Remove a device, then sign in on this one.</p>
-          {limitDevices.map((d) => (
-            <label key={d.id} className="field">
-              <input
-                type="radio"
-                name="revokeDevice"
-                checked={revokeDeviceId === d.id}
-                onChange={() => setRevokeDeviceId(d.id)}
-              />{" "}
-              {d.deviceLabel}
-              <span className="notice">Last active: {new Date(d.lastSeenAt).toLocaleString()}</span>
-            </label>
-          ))}
-        </div>
-      )}
       {error && <p className="form-error">{error}</p>}
       {info && <p className="notice">{info}</p>}
       {registerBlock === "email-failed" && (
@@ -277,9 +250,7 @@ export function AuthForm({
           {busy
             ? "Working…"
             : mode === "login"
-              ? revokeDeviceId
-                ? "Remove device and sign in"
-                : "Sign in"
+              ? "Sign in"
               : mode === "register"
                 ? "Create Free Account"
                 : mode === "forgot"

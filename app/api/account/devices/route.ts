@@ -7,7 +7,6 @@ import {
   revokeOwnDevice,
   signOutOtherDevices,
 } from "@/lib/devices/service";
-import { MAX_ACTIVE_DEVICES } from "@/lib/devices/policy";
 import { PERSONAL_USE_NOTICE } from "@/lib/pricing/copy";
 
 const postSchema = z.object({
@@ -23,7 +22,6 @@ export async function GET() {
   return NextResponse.json({
     devices,
     activeCount: devices.length,
-    maxActiveDevices: MAX_ACTIVE_DEVICES,
     currentDeviceId: session.deviceSessionId || null,
     notice: PERSONAL_USE_NOTICE,
   });

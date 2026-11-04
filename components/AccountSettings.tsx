@@ -24,15 +24,11 @@ export function AccountSettings() {
   const [prefMsg, setPrefMsg] = useState("");
   const [passMsg, setPassMsg] = useState("");
   const [devices, setDevices] = useState<Device[]>([]);
-  const [maxDevices, setMaxDevices] = useState(3);
   const [deviceMsg, setDeviceMsg] = useState("");
 
   const loadDevices = useCallback(async () => {
     const d = await fetch("/api/account/devices/").then((r) => r.json()).catch(() => null);
-    if (d?.devices) {
-      setDevices(d.devices);
-      setMaxDevices(d.maxActiveDevices || 3);
-    }
+    if (d?.devices) setDevices(d.devices);
   }, []);
 
   useEffect(() => {
@@ -126,10 +122,7 @@ export function AccountSettings() {
         </form>
         <section className="card">
           <h2>Devices</h2>
-          <p>
-            Active devices {devices.length} of {maxDevices}
-          </p>
-          <p className="notice">For account security, your account can be active on up to {maxDevices} devices at a time.</p>
+          <p>Active devices {devices.length}</p>
           <p className="notice">{PERSONAL_USE_NOTICE}</p>
           {devices.map((d) => (
             <div key={d.id} className="row" style={{ justifyContent: "space-between", marginTop: 8 }}>

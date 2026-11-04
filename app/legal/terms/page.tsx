@@ -17,7 +17,7 @@ export default function Page() {
       </p>
       <p>
         Pro access is for the personal use of the account holder. Account sharing, resale, credential sharing, or
-        commercial redistribution is not permitted. Your account may be active on up to 3 devices at a time.
+        commercial redistribution is not permitted.
       </p>
       <p>
         Our standard refund policy is a full refund within 72 hours of purchase only if you have not used any Pro-only

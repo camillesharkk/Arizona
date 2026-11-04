@@ -22,7 +22,6 @@ export async function getDeviceRepo(): Promise<DeviceRepo> {
 }
 
 export {
-  MAX_ACTIVE_DEVICES,
   DEVICE_INACTIVE_MS,
   MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW,
 } from "./policy.ts";

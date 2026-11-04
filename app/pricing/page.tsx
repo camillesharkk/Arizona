@@ -27,7 +27,7 @@ const faqs = [
   { q: "Is this the official SOS exam?", a: officialSosFaqAnswer() },
   { q: "Is Pro a subscription?", a: `No. Arizona Notary Exam Prep Pro is a one-time payment for 60-Day Full Access. The standard price is ${formatUsd(STANDARD_PRICE_CENTS)}. New members may pay ${formatUsd(NEWCOMER_PRICE_CENTS)} for 72 hours after registration. No subscription. No automatic renewal. Your Pro access lasts for 60 days from activation. If you purchase additional 60-day access while Pro is still active, the additional time is added after your current expiration date.` },
   { q: "What is the refund policy?", a: "You may request a refund within 3 days of purchase only if you have not used any Pro-only feature. One-time New Member and Referral discounts are not restored after a refund. An eligible unused full refund restores the Referral Credit(s) used on that order. Up to 3 Referral Credits can be applied per order, subject to the purchase amount. Subject to applicable law and payment-provider requirements." },
-  { q: "Can I share my Pro account?", a: "Pro access is for the personal use of the account holder. Account sharing or resale is not permitted. Your account may be active on up to 3 devices at a time." },
+  { q: "Can I share my Pro account?", a: "Pro access is for the personal use of the account holder. Account sharing or resale is not permitted." },
   { q: "Who collects payment?", a: "Paddle is the Merchant of Record. Paddle collects payment and handles applicable taxes at checkout. Arizona Notary Exam Prep Pro is a one-time purchase for 60-day access. It is not a subscription and does not renew automatically." },
 ];
 

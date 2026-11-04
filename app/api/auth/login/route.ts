@@ -3,7 +3,6 @@ import { z } from "zod";
 import { getStore } from "@/lib/store";
 import { clientIp } from "@/lib/rate-limit";
 import { issueUserSession } from "@/lib/devices/http";
-import { MAX_ACTIVE_DEVICES } from "@/lib/devices/policy";
 import { checkLoginCredentials } from "@/lib/auth/login";
 import { consumeLoginAttempt } from "@/lib/auth/login-policy";
 import { operationsAccess } from "@/lib/operations/report-view";
@@ -11,7 +10,6 @@ import { operationsAccess } from "@/lib/operations/report-view";
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
-  revokeDeviceId: z.string().uuid().optional(),
 });
 
 export async function POST(req: Request) {
@@ -46,20 +44,8 @@ export async function POST(req: Request) {
       emailVerified: user.emailVerified,
       name: user.name,
     },
-    { req, revokeDeviceId: body.data.revokeDeviceId, skipDeviceLimits: admin }
+    { req, skipDeviceLimits: admin }
   );
-  if (!issued.ok && issued.error === "DEVICE_LIMIT_REACHED") {
-    return NextResponse.json(
-      {
-        error: "DEVICE_LIMIT_REACHED",
-        code: "DEVICE_LIMIT_REACHED",
-        devices: issued.devices,
-        maxActiveDevices: MAX_ACTIVE_DEVICES,
-        message: `Your account can be active on up to ${MAX_ACTIVE_DEVICES} devices at a time.`,
-      },
-      { status: 403 }
-    );
-  }
   if (!issued.ok && issued.error === "TOO_MANY_DEVICE_CHANGES") {
     return NextResponse.json(
       {

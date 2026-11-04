@@ -2,7 +2,6 @@ import {
   DEVICE_CHURN_WINDOW_MS,
   DEVICE_INACTIVE_MS,
   DEVICE_TOUCH_MIN_MS,
-  MAX_ACTIVE_DEVICES,
   MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW,
 } from "./policy.ts";
 import { deviceLabelFromUserAgent, hashDeviceToken, summarizeUserAgent } from "./label.ts";
@@ -11,9 +10,8 @@ import type { DeviceSessionRow, PublicDevice } from "./types.ts";
 import type { SessionUser } from "@/lib/entitlements";
 
 export type ActivateOk = { ok: true; session: DeviceSessionRow; created: boolean };
-export type ActivateLimit = { ok: false; error: "DEVICE_LIMIT_REACHED"; devices: PublicDevice[] };
 export type ActivateChurn = { ok: false; error: "TOO_MANY_DEVICE_CHANGES" };
-export type ActivateResult = ActivateOk | ActivateLimit | ActivateChurn;
+export type ActivateResult = ActivateOk | ActivateChurn;
 
 export function publicDevices(
   rows: DeviceSessionRow[],
@@ -88,7 +86,6 @@ export async function activateDevice(
     token: string;
     userAgent?: string | null;
     now?: Date;
-    revokeDeviceId?: string;
     skipLimits?: boolean;
   }
 ): Promise<ActivateResult> {
@@ -99,35 +96,19 @@ export async function activateDevice(
   const uaSummary = (opts.userAgent || "").slice(0, 180) || null;
 
   return repo.withUserLock(opts.userId, async () => {
-    if (opts.revokeDeviceId) {
-      await repo.revokeSession(opts.revokeDeviceId, opts.userId, at);
-    }
-
     const existing = await repo.getByTokenHash(opts.userId, hash);
-    const rows = await repo.listSessions(opts.userId);
-    const active = rows.filter((s) => isDeviceActive(s, now));
 
     if (existing && !existing.revokedAt) {
-      if (!opts.skipLimits && !isDeviceActive(existing, now) && active.length >= MAX_ACTIVE_DEVICES) {
-        return { ok: false as const, error: "DEVICE_LIMIT_REACHED" as const, devices: publicDevices(rows, now) };
-      }
       await repo.touchSession(existing.id, at, label, uaSummary);
       const next = await repo.getSession(existing.id);
       return { ok: true as const, session: next || { ...existing, lastSeenAt: at, deviceLabel: label, userAgentSummary: uaSummary }, created: false };
     }
 
     if (existing && existing.revokedAt) {
-      if (!opts.skipLimits && active.length >= MAX_ACTIVE_DEVICES) {
-        return { ok: false as const, error: "DEVICE_LIMIT_REACHED" as const, devices: publicDevices(rows, now) };
-      }
       await repo.unrevokeSession(existing.id, at);
       await repo.touchSession(existing.id, at, label, uaSummary);
       const next = await repo.getSession(existing.id);
       return { ok: true as const, session: next || { ...existing, revokedAt: null, lastSeenAt: at, deviceLabel: label }, created: false };
-    }
-
-    if (!opts.skipLimits && active.length >= MAX_ACTIVE_DEVICES) {
-      return { ok: false as const, error: "DEVICE_LIMIT_REACHED" as const, devices: publicDevices(rows, now) };
     }
 
     const since = new Date(now.getTime() - DEVICE_CHURN_WINDOW_MS).toISOString();

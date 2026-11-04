@@ -14,7 +14,7 @@ import {
   revokeAllDevices,
 } from "../lib/devices/service.ts";
 import { newDeviceToken } from "../lib/devices/label.ts";
-import { DEVICE_INACTIVE_MS, MAX_ACTIVE_DEVICES, MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW } from "../lib/devices/policy.ts";
+import { DEVICE_INACTIVE_MS, MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW } from "../lib/devices/policy.ts";
 import { createMemoryCommerceRepo } from "../lib/commerce/repo.ts";
 import { markProUsed } from "../lib/commerce/service.ts";
 import { readSessionToken, signLegacySession, signSession } from "../lib/session-token.ts";
@@ -53,8 +53,8 @@ async function run() {
   else ok("third active device → success");
 
   const a4 = await activateDevice(repo, { userId, token: t4, userAgent: "Firefox/1 Linux", now });
-  if (a4.ok || a4.error !== "DEVICE_LIMIT_REACHED") fail("fourth device should hit DEVICE_LIMIT_REACHED");
-  else ok("fourth device → DEVICE_LIMIT_REACHED");
+  if (!a4.ok) fail("fourth device should sign in");
+  else ok("fourth device → success");
 
   if (!a1.ok || !a3.ok) {
     console.log(lines.join("\n"));
@@ -63,11 +63,11 @@ async function run() {
 
   const rev = await revokeOwnDevice(repo, { userId, deviceId: a1.session.id, now });
   if (!rev) fail("revoke own device");
-  else ok("revoked device frees a slot");
+  else ok("revoked own device");
 
   const a4b = await activateDevice(repo, { userId, token: t4, userAgent: "Firefox/1 Linux", now });
-  if (!a4b.ok) fail("fourth device after revoke should succeed");
-  else ok("revoked device → frees slot");
+  if (!a4b.ok) fail("signed-out device should sign in again");
+  else ok("signed-out device can sign in again");
 
   const otherRepoUser = await activateDevice(repo, {
     userId: other,
@@ -128,8 +128,8 @@ async function run() {
     if (staleJwt.ok) fail("inactive device JWT still valid");
     else ok("inactive device JWT rejected until re-activation");
     const staleBack = await activateDevice(stale, { userId: "stale", token: staleTok, userAgent: "Chrome/1 Windows", now });
-    if (staleBack.ok || staleBack.error !== "DEVICE_LIMIT_REACHED") fail("inactive device returned past the 3-device limit");
-    else ok("inactive device cannot bypass 3-device limit on return");
+    if (!staleBack.ok) fail("inactive device could not sign in again");
+    else ok("inactive device can sign in again");
   }
 
   const churn = createMemoryDeviceRepo();
@@ -156,8 +156,6 @@ async function run() {
   if ((await repo.listSessions(userId)).some((s) => !s.revokedAt)) fail("revoke all left an active session");
   else ok("revoke all devices");
 
-  if (MAX_ACTIVE_DEVICES !== 3) fail("MAX_ACTIVE_DEVICES should be 3");
-  else ok("MAX_ACTIVE_DEVICES = 3");
   if (MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW !== 5) fail("churn cap should be 5");
   else ok("device churn window remains 5 new activations / 7 days");
 
@@ -250,9 +248,9 @@ async function run() {
   });
   const ghostParsed = await readSessionToken(ghostLegacy);
   const ghostBound = await evaluateBoundSession(ghost, { id: ghostUser, deviceSessionId: ghostParsed?.deviceSessionId || "" }, now);
-  if (ghostParsed || ghostBound.ok) fail("legacy JWT authenticated a fourth device");
-  else if (fourth.ok) fail("3-device limit failed while testing legacy JWT");
-  else ok("old JWT cannot create invisible fourth device");
+  if (ghostParsed || ghostBound.ok) fail("legacy JWT authenticated without a device session");
+  else if (!fourth.ok) fail("fourth device should sign in while testing legacy JWT");
+  else ok("old JWT cannot authenticate without a device session");
 
   console.log(lines.join("\n"));
   console.log(failures === 0 ? "devices:verify OK" : `devices:verify FAIL failures=${failures}`);
