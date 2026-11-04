@@ -339,7 +339,10 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
         );
       })}
       {prompt ? (
-        <div className="nav-backdrop" style={{ inset: 0, zIndex: 50 }} onClick={() => setPrompt(null)}>
+        <div
+          style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0, 0, 0, 0.32)", overflow: "auto" }}
+          onClick={() => setPrompt(null)}
+        >
           <div
             ref={dialogRef}
             className="card"
