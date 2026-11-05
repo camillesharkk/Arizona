@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
+import { StudyPager } from "@/components/StudyPager";
+import { scrollUnderHeaderSoon } from "@/lib/scroll-under-header";
 import { categoryLabel, StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
 import { paths } from "@/lib/paths";
 import { FREE_FULL_EXAMS } from "@/lib/product";
@@ -36,6 +38,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
   const [fullOpen, setFullOpen] = useState(false);
   const [resumeHref, setResumeHref] = useState<string | null>(null);
   const [todayLeft, setTodayLeft] = useState<number | null>(null);
+  const cardFace = useRef<HTMLDivElement>(null);
   const deck = (() => {
     const list = cards.filter((item) => cardCategory === "all" || item.category === cardCategory);
     if (!shuffled) return list;
@@ -119,6 +122,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
   function moveCard(next: number) {
     setCardIndex(next);
     setFlipped(false);
+    scrollUnderHeaderSoon(cardFace.current);
   }
 
   const showContinue = Boolean(resumeHref || todayLeft);
@@ -137,8 +141,12 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
     <>
       <section className="home-welcome" aria-label="Where to start">
         <h1>Arizona Notary Exam Prep</h1>
+      </section>
+      <div className="home-copy">
         <p className="home-lead">Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams.</p>
         <p className="home-diagnostic">Answer 10 free questions and find out what to study next.</p>
+      </div>
+      <section className="home-welcome home-welcome-actions" aria-label="Start">
         <div className="home-actions-row">
           <a className="btn btn-primary" href={`${paths.practice}?mode=quick`}>
             Check My Knowledge — 10 Questions
@@ -179,7 +187,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
 
       <div className="home-stage">
         <section aria-label="Study cards">
-          <div className="filter-row home-topics">
+          <div className="tool-row home-topics">
             {categories.map((category) => (
               <button
                 key={category}
@@ -187,8 +195,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
                 type="button"
                 onClick={() => {
                   setCardCategory(category);
-                  setCardIndex(0);
-                  setFlipped(false);
+                  moveCard(0);
                   setShuffled(false);
                 }}
               >
@@ -200,17 +207,17 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
               type="button"
               onClick={() => {
                 setShuffled((on) => !on);
-                setCardIndex(0);
-                setFlipped(false);
+                moveCard(0);
               }}
             >
               {shuffled ? "Back to order" : "Shuffle"}
             </button>
-            <Link className="btn btn-ghost home-all-cards" href={paths.studyCards}>All study cards</Link>
+            <Link className="chip" href={paths.studyCards}>All study cards</Link>
           </div>
           {card ? (
             <div className="home-card-column">
               <div
+                ref={cardFace}
                 className="study-face"
                 onClick={() => setFlipped((open) => !open)}
                 onKeyDown={(event) => {
@@ -245,17 +252,13 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
                 </button>
               </div>
               <div className="home-card-actions">
-                <div className="study-pager">
-                  <button className="btn btn-ghost" type="button" onClick={() => moveCard(safeIndex - 1)} disabled={safeIndex === 0}>
-                    Previous
-                  </button>
-                  <span>
-                    {safeIndex + 1} / {deck.length}
-                  </span>
-                  <button className="btn btn-ghost" type="button" onClick={() => moveCard(safeIndex + 1)} disabled={safeIndex >= deck.length - 1}>
-                    Next
-                  </button>
-                </div>
+                <StudyPager
+                  index={safeIndex}
+                  total={deck.length}
+                  target={cardFace}
+                  onPrev={() => moveCard(safeIndex - 1)}
+                  onNext={() => moveCard(safeIndex + 1)}
+                />
                 {card.practiceHref ? <Link className="btn btn-ghost" href={card.practiceHref}>Practice this topic</Link> : null}
               </div>
             </div>

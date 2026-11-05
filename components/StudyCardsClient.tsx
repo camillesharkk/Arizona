@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { topics } from "@/data/exam-config";
 import { StudyCardBody } from "@/components/StudyCardBody";
+import { StudyPager } from "@/components/StudyPager";
+import { scrollUnderHeaderSoon } from "@/lib/scroll-under-header";
 import { paths } from "@/lib/paths";
 import { isTopicSlug, type PublicStudyCard } from "@/lib/study-cards";
 
@@ -21,6 +23,7 @@ export function StudyCardsClient({ cards, initialTopic }: { cards: PublicStudyCa
   const deck = useMemo(() => cards.filter((card) => topic === "all" || card.topic === topic), [cards, topic]);
   const safeIndex = Math.min(index, Math.max(0, deck.length - 1));
   const card = deck[safeIndex];
+  const face = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setTopic(initialTopic);
@@ -33,16 +36,18 @@ export function StudyCardsClient({ cards, initialTopic }: { cards: PublicStudyCa
     setIndex(0);
     setFlipped(false);
     router.replace(next === "all" ? paths.studyCards : `${paths.studyCards}?topic=${next}`, { scroll: false });
+    scrollUnderHeaderSoon(face.current);
   }
 
   function move(next: number) {
     setIndex(next);
     setFlipped(false);
+    scrollUnderHeaderSoon(face.current);
   }
 
   return (
     <>
-      <div className="filter-row">
+      <div className="tool-row">
         <button className={`chip ${topic === "all" ? "on" : ""}`} type="button" onClick={() => pick("all")}>
           All Topics · {cards.length}
         </button>
@@ -55,6 +60,7 @@ export function StudyCardsClient({ cards, initialTopic }: { cards: PublicStudyCa
       {card ? (
         <>
           <div
+            ref={face}
             className="study-face"
             onClick={() => {
               if (!card.locked) setFlipped((open) => !open);
@@ -117,17 +123,13 @@ export function StudyCardsClient({ cards, initialTopic }: { cards: PublicStudyCa
               </button>
             ) : null}
           </div>
-          <div className="study-pager">
-            <button className="btn btn-ghost" type="button" onClick={() => move(safeIndex - 1)} disabled={safeIndex === 0}>
-              Previous
-            </button>
-            <span>
-              {safeIndex + 1} / {deck.length}
-            </span>
-            <button className="btn btn-ghost" type="button" onClick={() => move(safeIndex + 1)} disabled={safeIndex >= deck.length - 1}>
-              Next
-            </button>
-          </div>
+          <StudyPager
+            index={safeIndex}
+            total={deck.length}
+            target={face}
+            onPrev={() => move(safeIndex - 1)}
+            onNext={() => move(safeIndex + 1)}
+          />
         </>
       ) : (
         <p>No cards in this topic.</p>

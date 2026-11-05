@@ -221,12 +221,12 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
           <Link href={paths.pricing} data-upgrade-source="wrong_answers">View Pro</Link>
         </p>
       ) : null}
-      <div className="filter-row" aria-label="Review source">
+      <div className="tool-row" aria-label="Review source">
         <button className={`chip ${source === "all" ? "on" : ""}`} type="button" onClick={() => setSource("all")}>All</button>
         <button className={`chip ${source === "incorrect" ? "on" : ""}`} type="button" onClick={() => setSource("incorrect")}>Incorrect</button>
         <button className={`chip ${source === "saved" ? "on" : ""}`} type="button" onClick={() => setSource("saved")}>Saved</button>
       </div>
-      <div className="filter-row">
+      <div className="tool-row">
         <button className={`chip ${topic === "all" ? "on" : ""}`} type="button" onClick={() => selectTopic("all")}>
           All
         </button>

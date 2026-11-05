@@ -254,7 +254,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
 
   return (
     <div>
-      <div className="filter-row">
+      <div className="tool-row">
         {!topic &&
           (["all", "wrong", "unanswered", ...topics.map((t) => t.id)] as const).map((id) => (
             <button

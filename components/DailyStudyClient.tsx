@@ -5,6 +5,7 @@ import Link from "next/link";
 import { publishedQuestions } from "@/data/questions";
 import { ExamRunner } from "@/components/ExamRunner";
 import { StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
+import { StudyPager } from "@/components/StudyPager";
 import { LoadingNote } from "@/components/QuizChrome";
 import { paths } from "@/lib/paths";
 
@@ -42,6 +43,9 @@ export function DailyStudyClient() {
   const [practiceIndex, setPracticeIndex] = useState(0);
   const [reviewIndex, setReviewIndex] = useState(0);
   const [flipped, setFlipped] = useState<"practice" | "review" | null>(null);
+  const [pinned, setPinned] = useState<"practice" | "review">("practice");
+  const practiceFace = useRef<HTMLDivElement>(null);
+  const reviewFace = useRef<HTMLDivElement>(null);
   const zone = useMemo(() => Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix", []);
   const visibleStart = useRef<number | null>(null);
 
@@ -145,14 +149,20 @@ export function DailyStudyClient() {
           <h2>Today’s Practice</h2>
           {practiceCard ? (
             <>
-              <div className="study-face" onClick={() => setFlipped(flipped === "practice" ? null : "practice")} role="button" tabIndex={0}>
+              <div ref={practiceFace} className="study-face" onClick={() => setFlipped(flipped === "practice" ? null : "practice")} role="button" tabIndex={0}>
                 <StudyCardBody card={practiceCard} flipped={flipped === "practice"} />
               </div>
               <div className="row" style={{ marginTop: 12 }}>
                 <button className="btn btn-primary" type="button" onClick={() => mark(practiceCard.id, "studied")}>Mark studied</button>
-                <button className="btn btn-ghost" type="button" disabled={practiceIndex === 0} onClick={() => { setPracticeIndex((index) => index - 1); setFlipped(null); }}>Previous</button>
-                <button className="btn btn-ghost" type="button" disabled={practiceIndex >= practiceCards.length - 1} onClick={() => { setPracticeIndex((index) => index + 1); setFlipped(null); }}>Next</button>
               </div>
+              <StudyPager
+                index={Math.min(practiceIndex, practiceCards.length - 1)}
+                total={practiceCards.length}
+                target={practiceFace}
+                pin={Boolean(practiceCard) && (pinned === "practice" || !reviewCard)}
+                onPrev={() => { setPinned("practice"); setPracticeIndex((index) => index - 1); setFlipped(null); }}
+                onNext={() => { setPinned("practice"); setPracticeIndex((index) => index + 1); setFlipped(null); }}
+              />
             </>
           ) : <p>No new cards left in today’s goal.</p>}
         </section>
@@ -171,17 +181,21 @@ export function DailyStudyClient() {
           ) : null}
           {reviewCard ? (
             <>
-              <div className="study-face" onClick={() => setFlipped(flipped === "review" ? null : "review")} role="button" tabIndex={0}>
+              <div ref={reviewFace} className="study-face" onClick={() => setFlipped(flipped === "review" ? null : "review")} role="button" tabIndex={0}>
                 <StudyCardBody card={reviewCard} flipped={flipped === "review"} />
               </div>
               <div className="row" style={{ marginTop: 12 }}>
                 <button className="btn btn-primary" type="button" onClick={() => mark(reviewCard.id, "remembered")}>Mark reviewed</button>
                 <button className="btn btn-ghost" type="button" onClick={() => mark(reviewCard.id, "need-review")}>Need review</button>
               </div>
-              <div className="row">
-                <button className="btn btn-ghost" type="button" disabled={reviewIndex === 0} onClick={() => { setReviewIndex((index) => index - 1); setFlipped(null); }}>Previous</button>
-                <button className="btn btn-ghost" type="button" disabled={reviewIndex >= reviewCards.length - 1} onClick={() => { setReviewIndex((index) => index + 1); setFlipped(null); }}>Next</button>
-              </div>
+              <StudyPager
+                index={Math.min(reviewIndex, reviewCards.length - 1)}
+                total={reviewCards.length}
+                target={reviewFace}
+                pin={pinned === "review" || !practiceCard}
+                onPrev={() => { setPinned("review"); setReviewIndex((index) => index - 1); setFlipped(null); }}
+                onNext={() => { setPinned("review"); setReviewIndex((index) => index + 1); setFlipped(null); }}
+              />
             </>
           ) : null}
         </section>

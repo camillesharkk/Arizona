@@ -344,6 +344,59 @@ h2 { font-size: 1.5rem; }
 }
 
 .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 20px; max-width: 100%; }
+.tool-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 0 12px;
+  padding: 0 0 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  box-shadow: inset -18px 0 14px -16px rgba(0, 0, 0, 0.28);
+}
+.tool-row .chip {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  min-height: 44px;
+  padding: 0 12px;
+  white-space: nowrap;
+  text-decoration: none;
+  scroll-margin-inline: 16px;
+}
+.tool-row .chip::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 5px;
+  bottom: 5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+}
+.tool-row .chip.on { color: #fff; }
+.tool-row .chip.on::before { background: var(--ink); border-color: var(--ink); }
+.tool-row .chip:hover { text-decoration: none; }
+.tool-row .chip:disabled { opacity: 0.55; cursor: not-allowed; }
+.tool-row .chip:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 .chip {
   border: 1px solid var(--line); background: white; border-radius: 999px;
   padding: 8px 12px; min-height: 44px; max-width: 100%;
@@ -351,6 +404,7 @@ h2 { font-size: 1.5rem; }
 }
 .chip:disabled { opacity: 0.55; cursor: not-allowed; }
 .chip.on { background: var(--ink); color: white; border-color: var(--ink); }
+.tool-row .chip.on { background: transparent; border-color: transparent; color: #fff; }
 
 .flash-card {
   min-height: 280px; display: grid; place-items: center; text-align: center;
@@ -693,16 +747,20 @@ h2 { font-size: 1.5rem; }
 
 .home-welcome {
   width: min(900px, 100%);
-  margin: 48px auto 32px;
+  margin: 40px auto 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
+.home-welcome-actions { margin: 16px auto 32px; }
+.home-welcome-actions .home-actions-row { margin-top: 0; }
+.home-copy { width: 100%; margin: 16px 0 0; text-align: left; }
+.home-copy .home-lead,
+.home-copy .home-diagnostic { max-width: none; margin: 0; text-align: left; }
+.home-copy .home-diagnostic { margin-top: 16px; }
 .home-welcome > * { max-width: 100%; min-width: 0; }
 .home-welcome h1 { margin: 0; font-size: clamp(2rem, 4vw, 2.6rem); text-wrap: balance; }
-.home-welcome .home-lead { max-width: min(65ch, 100%); margin: 14px 0 0; }
-.home-welcome .home-diagnostic { margin: 16px 0 0; max-width: min(65ch, 100%); }
 .home-actions-row {
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
   gap: 14px; margin-top: 16px; max-width: 100%;
@@ -736,12 +794,10 @@ h2 { font-size: 1.5rem; }
   font-size: 17px; font-weight: 400; line-height: 1.55;
 }
 .home-main .btn,
-.home-main .q-option,
-.home-topics .chip {
+.home-main .q-option {
   font-family: var(--font); font-size: 17px;
 }
 .home-main .btn { line-height: normal; }
-.home-topics .chip { font-weight: 600; }
 .home-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; }
 .home-modes .q-option { margin: 0; }
 .home-continue { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; }
@@ -753,12 +809,11 @@ h2 { font-size: 1.5rem; }
 .home-stage .study-face { min-height: 0; min-width: 0; }
 .home-stage [hidden] { display: none; }
 .home-topics { align-items: center; margin: 0 0 10px; max-width: 100%; min-width: 0; }
-.home-all-cards { margin-left: auto; max-width: 100%; background: var(--bg); }
 .home-card-actions {
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
   width: 100%; margin-top: 10px;
 }
-.home-card-actions .study-pager { flex: 1 0 100%; width: 100%; margin-top: 0; }
+.home-card-actions > .study-pager-nav { flex: 1 0 100%; width: 100%; }
 .home-card-actions > .btn { flex: 0 0 auto; background: var(--bg); }
 .home-ways {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -856,9 +911,14 @@ h2 { font-size: 1.5rem; }
   .home-modes, .home-ways, .home-block .home-split { grid-template-columns: 1fr; }
 }
 @media (max-width: 700px) {
-  .home-welcome { margin: 32px auto 24px; }
+  .home-welcome { margin: 28px auto 0; }
+  .home-welcome-actions { margin-bottom: 24px; }
   .home-actions-row { flex-direction: column; align-items: stretch; width: 100%; }
   .home-welcome .btn { width: 100%; }
+}
+@media (max-width: 640px) {
+  .tool-row { gap: 6px; }
+  .tool-row .chip { font-size: 13px; padding: 0 10px; }
 }
 @media (max-width: 640px) {
   .home-main { padding-top: 0; }
@@ -872,17 +932,31 @@ h2 { font-size: 1.5rem; }
 }
 .study-switch { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
 .home-quiz .card { box-shadow: none; }
-.home-exam-nav { padding: 8px 0 4px; }
+.home-exam-nav,
+.study-pager-nav { padding: 8px 0 4px; }
 @media (max-width: 900px) {
-  body:has(.home-exam-nav) { padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px)); }
+  body:has(.home-exam-nav),
+  body:has(.study-pager-nav):not(:has(.home-exam-nav)) {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  }
   .home-exam { padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px)); }
-  .home-exam-nav {
+  .home-exam-nav,
+  .study-pager-nav:not(.is-inline) {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
-    background: rgba(255, 255, 255, 0.96);
+    background: #fff;
     border-top: 1px solid var(--line);
     padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px));
   }
-  .quiz-stem { scroll-margin-top: 8px; }
+  body:has(.home-exam-nav) .study-pager-nav,
+  body:has([role="dialog"][aria-modal="true"]) .study-pager-nav {
+    position: static;
+    z-index: auto;
+    border-top: 0;
+    background: transparent;
+    padding: 8px 0 4px;
+  }
+  .quiz-stem { scroll-margin-top: 12px; }
+  .study-face { scroll-margin-top: 12px; }
 }
 .home-next { margin-top: 36px; }
 .home-links { margin: 8px 0 0; padding: 0; list-style: none; }
