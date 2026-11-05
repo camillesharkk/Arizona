@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
 import { paths } from "@/lib/paths";
 import { FREE_FULL_EXAMS } from "@/lib/product";
-import { clearSitting, openSitting } from "@/lib/sitting";
+import { clearSitting, openSitting, readSitting } from "@/lib/sitting";
 
 const ANON_FULL_KEY = "az-anon-full-started";
 
@@ -38,6 +38,11 @@ export function PracticeLaunch() {
         setSignedIn(Boolean(d.user));
         setOwner(d.user?.id || "guest");
         const nextOwner = d.user?.id || "guest";
+        const requested = new URLSearchParams(window.location.search).get("mode");
+        const startFresh = new URLSearchParams(window.location.search).get("start") === "1";
+        if (startFresh && (requested === "quick" || requested === "full" || requested === "weak") && !openSitting(sessionStorage, nextOwner, requested)) {
+          clearSitting(sessionStorage, nextOwner, requested);
+        }
         setOpenModes({
           quick: Boolean(openSitting(sessionStorage, nextOwner, "quick")),
           full: Boolean(openSitting(sessionStorage, nextOwner, "full")),
@@ -77,6 +82,8 @@ export function PracticeLaunch() {
   }
 
   function enter(next: "quick" | "full" | "weak") {
+    const existing = readSitting(sessionStorage, owner, next);
+    if (existing?.done) clearSitting(sessionStorage, owner, next);
     const url = new URL(window.location.href);
     url.searchParams.set("mode", next);
     window.history.replaceState(null, "", url);

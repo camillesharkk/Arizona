@@ -87,11 +87,10 @@ export default async function StudyGuidePage() {
             {chapterReferences[c.id]?.length > 0 && <p className="notice">Also consult: {chapterReferences[c.id].map((id, i) => <span key={id}>{i > 0 ? " · " : ""}<a href={getSource(id).url}>{getSource(id).title}</a></span>)}</p>}
             {c.id === "new-laws" && <p><Link href={paths.laws}>Read the verified change and its effective date</Link></p>}
             <div className="row" style={{ marginTop: 12 }}>
-              {eligibleExamPool({ topic, freeOnly: true }).length > 0 ? (
-                <Link className="btn btn-primary" href={paths.topic(topic)}>
-                  Practice this topic free
-                </Link>
-              ) : (
+              <Link className="btn btn-primary" href={paths.topic(topic)}>
+                Practice This Topic
+              </Link>
+              {eligibleExamPool({ topic, freeOnly: true }).length > 0 ? null : (
                 <p>
                   This topic’s practice questions are Pro-only.{" "}
                   <Link href={paths.topic(topic)}>See the Pro explanation</Link>

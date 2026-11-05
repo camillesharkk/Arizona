@@ -101,6 +101,6 @@ export function weakTopics(
   }
   return [...map.entries()]
     .map(([topic, v]) => ({ topic, label: topicLabel(topic), ...v }))
-    .sort((a, b) => b.wrong / b.total - a.wrong / a.total || b.wrong - a.wrong)
+    .sort((a, b) => b.wrong / b.total - a.wrong / a.total || b.wrong - a.wrong || a.topic.localeCompare(b.topic))
     .slice(0, limit);
 }

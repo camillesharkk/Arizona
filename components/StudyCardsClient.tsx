@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { topics } from "@/data/exam-config";
 import { StudyCardBody } from "@/components/StudyCardBody";
 import { paths } from "@/lib/paths";
-import type { PublicStudyCard } from "@/lib/study-cards";
+import { isTopicSlug, type PublicStudyCard } from "@/lib/study-cards";
 
 export function StudyCardsClient({ cards, initialTopic }: { cards: PublicStudyCard[]; initialTopic: string }) {
   const router = useRouter();
@@ -132,6 +132,13 @@ export function StudyCardsClient({ cards, initialTopic }: { cards: PublicStudyCa
       ) : (
         <p>No cards in this topic.</p>
       )}
+      {isTopicSlug(topic) ? (
+        <p style={{ marginTop: 12 }}>
+          <Link className="btn btn-primary" href={paths.topic(topic)}>
+            Practice This Topic
+          </Link>
+        </p>
+      ) : null}
     </>
   );
 }

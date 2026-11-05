@@ -25,7 +25,9 @@ import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } 
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
 import { SaveForReview } from "@/components/SaveForReview";
 import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
-import { clearSitting, readSitting, remainingSeconds, writeSitting, type Sitting } from "@/lib/sitting";
+import { clearSitting, openSitting, readSitting, remainingSeconds, writeSitting, type Sitting } from "@/lib/sitting";
+import { weakestMissedTopic, topicStudyHref } from "@/lib/next-step";
+import { FREE_FULL_EXAMS } from "@/lib/product";
 import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
 
 type Mode = "quick" | "full" | "weak" | "practice";
@@ -61,6 +63,8 @@ export function ExamRunner({
   const count = mode === "quick" ? 10 : mode === "full" ? examConfig.questionCount : 10;
   const byId = useMemo(() => new Map(publishedQuestions().map((item) => [item.question_id, item])), []);
   const [owner, setOwner] = useState<string | null>(null);
+  const [signedIn, setSignedIn] = useState(false);
+  const [fullExamCount, setFullExamCount] = useState(0);
   const [bootError, setBootError] = useState(false);
   const [bootTry, setBootTry] = useState(0);
   const [activeSeed, setActiveSeed] = useState<number | null>(null);
@@ -170,6 +174,8 @@ export function ExamRunner({
       .then((data) => {
         if (cancel) return;
         const nextOwner = data.user?.id || "guest";
+        setSignedIn(Boolean(data.user));
+        setFullExamCount(Number(data.user?.fullExamCount || 0));
         const existing = readSitting(sessionStorage, nextOwner, modeKey);
         const seed = existing?.seed ?? Math.floor(Math.random() * 1_000_000_000);
         const ids = existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed);
@@ -464,24 +470,104 @@ export function ExamRunner({
       topicAcc.set(r.question.topic, cur);
     });
     const sources = [...new Set(results.map((r) => r.question.source_reference))];
+    const guided = (mode === "quick" || mode === "full") && !review;
+    const missed = guided
+      ? weakestMissedTopic(
+          questions.map((item) => ({
+            question: item,
+            selected: answers[item.question_id],
+            correct: answers[item.question_id] === item.correct_option,
+          }))
+        )
+      : null;
+    const studyHref = missed ? topicStudyHref(missed.topic, isPro) : paths.study;
+    let anonFullUsed = false;
+    if (typeof window !== "undefined") {
+      try {
+        anonFullUsed = localStorage.getItem("az-anon-full-started") === "1";
+      } catch {
+        anonFullUsed = false;
+      }
+    }
+    const fullResume = Boolean(owner && openSitting(sessionStorage, owner, "full"));
+    const fullLocked = !fullResume && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || (!signedIn && anonFullUsed));
+    const fullHref = `${paths.practice}?mode=full${fullResume ? "" : "&start=1"}`;
+    const dailyHref = signedIn ? paths.daily : `${paths.login}?next=${encodeURIComponent(paths.daily)}`;
     return (
       <div className="grid">
         <div className="card">
           <span className="kicker">Result</span>
-          <h2>
-            {pct}% — {pass ? "PASS" : "NEEDS REVIEW"}
-          </h2>
-          <p className="lede">
-            {correct} of {questions.length} correct. Practice target {examConfig.passingScorePercent}%. The SOS notice
-            checked {officialExam.checkedOn} lists {officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.
-          </p>
+          {guided && mode === "full" ? (
+            <div className="row" style={{ marginTop: 8 }}>
+              {missed ? (
+                <a className="btn btn-primary" href={studyHref}>Review {missed.label}</a>
+              ) : null}
+              <a className={missed ? "btn btn-ghost" : "btn btn-primary"} href={dailyHref}>Open Daily Study</a>
+            </div>
+          ) : null}
+          {guided && mode === "full" ? (
+            <p className="notice">
+              {signedIn
+                ? "Missed questions stay on your review schedule. Daily Study shows a question when it is due."
+                : "Daily Study needs a sign-in. This exam stays in this browser. It is not added to Daily Study unless you were signed in when you submitted."}
+            </p>
+          ) : null}
+          {guided && mode === "quick" ? (
+            <>
+              <h2>{correct} of {questions.length} correct</h2>
+              <p className="lede">
+                {correct >= 8
+                  ? "Next: take a full practice exam."
+                  : missed
+                    ? `Next: review ${missed.label}.`
+                    : "Next: read the study guide, or try another 10 questions. Skipped questions are not enough to pick a topic."}
+              </p>
+              <div className="row">
+                {correct >= 8 ? (
+                  fullLocked ? (
+                    <a className="btn btn-primary" href={paths.pricing} data-upgrade-source="practice_limit">Unlock Pro</a>
+                  ) : (
+                    <a className="btn btn-primary" href={fullHref}>{fullResume ? "Resume Full Practice Exam" : "Start a Full Practice Exam"}</a>
+                  )
+                ) : missed ? (
+                  <a className="btn btn-primary" href={studyHref}>Review {missed.label}</a>
+                ) : (
+                  <a className="btn btn-primary" href={paths.study}>Review Study Guide</a>
+                )}
+                {correct >= 8 && missed ? (
+                  <a className="btn btn-ghost" href={studyHref}>Review {missed.label}</a>
+                ) : null}
+                {correct >= 8 && fullLocked ? (
+                  <p className="notice">
+                    {signedIn
+                      ? "This account has used its free Full 45. Pro includes more full exams."
+                      : "This browser has used its free Full 45. Pro includes more full exams."}
+                  </p>
+                ) : null}
+                {correct < 8 && !missed ? (
+                  <a className="btn btn-ghost" href={`${paths.practice}?mode=quick&start=1`}>Check My Knowledge — 10 Questions</a>
+                ) : null}
+                <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
+              </div>
+            </>
+          ) : (
+            <>
+              <h2>
+                {pct}% — {pass ? "PASS" : "NEEDS REVIEW"}
+              </h2>
+              <p className="lede">
+                {correct} of {questions.length} correct. Practice target {examConfig.passingScorePercent}%. The SOS notice
+                checked {officialExam.checkedOn} lists {officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.
+              </p>
+            </>
+          )}
           <h3>Topic accuracy</h3>
           {[...topicAcc.entries()].map(([id, v]) => (
             <p key={id}>
               {v.label}: {Math.round((v.right / v.total) * 100)}% ({v.total - v.right} missed)
             </p>
           ))}
-          {weak.length > 0 && (
+          {!guided && weak.length > 0 && (
             <div style={{ marginTop: 16 }}>
               <p>
                 <strong>Your weakest areas are:</strong>
@@ -500,21 +586,28 @@ export function ExamRunner({
               <li key={s}>{s}</li>
             ))}
           </ul>
-          <div className="row" style={{ marginTop: 16 }}>
-            {weak.length > 0 ? (
-              <Link className="btn btn-primary" href={`${paths.practice}?mode=weak`}>
-                Fix My Weak Areas
+          {guided && mode === "full" ? (
+            <div className="row" style={{ marginTop: 16 }}>
+              <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
+              <Link className="btn btn-ghost" href={paths.study}>Review Study Guide</Link>
+            </div>
+          ) : guided ? null : (
+            <div className="row" style={{ marginTop: 16 }}>
+              {weak.length > 0 ? (
+                <Link className="btn btn-primary" href={`${paths.practice}?mode=weak`}>
+                  Fix My Weak Areas
+                </Link>
+              ) : (
+                <Link className="btn btn-primary" href={paths.questions}>
+                  Continue Practice
+                </Link>
+              )}
+              <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
+              <Link className="btn btn-ghost" href={paths.study}>
+                Review Study Guide
               </Link>
-            ) : (
-              <Link className="btn btn-primary" href={paths.questions}>
-                Continue Practice
-              </Link>
-            )}
-            <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
-            <Link className="btn btn-ghost" href={paths.study}>
-              Review Study Guide
-            </Link>
-          </div>
+            </div>
+          )}
           <AccountInvite />
           {isPro ? (
             <p className="notice">Pro is active. Keep practicing the topics you missed.</p>

@@ -681,6 +681,9 @@ h2 { font-size: 1.5rem; }
   .grid-4 { grid-template-columns: 1fr 1fr; }
 }
 
+.home-start { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 4px 0 18px; }
+.home-start .btn-primary { min-width: min(100%, 360px); }
+.home-start .home-lead { margin: 0; }
 .home-choice { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin: 16px 0 8px; }
 .home-choice .btn-primary { min-width: min(100%, 320px); }
 .home-choice-note { margin: -4px 0 4px; color: var(--muted); }
@@ -826,7 +829,7 @@ h2 { font-size: 1.5rem; }
 @media (max-width: 640px) {
   .home-main { padding-top: 12px; }
   .home-main > h1, .home-entry h1 { font-size: 1.7rem; }
-  .home-actions .btn-primary { width: 100%; }
+  .home-start .btn, .home-actions .btn-primary { width: 100%; }
   .quiz-result { font-size: 28px; }
   .study-face { min-height: 240px; padding: 16px; }
   .study-stack { gap: 16px; }

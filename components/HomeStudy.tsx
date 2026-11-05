@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
 import { categoryLabel, StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
-import { examConfig } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 import { FREE_FULL_EXAMS } from "@/lib/product";
+import { openSitting } from "@/lib/sitting";
 import { loadProgress } from "@/lib/storage";
 
 const ANON_FULL_KEY = "az-anon-full-started";
@@ -17,26 +17,25 @@ export type StudyPreviewCard = StudyCardView & {
   sourceUrl: string;
 };
 
-type Mode = "learn" | "practice";
-
 export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
-  const [mode, setMode] = useState<Mode>("learn");
+  const [homeQuiz, setHomeQuiz] = useState<"none" | "quick" | "full">("none");
   const [cardIndex, setCardIndex] = useState(0);
   const [cardCategory, setCardCategory] = useState("all");
   const [shuffled, setShuffled] = useState(false);
   const [flipped, setFlipped] = useState(false);
-  const [ready, setReady] = useState(false);
   const [isPro, setIsPro] = useState(false);
   const [fullExamCount, setFullExamCount] = useState(0);
   const [signedIn, setSignedIn] = useState(false);
+  const [quickOpen, setQuickOpen] = useState(false);
+  const [homeQuickOpen, setHomeQuickOpen] = useState(false);
+  const [fullSittingOpen, setFullSittingOpen] = useState(false);
+  const [homeFullOpen, setHomeFullOpen] = useState(false);
   const [anonFullUsed, setAnonFullUsed] = useState(false);
   const [gateReady, setGateReady] = useState(false);
   const [authReady, setAuthReady] = useState(false);
   const [fullOpen, setFullOpen] = useState(false);
   const [resumeHref, setResumeHref] = useState<string | null>(null);
-  const [cardResume, setCardResume] = useState(false);
   const [todayLeft, setTodayLeft] = useState<number | null>(null);
-  const anonFullThisVisit = useRef(false);
   const deck = (() => {
     const list = cards.filter((item) => cardCategory === "all" || item.category === cardCategory);
     if (!shuffled) return list;
@@ -58,9 +57,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
       const saved = JSON.parse(sessionStorage.getItem(HOME_CARD_KEY) || "");
       if (saved && typeof saved.index === "number") {
         setCardIndex(saved.index);
-        if (saved.index > 0) setCardResume(true);
       }
-      if (typeof saved?.category === "string" && saved.category !== "all") setCardResume(true);
       if (typeof saved?.category === "string") setCardCategory(saved.category);
     } catch {
       /* first visit */
@@ -88,13 +85,17 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
       }
     }
     setGateReady(true);
-    setReady(true);
     fetch("/api/auth/me/")
       .then((r) => r.json())
       .then((d) => {
+        const nextOwner = d.user?.id || "guest";
         setIsPro(Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
         setFullExamCount(Number(d.user?.fullExamCount || 0));
         setSignedIn(Boolean(d.user));
+        setQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "quick")));
+        setHomeQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "home-quick")));
+        setFullSittingOpen(Boolean(openSitting(sessionStorage, nextOwner, "full")));
+        setHomeFullOpen(Boolean(openSitting(sessionStorage, nextOwner, "home-full")));
       })
       .catch(() => undefined)
       .finally(() => setAuthReady(true));
@@ -113,67 +114,54 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
       .catch(() => undefined);
   }, [signedIn]);
 
-  const inThisAnonFull = anonFullThisVisit.current && fullOpen;
-  const anonBlocked = !isPro && !signedIn && anonFullUsed && !inThisAnonFull;
-  const fullLocked = !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || anonBlocked);
-
-  function consumeAnonFull() {
-    anonFullThisVisit.current = true;
-    try {
-      localStorage.setItem(ANON_FULL_KEY, "1");
-    } catch {
-      /* this visit still stays open in memory */
-    }
-    setAnonFullUsed(true);
-  }
-
-  function startFull() {
-    if (!authReady || !gateReady || fullLocked) return;
-    if (!isPro && !signedIn && !anonFullUsed) consumeAnonFull();
-    setMode("practice");
-    setFullOpen(true);
-  }
+  const fullLocked = !fullSittingOpen && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || (!signedIn && anonFullUsed));
 
   function moveCard(next: number) {
     setCardIndex(next);
     setFlipped(false);
   }
 
-  const showContinue = Boolean(resumeHref || cardResume || todayLeft);
+  const showContinue = Boolean(resumeHref || todayLeft);
+
+  const fullHref = `${paths.practice}?mode=full${fullSittingOpen ? "" : "&start=1"}`;
 
   return (
     <div className="study-stack">
-      <div className="home-modes" role="radiogroup" aria-label="How to study">
-        <button
-          className={`q-option${mode === "learn" ? " selected" : ""}`}
-          type="button"
-          role="radio"
-          aria-checked={mode === "learn"}
-          onClick={() => setMode("learn")}
-        >
-          <strong className="q-option-inner">Learn</strong>
-          <span className="notice q-option-inner">Study key rules with flashcards and examples.</span>
-        </button>
-        <button
-          className={`q-option${mode === "practice" ? " selected" : ""}`}
-          type="button"
-          role="radio"
-          aria-checked={mode === "practice"}
-          onClick={() => setMode("practice")}
-        >
-          <strong className="q-option-inner">Practice</strong>
-          <span className="notice q-option-inner">Apply what you know with practice questions.</span>
-        </button>
-      </div>
+      <section className="home-start" aria-label="Where to start">
+        <a className="btn btn-primary" href={`${paths.practice}?mode=quick`}>
+          Check My Knowledge — 10 Questions
+        </a>
+        <p className="home-lead">Answer 10 free questions and find out what to study next.</p>
+        {quickOpen ? <p className="notice">You have an unfinished 10-question check. This continues it.</p> : null}
+        {homeQuickOpen ? (
+          <button className="home-text-btn" type="button" onClick={() => setHomeQuiz("quick")}>
+            Continue the 10 questions started on this page
+          </button>
+        ) : null}
+        {authReady && gateReady && fullSittingOpen ? (
+          <a className="btn btn-ghost" href={fullHref}>Resume Full Practice Exam</a>
+        ) : authReady && gateReady && fullLocked ? (
+          <>
+            <a className="btn btn-ghost" href={paths.pricing} data-upgrade-source="practice_limit">Unlock Pro</a>
+            <p className="notice">
+              {signedIn
+                ? "This account has used its free Full 45. Pro includes more full exams."
+                : "This browser has used its free Full 45. Pro includes more full exams."}
+            </p>
+          </>
+        ) : authReady && gateReady ? (
+          <a className="btn btn-ghost" href={fullHref}>Start a Full Practice Exam</a>
+        ) : null}
+        {homeFullOpen ? (
+          <button className="home-text-btn" type="button" onClick={() => { setFullOpen(true); setHomeQuiz("full"); }}>
+            Continue the full exam started on this page
+          </button>
+        ) : null}
+      </section>
 
       {showContinue ? (
         <p className="home-continue">
           {resumeHref ? <Link href={resumeHref}>Continue saved practice</Link> : null}
-          {cardResume ? (
-            <button className="home-text-btn" type="button" onClick={() => setMode("learn")}>
-              Continue study cards
-            </button>
-          ) : null}
           {todayLeft ? (
             <Link href={paths.daily}>
               Today: {todayLeft} daily study {todayLeft === 1 ? "item" : "items"} left
@@ -183,7 +171,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
       ) : null}
 
       <div className="home-stage">
-        <section hidden={mode !== "learn"} aria-label="Study cards">
+        <section aria-label="Study cards">
           <div className="filter-row home-topics">
             {categories.map((category) => (
               <button
@@ -269,46 +257,22 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
           )}
         </section>
 
-        <section className="home-quiz" hidden={mode !== "practice" || fullOpen} aria-label="Practice questions">
-          {ready ? (
+        {homeQuiz === "quick" ? (
+          <section className="home-quiz" aria-label="Practice questions">
             <ExamRunner mode="quick" practice isPro={isPro} reportStart="answer" layout="compact" sittingMode="home-quick" />
-          ) : (
-            <div className="card" aria-busy="true">
-              <p className="notice">Question 1 of 10</p>
-              <div className="skeleton skeleton-line" />
-              <div className="skeleton skeleton-line" />
-            </div>
-          )}
-        </section>
+          </section>
+        ) : null}
 
-        {fullOpen ? (
-          <section hidden={mode !== "practice"} aria-label="Full practice exam">
+        {homeQuiz === "full" && fullOpen ? (
+          <section aria-label="Full practice exam">
             <ExamRunner mode="full" isPro={isPro} layout="compact" sittingMode="home-full" />
           </section>
         ) : null}
       </div>
 
-      <div className="home-ways">
-        <Link className="q-option" href={`${paths.practice}?mode=quick`}>
-          <strong className="q-option-inner">Check My Knowledge — 10 Questions</strong>
-        </Link>
-        {fullLocked ? (
-          <Link className="q-option" href={paths.pricing}>
-            <strong className="q-option-inner">Full Practice Exam</strong>
-            <span className="notice q-option-inner">Another full exam is part of Pro.</span>
-          </Link>
-        ) : (
-          <button className={`q-option${fullOpen ? " selected" : ""}`} type="button" disabled={!authReady || !gateReady} onClick={startFull}>
-            <strong className="q-option-inner">Full Practice Exam</strong>
-            <span className="notice q-option-inner">
-              {examConfig.questionCount} questions, {examConfig.timeLimitMinutes} minutes
-            </span>
-          </button>
-        )}
-        <Link className="q-option" href={paths.daily}>
-          <strong className="q-option-inner">Daily Study</strong>
-        </Link>
-      </div>
+      <p className="home-continue">
+        <Link href={paths.daily}>Daily Study</Link>
+      </p>
     </div>
   );
 }
