@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
 import { caPaths, isCaliforniaPath, switchStateHref } from "@/lib/ca-site";
+import { isComingSoonPath } from "@/lib/states";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { ProAccessNote } from "@/components/ProAccessNote";
@@ -45,6 +46,7 @@ export function SiteHeader() {
   const pathname = usePathname() || "";
   const nav = navFor(pathname);
   const onCa = isCaliforniaPath(pathname);
+  const onPicker = pathname === "/" || isComingSoonPath(pathname);
   const [open, setOpen] = useState(false);
   const [studyOpen, setStudyOpen] = useState(true);
   const [accountOpen, setAccountOpen] = useState(true);
@@ -89,7 +91,7 @@ export function SiteHeader() {
     setAuthStatus("signed-out");
     setOpen(false);
     await resetAnalyticsUser();
-    window.location.href = nav.home;
+    window.location.href = onPicker ? "/" : nav.home;
   }
 
   const onHome = pathname === nav.home || pathname === "/";
@@ -119,16 +121,21 @@ export function SiteHeader() {
           >
             <span className={open ? "menu-icon open" : "menu-icon"} />
           </button>
-          <Link href={nav.home} className="logo">
-            <span className="logo-mark">{onCa ? "C" : "A"}</span>
-            {onCa ? "California" : "Arizona Exam"}
+          <Link href={onPicker ? "/" : nav.home} className="logo">
+            <span className="logo-mark">{onPicker ? "N" : onCa ? "C" : "A"}</span>
+            {onPicker ? "Notary Exam Prep" : onCa ? "California" : "Arizona Exam"}
           </Link>
-          <nav className="state-switch" aria-label="State">
-            <Link href={switchStateHref(pathname, "AZ")} aria-current={onCa ? undefined : "page"}>AZ</Link>
-            <Link href={switchStateHref(pathname, "CA")} aria-current={onCa ? "page" : undefined}>CA</Link>
-          </nav>
+          {onPicker ? null : (
+            <nav className="state-switch" aria-label="State">
+              <Link href={switchStateHref(pathname, "AZ")} aria-current={onCa ? undefined : "page"}>AZ</Link>
+              <Link href={switchStateHref(pathname, "CA")} aria-current={onCa ? "page" : undefined}>CA</Link>
+            </nav>
+          )}
         </div>
         <nav className="nav nav-desktop" aria-label="Primary">
+          {onPicker ? null : <Link href="/">Choose State</Link>}
+          {onPicker ? null : (
+          <>
           <Link href={nav.practice} className={active(pathname, nav.practice) ? "active" : ""}>
             Practice
           </Link>
@@ -149,6 +156,8 @@ export function SiteHeader() {
           <Link href={nav.laws} className={active(pathname, nav.laws) ? "active" : ""}>
             Laws
           </Link>
+          </>
+          )}
         </nav>
         <div className="header-right">
           {authStatus === "signed-out" && (
@@ -157,13 +166,13 @@ export function SiteHeader() {
             </Link>
           )}
           {authStatus === "loading" && <span className="header-auth-placeholder" aria-hidden="true" />}
-          {!onHome && (
+          {!onHome && !onPicker && (
             <Link className="btn btn-primary header-cta" href={nav.practice}>
               Start Free Test
             </Link>
           )}
           {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} />}
-          {!onHome && (
+          {!onHome && !onPicker && (
             <Link className="btn btn-primary bar" href={nav.practice}>
               Practice Test
             </Link>
@@ -172,11 +181,16 @@ export function SiteHeader() {
       </div>
       {open && <div className="nav-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />}
       <nav id="mobile-nav" className={open ? "nav-drawer open" : "nav-drawer"} aria-label="Mobile">
-        <nav className="state-switch state-switch-drawer" aria-label="State">
-          <Link href={switchStateHref(pathname, "AZ")} aria-current={onCa ? undefined : "page"}>Arizona</Link>
-          <Link href={switchStateHref(pathname, "CA")} aria-current={onCa ? "page" : undefined}>California</Link>
-        </nav>
-        {onHome ? null : (
+        {onPicker ? (
+          <Link href="/">Choose State</Link>
+        ) : (
+          <nav className="state-switch state-switch-drawer" aria-label="State">
+            <Link href={switchStateHref(pathname, "AZ")} aria-current={onCa ? undefined : "page"}>Arizona</Link>
+            <Link href={switchStateHref(pathname, "CA")} aria-current={onCa ? "page" : undefined}>California</Link>
+          </nav>
+        )}
+        {onPicker ? null : <Link href="/">Choose State</Link>}
+        {onHome || onPicker ? null : (
           <Link className="btn btn-primary btn-wide drawer-start" href={nav.practice}>
             Practice Test
           </Link>
@@ -197,10 +211,12 @@ export function SiteHeader() {
         ) : (
           <p className="kicker">Guest</p>
         )}
-        <button className="chip" type="button" onClick={() => setStudyOpen((v) => !v)}>
-          Study {studyOpen ? "▾" : "▸"}
-        </button>
-        {studyOpen && (
+        {onPicker ? null : (
+          <button className="chip" type="button" onClick={() => setStudyOpen((v) => !v)}>
+            Study {studyOpen ? "▾" : "▸"}
+          </button>
+        )}
+        {!onPicker && studyOpen && (
           <>
             {study.map((l) => (
               <Link key={l.href} href={l.href} className={active(pathname, l.href) ? "active" : ""}>
@@ -220,16 +236,18 @@ export function SiteHeader() {
             </Link>
           </>
         )}
-        <button className="chip" type="button" onClick={() => setAccountOpen((v) => !v)}>
-          Exam & career {accountOpen ? "▾" : "▸"}
-        </button>
-        {accountOpen &&
+        {onPicker ? null : (
+          <button className="chip" type="button" onClick={() => setAccountOpen((v) => !v)}>
+            Exam & career {accountOpen ? "▾" : "▸"}
+          </button>
+        )}
+        {!onPicker && accountOpen &&
           exam.map((l) => (
             <Link key={l.href} href={l.href} className={active(pathname, l.href) ? "active" : ""}>
               {l.label}
             </Link>
           ))}
-        {onCa ? <Link href={nav.examPrep}>Exam guide</Link> : <Link href={paths.courses}>Arizona Notary Courses</Link>}
+        {onPicker ? null : onCa ? <Link href={nav.examPrep}>Exam guide</Link> : <Link href={paths.courses}>Arizona Notary Courses</Link>}
         {authStatus === "signed-in" && me ? (
           <>
             <Link href={paths.dashboard}>Dashboard</Link>
@@ -259,17 +277,22 @@ export function SiteFooter() {
   const pathname = usePathname() || "";
   const nav = navFor(pathname);
   const onCa = isCaliforniaPath(pathname);
+  const onPicker = pathname === "/" || isComingSoonPath(pathname);
   return (
     <footer className="footer">
       <div className="wrap footer-bar">
-        <p className="footer-brand">{onCa ? "California Exam. Independent practice." : "Arizona Exam. Independent practice."}</p>
+        <p className="footer-brand">{onPicker ? "Notary Exam Prep. Independent practice." : onCa ? "California Exam. Independent practice." : "Arizona Exam. Independent practice."}</p>
         <nav className="footer-links" aria-label="Help and legal">
+          {onPicker ? <Link href="/">Choose State</Link> : (
+            <>
           <Link href={nav.practice}>Practice Test</Link>
           <Link href={nav.questions}>Questions</Link>
           <Link href={nav.study}>Study Guide</Link>
           <Link href={nav.guidesIndex}>Exam guides</Link>
           <Link href={nav.passingScore}>Passing score</Link>
           <Link href={nav.mistakes}>Wrong Answers</Link>
+            </>
+          )}
           <Link href={paths.privacy}>Privacy</Link>
           <Link href={paths.terms}>Terms</Link>
           <Link href={paths.refund}>Refund Policy</Link>

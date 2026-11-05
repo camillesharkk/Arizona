@@ -14,6 +14,7 @@ export default function Page() {
         When configured, we use Google Analytics 4 for acquisition (source, landing page, and organic search), PostHog for product events such as practice, signup, and checkout steps, and Microsoft Clarity for heatmaps, clicks, scrolls, and session recordings. These tools are off unless their environment variables are set. We do not send question text, answer text, passwords, or payment customer details to them. Analytics identifies a signed-in visitor by an internal account id, not by email, name, or phone. Clarity masks form fields and does not record login, account, dashboard, or checkout screens. Paddle Checkout content is not recorded.
       </p>
       <p>You may request deletion of your account data through the site contact form.</p>
+      <p>If you choose Use My Location, your browser sends coordinates to this site once so we can identify a state from local boundary data. We do not store those coordinates, put them in a page address, or send them to analytics.</p>
     </LegalCopy>
   );
 }

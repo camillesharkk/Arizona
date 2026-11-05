@@ -6,6 +6,7 @@ import { siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const urls = [
+    "/",
     paths.home,
     paths.practice,
     paths.questions,

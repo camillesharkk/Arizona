@@ -1,10 +1,20 @@
-import { redirect } from "next/navigation";
-import { paths, redirectWithSearch } from "@/lib/paths";
+import type { Metadata } from "next";
+import { StatePicker } from "@/components/StatePicker";
+import { siteUrl } from "@/lib/site";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  redirect(redirectWithSearch(paths.home, await searchParams));
+export const metadata: Metadata = {
+  title: { absolute: "Choose Your State · Notary Exam Prep" },
+  description: "Select your state to find notary practice questions and study materials.",
+  alternates: { canonical: `${siteUrl()}/` },
+  robots: { index: true, follow: true },
+};
+
+export default function Page() {
+  return (
+    <main className="wrap state-picker-page">
+      <h1>Choose Your State</h1>
+      <p className="home-lead">Select your state to find notary practice questions and study materials.</p>
+      <StatePicker />
+    </main>
+  );
 }
