@@ -1,4 +1,5 @@
 import type { Difficulty, ExamArea, Question, TopicId } from "@/lib/types";
+import { extraCaRows } from "./ca-extra";
 
 const VERIFIED = "2026-11-05";
 
@@ -13,6 +14,58 @@ type Row = {
   correct: 0 | 1 | 2 | 3;
   why: string;
   source: string;
+  study?: string;
+  miss?: [string, string, string, string];
+};
+
+const studyById: Record<string, string> = {
+  "ca-001": "qualification",
+  "ca-002": "qualification",
+  "ca-003": "education-exam",
+  "ca-004": "bond-oath",
+  "ca-005": "address-records",
+  "ca-006": "bond-oath",
+  "ca-007": "acknowledgment",
+  "ca-008": "jurat",
+  "ca-009": "fees",
+  "ca-010": "fees",
+  "ca-011": "copy-cert",
+  "ca-012": "fees",
+  "ca-013": "fees",
+  "ca-014": "certificates",
+  "ca-015": "acknowledgment",
+  "ca-016": "subscribing-witness",
+  "ca-017": "authority-conflict",
+  "ca-018": "authority-conflict",
+  "ca-019": "fees",
+  "ca-020": "electronic-ron",
+  "ca-021": "identification",
+  "ca-022": "credible-witness",
+  "ca-023": "credible-witness",
+  "ca-024": "identification",
+  "ca-025": "identification",
+  "ca-026": "advertising-immigration",
+  "ca-027": "advertising-immigration",
+  "ca-028": "advertising-immigration",
+  "ca-029": "advertising-immigration",
+  "ca-030": "advertising-immigration",
+  "ca-031": "journal-thumbprint",
+  "ca-032": "journal-thumbprint",
+  "ca-033": "journal-thumbprint",
+  "ca-034": "journal-thumbprint",
+  "ca-035": "journal-thumbprint",
+  "ca-036": "journal-thumbprint",
+  "ca-037": "seal",
+  "ca-038": "seal",
+  "ca-039": "seal",
+  "ca-040": "seal",
+  "ca-041": "seal",
+  "ca-042": "address-records",
+  "ca-043": "fees",
+  "ca-044": "journal-thumbprint",
+  "ca-045": "education-exam",
+  "ca-046": "education-exam",
+  "ca-047": "education-exam",
 };
 
 const rows: Row[] = [
@@ -149,7 +202,7 @@ const rows: Row[] = [
   },
   {
     id: "ca-009",
-    area: "acts",
+    area: "violations",
     topic: "acknowledgments",
     difficulty: "medium",
     free: true,
@@ -161,7 +214,7 @@ const rows: Row[] = [
   },
   {
     id: "ca-010",
-    area: "acts",
+    area: "violations",
     topic: "jurats",
     difficulty: "medium",
     free: true,
@@ -185,7 +238,7 @@ const rows: Row[] = [
   },
   {
     id: "ca-012",
-    area: "acts",
+    area: "violations",
     topic: "acknowledgments",
     difficulty: "medium",
     free: true,
@@ -197,7 +250,7 @@ const rows: Row[] = [
   },
   {
     id: "ca-013",
-    area: "acts",
+    area: "violations",
     topic: "jurats",
     difficulty: "hard",
     free: true,
@@ -294,7 +347,7 @@ const rows: Row[] = [
   },
   {
     id: "ca-019",
-    area: "acts",
+    area: "violations",
     topic: "jurats",
     difficulty: "medium",
     free: true,
@@ -777,15 +830,16 @@ const letters = ["A", "B", "C", "D"] as const;
 function publish(row: Row): Question {
   const correct = letters[row.correct];
   const feedback = {
-    A: row.correct === 0 ? row.why : "That choice does not match the California statute or handbook passage cited for this item.",
-    B: row.correct === 1 ? row.why : "That choice does not match the California statute or handbook passage cited for this item.",
-    C: row.correct === 2 ? row.why : "That choice does not match the California statute or handbook passage cited for this item.",
-    D: row.correct === 3 ? row.why : "That choice does not match the California statute or handbook passage cited for this item.",
+    A: row.miss?.[0] || (row.correct === 0 ? row.why : `"${row.options[0]}" conflicts with the cited rule. ${row.why}`),
+    B: row.miss?.[1] || (row.correct === 1 ? row.why : `"${row.options[1]}" conflicts with the cited rule. ${row.why}`),
+    C: row.miss?.[2] || (row.correct === 2 ? row.why : `"${row.options[2]}" conflicts with the cited rule. ${row.why}`),
+    D: row.miss?.[3] || (row.correct === 3 ? row.why : `"${row.options[3]}" conflicts with the cited rule. ${row.why}`),
   };
   return {
     question_id: row.id,
     state: "CA",
     exam_area: row.area,
+    study_topic: row.study || studyById[row.id],
     topic: row.topic,
     difficulty: row.difficulty,
     question_text: row.text,
@@ -807,7 +861,7 @@ function publish(row: Row): Question {
   };
 }
 
-const questions = rows.map(publish);
+const questions = [...rows, ...extraCaRows].map(publish);
 
 export function publishedCaQuestions(): Question[] {
   return questions.filter((question) => question.status === "published" && question.state === "CA");

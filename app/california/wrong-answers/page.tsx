@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CaliforniaWrong } from "@/components/CaliforniaWrong";
+import { CloudMistakes } from "@/components/CloudMistakes";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <main className="wrap">
       <h1>California wrong answers</h1>
-      <CaliforniaWrong />
+      <CloudMistakes stateCode="CA" />
     </main>
   );
 }

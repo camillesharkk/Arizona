@@ -3,54 +3,91 @@
 import { useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { caCards } from "@/data/ca-cards";
-import { areaLabel, caPaths } from "@/lib/ca-site";
+import { caPaths } from "@/lib/ca-site";
+import { caStudyTopics } from "@/lib/ca-topics";
+import { StudyCardBody } from "@/components/StudyCardBody";
 import { StudyPager } from "@/components/StudyPager";
-
-const areas = ["all", "administration", "acts", "identity", "immigration", "violations"] as const;
+import { scrollUnderHeaderSoon } from "@/lib/scroll-under-header";
 
 export function CaliforniaCards() {
   const params = useSearchParams();
   const initial = params.get("topic") || "all";
-  const [area, setArea] = useState<(typeof areas)[number]>(areas.includes(initial as (typeof areas)[number]) ? (initial as (typeof areas)[number]) : "all");
+  const topics = ["all", ...caStudyTopics.map((topic) => topic.id)];
+  const [topic, setTopic] = useState(topics.includes(initial) ? initial : "all");
   const [index, setIndex] = useState(0);
-  const [open, setOpen] = useState(false);
-  const face = useRef<HTMLElement | null>(null);
-  const cards = useMemo(() => caCards.filter((card) => area === "all" || card.area === area), [area]);
-  const card = cards[index];
+  const [flipped, setFlipped] = useState(false);
+  const face = useRef<HTMLDivElement>(null);
+  const cards = useMemo(() => caCards.filter((card) => topic === "all" || card.study === topic), [topic]);
+  const safeIndex = Math.min(index, Math.max(cards.length - 1, 0));
+  const card = cards[safeIndex];
 
-  function pick(next: (typeof areas)[number]) {
-    setArea(next);
+  function pick(next: string) {
+    setTopic(next);
     setIndex(0);
-    setOpen(false);
+    setFlipped(false);
+  }
+
+  function move(next: number) {
+    setIndex(next);
+    setFlipped(false);
+    scrollUnderHeaderSoon(face.current);
   }
 
   return (
-    <div className="grid">
+    <div>
       <div className="tool-row" role="toolbar" aria-label="Study card topics">
-        {areas.map((item) => (
-          <button key={item} className={item === area ? "chip on" : "chip"} type="button" onClick={() => pick(item)}>
-            {item === "all" ? "All study cards" : areaLabel(item)}
+        {topics.map((item) => (
+          <button key={item} className={item === topic ? "chip on" : "chip"} type="button" onClick={() => pick(item)}>
+            {item === "all" ? "All study cards" : caStudyTopics.find((entry) => entry.id === item)?.label}
           </button>
         ))}
       </div>
       {card ? (
-        <article className="card" ref={face}>
-          <p className="kicker">{areaLabel(card.area)}</p>
-          <h2>{card.title}</h2>
-          <p>{open ? card.back : card.front}</p>
-          <p className="notice">{card.source}</p>
-          <div className="row">
-            <button className="btn btn-ghost" type="button" onClick={() => setOpen((value) => !value)}>{open ? "Hide answer" : "Show answer"}</button>
-            <a className="btn btn-primary" href={`${caPaths.practice}?mode=quick`}>Practice this state</a>
+        <div className="home-card-column">
+          <div
+            ref={face}
+            className="study-face"
+            role="button"
+            tabIndex={0}
+            aria-pressed={flipped}
+            onClick={() => setFlipped((open) => !open)}
+            onKeyDown={(event) => {
+              if (event.key === "ArrowRight" && safeIndex < cards.length - 1) {
+                event.preventDefault();
+                move(safeIndex + 1);
+              } else if (event.key === "ArrowLeft" && safeIndex > 0) {
+                event.preventDefault();
+                move(safeIndex - 1);
+              } else if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                setFlipped((open) => !open);
+              }
+            }}
+          >
+            <StudyCardBody
+              card={{
+                id: card.id,
+                category: card.study,
+                title: card.title,
+                front: card.front,
+                back: card.rule,
+                rule: card.rule,
+                boundary: card.boundary,
+                mixup: card.mixup,
+                sourceLabel: card.source,
+                sourceUrl: card.sourceUrl,
+              }}
+              flipped={flipped}
+            />
+            <button className="btn btn-ghost study-reveal" type="button" onClick={(event) => { event.stopPropagation(); setFlipped((open) => !open); }}>
+              {flipped ? "Show question" : "Show answer"}
+            </button>
           </div>
-          <StudyPager
-            index={index}
-            total={cards.length}
-            target={face}
-            onPrev={() => { setIndex((value) => Math.max(0, value - 1)); setOpen(false); }}
-            onNext={() => { setIndex((value) => Math.min(cards.length - 1, value + 1)); setOpen(false); }}
-          />
-        </article>
+          <div className="home-card-actions">
+            <StudyPager index={safeIndex} total={cards.length} target={face} onPrev={() => move(safeIndex - 1)} onNext={() => move(safeIndex + 1)} />
+            <a className="btn btn-ghost" href={`${caPaths.practice}?mode=practice&area=${card.study}`}>Practice this topic</a>
+          </div>
+        </div>
       ) : (
         <p>No cards in this topic.</p>
       )}

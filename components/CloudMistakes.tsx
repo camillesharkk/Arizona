@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { publishedQuestions } from "@/data/questions";
+import { publishedCaQuestions } from "@/data/ca-questions";
 import { topics } from "@/data/exam-config";
+import { CA_EXAM, caPaths } from "@/lib/ca-site";
 import { ExamRunner } from "@/components/ExamRunner";
 import { LoadingNote } from "@/components/QuizChrome";
 import { topicLabel } from "@/lib/quiz";
@@ -20,10 +22,17 @@ function dueNow(stat: QuestionStat) {
   return Boolean(stat.nextReviewAt) && Date.parse(stat.nextReviewAt as string) <= Date.now();
 }
 
-export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
+export function CloudMistakes({ initialTopic, stateCode = "AZ" }: { initialTopic?: string; stateCode?: "AZ" | "CA" }) {
+  const onCa = stateCode === "CA";
+  const site = onCa ? caPaths : paths;
+  const questionPool = onCa ? publishedCaQuestions() : publishedQuestions();
+  const topicChoices = onCa
+    ? CA_EXAM.quotas.map((item) => ({ id: item.area, short: item.label }))
+    : topics.map((item) => ({ id: item.id, short: item.short }));
   const router = useRouter();
   const [stats, setStats] = useState<QuestionStat[]>([]);
-  const [topic, setTopic] = useState(initialTopic && topicIds.has(initialTopic) ? initialTopic : "all");
+  const allowedTopics = new Set<string>(topicChoices.map((item) => item.id));
+  const [topic, setTopic] = useState<string>(initialTopic && allowedTopics.has(initialTopic) ? initialTopic : "all");
   const [queue, setQueue] = useState<Question[] | null>(null);
   const [isPro, setIsPro] = useState(false);
   const [needAuth, setNeedAuth] = useState(false);
@@ -59,7 +68,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
       userIdRef.current = me.user.id;
       setSeen(readMistakePrompts(window.localStorage, me.user.id));
       setIsPro(Boolean(me.user.arizonaPro || me.user.plan === "pro"));
-      const response = await fetch("/api/mistakes/", { cache: "no-store", signal: AbortSignal.timeout(30000) });
+      const response = await fetch(onCa ? "/api/mistakes/?state=CA" : "/api/mistakes/", { cache: "no-store", signal: AbortSignal.timeout(30000) });
       if (id !== requestId.current || pendingIds.current.size) return;
       if (!response.ok) throw new Error("mistakes");
       const data = await response.json();
@@ -135,7 +144,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
   }, []);
 
   useEffect(() => {
-    setTopic(initialTopic && topicIds.has(initialTopic) ? initialTopic : "all");
+    setTopic(initialTopic && allowedTopics.has(initialTopic) ? initialTopic : "all");
   }, [initialTopic]);
 
   useEffect(() => {
@@ -150,7 +159,11 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [prompt]);
 
-  const byTopic = stats.filter((s) => topic === "all" || s.topic === topic);
+  const byTopic = stats.filter((s) => {
+    if (topic === "all") return true;
+    if (!onCa) return s.topic === topic;
+    return questionPool.find((question) => question.question_id === s.questionId)?.exam_area === topic;
+  });
   const filtered = byTopic.filter((s) => {
     if (source === "incorrect") return s.wrongCount > 0;
     if (source === "saved") return Boolean(s.savedForReview);
@@ -162,11 +175,11 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
     .filter((value): value is string => Boolean(value))
     .sort()[0];
   const phase = listPhase(loadError ? "error" : ready ? "ready" : "loading", filtered.length);
-  const returnTo = topic === "all" ? paths.mistakes : `${paths.mistakes}?topic=${topic}`;
+  const returnTo = topic === "all" ? site.mistakes : `${site.mistakes}?topic=${topic}`;
 
   function selectTopic(id: string) {
     setTopic(id);
-    router.replace(id === "all" ? paths.mistakes : `${paths.mistakes}?topic=${id}`, { scroll: false });
+    router.replace(id === "all" ? site.mistakes : `${site.mistakes}?topic=${id}`, { scroll: false });
   }
 
   function requestAction(stat: QuestionStat, action: MistakeAction) {
@@ -180,7 +193,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
   }
 
   function begin() {
-    const byId = new Map(publishedQuestions().map((question) => [question.question_id, question]));
+    const byId = new Map(questionPool.map((question) => [question.question_id, question]));
     const next = filtered.flatMap((stat) => {
       const question = byId.get(stat.questionId);
       return question ? [question] : [];
@@ -192,7 +205,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
     return (
       <div className="card">
         <p>Sign in to practice the questions you missed. Your place is saved.</p>
-        <Link className="btn btn-primary" href={`${paths.login}?next=${encodeURIComponent(returnTo)}`}>
+        <Link className="btn btn-primary" href={`${site.login}?next=${encodeURIComponent(returnTo)}`}>
           Sign in
         </Link>
       </div>
@@ -205,7 +218,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
         <button className="btn btn-ghost" type="button" onClick={() => { setQueue(null); load(); }}>
           Back
         </button>
-        <ExamRunner mode="weak" practice review preset={queue} isPro={isPro} sittingMode={`review-${source}-${topic}`} />
+        <ExamRunner mode="weak" practice review preset={queue} isPro={onCa ? true : isPro} sittingMode={`review-${source}-${topic}`} stateCode={stateCode} />
       </div>
     );
   }
@@ -215,12 +228,13 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
       {ready && isPro ? (
         <p className="notice">Pro is active. Missed questions and questions you save stay on this account.</p>
       ) : null}
-      {ready && !isPro ? (
+      {ready && !isPro && !onCa ? (
         <p className="notice">
           Missed questions and questions you save stay on this account. Pro adds the rest of the practice bank.{" "}
           <Link href={paths.pricing} data-upgrade-source="wrong_answers">View Pro</Link>
         </p>
       ) : null}
+      {ready && onCa ? <p className="notice">Missed California questions and questions you save stay on this account.</p> : null}
       <div className="tool-row" aria-label="Review source">
         <button className={`chip ${source === "all" ? "on" : ""}`} type="button" onClick={() => setSource("all")}>All</button>
         <button className={`chip ${source === "incorrect" ? "on" : ""}`} type="button" onClick={() => setSource("incorrect")}>Incorrect</button>
@@ -230,7 +244,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
         <button className={`chip ${topic === "all" ? "on" : ""}`} type="button" onClick={() => selectTopic("all")}>
           All
         </button>
-        {topics.map((item) => (
+        {topicChoices.map((item) => (
           <button key={item.id} className={`chip ${topic === item.id ? "on" : ""}`} type="button" onClick={() => selectTopic(item.id)}>
             {item.short}
           </button>
@@ -258,7 +272,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
                 ? "No missed questions."
                 : "No missed or saved questions in this set yet."}
           </p>
-          <Link className="btn btn-primary" href={paths.practice}>Start a practice test</Link>
+          <Link className="btn btn-primary" href={site.practice}>Start a practice test</Link>
         </div>
       ) : null}
       {phase === "list" ? (
@@ -288,7 +302,7 @@ export function CloudMistakes({ initialTopic }: { initialTopic?: string }) {
         {actionMessage}
       </p>
       {filtered.map((s) => {
-        const q = publishedQuestions().find((x) => x.question_id === s.questionId);
+        const q = questionPool.find((x) => x.question_id === s.questionId);
         if (!q) return null;
         return (
           <article className="card" key={s.questionId} style={{ marginTop: 12 }}>

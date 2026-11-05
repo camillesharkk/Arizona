@@ -14,6 +14,7 @@ import {
   pickFullExam,
   presentExamQuestions,
   scorePercent,
+  shuffle,
   topicLabel,
   weakTopics,
   type Letter,
@@ -46,6 +47,7 @@ export function ExamRunner({
   review = false,
   onRecorded,
   stateCode = "AZ",
+  focusArea,
 }: {
   mode: Mode;
   practice?: boolean;
@@ -60,6 +62,7 @@ export function ExamRunner({
   review?: boolean;
   onRecorded?: () => void;
   stateCode?: SittingState;
+  focusArea?: string;
 }) {
   const modeKey = sittingMode || mode;
   const site = stateCode === "CA" ? caPaths : paths;
@@ -128,6 +131,10 @@ export function ExamRunner({
 
   function drawQuestionIds(seed: number) {
     if (stateCode === "CA") {
+      if (focusArea) {
+        const pool = publishedCaQuestions().filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
+        return shuffle(pool, seed).slice(0, 10).map((item) => item.question_id);
+      }
       if (mode === "quick") return pickCaQuickExam(seed).map((item) => item.question_id);
       if (mode === "full") {
         const picked = pickCaFullExam(seed);

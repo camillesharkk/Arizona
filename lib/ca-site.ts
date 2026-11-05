@@ -39,7 +39,7 @@ export const CA_EXAM = {
   quotas: [
     { area: "administration", label: "Administrative procedures", count: 5 },
     { area: "acts", label: "Notarial acts and documents", count: 12 },
-    { area: "identity", label: "Identification and credible witnesses", count: 4 },
+    { area: "identity", label: "Identification and subscribing witness notarizations", count: 4 },
     { area: "immigration", label: "Immigration and foreign language", count: 4 },
     { area: "violations", label: "Misconduct and fees", count: 15 },
   ] as const,

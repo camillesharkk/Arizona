@@ -11,7 +11,8 @@ import { clearSitting, openSitting, readSitting, type SittingState } from "@/lib
 export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState }) {
   const anonFullKey = stateCode === "CA" ? "ca-anon-full-started" : "az-anon-full-started";
   const site = stateCode === "CA" ? caPaths : paths;
-  const [mode, setMode] = useState<"pick" | "quick" | "full" | "weak">("pick");
+  const [mode, setMode] = useState<"pick" | "quick" | "full" | "weak" | "practice">("pick");
+  const [focusArea, setFocusArea] = useState("");
   const [isPro, setIsPro] = useState(false);
   const [fullExamCount, setFullExamCount] = useState(0);
   const [signedIn, setSignedIn] = useState(false);
@@ -29,8 +30,13 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
       setAnonFullUsed(false);
     }
     setGateReady(true);
-    const q = new URLSearchParams(window.location.search).get("mode");
-    if (q === "quick" || q === "full" || q === "weak") setMode(q);
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("mode");
+    const area = params.get("area") || "";
+    if (area) {
+      setFocusArea(area);
+      setMode("practice");
+    } else if (q === "quick" || q === "full" || q === "weak") setMode(q);
     fetch("/api/auth/me/")
       .then((r) => r.json())
       .then((d) => {
@@ -174,7 +180,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
       <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginBottom: 16 }}>
         Change mode
       </button>
-      <ExamRunner mode={mode} practice={mode !== "full"} isPro={isPro} sittingMode={mode} stateCode={stateCode} />
+      <ExamRunner mode={mode} practice={mode !== "full"} isPro={isPro} sittingMode={focusArea ? `area-${focusArea}` : mode} stateCode={stateCode} focusArea={focusArea || undefined} />
     </div>
   );
 }

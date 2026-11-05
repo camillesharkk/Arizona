@@ -35,6 +35,8 @@ export type Question = {
   state: StateCode;
   /** California exam content area. Arizona items leave this unset. */
   exam_area?: ExamArea;
+  /** California study topic. One question has one primary exam area. */
+  study_topic?: string;
   topic: TopicId;
   difficulty: Difficulty;
   question_text: string;

@@ -7,6 +7,7 @@ import { StudyPager } from "@/components/StudyPager";
 import { scrollUnderHeaderSoon } from "@/lib/scroll-under-header";
 import { categoryLabel, StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
 import { paths } from "@/lib/paths";
+import { caPaths } from "@/lib/ca-site";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { openSitting } from "@/lib/sitting";
 import { loadProgress } from "@/lib/storage";
@@ -19,7 +20,11 @@ export type StudyPreviewCard = StudyCardView & {
   sourceUrl: string;
 };
 
-export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
+export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard[]; stateCode?: "AZ" | "CA" }) {
+  const onCa = stateCode === "CA";
+  const site = onCa ? caPaths : paths;
+  const cardKey = onCa ? "ca-home-card" : HOME_CARD_KEY;
+  const anonKey = onCa ? "ca-anon-full-started" : ANON_FULL_KEY;
   const [homeQuiz, setHomeQuiz] = useState<"none" | "quick" | "full">("none");
   const [cardIndex, setCardIndex] = useState(0);
   const [cardCategory, setCardCategory] = useState("all");
@@ -57,7 +62,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
 
   useEffect(() => {
     try {
-      const saved = JSON.parse(sessionStorage.getItem(HOME_CARD_KEY) || "");
+      const saved = JSON.parse(sessionStorage.getItem(cardKey) || "");
       if (saved && typeof saved.index === "number") {
         setCardIndex(saved.index);
       }
@@ -69,22 +74,22 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
 
   useEffect(() => {
     try {
-      sessionStorage.setItem(HOME_CARD_KEY, JSON.stringify({ index: safeIndex, category: cardCategory }));
+      sessionStorage.setItem(cardKey, JSON.stringify({ index: safeIndex, category: cardCategory }));
     } catch {
       /* storage can be blocked */
     }
-  }, [safeIndex, cardCategory]);
+  }, [safeIndex, cardCategory, cardKey]);
 
   useEffect(() => {
     try {
-      setAnonFullUsed(localStorage.getItem(ANON_FULL_KEY) === "1");
+      setAnonFullUsed(localStorage.getItem(anonKey) === "1");
     } catch {
       setAnonFullUsed(false);
     }
-    const saved = loadProgress();
+    const saved = loadProgress(stateCode);
     if (saved.lastMode === "quick" || saved.lastMode === "full" || saved.lastMode === "weak") {
       if (saved.answeredIds.length > 0 || saved.lastScore != null) {
-        setResumeHref(`${paths.practice}?mode=${saved.lastMode}`);
+        setResumeHref(`${site.practice}?mode=${saved.lastMode}`);
       }
     }
     setGateReady(true);
@@ -92,13 +97,13 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
       .then((r) => r.json())
       .then((d) => {
         const nextOwner = d.user?.id || "guest";
-        setIsPro(Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
-        setFullExamCount(Number(d.user?.fullExamCount || 0));
+        setIsPro(onCa ? false : Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
+        setFullExamCount(Number((onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
-        setQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "quick")));
-        setHomeQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "home-quick")));
-        setFullSittingOpen(Boolean(openSitting(sessionStorage, nextOwner, "full")));
-        setHomeFullOpen(Boolean(openSitting(sessionStorage, nextOwner, "home-full")));
+        setQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "quick", stateCode)));
+        setHomeQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "home-quick", stateCode)));
+        setFullSittingOpen(Boolean(openSitting(sessionStorage, nextOwner, "full", stateCode)));
+        setHomeFullOpen(Boolean(openSitting(sessionStorage, nextOwner, "home-full", stateCode)));
       })
       .catch(() => undefined)
       .finally(() => setAuthReady(true));
@@ -107,7 +112,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
   useEffect(() => {
     if (!signedIn) return;
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    fetch(`/api/daily-study/?timeZone=${encodeURIComponent(timeZone)}`)
+    fetch(`/api/daily-study/?timeZone=${encodeURIComponent(timeZone)}${onCa ? "&state=CA" : ""}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         const tasks = Array.isArray(data?.taskStatus) ? data.taskStatus : [];
@@ -115,7 +120,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
         setTodayLeft(left > 0 ? left : null);
       })
       .catch(() => undefined);
-  }, [signedIn]);
+  }, [signedIn, onCa]);
 
   const fullLocked = !fullSittingOpen && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || (!signedIn && anonFullUsed));
 
@@ -127,12 +132,12 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
 
   const showContinue = Boolean(resumeHref || todayLeft);
 
-  const fullHref = `${paths.practice}?mode=full${fullSittingOpen ? "" : "&start=1"}`;
+  const fullHref = `${site.practice}?mode=full${fullSittingOpen ? "" : "&start=1"}`;
 
   const fullAction = authReady && gateReady && fullSittingOpen ? (
     <a className="btn btn-ghost" href={fullHref}>Resume Full Practice Exam</a>
   ) : authReady && gateReady && fullLocked ? (
-    <a className="btn btn-ghost" href={paths.pricing} data-upgrade-source="practice_limit">Unlock Pro</a>
+    <a className="btn btn-ghost" href={site.pricing} data-upgrade-source="practice_limit">{onCa ? "Full exam limit" : "Unlock Pro"}</a>
   ) : authReady && gateReady ? (
     <a className="btn btn-ghost" href={fullHref}>Start a Full Practice Exam</a>
   ) : null;
@@ -140,15 +145,15 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
   return (
     <>
       <section className="home-welcome" aria-label="Where to start">
-        <h1>Arizona Notary Exam Prep</h1>
+        <h1>{onCa ? "California Notary Exam Prep" : "Arizona Notary Exam Prep"}</h1>
       </section>
       <div className="home-copy">
-        <p className="home-lead">Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams.</p>
-        <p className="home-diagnostic">Answer 10 free questions and find out what to study next.</p>
+        <p className="home-lead">{onCa ? "Practice the California notary exam with published questions and study cards. The check uses your answers to suggest a next step. It is not an official score." : "Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams."}</p>
+        <p className="home-diagnostic">{onCa ? "A full practice exam is 45 questions and 60 minutes. Forty items are scored. Five are unscored. The official exam needs a scaled score of at least 70, which is not a percent." : "Answer 10 free questions and find out what to study next."}</p>
       </div>
       <section className="home-welcome home-welcome-actions" aria-label="Start">
         <div className="home-actions-row">
-          <a className="btn btn-primary" href={`${paths.practice}?mode=quick`}>
+          <a className="btn btn-primary" href={`${site.practice}?mode=quick`}>
             Check My Knowledge — 10 Questions
           </a>
           {fullAction}
@@ -157,8 +162,8 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
         {fullLocked && authReady && gateReady ? (
           <p className="notice">
             {signedIn
-              ? "This account has used its free Full 45. Pro includes more full exams."
-              : "This browser has used its free Full 45. Pro includes more full exams."}
+              ? (onCa ? "This account has used its full practice exam. California Pro is not open." : "This account has used its free Full 45. Pro includes more full exams.")
+              : (onCa ? "This browser has used its full practice exam. California Pro is not open." : "This browser has used its free Full 45. Pro includes more full exams.")}
           </p>
         ) : null}
         {homeQuickOpen ? (
@@ -178,7 +183,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
         <p className="home-continue">
           {resumeHref ? <Link href={resumeHref}>Continue saved practice</Link> : null}
           {todayLeft ? (
-            <Link href={paths.daily}>
+            <Link href={site.daily}>
               Today: {todayLeft} daily study {todayLeft === 1 ? "item" : "items"} left
             </Link>
           ) : null}
@@ -212,7 +217,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
             >
               {shuffled ? "Back to order" : "Shuffle"}
             </button>
-            <Link className="chip" href={paths.studyCards}>All study cards</Link>
+            <Link className="chip" href={site.studyCards}>All study cards</Link>
           </div>
           {card ? (
             <div className="home-card-column">
@@ -269,19 +274,19 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
 
         {homeQuiz === "quick" ? (
           <section className="home-quiz" aria-label="Practice questions">
-            <ExamRunner mode="quick" practice isPro={isPro} reportStart="answer" layout="compact" sittingMode="home-quick" />
+            <ExamRunner mode="quick" practice isPro={isPro} reportStart="answer" layout="compact" sittingMode="home-quick" stateCode={stateCode} />
           </section>
         ) : null}
 
         {homeQuiz === "full" && fullOpen ? (
           <section aria-label="Full practice exam">
-            <ExamRunner mode="full" isPro={isPro} layout="compact" sittingMode="home-full" />
+            <ExamRunner mode="full" isPro={isPro} layout="compact" sittingMode="home-full" stateCode={stateCode} />
           </section>
         ) : null}
       </div>
 
       <p className="home-continue">
-        <Link href={paths.daily}>Daily Study</Link>
+        <Link href={site.daily}>Daily Study</Link>
       </p>
     </div>
     </>

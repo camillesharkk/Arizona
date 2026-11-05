@@ -56,14 +56,16 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
+  const state = new URL(req.url).searchParams.get("state") === "CA" ? "CA" : "AZ";
+  const bank = state === "CA" ? "california-notary-exam" : "arizona-notary-exam";
   const store = await getStore();
   const stats = await store.listStats(session.id);
   const now = Date.now();
   const mistakes = stats
-    .filter((s) => s.state === "AZ" && s.bank === "arizona-notary-exam" && !s.mastered && (s.wrongCount > 0 || s.savedForReview))
+    .filter((s) => s.state === state && s.bank === bank && !s.mastered && (s.wrongCount > 0 || s.savedForReview))
     .sort((a, b) => compareMistakes(a, b, now));
   return NextResponse.json({
     mistakes: mistakes.map(toClientStat),
