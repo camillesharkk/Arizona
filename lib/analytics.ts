@@ -399,12 +399,13 @@ export function examStartParams(input: {
   practice?: boolean;
   questionCount: number;
   plan: "free" | "pro";
+  state?: string;
 }) {
   return {
     mode: examAnalyticsMode(input.mode, input.practice),
     question_count: input.questionCount,
     plan: input.plan,
-    state: ANALYTICS_STATE,
+    state: input.state || ANALYTICS_STATE,
   };
 }
 
@@ -417,6 +418,7 @@ export function examCompleteParams(input: {
   passed: boolean;
   plan: "free" | "pro";
   durationSeconds?: number;
+  state?: string;
 }) {
   const mode = examAnalyticsMode(input.mode, input.practice);
   return {
@@ -426,7 +428,7 @@ export function examCompleteParams(input: {
     score: input.score,
     ...(typeof input.durationSeconds === "number" ? { duration_seconds: input.durationSeconds } : {}),
     plan: input.plan,
-    state: ANALYTICS_STATE,
+    state: input.state || ANALYTICS_STATE,
     exam_type: mode,
     score_percent: input.score,
     passed: input.passed,

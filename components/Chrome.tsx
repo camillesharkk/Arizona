@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
+import { caPaths, isCaliforniaPath, switchStateHref } from "@/lib/ca-site";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { ProAccessNote } from "@/components/ProAccessNote";
@@ -12,12 +13,38 @@ import { ProAccessNote } from "@/components/ProAccessNote";
 type AuthStatus = "loading" | "signed-in" | "signed-out";
 
 function active(pathname: string, href: string) {
-  if (href === paths.home || href === paths.hub) return pathname === paths.home || pathname === paths.hub || pathname === "/arizona";
+  if (href === "/arizona-notary-exam/" || href === "/arizona/" || href === "/california/") {
+    return pathname === href || pathname === "/arizona" || pathname === "/arizona/" || pathname === "/california" || pathname === "/california/";
+  }
   return pathname === href || pathname.startsWith(href);
+}
+
+function navFor(pathname: string) {
+  if (!isCaliforniaPath(pathname)) return paths;
+  return {
+    ...paths,
+    home: caPaths.home,
+    practice: caPaths.practice,
+    questions: caPaths.questions,
+    study: caPaths.study,
+    studyCards: caPaths.studyCards,
+    mistakes: caPaths.mistakes,
+    daily: caPaths.daily,
+    resources: caPaths.resources,
+    laws: caPaths.laws,
+    become: caPaths.become,
+    pricing: caPaths.pricing,
+    examPrep: caPaths.examGuide,
+    passingScore: caPaths.passingScore,
+    guidesIndex: caPaths.examGuide,
+    flashcards: caPaths.studyCards,
+  };
 }
 
 export function SiteHeader() {
   const pathname = usePathname() || "";
+  const nav = navFor(pathname);
+  const onCa = isCaliforniaPath(pathname);
   const [open, setOpen] = useState(false);
   const [studyOpen, setStudyOpen] = useState(true);
   const [accountOpen, setAccountOpen] = useState(true);
@@ -62,20 +89,20 @@ export function SiteHeader() {
     setAuthStatus("signed-out");
     setOpen(false);
     await resetAnalyticsUser();
-    window.location.href = paths.home;
+    window.location.href = nav.home;
   }
 
-  const onHome = pathname === paths.home || pathname === "/";
+  const onHome = pathname === nav.home || pathname === "/";
   const study = [
-    { href: paths.practice, label: "Practice Test" },
-    { href: paths.questions, label: "Questions" },
-    { href: paths.study, label: "Study Guide" },
-    { href: paths.flashcards, label: "Flashcards" },
+    { href: nav.practice, label: "Practice Test" },
+    { href: nav.questions, label: "Questions" },
+    { href: nav.study, label: "Study Guide" },
+    { href: nav.flashcards, label: "Flashcards" },
   ];
   const exam = [
-    { href: paths.examPrep, label: "Exam Guide" },
-    { href: paths.laws, label: "Laws" },
-    { href: paths.become, label: "Become a Notary" },
+    { href: nav.examPrep, label: "Exam Guide" },
+    { href: nav.laws, label: "Laws" },
+    { href: nav.become, label: "Become a Notary" },
   ];
 
   return (
@@ -92,44 +119,52 @@ export function SiteHeader() {
           >
             <span className={open ? "menu-icon open" : "menu-icon"} />
           </button>
-          <Link href={paths.home} className="logo">
-            <span className="logo-mark">N</span>
-            Arizona Exam
+          <Link href={nav.home} className="logo">
+            <span className="logo-mark">{onCa ? "C" : "A"}</span>
+            {onCa ? "California" : "Arizona Exam"}
           </Link>
+          <nav className="state-switch" aria-label="State">
+            <Link href={switchStateHref(pathname, "AZ")} aria-current={onCa ? undefined : "page"}>AZ</Link>
+            <Link href={switchStateHref(pathname, "CA")} aria-current={onCa ? "page" : undefined}>CA</Link>
+          </nav>
         </div>
         <nav className="nav nav-desktop" aria-label="Primary">
-          <Link href={paths.practice} className={active(pathname, paths.practice) ? "active" : ""}>
+          <Link href={nav.practice} className={active(pathname, nav.practice) ? "active" : ""}>
             Practice
           </Link>
-          <Link href={paths.study} className={active(pathname, paths.study) ? "active" : ""}>
+          <Link href={nav.study} className={active(pathname, nav.study) ? "active" : ""}>
             Study Guide
           </Link>
-          <WrongAnswersLink className={active(pathname, paths.mistakes) ? "active" : ""} />
-          <Link href={paths.daily} className={active(pathname, paths.daily) ? "active" : ""}>
+          {onCa ? (
+            <Link href={nav.mistakes} className={active(pathname, nav.mistakes) ? "active" : ""}>Wrong Answers</Link>
+          ) : (
+            <WrongAnswersLink className={active(pathname, nav.mistakes) ? "active" : ""} />
+          )}
+          <Link href={nav.daily} className={active(pathname, nav.daily) ? "active" : ""}>
             Daily Study
           </Link>
-          <Link href={paths.resources} className={active(pathname, paths.resources) ? "active" : ""}>
+          <Link href={nav.resources} className={active(pathname, nav.resources) ? "active" : ""}>
             Resources
           </Link>
-          <Link href={paths.laws} className={active(pathname, paths.laws) ? "active" : ""}>
+          <Link href={nav.laws} className={active(pathname, nav.laws) ? "active" : ""}>
             Laws
           </Link>
         </nav>
         <div className="header-right">
           {authStatus === "signed-out" && (
-            <Link href={paths.login} className={`header-signin ${active(pathname, paths.login) ? "active" : ""}`}>
+            <Link href={onCa ? `${paths.login}?next=${encodeURIComponent(pathname)}` : paths.login} className={`header-signin ${active(pathname, paths.login) ? "active" : ""}`}>
               Sign in
             </Link>
           )}
           {authStatus === "loading" && <span className="header-auth-placeholder" aria-hidden="true" />}
           {!onHome && (
-            <Link className="btn btn-primary header-cta" href={paths.practice}>
+            <Link className="btn btn-primary header-cta" href={nav.practice}>
               Start Free Test
             </Link>
           )}
           {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} />}
           {!onHome && (
-            <Link className="btn btn-primary bar" href={paths.practice}>
+            <Link className="btn btn-primary bar" href={nav.practice}>
               Practice Test
             </Link>
           )}
@@ -137,8 +172,12 @@ export function SiteHeader() {
       </div>
       {open && <div className="nav-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />}
       <nav id="mobile-nav" className={open ? "nav-drawer open" : "nav-drawer"} aria-label="Mobile">
+        <nav className="state-switch state-switch-drawer" aria-label="State">
+          <Link href={switchStateHref(pathname, "AZ")} aria-current={onCa ? undefined : "page"}>Arizona</Link>
+          <Link href={switchStateHref(pathname, "CA")} aria-current={onCa ? "page" : undefined}>California</Link>
+        </nav>
         {onHome ? null : (
-          <Link className="btn btn-primary btn-wide drawer-start" href={paths.practice}>
+          <Link className="btn btn-primary btn-wide drawer-start" href={nav.practice}>
             Practice Test
           </Link>
         )}
@@ -168,11 +207,15 @@ export function SiteHeader() {
                 {l.label}
               </Link>
             ))}
-            <WrongAnswersLink className={active(pathname, paths.mistakes) ? "active" : ""} />
-            <Link href={paths.daily} className={active(pathname, paths.daily) ? "active" : ""}>
+            {onCa ? (
+              <Link href={nav.mistakes} className={active(pathname, nav.mistakes) ? "active" : ""}>Wrong Answers</Link>
+            ) : (
+              <WrongAnswersLink className={active(pathname, nav.mistakes) ? "active" : ""} />
+            )}
+            <Link href={nav.daily} className={active(pathname, nav.daily) ? "active" : ""}>
               Daily Study
             </Link>
-            <Link href={paths.resources} className={active(pathname, paths.resources) ? "active" : ""}>
+            <Link href={nav.resources} className={active(pathname, nav.resources) ? "active" : ""}>
               Resources
             </Link>
           </>
@@ -186,14 +229,14 @@ export function SiteHeader() {
               {l.label}
             </Link>
           ))}
-        <Link href={paths.courses}>Arizona Notary Courses</Link>
+        {onCa ? <Link href={nav.examPrep}>Exam guide</Link> : <Link href={paths.courses}>Arizona Notary Courses</Link>}
         {authStatus === "signed-in" && me ? (
           <>
             <Link href={paths.dashboard}>Dashboard</Link>
             <Link href={paths.account}>Account Settings</Link>
             <Link href={paths.referrals}>Invite & Credits</Link>
             <Link href={paths.billing}>Billing & Access</Link>
-            <Link href={paths.pricing}>{me.plan === "pro" ? "Pro Access" : "Upgrade to Pro"}</Link>
+            <Link href={onCa ? nav.pricing : paths.pricing}>{onCa ? "California access" : me.plan === "pro" ? "Pro Access" : "Upgrade to Pro"}</Link>
             <button className="btn btn-ghost btn-wide account-signout" type="button" onClick={logout}>
               Sign out
             </button>
@@ -203,8 +246,8 @@ export function SiteHeader() {
           </>
         ) : authStatus === "signed-out" ? (
           <>
-            <Link href={paths.login}>Sign in</Link>
-            <Link href={paths.register}>Create Free Account</Link>
+            <Link href={onCa ? `${paths.login}?next=${encodeURIComponent(pathname)}` : paths.login}>Sign in</Link>
+            <Link href={onCa ? `${paths.register}?next=${encodeURIComponent(pathname)}` : paths.register}>Create Free Account</Link>
           </>
         ) : null}
       </nav>
@@ -213,17 +256,20 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
+  const pathname = usePathname() || "";
+  const nav = navFor(pathname);
+  const onCa = isCaliforniaPath(pathname);
   return (
     <footer className="footer">
       <div className="wrap footer-bar">
-        <p className="footer-brand">Arizona Exam. Independent practice.</p>
+        <p className="footer-brand">{onCa ? "California Exam. Independent practice." : "Arizona Exam. Independent practice."}</p>
         <nav className="footer-links" aria-label="Help and legal">
-          <Link href={paths.practice}>Practice Test</Link>
-          <Link href={paths.questions}>Questions</Link>
-          <Link href={paths.study}>Study Guide</Link>
-          <Link href={paths.guidesIndex}>Exam guides</Link>
-          <Link href={paths.passingScore}>Passing score</Link>
-          <Link href={paths.mistakes}>Wrong Answers</Link>
+          <Link href={nav.practice}>Practice Test</Link>
+          <Link href={nav.questions}>Questions</Link>
+          <Link href={nav.study}>Study Guide</Link>
+          <Link href={nav.guidesIndex}>Exam guides</Link>
+          <Link href={nav.passingScore}>Passing score</Link>
+          <Link href={nav.mistakes}>Wrong Answers</Link>
           <Link href={paths.privacy}>Privacy</Link>
           <Link href={paths.terms}>Terms</Link>
           <Link href={paths.refund}>Refund Policy</Link>

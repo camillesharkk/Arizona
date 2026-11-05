@@ -5,6 +5,7 @@ import { canAccessQuestion, canTakeFullExam, canUseAdvancedAnalytics, hasArizona
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { recordProUsage } from "@/lib/commerce/usage";
 import { publishedQuestions } from "@/data/questions";
+import { publishedCaQuestions } from "@/data/ca-questions";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
@@ -14,6 +15,7 @@ const answerSchema = z.object({
   selected: z.enum(["A", "B", "C", "D"]),
   attemptId: z.string().min(8).max(80).optional(),
   review: z.boolean().optional(),
+  state: z.enum(["AZ", "CA"]).optional(),
 });
 
 export async function POST(req: Request) {
@@ -28,6 +30,7 @@ export async function POST(req: Request) {
         correctCount: z.number(),
         total: z.number(),
         examId: z.string().uuid().optional(),
+        state: z.enum(["AZ", "CA"]).optional(),
       })
       .safeParse(body);
     if (!exam.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
@@ -36,11 +39,17 @@ export async function POST(req: Request) {
       const existing = (await store.listExams(session.id)).some((row) => row.id === exam.data.examId);
       if (existing) return NextResponse.json({ ok: true, duplicate: true });
     }
-    if (exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
+    const california = exam.data.state === "CA";
+    if (!california && exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
       return NextResponse.json({ error: "Pro required for additional full exams" }, { status: 402 });
     }
-    const priorFull = exam.data.mode === "full" ? await fullExamCount(session.id) : 0;
-    const inserted = await recordExam({ ...exam.data, userId: session.id });
+    const priorFull = !california && exam.data.mode === "full" ? await fullExamCount(session.id) : 0;
+    const inserted = await recordExam({
+      ...exam.data,
+      mode: california ? `ca-${exam.data.mode}` : exam.data.mode,
+      userId: session.id,
+      updateBest: !california,
+    });
     if (!inserted) return NextResponse.json({ ok: true, duplicate: true });
     if (exam.data.mode === "full" && priorFull >= FREE_FULL_EXAMS) {
       await recordProUsage(session.id, "full_exam_extra");
@@ -49,8 +58,11 @@ export async function POST(req: Request) {
   }
   const parsed = answerSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid answer" }, { status: 400 });
-  const q = publishedQuestions().find((x) => x.question_id === parsed.data.questionId);
+  const q = [...publishedQuestions(), ...publishedCaQuestions()].find((x) => x.question_id === parsed.data.questionId);
   if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
+  if (parsed.data.state ? parsed.data.state !== q.state : q.state !== "AZ") {
+    return NextResponse.json({ error: "Question is not in this state" }, { status: 400 });
+  }
   if (!(await canAccessQuestion(session.id, q))) return NextResponse.json({ error: "Pro required" }, { status: 402 });
   const correct = parsed.data.selected === q.correct_option;
   const stat = await recordQuestionAnswer({

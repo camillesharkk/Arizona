@@ -4,6 +4,9 @@ import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from "
 import Link from "next/link";
 import type { Question } from "@/lib/types";
 import { publishedQuestions } from "@/data/questions";
+import { publishedCaQuestions } from "@/data/ca-questions";
+import { pickCaFullExam, pickCaQuickExam, weakestCaArea } from "@/lib/ca-exam";
+import { areaLabel, caPaths } from "@/lib/ca-site";
 import { examConfig, officialExam } from "@/data/exam-config";
 import {
   buildQuickExam,
@@ -25,7 +28,7 @@ import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } 
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
 import { SaveForReview } from "@/components/SaveForReview";
 import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
-import { clearSitting, openSitting, readSitting, remainingSeconds, writeSitting, type Sitting } from "@/lib/sitting";
+import { clearSitting, openSitting, readSitting, remainingSeconds, writeSitting, type Sitting, type SittingState } from "@/lib/sitting";
 import { weakestMissedTopic, topicStudyHref } from "@/lib/next-step";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
@@ -42,6 +45,7 @@ export function ExamRunner({
   sittingMode,
   review = false,
   onRecorded,
+  stateCode = "AZ",
 }: {
   mode: Mode;
   practice?: boolean;
@@ -55,13 +59,22 @@ export function ExamRunner({
   /** Wrong-answer practice. A normal practice correct does not move the review plan. */
   review?: boolean;
   onRecorded?: () => void;
+  stateCode?: SittingState;
 }) {
   const modeKey = sittingMode || mode;
+  const site = stateCode === "CA" ? caPaths : paths;
+  const examMinutes = stateCode === "CA" ? 60 : examConfig.timeLimitMinutes;
+  const fullSize = stateCode === "CA" ? 45 : examConfig.questionCount;
+  const anonFullKey = stateCode === "CA" ? "ca-anon-full-started" : "az-anon-full-started";
+  const unscoredRef = useRef<string[]>([]);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const poolLocked = useRef(false);
   const [poolIsPro, setPoolIsPro] = useState(isPro);
-  const count = mode === "quick" ? 10 : mode === "full" ? examConfig.questionCount : 10;
-  const byId = useMemo(() => new Map(publishedQuestions().map((item) => [item.question_id, item])), []);
+  const count = mode === "quick" ? 10 : mode === "full" ? fullSize : 10;
+  const byId = useMemo(
+    () => new Map((stateCode === "CA" ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
+    [stateCode]
+  );
   const [owner, setOwner] = useState<string | null>(null);
   const [signedIn, setSignedIn] = useState(false);
   const [fullExamCount, setFullExamCount] = useState(0);
@@ -92,7 +105,7 @@ export function ExamRunner({
   const [explainOpen, setExplainOpen] = useState<Record<string, boolean>>({});
   const [marked, setMarked] = useState<string[]>([]);
   const [done, setDone] = useState(false);
-  const [seconds, setSeconds] = useState(examConfig.timeLimitMinutes * 60);
+  const [seconds, setSeconds] = useState(examMinutes * 60);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const recordedIds = useRef<string[]>([]);
   const booted = owner != null && activeSeed != null && lockedIds != null;
@@ -114,6 +127,17 @@ export function ExamRunner({
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   function drawQuestionIds(seed: number) {
+    if (stateCode === "CA") {
+      if (mode === "quick") return pickCaQuickExam(seed).map((item) => item.question_id);
+      if (mode === "full") {
+        const picked = pickCaFullExam(seed);
+        if (!picked) return [];
+        unscoredRef.current = picked.unscoredIds;
+        return picked.questions.map((item) => item.question_id);
+      }
+      const missed = loadProgress("CA").wrongIds;
+      return publishedCaQuestions().filter((item) => missed.includes(item.question_id)).slice(0, 10).map((item) => item.question_id);
+    }
     if (mode === "quick") {
       const picked = buildQuickExam({ isPro: reportStart === "answer" ? poolIsPro : isPro, seed, stale: preset });
       return picked.length === 10 ? picked.map((item) => item.question_id) : [];
@@ -137,7 +161,7 @@ export function ExamRunner({
     return {
       version: 1,
       owner,
-      state: "AZ",
+      state: stateCode,
       mode: modeKey,
       seed: activeSeed,
       questionIds: lockedIds,
@@ -146,7 +170,8 @@ export function ExamRunner({
       explainOpen,
       flaggedIds: marked,
       startedAt,
-      timeLimitSeconds: timed ? examConfig.timeLimitMinutes * 60 : null,
+      timeLimitSeconds: timed ? examMinutes * 60 : null,
+      unscoredIds: unscoredRef.current,
       done,
       examId: examSaveId.current,
       attemptIds: attemptIds.current,
@@ -175,9 +200,10 @@ export function ExamRunner({
         if (cancel) return;
         const nextOwner = data.user?.id || "guest";
         setSignedIn(Boolean(data.user));
-        setFullExamCount(Number(data.user?.fullExamCount || 0));
-        const existing = readSitting(sessionStorage, nextOwner, modeKey);
+        setFullExamCount(Number((stateCode === "CA" ? data.user?.caFullExamCount : data.user?.fullExamCount) || 0));
+        const existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
         const seed = existing?.seed ?? Math.floor(Math.random() * 1_000_000_000);
+        if (existing?.unscoredIds?.length) unscoredRef.current = existing.unscoredIds;
         const ids = existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed);
         setOwner(nextOwner);
         setActiveSeed(seed);
@@ -222,7 +248,7 @@ export function ExamRunner({
     poolLocked.current = true;
     setStartedAt((current) => current ?? Date.now());
     const plan = isPro ? "pro" : "free";
-    const start = examStartParams({ mode, practice, questionCount: questions.length, plan });
+    const start = examStartParams({ mode, practice, questionCount: questions.length, plan, state: stateCode });
     trackAnalyticsEvent("exam_start", start);
     if (start.mode === "quick10") trackEvent("quick10_start");
     if (start.mode === "full45") trackEvent("full45_start", { plan });
@@ -236,7 +262,7 @@ export function ExamRunner({
 
   useEffect(() => {
     if (!timed || done || !startedAt) return;
-    const limit = examConfig.timeLimitMinutes * 60;
+    const limit = examMinutes * 60;
     const tick = () => setSeconds(remainingSeconds(startedAt, limit, Date.now()));
     tick();
     const timer = window.setInterval(tick, 1000);
@@ -285,14 +311,14 @@ export function ExamRunner({
           <>
             <h2>Full 45 is not available</h2>
             <p>
-              A full practice test must contain exactly {examConfig.questionCount} unique published questions. The current
+              A full practice test must contain exactly {fullSize} unique published questions. The current
               eligible bank does not, so the exam was not started. This is not a shortened 45-question test.
             </p>
           </>
         ) : (
           <p>Not enough questions in this set. Try Full 45 or open Exam Questions.</p>
         )}
-        <Link className="btn btn-primary" href={paths.questions}>
+        <Link className="btn btn-primary" href={site.questions}>
           Start Questions
         </Link>
       </div>
@@ -339,7 +365,7 @@ export function ExamRunner({
     answersRef.current = nextAnswers;
     setAnswers(nextAnswers);
     if (practice) {
-      recordAnswer(q.question_id, letter === q.correct_option);
+      recordAnswer(q.question_id, letter === q.correct_option, stateCode);
       fetch("/api/progress/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -387,17 +413,17 @@ export function ExamRunner({
     if (!examSaveId.current) examSaveId.current = crypto.randomUUID();
     if (!localSaved.current) {
       localSaved.current = true;
-      if (!practice) results.forEach((r) => recordAnswer(r.question.question_id, r.correct));
-      const prev = loadProgress();
+      if (!practice) results.forEach((r) => recordAnswer(r.question.question_id, r.correct, stateCode));
+      const prev = loadProgress(stateCode);
       saveProgress({
         lastScore: pct,
         lastMode: mode,
         scores: [{ at: new Date().toISOString(), score: pct, mode }, ...prev.scores].slice(0, 20),
-      });
+      }, stateCode);
     }
     persistSitting({ examId: examSaveId.current, scored: true });
     const saves: Promise<Response>[] = [];
-    if (!practice) results.forEach((r) => {
+    if (!practice || stateCode === "CA") results.forEach((r) => {
       const letter = current[r.question.question_id];
       if (letter) {
         saves.push(fetch("/api/progress/", {
@@ -408,20 +434,26 @@ export function ExamRunner({
             selected: originalLetter(r.question.question_id, letter),
             attemptId: attemptId(r.question.question_id),
             review: false,
+            state: stateCode,
           }),
         }));
       }
     });
+    const scoredResults = stateCode === "CA" && mode === "full"
+      ? results.filter((item) => !unscoredRef.current.includes(item.question.question_id))
+      : results;
+    const scoredCorrect = scoredResults.filter((item) => item.correct).length;
     saves.push(fetch("/api/progress/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         kind: "exam",
         mode,
-        score: pct,
-        correctCount: results.filter((r) => r.correct).length,
-        total: questions.length,
+        score: stateCode === "CA" && mode === "full" ? scorePercent(scoredCorrect, scoredResults.length || 1) : pct,
+        correctCount: stateCode === "CA" && mode === "full" ? scoredCorrect : results.filter((r) => r.correct).length,
+        total: stateCode === "CA" && mode === "full" ? scoredResults.length : questions.length,
         examId: examSaveId.current,
+        state: stateCode,
       }),
     }));
     persistSitting({ examId: examSaveId.current, scored: localSaved.current });
@@ -445,7 +477,8 @@ export function ExamRunner({
           questionCount: questions.length,
           answeredCount: Object.keys(current).length,
           score: pct,
-          passed: pct >= examConfig.passingScorePercent,
+          passed: stateCode === "CA" ? false : pct >= examConfig.passingScorePercent,
+          state: stateCode,
           plan: isPro ? "pro" : "free",
           durationSeconds: elapsed,
         })
@@ -460,14 +493,23 @@ export function ExamRunner({
     }));
     const correct = results.filter((r) => r.correct).length;
     const pct = scorePercent(correct, questions.length);
-    const pass = pct >= examConfig.passingScorePercent;
+    const pass = stateCode === "CA" ? false : pct >= examConfig.passingScorePercent;
+    const unscored = new Set(unscoredRef.current);
+    const scoredRows = stateCode === "CA" && mode === "full" ? results.filter((item) => !unscored.has(item.question.question_id)) : results;
+    const scoredCorrect = scoredRows.filter((item) => item.correct).length;
+    const caMiss = stateCode === "CA" ? weakestCaArea(questions.map((item) => ({
+      question: item,
+      selected: answers[item.question_id],
+      correct: answers[item.question_id] === item.correct_option,
+    }))) : null;
     const weak = weakTopics(results, 4).filter((w) => w.wrong > 0);
     const topicAcc = new Map<string, { right: number; total: number; label: string }>();
     results.forEach((r) => {
-      const cur = topicAcc.get(r.question.topic) || { right: 0, total: 0, label: topicLabel(r.question.topic) };
+      const key = stateCode === "CA" ? r.question.exam_area || r.question.topic : r.question.topic;
+      const cur = topicAcc.get(key) || { right: 0, total: 0, label: stateCode === "CA" ? areaLabel(key) : topicLabel(r.question.topic) };
       cur.total += 1;
       if (r.correct) cur.right += 1;
-      topicAcc.set(r.question.topic, cur);
+      topicAcc.set(key, cur);
     });
     const sources = [...new Set(results.map((r) => r.question.source_reference))];
     const guided = (mode === "quick" || mode === "full") && !review;
@@ -480,19 +522,22 @@ export function ExamRunner({
           }))
         )
       : null;
-    const studyHref = missed ? topicStudyHref(missed.topic, isPro) : paths.study;
+    const studyHref = stateCode === "CA"
+      ? (caMiss ? `${site.studyCards}?topic=${caMiss.area}` : site.study)
+      : (missed ? topicStudyHref(missed.topic, isPro) : paths.study);
+    const recommend = stateCode === "CA" ? caMiss : missed;
     let anonFullUsed = false;
     if (typeof window !== "undefined") {
       try {
-        anonFullUsed = localStorage.getItem("az-anon-full-started") === "1";
+        anonFullUsed = localStorage.getItem(anonFullKey) === "1";
       } catch {
         anonFullUsed = false;
       }
     }
-    const fullResume = Boolean(owner && openSitting(sessionStorage, owner, "full"));
+    const fullResume = Boolean(owner && openSitting(sessionStorage, owner, "full", stateCode));
     const fullLocked = !fullResume && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || (!signedIn && anonFullUsed));
-    const fullHref = `${paths.practice}?mode=full${fullResume ? "" : "&start=1"}`;
-    const dailyHref = signedIn ? paths.daily : `${paths.login}?next=${encodeURIComponent(paths.daily)}`;
+    const fullHref = `${site.practice}?mode=full${fullResume ? "" : "&start=1"}`;
+    const dailyHref = signedIn ? site.daily : `${site.login}?next=${encodeURIComponent(site.daily)}`;
     return (
       <div className="grid">
         <div className="card result-summary">
@@ -503,52 +548,57 @@ export function ExamRunner({
               <p className="lede">
                 {correct >= 8
                   ? "Next: take a full practice exam."
-                  : missed
-                    ? `Next: review ${missed.label}.`
+                  : recommend
+                    ? `Next: review ${recommend.label}.`
                     : "Next: read the study guide, or try another 10 questions. Skipped questions are not enough to pick a topic."}
               </p>
               <div className="result-next">
                 {correct >= 8 ? (
                   fullLocked ? (
-                    <a className="btn btn-primary" href={paths.pricing} data-upgrade-source="practice_limit">Unlock Pro</a>
+                    <a className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">{stateCode === "CA" ? "Full exam limit" : "Unlock Pro"}</a>
                   ) : (
                     <a className="btn btn-primary" href={fullHref}>{fullResume ? "Resume Full Practice Exam" : "Start a Full Practice Exam"}</a>
                   )
-                ) : missed ? (
-                  <a className="btn btn-primary" href={studyHref}>Review {missed.label}</a>
+                ) : recommend ? (
+                  <a className="btn btn-primary" href={studyHref}>Review {recommend.label}</a>
                 ) : (
-                  <a className="btn btn-primary" href={paths.study}>Review Study Guide</a>
+                  <a className="btn btn-primary" href={site.study}>Review Study Guide</a>
                 )}
-                {correct >= 8 && missed ? (
-                  <a className="btn btn-ghost" href={studyHref}>Review {missed.label}</a>
+                {correct >= 8 && recommend ? (
+                  <a className="btn btn-ghost" href={studyHref}>Review {recommend.label}</a>
                 ) : null}
                 {correct >= 8 && fullLocked ? (
                   <p className="notice">
-                    {signedIn
-                      ? "This account has used its free Full 45. Pro includes more full exams."
-                      : "This browser has used its free Full 45. Pro includes more full exams."}
+                    {stateCode === "CA"
+                      ? "The free California Full 45 on this account or browser is used. California Pro is not open yet."
+                      : signedIn
+                        ? "This account has used its free Full 45. Pro includes more full exams."
+                        : "This browser has used its free Full 45. Pro includes more full exams."}
                   </p>
                 ) : null}
-                {correct < 8 && !missed ? (
-                  <a className="btn btn-ghost" href={`${paths.practice}?mode=quick&start=1`}>Check My Knowledge — 10 Questions</a>
+                {correct < 8 && !recommend ? (
+                  <a className="btn btn-ghost" href={`${site.practice}?mode=quick&start=1`}>Check My Knowledge — 10 Questions</a>
                 ) : null}
               </div>
             </>
           ) : (
             <>
               <h2>
-                {pct}% — {pass ? "PASS" : "NEEDS REVIEW"}
+                {stateCode === "CA" && mode === "full"
+                  ? `${scoredCorrect} of 40 scored`
+                  : `${pct}% — ${pass ? "PASS" : "NEEDS REVIEW"}`}
               </h2>
               <p className="lede">
-                {correct} of {questions.length} correct. Practice target {examConfig.passingScorePercent}%. The SOS notice
-                checked {officialExam.checkedOn} lists {officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.
+                {stateCode === "CA" && mode === "full"
+                  ? `${scoredCorrect} of 40 scored items correct. Five items are unscored and are marked below. This raw count is study feedback. The official exam uses a scaled score of at least 70, and a scaled score is not a percent.`
+                  : `${correct} of ${questions.length} correct. Practice target ${examConfig.passingScorePercent}%. The SOS notice checked ${officialExam.checkedOn} lists ${officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.`}
               </p>
               {guided && mode === "full" ? (
                 <div className="result-next">
-                  {missed ? (
-                    <a className="btn btn-primary" href={studyHref}>Review {missed.label}</a>
+                  {recommend ? (
+                    <a className="btn btn-primary" href={studyHref}>Review {recommend.label}</a>
                   ) : null}
-                  <a className={missed ? "btn btn-ghost" : "btn btn-primary"} href={dailyHref}>Open Daily Study</a>
+                  <a className={recommend ? "btn btn-ghost" : "btn btn-primary"} href={dailyHref}>Open Daily Study</a>
                   <p className="notice">
                     {signedIn
                       ? "Missed questions stay on your review schedule. Daily Study shows a question when it is due."
@@ -585,8 +635,8 @@ export function ExamRunner({
           </ul>
           {guided ? (
             <div className="result-links">
-              <WrongAnswersLink label="Review wrong answers" />
-              <Link href={paths.study}>Review Study Guide</Link>
+              {stateCode === "CA" ? <Link href={site.mistakes}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" />}
+              <Link href={site.study}>Review Study Guide</Link>
             </div>
           ) : (
             <div className="result-next">
@@ -606,7 +656,9 @@ export function ExamRunner({
             </div>
           )}
           <AccountInvite />
-          {isPro ? (
+          {stateCode === "CA" ? (
+            <p className="notice">This is study feedback for California. California Pro is not open, and this raw count is not an official scaled score.</p>
+          ) : isPro ? (
             <p className="notice">Pro is active. Keep practicing the topics you missed.</p>
           ) : (
             <p className="notice">
@@ -624,7 +676,13 @@ export function ExamRunner({
             reveal
             isPro={isPro}
             lockPaid={false}
-            extra={<SaveForReview questionId={r.question.question_id} hint={false} />}
+            extra={
+              unscored.has(r.question.question_id) ? (
+                <p className="notice">Unscored. This item did not affect the 40-item count.</p>
+              ) : stateCode === "CA" ? null : (
+                <SaveForReview questionId={r.question.question_id} hint={false} />
+              )
+            }
           />
         ))}
       </div>
@@ -653,13 +711,13 @@ export function ExamRunner({
         isPro={isPro}
         marked={marked.includes(view.question_id)}
         onMark={past ? undefined : () => toggleMark(view.question_id)}
-        extra={<SaveForReview questionId={view.question_id} hint={false} />}
+        extra={stateCode === "CA" ? null : <SaveForReview questionId={view.question_id} hint={false} />}
         explainOpen={Boolean(explainOpen[view.question_id])}
         onToggleExplain={() => {
           const id = view.question_id;
           setExplainOpen((current) => ({ ...current, [id]: !current[id] }));
         }}
-        tutor
+        tutor={stateCode !== "CA"}
       />
       {past ? (
         <button className="card-corner-btn" type="button" onClick={closePast}>
@@ -689,7 +747,7 @@ export function ExamRunner({
   function startNew() {
     if (!owner) return;
     if (!window.confirm("Start a new set? This replaces the unfinished one.")) return;
-    clearSitting(sessionStorage, owner, modeKey);
+    clearSitting(sessionStorage, owner, modeKey, stateCode);
     const seed = Math.floor(Math.random() * 1_000_000_000);
     const ids = drawQuestionIds(seed);
     setActiveSeed(seed);
@@ -710,7 +768,7 @@ export function ExamRunner({
     finishOnce.current = false;
     completeReported.current = false;
     choiceLock.current = null;
-    setSeconds(examConfig.timeLimitMinutes * 60);
+    setSeconds(examMinutes * 60);
     setRestored(false);
     setPastIndex(null);
     setSubmitError("");

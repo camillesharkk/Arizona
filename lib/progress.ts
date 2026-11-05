@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import { publishedQuestions } from "@/data/questions";
+import { publishedCaQuestions } from "@/data/ca-questions";
 import { applyReviewAnswer, DEFAULT_STUDY_TIME_ZONE, migrateReviewFields } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
 import type { QuestionStat } from "@/lib/store/types";
@@ -28,7 +29,7 @@ export async function recordQuestionAnswer(opts: {
   attemptId?: string;
 }) {
   const store = await getStore();
-  const q = publishedQuestions().find((x) => x.question_id === opts.questionId);
+  const q = [...publishedQuestions(), ...publishedCaQuestions()].find((x) => x.question_id === opts.questionId);
   if (!q) throw new Error("unknown_question");
   if (opts.attemptId) {
     const fresh = await store.claimAttempt(opts.userId, opts.attemptId, opts.questionId);
@@ -36,7 +37,8 @@ export async function recordQuestionAnswer(opts: {
   }
   const prev = await store.getStat(opts.userId, opts.questionId);
   const now = new Date().toISOString();
-  const savedPlan = await store.getStudyPlan(opts.userId, "AZ");
+  const state = q.state === "CA" ? "CA" : "AZ";
+  const savedPlan = await store.getStudyPlan(opts.userId, state);
   const savedSettings = (savedPlan?.document as { settings?: { timeZone?: string } } | undefined)?.settings;
   const timeZone = savedSettings?.timeZone || DEFAULT_STUDY_TIME_ZONE;
   const migrated = prev ? migrateReviewFields(prev, now, timeZone) : null;
@@ -45,9 +47,9 @@ export async function recordQuestionAnswer(opts: {
     userId: opts.userId,
     questionId: opts.questionId,
     topic: q.topic,
-    bank: "arizona-notary-exam",
+    bank: state === "CA" ? "california-notary-exam" : "arizona-notary-exam",
     chapter: q.topic,
-    state: "AZ",
+    state,
     firstCorrect: prev?.firstCorrect ?? opts.correct,
     lastCorrect: opts.correct,
     ...review,
@@ -72,6 +74,7 @@ export async function recordExam(opts: {
   correctCount: number;
   total: number;
   examId?: string;
+  updateBest?: boolean;
 }) {
   const store = await getStore();
   const inserted = await store.addExam({
@@ -86,8 +89,13 @@ export async function recordExam(opts: {
   if (!inserted) return false;
   const user = await store.getUserById(opts.userId);
   if (user) {
-    const best = user.bestScore == null ? opts.score : Math.max(user.bestScore, opts.score);
-    await store.updateUser(opts.userId, { ...applyStreak(user), bestScore: best });
+    const patch = applyStreak(user);
+    if (opts.updateBest === false) {
+      await store.updateUser(opts.userId, patch);
+    } else {
+      const best = user.bestScore == null ? opts.score : Math.max(user.bestScore, opts.score);
+      await store.updateUser(opts.userId, { ...patch, bestScore: best });
+    }
   }
   return true;
 }

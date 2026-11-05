@@ -36,8 +36,9 @@ const empty: SavedProgress = {
   scores: [],
 };
 
-function progressKey(email = currentEmail()) {
-  return email ? `${PREFIX}progress:${email}` : `${PREFIX}progress`;
+function progressKey(email = currentEmail(), state: "AZ" | "CA" = "AZ") {
+  const prefix = state === "CA" ? "ca-notary-" : PREFIX;
+  return email ? `${prefix}progress:${email}` : `${prefix}progress`;
 }
 
 function notifyProgress() {
@@ -45,10 +46,10 @@ function notifyProgress() {
   window.dispatchEvent(new Event(PROGRESS_EVENT));
 }
 
-export function loadProgress(): SavedProgress {
+export function loadProgress(state: "AZ" | "CA" = "AZ"): SavedProgress {
   if (typeof window === "undefined") return { ...empty };
   try {
-    const raw = localStorage.getItem(progressKey());
+    const raw = localStorage.getItem(progressKey(undefined, state));
     if (!raw) return { ...empty };
     return { ...empty, ...JSON.parse(raw) };
   } catch {
@@ -56,9 +57,9 @@ export function loadProgress(): SavedProgress {
   }
 }
 
-export function saveProgress(patch: Partial<SavedProgress>): SavedProgress {
-  const next = { ...loadProgress(), ...patch };
-  localStorage.setItem(progressKey(), JSON.stringify(next));
+export function saveProgress(patch: Partial<SavedProgress>, state: "AZ" | "CA" = "AZ"): SavedProgress {
+  const next = { ...loadProgress(state), ...patch };
+  localStorage.setItem(progressKey(undefined, state), JSON.stringify(next));
   notifyProgress();
   return next;
 }
@@ -73,11 +74,11 @@ export function removeWrong(id: string) {
   saveProgress({ wrongIds: p.wrongIds.filter((x) => x !== id) });
 }
 
-export function recordAnswer(id: string, correct: boolean) {
-  const p = loadProgress();
+export function recordAnswer(id: string, correct: boolean, state: "AZ" | "CA" = "AZ") {
+  const p = loadProgress(state);
   const answeredIds = p.answeredIds.includes(id) ? p.answeredIds : [...p.answeredIds, id];
   const wrongIds = correct ? p.wrongIds.filter((x) => x !== id) : p.wrongIds.includes(id) ? p.wrongIds : [...p.wrongIds, id];
-  saveProgress({ answeredIds, wrongIds, lastQuestionId: id });
+  saveProgress({ answeredIds, wrongIds, lastQuestionId: id }, state);
 }
 
 export function toggleFlag(id: string) {

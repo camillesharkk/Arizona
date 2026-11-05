@@ -27,9 +27,14 @@ export type Source = {
   version?: string;
 };
 
+export type StateCode = "AZ" | "CA";
+export type ExamArea = "administration" | "acts" | "identity" | "immigration" | "violations";
+
 export type Question = {
   question_id: string;
-  state: "AZ";
+  state: StateCode;
+  /** California exam content area. Arizona items leave this unset. */
+  exam_area?: ExamArea;
   topic: TopicId;
   difficulty: Difficulty;
   question_text: string;

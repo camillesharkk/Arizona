@@ -1,12 +1,17 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { addVisibleTime, dailyStudyView, markDailyCard, studyMore } from "@/lib/daily-study";
+import { caDailyView } from "@/lib/ca-daily";
 import { getSession } from "@/lib/session";
 
 export async function GET(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
-  const timeZone = new URL(req.url).searchParams.get("timeZone") || undefined;
+  const url = new URL(req.url);
+  const state = url.searchParams.get("state");
+  if (state === "CA") return NextResponse.json(await caDailyView(session.id));
+  if (state && state !== "AZ") return NextResponse.json({ error: "Unknown state" }, { status: 400 });
+  const timeZone = url.searchParams.get("timeZone") || undefined;
   return NextResponse.json(await dailyStudyView(session.id, timeZone));
 }
 

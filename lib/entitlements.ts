@@ -101,6 +101,7 @@ export async function refundArizonaOrder(userId: string, provider: string, provi
 }
 
 export async function canAccessQuestion(userId: string | null | undefined, q: Question) {
+  if (q.state === "CA") return q.is_free;
   if (q.is_free) return true;
   return hasArizonaPro(userId);
 }
@@ -132,4 +133,10 @@ export async function fullExamCount(userId: string) {
   const store = await getStore();
   const exams = await store.listExams(userId);
   return exams.filter((e) => e.mode === "full").length;
+}
+
+export async function caFullExamCount(userId: string) {
+  const store = await getStore();
+  const exams = await store.listExams(userId);
+  return exams.filter((e) => e.mode === "ca-full").length;
 }

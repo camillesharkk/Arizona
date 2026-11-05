@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
 import { paths } from "@/lib/paths";
+import { caPaths } from "@/lib/ca-site";
 import { FREE_FULL_EXAMS } from "@/lib/product";
-import { clearSitting, openSitting, readSitting } from "@/lib/sitting";
+import { clearSitting, openSitting, readSitting, type SittingState } from "@/lib/sitting";
 
-const ANON_FULL_KEY = "az-anon-full-started";
-
-export function PracticeLaunch() {
+export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState }) {
+  const anonFullKey = stateCode === "CA" ? "ca-anon-full-started" : "az-anon-full-started";
+  const site = stateCode === "CA" ? caPaths : paths;
   const [mode, setMode] = useState<"pick" | "quick" | "full" | "weak">("pick");
   const [isPro, setIsPro] = useState(false);
   const [fullExamCount, setFullExamCount] = useState(0);
@@ -23,7 +24,7 @@ export function PracticeLaunch() {
 
   useEffect(() => {
     try {
-      setAnonFullUsed(localStorage.getItem(ANON_FULL_KEY) === "1");
+      setAnonFullUsed(localStorage.getItem(anonFullKey) === "1");
     } catch {
       setAnonFullUsed(false);
     }
@@ -33,20 +34,20 @@ export function PracticeLaunch() {
     fetch("/api/auth/me/")
       .then((r) => r.json())
       .then((d) => {
-        setIsPro(Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
-        setFullExamCount(Number(d.user?.fullExamCount || 0));
+        setIsPro(stateCode === "CA" ? false : Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
+        setFullExamCount(Number((stateCode === "CA" ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setOwner(d.user?.id || "guest");
         const nextOwner = d.user?.id || "guest";
         const requested = new URLSearchParams(window.location.search).get("mode");
         const startFresh = new URLSearchParams(window.location.search).get("start") === "1";
-        if (startFresh && (requested === "quick" || requested === "full" || requested === "weak") && !openSitting(sessionStorage, nextOwner, requested)) {
-          clearSitting(sessionStorage, nextOwner, requested);
+        if (startFresh && (requested === "quick" || requested === "full" || requested === "weak") && !openSitting(sessionStorage, nextOwner, requested, stateCode)) {
+          clearSitting(sessionStorage, nextOwner, requested, stateCode);
         }
         setOpenModes({
-          quick: Boolean(openSitting(sessionStorage, nextOwner, "quick")),
-          full: Boolean(openSitting(sessionStorage, nextOwner, "full")),
-          weak: Boolean(openSitting(sessionStorage, nextOwner, "weak")),
+          quick: Boolean(openSitting(sessionStorage, nextOwner, "quick", stateCode)),
+          full: Boolean(openSitting(sessionStorage, nextOwner, "full", stateCode)),
+          weak: Boolean(openSitting(sessionStorage, nextOwner, "weak", stateCode)),
         });
       })
       .catch(() => undefined)
@@ -55,13 +56,13 @@ export function PracticeLaunch() {
 
   const inThisAnonFull = anonFullThisVisit.current && mode === "full";
   const anonBlocked = !isPro && !signedIn && anonFullUsed && !inThisAnonFull;
-  const fullResume = mode === "full" && typeof window !== "undefined" && Boolean(openSitting(sessionStorage, owner, "full"));
+  const fullResume = mode === "full" && typeof window !== "undefined" && Boolean(openSitting(sessionStorage, owner, "full", stateCode));
   const fullLocked = !fullResume && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || anonBlocked);
 
   function consumeAnonFull() {
     anonFullThisVisit.current = true;
     try {
-      localStorage.setItem(ANON_FULL_KEY, "1");
+      localStorage.setItem(anonFullKey, "1");
     } catch {
       /* this visit still stays open in memory */
     }
@@ -74,16 +75,16 @@ export function PracticeLaunch() {
     url.searchParams.delete("mode");
     window.history.replaceState(null, "", url);
     setOpenModes({
-      quick: Boolean(openSitting(sessionStorage, owner, "quick")),
-      full: Boolean(openSitting(sessionStorage, owner, "full")),
-      weak: Boolean(openSitting(sessionStorage, owner, "weak")),
+      quick: Boolean(openSitting(sessionStorage, owner, "quick", stateCode)),
+      full: Boolean(openSitting(sessionStorage, owner, "full", stateCode)),
+      weak: Boolean(openSitting(sessionStorage, owner, "weak", stateCode)),
     });
     setMode("pick");
   }
 
   function enter(next: "quick" | "full" | "weak") {
-    const existing = readSitting(sessionStorage, owner, next);
-    if (existing?.done) clearSitting(sessionStorage, owner, next);
+    const existing = readSitting(sessionStorage, owner, next, stateCode);
+    if (existing?.done) clearSitting(sessionStorage, owner, next, stateCode);
     const url = new URL(window.location.href);
     url.searchParams.set("mode", next);
     window.history.replaceState(null, "", url);
@@ -97,7 +98,7 @@ export function PracticeLaunch() {
 
   function beginNew(next: "quick" | "full" | "weak") {
     if (openModes[next] && !window.confirm("Start a new set? This replaces the unfinished one.")) return;
-    clearSitting(sessionStorage, owner, next);
+    clearSitting(sessionStorage, owner, next, stateCode);
     setOpenModes((current) => ({ ...current, [next]: false }));
     if (next === "full") startFull();
     else enter(next);
@@ -152,12 +153,14 @@ export function PracticeLaunch() {
       <div className="card">
         <h2>Free Full 45 already used</h2>
         <p>
-          {signedIn
-            ? "This account has used its free Full 45. Pro includes more full exams."
-            : "This browser has used its free Full 45. Pro includes more full exams."}
+          {stateCode === "CA"
+            ? "The free California Full 45 is used. California Pro is not open yet, so another full exam cannot start."
+            : signedIn
+              ? "This account has used its free Full 45. Pro includes more full exams."
+              : "This browser has used its free Full 45. Pro includes more full exams."}
         </p>
-        <Link className="btn btn-primary" href={paths.pricing} data-upgrade-source="practice_limit">
-          Unlock Pro
+        <Link className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">
+          {stateCode === "CA" ? "See California access" : "Unlock Pro"}
         </Link>
         <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginLeft: 8 }}>
           Change mode
@@ -171,7 +174,7 @@ export function PracticeLaunch() {
       <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginBottom: 16 }}>
         Change mode
       </button>
-      <ExamRunner mode={mode} practice={mode !== "full"} isPro={isPro} sittingMode={mode} />
+      <ExamRunner mode={mode} practice={mode !== "full"} isPro={isPro} sittingMode={mode} stateCode={stateCode} />
     </div>
   );
 }
