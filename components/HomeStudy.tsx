@@ -125,32 +125,38 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
 
   const fullHref = `${paths.practice}?mode=full${fullSittingOpen ? "" : "&start=1"}`;
 
+  const fullAction = authReady && gateReady && fullSittingOpen ? (
+    <a className="btn btn-ghost" href={fullHref}>Resume Full Practice Exam</a>
+  ) : authReady && gateReady && fullLocked ? (
+    <a className="btn btn-ghost" href={paths.pricing} data-upgrade-source="practice_limit">Unlock Pro</a>
+  ) : authReady && gateReady ? (
+    <a className="btn btn-ghost" href={fullHref}>Start a Full Practice Exam</a>
+  ) : null;
+
   return (
-    <div className="study-stack">
-      <section className="home-start" aria-label="Where to start">
-        <a className="btn btn-primary" href={`${paths.practice}?mode=quick`}>
-          Check My Knowledge — 10 Questions
-        </a>
-        <p className="home-lead">Answer 10 free questions and find out what to study next.</p>
+    <>
+      <section className="home-welcome" aria-label="Where to start">
+        <h1>Arizona Notary Exam Prep</h1>
+        <p className="home-lead">Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams.</p>
+        <p className="home-diagnostic">Answer 10 free questions and find out what to study next.</p>
+        <div className="home-actions-row">
+          <a className="btn btn-primary" href={`${paths.practice}?mode=quick`}>
+            Check My Knowledge — 10 Questions
+          </a>
+          {fullAction}
+        </div>
         {quickOpen ? <p className="notice">You have an unfinished 10-question check. This continues it.</p> : null}
+        {fullLocked && authReady && gateReady ? (
+          <p className="notice">
+            {signedIn
+              ? "This account has used its free Full 45. Pro includes more full exams."
+              : "This browser has used its free Full 45. Pro includes more full exams."}
+          </p>
+        ) : null}
         {homeQuickOpen ? (
           <button className="home-text-btn" type="button" onClick={() => setHomeQuiz("quick")}>
             Continue the 10 questions started on this page
           </button>
-        ) : null}
-        {authReady && gateReady && fullSittingOpen ? (
-          <a className="btn btn-ghost" href={fullHref}>Resume Full Practice Exam</a>
-        ) : authReady && gateReady && fullLocked ? (
-          <>
-            <a className="btn btn-ghost" href={paths.pricing} data-upgrade-source="practice_limit">Unlock Pro</a>
-            <p className="notice">
-              {signedIn
-                ? "This account has used its free Full 45. Pro includes more full exams."
-                : "This browser has used its free Full 45. Pro includes more full exams."}
-            </p>
-          </>
-        ) : authReady && gateReady ? (
-          <a className="btn btn-ghost" href={fullHref}>Start a Full Practice Exam</a>
         ) : null}
         {homeFullOpen ? (
           <button className="home-text-btn" type="button" onClick={() => { setFullOpen(true); setHomeQuiz("full"); }}>
@@ -158,6 +164,7 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
           </button>
         ) : null}
       </section>
+    <div className="study-stack">
 
       {showContinue ? (
         <p className="home-continue">
@@ -274,5 +281,6 @@ export function HomeStudy({ cards }: { cards: StudyPreviewCard[] }) {
         <Link href={paths.daily}>Daily Study</Link>
       </p>
     </div>
+    </>
   );
 }

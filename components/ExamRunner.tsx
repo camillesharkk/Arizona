@@ -495,23 +495,8 @@ export function ExamRunner({
     const dailyHref = signedIn ? paths.daily : `${paths.login}?next=${encodeURIComponent(paths.daily)}`;
     return (
       <div className="grid">
-        <div className="card">
+        <div className="card result-summary">
           <span className="kicker">Result</span>
-          {guided && mode === "full" ? (
-            <div className="row" style={{ marginTop: 8 }}>
-              {missed ? (
-                <a className="btn btn-primary" href={studyHref}>Review {missed.label}</a>
-              ) : null}
-              <a className={missed ? "btn btn-ghost" : "btn btn-primary"} href={dailyHref}>Open Daily Study</a>
-            </div>
-          ) : null}
-          {guided && mode === "full" ? (
-            <p className="notice">
-              {signedIn
-                ? "Missed questions stay on your review schedule. Daily Study shows a question when it is due."
-                : "Daily Study needs a sign-in. This exam stays in this browser. It is not added to Daily Study unless you were signed in when you submitted."}
-            </p>
-          ) : null}
           {guided && mode === "quick" ? (
             <>
               <h2>{correct} of {questions.length} correct</h2>
@@ -522,7 +507,7 @@ export function ExamRunner({
                     ? `Next: review ${missed.label}.`
                     : "Next: read the study guide, or try another 10 questions. Skipped questions are not enough to pick a topic."}
               </p>
-              <div className="row">
+              <div className="result-next">
                 {correct >= 8 ? (
                   fullLocked ? (
                     <a className="btn btn-primary" href={paths.pricing} data-upgrade-source="practice_limit">Unlock Pro</a>
@@ -547,7 +532,6 @@ export function ExamRunner({
                 {correct < 8 && !missed ? (
                   <a className="btn btn-ghost" href={`${paths.practice}?mode=quick&start=1`}>Check My Knowledge — 10 Questions</a>
                 ) : null}
-                <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
               </div>
             </>
           ) : (
@@ -559,6 +543,19 @@ export function ExamRunner({
                 {correct} of {questions.length} correct. Practice target {examConfig.passingScorePercent}%. The SOS notice
                 checked {officialExam.checkedOn} lists {officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.
               </p>
+              {guided && mode === "full" ? (
+                <div className="result-next">
+                  {missed ? (
+                    <a className="btn btn-primary" href={studyHref}>Review {missed.label}</a>
+                  ) : null}
+                  <a className={missed ? "btn btn-ghost" : "btn btn-primary"} href={dailyHref}>Open Daily Study</a>
+                  <p className="notice">
+                    {signedIn
+                      ? "Missed questions stay on your review schedule. Daily Study shows a question when it is due."
+                      : "Daily Study needs a sign-in. This exam stays in this browser. It is not added to Daily Study unless you were signed in when you submitted."}
+                  </p>
+                </div>
+              ) : null}
             </>
           )}
           <h3>Topic accuracy</h3>
@@ -586,13 +583,13 @@ export function ExamRunner({
               <li key={s}>{s}</li>
             ))}
           </ul>
-          {guided && mode === "full" ? (
-            <div className="row" style={{ marginTop: 16 }}>
-              <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
-              <Link className="btn btn-ghost" href={paths.study}>Review Study Guide</Link>
+          {guided ? (
+            <div className="result-links">
+              <WrongAnswersLink label="Review wrong answers" />
+              <Link href={paths.study}>Review Study Guide</Link>
             </div>
-          ) : guided ? null : (
-            <div className="row" style={{ marginTop: 16 }}>
+          ) : (
+            <div className="result-next">
               {weak.length > 0 ? (
                 <Link className="btn btn-primary" href={`${paths.practice}?mode=weak`}>
                   Fix My Weak Areas

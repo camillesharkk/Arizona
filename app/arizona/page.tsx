@@ -50,8 +50,6 @@ export default function ArizonaHub() {
       <div className="wrap home-main">
         <JsonLd data={quizJson()} />
         <AccountStatusBanner />
-        <h1>Arizona Notary Exam Prep</h1>
-        <p className="home-lead">Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams.</p>
         <HomeStudy cards={previewCards} />
 
         <section className="home-block" aria-labelledby="free-pro-heading">
