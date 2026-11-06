@@ -15,12 +15,13 @@ export function FlagIcon() {
   );
 }
 
-export function LoadingNote({ text = "Loading your questions…" }: { text?: string }) {
+export function LoadingNote({ text = "Loading your questions…", inline = false }: { text?: string; inline?: boolean }) {
+  const Tag = inline ? "span" : "p";
   return (
-    <p className="loading-row" role="status">
+    <Tag className="loading-row" role="status">
       <span className="spinner" aria-hidden="true" />
       {text}
-    </p>
+    </Tag>
   );
 }
 

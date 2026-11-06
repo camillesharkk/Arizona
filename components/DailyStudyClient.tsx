@@ -46,6 +46,8 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
   const site = stateCode === "CA" ? caPaths : paths;
   const [view, setView] = useState<View | null>(null);
   const [loadError, setLoadError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const loadId = useRef(0);
   const [practiceIndex, setPracticeIndex] = useState(0);
   const [reviewIndex, setReviewIndex] = useState(0);
   const [flipped, setFlipped] = useState<"practice" | "review" | null>(null);
@@ -58,24 +60,34 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
   const query = `timeZone=${encodeURIComponent(zone)}${stateCode === "CA" ? "&state=CA" : ""}`;
 
   async function load() {
+    const id = ++loadId.current;
+    setLoading(true);
+    setLoadError(false);
+    let hold = false;
     try {
       if (stateCode === "CA") await syncCaAttempts().catch(() => undefined);
+      if (id !== loadId.current) return;
       const response = await fetch(`/api/daily-study/?${query}`, { cache: "no-store" });
+      if (id !== loadId.current) return;
+      const back = `${site.login}?next=${encodeURIComponent(`${site.daily}${window.location.search}`)}`;
       if (response.status === 401) {
-        window.location.href = `${site.login}?next=${encodeURIComponent(site.daily)}`;
+        hold = true;
+        window.location.href = back;
         return;
       }
       if (!response.ok) throw new Error("daily");
       const data = await response.json();
       if (data.error) {
-        window.location.href = `${site.login}?next=${encodeURIComponent(site.daily)}`;
+        hold = true;
+        window.location.href = back;
         return;
       }
       if (stateCode === "CA" && data.state !== "CA") throw new Error("state");
       setView(data);
-      setLoadError(false);
     } catch {
-      setLoadError(true);
+      if (id === loadId.current) setLoadError(true);
+    } finally {
+      if (id === loadId.current && !hold) setLoading(false);
     }
   }
 
@@ -117,6 +129,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
     setFlipped(null);
   }
 
+  if (!view && loading) return <LoadingNote text="Loading your study plan…" />;
   if (loadError && !view) {
     return (
       <div className="card">

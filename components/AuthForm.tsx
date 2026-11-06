@@ -5,6 +5,7 @@ import Link from "next/link";
 import { paths } from "@/lib/paths";
 import { syncCaAttempts } from "@/lib/ca-sync";
 import { PasswordField } from "@/components/PasswordField";
+import { LoadingNote } from "@/components/QuizChrome";
 
 const VERIFY_EMAIL_KEY = "az_verify_email";
 
@@ -84,6 +85,7 @@ export function AuthForm({
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (busy) return;
     if ((mode === "register" || mode === "reset") && password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -109,10 +111,18 @@ export function AuthForm({
           : mode === "register"
             ? { email, password, name, referralCode: referralCode.trim() || undefined }
             : { email, password, name };
-    const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-    const data = await res.json();
-    setBusy(false);
+    let res: Response;
+    let data: { error?: string; code?: string; message?: string; verifyToken?: string; resetToken?: string };
+    try {
+      res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      data = await res.json().catch(() => ({}));
+    } catch {
+      setBusy(false);
+      setError("Request failed");
+      return;
+    }
     if (!res.ok) {
+      setBusy(false);
       if (mode === "login" && data.code === "TOO_MANY_DEVICE_CHANGES") {
         setError(data.message || "Too many new devices");
         return;
@@ -151,9 +161,11 @@ export function AuthForm({
     if (mode === "login") {
       await syncCaAttempts().catch(() => null);
       const next = new URLSearchParams(window.location.search).get("next");
-      window.location.href = next && next.startsWith("/") && !next.startsWith("//") ? next : paths.dashboard;
+      const safe = next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/\\");
+      window.location.href = safe ? next : paths.dashboard;
       return;
     }
+    setBusy(false);
     if (mode === "register") {
       const { trackAnalyticsEvent } = await import("@/lib/analytics");
       trackAnalyticsEvent("sign_up", { plan: "free" });
@@ -248,16 +260,20 @@ export function AuthForm({
         <p className="notice">Use the verification email for this address instead of creating a new account.</p>
       )}
       {!hideCreate && (
-        <button className="btn btn-primary" type="submit" disabled={busy}>
-          {busy
-            ? "Working…"
-            : mode === "login"
-              ? "Sign in"
-              : mode === "register"
-                ? "Create Free Account"
-                : mode === "forgot"
-                  ? "Send reset link"
-                  : "Set new password"}
+        <button className="btn btn-primary" type="submit" disabled={busy} aria-busy={busy}>
+          {busy && mode === "login" ? (
+            <LoadingNote inline text="Signing in…" />
+          ) : busy ? (
+            "Working…"
+          ) : mode === "login" ? (
+            "Sign in"
+          ) : mode === "register" ? (
+            "Create Free Account"
+          ) : mode === "forgot" ? (
+            "Send reset link"
+          ) : (
+            "Set new password"
+          )}
         </button>
       )}
       {(needVerify || registerBlock) && (

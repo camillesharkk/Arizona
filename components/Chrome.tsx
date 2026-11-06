@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
-import { caPaths, isCaliforniaPath, switchStateHref } from "@/lib/ca-site";
+import { caPaths, isCaliforniaPath } from "@/lib/ca-site";
 import { isComingSoonPath } from "@/lib/states";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
+import { StateMenu } from "@/components/StateMenu";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { ProAccessNote } from "@/components/ProAccessNote";
 
@@ -52,6 +53,7 @@ export function SiteHeader() {
   const [accountOpen, setAccountOpen] = useState(true);
   const [me, setMe] = useState<HeaderUser | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
+  const [returnTo, setReturnTo] = useState(pathname);
 
   useEffect(() => {
     let cancelled = false;
@@ -77,6 +79,7 @@ export function SiteHeader() {
   }, [pathname]);
 
   useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => setReturnTo(`${pathname}${window.location.search}`), [pathname]);
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -125,15 +128,9 @@ export function SiteHeader() {
             <span className="logo-mark">{onPicker ? "N" : onCa ? "C" : "A"}</span>
             {onPicker ? "Notary Exam Prep" : onCa ? "California" : "Arizona Exam"}
           </Link>
-          {onPicker ? null : (
-            <nav className="state-switch" aria-label="State">
-              <Link href={switchStateHref(pathname, "AZ")} aria-current={onCa ? undefined : "page"}>AZ</Link>
-              <Link href={switchStateHref(pathname, "CA")} aria-current={onCa ? "page" : undefined}>CA</Link>
-            </nav>
-          )}
+          <StateMenu pathname={pathname} />
         </div>
         <nav className="nav nav-desktop" aria-label="Primary">
-          {onPicker ? null : <Link href="/">Choose State</Link>}
           {onPicker ? null : (
           <>
           <Link href={nav.practice} className={active(pathname, nav.practice) ? "active" : ""}>
@@ -157,7 +154,7 @@ export function SiteHeader() {
         </nav>
         <div className="header-right">
           {authStatus === "signed-out" && (
-            <Link href={onCa ? `${paths.login}?next=${encodeURIComponent(pathname)}` : paths.login} className={`header-signin ${active(pathname, paths.login) ? "active" : ""}`}>
+            <Link href={onCa ? `${paths.login}?next=${encodeURIComponent(returnTo)}` : paths.login} className={`header-signin ${active(pathname, paths.login) ? "active" : ""}`}>
               Sign in
             </Link>
           )}
@@ -177,15 +174,6 @@ export function SiteHeader() {
       </div>
       {open && <div className="nav-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />}
       <nav id="mobile-nav" className={open ? "nav-drawer open" : "nav-drawer"} aria-label="Mobile">
-        {onPicker ? (
-          <Link href="/">Choose State</Link>
-        ) : (
-          <nav className="state-switch state-switch-drawer" aria-label="State">
-            <Link href={switchStateHref(pathname, "AZ")} aria-current={onCa ? undefined : "page"}>Arizona</Link>
-            <Link href={switchStateHref(pathname, "CA")} aria-current={onCa ? "page" : undefined}>California</Link>
-          </nav>
-        )}
-        {onPicker ? null : <Link href="/">Choose State</Link>}
         {onHome || onPicker ? null : (
           <Link className="btn btn-primary btn-wide drawer-start" href={nav.practice}>
             Practice Test
@@ -254,7 +242,7 @@ export function SiteHeader() {
           </>
         ) : authStatus === "signed-out" ? (
           <>
-            <Link href={onCa ? `${paths.login}?next=${encodeURIComponent(pathname)}` : paths.login}>Sign in</Link>
+            <Link href={onCa ? `${paths.login}?next=${encodeURIComponent(returnTo)}` : paths.login}>Sign in</Link>
             <Link href={onCa ? `${paths.register}?next=${encodeURIComponent(pathname)}` : paths.register}>Create Free Account</Link>
           </>
         ) : null}
