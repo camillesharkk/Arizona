@@ -195,6 +195,8 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--brand); width:
 }
 .btn:active { transform: scale(0.98); }
 .btn:disabled, .btn[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; transform: none; }
+.btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.btn-ghost:disabled, .btn-ghost[aria-disabled="true"] { border-color: var(--line); }
 .btn-primary { background: var(--brand); color: white; }
 .btn-primary:hover { background: var(--brand-hover); }
 .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }

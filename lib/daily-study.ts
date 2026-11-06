@@ -1,5 +1,9 @@
+import { caCards } from "@/data/ca-cards";
+import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedQuestions } from "@/data/questions";
 import { localDate } from "@/lib/calendar";
+import { recentCaExams, type CaCheck } from "@/lib/ca-daily-shape";
+import { caPaths } from "@/lib/ca-site";
 import { hasArizonaPro } from "@/lib/entitlements";
 import { publicStudyCards, studyCardCatalog } from "@/lib/study-cards";
 import {
@@ -16,12 +20,41 @@ import {
   type StudyDocument,
   type StudySettings,
 } from "@/lib/study-plan";
-import { DEFAULT_STUDY_TIME_ZONE } from "@/lib/review-schedule";
+import { DEFAULT_STUDY_TIME_ZONE, scheduleReview } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
 
-const STATE = "AZ";
+export type StudyState = "AZ" | "CA";
 
-function pool(isPro: boolean) {
+function pool(state: StudyState, isPro: boolean) {
+  if (state === "CA") {
+    const questions = publishedCaQuestions();
+    const cards = caCards.map((card) => ({
+      id: card.id,
+      topic: card.study,
+      category: card.study,
+      title: card.title,
+      front: card.front,
+      back: card.rule,
+      rule: card.rule,
+      boundary: card.boundary,
+      mixup: card.mixup,
+      sourceLabel: card.source,
+      sourceUrl: card.sourceUrl,
+      practiceHref: `${caPaths.practice}?mode=practice&area=${encodeURIComponent(card.study)}`,
+      locked: false,
+      pending: false,
+    }));
+    const cardsByQuestion = new Map<string, string[]>();
+    for (const card of cards) {
+      for (const question of questions) {
+        if (question.study_topic !== card.topic) continue;
+        const list = cardsByQuestion.get(question.question_id) || [];
+        list.push(card.id);
+        cardsByQuestion.set(question.question_id, list);
+      }
+    }
+    return { questions, cards, cardsByQuestion };
+  }
   const questions = publishedQuestions().filter((question) => isPro || question.is_free);
   const cards = publicStudyCards(isPro).filter((card) => !card.locked && !card.pending);
   const allowedCards = new Set(cards.map((card) => card.id));
@@ -37,27 +70,46 @@ function pool(isPro: boolean) {
   return { questions, cards, cardsByQuestion };
 }
 
-async function loadDocument(userId: string, today: string, timeZoneHint?: string) {
+function keptChecks(raw: unknown): Record<string, CaCheck> | undefined {
+  if (!raw || typeof raw !== "object" || !("checks" in raw)) return undefined;
+  const checks = (raw as { checks?: unknown }).checks;
+  return checks && typeof checks === "object" ? (checks as Record<string, CaCheck>) : undefined;
+}
+
+async function loadDocument(userId: string, state: StudyState, today: string, timeZoneHint?: string) {
   const store = await getStore();
-  const row = await store.getStudyPlan(userId, STATE);
+  const row = await store.getStudyPlan(userId, state);
   const hint = timeZoneHint && timeZoneHint.length < 80 ? timeZoneHint : undefined;
   const doc = normalizeDocument(row?.document, today, hint || DEFAULT_STUDY_TIME_ZONE);
   if (!row && hint) doc.settings.timeZone = hint;
-  return doc;
+  return { store, doc, checks: state === "CA" ? keptChecks(row?.document) : undefined };
 }
 
-export async function dailyStudyView(userId: string, timeZoneHint?: string, now = new Date().toISOString()) {
-  const pro = await hasArizonaPro(userId);
+async function saveDocument(store: Awaited<ReturnType<typeof getStore>>, userId: string, state: StudyState, doc: StudyDocument, checks?: Record<string, CaCheck>) {
+  await store.saveStudyPlan({ userId, state, document: state === "CA" && checks ? { ...doc, checks } : doc });
+}
+
+export async function dailyStudyView(userId: string, timeZoneHint?: string, now = new Date().toISOString(), state: StudyState = "AZ") {
+  const pro = state === "AZ" ? await hasArizonaPro(userId) : true;
   const storeForExpiry = await getStore();
-  const expires = await storeForExpiry.getLatestArizonaExpiry(userId);
-  let doc = await loadDocument(userId, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
+  const expires = state === "AZ" ? await storeForExpiry.getLatestArizonaExpiry(userId) : null;
+  const loaded = await loadDocument(userId, state, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
+  let doc = loaded.doc;
+  const { store, checks } = loaded;
   const timeZone = doc.settings.timeZone || DEFAULT_STUDY_TIME_ZONE;
   const today = localDate(now, timeZone);
-  const { questions, cards, cardsByQuestion } = pool(pro);
-  const store = await getStore();
+  const { questions, cards, cardsByQuestion } = pool(state, pro);
   const stats = await store.listStats(userId);
+  const stateStats = stats.filter((item) => item.state === state);
+  if (state === "CA") {
+    for (const stat of stateStats) {
+      if (stat.mastered || stat.wrongCount <= 0 || stat.nextReviewAt) continue;
+      stat.nextReviewAt = scheduleReview(stat.lastWrongAt || stat.firstAt || now, stat.reviewStage || 0, timeZone);
+      await store.updateReviewStat(userId, stat.questionId, { nextReviewAt: stat.nextReviewAt });
+    }
+  }
   const progress: ItemProgress[] = questions.map((question) => {
-    const stat = stats.find((item) => item.questionId === question.question_id && item.state === STATE);
+    const stat = stateStats.find((item) => item.questionId === question.question_id);
     return {
       id: question.question_id,
       wrongCount: stat?.wrongCount ?? 0,
@@ -82,7 +134,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   });
   const previousSeconds = doc.days[today]?.visibleSeconds ?? 0;
   doc = { ...doc, days: { ...doc.days, [today]: { tasks: built.tasks, visibleSeconds: previousSeconds } } };
-  await store.saveStudyPlan({ userId, state: STATE, document: doc });
+  await saveDocument(store, userId, state, doc, checks);
   const projection = projectPlan({
     settings: doc.settings,
     today,
@@ -120,11 +172,11 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     projectedDate: projection.date,
     projectReason: projection.reason,
     entitlementExpiresAt: expires ? expires.toISOString() : null,
-    freeOnly: !pro,
-    freeQuestionCount: pool(false).questions.length,
-    questionCount: pool(true).questions.length,
-    freeCardCount: pool(false).cards.length,
-    cardCount: pool(true).cards.length,
+    freeOnly: state === "AZ" && !pro,
+    freeQuestionCount: pool(state, false).questions.length,
+    questionCount: pool(state, true).questions.length,
+    freeCardCount: pool(state, false).cards.length,
+    cardCount: pool(state, true).cards.length,
     quotas: built.quotas,
     recommended: { newCards: base.newCards, newQuestions: base.newQuestions, reviews: base.reviews },
     reason: built.reason,
@@ -137,14 +189,45 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     unmappedQuestionIds: built.unmappedQuestionIds,
     nextReviewAt: nextReview,
     taskStatus: built.tasks,
+    ...(state === "CA" ? californiaPlan(questions, stateStats, await store.listExams(userId), checks) : {}),
   };
 }
 
-export async function saveStudySettings(userId: string, patch: Partial<StudySettings> & { restore?: boolean }, timeZoneHint?: string) {
+function californiaPlan(
+  questions: { question_id: string; question_text: string; exam_area?: string }[],
+  stats: { questionId: string; state: string; wrongCount: number; savedForReview?: boolean; mastered: boolean; nextReviewAt: string | null; lastWrongAt: string | null; firstAt: string | null }[],
+  exams: { id: string; mode: string; correctCount: number; total: number; at: string }[],
+  checks: Record<string, CaCheck> | undefined,
+) {
+  const byId = new Map(questions.map((question) => [question.question_id, question]));
   const now = new Date().toISOString();
-  const store = await getStore();
-  const row = await store.getStudyPlan(userId, STATE);
-  const doc = normalizeDocument(row?.document, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
+  const scheduled = stats
+    .filter((stat) => !stat.mastered && (stat.wrongCount > 0 || stat.savedForReview) && byId.has(stat.questionId))
+    .map((stat) => {
+      const question = byId.get(stat.questionId)!;
+      return {
+        questionId: question.question_id,
+        prompt: question.question_text,
+        area: question.exam_area || "",
+        nextReviewAt: stat.nextReviewAt,
+        wrongCount: stat.wrongCount,
+        saved: Boolean(stat.savedForReview),
+        due: Boolean(stat.nextReviewAt && stat.nextReviewAt <= now),
+      };
+    })
+    .sort((a, b) => (a.nextReviewAt || "9").localeCompare(b.nextReviewAt || "9"));
+  return {
+    state: "CA" as const,
+    recent: recentCaExams(exams, checks || {}, stats),
+    scheduled,
+    due: scheduled.filter((item) => item.due).map((item) => ({ questionId: item.questionId, prompt: item.prompt, due: item.nextReviewAt, area: item.area })),
+    hasPractice: recentCaExams(exams, checks || {}, stats).length > 0 || stats.some((stat) => stat.firstAt || stat.savedForReview),
+  };
+}
+
+export async function saveStudySettings(userId: string, patch: Partial<StudySettings> & { restore?: boolean }, timeZoneHint?: string, state: StudyState = "AZ") {
+  const now = new Date().toISOString();
+  const { store, doc, checks } = await loadDocument(userId, state, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
   const settings: StudySettings = { ...doc.settings };
   if (patch.restore) {
     settings.mode = "recommended";
@@ -179,33 +262,29 @@ export async function saveStudySettings(userId: string, patch: Partial<StudySett
     }
   }
   const next: StudyDocument = { ...doc, settings };
-  await store.saveStudyPlan({ userId, state: STATE, document: next });
+  await saveDocument(store, userId, state, next, checks);
   return settings;
 }
 
-export async function markDailyCard(userId: string, input: { cardId: string; action: "studied" | "remembered" | "need-review"; attemptId: string }) {
-  const pro = await hasArizonaPro(userId);
-  const allowed = new Set(pool(pro).cards.map((card) => card.id));
+export async function markDailyCard(userId: string, input: { cardId: string; action: "studied" | "remembered" | "need-review"; attemptId: string }, state: StudyState = "AZ") {
+  const pro = state === "AZ" ? await hasArizonaPro(userId) : true;
+  const allowed = new Set(pool(state, pro).cards.map((card) => card.id));
   if (!allowed.has(input.cardId)) throw new Error("not_allowed");
-  const store = await getStore();
   const now = new Date().toISOString();
-  const row = await store.getStudyPlan(userId, STATE);
-  let doc = normalizeDocument(row?.document, localDate(now, DEFAULT_STUDY_TIME_ZONE));
+  const { store, doc, checks } = await loadDocument(userId, state, localDate(now, DEFAULT_STUDY_TIME_ZONE));
   if (doc.attempts.includes(input.attemptId)) return doc;
-  doc = applyCardMark(doc, { cardId: input.cardId, action: input.action, now, timeZone: doc.settings.timeZone });
-  doc = { ...doc, attempts: [...doc.attempts, input.attemptId].slice(-500) };
-  await store.saveStudyPlan({ userId, state: STATE, document: doc });
-  return doc;
+  const marked = applyCardMark(doc, { cardId: input.cardId, action: input.action, now, timeZone: doc.settings.timeZone });
+  const next = { ...marked, attempts: [...marked.attempts, input.attemptId].slice(-500) };
+  await saveDocument(store, userId, state, next, checks);
+  return next;
 }
 
-export async function studyMore(userId: string) {
-  await dailyStudyView(userId);
-  const pro = await hasArizonaPro(userId);
-  const { questions, cards } = pool(pro);
-  const store = await getStore();
+export async function studyMore(userId: string, state: StudyState = "AZ") {
+  await dailyStudyView(userId, undefined, undefined, state);
+  const pro = state === "AZ" ? await hasArizonaPro(userId) : true;
+  const { questions, cards } = pool(state, pro);
   const now = new Date().toISOString();
-  const row = await store.getStudyPlan(userId, STATE);
-  const doc = normalizeDocument(row?.document, localDate(now, DEFAULT_STUDY_TIME_ZONE));
+  const { store, doc, checks } = await loadDocument(userId, state, localDate(now, DEFAULT_STUDY_TIME_ZONE));
   const today = localDate(now, doc.settings.timeZone);
   const day = doc.days[today] || { tasks: [], visibleSeconds: 0 };
   const stats = await store.listStats(userId);
@@ -213,18 +292,16 @@ export async function studyMore(userId: string) {
   let sort = day.tasks.reduce((max, task) => Math.max(max, task.sort), 0);
   const tasks = [...day.tasks];
   const card = cards.find((item) => !doc.cards[item.id]?.firstStudiedAt && !keys.has(`card:${item.id}`));
-  const question = questions.find((item) => !stats.some((stat) => stat.questionId === item.question_id && stat.firstAt) && !keys.has(`question:${item.question_id}`));
+  const question = questions.find((item) => !stats.some((stat) => stat.state === state && stat.questionId === item.question_id && stat.firstAt) && !keys.has(`question:${item.question_id}`));
   if (card) tasks.push({ key: `card:${card.id}`, kind: "new-card", status: "pending", sort: ++sort });
   if (question) tasks.push({ key: `question:${question.question_id}`, kind: "new-question", status: "pending", sort: ++sort });
-  await store.saveStudyPlan({ userId, state: STATE, document: { ...doc, days: { ...doc.days, [today]: { ...day, tasks } } } });
+  await saveDocument(store, userId, state, { ...doc, days: { ...doc.days, [today]: { ...day, tasks } } }, checks);
 }
 
-export async function addVisibleTime(userId: string, seconds: number, attemptId: string) {
+export async function addVisibleTime(userId: string, seconds: number, attemptId: string, state: StudyState = "AZ") {
   if (seconds <= 0 || seconds > 120) return;
-  const store = await getStore();
   const now = new Date().toISOString();
-  const row = await store.getStudyPlan(userId, STATE);
-  const doc = normalizeDocument(row?.document, localDate(now, DEFAULT_STUDY_TIME_ZONE));
+  const { store, doc, checks } = await loadDocument(userId, state, localDate(now, DEFAULT_STUDY_TIME_ZONE));
   if (doc.attempts.includes(attemptId)) return;
   const today = localDate(now, doc.settings.timeZone);
   const day = doc.days[today] || { tasks: [], visibleSeconds: 0 };
@@ -233,7 +310,7 @@ export async function addVisibleTime(userId: string, seconds: number, attemptId:
     attempts: [...doc.attempts, attemptId].slice(-500),
     days: { ...doc.days, [today]: { ...day, visibleSeconds: day.visibleSeconds + Math.floor(seconds) } },
   };
-  await store.saveStudyPlan({ userId, state: STATE, document: next });
+  await saveDocument(store, userId, state, next, checks);
 }
 
 export function emptyFor(today: string) {

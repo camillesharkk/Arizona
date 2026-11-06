@@ -30,8 +30,12 @@ export function StudySettings() {
   const [payload, setPayload] = useState<Payload | null>(null);
   const [message, setMessage] = useState("");
 
+  function stateQuery() {
+    return new URLSearchParams(window.location.search).get("state") === "CA" ? "CA" : "AZ";
+  }
+
   async function load() {
-    const data = await fetch(`/api/study-settings/?timeZone=${encodeURIComponent(zone)}`).then((response) => response.json());
+    const data = await fetch(`/api/study-settings/?timeZone=${encodeURIComponent(zone)}&state=${stateQuery()}`).then((response) => response.json());
     if (!data.error) setPayload(data);
   }
 
@@ -43,7 +47,7 @@ export function StudySettings() {
   const settings = payload.settings;
 
   async function save(next: Partial<Settings> & { restore?: boolean }) {
-    const data = await fetch("/api/study-settings/", {
+    const data = await fetch(`/api/study-settings/?state=${stateQuery()}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...settings, ...next, timeZone: settings.timeZone || zone }),

@@ -8,10 +8,12 @@ export function WrongAnswersLink({
   className,
   label = "Wrong Answers",
   href = paths.mistakes,
+  stateCode = "AZ",
 }: {
   className?: string;
   label?: string;
   href?: string;
+  stateCode?: "AZ" | "CA";
 }) {
   const [text, setText] = useState(label);
   const [to, setTo] = useState(href);
@@ -28,7 +30,7 @@ export function WrongAnswersLink({
             setText(label);
             return;
           }
-          const data = await fetch("/api/mistakes/", { cache: "no-store" }).then((r) => r.json());
+          const data = await fetch(stateCode === "CA" ? "/api/mistakes/?state=CA" : "/api/mistakes/", { cache: "no-store" }).then((r) => r.json());
           if (cancel) return;
           const due = Number(data.dueCount || 0);
           setText(due > 0 ? `${label} · ${due} due` : label);
@@ -42,7 +44,7 @@ export function WrongAnswersLink({
       cancel = true;
       window.removeEventListener("az-mistakes-change", refresh);
     };
-  }, [href, label]);
+  }, [href, label, stateCode]);
 
   return (
     <Link className={className} href={to}>

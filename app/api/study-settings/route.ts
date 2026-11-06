@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { dailyStudyView, saveStudySettings } from "@/lib/daily-study";
+import { dailyStudyView, saveStudySettings, type StudyState } from "@/lib/daily-study";
 import { getSession } from "@/lib/session";
 
 const schema = z.object({
@@ -17,8 +17,10 @@ const schema = z.object({
 export async function GET(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
-  const timeZone = new URL(req.url).searchParams.get("timeZone") || undefined;
-  return NextResponse.json(await dailyStudyView(session.id, timeZone));
+  const url = new URL(req.url);
+  const timeZone = url.searchParams.get("timeZone") || undefined;
+  const state: StudyState = url.searchParams.get("state") === "CA" ? "CA" : "AZ";
+  return NextResponse.json(await dailyStudyView(session.id, timeZone, undefined, state));
 }
 
 export async function POST(req: Request) {
@@ -27,10 +29,12 @@ export async function POST(req: Request) {
   const body = schema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
   try {
-    await saveStudySettings(session.id, body.data, body.data.timeZone);
+    const state: StudyState = new URL(req.url).searchParams.get("state") === "CA" ? "CA" : "AZ";
+    await saveStudySettings(session.id, body.data, body.data.timeZone, state);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Could not save";
     return NextResponse.json({ error: message }, { status: 400 });
   }
-  return NextResponse.json(await dailyStudyView(session.id, body.data.timeZone));
+  const state: StudyState = new URL(req.url).searchParams.get("state") === "CA" ? "CA" : "AZ";
+  return NextResponse.json(await dailyStudyView(session.id, body.data.timeZone, undefined, state));
 }

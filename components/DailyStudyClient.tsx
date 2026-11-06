@@ -2,11 +2,14 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedQuestions } from "@/data/questions";
 import { ExamRunner } from "@/components/ExamRunner";
 import { StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
 import { StudyPager } from "@/components/StudyPager";
 import { LoadingNote } from "@/components/QuizChrome";
+import { caPaths } from "@/lib/ca-site";
+import { syncCaAttempts } from "@/lib/ca-sync";
 import { paths } from "@/lib/paths";
 
 type Card = StudyCardView & { id: string };
@@ -35,9 +38,12 @@ type View = {
   unmappedQuestionIds: string[];
   nextReviewAt: string | null;
   taskStatus: { key: string; kind: string; status: string }[];
+  recent?: { id: string; at: string; label: string; correct: number; total: number; wrong: number }[];
+  scheduled?: { questionId: string; prompt: string; nextReviewAt: string | null; wrongCount: number; saved: boolean; due: boolean }[];
 };
 
-export function DailyStudyClient() {
+export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA" }) {
+  const site = stateCode === "CA" ? caPaths : paths;
   const [view, setView] = useState<View | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [practiceIndex, setPracticeIndex] = useState(0);
@@ -49,15 +55,23 @@ export function DailyStudyClient() {
   const zone = useMemo(() => Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix", []);
   const visibleStart = useRef<number | null>(null);
 
+  const query = `timeZone=${encodeURIComponent(zone)}${stateCode === "CA" ? "&state=CA" : ""}`;
+
   async function load() {
     try {
-      const response = await fetch(`/api/daily-study/?timeZone=${encodeURIComponent(zone)}`);
+      if (stateCode === "CA") await syncCaAttempts().catch(() => undefined);
+      const response = await fetch(`/api/daily-study/?${query}`, { cache: "no-store" });
+      if (response.status === 401) {
+        window.location.href = `${site.login}?next=${encodeURIComponent(site.daily)}`;
+        return;
+      }
       if (!response.ok) throw new Error("daily");
       const data = await response.json();
       if (data.error) {
-        window.location.href = `${paths.login}?next=${encodeURIComponent(paths.daily)}`;
+        window.location.href = `${site.login}?next=${encodeURIComponent(site.daily)}`;
         return;
       }
+      if (stateCode === "CA" && data.state !== "CA") throw new Error("state");
       setView(data);
       setLoadError(false);
     } catch {
@@ -86,7 +100,7 @@ export function DailyStudyClient() {
     const seconds = Math.round((Date.now() - visibleStart.current) / 1000);
     visibleStart.current = document.visibilityState === "visible" ? Date.now() : null;
     if (seconds < 5) return;
-    fetch("/api/daily-study/", {
+    fetch(`/api/daily-study/?${query}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "visible", seconds: Math.min(seconds, 120), attemptId: crypto.randomUUID() }),
@@ -94,7 +108,7 @@ export function DailyStudyClient() {
   }
 
   async function mark(cardId: string, action: "studied" | "remembered" | "need-review") {
-    const data = await fetch("/api/daily-study/", {
+    const data = await fetch(`/api/daily-study/?${query}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action, cardId, attemptId: crypto.randomUUID() }),
@@ -111,14 +125,15 @@ export function DailyStudyClient() {
       </div>
     );
   }
-  if (!view) return <LoadingNote text="Loading today’s plan…" />;
+  if (!view) return <LoadingNote text="Loading your study plan…" />;
   const pending = (kind: string) => new Set(view.taskStatus.filter((task) => task.kind === kind && task.status === "pending").map((task) => task.key));
   const practiceCards = view.practiceCards.filter((card) => pending("new-card").has(`card:${card.id}`));
   const reviewCards = view.reviewCards.filter((card) => pending("review-card").has(`card:${card.id}`));
   const practiceCard = practiceCards[Math.min(practiceIndex, Math.max(practiceCards.length - 1, 0))];
   const reviewCard = reviewCards[Math.min(reviewIndex, Math.max(reviewCards.length - 1, 0))];
-  const practiceQuestions = publishedQuestions().filter((question) => pending("new-question").has(`question:${question.question_id}`));
-  const reviewQuestions = publishedQuestions().filter((question) => pending("review-question").has(`question:${question.question_id}`));
+  const bank = stateCode === "CA" ? publishedCaQuestions() : publishedQuestions();
+  const practiceQuestions = bank.filter((question) => pending("new-question").has(`question:${question.question_id}`));
+  const reviewQuestions = bank.filter((question) => pending("review-question").has(`question:${question.question_id}`));
   const entitlement = view.entitlementExpiresAt ? view.entitlementExpiresAt.slice(0, 10) : null;
   const progress = view.total ? Math.round(((view.introduced + view.reviewed) / (view.total * 2)) * 100) : 0;
 
@@ -129,17 +144,17 @@ export function DailyStudyClient() {
         <span>{view.done} / {view.goal} today</span>
         <span>{progress}% of this plan</span>
         <span>Target {view.targetDate}</span>
-        <Link href={`${paths.account}#study-settings`}>Study Settings</Link>
+        <Link href={stateCode === "CA" ? `${paths.account}?state=CA#study-settings` : `${paths.account}#study-settings`}>Study Settings</Link>
       </div>
-      {view.freeOnly ? (
+      {stateCode === "AZ" && view.freeOnly ? (
         <p className="notice">
           Today’s plan uses the free set: {view.freeQuestionCount} questions and {view.freeCardCount} study cards. Pro uses all {view.questionCount} questions and {view.cardCount} study cards.{" "}
           <Link href={paths.pricing}>View Pro</Link>
         </p>
-      ) : (
+      ) : stateCode === "AZ" ? (
         <p className="notice">Pro is active. Today’s plan uses the full question bank and study cards.</p>
-      )}
-      {entitlement && entitlement < view.targetDate ? <p className="notice">Pro access ends {entitlement}. The study target stays {view.targetDate}.</p> : null}
+      ) : null}
+      {stateCode === "AZ" && entitlement && entitlement < view.targetDate ? <p className="notice">Pro access ends {entitlement}. The study target stays {view.targetDate}.</p> : null}
       {view.projectedDate && view.projectedDate > view.targetDate ? <p className="notice">At the current pace the plan finishes {view.projectedDate}.</p> : null}
       {view.projectReason ? <p className="notice">{view.projectReason}</p> : null}
       {view.reason ? <p className="notice">{view.reason}</p> : null}
@@ -201,18 +216,18 @@ export function DailyStudyClient() {
         </section>
         {practiceQuestions.length ? (
           <div className="daily-practice-quiz">
-            <ExamRunner mode="practice" practice preset={practiceQuestions} onRecorded={load} sittingMode="daily-practice" />
+            <ExamRunner mode="practice" practice preset={practiceQuestions} onRecorded={load} sittingMode="daily-practice" stateCode={stateCode} />
           </div>
         ) : null}
         {reviewQuestions.length ? (
           <div className="daily-review-quiz">
-            <ExamRunner mode="weak" practice review preset={reviewQuestions} onRecorded={load} sittingMode="daily-review" />
+            <ExamRunner mode="weak" practice review preset={reviewQuestions} onRecorded={load} sittingMode="daily-review" stateCode={stateCode} />
           </div>
         ) : null}
       </div>
       <p style={{ marginTop: 16 }}>
         <button className="btn btn-ghost" type="button" onClick={async () => {
-          const data = await fetch("/api/daily-study/", {
+          const data = await fetch(`/api/daily-study/?${query}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ action: "more", attemptId: crypto.randomUUID() }),
@@ -220,6 +235,38 @@ export function DailyStudyClient() {
           if (!data.error) setView(data);
         }}>Keep studying</button>
       </p>
+      {view.recent && view.recent.length > 0 ? (
+        <section className="card" style={{ marginTop: 16 }}>
+          <h2>Recent practice</h2>
+          <ul className="check">
+            {view.recent.map((exam) => (
+              <li key={exam.id}>
+                <strong>{exam.label}</strong>
+                {" · "}
+                {new Date(exam.at).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+                {" · "}
+                {exam.correct}/{exam.total}
+                {exam.wrong > 0 ? <> · <Link href={`${site.mistakes}?attempt=${exam.id}`}>Review My Mistakes ({exam.wrong})</Link></> : " · No mistakes"}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+      {view.scheduled && view.scheduled.length > 0 ? (
+        <section className="card">
+          <h2>Scheduled review</h2>
+          <ul className="check">
+            {view.scheduled.map((item) => (
+              <li key={item.questionId}>
+                {item.prompt}
+                {" · "}
+                {item.saved && item.wrongCount === 0 ? "Added" : `Wrong ${item.wrongCount}`}
+                {item.nextReviewAt ? ` · ${item.due ? "Due" : "Next"} ${new Date(item.nextReviewAt).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}` : ""}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </>
   );
 }

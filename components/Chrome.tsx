@@ -142,11 +142,7 @@ export function SiteHeader() {
           <Link href={nav.study} className={active(pathname, nav.study) ? "active" : ""}>
             Study Guide
           </Link>
-          {onCa ? (
-            <Link href={nav.mistakes} className={active(pathname, nav.mistakes) ? "active" : ""}>Wrong Answers</Link>
-          ) : (
-            <WrongAnswersLink className={active(pathname, nav.mistakes) ? "active" : ""} />
-          )}
+          <WrongAnswersLink href={nav.mistakes} stateCode={onCa ? "CA" : "AZ"} className={active(pathname, nav.mistakes) ? "active" : ""} />
           <Link href={nav.daily} className={active(pathname, nav.daily) ? "active" : ""}>
             Daily Study
           </Link>
@@ -224,11 +220,7 @@ export function SiteHeader() {
                 {l.label}
               </Link>
             ))}
-            {onCa ? (
-              <Link href={nav.mistakes} className={active(pathname, nav.mistakes) ? "active" : ""}>Wrong Answers</Link>
-            ) : (
-              <WrongAnswersLink className={active(pathname, nav.mistakes) ? "active" : ""} />
-            )}
+            <WrongAnswersLink href={nav.mistakes} stateCode={onCa ? "CA" : "AZ"} className={active(pathname, nav.mistakes) ? "active" : ""} />
             <Link href={nav.resources} className={active(pathname, nav.resources) ? "active" : ""}>
               Resources
             </Link>

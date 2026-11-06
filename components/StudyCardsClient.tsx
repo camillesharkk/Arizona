@@ -3,14 +3,28 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { topics } from "@/data/exam-config";
+import { topics as arizonaTopics } from "@/data/exam-config";
 import { StudyCardBody } from "@/components/StudyCardBody";
 import { StudyPager } from "@/components/StudyPager";
 import { scrollUnderHeaderSoon } from "@/lib/scroll-under-header";
 import { paths } from "@/lib/paths";
 import { isTopicSlug, type PublicStudyCard } from "@/lib/study-cards";
 
-export function StudyCardsClient({ cards, initialTopic }: { cards: PublicStudyCard[]; initialTopic: string }) {
+export function StudyCardsClient({
+  cards,
+  initialTopic,
+  topics = arizonaTopics,
+  cardsHref = paths.studyCards,
+  dailyHref = paths.daily,
+  practiceHref,
+}: {
+  cards: PublicStudyCard[];
+  initialTopic: string;
+  topics?: readonly { id: string; label: string }[];
+  cardsHref?: string;
+  dailyHref?: string;
+  practiceHref?: (topic: string) => string | undefined;
+}) {
   const router = useRouter();
   const [topic, setTopic] = useState(initialTopic);
   const [index, setIndex] = useState(0);
@@ -35,7 +49,7 @@ export function StudyCardsClient({ cards, initialTopic }: { cards: PublicStudyCa
     setTopic(next);
     setIndex(0);
     setFlipped(false);
-    router.replace(next === "all" ? paths.studyCards : `${paths.studyCards}?topic=${next}`, { scroll: false });
+    router.replace(next === "all" ? cardsHref : `${cardsHref}?topic=${next}`, { scroll: false });
     scrollUnderHeaderSoon(face.current);
   }
 
@@ -130,14 +144,14 @@ export function StudyCardsClient({ cards, initialTopic }: { cards: PublicStudyCa
             onPrev={() => move(safeIndex - 1)}
             onNext={() => move(safeIndex + 1)}
           />
-          {safeIndex === deck.length - 1 ? <p style={{ marginTop: 12 }}><Link className="btn btn-primary" href={paths.daily}>Continue to Daily Study</Link></p> : null}
+          {safeIndex === deck.length - 1 ? <p style={{ marginTop: 12 }}><Link className="btn btn-primary" href={dailyHref}>Continue to Daily Study</Link></p> : null}
         </>
       ) : (
         <p>No cards in this topic.</p>
       )}
-      {isTopicSlug(topic) ? (
+      {(practiceHref ? practiceHref(topic) : isTopicSlug(topic) ? paths.topic(topic) : undefined) ? (
         <p style={{ marginTop: 12 }}>
-          <Link className="btn btn-primary" href={paths.topic(topic)}>
+          <Link className="btn btn-primary" href={(practiceHref ? practiceHref(topic) : paths.topic(topic)) || paths.practice}>
             Practice This Topic
           </Link>
         </p>

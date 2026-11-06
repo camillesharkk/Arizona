@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { addVisibleTime, dailyStudyView, markDailyCard, studyMore } from "@/lib/daily-study";
+import { addVisibleTime, dailyStudyView, markDailyCard, studyMore, type StudyState } from "@/lib/daily-study";
 import { caDailyView } from "@/lib/ca-daily";
 import { getSession } from "@/lib/session";
 
@@ -27,13 +27,14 @@ export async function POST(req: Request) {
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const body = bodySchema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
+  const state: StudyState = new URL(req.url).searchParams.get("state") === "CA" ? "CA" : "AZ";
   try {
     if (body.data.action === "visible") {
-      await addVisibleTime(session.id, body.data.seconds || 0, body.data.attemptId);
+      await addVisibleTime(session.id, body.data.seconds || 0, body.data.attemptId, state);
     } else if (body.data.action === "more") {
-      await studyMore(session.id);
+      await studyMore(session.id, state);
     } else if (body.data.cardId) {
-      await markDailyCard(session.id, { cardId: body.data.cardId, action: body.data.action, attemptId: body.data.attemptId });
+      await markDailyCard(session.id, { cardId: body.data.cardId, action: body.data.action, attemptId: body.data.attemptId }, state);
     } else {
       return NextResponse.json({ error: "Invalid" }, { status: 400 });
     }
@@ -42,5 +43,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
   const timeZone = new URL(req.url).searchParams.get("timeZone") || undefined;
-  return NextResponse.json(await dailyStudyView(session.id, timeZone));
+  return NextResponse.json(await dailyStudyView(session.id, timeZone, undefined, state));
 }
