@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { caPaths } from "@/lib/ca-site";
 import { paths } from "@/lib/paths";
+import type { LiveCode } from "@/lib/site-state";
 import { ProAccessNote } from "@/components/ProAccessNote";
 
 export type HeaderUser = {
@@ -19,12 +21,15 @@ export function avatarInitial(name: string | null, email: string): string {
   return (match?.[0] || "?").toUpperCase();
 }
 
-export function AccountMenu({ me, onLogout }: { me: HeaderUser; onLogout: () => void }) {
+export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser; onLogout: () => void; stateCode?: LiveCode | null }) {
   const pathname = usePathname() || "";
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const menuId = "account-menu-dropdown";
   const isPro = me.plan === "pro";
+  const pricing = stateCode === "CA" ? caPaths.pricing : paths.pricing;
+  const mistakes = stateCode === "CA" ? caPaths.mistakes : paths.mistakes;
+  const pricingLabel = stateCode === "CA" ? "California access" : isPro ? "Pro Access" : "Upgrade to Pro";
   const initial = avatarInitial(me.name, me.email);
 
   useEffect(() => {
@@ -80,7 +85,7 @@ export function AccountMenu({ me, onLogout }: { me: HeaderUser; onLogout: () => 
           <Link role="menuitem" href={paths.dashboard} onClick={() => setOpen(false)}>
             Dashboard
           </Link>
-          <Link role="menuitem" href={paths.mistakes} onClick={() => setOpen(false)}>
+          <Link role="menuitem" href={stateCode ? mistakes : "/"} onClick={() => setOpen(false)}>
             Wrong Answers
           </Link>
           <Link role="menuitem" href={`${paths.account}#study-settings`} onClick={() => setOpen(false)}>
@@ -95,8 +100,8 @@ export function AccountMenu({ me, onLogout }: { me: HeaderUser; onLogout: () => 
           <Link role="menuitem" href={paths.billing} onClick={() => setOpen(false)}>
             Billing & Access
           </Link>
-          <Link role="menuitem" href={paths.pricing} onClick={() => setOpen(false)}>
-            {isPro ? "Pro Access" : "Upgrade to Pro"}
+          <Link role="menuitem" href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>
+            {pricingLabel}
           </Link>
           <div className="account-menu-sep" role="separator" />
           <button className="account-signout" type="button" role="menuitem" onClick={onLogout}>

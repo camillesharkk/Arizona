@@ -2,28 +2,19 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { isCaliforniaPath, switchStateHref, type LiveState } from "@/lib/ca-site";
-import { availableStates, isComingSoonPath, stateByCode, stateLabel } from "@/lib/states";
-
-const sharedPaths = ["/login", "/register", "/forgot-password", "/reset-password", "/verify-email", "/account", "/dashboard", "/contact", "/legal"];
-
-function currentCode(pathname: string) {
-  if (pathname === "/" || isComingSoonPath(pathname)) return null;
-  if (isCaliforniaPath(pathname)) return "CA";
-  if (sharedPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))) return null;
-  return "AZ";
-}
+import { switchStateHref, type LiveState } from "@/lib/ca-site";
+import { pathState, writeStateCookie, type LiveCode } from "@/lib/site-state";
+import { availableStates, stateByCode, stateLabel } from "@/lib/states";
 
 function stateHref(pathname: string, code: string) {
   const home = stateByCode(code)?.homePath || "/";
-  if (!currentCode(pathname) || (code !== "AZ" && code !== "CA")) return home;
+  if (!pathState(pathname) || (code !== "AZ" && code !== "CA")) return home;
   const next = switchStateHref(pathname, code as LiveState);
   return next.split("#")[0]?.split("?")[0] || home;
 }
 
-export function StateMenu({ pathname }: { pathname: string }) {
+export function StateMenu({ pathname, current }: { pathname: string; current: LiveCode | null }) {
   const states = availableStates();
-  const current = currentCode(pathname);
   const currentName = current ? stateByCode(current)?.name : "";
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -94,12 +85,15 @@ export function StateMenu({ pathname }: { pathname: string }) {
               role="menuitem"
               href={stateHref(pathname, state.code)}
               aria-current={state.code === current ? "true" : undefined}
+              onClick={() => {
+                if (state.code === "AZ" || state.code === "CA") writeStateCookie(state.code);
+              }}
             >
               <span>{stateLabel(state)}</span>
               {state.code === current ? <span aria-hidden="true">✓</span> : null}
             </Link>
           ))}
-          <Link role="menuitem" href="/">View all states</Link>
+          <Link role="menuitem" href="/">Choose another state</Link>
         </div>
       ) : null}
     </div>

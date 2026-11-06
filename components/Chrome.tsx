@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
-import { caPaths, isCaliforniaPath } from "@/lib/ca-site";
-import { isComingSoonPath } from "@/lib/states";
+import { caPaths } from "@/lib/ca-site";
+import { useResolvedState } from "@/components/SavedState";
+import type { LiveCode } from "@/lib/site-state";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
 import { StateMenu } from "@/components/StateMenu";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
-import { ProAccessNote } from "@/components/ProAccessNote";
 
 type AuthStatus = "loading" | "signed-in" | "signed-out";
 
@@ -21,8 +21,8 @@ function active(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(href);
 }
 
-function navFor(pathname: string) {
-  if (!isCaliforniaPath(pathname)) return paths;
+function navFor(state: LiveCode | null) {
+  if (state !== "CA") return paths;
   return {
     ...paths,
     home: caPaths.home,
@@ -43,233 +43,177 @@ function navFor(pathname: string) {
   };
 }
 
-export function SiteHeader() {
+function primaryLinks(nav: ReturnType<typeof navFor>) {
+  return [
+    { href: nav.practice, label: "Practice" },
+    { href: nav.study, label: "Study Guide" },
+    { href: nav.mistakes, label: "Wrong Answers" },
+    { href: nav.daily, label: "Daily Study" },
+    { href: nav.resources, label: "Resources" },
+    { href: nav.laws, label: "Laws" },
+  ];
+}
+
+function moreLinks(nav: ReturnType<typeof navFor>, state: LiveCode) {
+  return [
+    { href: nav.questions, label: "Questions" },
+    { href: nav.flashcards, label: "Study cards" },
+    { href: nav.examPrep, label: "Exam guide" },
+    { href: nav.become, label: "Become a Notary" },
+    ...(state === "AZ" ? [{ href: paths.courses, label: "Courses" }] : []),
+  ];
+}
+
+export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
   const pathname = usePathname() || "";
-  const nav = navFor(pathname);
-  const onCa = isCaliforniaPath(pathname);
-  const onPicker = pathname === "/" || isComingSoonPath(pathname);
-  const [open, setOpen] = useState(false);
-  const [studyOpen, setStudyOpen] = useState(true);
-  const [accountOpen, setAccountOpen] = useState(true);
+  const state = useResolvedState(savedState);
+  const nav = navFor(state);
+  const [openMore, setOpenMore] = useState(false);
   const [me, setMe] = useState<HeaderUser | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
   const [returnTo, setReturnTo] = useState(pathname);
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/auth/me/")
-      .then((r) => r.json())
-      .then((d) => {
-        if (cancelled) return;
-        if (d.user) {
-          setMe(d.user);
-          setAuthStatus("signed-in");
-        } else {
-          setMe(null);
-          setAuthStatus("signed-out");
-        }
-      })
-      .catch(() => {
-        if (cancelled) return;
-        setAuthStatus((prev) => (prev === "signed-in" ? prev : "signed-out"));
-      });
+    const request = window.setTimeout(() => {
+      fetch("/api/auth/me/")
+        .then((r) => r.json())
+        .then((d) => {
+          if (cancelled) return;
+          if (d.user) {
+            setMe(d.user);
+            setAuthStatus("signed-in");
+          } else {
+            setMe(null);
+            setAuthStatus("signed-out");
+          }
+        })
+        .catch(() => {
+          if (!cancelled) setAuthStatus((prev) => (prev === "signed-in" ? prev : "signed-out"));
+        });
+    }, 0);
     return () => {
       cancelled = true;
+      window.clearTimeout(request);
     };
   }, [pathname]);
 
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => setOpenMore(false), [pathname]);
   useEffect(() => setReturnTo(`${pathname}${window.location.search}`), [pathname]);
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (state === "CA") document.documentElement.dataset.state = "CA";
+    else delete document.documentElement.dataset.state;
+  }, [state]);
+  useEffect(() => {
+    if (!openMore) return;
+    function close(event: Event) {
+      const target = event.target as Node | null;
+      if (target && (target as Element).closest?.(".more-menu")) return;
+      setOpenMore(false);
+    }
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpenMore(false);
+    }
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [openMore]);
 
   async function logout() {
     await fetch("/api/auth/logout/", { method: "POST" });
     void resetAnalyticsUser();
     setMe(null);
     setAuthStatus("signed-out");
-    setOpen(false);
-    await resetAnalyticsUser();
-    window.location.href = onPicker ? "/" : nav.home;
+    window.location.href = state ? nav.home : "/";
   }
 
-  const onHome = pathname === nav.home || pathname === "/";
-  const study = [
-    { href: nav.practice, label: "Practice Test" },
-    { href: nav.questions, label: "Questions" },
-    { href: nav.study, label: "Study Guide" },
-    { href: nav.flashcards, label: "Flashcards" },
-  ];
-  const exam = [
-    { href: nav.examPrep, label: "Exam Guide" },
-    { href: nav.laws, label: "Laws" },
-    { href: nav.become, label: "Become a Notary" },
-  ];
+  const onHome = Boolean(state) && (pathname === nav.home || pathname === `${nav.home.replace(/\/$/, "")}`);
+  const signInHref = `${paths.login}?next=${encodeURIComponent(returnTo)}`;
+  const links = state ? primaryLinks(nav) : [];
+  const extra = state ? moreLinks(nav, state) : [];
 
   return (
     <header className="site-header">
       <div className="wrap header-inner">
         <div className="header-left">
-          <button
-            className="menu-btn"
-            type="button"
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <span className={open ? "menu-icon open" : "menu-icon"} />
-          </button>
-          <Link href={onPicker ? "/" : nav.home} className="logo">
-            <span className="logo-mark">{onPicker ? "N" : onCa ? "C" : "A"}</span>
-            {onPicker ? "Notary Exam Prep" : onCa ? "California" : "Arizona Exam"}
+          <Link href={state ? nav.home : "/"} className="logo">
+            <span className="logo-mark">{state === "CA" ? "C" : state === "AZ" ? "A" : "N"}</span>
+            {state === "CA" ? "California" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
           </Link>
-          <StateMenu pathname={pathname} />
+          <StateMenu pathname={pathname} current={state} />
         </div>
-        <nav className="nav nav-desktop" aria-label="Primary">
-          {onPicker ? null : (
-          <>
-          <Link href={nav.practice} className={active(pathname, nav.practice) ? "active" : ""}>
-            Practice
-          </Link>
-          <Link href={nav.study} className={active(pathname, nav.study) ? "active" : ""}>
-            Study Guide
-          </Link>
-          <WrongAnswersLink href={nav.mistakes} stateCode={onCa ? "CA" : "AZ"} className={active(pathname, nav.mistakes) ? "active" : ""} />
-          <Link href={nav.daily} className={active(pathname, nav.daily) ? "active" : ""}>
-            Daily Study
-          </Link>
-          <Link href={nav.resources} className={active(pathname, nav.resources) ? "active" : ""}>
-            Resources
-          </Link>
-          <Link href={nav.laws} className={active(pathname, nav.laws) ? "active" : ""}>
-            Laws
-          </Link>
-          </>
-          )}
-        </nav>
+        {links.length ? <nav className="nav nav-desktop" aria-label="Primary">
+          <div className="nav-scroll">
+            {links.map((item) => item.label === "Wrong Answers" && state ? (
+              <WrongAnswersLink key={item.href} href={item.href} stateCode={state} className={active(pathname, item.href) ? "active" : ""} />
+            ) : (
+              <Link key={item.href} href={item.href} className={active(pathname, item.href) ? "active" : ""}>
+                {item.label}
+              </Link>
+            ))}
+          </div>
+          {extra.length ? (
+            <div className="more-menu">
+              <button className="more-btn" type="button" aria-expanded={openMore} onClick={() => setOpenMore((value) => !value)}>
+                More
+              </button>
+              {openMore ? (
+                <div className="more-panel" role="menu">
+                  {extra.map((item) => (
+                    <Link key={item.href} role="menuitem" href={item.href} className={active(pathname, item.href) ? "active" : ""}>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </nav> : null}
         <div className="header-right">
+          {authStatus === "loading" && (
+            <span className="header-auth-placeholder" role="status" aria-label="Loading account">
+              <span className="spinner" aria-hidden="true" />
+            </span>
+          )}
           {authStatus === "signed-out" && (
-            <Link href={onCa ? `${paths.login}?next=${encodeURIComponent(returnTo)}` : paths.login} className={`header-signin ${active(pathname, paths.login) ? "active" : ""}`}>
+            <Link href={signInHref} className={`header-signin ${active(pathname, paths.login) ? "active" : ""}`}>
               Sign in
             </Link>
           )}
-          {authStatus === "loading" && <span className="header-auth-placeholder" aria-hidden="true" />}
-          {!onHome && !onPicker && (
+          {state && !onHome && (
             <Link className="btn btn-primary header-cta" href={nav.practice}>
               Start Free Test
             </Link>
           )}
-          {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} />}
-          {!onHome && !onPicker && (
-            <Link className="btn btn-primary bar" href={nav.practice}>
-              Practice Test
-            </Link>
-          )}
+          {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} stateCode={state} />}
         </div>
       </div>
-      {open && <div className="nav-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />}
-      <nav id="mobile-nav" className={open ? "nav-drawer open" : "nav-drawer"} aria-label="Mobile">
-        {onHome || onPicker ? null : (
-          <Link className="btn btn-primary btn-wide drawer-start" href={nav.practice}>
-            Practice Test
-          </Link>
-        )}
-        {authStatus === "signed-in" && me ? (
-          <div className="drawer-account">
-            <p className="drawer-account-name">{me.name?.trim() || me.email}</p>
-            {me.name?.trim() ? <p className="drawer-account-email">{me.email}</p> : null}
-            <span className={me.plan === "pro" ? "badge badge-pro" : "badge"}>{me.plan === "pro" ? "Pro" : "Free"}</span>
-            {me.plan === "pro" && me.planExpiresAt ? (
-              <p className="notice">
-                <ProAccessNote plan={me.plan} planExpiresAt={me.planExpiresAt} compact />
-              </p>
-            ) : null}
-          </div>
-        ) : authStatus === "loading" ? (
-          <p className="kicker">Loading account…</p>
-        ) : (
-          <p className="kicker">Guest</p>
-        )}
-        {onPicker ? null : <Link href={nav.daily}>Daily Study</Link>}
-        {onPicker ? null : (
-          <button className="chip" type="button" onClick={() => setStudyOpen((v) => !v)}>
-            Study {studyOpen ? "▾" : "▸"}
-          </button>
-        )}
-        {!onPicker && studyOpen && (
-          <>
-            {study.map((l) => (
-              <Link key={l.href} href={l.href} className={active(pathname, l.href) ? "active" : ""}>
-                {l.label}
-              </Link>
-            ))}
-            <WrongAnswersLink href={nav.mistakes} stateCode={onCa ? "CA" : "AZ"} className={active(pathname, nav.mistakes) ? "active" : ""} />
-            <Link href={nav.resources} className={active(pathname, nav.resources) ? "active" : ""}>
-              Resources
-            </Link>
-          </>
-        )}
-        {onPicker ? null : (
-          <button className="chip" type="button" onClick={() => setAccountOpen((v) => !v)}>
-            Exam & career {accountOpen ? "▾" : "▸"}
-          </button>
-        )}
-        {!onPicker && accountOpen &&
-          exam.map((l) => (
-            <Link key={l.href} href={l.href} className={active(pathname, l.href) ? "active" : ""}>
-              {l.label}
-            </Link>
-          ))}
-        {onPicker ? null : onCa ? <Link href={nav.examPrep}>Exam guide</Link> : <Link href={paths.courses}>Arizona Notary Courses</Link>}
-        {authStatus === "signed-in" && me ? (
-          <>
-            <Link href={paths.dashboard}>Dashboard</Link>
-            <Link href={paths.account}>Account Settings</Link>
-            <Link href={paths.referrals}>Invite & Credits</Link>
-            <Link href={paths.billing}>Billing & Access</Link>
-            <Link href={onCa ? nav.pricing : paths.pricing}>{onCa ? "California access" : me.plan === "pro" ? "Pro Access" : "Upgrade to Pro"}</Link>
-            <button className="btn btn-ghost btn-wide account-signout" type="button" onClick={logout}>
-              Sign out
-            </button>
-            <Link href={paths.accountDelete} className="account-delete-link">
-              Delete Account
-            </Link>
-          </>
-        ) : authStatus === "signed-out" ? (
-          <>
-            <Link href={onCa ? `${paths.login}?next=${encodeURIComponent(returnTo)}` : paths.login}>Sign in</Link>
-            <Link href={onCa ? `${paths.register}?next=${encodeURIComponent(pathname)}` : paths.register}>Create Free Account</Link>
-          </>
-        ) : null}
-      </nav>
     </header>
   );
 }
 
-export function SiteFooter() {
-  const pathname = usePathname() || "";
-  const nav = navFor(pathname);
-  const onCa = isCaliforniaPath(pathname);
-  const onPicker = pathname === "/" || isComingSoonPath(pathname);
+export function SiteFooter({ savedState }: { savedState: LiveCode | null }) {
+  const state = useResolvedState(savedState);
+  const nav = navFor(state);
   return (
     <footer className="footer">
       <div className="wrap footer-bar">
-        <p className="footer-brand">{onPicker ? "Notary Exam Prep. Independent practice." : onCa ? "California Exam. Independent practice." : "Arizona Exam. Independent practice."}</p>
+        <p className="footer-brand">{state === "CA" ? "California Exam. Independent practice." : state === "AZ" ? "Arizona Exam. Independent practice." : "Notary Exam Prep. Independent practice."}</p>
         <nav className="footer-links" aria-label="Help and legal">
-          {onPicker ? <Link href="/">Choose State</Link> : (
+          {state ? (
             <>
-          <Link href={nav.practice}>Practice Test</Link>
-          <Link href={nav.questions}>Questions</Link>
-          <Link href={nav.study}>Study Guide</Link>
-          <Link href={nav.guidesIndex}>Exam guides</Link>
-          <Link href={nav.passingScore}>Passing score</Link>
-          <Link href={nav.mistakes}>Wrong Answers</Link>
+              <Link href={nav.practice}>Practice Test</Link>
+              <Link href={nav.questions}>Questions</Link>
+              <Link href={nav.study}>Study Guide</Link>
+              <Link href={nav.guidesIndex}>Exam guides</Link>
+              <Link href={nav.passingScore}>Passing score</Link>
+              <Link href={nav.mistakes}>Wrong Answers</Link>
             </>
+          ) : (
+            <Link href="/">Choose another state</Link>
           )}
           <Link href={paths.privacy}>Privacy</Link>
           <Link href={paths.terms}>Terms</Link>

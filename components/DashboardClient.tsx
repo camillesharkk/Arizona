@@ -8,7 +8,10 @@ import type { TopicId } from "@/lib/types";
 import { readinessScore } from "@/lib/stats";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 import { ProAccessNote } from "@/components/ProAccessNote";
+import { LoadingNote } from "@/components/QuizChrome";
+import { useResolvedState, useSavedState } from "@/components/SavedState";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
+import { caPaths } from "@/lib/ca-site";
 import { recoverPendingPurchase, type AnalyticsPaidOrder } from "@/lib/analytics";
 
 const ACCESS_POLL_MS = 1000;
@@ -46,7 +49,11 @@ async function readAccess(res: Response): Promise<AccessPayload | null> {
 }
 
 export function DashboardClient() {
+  const state = useResolvedState(useSavedState());
+  const site = state === "CA" ? caPaths : paths;
   const [data, setData] = useState<ProgressPayload | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
   const [checkEmail, setCheckEmail] = useState(false);
   const [checkoutPhase, setCheckoutPhase] = useState<CheckoutPhase>("boot");
   const [accessRetry, setAccessRetry] = useState(0);
@@ -81,15 +88,24 @@ export function DashboardClient() {
     let cancelled = false;
 
     async function loadProgress() {
-      const progress = await fetch("/api/progress/").then((r) => r.json()).catch(() => null);
-      if (cancelled || !progress || typeof progress !== "object") return;
-      if (progress.user) {
-        setData((prev) => ({
-          ...(progress as ProgressPayload),
-          arizonaPro: Boolean(
-            grantedRef.current || prev?.arizonaPro || (progress as ProgressPayload).arizonaPro
-          ),
-        }));
+      try {
+        const response = await fetch("/api/progress/");
+        const progress = await response.json().catch(() => null);
+        if (cancelled) return;
+        if (!response.ok || !progress || typeof progress !== "object") throw new Error("progress");
+        if (progress.user) {
+          setData((prev) => ({
+            ...(progress as ProgressPayload),
+            arizonaPro: Boolean(
+              grantedRef.current || prev?.arizonaPro || (progress as ProgressPayload).arizonaPro
+            ),
+          }));
+        }
+        setFailed(false);
+      } catch {
+        if (!cancelled) setFailed(true);
+      } finally {
+        if (!cancelled) setLoaded(true);
       }
     }
 
@@ -143,10 +159,19 @@ export function DashboardClient() {
   const activating = checkoutPhase === "activating" || checkoutPhase === "timeout";
   const isAzPro = Boolean(data?.arizonaPro || data?.user?.plan === "pro" || checkoutPhase === "activated");
 
-  if (checkoutPhase === "boot") {
+  if (!loaded || checkoutPhase === "boot") {
+    return (
+      <div className="loading-stage">
+        <LoadingNote text="Loading your dashboard…" />
+      </div>
+    );
+  }
+
+  if (failed && !data?.user) {
     return (
       <div className="card">
-        <p className="notice">Loading your dashboard…</p>
+        <p className="form-error" role="alert">Could not load this dashboard.</p>
+        <button className="btn btn-primary" type="button" onClick={() => { setLoaded(false); setFailed(false); setAccessRetry((n) => n + 1); }}>Retry</button>
       </div>
     );
   }
@@ -187,8 +212,8 @@ export function DashboardClient() {
   }
 
   const user = data!.user!;
-  const stats = data!.stats || [];
-  const exams = data!.exams || [];
+  const stats = (data!.stats || []).filter((row) => (row.state || "AZ") === state);
+  const exams = (data!.exams || []).filter((row) => state === "CA" ? row.mode.startsWith("ca-") : !row.mode.startsWith("ca-"));
   const answered = stats.reduce((n, s) => n + s.rightCount + s.wrongCount, 0);
   const right = stats.reduce((n, s) => n + s.rightCount, 0);
   const acc = answered ? Math.round((right / answered) * 100) : 0;
@@ -200,13 +225,15 @@ export function DashboardClient() {
     byTopic.set(s.topic, cur);
   });
   const ready = readinessScore(stats, exams);
-  const showAsPro = isAzPro;
+  const showAsPro = state !== "CA" && isAzPro;
   const hideFreePlan = activating && !showAsPro;
   const weakPlan = [...byTopic.entries()]
     .map(([id, v]) => ({ id, acc: v.r + v.w ? Math.round((v.r / (v.r + v.w)) * 100) : 100, missed: v.w }))
     .sort((a, b) => a.acc - b.acc)
     .slice(0, 3);
-  const planLabel = showAsPro ? "Pro" : hideFreePlan ? "…" : "Free";
+  const planLabel = state === "CA" ? "Free" : showAsPro ? "Pro" : hideFreePlan ? "…" : "Free";
+  const bestScore = exams.length ? Math.max(...exams.map((row) => row.score)) : null;
+  const lastStudy = [...stats.map((row) => row.lastAt), ...exams.map((row) => row.at)].filter(Boolean).sort().at(-1) || null;
 
   return (
     <div className="grid">
@@ -226,11 +253,11 @@ export function DashboardClient() {
       )}
       <div className="card">
         <h2>Exam readiness {showAsPro ? `${ready}%` : ""}</h2>
-        <p>Best score {user.bestScore ?? "—"}% · Tests taken {exams.length} · Last study {user.lastStudyAt?.slice(0, 10) || "—"}</p>
-        {!showAsPro && !hideFreePlan && (
+        <p>Best score {bestScore ?? "—"}% · Tests taken {exams.length} · Last study {lastStudy?.slice(0, 10) || "—"}</p>
+        {state !== "CA" && !showAsPro && !hideFreePlan && (
           <p>Free practice uses the free question pool. Pro adds the rest of the bank, the full study-card deck, more full exams, and the exam readiness score.</p>
         )}
-        {!showAsPro && !hideFreePlan && (
+        {state !== "CA" && !showAsPro && !hideFreePlan && (
           <Link className="btn btn-primary" href={paths.pricing}>
             View Pro
           </Link>
@@ -245,7 +272,7 @@ export function DashboardClient() {
               {topicLabel(w.id as TopicId)} ({w.acc}% accuracy)
             </p>
           ))}
-          <Link className="btn btn-primary" href={`${paths.practice}?mode=weak`}>
+          <Link className="btn btn-primary" href={`${site.practice}?mode=weak`}>
             Train weak areas
           </Link>
         </div>
@@ -259,9 +286,9 @@ export function DashboardClient() {
         ))}
       </div>
       <div className="row">
-        <Link className="btn btn-primary" href={paths.practice}>Continue Practice</Link>
-        <WrongAnswersLink className="btn btn-ghost" />
-        <Link className="btn btn-ghost" href={paths.study}>Study Guide</Link>
+        <Link className="btn btn-primary" href={state ? site.practice : "/"}>Continue Practice</Link>
+        <WrongAnswersLink className="btn btn-ghost" href={state ? site.mistakes : "/"} stateCode={state || "AZ"} />
+        <Link className="btn btn-ghost" href={state ? site.study : "/"}>Study Guide</Link>
       </div>
     </div>
   );
