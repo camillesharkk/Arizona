@@ -3,6 +3,7 @@ import { z } from "zod";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { savedReviewStat } from "@/lib/review-save";
+import { localDate } from "@/lib/calendar";
 import { compareMistakes, DEFAULT_STUDY_TIME_ZONE, isDue } from "@/lib/review-schedule";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
@@ -61,7 +62,10 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
-  const state = new URL(req.url).searchParams.get("state") === "CA" ? "CA" : "AZ";
+  const url = new URL(req.url);
+  const state = url.searchParams.get("state") === "CA" ? "CA" : "AZ";
+  const zone = url.searchParams.get("timeZone");
+  const timeZone = zone && zone.length < 80 ? zone : DEFAULT_STUDY_TIME_ZONE;
   const bank = state === "CA" ? "california-notary-exam" : "arizona-notary-exam";
   const store = await getStore();
   const stats = await store.listStats(session.id);
@@ -70,11 +74,14 @@ export async function GET(req: Request) {
     .filter((s) => s.state === state && s.bank === bank && !s.mastered && (s.wrongCount > 0 || s.savedForReview))
     .sort((a, b) => compareMistakes(a, b, now));
   return NextResponse.json({
+    state,
+    accountId: session.id,
+    studyDay: localDate(new Date().toISOString(), timeZone),
     mistakes: mistakes.map(toClientStat),
     dueCount: mistakes.filter((s) => isDue(s, now)).length,
     truncated: false,
-    favorites: stats.filter((s) => s.favorited).map(toClientStat),
-  });
+    favorites: stats.filter((s) => s.state === state && s.favorited).map(toClientStat),
+  }, { headers: { "Cache-Control": "private, no-store" } });
 }
 
 function toClientStat(s: QuestionStat) {

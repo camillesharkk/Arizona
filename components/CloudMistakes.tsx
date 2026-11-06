@@ -1,34 +1,43 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { topics } from "@/data/exam-config";
-import { CA_EXAM, caPaths } from "@/lib/ca-site";
+import { caPaths } from "@/lib/ca-site";
+import { caStudyLabel, caStudyTopics } from "@/lib/ca-topics";
 import { ExamRunner } from "@/components/ExamRunner";
 import { MistakeActions } from "@/components/MistakeActions";
+import { Breadcrumb } from "@/components/Breadcrumb";
 import { LoadingNote } from "@/components/QuizChrome";
 import { topicLabel } from "@/lib/quiz";
 import { paths } from "@/lib/paths";
+import { readCaAttempt, latestCaQuick, type CaQuickAttempt } from "@/lib/ca-attempts";
 import { listPhase } from "@/lib/list-phase";
 import { markMistakePromptSeen, mistakePrompt, readMistakePrompts, type MistakeAction, type MistakePrompt } from "@/lib/mistake-prompts";
 import type { Question } from "@/lib/types";
 import type { QuestionStat } from "@/lib/store/types";
 
-const topicIds = new Set<string>(topics.map((topic) => topic.id));
-
 function dueNow(stat: QuestionStat) {
   return Boolean(stat.nextReviewAt) && Date.parse(stat.nextReviewAt as string) <= Date.now();
 }
 
-export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hideDailyLink = false }: { initialTopic?: string; stateCode?: "AZ" | "CA"; attemptIds?: string[]; hideDailyLink?: boolean }) {
+function notebookHref(base: string, topic: string, attempt: string) {
+  const params = new URLSearchParams();
+  if (topic && topic !== "all") params.set("topic", topic);
+  if (attempt) params.set("attempt", attempt);
+  const query = params.toString();
+  return query ? `${base}?${query}` : base;
+}
+
+export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }: { initialTopic?: string; stateCode?: "AZ" | "CA"; attemptId?: string }) {
   const onCa = stateCode === "CA";
   const site = onCa ? caPaths : paths;
   const questionPool = onCa ? publishedCaQuestions() : publishedQuestions();
   const topicChoices = onCa
-    ? CA_EXAM.quotas.map((item) => ({ id: item.area, short: item.label }))
+    ? caStudyTopics.map((item) => ({ id: item.id, short: item.label }))
     : topics.map((item) => ({ id: item.id, short: item.short }));
   const router = useRouter();
   const [stats, setStats] = useState<QuestionStat[]>([]);
@@ -45,6 +54,14 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
   const [pending, setPending] = useState<Record<string, string>>({});
   const [actionErrors, setActionErrors] = useState<Record<string, string>>({});
   const [actionMessage, setActionMessage] = useState("");
+  const [scopeIds, setScopeIds] = useState<string[] | null>(null);
+  const [scopeSummary, setScopeSummary] = useState("");
+  const [scopeNote, setScopeNote] = useState("");
+  const [importOpen, setImportOpen] = useState(false);
+  const [importAttempt, setImportAttempt] = useState<CaQuickAttempt | null>(null);
+  const [importMessage, setImportMessage] = useState("");
+  const [importError, setImportError] = useState("");
+  const [importBusy, setImportBusy] = useState(false);
   const [seen, setSeen] = useState({ mastered: false, favorite: false });
   const [prompt, setPrompt] = useState<{ stat: QuestionStat; action: MistakeAction; copy: MistakePrompt } | null>(null);
   const userIdRef = useRef("");
@@ -54,6 +71,11 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
     if (pendingIds.current.size) return;
     const id = ++requestId.current;
     setLoadError(false);
+    setReady(false);
+    setStats([]);
+    setScopeIds(null);
+    setScopeSummary("");
+    setScopeNote("");
     try {
       const meResponse = await fetch("/api/auth/me/", { cache: "no-store", signal: AbortSignal.timeout(30000) });
       if (id !== requestId.current || pendingIds.current.size) return;
@@ -68,13 +90,20 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
       setNeedAuth(false);
       userIdRef.current = me.user.id;
       setSeen(readMistakePrompts(window.localStorage, me.user.id));
-      setIsPro(Boolean(me.user.arizonaPro || me.user.plan === "pro"));
-      const response = await fetch(onCa ? "/api/mistakes/?state=CA" : "/api/mistakes/", { cache: "no-store", signal: AbortSignal.timeout(30000) });
+      setIsPro(onCa ? false : Boolean(me.user.arizonaPro || me.user.plan === "pro"));
+      const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix";
+      const day = new Intl.DateTimeFormat("en-CA", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+      const response = await fetch(`/api/mistakes/?state=${stateCode}&timeZone=${encodeURIComponent(zone)}&day=${day}&account=${encodeURIComponent(me.user.id)}`, { cache: "no-store", signal: AbortSignal.timeout(30000) });
       if (id !== requestId.current || pendingIds.current.size) return;
       if (!response.ok) throw new Error("mistakes");
       const data = await response.json();
-      if (id !== requestId.current || pendingIds.current.size) return;
+      if (id !== requestId.current || pendingIds.current.size || data.state !== stateCode || data.accountId !== me.user.id) return;
       if (!Array.isArray(data.mistakes)) throw new Error("mistakes");
+      const scope = await resolveScope(me.user.id, attemptId);
+      if (id !== requestId.current) return;
+      setScopeIds(scope.ids);
+      setScopeSummary(scope.summary);
+      setScopeNote(scope.note);
       setStats(data.mistakes);
       setReady(true);
     } catch {
@@ -82,6 +111,32 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
       setLoadError(true);
       setReady(true);
     }
+  }
+
+  async function resolveScope(userId: string, requested: string) {
+    if (!requested) return { ids: null as string[] | null, summary: "", note: "" };
+    if (onCa) {
+      const local = readCaAttempt(userId, requested);
+      if (local && local.owner === userId) {
+        return {
+          ids: local.wrongIds,
+          summary: `This practice · ${new Date(local.finishedAt).toLocaleString()} · ${local.correctIds.length}/${local.questionIds.length} · ${local.wrongIds.length} missed`,
+          note: "",
+        };
+      }
+      const daily = await fetch(`/api/daily-study/?state=CA&timeZone=${encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix")}&account=${encodeURIComponent(userId)}`, { cache: "no-store" }).catch(() => null);
+      const body = daily?.ok ? await daily.json().catch(() => null) : null;
+      const row = Array.isArray(body?.recent) ? body.recent.find((item: { id?: string }) => item.id === requested) : null;
+      if (row && body?.state === "CA") {
+        const wrongIds = Array.isArray(row.wrongIds) ? row.wrongIds.filter((item: unknown) => typeof item === "string") : [];
+        return {
+          ids: wrongIds,
+          summary: `This practice · ${row.label || "Practice"} · ${row.correct}/${row.total} · ${wrongIds.length} missed`,
+          note: "",
+        };
+      }
+    }
+    return { ids: null, summary: "", note: "That practice is not on this account. Showing every saved record for this state." };
   }
 
   async function updateRecord(stat: QuestionStat, action: "mastered" | "favorite" | "remove" | "save") {
@@ -153,8 +208,9 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
     }
     window.addEventListener("az-review-save", onSave);
     return () => window.removeEventListener("az-review-save", onSave);
+    // A new state or sitting starts a new request. Mutations keep their own refresh lock.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [stateCode, attemptId]);
 
   useEffect(() => {
     setTopic(initialTopic && allowedTopics.has(initialTopic) ? initialTopic : "all");
@@ -174,11 +230,12 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
 
   const byTopic = stats.filter((s) => {
     if (topic === "all") return true;
+    const question = questionPool.find((item) => item.question_id === s.questionId);
     if (!onCa) return s.topic === topic;
-    return questionPool.find((question) => question.question_id === s.questionId)?.exam_area === topic;
+    return question?.study_topic === topic;
   });
   const filtered = byTopic.filter((s) => {
-    if (attemptIds?.length && !attemptIds.includes(s.questionId)) return false;
+    if (scopeIds && !scopeIds.includes(s.questionId)) return false;
     if (source === "incorrect") return s.wrongCount > 0;
     if (source === "saved") return Boolean(s.savedForReview);
     return true;
@@ -189,11 +246,19 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
     .filter((value): value is string => Boolean(value))
     .sort()[0];
   const phase = listPhase(loadError ? "error" : ready ? "ready" : "loading", filtered.length);
-  const returnTo = topic === "all" ? site.mistakes : `${site.mistakes}?topic=${topic}`;
+  const returnTo = notebookHref(site.mistakes, topic, attemptId);
+  const scopedCount = stats.filter((row) => !scopeIds || scopeIds.includes(row.questionId)).length;
 
   function selectTopic(id: string) {
     setTopic(id);
-    router.replace(id === "all" ? site.mistakes : `${site.mistakes}?topic=${id}`, { scroll: false });
+    router.replace(notebookHref(site.mistakes, id, attemptId), { scroll: false });
+  }
+
+  function viewAllRecords() {
+    setScopeIds(null);
+    setScopeSummary("");
+    setScopeNote("");
+    router.replace(notebookHref(site.mistakes, topic, ""), { scroll: false });
   }
 
   function requestAction(stat: QuestionStat, action: "mastered" | "favorite" | "remove" | "save") {
@@ -219,29 +284,86 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
     setQueue(next);
   }
 
-  if (needAuth) {
+  async function importMistakes() {
+    const attempt = importAttempt;
+    if (!attempt || importBusy) return;
+    const missing = attempt.wrongIds.filter((id) => !stats.some((row) => row.questionId === id));
+    if (missing.length === 0) {
+      setImportMessage(`${attempt.wrongIds.length} already saved`);
+      return;
+    }
+    setImportBusy(true);
+    setImportError("");
+    setImportMessage("");
+    try {
+      let added = 0;
+      let already = attempt.wrongIds.length - missing.length;
+      for (const id of missing) {
+        const selected = attempt.originalAnswers[id];
+        const savedAttempt = attempt.attemptIds[id];
+        if (!selected || !savedAttempt) continue;
+        const response = await fetch("/api/progress/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ questionId: id, selected, attemptId: savedAttempt, review: false, state: "CA" }),
+        });
+        const data = await response.json().catch(() => null);
+        if (!response.ok) throw new Error(data?.error || "Could not import these mistakes.");
+        if (data?.duplicate) already += 1;
+        else added += 1;
+      }
+      setImportMessage(`${added} ${added === 1 ? "mistake" : "mistakes"} added · ${already} already saved`);
+      await load();
+    } catch (reason) {
+      setImportError(reason instanceof Error ? reason.message : "Could not import these mistakes.");
+    } finally {
+      setImportBusy(false);
+    }
+  }
+
+  function shell(children: ReactNode) {
     return (
+      <main className="wrap hero">
+        <Breadcrumb items={[{ name: "Home", path: site.home }, { name: "Wrong Answers", path: site.mistakes }]} />
+        <h1>Wrong-answer notebook</h1>
+        {children}
+      </main>
+    );
+  }
+
+  if (needAuth) {
+    return shell(
       <div className="card">
         <p>Sign in to practice the questions you missed. Your place is saved.</p>
         <Link className="btn btn-primary" href={`${site.login}?next=${encodeURIComponent(returnTo)}`}>
           Sign in
         </Link>
-      </div>
+      </div>,
     );
   }
 
   if (queue) {
-    return (
+    return shell(
       <div>
         <button className="btn btn-ghost" type="button" onClick={() => { setQueue(null); load(); }}>
           Back
         </button>
         <ExamRunner mode="weak" practice review preset={queue} isPro={onCa ? true : isPro} sittingMode={`review-${source}-${topic}`} stateCode={stateCode} />
-      </div>
+      </div>,
     );
   }
 
-  return (
+  const emptyCopy = scopeIds && scopedCount === 0
+    ? "No mistakes in this practice."
+    : stats.length > 0
+      ? "Nothing matches this filter."
+      : source === "saved"
+        ? "No questions saved."
+        : source === "incorrect"
+          ? "No missed questions."
+          : "No missed or saved questions on this account yet.";
+
+  return shell(
     <div>
       {ready && isPro ? (
         <p className="notice">Pro is active. Missed questions and questions you save stay on this account.</p>
@@ -253,6 +375,16 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
         </p>
       ) : null}
       {ready && onCa ? <p className="notice">Missed California questions and questions you save stay on this account.</p> : null}
+      {scopeSummary ? (
+        <p className="notice">
+          {scopeSummary}{" "}
+          <button className="btn btn-ghost" type="button" onClick={viewAllRecords}>View all records</button>
+        </p>
+      ) : null}
+      {scopeNote ? <p className="notice" role="status">{scopeNote}</p> : null}
+      {!ready && !loadError ? <LoadingNote text="Loading your questions…" /> : null}
+      {ready ? (
+      <>
       <div className="tool-row" aria-label="Review source">
         <button className={`chip ${source === "all" ? "on" : ""}`} type="button" onClick={() => setSource("all")}>All</button>
         <button className={`chip ${source === "incorrect" ? "on" : ""}`} type="button" onClick={() => setSource("incorrect")}>Incorrect</button>
@@ -268,39 +400,40 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
           </button>
         ))}
       </div>
-      {phase === "loading" ? <LoadingNote /> : null}
+      <div className="row" style={{ marginTop: 12 }}>
+        <Link className="btn btn-primary" href={site.daily}>Open Daily Study</Link>
+        <button className="btn btn-ghost" type="button" onClick={begin} disabled={filtered.length === 0}>Practice wrong answers</button>
+        {onCa ? <button className="btn btn-ghost" type="button" onClick={() => { setImportOpen((open) => !open); setImportError(""); const found = (attemptId && readCaAttempt(userIdRef.current, attemptId)) || latestCaQuick(userIdRef.current); setImportAttempt(found); }}>Import Mistakes</button> : null}
+      </div>
+      {importOpen && onCa ? (
+        <div className="card import-panel">
+          <h2>Import Mistakes</h2>
+          {!importAttempt ? <p>No finished practice on this account can be imported.</p> : importAttempt.wrongIds.length === 0 ? (
+            <p>No mistakes to import. Finished {new Date(importAttempt.finishedAt).toLocaleString()} with {importAttempt.correctIds.length} correct.</p>
+          ) : (
+            <>
+              <p>Finished {new Date(importAttempt.finishedAt).toLocaleString()}. {importAttempt.wrongIds.length} missed. {importAttempt.wrongIds.filter((id) => stats.some((row) => row.questionId === id)).length} already saved.</p>
+              <button className="btn btn-primary" type="button" disabled={importBusy} onClick={() => void importMistakes()}>{importBusy ? "Saving…" : "Import Mistakes"}</button>
+            </>
+          )}
+          {importMessage ? <p className="notice" role="status">{importMessage}</p> : null}
+          {importError ? <p className="form-error" role="alert">{importError}</p> : null}
+        </div>
+      ) : null}
+      </>
+      ) : null}
       {phase === "error" ? (
         <div className="card">
           <p className="form-error" role="alert">Could not load your questions.</p>
           <button className="btn btn-primary" type="button" onClick={() => { setReady(false); load(); }}>Retry</button>
         </div>
       ) : null}
-      {loadError && phase === "list" ? (
-        <p className="form-error" role="alert">
-          Could not refresh this list.{" "}
-          <button className="btn btn-ghost" type="button" onClick={() => load()}>Retry</button>
-        </p>
-      ) : null}
+      {ready && due.length === 0 && nextReview ? <p className="notice">Next review {new Date(nextReview).toLocaleString()}.</p> : null}
       {phase === "empty" ? (
         <div className="card">
-          <p>
-            {source === "saved"
-              ? "No questions saved."
-              : source === "incorrect"
-                ? "No missed questions."
-                : "No missed or saved questions in this set yet."}
-          </p>
-          <Link className="btn btn-primary" href={site.practice}>Start a practice test</Link>
+          <p>{emptyCopy}</p>
+          {stats.length === 0 && !scopeIds ? <Link className="btn btn-primary" href={site.practice}>Start a practice test</Link> : null}
         </div>
-      ) : null}
-      {phase === "list" ? (
-        <>
-          {hideDailyLink ? null : <Link className="btn btn-primary" href={site.daily}>Open Daily Study</Link>}
-          {due.length === 0 && nextReview ? <p className="notice">Next review {new Date(nextReview).toLocaleString()}.</p> : null}
-          <button className="btn btn-ghost" type="button" onClick={begin}>
-            {due.length === 0 ? "Practice all wrong answers" : "Practice wrong answers"}
-          </button>
-        </>
       ) : null}
       <p
         className="card"
@@ -326,7 +459,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
         return (
           <article className="card" key={s.questionId} style={{ marginTop: 12 }}>
             <span className="kicker">
-              {topicLabel(q.topic)} · {dueNow(s) ? "Due" : "Later"}
+              {(onCa ? caStudyLabel(q.study_topic || q.topic) : topicLabel(q.topic))} · {dueNow(s) ? "Due" : "Later"}
               {s.wrongCount > 0 ? " · Incorrect" : ""}
               {s.savedForReview ? " · Saved" : ""}
             </span>
@@ -387,6 +520,6 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hide
           </div>
         </div>
       ) : null}
-    </div>
+    </div>,
   );
 }

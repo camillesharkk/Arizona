@@ -1,7 +1,6 @@
 import { CloudMistakes } from "@/components/CloudMistakes";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
-import { Breadcrumb } from "@/components/Breadcrumb";
 
 export const metadata = pageMeta({
   title: "Wrong Answers",
@@ -12,14 +11,8 @@ export const metadata = pageMeta({
 export default async function MistakesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ topic?: string }>;
+  searchParams: Promise<{ topic?: string; attempt?: string }>;
 }) {
-  const { topic } = await searchParams;
-  return (
-    <main className="wrap hero">
-      <Breadcrumb items={[{ name: "Home", path: paths.home }, { name: "Wrong Answers", path: paths.mistakes }]} />
-      <h1>Wrong-answer notebook</h1>
-      <CloudMistakes initialTopic={topic} />
-    </main>
-  );
+  const { topic, attempt } = await searchParams;
+  return <CloudMistakes stateCode="AZ" initialTopic={topic} attemptId={attempt || ""} />;
 }
