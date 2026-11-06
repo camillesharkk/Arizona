@@ -185,10 +185,11 @@ export function CaliforniaGuide() {
               {mastered.includes(item.id) ? "Mastered" : "Mark mastered"}
             </button>
             <Link className="btn btn-ghost" href={`${caPaths.studyCards}?topic=${item.id}`}>Study Cards</Link>
-            <Link className="btn btn-primary" href={`${caPaths.practice}?mode=practice&area=${item.id}`}>Practice This Topic</Link>
-          </div>
-        </article>
+          <Link className="btn btn-primary" href={`${caPaths.practice}?mode=practice&area=${item.id}`}>Practice This Topic</Link>
+        </div>
+      </article>
       ))}
+      <p><Link className="btn btn-primary" href={signedIn ? caPaths.daily : `${caPaths.login}?next=${encodeURIComponent(caPaths.daily)}`}>Continue to Daily Study</Link></p>
       {!signedIn ? <p className="notice">Chapter progress on this browser stays with this browser until you sign in.</p> : null}
     </>
   );

@@ -460,9 +460,11 @@ export function ExamRunner({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           questionId: q.question_id,
-          selected: originalLetter(q.question_id, letter),
-          attemptId: attemptId(q.question_id),
-          review,
+            selected: originalLetter(q.question_id, letter),
+            attemptId: attemptId(q.question_id),
+            review,
+            state: stateCode,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         }),
       }).then(() => onRecorded?.()).catch(() => undefined);
       if (mode === "weak" && isPro && !weakReported.current) {
@@ -699,6 +701,7 @@ export function ExamRunner({
                 {correct < 8 && !recommend ? (
                   <a className="btn btn-ghost" href={`${site.practice}?mode=quick&start=1`}>Check My Knowledge — 10 Questions</a>
                 ) : null}
+                <a className="btn btn-ghost" href={dailyHref}>Open Daily Study</a>
               </div>
                 </>
               )}
@@ -833,7 +836,7 @@ export function ExamRunner({
         isPro={isPro}
         marked={marked.includes(view.question_id)}
         onMark={past ? undefined : () => toggleMark(view.question_id)}
-        extra={stateCode === "CA" ? null : <SaveForReview questionId={view.question_id} hint={false} />}
+        extra={<SaveForReview questionId={view.question_id} hint={false} />}
         explainOpen={Boolean(explainOpen[view.question_id])}
         onToggleExplain={() => {
           const id = view.question_id;

@@ -211,6 +211,7 @@ export function SiteHeader() {
         ) : (
           <p className="kicker">Guest</p>
         )}
+        {onPicker ? null : <Link href={nav.daily}>Daily Study</Link>}
         {onPicker ? null : (
           <button className="chip" type="button" onClick={() => setStudyOpen((v) => !v)}>
             Study {studyOpen ? "▾" : "▸"}
@@ -228,9 +229,6 @@ export function SiteHeader() {
             ) : (
               <WrongAnswersLink className={active(pathname, nav.mistakes) ? "active" : ""} />
             )}
-            <Link href={nav.daily} className={active(pathname, nav.daily) ? "active" : ""}>
-              Daily Study
-            </Link>
             <Link href={nav.resources} className={active(pathname, nav.resources) ? "active" : ""}>
               Resources
             </Link>

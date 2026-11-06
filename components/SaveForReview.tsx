@@ -33,11 +33,12 @@ function rememberServerSaves(rows: { questionId?: string; savedForReview?: boole
 
 function loadSavedReviews() {
   if (!savedKnown) {
-    savedKnown = fetch("/api/mistakes/")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        const rows = Array.isArray(data?.mistakes) ? data.mistakes : [];
-        rememberServerSaves(rows);
+    savedKnown = Promise.all(["/api/mistakes/", "/api/mistakes/?state=CA"].map((url) => fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => null)))
+      .then((payloads) => {
+        for (const data of payloads) {
+          const rows = Array.isArray(data?.mistakes) ? data.mistakes : [];
+          rememberServerSaves(rows);
+        }
       })
       .catch(() => undefined);
   }
@@ -67,7 +68,7 @@ export async function flushPendingReviewSaves() {
 
 export function SaveForReview({
   questionId,
-  label = "Save for review",
+  label = "Add to Daily Study",
   hint = true,
 }: {
   questionId: string;
@@ -131,9 +132,9 @@ export function SaveForReview({
   return (
     <div className="save-review">
       <button className={`btn btn-ghost${saved ? " is-on" : ""}`} type="button" onClick={toggle} disabled={busy} aria-pressed={saved}>
-        <BookmarkIcon /> {busy ? "Saving…" : saved ? "Saved for review" : label}
+        <BookmarkIcon /> {busy ? "Saving…" : saved ? "Added to Daily Study" : label}
       </button>
-      {hint && !saved ? <p className="notice">Guessed or unsure? Save this question to review later.</p> : null}
+      {hint && !saved ? <p className="notice">Adds this question to Daily Study. It does not count as a missed answer.</p> : null}
       {needLogin ? (
         <p className="notice" role="status">
           Sign in to save this question for review. <Link href={next}>Sign in</Link>

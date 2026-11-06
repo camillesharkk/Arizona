@@ -28,6 +28,7 @@ assert.deepEqual(again, exact);
 const next = scheduleReview("2026-11-06T12:00:00.000Z", 0, "America/Phoenix");
 assert.equal(dueQuestionIds(stats, "2026-11-06T18:00:00.000Z").length, 0);
 assert.deepEqual(dueQuestionIds([{ ...stats[0], nextReviewAt: next }], next), ["ca-001"]);
+assert.deepEqual(dueQuestionIds([{ ...stats[0], nextReviewAt: next, savedForReview: true, wrongCount: 0 }], next), ["ca-001"]);
 assert.deepEqual(dueQuestionIds([{ ...stats[0], nextReviewAt: next, state: "AZ" }], next), []);
 
 console.log("ca-daily-check ok");

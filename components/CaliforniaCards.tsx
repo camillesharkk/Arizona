@@ -86,6 +86,7 @@ export function CaliforniaCards() {
           <div className="home-card-actions">
             <StudyPager index={safeIndex} total={cards.length} target={face} onPrev={() => move(safeIndex - 1)} onNext={() => move(safeIndex + 1)} />
             <a className="btn btn-ghost" href={`${caPaths.practice}?mode=practice&area=${card.study}`}>Practice this topic</a>
+            {safeIndex === cards.length - 1 ? <a className="btn btn-primary" href={caPaths.daily}>Continue to Daily Study</a> : null}
           </div>
         </div>
       ) : (

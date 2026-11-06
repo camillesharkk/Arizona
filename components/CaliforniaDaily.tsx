@@ -17,6 +17,7 @@ type Recent = {
 };
 
 type Due = { questionId: string; prompt: string; due: string | null; area: string };
+type Scheduled = { questionId: string; prompt: string; nextReviewAt: string | null; wrongCount: number; saved: boolean; due: boolean };
 type Card = { id: string; title: string; front: string; study: string };
 
 type View = {
@@ -26,6 +27,7 @@ type View = {
   goal: number;
   recent: Recent[];
   due: Due[];
+  scheduled: Scheduled[];
   nextReviewAt: string | null;
   todayCards: Card[];
   todayQuestionIds: string[];
@@ -41,27 +43,36 @@ function when(iso: string) {
 export function CaliforniaDaily() {
   const [view, setView] = useState<View | null>(null);
   const [phase, setPhase] = useState<"loading" | "ready" | "signed-out" | "error">("loading");
-  const shown = useRef(false);
+  const requestId = useRef(0);
 
   const load = useCallback(async () => {
-    if (!shown.current) setPhase("loading");
-    const sync = await syncCaAttempts().catch(() => ({ ok: false, pending: true }));
-    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const response = await fetch(`/api/daily-study/?state=CA&timeZone=${encodeURIComponent(zone)}`, { cache: "no-store" }).catch(() => null);
-    if (!response) {
-      setPhase("error");
-      return;
-    }
-    if (response.status === 401) {
+    const id = ++requestId.current;
+    setPhase("loading");
+    setView(null);
+    const me = await fetch("/api/auth/me/", { cache: "no-store" }).catch(() => null);
+    if (id !== requestId.current) return;
+    const account = me?.ok ? await me.json().catch(() => null) : null;
+    const userId = account?.user?.id as string | undefined;
+    if (!userId) {
       setPhase("signed-out");
       return;
     }
-    if (!response.ok || !sync.ok) {
+    const sync = await syncCaAttempts().catch(() => ({ ok: false, pending: true }));
+    if (id !== requestId.current) return;
+    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const day = new Intl.DateTimeFormat("en-CA", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+    const response = await fetch(`/api/daily-study/?state=CA&timeZone=${encodeURIComponent(zone)}&day=${day}&account=${encodeURIComponent(userId)}`, { cache: "no-store" }).catch(() => null);
+    if (id !== requestId.current) return;
+    if (!response || !response.ok || !sync.ok) {
       setPhase("error");
       return;
     }
-    shown.current = true;
-    setView(await response.json());
+    const data = await response.json();
+    if (id !== requestId.current || data?.state !== "CA") {
+      if (id === requestId.current) setPhase("error");
+      return;
+    }
+    setView(data);
     setPhase("ready");
   }, []);
 
@@ -78,7 +89,14 @@ export function CaliforniaDaily() {
     };
   }, [load]);
 
-  if (phase === "loading") return <p className="card">Loading daily study…</p>;
+  if (phase === "loading") {
+    return (
+      <p className="card loading-row" role="status">
+        <span className="spinner" aria-hidden="true" />
+        Loading your study plan…
+      </p>
+    );
+  }
   if (phase === "signed-out") {
     return (
       <section className="card">
@@ -135,6 +153,21 @@ export function CaliforniaDaily() {
         {view.due.length > 0 && (
           <ul className="check">
             {view.due.map((item) => <li key={item.questionId}>{item.prompt}</li>)}
+          </ul>
+        )}
+      </section>
+      <section className="card">
+        <h2>Scheduled review</h2>
+        {view.scheduled.length === 0 ? <p>No California questions are on the review plan.</p> : (
+          <ul className="check">
+            {view.scheduled.map((item) => (
+              <li key={item.questionId}>
+                {item.prompt}
+                {" · "}
+                {item.saved && item.wrongCount === 0 ? "Added" : `Wrong ${item.wrongCount}`}
+                {item.nextReviewAt ? ` · ${item.due ? "Due" : "Next"} ${when(item.nextReviewAt)}` : ""}
+              </li>
+            ))}
           </ul>
         )}
       </section>

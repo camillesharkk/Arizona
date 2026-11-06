@@ -456,6 +456,8 @@ h2 { font-size: 1.5rem; }
   cursor: pointer; font-family: inherit; font-weight: 600; white-space: normal;
 }
 .chip:disabled { opacity: 0.55; cursor: not-allowed; }
+a.chip { display: inline-flex; align-items: center; text-decoration: none; color: inherit; }
+.mistake-actions { margin-top: 8px; }
 .chip.on { background: var(--ink); color: white; border-color: var(--ink); }
 .tool-row .chip.on { background: transparent; border-color: transparent; color: #fff; }
 

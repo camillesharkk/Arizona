@@ -2,7 +2,7 @@ import { caCards } from "@/data/ca-cards";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { localDate } from "@/lib/calendar";
 import { dueQuestionIds, recentCaExams, type CaCheck } from "@/lib/ca-daily-shape";
-import { DEFAULT_STUDY_TIME_ZONE } from "@/lib/review-schedule";
+import { DEFAULT_STUDY_TIME_ZONE, scheduleReview } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
 import { buildDay, dayNumber, normalizeDocument, planDates, type ItemProgress } from "@/lib/study-plan";
 
@@ -45,6 +45,12 @@ export async function caDailyView(userId: string, timeZoneHint?: string, now = n
     store.getStudyPlan(userId, "CA"),
   ]);
   const caStats = stats.filter((stat) => stat.state === "CA");
+  for (const stat of caStats) {
+    if (stat.mastered || stat.wrongCount <= 0 || stat.nextReviewAt) continue;
+    const from = stat.lastWrongAt || stat.firstAt || now;
+    stat.nextReviewAt = scheduleReview(from, stat.reviewStage || 0, timeZone);
+    await store.updateReviewStat(userId, stat.questionId, { nextReviewAt: stat.nextReviewAt });
+  }
   const checks = checksFrom(plan?.document);
   const recent = recentCaExams(exams, checks, caStats);
   const questions = publishedCaQuestions();
@@ -114,6 +120,20 @@ export async function caDailyView(userId: string, timeZoneHint?: string, now = n
     nextReviewAt,
     todayCards,
     todayQuestionIds,
-    hasPractice: recent.length > 0 || caStats.some((stat) => stat.firstAt),
+    hasPractice: recent.length > 0 || caStats.some((stat) => stat.firstAt || stat.savedForReview),
+    scheduled: caStats
+      .filter((stat) => !stat.mastered && (stat.wrongCount > 0 || stat.savedForReview) && byId.has(stat.questionId))
+      .map((stat) => {
+        const question = byId.get(stat.questionId)!;
+        return {
+          questionId: question.question_id,
+          prompt: question.question_text,
+          nextReviewAt: stat.nextReviewAt,
+          wrongCount: stat.wrongCount,
+          saved: Boolean(stat.savedForReview),
+          due: Boolean(stat.nextReviewAt && stat.nextReviewAt <= now),
+        };
+      })
+      .sort((a, b) => (a.nextReviewAt || "9").localeCompare(b.nextReviewAt || "9")),
   };
 }

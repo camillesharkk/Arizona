@@ -15,13 +15,14 @@ export type CaStatLike = {
   mastered: boolean;
   nextReviewAt: string | null;
   lastWrongAt: string | null;
+  savedForReview?: boolean;
 };
 
 const RECOVER_MS = 10 * 60 * 1000;
 
 export function dueQuestionIds(stats: CaStatLike[], now: string) {
   return stats
-    .filter((stat) => stat.state === "CA" && stat.wrongCount > 0 && !stat.mastered && stat.nextReviewAt && stat.nextReviewAt <= now)
+    .filter((stat) => stat.state === "CA" && !stat.mastered && stat.nextReviewAt && stat.nextReviewAt <= now && (stat.wrongCount > 0 || stat.savedForReview))
     .map((stat) => stat.questionId);
 }
 
@@ -47,7 +48,7 @@ export function recentCaExams(exams: CaExamLike[], checks: Record<string, CaChec
         id: exam.id,
         at: exam.at,
         mode: exam.mode,
-        label: exam.mode === "ca-full" ? "Full 45" : "Quick 10",
+        label: exam.mode === "ca-full" ? "Full 45" : exam.mode === "ca-quick" ? "Quick 10" : exam.mode === "ca-weak" ? "Weak areas" : "Topic practice",
         correct: exam.correctCount,
         total: exam.total,
         wrong,

@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { caPaths } from "@/lib/ca-site";
 import { quickNextBand, rankMissedTopics, type TopicMiss } from "@/lib/ca-next";
 
@@ -29,6 +32,19 @@ export function CaQuickNext({
     : caPaths.study;
   const mistakeHref = `${caPaths.mistakes}${attempt ? `?${attempt}` : ""}`;
   const fullLabel = fullResume ? "Resume Full 45 Practice Exam" : "Start Full 45 Practice Exam";
+  const [nextReviewAt, setNextReviewAt] = useState("");
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    fetch(`/api/daily-study/?state=CA&timeZone=${encodeURIComponent(zone)}`, { cache: "no-store" })
+      .then((response) => {
+        setSignedIn(response.ok);
+        return response.ok ? response.json() : null;
+      })
+      .then((data) => setNextReviewAt(data?.nextReviewAt || ""))
+      .catch(() => undefined);
+  }, []);
+  const dailyHref = signedIn ? caPaths.daily : `${caPaths.login}?next=${encodeURIComponent(caPaths.daily)}`;
   const fullButton = (
     <a className={band === "review" && topic ? "btn btn-ghost" : "btn btn-primary"} href={fullHref}>
       {fullLabel}
@@ -66,6 +82,8 @@ export function CaQuickNext({
           </>
         ) : null}
         {band === "perfect" ? <a className="btn btn-ghost" href={caPaths.studyCards}>Explore Study Cards</a> : null}
+        <a className="btn btn-ghost" href={dailyHref}>Open Daily Study</a>
+        {nextReviewAt ? <span className="notice">Next review {new Date(nextReviewAt).toLocaleString()}.</span> : null}
       </div>
       {fullLocked && !fullResume ? <p className="notice">The free Full 45 on this account or browser is already used. Opening it shows that limit. California Pro is not open.</p> : null}
     </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { CloudMistakes } from "@/components/CloudMistakes";
+import { MistakeActions } from "@/components/MistakeActions";
 import {
   adoptGuestCaRecords,
   importLocalMistakes,
@@ -36,6 +37,46 @@ export function CaliforniaMistakes() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
+  const [cardNote, setCardNote] = useState("");
+
+  async function cardAction(questionId: string, action: "mastered" | "favorite" | "remove" | "save") {
+    const current = stats.find((row) => row.questionId === questionId);
+    setCardNote("");
+    const body = action === "save"
+      ? { questionId, saveForReview: !current?.savedForReview }
+      : action === "remove"
+        ? { questionId, remove: true }
+        : action === "mastered"
+          ? { questionId, mastered: true }
+          : { questionId, favorited: !current?.favorited };
+    const response = await fetch("/api/mistakes/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).catch(() => null);
+    const data = response?.ok ? await response.json().catch(() => null) : null;
+    if (!response?.ok || !data?.ok) {
+      setCardNote("Could not update this question. Try again.");
+      return;
+    }
+    if (action === "save") {
+      const saved = Boolean(data.savedForReview);
+      setStats((rows) => {
+        const next = rows.filter((row) => row.questionId !== questionId);
+        const base = current || { questionId, state: "CA", wrongCount: 0, favorited: false, mastered: false, savedForReview: false, nextReviewAt: null } as QuestionStat;
+        return [...next, { ...base, savedForReview: saved, nextReviewAt: data.nextReviewAt ?? base.nextReviewAt }];
+      });
+      setCardNote(saved ? `Added to Daily Study.${data.nextReviewAt ? ` Next review ${new Date(data.nextReviewAt).toLocaleString()}.` : ""}` : "Removed from the review plan.");
+      return;
+    }
+    if (action === "favorite" && current) {
+      setStats((rows) => rows.map((row) => row.questionId === questionId ? { ...row, favorited: !row.favorited } : row));
+      setCardNote(current.favorited ? "Favorite removed." : "Question favorited.");
+      return;
+    }
+    setStats((rows) => rows.filter((row) => row.questionId !== questionId));
+    setCardNote(action === "mastered" ? "Question marked as mastered." : "Record deleted.");
+  }
 
   async function resolve(userId: string) {
     if (userId) adoptGuestCaRecords(userId);
@@ -205,15 +246,15 @@ export function CaliforniaMistakes() {
         </div>
       ) : null}
       {message ? <p className="notice" role="status">{message}</p> : null}
+      <div className="row" style={{ margin: "12px 0" }}>
+        <Link className="btn btn-primary" href={preview.signedIn ? caPaths.daily : `${caPaths.login}?next=${encodeURIComponent(caPaths.daily)}`}>Open Daily Study</Link>
+      </div>
       <div className="tool-row" aria-label="Mistake list">
         <button className={`chip ${showAll ? "" : "on"}`} type="button" onClick={() => setShowAll(false)}>This practice</button>
         <button className={`chip ${showAll ? "on" : ""}`} type="button" onClick={() => setShowAll(true)}>All mistakes</button>
       </div>
-      {due && !showAll ? (
-        <p className="notice">
-          Next review {new Date(due).toLocaleString()}. <Link href={caPaths.daily}>Daily Study</Link>
-        </p>
-      ) : null}
+      {due && !showAll ? <p className="notice">Next review {new Date(due).toLocaleString()}.</p> : null}
+      {cardNote ? <p className="notice" role="status">{cardNote}</p> : null}
       {!showAll && questions.length > 0 ? (
         questions.map((question) => {
           const stat = stats.find((row) => row.questionId === question.question_id);
@@ -223,17 +264,20 @@ export function CaliforniaMistakes() {
               <h2>{question.question_text}</h2>
               {stat?.nextReviewAt ? <p>Next review {new Date(stat.nextReviewAt).toLocaleString()}.</p> : null}
               {stat?.mastered ? <p>Mastered. Import does not clear that status.</p> : null}
-              <div className="row">
-                {question.study_topic ? <Link href={`${caPaths.study}?chapter=${question.study_topic}#${question.study_topic}`}>Study This Rule</Link> : null}
-                {question.study_topic ? <Link href={`${caPaths.practice}?mode=practice&area=${question.study_topic}`}>Practice This Topic</Link> : null}
-              </div>
+              <MistakeActions
+                stateCode="CA"
+                studyTopic={question.study_topic}
+                stat={stat}
+                signedIn={preview.signedIn}
+                onAction={(action) => void cardAction(question.question_id, action)}
+              />
             </article>
           );
         })
       ) : null}
       {!showAll && attempt && questions.length === 0 ? <p className="notice">No mistakes to import.</p> : null}
       {!showAll && !attempt ? <p className="notice">Finish a Quick 10 to list its missed questions here.</p> : null}
-      {showAll && preview.signedIn ? <CloudMistakes stateCode="CA" /> : null}
+      {showAll && preview.signedIn ? <CloudMistakes stateCode="CA" hideDailyLink /> : null}
       {showAll && !preview.signedIn ? (
         <div className="card">
           <p>Sign in to open the saved notebook. This browser can still show the Quick 10 you just finished.</p>

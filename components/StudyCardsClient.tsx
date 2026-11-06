@@ -130,6 +130,7 @@ export function StudyCardsClient({ cards, initialTopic }: { cards: PublicStudyCa
             onPrev={() => move(safeIndex - 1)}
             onNext={() => move(safeIndex + 1)}
           />
+          {safeIndex === deck.length - 1 ? <p style={{ marginTop: 12 }}><Link className="btn btn-primary" href={paths.daily}>Continue to Daily Study</Link></p> : null}
         </>
       ) : (
         <p>No cards in this topic.</p>

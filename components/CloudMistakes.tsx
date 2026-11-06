@@ -8,6 +8,7 @@ import { publishedCaQuestions } from "@/data/ca-questions";
 import { topics } from "@/data/exam-config";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
 import { ExamRunner } from "@/components/ExamRunner";
+import { MistakeActions } from "@/components/MistakeActions";
 import { LoadingNote } from "@/components/QuizChrome";
 import { topicLabel } from "@/lib/quiz";
 import { paths } from "@/lib/paths";
@@ -22,7 +23,7 @@ function dueNow(stat: QuestionStat) {
   return Boolean(stat.nextReviewAt) && Date.parse(stat.nextReviewAt as string) <= Date.now();
 }
 
-export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds }: { initialTopic?: string; stateCode?: "AZ" | "CA"; attemptIds?: string[] }) {
+export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds, hideDailyLink = false }: { initialTopic?: string; stateCode?: "AZ" | "CA"; attemptIds?: string[]; hideDailyLink?: boolean }) {
   const onCa = stateCode === "CA";
   const site = onCa ? caPaths : paths;
   const questionPool = onCa ? publishedCaQuestions() : publishedQuestions();
@@ -83,7 +84,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds }: { 
     }
   }
 
-  async function updateRecord(stat: QuestionStat, action: "mastered" | "favorite" | "remove") {
+  async function updateRecord(stat: QuestionStat, action: "mastered" | "favorite" | "remove" | "save") {
     const questionId = stat.questionId;
     if (pendingIds.current.has(questionId)) return;
     pendingIds.current.add(questionId);
@@ -93,7 +94,9 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds }: { 
     // An earlier refresh must not overwrite a successful mutation.
     ++requestId.current;
     try {
-      const patch = action === "mastered" ? { mastered: true }
+      const patch = action === "save"
+        ? { saveForReview: !stat.savedForReview }
+        : action === "mastered" ? { mastered: true }
         : action === "remove" ? { remove: true } : { favorited: !stat.favorited };
       const response = await fetch("/api/mistakes/", {
         method: "POST",
@@ -110,15 +113,25 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds }: { 
         throw new Error(data?.error || "Could not update this question. Please try again.");
       }
       ++requestId.current;
-      setStats((current) => action === "favorite"
-        ? current.map((row) => row.questionId === questionId ? { ...row, favorited: !stat.favorited } : row)
-        : current.filter((row) => row.questionId !== questionId));
-      if (userIdRef.current && (action === "mastered" || (action === "favorite" && !stat.favorited))) {
-        markMistakePromptSeen(window.localStorage, userIdRef.current, action === "mastered" ? "mastered" : "favorite");
-        setSeen(readMistakePrompts(window.localStorage, userIdRef.current));
+      if (action === "save") {
+        const saved = Boolean(data.savedForReview);
+        setStats((current) => current.map((row) => row.questionId === questionId
+          ? { ...row, savedForReview: saved, nextReviewAt: data.nextReviewAt ?? row.nextReviewAt }
+          : row));
+        setActionMessage(saved
+          ? `Added to Daily Study.${data.nextReviewAt ? ` Next review ${new Date(data.nextReviewAt).toLocaleString()}.` : ""}`
+          : "Removed from the review plan.");
+      } else {
+        setStats((current) => action === "favorite"
+          ? current.map((row) => row.questionId === questionId ? { ...row, favorited: !stat.favorited } : row)
+          : current.filter((row) => row.questionId !== questionId));
+        if (userIdRef.current && (action === "mastered" || (action === "favorite" && !stat.favorited))) {
+          markMistakePromptSeen(window.localStorage, userIdRef.current, action === "mastered" ? "mastered" : "favorite");
+          setSeen(readMistakePrompts(window.localStorage, userIdRef.current));
+        }
+        setActionMessage(action === "mastered" ? "Question marked as mastered."
+          : action === "remove" ? "Record deleted." : stat.favorited ? "Favorite removed." : "Question favorited.");
       }
-      setActionMessage(action === "mastered" ? "Question marked as mastered."
-        : action === "remove" ? "Record deleted." : stat.favorited ? "Favorite removed." : "Question favorited.");
       window.dispatchEvent(new Event("az-mistakes-change"));
       router.refresh();
     } catch (error) {
@@ -183,8 +196,12 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds }: { 
     router.replace(id === "all" ? site.mistakes : `${site.mistakes}?topic=${id}`, { scroll: false });
   }
 
-  function requestAction(stat: QuestionStat, action: MistakeAction) {
+  function requestAction(stat: QuestionStat, action: "mastered" | "favorite" | "remove" | "save") {
     if (pendingIds.current.has(stat.questionId)) return;
+    if (action === "save") {
+      void updateRecord(stat, action);
+      return;
+    }
     const copy = mistakePrompt(action, { favorited: stat.favorited, seenMastered: seen.mastered, seenFavorite: seen.favorite });
     if (copy) {
       setPrompt({ stat, action, copy });
@@ -278,8 +295,9 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds }: { 
       ) : null}
       {phase === "list" ? (
         <>
+          {hideDailyLink ? null : <Link className="btn btn-primary" href={site.daily}>Open Daily Study</Link>}
           {due.length === 0 && nextReview ? <p className="notice">Next review {new Date(nextReview).toLocaleString()}.</p> : null}
-          <button className="btn btn-primary" type="button" onClick={begin}>
+          <button className="btn btn-ghost" type="button" onClick={begin}>
             {due.length === 0 ? "Practice all wrong answers" : "Practice wrong answers"}
           </button>
         </>
@@ -317,34 +335,13 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds }: { 
               {s.wrongCount > 0 ? `Wrong ${s.wrongCount} ${s.wrongCount === 1 ? "time" : "times"}` : "Saved for review"}
               {s.nextReviewAt ? ` · Next review ${new Date(s.nextReviewAt).toLocaleString()}` : ""}
             </p>
-            <div className="row" aria-busy={Boolean(pending[s.questionId])}>
-              {onCa && q.study_topic ? <Link href={`${caPaths.study}?chapter=${q.study_topic}#${q.study_topic}`}>Study This Rule</Link> : null}
-              <button
-                className="chip"
-                type="button"
-                disabled={Boolean(pending[s.questionId])}
-                onClick={() => requestAction(s, "mastered")}
-              >
-                {pending[s.questionId] === "mastered" ? "Saving…" : "Mark mastered"}
-              </button>
-              <button
-                className="chip"
-                type="button"
-                disabled={Boolean(pending[s.questionId])}
-                aria-pressed={s.favorited}
-                onClick={() => requestAction(s, "favorite")}
-              >
-                {pending[s.questionId] === "favorite" ? "Saving…" : s.favorited ? "Favorited" : "Favorite"}
-              </button>
-              <button
-                className="chip"
-                type="button"
-                disabled={Boolean(pending[s.questionId])}
-                onClick={() => requestAction(s, "remove")}
-              >
-                {pending[s.questionId] === "remove" ? "Deleting…" : "Delete record"}
-              </button>
-            </div>
+            <MistakeActions
+              stateCode={onCa ? "CA" : "AZ"}
+              studyTopic={onCa ? q.study_topic : undefined}
+              stat={s}
+              pending={pending[s.questionId]}
+              onAction={(action) => requestAction(s, action)}
+            />
             {actionErrors[s.questionId] ? (
               <div className="form-error" role="alert">
                 <p>{actionErrors[s.questionId]}</p>

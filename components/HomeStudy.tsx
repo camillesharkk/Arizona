@@ -135,8 +135,6 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
     scrollUnderHeaderSoon(cardFace.current);
   }
 
-  const showContinue = Boolean(resumeHref || todayLeft);
-
   const fullHref = `${site.practice}?mode=full${fullSittingOpen ? "" : "&start=1"}`;
 
   const fullAction = authReady && gateReady && fullSittingOpen ? (
@@ -184,16 +182,12 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
       </section>
     <div className="study-stack">
 
-      {showContinue ? (
-        <p className="home-continue">
+      <p className="home-continue">
           {resumeHref ? <Link href={resumeHref}>Continue saved practice</Link> : null}
-          {todayLeft ? (
-            <Link href={site.daily}>
-              Today: {todayLeft} daily study {todayLeft === 1 ? "item" : "items"} left
-            </Link>
-          ) : null}
+          <Link href={signedIn ? site.daily : `${site.login}?next=${encodeURIComponent(site.daily)}`}>
+            {todayLeft ? `Today: ${todayLeft} daily study ${todayLeft === 1 ? "item" : "items"} left` : "Daily Study"}
+          </Link>
         </p>
-      ) : null}
 
       <div className="home-stage">
         <section aria-label="Study cards">
@@ -289,10 +283,6 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
           </section>
         ) : null}
       </div>
-
-      <p className="home-continue">
-        <Link href={site.daily}>Daily Study</Link>
-      </p>
     </div>
     </>
   );
