@@ -70,6 +70,7 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
     } catch {
       /* first visit */
     }
+    if (new URLSearchParams(window.location.search).get("attempt")) setHomeQuiz("quick");
   }, []);
 
   useEffect(() => {
@@ -104,6 +105,10 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
         setHomeQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "home-quick", stateCode)));
         setFullSittingOpen(Boolean(openSitting(sessionStorage, nextOwner, "full", stateCode)));
         setHomeFullOpen(Boolean(openSitting(sessionStorage, nextOwner, "home-full", stateCode)));
+        if (new URLSearchParams(window.location.search).get("exam") === "full" && openSitting(sessionStorage, nextOwner, "home-full", stateCode)) {
+          setFullOpen(true);
+          setHomeQuiz("full");
+        }
       })
       .catch(() => undefined)
       .finally(() => setAuthReady(true));

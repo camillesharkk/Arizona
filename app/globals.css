@@ -363,6 +363,14 @@ h2 { font-size: 1.5rem; }
 .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .result-next { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0 8px; }
 .result-next .notice { flex: 1 0 100%; margin: 0; }
+.next-step h3 { margin: 8px 0; }
+.import-panel { margin: 12px 0; }
+.guide-chapter { scroll-margin-top: 5.5rem; }
+.review-topic-list { display: grid; gap: 12px; padding-left: 18px; }
+.review-topic-list .row { margin-top: 6px; }
+.resource-list { display: grid; gap: 14px; padding: 0; list-style: none; }
+.resource-list li { border-top: 1px solid var(--line); padding-top: 12px; }
+.resource-list span { display: block; color: var(--muted); font-size: 0.85rem; margin: 2px 0 6px; }
 .result-links { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 16px; }
 .result-summary h2 { margin-top: 8px; }
 .card:has(.quiz-stem) .q-option, .card:has(.quiz-stem) .explain, .card:has(.quiz-stem) .quiz-stem { text-align: left; }

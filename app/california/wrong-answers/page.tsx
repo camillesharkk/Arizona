@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { CloudMistakes } from "@/components/CloudMistakes";
+import { Suspense } from "react";
+import { CaliforniaMistakes } from "@/components/CaliforniaMistakes";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -12,8 +13,9 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main className="wrap">
-      <h1>California wrong answers</h1>
-      <CloudMistakes stateCode="CA" />
+      <Suspense fallback={<p className="notice">Loading mistakes…</p>}>
+        <CaliforniaMistakes />
+      </Suspense>
     </main>
   );
 }

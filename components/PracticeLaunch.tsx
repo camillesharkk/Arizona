@@ -49,6 +49,11 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         const startFresh = new URLSearchParams(window.location.search).get("start") === "1";
         if (startFresh && (requested === "quick" || requested === "full" || requested === "weak") && !openSitting(sessionStorage, nextOwner, requested, stateCode)) {
           clearSitting(sessionStorage, nextOwner, requested, stateCode);
+          const url = new URL(window.location.href);
+          if (url.searchParams.has("attempt")) {
+            url.searchParams.delete("attempt");
+            window.history.replaceState(null, "", url);
+          }
         }
         setOpenModes({
           quick: Boolean(openSitting(sessionStorage, nextOwner, "quick", stateCode)),
@@ -93,6 +98,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
     if (existing?.done) clearSitting(sessionStorage, owner, next, stateCode);
     const url = new URL(window.location.href);
     url.searchParams.set("mode", next);
+    url.searchParams.delete("attempt");
     window.history.replaceState(null, "", url);
     setMode(next);
   }

@@ -31,6 +31,8 @@ import { SaveForReview } from "@/components/SaveForReview";
 import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
 import { clearSitting, openSitting, readSitting, remainingSeconds, writeSitting, type Sitting, type SittingState } from "@/lib/sitting";
 import { weakestMissedTopic, topicStudyHref } from "@/lib/next-step";
+import { adoptGuestCaRecords, readCaAttempt, saveCaQuickAttempt } from "@/lib/ca-attempts";
+import { CaQuickNext } from "@/components/CaQuickNext";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
 
@@ -124,6 +126,7 @@ export function ExamRunner({
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const attemptIds = useRef<Record<string, string>>({});
+  const viewOnly = useRef(false);
   const reviewScroll = useRef(0);
   const [pastIndex, setPastIndex] = useState<number | null>(null);
   answersRef.current = answers;
@@ -189,6 +192,7 @@ export function ExamRunner({
   }
 
   function persistSitting(patch: Partial<Sitting> = {}) {
+    if (viewOnly.current) return;
     const sitting = currentSitting(patch);
     if (!sitting) return;
     try {
@@ -208,7 +212,36 @@ export function ExamRunner({
         const nextOwner = data.user?.id || "guest";
         setSignedIn(Boolean(data.user));
         setFullExamCount(Number((stateCode === "CA" ? data.user?.caFullExamCount : data.user?.fullExamCount) || 0));
-        const existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
+        const params = new URLSearchParams(window.location.search);
+        const startFresh = params.get("start") === "1";
+        let existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
+        if (startFresh && existing?.done) {
+          clearSitting(sessionStorage, nextOwner, modeKey, stateCode);
+          existing = null;
+        }
+        const requestedAttempt = startFresh ? "" : params.get("attempt") || "";
+        if (stateCode === "CA" && requestedAttempt && existing?.examId !== requestedAttempt) {
+          if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner);
+          const archived = readCaAttempt(nextOwner, requestedAttempt);
+          if (archived && archived.mode === "quick" && mode === "quick") {
+            viewOnly.current = Boolean(existing);
+            setOwner(nextOwner);
+            setActiveSeed(archived.seed);
+            setLockedIds(archived.questionIds);
+            setAnswers(archived.answers);
+            answersRef.current = archived.answers;
+            setDone(true);
+            setIdx(0);
+            examSaveId.current = archived.id;
+            attemptIds.current = archived.attemptIds;
+            localSaved.current = true;
+            finishOnce.current = true;
+            recordedIds.current = archived.questionIds;
+            setRestored(true);
+            return;
+          }
+        }
+        viewOnly.current = false;
         const seed = existing?.seed ?? Math.floor(Math.random() * 1_000_000_000);
         if (existing?.unscoredIds?.length) unscoredRef.current = existing.unscoredIds;
         const ids = existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed);
@@ -243,6 +276,55 @@ export function ExamRunner({
     // Draw once for this mode. A restored sitting keeps its own question ids.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bootTry, modeKey]);
+
+  useEffect(() => {
+    if (viewOnly.current || !done || stateCode !== "CA" || mode !== "quick") return;
+    if (!owner || !examSaveId.current || activeSeed == null || !lockedIds?.length || !questions.length) return;
+    const answersNow = answersRef.current;
+    const correctIds: string[] = [];
+    const wrongIds: string[] = [];
+    const skippedIds: string[] = [];
+    const topicCounts = new Map<string, number>();
+    const originalAnswers: Record<string, Letter> = {};
+    questions.forEach((item) => {
+      const selected = answersNow[item.question_id];
+      if (!selected) {
+        skippedIds.push(item.question_id);
+        return;
+      }
+      originalAnswers[item.question_id] = originalLetter(item.question_id, selected);
+      if (selected === item.correct_option) correctIds.push(item.question_id);
+      else {
+        wrongIds.push(item.question_id);
+        const topic = item.study_topic;
+        if (topic) topicCounts.set(topic, (topicCounts.get(topic) || 0) + 1);
+      }
+    });
+    saveCaQuickAttempt({
+      id: examSaveId.current,
+      owner,
+      state: "CA",
+      mode: "quick",
+      sittingMode: modeKey,
+      finishedAt: new Date().toISOString(),
+      seed: activeSeed,
+      questionIds: lockedIds,
+      answers: answersNow,
+      originalAnswers,
+      attemptIds: { ...attemptIds.current },
+      correctIds,
+      wrongIds,
+      skippedIds,
+      topicMisses: [...topicCounts.entries()].map(([id, missed]) => ({ id, missed })),
+    });
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("attempt") !== examSaveId.current) {
+      url.searchParams.set("attempt", examSaveId.current);
+      window.history.replaceState(null, "", url);
+    }
+    // Archive the finished check once. Later renders keep the same attempt id.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [done, owner, activeSeed, lockedIds, questions, stateCode, mode, modeKey]);
 
   useEffect(() => {
     persistSitting();
@@ -541,9 +623,13 @@ export function ExamRunner({
         anonFullUsed = false;
       }
     }
-    const fullResume = Boolean(owner && openSitting(sessionStorage, owner, "full", stateCode));
+    const practiceFull = Boolean(owner && openSitting(sessionStorage, owner, "full", stateCode));
+    const homeFull = Boolean(owner && openSitting(sessionStorage, owner, "home-full", stateCode));
+    const fullResume = practiceFull || homeFull;
     const fullLocked = !fullResume && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || (!signedIn && anonFullUsed));
-    const fullHref = `${site.practice}?mode=full${fullResume ? "" : "&start=1"}`;
+    const fullHref = homeFull && !practiceFull
+      ? `${site.home}?exam=full`
+      : `${site.practice}?mode=full${practiceFull ? "" : "&start=1"}`;
     const dailyHref = signedIn ? site.daily : `${site.login}?next=${encodeURIComponent(site.daily)}`;
     return (
       <div className="grid">
@@ -552,6 +638,27 @@ export function ExamRunner({
           {guided && mode === "quick" ? (
             <>
               <h2>{correct} of {questions.length} correct</h2>
+              {stateCode === "CA" ? (
+                <CaQuickNext
+                  correct={correct}
+                  total={questions.length}
+                  skipped={questions.filter((item) => !answers[item.question_id]).length}
+                  misses={(() => {
+                    const counts = new Map<string, number>();
+                    questions.forEach((item) => {
+                      const selected = answers[item.question_id];
+                      if (!selected || selected === item.correct_option || !item.study_topic) return;
+                      counts.set(item.study_topic, (counts.get(item.study_topic) || 0) + 1);
+                    });
+                    return [...counts.entries()].map(([id, missed]) => ({ id, missed }));
+                  })()}
+                  attemptId={examSaveId.current || ""}
+                  fullHref={fullHref}
+                  fullResume={fullResume}
+                  fullLocked={fullLocked}
+                />
+              ) : (
+                <>
               <p className="lede">
                 {correct >= 8
                   ? "Next: take a full practice exam."
@@ -562,7 +669,7 @@ export function ExamRunner({
               <div className="result-next">
                 {correct >= 8 ? (
                   fullLocked ? (
-                    <a className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">{stateCode === "CA" ? "Full exam limit" : "Unlock Pro"}</a>
+                    <a className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">Unlock Pro</a>
                   ) : (
                     <a className="btn btn-primary" href={fullHref}>{fullResume ? "Resume Full Practice Exam" : "Start a Full Practice Exam"}</a>
                   )
@@ -576,17 +683,17 @@ export function ExamRunner({
                 ) : null}
                 {correct >= 8 && fullLocked ? (
                   <p className="notice">
-                    {stateCode === "CA"
-                      ? "The free California Full 45 on this account or browser is used. California Pro is not open yet."
-                      : signedIn
-                        ? "This account has used its free Full 45. Pro includes more full exams."
-                        : "This browser has used its free Full 45. Pro includes more full exams."}
+                    {signedIn
+                      ? "This account has used its free Full 45. Pro includes more full exams."
+                      : "This browser has used its free Full 45. Pro includes more full exams."}
                   </p>
                 ) : null}
                 {correct < 8 && !recommend ? (
                   <a className="btn btn-ghost" href={`${site.practice}?mode=quick&start=1`}>Check My Knowledge — 10 Questions</a>
                 ) : null}
               </div>
+                </>
+              )}
             </>
           ) : (
             <>
@@ -640,7 +747,7 @@ export function ExamRunner({
               <li key={s}>{s}</li>
             ))}
           </ul>
-          {guided ? (
+          {stateCode === "CA" && mode === "quick" ? null : guided ? (
             <div className="result-links">
               {stateCode === "CA" ? <Link href={site.mistakes}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" />}
               <Link href={site.study}>Review Study Guide</Link>

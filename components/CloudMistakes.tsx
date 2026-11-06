@@ -22,7 +22,7 @@ function dueNow(stat: QuestionStat) {
   return Boolean(stat.nextReviewAt) && Date.parse(stat.nextReviewAt as string) <= Date.now();
 }
 
-export function CloudMistakes({ initialTopic, stateCode = "AZ" }: { initialTopic?: string; stateCode?: "AZ" | "CA" }) {
+export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptIds }: { initialTopic?: string; stateCode?: "AZ" | "CA"; attemptIds?: string[] }) {
   const onCa = stateCode === "CA";
   const site = onCa ? caPaths : paths;
   const questionPool = onCa ? publishedCaQuestions() : publishedQuestions();
@@ -165,6 +165,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ" }: { initialTopic
     return questionPool.find((question) => question.question_id === s.questionId)?.exam_area === topic;
   });
   const filtered = byTopic.filter((s) => {
+    if (attemptIds?.length && !attemptIds.includes(s.questionId)) return false;
     if (source === "incorrect") return s.wrongCount > 0;
     if (source === "saved") return Boolean(s.savedForReview);
     return true;
@@ -317,6 +318,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ" }: { initialTopic
               {s.nextReviewAt ? ` · Next review ${new Date(s.nextReviewAt).toLocaleString()}` : ""}
             </p>
             <div className="row" aria-busy={Boolean(pending[s.questionId])}>
+              {onCa && q.study_topic ? <Link href={`${caPaths.study}?chapter=${q.study_topic}#${q.study_topic}`}>Study This Rule</Link> : null}
               <button
                 className="chip"
                 type="button"
