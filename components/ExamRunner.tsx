@@ -524,6 +524,7 @@ export function ExamRunner({
             attemptId: attemptId(r.question.question_id),
             review: false,
             state: stateCode,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           }),
         }));
       }
@@ -543,6 +544,13 @@ export function ExamRunner({
         total: stateCode === "CA" && mode === "full" ? scoredResults.length : questions.length,
         examId: examSaveId.current,
         state: stateCode,
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        ...(stateCode === "CA"
+          ? {
+              wrongIds: results.filter((item) => !item.correct && current[item.question.question_id]).map((item) => item.question.question_id),
+              skipped: results.filter((item) => !current[item.question.question_id]).length,
+            }
+          : {}),
       }),
     }));
     persistSitting({ examId: examSaveId.current, scored: localSaved.current });

@@ -6,6 +6,7 @@ import { FREE_FULL_EXAMS } from "@/lib/product";
 import { recordProUsage } from "@/lib/commerce/usage";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
+import { saveCaExamCheck } from "@/lib/ca-daily";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
@@ -16,6 +17,7 @@ const answerSchema = z.object({
   attemptId: z.string().min(8).max(80).optional(),
   review: z.boolean().optional(),
   state: z.enum(["AZ", "CA"]).optional(),
+  timeZone: z.string().max(80).optional(),
 });
 
 export async function POST(req: Request) {
@@ -31,22 +33,34 @@ export async function POST(req: Request) {
         total: z.number(),
         examId: z.string().uuid().optional(),
         state: z.enum(["AZ", "CA"]).optional(),
+        wrongIds: z.array(z.string().max(80)).max(45).optional(),
+        skipped: z.number().int().min(0).max(45).optional(),
+        timeZone: z.string().max(80).optional(),
       })
       .safeParse(body);
     if (!exam.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
     const store = await getStore();
+    const california = exam.data.state === "CA";
+    if (california && exam.data.examId && exam.data.wrongIds) {
+      await saveCaExamCheck(session.id, exam.data.examId, {
+        wrongIds: exam.data.wrongIds,
+        skipped: exam.data.skipped ?? 0,
+      });
+    }
     if (exam.data.examId) {
       const existing = (await store.listExams(session.id)).some((row) => row.id === exam.data.examId);
       if (existing) return NextResponse.json({ ok: true, duplicate: true });
     }
-    const california = exam.data.state === "CA";
     if (!california && exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
       return NextResponse.json({ error: "Pro required for additional full exams" }, { status: 402 });
     }
     const priorFull = !california && exam.data.mode === "full" ? await fullExamCount(session.id) : 0;
     const inserted = await recordExam({
-      ...exam.data,
       mode: california ? `ca-${exam.data.mode}` : exam.data.mode,
+      score: exam.data.score,
+      correctCount: exam.data.correctCount,
+      total: exam.data.total,
+      examId: exam.data.examId,
       userId: session.id,
       updateBest: !california,
     });
@@ -72,6 +86,7 @@ export async function POST(req: Request) {
     correct,
     review: parsed.data.review,
     attemptId: parsed.data.attemptId,
+    timeZone: parsed.data.timeZone,
   });
   if (!stat) return NextResponse.json({ ok: true, duplicate: true, correct });
   if (!q.is_free) {

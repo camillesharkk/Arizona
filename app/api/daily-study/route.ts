@@ -9,7 +9,7 @@ export async function GET(req: Request) {
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const url = new URL(req.url);
   const state = url.searchParams.get("state");
-  if (state === "CA") return NextResponse.json(await caDailyView(session.id));
+  if (state === "CA") return NextResponse.json(await caDailyView(session.id, url.searchParams.get("timeZone") || undefined));
   if (state && state !== "AZ") return NextResponse.json({ error: "Unknown state" }, { status: 400 });
   const timeZone = url.searchParams.get("timeZone") || undefined;
   return NextResponse.json(await dailyStudyView(session.id, timeZone));

@@ -18,6 +18,8 @@ export type CaQuickAttempt = {
   wrongIds: string[];
   skippedIds: string[];
   topicMisses: TopicMiss[];
+  /** Set after the signed-in account has this attempt. A later save must not clear it. */
+  synced?: boolean;
 };
 
 export type CaStudyRecord = {
@@ -75,7 +77,7 @@ export function saveCaQuickAttempt(row: CaQuickAttempt) {
   const index = all.findIndex((item) => item.id === row.id);
   if (index >= 0) {
     if (all[index].owner !== row.owner) return;
-    all[index] = { ...row, finishedAt: all[index].finishedAt };
+    all[index] = { ...row, finishedAt: all[index].finishedAt, synced: all[index].synced || row.synced };
   } else {
     all.unshift(row);
   }
@@ -157,6 +159,14 @@ export function localMistakeIds(owner: string) {
   const row = readList<{ owner: string; ids: string[] }>(LOCAL).find((item) => item.owner === owner);
   const progress = loadProgress("CA").wrongIds;
   return [...new Set([...(row?.ids || []), ...progress])];
+}
+
+export function markCaAttemptSynced(owner: string, id: string) {
+  const all = readList<unknown>(ATTEMPTS).map(asAttempt).filter((item): item is CaQuickAttempt => Boolean(item));
+  const index = all.findIndex((item) => item.id === id && item.owner === owner);
+  if (index < 0) return;
+  all[index] = { ...all[index], synced: true };
+  writeList(ATTEMPTS, all);
 }
 
 export function importLocalMistakes(owner: string, ids: string[]) {

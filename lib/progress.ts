@@ -27,6 +27,7 @@ export async function recordQuestionAnswer(opts: {
   correct: boolean;
   review?: boolean;
   attemptId?: string;
+  timeZone?: string;
 }) {
   const store = await getStore();
   const q = [...publishedQuestions(), ...publishedCaQuestions()].find((x) => x.question_id === opts.questionId);
@@ -40,7 +41,7 @@ export async function recordQuestionAnswer(opts: {
   const state = q.state === "CA" ? "CA" : "AZ";
   const savedPlan = await store.getStudyPlan(opts.userId, state);
   const savedSettings = (savedPlan?.document as { settings?: { timeZone?: string } } | undefined)?.settings;
-  const timeZone = savedSettings?.timeZone || DEFAULT_STUDY_TIME_ZONE;
+  const timeZone = savedSettings?.timeZone || opts.timeZone || DEFAULT_STUDY_TIME_ZONE;
   const migrated = prev ? migrateReviewFields(prev, now, timeZone) : null;
   const review = applyReviewAnswer(migrated, { correct: opts.correct, review: Boolean(opts.review), now, timeZone });
   const next: QuestionStat = {

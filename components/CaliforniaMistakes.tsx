@@ -41,7 +41,31 @@ export function CaliforniaMistakes() {
     if (userId) adoptGuestCaRecords(userId);
     const nextOwner = userId || "guest";
     setOwner(nextOwner);
-    const attempt = requested ? readCaAttempt(nextOwner, requested) : latestCaQuick(nextOwner);
+    let attempt = requested ? readCaAttempt(nextOwner, requested) : latestCaQuick(nextOwner);
+    if (!attempt && userId && requested) {
+      const daily = await fetch("/api/daily-study/?state=CA", { cache: "no-store" });
+      const body = daily.ok ? await daily.json() : null;
+      const row = Array.isArray(body?.recent) ? body.recent.find((item: { id: string }) => item.id === requested) : null;
+      if (row) {
+        attempt = {
+          id: row.id,
+          owner: userId,
+          state: "CA",
+          mode: "quick",
+          sittingMode: "quick",
+          finishedAt: row.at,
+          seed: 0,
+          questionIds: [...row.wrongIds, ...Array.from({ length: Math.max(0, row.total - row.wrongIds.length) }, () => "")],
+          answers: {},
+          originalAnswers: {},
+          attemptIds: {},
+          correctIds: Array.from({ length: row.correct }, () => ""),
+          wrongIds: row.wrongIds,
+          skippedIds: [],
+          topicMisses: [],
+        };
+      }
+    }
     const wrong = attempt?.wrongIds || [];
     if (!userId) {
       const have = new Set(localMistakeIds(nextOwner));

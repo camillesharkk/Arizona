@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
+import { syncCaAttempts } from "@/lib/ca-sync";
 import { PasswordField } from "@/components/PasswordField";
 
 const VERIFY_EMAIL_KEY = "az_verify_email";
@@ -148,6 +149,7 @@ export function AuthForm({
       setInfo("If that email is registered, a reset link is on the way. If you don't see the email, check your spam or junk folder.");
     }
     if (mode === "login") {
+      await syncCaAttempts().catch(() => null);
       const next = new URLSearchParams(window.location.search).get("next");
       window.location.href = next && next.startsWith("/") && !next.startsWith("//") ? next : paths.dashboard;
       return;
