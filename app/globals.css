@@ -1104,6 +1104,102 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
 .daily-practice-quiz, .daily-review-quiz { grid-column: 1 / -1; min-width: 0; }
 .daily-practice-quiz { grid-row: 2; }
 .daily-review-quiz { grid-row: 3; }
+@media (max-width: 900px) {
+  h1,
+  .home-welcome h1,
+  .home-main > h1,
+  .home-entry h1,
+  .flash-page h1 {
+    font-size: 1.625rem;
+    font-weight: 650;
+    line-height: 1.2;
+  }
+  h2,
+  .home-block h2,
+  .study-module-bar h2,
+  .study-pro h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  h3,
+  .card h3,
+  .home-block h3,
+  .study-face h3,
+  h2.quiz-stem,
+  h3.quiz-stem {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .lede,
+  .home-lead,
+  .home-main .home-lead,
+  .home-plain,
+  .q-option,
+  .home-main .q-option,
+  .answer-result-line {
+    font-size: 1.0625rem;
+    line-height: 1.45;
+  }
+  .card h3 + p,
+  .notice,
+  .kicker,
+  .badge,
+  .breadcrumb,
+  .stat span,
+  .daily-meta,
+  .study-category,
+  .exam-nav-progress,
+  .study-pager > span {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .kicker, .badge { font-size: 0.8125rem; }
+  .btn,
+  .home-welcome .btn,
+  .home-main .btn {
+    font-size: 1rem;
+    padding: 8px 16px;
+    min-height: 44px;
+  }
+  .btn span, .q-option span, strong, a { font-size: inherit; }
+  .exam-nav .btn,
+  .study-pager .btn {
+    font-size: 0.9375rem;
+    min-height: 44px;
+  }
+  .nav a,
+  .more-btn,
+  .header-signin,
+  .footer,
+  .footer-links a {
+    font-size: 0.875rem;
+  }
+  input,
+  select,
+  textarea,
+  .field input,
+  .field select,
+  .field textarea,
+  .state-search input {
+    font-size: 16px;
+  }
+  .card,
+  .study-face { padding: 14px; }
+  .study-face,
+  .flash-card { min-height: 0; }
+  .q-options { gap: 8px; margin: 12px 0; }
+  .q-option { min-height: 44px; padding: 8px 12px; line-height: 1.4; }
+  .filter-row,
+  .mistake-actions,
+  .home-card-actions,
+  .exam-nav { gap: 8px; }
+  .hero { padding: 16px 0 12px; }
+  .home-welcome { margin-top: 12px; }
+  .home-welcome-actions { margin-bottom: 12px; }
+  .quiz-result { font-size: 1.625rem; }
+}
 @media (max-width: 800px) {
   .daily-grid { grid-template-columns: 1fr; }
   .daily-practice-card, .daily-review-card, .daily-practice-quiz, .daily-review-quiz { grid-column: 1; }
