@@ -7,7 +7,7 @@ import { localDate } from "@/lib/calendar";
 import { recentCaExams, type CaCheck } from "@/lib/ca-daily-shape";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
-import { hasArizonaPro } from "@/lib/entitlements";
+import { accountProExpiry, hasArizonaPro } from "@/lib/entitlements";
 import { publicStudyCards, studyCardCatalog } from "@/lib/study-cards";
 import {
   applyCardMark,
@@ -95,10 +95,11 @@ async function saveDocument(store: Awaited<ReturnType<typeof getStore>>, userId:
 }
 
 export async function dailyStudyView(userId: string, timeZoneHint?: string, now = new Date().toISOString(), state: StudyState = "AZ") {
-  const pro = state === "AZ" ? await hasArizonaPro(userId) : true;
+  const pro = await hasArizonaPro(userId);
   const topicPractice = state === "CA" || state === "HI";
   const storeForExpiry = await getStore();
-  const expires = state === "AZ" ? await storeForExpiry.getLatestArizonaExpiry(userId) : null;
+  const account = await storeForExpiry.listEntitlements(userId);
+  const expires = accountProExpiry(account, new Date(now));
   const loaded = await loadDocument(userId, state, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
   let doc = loaded.doc;
   const { store, checks } = loaded;
@@ -274,7 +275,7 @@ export async function saveStudySettings(userId: string, patch: Partial<StudySett
 }
 
 export async function markDailyCard(userId: string, input: { cardId: string; action: "studied" | "remembered" | "need-review"; attemptId: string }, state: StudyState = "AZ") {
-  const pro = state === "AZ" ? await hasArizonaPro(userId) : true;
+  const pro = await hasArizonaPro(userId);
   const allowed = new Set(pool(state, pro).cards.map((card) => card.id));
   if (!allowed.has(input.cardId)) throw new Error("not_allowed");
   const now = new Date().toISOString();
@@ -288,7 +289,7 @@ export async function markDailyCard(userId: string, input: { cardId: string; act
 
 export async function studyMore(userId: string, state: StudyState = "AZ") {
   await dailyStudyView(userId, undefined, undefined, state);
-  const pro = state === "AZ" ? await hasArizonaPro(userId) : true;
+  const pro = await hasArizonaPro(userId);
   const { questions, cards } = pool(state, pro);
   const now = new Date().toISOString();
   const { store, doc, checks } = await loadDocument(userId, state, localDate(now, DEFAULT_STUDY_TIME_ZONE));

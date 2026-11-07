@@ -18,7 +18,7 @@ export function CaQuickNext({
   fullName = "Full 45 Practice Exam",
   labelFor = caStudyLabel,
   dailyState = "CA",
-  limitNote = "The free Full 45 on this account or browser is already used. Opening it shows that limit. California Pro is not open.",
+  limitNote = "The free Full 45 on this account or browser is already used. Pro includes more full exams in every available state for 60 days.",
 }: {
   correct: number;
   total: number;

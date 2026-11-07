@@ -39,10 +39,8 @@ type AccessPayload = {
   orders?: AnalyticsPaidOrder[];
 };
 
-function proForState(row: { arizonaPro?: boolean; californiaPro?: boolean; hawaiiPro?: boolean } | null | undefined, state: string) {
-  if (state === "HI") return Boolean(row?.hawaiiPro);
-  if (state === "CA") return Boolean(row?.californiaPro);
-  return Boolean(row?.arizonaPro);
+function proForState(row: { arizonaPro?: boolean; californiaPro?: boolean; hawaiiPro?: boolean } | null | undefined, _state: string) {
+  return Boolean(row?.arizonaPro || row?.californiaPro || row?.hawaiiPro);
 }
 
 function clearCheckoutQuery() {

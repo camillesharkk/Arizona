@@ -66,7 +66,7 @@ export default function Page() {
         <li>
           <Link href={`${caPaths.practice}?mode=full`}>Full 45 practice exam</Link>
           <span>This site</span>
-          <p>Forty scored items in the official area counts, plus five unscored items. One free full exam is available. California Pro is not open.</p>
+          <p>Forty scored items in the official area counts, plus five unscored items. One free full exam is available. Pro includes more full exams in every available state for 60 days.</p>
         </li>
       </ul>
 

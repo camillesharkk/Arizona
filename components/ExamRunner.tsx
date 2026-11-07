@@ -805,9 +805,9 @@ export function ExamRunner({
           )}
           <AccountInvite />
           {onCa ? (
-            <p className="notice">This is study feedback for California. California Pro is not open, and this raw count is not an official scaled score.</p>
+            <p className="notice">This is study feedback for California. Forty items are scored. This raw count is not an official scaled score.</p>
           ) : onHi ? (
-            <p className="notice">This is study feedback for Hawaii. Hawaii Pro is not open. This score is not an official exam result.</p>
+            <p className="notice">This is study feedback for Hawaii. This score is this site's practice result, not an official exam result.</p>
           ) : isPro ? (
             <p className="notice">Pro is active. Keep practicing the topics you missed.</p>
           ) : (

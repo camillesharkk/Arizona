@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
-import { aiDailyLimit, canAccessQuestion, hasStatePro } from "@/lib/entitlements";
+import { aiDailyLimit, canAccessQuestion, hasArizonaPro } from "@/lib/entitlements";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
-import type { ProState } from "@/lib/pro-products";
 import { getStore } from "@/lib/store";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { recordProUsage } from "@/lib/commerce/usage";
@@ -21,8 +20,8 @@ export async function GET() {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const store = await getStore();
-  const plan = (await hasStatePro(session.id, "AZ")) ? "pro" : "free";
-  const limit = await aiDailyLimit(session.id, "AZ");
+  const plan = (await hasArizonaPro(session.id)) ? "pro" : "free";
+  const limit = await aiDailyLimit(session.id);
   const usage = await readAiUsage(store, session.id, limit);
   return NextResponse.json(usagePayload(plan, usage.used, usage.limit, usage.remaining));
 }
@@ -47,9 +46,8 @@ export async function POST(req: Request) {
   if (!(await canAccessQuestion(session.id, q))) return NextResponse.json({ error: "Pro required" }, { status: 402 });
   const store = await getStore();
   const day = utcAiDay();
-  const tutorState: ProState = q.state === "CA" || q.state === "HI" ? q.state : "AZ";
-  const plan = (await hasStatePro(session.id, tutorState)) ? "pro" : "free";
-  const limit = await aiDailyLimit(session.id, tutorState);
+  const plan = (await hasArizonaPro(session.id)) ? "pro" : "free";
+  const limit = await aiDailyLimit(session.id);
   const before = await readAiUsage(store, session.id, limit, day);
   if (before.used >= limit) {
     return NextResponse.json(

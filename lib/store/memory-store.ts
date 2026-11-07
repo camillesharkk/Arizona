@@ -247,6 +247,9 @@ export function createMemoryStore(): Store {
       if (!times.length) return null;
       return new Date(Math.max(...times));
     },
+    async listEntitlements(userId) {
+      return db.entitlements.filter((e) => e.userId === userId);
+    },
     async getArizonaEntitlement(userId) {
       const now = Date.now();
       return (

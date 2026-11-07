@@ -77,11 +77,7 @@ export function QuestionsClient({
       .then((data) => {
         if (cancel) return;
         const nextOwner = data.user?.id || "guest";
-        const pro = stateCode === "HI"
-          ? Boolean(data.user?.hawaiiPro)
-          : stateCode === "CA"
-            ? Boolean(data.user?.californiaPro)
-            : Boolean(data.user?.arizonaPro || data.user?.plan === "pro");
+        const pro = Boolean(data.user?.arizonaPro || data.user?.californiaPro || data.user?.hawaiiPro || data.user?.plan === "pro");
         const existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
         setOwner(nextOwner);
         setIsPro(pro);

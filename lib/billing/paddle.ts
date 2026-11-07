@@ -1,11 +1,11 @@
 import { Environment, Paddle, type CreateTransactionRequestBody } from "@paddle/paddle-node-sdk";
 import { AZ_PRO_PRODUCT_CODE, CURRENCY } from "../pricing/catalog.ts";
-import { proStateForCode } from "../pro-products.ts";
+import { isSiteProProduct } from "../pro-products.ts";
 
 export const PADDLE_PROVIDER = "paddle" as const;
 
-export const PADDLE_PRICE_NAME = "60-Day Pro Access";
-export const PADDLE_PRICE_DESCRIPTION = "Arizona Notary Exam Pro - 60-day one-time access";
+export const PADDLE_PRICE_NAME = "Notary Prep Pro — 60-Day All-State Access";
+export const PADDLE_PRICE_DESCRIPTION = "One purchase unlocks Pro across all available states for 60 days.";
 
 export type PaddleEnvName = "sandbox" | "production";
 export type PaddleEnvMap = Record<string, string | undefined>;
@@ -31,6 +31,7 @@ export type PaddleCustomData = {
   user_id: string;
   quote_id: string;
   product_code: string;
+  source_state?: "AZ" | "CA" | "HI";
 };
 
 function missingNamed(env: PaddleEnvMap, keys: string[]) {
@@ -181,7 +182,7 @@ export function matchPaddleTransactionToQuote(
   const custom = readPaddleCustom(txn);
   if (custom.quote_id !== quote.id) return { ok: false, error: "quote_mismatch" };
   if (custom.user_id !== quote.userId) return { ok: false, error: "user_mismatch" };
-  if (!proStateForCode(custom.product_code) || custom.product_code !== quote.productCode) {
+  if (!isSiteProProduct(custom.product_code) || custom.product_code !== quote.productCode) {
     return { ok: false, error: "product_mismatch" };
   }
   if (String(txn.currencyCode || "") !== CURRENCY || quote.currency !== CURRENCY) {
@@ -225,11 +226,13 @@ export function buildPaddleTransactionPayload(opts: {
   userId: string;
   quoteId: string;
   productCode: string;
+  sourceState?: "AZ" | "CA" | "HI";
 }): CreateTransactionRequestBody {
   const customData: PaddleCustomData = {
     user_id: opts.userId,
     quote_id: opts.quoteId,
     product_code: opts.productCode,
+    ...(opts.sourceState ? { source_state: opts.sourceState } : {}),
   };
   return {
     items: [

@@ -5,8 +5,8 @@ import { getLemonConfig, isLemonProvider, verifyLemonWebhookSignature } from "@/
 import { PADDLE_PROVIDER, createPaddleSdk, getPaddleWebhookConfig, isPaddleProvider, paddleLog } from "@/lib/billing/paddle";
 import { handlePaddleWebhook } from "@/lib/billing/paddle-webhook";
 import { getCommerceRepo } from "@/lib/commerce";
-import { grantArizonaPro60d, grantStatePro60d, refundArizonaOrder } from "@/lib/entitlements";
-import { proStateForCode } from "@/lib/pro-products";
+import { grantArizonaPro60d, refundArizonaOrder } from "@/lib/entitlements";
+import { isSiteProProduct } from "@/lib/pro-products";
 import { getStore } from "@/lib/store";
 
 export async function POST(req: Request) {
@@ -72,11 +72,9 @@ export async function POST(req: Request) {
       config: cfg.config,
       event,
       grantPro: async (opts) => {
-        const state = proStateForCode(opts.productCode);
-        if (!state) throw new Error("product_mismatch");
-        const granted = await grantStatePro60d({
+        if (!isSiteProProduct(opts.productCode)) throw new Error("product_mismatch");
+        const granted = await grantArizonaPro60d({
           userId: opts.userId,
-          state,
           provider: opts.provider,
           providerOrderId: opts.providerOrderId,
         });

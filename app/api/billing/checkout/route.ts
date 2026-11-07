@@ -3,8 +3,8 @@ import { z } from "zod";
 import { getSession, setSessionCookie } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { checkoutUrl } from "@/lib/billing";
-import { grantStatePro60d, hasArizonaPro } from "@/lib/entitlements";
-import { proStateForCode } from "@/lib/pro-products";
+import { grantArizonaPro60d, hasArizonaPro } from "@/lib/entitlements";
+import { isSiteProProduct } from "@/lib/pro-products";
 import { getCommerceRepo } from "@/lib/commerce";
 import { assertQuoteStillValid, abandonQuote, confirmPaidOrder } from "@/lib/commerce/service";
 import { ensureLemonCheckout } from "@/lib/billing/lemon-checkout";
@@ -15,6 +15,7 @@ import { getPaddleCheckoutConfig, isPaddleProvider, isPositiveCents } from "@/li
 
 const postSchema = z.object({
   quoteId: z.string().uuid(),
+  sourceState: z.enum(["AZ", "CA", "HI"]).optional(),
 });
 
 export async function POST(req: Request) {
@@ -38,6 +39,7 @@ export async function POST(req: Request) {
       repo,
       quote,
       config: cfg.config,
+      sourceState: body.data.sourceState,
     });
     if (!paddle.ok) return NextResponse.json({ error: paddle.error }, { status: paddle.status });
     return NextResponse.json({
@@ -105,9 +107,8 @@ export async function GET(req: Request) {
     provider: "mock",
     providerOrderId: `mock-${quoteId}`,
     grantPro: async (opts) => {
-      const state = proStateForCode(opts.productCode);
-      if (!state) throw new Error("product_mismatch");
-      return grantStatePro60d({ ...opts, state });
+      if (!isSiteProProduct(opts.productCode)) throw new Error("product_mismatch");
+      return grantArizonaPro60d(opts);
     },
   });
   if (!result.ok) return NextResponse.json({ error: result.error }, { status: 409 });

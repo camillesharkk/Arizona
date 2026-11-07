@@ -10,7 +10,10 @@ import {
   FREE_FULL_EXAMS,
   PRO_DURATION_DAYS,
 } from "@/lib/product";
-import { PRO_PRODUCTS, type ProState } from "@/lib/pro-products";
+import { SITE_PRO_PRODUCT_CODE } from "@/lib/pro-products";
+import { accountProCovers, accountProExpiry } from "./account-pro.ts";
+
+export { accountProCovers, accountProExpiry };
 
 export type Plan = "free" | "pro";
 
@@ -29,7 +32,15 @@ export { AZ_PRO_PRODUCT, AZ_STATE, PRO_DURATION_DAYS, AI_LIMIT_FREE, AI_LIMIT_PR
 export async function getArizonaEntitlement(userId: string | null | undefined): Promise<EntitlementRow | null> {
   if (!userId) return null;
   const store = await getStore();
-  return store.getArizonaEntitlement(userId);
+  const rows = await store.listEntitlements(userId);
+  const now = new Date();
+  if (!accountProCovers(rows, now)) return null;
+  const expiry = accountProExpiry(rows, now);
+  const current = rows
+    .filter((row) => row.status === "active" && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
+    .sort((a, b) => new Date(b.expiresAt).getTime() - new Date(a.expiresAt).getTime())[0];
+  if (!current || !expiry) return null;
+  return { ...current, state: "ALL", expiresAt: expiry.toISOString() };
 }
 
 export function servingEntitlements<T extends { startsAt: string; expiresAt: string }>(
@@ -53,15 +64,13 @@ export async function hasArizonaPro(userId: string | null | undefined) {
   return Boolean(row);
 }
 
-export async function hasStatePro(userId: string | null | undefined, state: ProState) {
-  if (!userId) return false;
-  const store = await getStore();
-  return Boolean(await store.getStateEntitlement(userId, state));
+export async function hasStatePro(userId: string | null | undefined, _state?: string) {
+  return hasArizonaPro(userId);
 }
 
 export async function refreshPlanCache(userId: string) {
   const store = await getStore();
-  const row = await store.getArizonaEntitlement(userId);
+  const row = await getArizonaEntitlement(userId);
   await store.updateUser(userId, {
     plan: row ? "pro" : "free",
     planStatus: row ? "active" : "expired",
@@ -71,7 +80,7 @@ export async function refreshPlanCache(userId: string) {
 
 export async function grantStatePro60d(opts: {
   userId: string;
-  state: ProState;
+  state?: string;
   provider: "mock" | "lemon_squeezy" | "paddle";
   providerOrderId: string;
   providerCustomerId?: string | null;
@@ -79,18 +88,16 @@ export async function grantStatePro60d(opts: {
   const store = await getStore();
   const existing = await store.getEntitlementByProviderOrder(opts.provider, opts.providerOrderId);
   if (existing) {
-    if (existing.userId !== opts.userId || existing.state !== opts.state) {
-      throw new Error("order_user_mismatch");
-    }
+    if (existing.userId !== opts.userId) throw new Error("order_user_mismatch");
     return { ok: true, duplicate: true, entitlement: existing };
   }
-  const latestExpiry = await store.getLatestStateExpiry(opts.userId, opts.state);
+  const rows = await store.listEntitlements(opts.userId);
   const now = new Date();
-  const window = nextProWindow(latestExpiry, now);
+  const window = nextProWindow(accountProExpiry(rows, now), now);
   const entitlement = await store.insertEntitlement({
     userId: opts.userId,
-    productCode: PRO_PRODUCTS[opts.state].code,
-    state: opts.state,
+    productCode: SITE_PRO_PRODUCT_CODE,
+    state: "ALL",
     status: "active",
     startsAt: window.startsAt.toISOString(),
     expiresAt: window.expiresAt.toISOString(),
@@ -98,7 +105,7 @@ export async function grantStatePro60d(opts: {
     providerOrderId: opts.providerOrderId,
     providerCustomerId: opts.providerCustomerId ?? null,
   });
-  if (opts.state === "AZ") await refreshPlanCache(opts.userId);
+  await refreshPlanCache(opts.userId);
   return { ok: true, duplicate: false, entitlement };
 }
 
@@ -119,8 +126,7 @@ export async function refundArizonaOrder(userId: string, provider: string, provi
 
 export async function canAccessQuestion(userId: string | null | undefined, q: Question) {
   if (q.is_free) return true;
-  if (q.state === "CA" || q.state === "HI" || q.state === "AZ") return hasStatePro(userId, q.state);
-  return false;
+  return hasArizonaPro(userId);
 }
 
 export async function visibleQuestions(userId: string | null | undefined) {
@@ -128,9 +134,9 @@ export async function visibleQuestions(userId: string | null | undefined) {
   return publishedQuestions().filter((q) => q.is_free || pro);
 }
 
-export async function aiDailyLimit(userId: string | null | undefined, state: ProState = "AZ") {
+export async function aiDailyLimit(userId: string | null | undefined, _state?: string) {
   if (!userId) return 0;
-  return (await hasStatePro(userId, state)) ? AI_LIMIT_PRO : AI_LIMIT_FREE;
+  return (await hasArizonaPro(userId)) ? AI_LIMIT_PRO : AI_LIMIT_FREE;
 }
 
 export async function canUseAdvancedAnalytics(userId: string | null | undefined) {

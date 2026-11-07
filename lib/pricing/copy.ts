@@ -29,6 +29,6 @@ export const PERSONAL_USE_NOTICE =
   "Pro access is for the personal use of the account holder. Account sharing or resale is not permitted.";
 
 export const PRO_DURATION_NOTICE =
-  "Your Pro access lasts for 60 days from activation. If you purchase additional 60-day access while Pro is still active, the additional time is added after your current expiration date.";
+  "One purchase unlocks Pro across all available states for 60 days, including states added while Pro is active. If you buy again while Pro is still active, the extra 60 days start after the current expiration. A new purchase after Pro has expired starts on the day it is paid.";
 
 export const TAX_CHECKOUT_NOTICE = "Applicable taxes may be added at checkout.";

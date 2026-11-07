@@ -3,7 +3,7 @@ import type { CommerceRepo } from "../commerce/repo.ts";
 import type { GrantProFn } from "../commerce/service.ts";
 import { confirmPaidOrder, quotedCreditsBoundToQuote } from "../commerce/service.ts";
 import { CURRENCY } from "../pricing/catalog.ts";
-import { paddleProductIdFor, proStateForCode } from "../pro-products.ts";
+import { isSiteProProduct } from "../pro-products.ts";
 import {
   PADDLE_PROVIDER,
   isPaddleTransactionId,
@@ -108,9 +108,8 @@ export async function handlePaddleWebhook(opts: {
   if (!isPaddleTransactionId(transactionId)) return fail(409, "transaction_id_invalid", { event: eventType });
 
   const custom = readCustom(txn);
-  const productState = proStateForCode(custom.product_code);
-  const expectedProductId = productState === "AZ" ? opts.config.productId : productState ? paddleProductIdFor(productState) : null;
-  if (!productState || !expectedProductId) {
+  const expectedProductId = opts.config.productId;
+  if (!isSiteProProduct(custom.product_code)) {
     return fail(409, "product_mismatch", { orderId: transactionId, quoteId: custom.quote_id });
   }
   if (!custom.quote_id || !custom.user_id) {

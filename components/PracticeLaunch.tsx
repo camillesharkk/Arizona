@@ -43,7 +43,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
     fetch("/api/auth/me/")
       .then((r) => r.json())
       .then((d) => {
-        setIsPro(onHi ? Boolean(d.user?.hawaiiPro) : onCa ? Boolean(d.user?.californiaPro) : Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
+        setIsPro(Boolean(d.user?.arizonaPro || d.user?.californiaPro || d.user?.hawaiiPro || d.user?.plan === "pro"));
         setFullExamCount(Number((onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setOwner(d.user?.id || "guest");

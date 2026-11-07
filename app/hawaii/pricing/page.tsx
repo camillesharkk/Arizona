@@ -19,10 +19,10 @@ export default function Page() {
       <h1>Hawaii Pro</h1>
       <div className="card">
         <p>{counts.free} of {counts.published} published questions are free, and all {hiCards.length} study cards are free. One Comprehensive Practice is included. That set is 50 questions with no time limit, and that count is this site's practice setting.</p>
-        <p>Hawaii Pro removes the one-practice limit and raises the AI tutor allowance for Hawaii questions. An Arizona or California purchase does not unlock Hawaii.</p>
+        <p>The published Hawaii questions and study cards are included. Pro removes the one-practice limit and uses the account AI tutor allowance. One purchase covers Arizona, California, and Hawaii.</p>
         <a className="btn btn-ghost" href={`${hiPaths.practice}?mode=quick`}>Check My Knowledge — 10 Questions</a>
       </div>
-      <StateCheckout state="HI" />
+      <StateCheckout source="HI" />
     </main>
   );
 }

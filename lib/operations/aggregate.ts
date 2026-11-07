@@ -330,7 +330,8 @@ export function reconcileEntitlements(completedIds: string[], orders: Entitlemen
     const days =
       order.startsAt && order.expiresAt ? (Date.parse(order.expiresAt) - Date.parse(order.startsAt)) / (24 * 60 * 60 * 1000) : null;
     const durationOk = days != null && Math.abs(days - PRO_DURATION_DAYS) < 0.01;
-    const ok = order.productCode === AZ_PRO_PRODUCT_CODE && order.state === "AZ" && Boolean(order.entitlementId) && durationOk;
+    const stateOk = order.state === "AZ" || order.state === "CA" || order.state === "HI" || order.state === "ALL";
+    const ok = order.productCode === AZ_PRO_PRODUCT_CODE && stateOk && Boolean(order.entitlementId) && durationOk;
     if (ok) matched += 1;
     else mismatched += 1;
   }

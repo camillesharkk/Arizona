@@ -308,6 +308,10 @@ export const fileStore: Store = {
     if (!times.length) return null;
     return new Date(Math.max(...times));
   },
+  async listEntitlements(userId) {
+    const db = await load();
+    return db.entitlements.filter((e) => e.userId === userId);
+  },
   async getArizonaEntitlement(userId) {
     const db = await load();
     const now = Date.now();

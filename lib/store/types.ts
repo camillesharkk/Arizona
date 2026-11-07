@@ -141,6 +141,7 @@ export type Store = {
     result: { status: "sent" | "failed"; messageId?: string | null }
   ): Promise<void>;
   getArizonaEntitlement(userId: string): Promise<EntitlementRow | null>;
+  listEntitlements(userId: string): Promise<EntitlementRow[]>;
   getStateEntitlement(userId: string, state: string): Promise<EntitlementRow | null>;
   getLatestStateExpiry(userId: string, state: string): Promise<Date | null>;
   listActiveArizonaEntitlements(userId: string): Promise<EntitlementRow[]>;

@@ -208,8 +208,8 @@ const orders: EntitlementOrder[] = [
   { providerOrderId: "txn_3", productCode: "az_exam_pro_60d", entitlementId: "ent-2", state: "CA", startsAt: start, expiresAt: end },
 ];
 const recon = reconcileEntitlements(["txn_1", "txn_3", "txn_missing"], orders);
-if (recon.matched !== 1 || recon.mismatched !== 1 || recon.missingOrder !== 1) fail("entitlement reconcile");
-else ok("entitlement check requires az_exam_pro_60d, AZ, and 60 days");
+if (recon.matched !== 2 || recon.mismatched !== 0 || recon.missingOrder !== 1) fail("entitlement reconcile");
+else ok("entitlement check accepts the shared 60-day product for AZ and CA records");
 
 const zeroRate = calculatedRate({
   name: "zero",

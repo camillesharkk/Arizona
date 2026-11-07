@@ -58,7 +58,7 @@ function formatRemaining(ms: number) {
   return d > 0 ? `${d}d ${clock}` : clock;
 }
 
-export function CheckoutButton({ belowCta, productCode = "az_exam_pro_60d" }: { belowCta?: ReactNode; productCode?: "az_exam_pro_60d" | "ca_exam_pro_60d" | "hi_exam_pro_60d" }) {
+export function CheckoutButton({ belowCta, productCode = "az_exam_pro_60d", sourceState }: { belowCta?: ReactNode; productCode?: "az_exam_pro_60d"; sourceState?: "AZ" | "CA" | "HI" }) {
   const [preview, setPreview] = useState<Preview | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [applyCredit, setApplyCredit] = useState(false);
@@ -213,14 +213,14 @@ export function CheckoutButton({ belowCta, productCode = "az_exam_pro_60d" }: { 
     const res = await fetch("/api/billing/checkout/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ quoteId: quote.quoteId }),
+      body: JSON.stringify({ quoteId: quote.quoteId, sourceState }),
     });
     let data = await res.json();
     if (res.status === 409 && data.error === "checkout_in_progress") {
       const retry = await fetch("/api/billing/checkout/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quoteId: quote.quoteId }),
+        body: JSON.stringify({ quoteId: quote.quoteId, sourceState }),
       });
       data = await retry.json();
       if (!retry.ok && retry.status !== 409) {

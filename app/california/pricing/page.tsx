@@ -19,10 +19,10 @@ export default function Page() {
       <h1>California Pro</h1>
       <div className="card">
         <p>{counts.free} of {counts.published} published questions are free, and all {caCards.length} study cards are free. One full 45-question practice exam is included.</p>
-        <p>California Pro removes the one-exam limit and raises the AI tutor allowance for California questions. An Arizona or Hawaii purchase does not unlock California.</p>
+        <p>Pro removes the one-exam limit and uses the account AI tutor allowance. One purchase covers Arizona, California, and Hawaii.</p>
         <a className="btn btn-ghost" href={`${caPaths.practice}?mode=quick`}>Check My Knowledge — 10 Questions</a>
       </div>
-      <StateCheckout state="CA" />
+      <StateCheckout source="CA" />
     </main>
   );
 }

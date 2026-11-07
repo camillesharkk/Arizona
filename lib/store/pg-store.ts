@@ -383,6 +383,15 @@ export const pgStore: Store = {
     if (!v) return null;
     return v instanceof Date ? v : new Date(String(v));
   },
+  async listEntitlements(userId) {
+    await assertSchema();
+    const rows = await db()`
+      select * from entitlements
+      where user_id = ${userId}
+      order by expires_at asc
+    `;
+    return rows.map((row) => mapEntitlement(row as Record<string, unknown>));
+  },
   async getArizonaEntitlement(userId) {
     await assertSchema();
     const rows = await db()`

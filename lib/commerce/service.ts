@@ -14,7 +14,7 @@ import {
   STANDARD_PRICE_CENTS,
 } from "../pricing/catalog.ts";
 import { calculatePrice, type PriceBreakdown } from "../pricing/engine.ts";
-import { proStateForCode } from "../pro-products.ts";
+import { isSiteProProduct } from "../pro-products.ts";
 import { addHours } from "../pricing/money.ts";
 import { generateReferralCode, isReferralCodeFormat, normalizeReferralCode } from "./codes.ts";
 import type { CommerceRepo } from "./repo.ts";
@@ -173,7 +173,7 @@ export async function createQuote(
   const now = opts.now ?? new Date();
   if (!opts.policyAccepted) return { ok: false, error: "policy_required" };
   const productCode = opts.productCode ?? AZ_PRO_PRODUCT_CODE;
-  if (!proStateForCode(productCode)) return { ok: false, error: "product_mismatch" };
+  if (!isSiteProProduct(productCode)) return { ok: false, error: "product_mismatch" };
   const { snap, breakdown } = await previewPrice(repo, opts.userId, opts.applyCredit, now, opts.requestedCreditCount);
   if (opts.applyCredit && !breakdown.creditApplied) {
     return { ok: false, error: "credit_unavailable" };

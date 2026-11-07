@@ -168,8 +168,8 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
         {fullLocked && authReady && gateReady ? (
           <p className="notice">
             {signedIn
-              ? (onHi ? "This account has used its free Comprehensive Practice. Hawaii Pro is not open." : onCa ? "This account has used its full practice exam. California Pro is not open." : "This account has used its free Full 45. Pro includes more full exams.")
-              : (onHi ? "This browser has used its free Comprehensive Practice. Hawaii Pro is not open." : onCa ? "This browser has used its full practice exam. California Pro is not open." : "This browser has used its free Full 45. Pro includes more full exams.")}
+              ? (onHi ? "This account has used its free Comprehensive Practice. Pro includes more of them in every available state for 60 days." : onCa ? "This account has used its full practice exam. Pro includes more full exams in every available state for 60 days." : "This account has used its free Full 45. Pro includes more full exams.")
+              : (onHi ? "This browser has used its free Comprehensive Practice. Pro includes more of them in every available state for 60 days." : onCa ? "This browser has used its full practice exam. Pro includes more full exams in every available state for 60 days." : "This browser has used its free Full 45. Pro includes more full exams.")}
           </p>
         ) : null}
         {homeQuickOpen ? (

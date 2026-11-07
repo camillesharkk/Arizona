@@ -34,7 +34,7 @@ export function HomeProCta() {
       <section className="card" style={{ marginTop: 20 }}>
         <h2>You&apos;re on Pro</h2>
         <ProAccessNote plan="pro" planExpiresAt={expiresAt} />
-        <p className="lede">Your 60-day Arizona Notary Exam Prep Pro access is active. This is not a lifetime membership.</p>
+        <p className="lede">Pro is active for every available state until the date below. This is not a lifetime membership.</p>
         <Link className="btn btn-ghost" href={paths.dashboard}>
           Go to Dashboard
         </Link>
