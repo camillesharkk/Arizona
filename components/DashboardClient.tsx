@@ -23,15 +23,27 @@ type ProgressPayload = {
   exams: ExamRow[];
   user: UserRow | null;
   arizonaPro?: boolean;
+  californiaPro?: boolean;
+  hawaiiPro?: boolean;
 };
 
 type CheckoutPhase = "boot" | "off" | "activating" | "activated" | "timeout" | "session";
 
 type AccessPayload = {
   arizonaPro?: boolean;
+  californiaPro?: boolean;
+  hawaiiPro?: boolean;
   planExpiresAt?: string | null;
+  californiaPlanExpiresAt?: string | null;
+  hawaiiPlanExpiresAt?: string | null;
   orders?: AnalyticsPaidOrder[];
 };
+
+function proForState(row: { arizonaPro?: boolean; californiaPro?: boolean; hawaiiPro?: boolean } | null | undefined, state: string) {
+  if (state === "HI") return Boolean(row?.hawaiiPro);
+  if (state === "CA") return Boolean(row?.californiaPro);
+  return Boolean(row?.arizonaPro);
+}
 
 function clearCheckoutQuery() {
   const url = new URL(window.location.href);
@@ -127,7 +139,7 @@ export function DashboardClient() {
         }
         const access = await readAccess(res);
         if (cancelled) return;
-        if (access?.arizonaPro === true) {
+        if (access && proForState(access, state ?? "AZ")) {
           applyProAccess(access);
           return;
         }
@@ -151,14 +163,14 @@ export function DashboardClient() {
     return () => {
       cancelled = true;
     };
-  }, [accessRetry, applyProAccess]);
+  }, [accessRetry, applyProAccess, state]);
 
   const retryAccess = () => {
     setCheckoutPhase("activating");
     setAccessRetry((n) => n + 1);
   };
   const activating = checkoutPhase === "activating" || checkoutPhase === "timeout";
-  const isAzPro = Boolean(data?.arizonaPro || data?.user?.plan === "pro" || checkoutPhase === "activated");
+  const isAzPro = Boolean(proForState(data, state ?? "AZ") || (state === "AZ" && data?.user?.plan === "pro") || checkoutPhase === "activated");
 
   if (!loaded || checkoutPhase === "boot") {
     return (

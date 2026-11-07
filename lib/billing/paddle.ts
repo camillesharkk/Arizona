@@ -1,5 +1,6 @@
 import { Environment, Paddle, type CreateTransactionRequestBody } from "@paddle/paddle-node-sdk";
 import { AZ_PRO_PRODUCT_CODE, CURRENCY } from "../pricing/catalog.ts";
+import { proStateForCode } from "../pro-products.ts";
 
 export const PADDLE_PROVIDER = "paddle" as const;
 
@@ -180,7 +181,7 @@ export function matchPaddleTransactionToQuote(
   const custom = readPaddleCustom(txn);
   if (custom.quote_id !== quote.id) return { ok: false, error: "quote_mismatch" };
   if (custom.user_id !== quote.userId) return { ok: false, error: "user_mismatch" };
-  if (custom.product_code !== expectedPaddleProductCode() || custom.product_code !== quote.productCode) {
+  if (!proStateForCode(custom.product_code) || custom.product_code !== quote.productCode) {
     return { ok: false, error: "product_mismatch" };
   }
   if (String(txn.currencyCode || "") !== CURRENCY || quote.currency !== CURRENCY) {

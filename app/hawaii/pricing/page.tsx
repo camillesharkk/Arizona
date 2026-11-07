@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { StateCheckout } from "@/components/StateCheckout";
 import { hiCards } from "@/data/hi-cards";
 import { hiQuestionCounts } from "@/data/hi-questions";
 import { hiPaths } from "@/lib/hi-site";
@@ -8,19 +9,20 @@ const counts = hiQuestionCounts();
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Practice Access" },
-  description: "Hawaii Pro is not open. The published Hawaii question bank and study cards are free.",
+  description: "Hawaii Pro is 60 days of extra comprehensive practice. The published question bank stays available on the free plan.",
   alternates: { canonical: `${siteUrl()}/hawaii/pricing/` },
 };
 
 export default function Page() {
   return (
     <main className="wrap">
-      <h1>Hawaii access</h1>
+      <h1>Hawaii Pro</h1>
       <div className="card">
-        <p>{counts.free} of {counts.published} published questions are free, and all {hiCards.length} study cards are free. One Comprehensive Practice is included. That set is 50 questions with no time limit.</p>
-        <p>Hawaii Pro is not open. There is no Hawaii checkout. An Arizona or California purchase does not unlock Hawaii.</p>
-        <a className="btn btn-primary" href={`${hiPaths.practice}?mode=quick`}>Check My Knowledge — 10 Questions</a>
+        <p>{counts.free} of {counts.published} published questions are free, and all {hiCards.length} study cards are free. One Comprehensive Practice is included. That set is 50 questions with no time limit, and that count is this site's practice setting.</p>
+        <p>Hawaii Pro removes the one-practice limit and raises the AI tutor allowance for Hawaii questions. An Arizona or California purchase does not unlock Hawaii.</p>
+        <a className="btn btn-ghost" href={`${hiPaths.practice}?mode=quick`}>Check My Knowledge — 10 Questions</a>
       </div>
+      <StateCheckout state="HI" />
     </main>
   );
 }

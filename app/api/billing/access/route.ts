@@ -3,7 +3,8 @@ import { getSession } from "@/lib/session";
 import { getCommerceRepo } from "@/lib/commerce";
 import { refundEligibility, releaseMatureRewards } from "@/lib/commerce/service";
 import { formatUsd } from "@/lib/pricing/money";
-import { hasArizonaPro, getArizonaEntitlement } from "@/lib/entitlements";
+import { hasArizonaPro, hasStatePro, getArizonaEntitlement } from "@/lib/entitlements";
+import { getStore } from "@/lib/store";
 
 export async function GET() {
   const session = await getSession();
@@ -37,9 +38,18 @@ export async function GET() {
         : { eligible: false, reason: el.reason, usedAt: "usedAt" in el ? el.usedAt : undefined },
     });
   }
+  const store = await getStore();
+  const [californiaEntitlement, hawaiiEntitlement] = await Promise.all([
+    store.getStateEntitlement(session.id, "CA"),
+    store.getStateEntitlement(session.id, "HI"),
+  ]);
   return NextResponse.json({
     arizonaPro: await hasArizonaPro(session.id),
+    californiaPro: await hasStatePro(session.id, "CA"),
+    hawaiiPro: await hasStatePro(session.id, "HI"),
     planExpiresAt: entitlement?.expiresAt ?? null,
+    californiaPlanExpiresAt: californiaEntitlement?.expiresAt ?? null,
+    hawaiiPlanExpiresAt: hawaiiEntitlement?.expiresAt ?? null,
     orders: items,
     refundRequests: requests.map((r) => ({
       id: r.id,

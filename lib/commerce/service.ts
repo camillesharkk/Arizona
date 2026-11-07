@@ -14,6 +14,7 @@ import {
   STANDARD_PRICE_CENTS,
 } from "../pricing/catalog.ts";
 import { calculatePrice, type PriceBreakdown } from "../pricing/engine.ts";
+import { proStateForCode } from "../pro-products.ts";
 import { addHours } from "../pricing/money.ts";
 import { generateReferralCode, isReferralCodeFormat, normalizeReferralCode } from "./codes.ts";
 import type { CommerceRepo } from "./repo.ts";
@@ -27,6 +28,7 @@ export type GrantProFn = (opts: {
   userId: string;
   provider: "mock" | "lemon_squeezy" | "paddle";
   providerOrderId: string;
+  productCode: string;
 }) => Promise<{ entitlement: { id: string } }>;
 
 export type ActiveEntitlement = { id: string; startsAt: string; expiresAt: string };
@@ -166,10 +168,12 @@ export async function previewPrice(
 
 export async function createQuote(
   repo: CommerceRepo,
-  opts: { userId: string; applyCredit: boolean; policyAccepted: boolean; now?: Date; requestedCreditCount?: number }
+  opts: { userId: string; applyCredit: boolean; policyAccepted: boolean; now?: Date; requestedCreditCount?: number; productCode?: string }
 ): Promise<{ ok: true; quote: PricingQuoteRow; breakdown: PriceBreakdown } | { ok: false; error: string }> {
   const now = opts.now ?? new Date();
   if (!opts.policyAccepted) return { ok: false, error: "policy_required" };
+  const productCode = opts.productCode ?? AZ_PRO_PRODUCT_CODE;
+  if (!proStateForCode(productCode)) return { ok: false, error: "product_mismatch" };
   const { snap, breakdown } = await previewPrice(repo, opts.userId, opts.applyCredit, now, opts.requestedCreditCount);
   if (opts.applyCredit && !breakdown.creditApplied) {
     return { ok: false, error: "credit_unavailable" };
@@ -190,7 +194,7 @@ export async function createQuote(
   const quote: PricingQuoteRow = {
     id: randomUUID(),
     userId: opts.userId,
-    productCode: AZ_PRO_PRODUCT_CODE,
+    productCode,
     currency: CURRENCY,
     listPriceCents: breakdown.listPriceCents,
     standardPriceCents: breakdown.standardPriceCents,
@@ -364,6 +368,7 @@ export async function confirmPaidOrder(
     userId: opts.userId,
     provider: opts.provider,
     providerOrderId: opts.providerOrderId,
+    productCode: quote.productCode,
   });
 
   const order: CommerceOrderRow = {

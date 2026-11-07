@@ -43,7 +43,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
     fetch("/api/auth/me/")
       .then((r) => r.json())
       .then((d) => {
-        setIsPro(onCa || onHi ? false : Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
+        setIsPro(onHi ? Boolean(d.user?.hawaiiPro) : onCa ? Boolean(d.user?.californiaPro) : Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
         setFullExamCount(Number((onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setOwner(d.user?.id || "guest");
@@ -172,16 +172,20 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
       <div className="card">
         <h2>{onHi ? "Free Comprehensive Practice already used" : "Free Full 45 already used"}</h2>
         <p>
-          {onCa || onHi
+          {signedIn
             ? (onHi
-              ? "The free Hawaii Comprehensive Practice is used. Hawaii Pro is not open yet, so another one cannot start."
-              : "The free California Full 45 is used. California Pro is not open yet, so another full exam cannot start.")
-            : signedIn
-              ? (onHi ? "This account has used its free Comprehensive Practice. Hawaii Pro is not open." : "This account has used its free Full 45. Pro includes more full exams.")
-              : (onHi ? "This browser has used its free Comprehensive Practice. Hawaii Pro is not open." : "This browser has used its free Full 45. Pro includes more full exams.")}
+              ? "This account has used its free Comprehensive Practice. Hawaii Pro includes more of them for 60 days."
+              : onCa
+                ? "This account has used its free Full 45. California Pro includes more full exams for 60 days."
+                : "This account has used its free Full 45. Pro includes more full exams.")
+            : (onHi
+              ? "This browser has used its free Comprehensive Practice. Hawaii Pro includes more of them for 60 days."
+              : onCa
+                ? "This browser has used its free Full 45. California Pro includes more full exams for 60 days."
+                : "This browser has used its free Full 45. Pro includes more full exams.")}
         </p>
         <Link className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">
-          {onHi ? "See Hawaii access" : onCa ? "See California access" : "Unlock Pro"}
+          Unlock Pro
         </Link>
         <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginLeft: 8 }}>
           Change mode

@@ -3,7 +3,8 @@ import { z } from "zod";
 import { getSession, setSessionCookie } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { checkoutUrl } from "@/lib/billing";
-import { grantArizonaPro60d, hasArizonaPro } from "@/lib/entitlements";
+import { grantStatePro60d, hasArizonaPro } from "@/lib/entitlements";
+import { proStateForCode } from "@/lib/pro-products";
 import { getCommerceRepo } from "@/lib/commerce";
 import { assertQuoteStillValid, abandonQuote, confirmPaidOrder } from "@/lib/commerce/service";
 import { ensureLemonCheckout } from "@/lib/billing/lemon-checkout";
@@ -103,7 +104,11 @@ export async function GET(req: Request) {
     quoteId,
     provider: "mock",
     providerOrderId: `mock-${quoteId}`,
-    grantPro: async (opts) => grantArizonaPro60d(opts),
+    grantPro: async (opts) => {
+      const state = proStateForCode(opts.productCode);
+      if (!state) throw new Error("product_mismatch");
+      return grantStatePro60d({ ...opts, state });
+    },
   });
   if (!result.ok) return NextResponse.json({ error: result.error }, { status: 409 });
   const store = await getStore();

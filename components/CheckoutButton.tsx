@@ -58,7 +58,7 @@ function formatRemaining(ms: number) {
   return d > 0 ? `${d}d ${clock}` : clock;
 }
 
-export function CheckoutButton({ belowCta }: { belowCta?: ReactNode }) {
+export function CheckoutButton({ belowCta, productCode = "az_exam_pro_60d" }: { belowCta?: ReactNode; productCode?: "az_exam_pro_60d" | "ca_exam_pro_60d" | "hi_exam_pro_60d" }) {
   const [preview, setPreview] = useState<Preview | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [applyCredit, setApplyCredit] = useState(false);
@@ -196,7 +196,7 @@ export function CheckoutButton({ belowCta }: { belowCta?: ReactNode }) {
     const quoteRes = await fetch("/api/pricing/quote/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productCode: "az_exam_pro_60d", applyCredit, policyAccepted: true }),
+      body: JSON.stringify({ productCode, applyCredit, policyAccepted: true }),
     });
     const quote = await quoteRes.json();
     if (quoteRes.status === 409 || quote.error === "PRICE_CHANGED") {

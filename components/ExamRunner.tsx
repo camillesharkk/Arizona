@@ -867,7 +867,7 @@ export function ExamRunner({
           const id = view.question_id;
           setExplainOpen((current) => ({ ...current, [id]: !current[id] }));
         }}
-        tutor={stateCode === "AZ"}
+        tutor
       />
       {past ? (
         <button className="card-corner-btn" type="button" onClick={closePast}>

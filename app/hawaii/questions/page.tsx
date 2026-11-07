@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
-import { hiQuestionCounts } from "@/data/hi-questions";
+import { QuestionsClient } from "@/components/QuestionsClient";
+import { publishedHiQuestions, hiQuestionCounts } from "@/data/hi-questions";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
-import { hiStudyLabel } from "@/lib/hi-topics";
+import { hiStudyLabel, hiStudyTopics } from "@/lib/hi-topics";
 import { siteUrl } from "@/lib/site";
 
 const counts = hiQuestionCounts();
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Exam Questions" },
-  description: `${counts.published} published Hawaii notary practice questions. All published questions are free while Hawaii Pro is closed.`,
+  description: `${counts.published} published Hawaii notary practice questions, with the same filters and resume behavior as the Arizona bank.`,
   alternates: { canonical: `${siteUrl()}/hawaii/questions/` },
 };
 
-export default function Page() {
+export default async function Page({ searchParams }: { searchParams: Promise<{ topic?: string }> }) {
+  const { topic } = await searchParams;
   return (
     <main className="wrap">
       <h1>Hawaii notary exam questions</h1>
@@ -25,6 +27,12 @@ export default function Page() {
         </ul>
         <a className="btn btn-primary" href={`${hiPaths.practice}?mode=quick`}>Check My Knowledge — 10 Questions</a>
       </div>
+      <QuestionsClient
+        stateCode="HI"
+        topic={topic}
+        questions={publishedHiQuestions()}
+        topicChoices={hiStudyTopics.map((topic) => ({ id: topic.id, short: topic.label, label: topic.label }))}
+      />
     </main>
   );
 }

@@ -2,10 +2,10 @@ import { EventName } from "@paddle/paddle-node-sdk";
 import type { CommerceRepo } from "../commerce/repo.ts";
 import type { GrantProFn } from "../commerce/service.ts";
 import { confirmPaidOrder, quotedCreditsBoundToQuote } from "../commerce/service.ts";
-import { AZ_PRO_PRODUCT_CODE, CURRENCY } from "../pricing/catalog.ts";
+import { CURRENCY } from "../pricing/catalog.ts";
+import { paddleProductIdFor, proStateForCode } from "../pro-products.ts";
 import {
   PADDLE_PROVIDER,
-  expectedPaddleProductCode,
   isPaddleTransactionId,
   matchPaddleTransactionToQuote,
   paddleLog,
@@ -108,7 +108,9 @@ export async function handlePaddleWebhook(opts: {
   if (!isPaddleTransactionId(transactionId)) return fail(409, "transaction_id_invalid", { event: eventType });
 
   const custom = readCustom(txn);
-  if (custom.product_code !== expectedPaddleProductCode() || custom.product_code !== AZ_PRO_PRODUCT_CODE) {
+  const productState = proStateForCode(custom.product_code);
+  const expectedProductId = productState === "AZ" ? opts.config.productId : productState ? paddleProductIdFor(productState) : null;
+  if (!productState || !expectedProductId) {
     return fail(409, "product_mismatch", { orderId: transactionId, quoteId: custom.quote_id });
   }
   if (!custom.quote_id || !custom.user_id) {
@@ -124,7 +126,7 @@ export async function handlePaddleWebhook(opts: {
   const item = items[0];
   if (Number(item.quantity) !== 1) return fail(409, "quantity_mismatch", { orderId: transactionId, quoteId: custom.quote_id });
   const productId = String(item.price?.productId || "");
-  if (productId !== opts.config.productId) {
+  if (productId !== expectedProductId) {
     return fail(409, "product_id_mismatch", { orderId: transactionId, quoteId: custom.quote_id });
   }
   if (item.price?.billingCycle) {
@@ -134,7 +136,7 @@ export async function handlePaddleWebhook(opts: {
   const lineItems = txn.details?.lineItems || [];
   if (lineItems.length > 1) return fail(409, "item_count_mismatch", { orderId: transactionId, quoteId: custom.quote_id });
   const lineProductId = lineItems[0]?.product?.id ? String(lineItems[0].product.id) : "";
-  if (lineProductId && lineProductId !== opts.config.productId) {
+  if (lineProductId && lineProductId !== expectedProductId) {
     return fail(409, "product_id_mismatch", { orderId: transactionId, quoteId: custom.quote_id });
   }
   if (lineItems[0] && Number(lineItems[0].quantity) !== 1) {
@@ -150,7 +152,7 @@ export async function handlePaddleWebhook(opts: {
   if (quote.userId !== custom.user_id) {
     return fail(409, "user_mismatch", { orderId: transactionId, quoteId: quote.id });
   }
-  if (quote.productCode !== AZ_PRO_PRODUCT_CODE) {
+  if (quote.productCode !== custom.product_code) {
     return fail(409, "product_mismatch", { orderId: transactionId, quoteId: quote.id });
   }
   if (quote.currency !== CURRENCY) {
@@ -163,7 +165,7 @@ export async function handlePaddleWebhook(opts: {
     return fail(409, "currency_mismatch", { orderId: transactionId, quoteId: quote.id });
   }
 
-  const matched = matchPaddleTransactionToQuote(txn, quote, opts.config.productId);
+  const matched = matchPaddleTransactionToQuote(txn, quote, expectedProductId);
   if (!matched.ok) return fail(409, matched.error, { orderId: transactionId, quoteId: quote.id });
 
   const held = await quotedCreditsBoundToQuote(opts.repo, quote);

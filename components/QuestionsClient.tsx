@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
-import type { Difficulty, TopicId } from "@/lib/types";
+import type { Difficulty } from "@/lib/types";
 import { QuestionBlock } from "@/components/ExamRunner";
 import { ExamNav, LoadingNote, QuestionJump } from "@/components/QuizChrome";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
@@ -16,10 +16,25 @@ import { SaveForReview } from "@/components/SaveForReview";
 import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { paths } from "@/lib/paths";
+import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 import { isActiveQuestion } from "@/lib/question-status";
+import type { Question, StateCode } from "@/lib/types";
 
-export function QuestionsClient({ topic }: { topic?: TopicId }) {
-  const [filter, setFilter] = useState<"all" | TopicId | "wrong" | "unanswered">(topic ?? "all");
+export function QuestionsClient({
+  topic,
+  stateCode = "AZ",
+  questions,
+  topicChoices,
+}: {
+  topic?: string;
+  stateCode?: StateCode;
+  questions?: Question[];
+  topicChoices?: { id: string; short: string; label: string }[];
+}) {
+  const sitePaths = stateCode === "HI" ? hiPaths : stateCode === "CA" ? caPaths : paths;
+  const topicList = topicChoices ?? topics;
+  const [filter, setFilter] = useState<string>(topic ?? "all");
   const [difficulty, setDifficulty] = useState<"all" | Difficulty>("all");
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, "A" | "B" | "C" | "D">>({});
@@ -52,7 +67,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
   const scrollExplain = useRef(false);
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
-  useEffect(() => subscribeProgress(() => setProgress(loadProgress())), []);
+  useEffect(() => subscribeProgress(() => setProgress(loadProgress(stateCode))), [stateCode]);
   useEffect(() => {
     let cancel = false;
     setAuthReady(false);
@@ -62,8 +77,12 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       .then((data) => {
         if (cancel) return;
         const nextOwner = data.user?.id || "guest";
-        const pro = Boolean(data.user?.arizonaPro || data.user?.plan === "pro");
-        const existing = readSitting(sessionStorage, nextOwner, modeKey);
+        const pro = stateCode === "HI"
+          ? Boolean(data.user?.hawaiiPro)
+          : stateCode === "CA"
+            ? Boolean(data.user?.californiaPro)
+            : Boolean(data.user?.arizonaPro || data.user?.plan === "pro");
+        const existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
         setOwner(nextOwner);
         setIsPro(pro);
         setSeed(existing?.seed ?? Math.floor(Math.random() * 1_000_000_000));
@@ -95,19 +114,19 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     return () => {
       cancel = true;
     };
-  }, [modeKey, bootTry]);
+  }, [modeKey, bootTry, stateCode]);
 
   const rawPool = useMemo(() => {
-    let list = publishedQuestions().filter((q) => q.is_free || isPro);
-    if (topic) list = list.filter((q) => q.topic === topic);
+    let list = (questions ?? publishedQuestions()).filter((q) => q.is_free || isPro);
+    if (topic) list = list.filter((q) => q.study_topic === topic || q.topic === topic);
     else if (filter !== "all" && filter !== "wrong" && filter !== "unanswered") {
-      list = list.filter((q) => q.topic === filter);
+      list = list.filter((q) => q.study_topic === filter || q.topic === filter);
     }
     if (filter === "wrong") list = list.filter((q) => progress.wrongIds.includes(q.question_id));
     if (filter === "unanswered") list = list.filter((q) => !progress.answeredIds.includes(q.question_id));
     if (difficulty !== "all") list = list.filter((q) => q.difficulty === difficulty);
     return list;
-  }, [filter, difficulty, topic, progress.wrongIds, progress.answeredIds, isPro]);
+  }, [questions, filter, difficulty, topic, progress.wrongIds, progress.answeredIds, isPro]);
 
   const pool = useMemo(() => {
     const maps: Record<string, Record<Letter, Letter>> = {};
@@ -141,7 +160,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       writeSitting(sessionStorage, {
         version: 1,
         owner,
-        state: "AZ",
+        state: stateCode,
         mode: modeKey,
         seed,
         questionIds: order,
@@ -160,7 +179,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     } catch {
       /* storage can be blocked */
     }
-  }, [authReady, loadedKey, modeKey, seed, order, idx, answers, explainOpen, marked, done, owner]);
+  }, [authReady, loadedKey, modeKey, seed, order, idx, answers, explainOpen, marked, done, owner, stateCode]);
 
   const active = orderedPool;
   const safeIdx = Math.min(idx, Math.max(0, active.length - 1));
@@ -229,10 +248,10 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     scrollUnderHeaderAfterLayout(open ? explain || headingRef.current : headingRef.current);
   }, [safeIdx, authReady, q, explainOpen]);
 
-  const selectedTopic: TopicId | null =
+  const selectedTopic: string | null =
     topic ?? (filter !== "all" && filter !== "wrong" && filter !== "unanswered" ? filter : null);
   const topicQuestions = selectedTopic
-    ? publishedQuestions().filter((item) => item.topic === selectedTopic && isActiveQuestion(item))
+    ? (questions ?? publishedQuestions()).filter((item) => (item.study_topic === selectedTopic || item.topic === selectedTopic) && isActiveQuestion(item))
     : [];
   const topicFreeCount = topicQuestions.filter((item) => item.is_free).length;
   const proOnlyTopic = Boolean(selectedTopic && !isPro && topicFreeCount === 0 && topicQuestions.length > 0);
@@ -256,7 +275,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
     <div>
       <div className="tool-row">
         {!topic &&
-          (["all", "wrong", "unanswered", ...topics.map((t) => t.id)] as const).map((id) => (
+          (["all", "wrong", "unanswered", ...topicList.map((t) => t.id)]).map((id) => (
             <button
               key={id}
               className={`chip ${filter === id ? "on" : ""}`}
@@ -271,7 +290,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
                 setResumed(true);
               }}
             >
-              {id === "all" ? "All topics" : id === "wrong" ? "Wrong" : id === "unanswered" ? "Unanswered" : topics.find((t) => t.id === id)?.short}
+              {id === "all" ? "All topics" : id === "wrong" ? "Wrong" : id === "unanswered" ? "Unanswered" : topicList.find((t) => t.id === id)?.short}
             </button>
           ))}
         {(["all", "easy", "medium", "hard"] as const).map((d) => (
@@ -297,15 +316,15 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
       </p>
       {proOnlyTopic ? (
         <div className="card">
-          <h2>{topics.find((t) => t.id === selectedTopic)?.label} is in the Pro bank</h2>
+          <h2>{topicList.find((t) => t.id === selectedTopic)?.label} is in the Pro bank</h2>
           <p>
             This topic has {topicQuestions.length} practice questions and no free questions. Quick 10 still uses the free
             pool, and topics with free questions can be practiced without Pro.
           </p>
-          <Link className="btn btn-primary" href={paths.pricing}>
+          <Link className="btn btn-primary" href={sitePaths.pricing}>
             Unlock Pro
           </Link>
-          <Link className="btn btn-ghost" href={`${paths.practice}?mode=quick`} style={{ marginLeft: 8 }}>
+          <Link className="btn btn-ghost" href={`${sitePaths.practice}?mode=quick`} style={{ marginLeft: 8 }}>
             Free Quick 10
           </Link>
         </div>
@@ -314,7 +333,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
           <h2>You finished this set.</h2>
           <p>{correctSession} of {active.length} correct in this sitting.</p>
           <div className="row">
-            <Link className="btn btn-primary" href={paths.study}>Review the study guide</Link>
+            <Link className="btn btn-primary" href={sitePaths.study}>Review the study guide</Link>
             <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
           </div>
         </div>
@@ -324,7 +343,7 @@ export function QuestionsClient({ topic }: { topic?: TopicId }) {
           <span className="notice">Question {safeIdx + 1} of {active.length}{resumed ? " · Resumed" : ""}</span>
           <button className="btn btn-ghost" type="button" onClick={() => {
             if (!window.confirm("Start a new set? This replaces the unfinished one.")) return;
-            clearSitting(sessionStorage, owner, modeKey);
+            clearSitting(sessionStorage, owner, modeKey, stateCode);
             setSeed(Math.floor(Math.random() * 1_000_000_000));
             setOrder(null);
             setIdx(0);

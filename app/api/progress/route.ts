@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
-import { canAccessQuestion, canTakeFullExam, canUseAdvancedAnalytics, hasArizonaPro, fullExamCount, getArizonaEntitlement } from "@/lib/entitlements";
+import { canAccessQuestion, canTakeFullExam, canUseAdvancedAnalytics, hasArizonaPro, hasStatePro, fullExamCount, caFullExamCount, getArizonaEntitlement } from "@/lib/entitlements";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { recordProUsage } from "@/lib/commerce/usage";
 import { publishedQuestions } from "@/data/questions";
@@ -57,8 +57,11 @@ export async function POST(req: Request) {
     if (!california && !hawaii && exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
       return NextResponse.json({ error: "Pro required for additional full exams" }, { status: 402 });
     }
-    if (hawaii && exam.data.mode === "full" && (await hiFullExamCount(session.id)) >= FREE_FULL_EXAMS) {
+    if (hawaii && exam.data.mode === "full" && !(await hasStatePro(session.id, "HI")) && (await hiFullExamCount(session.id)) >= FREE_FULL_EXAMS) {
       return NextResponse.json({ error: "The free Hawaii comprehensive practice is already used" }, { status: 402 });
+    }
+    if (california && exam.data.mode === "full" && !(await hasStatePro(session.id, "CA")) && (await caFullExamCount(session.id)) >= FREE_FULL_EXAMS) {
+      return NextResponse.json({ error: "The free California full exam is already used" }, { status: 402 });
     }
     const priorFull = !california && !hawaii && exam.data.mode === "full" ? await fullExamCount(session.id) : 0;
     const inserted = await recordExam({
@@ -105,12 +108,14 @@ export async function GET() {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const store = await getStore();
-  const [stats, exams, user, arizonaPro, entitlement] = await Promise.all([
+  const [stats, exams, user, arizonaPro, entitlement, californiaPro, hawaiiPro] = await Promise.all([
     store.listStats(session.id),
     store.listExams(session.id),
     store.getUserById(session.id),
     hasArizonaPro(session.id),
     getArizonaEntitlement(session.id),
+    hasStatePro(session.id, "CA"),
+    hasStatePro(session.id, "HI"),
   ]);
   const advanced = await canUseAdvancedAnalytics(session.id);
   return NextResponse.json({
@@ -118,6 +123,8 @@ export async function GET() {
     exams: exams.map(toClientExam),
     user: user ? toClientUser(user, arizonaPro, entitlement?.expiresAt ?? user.planExpiresAt) : null,
     arizonaPro,
+    californiaPro,
+    hawaiiPro,
     advancedAnalytics: advanced,
   });
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
-import { aiDailyLimit, caFullExamCount, fullExamCount, getArizonaEntitlement, hasArizonaPro, hiFullExamCount } from "@/lib/entitlements";
+import { aiDailyLimit, caFullExamCount, fullExamCount, getArizonaEntitlement, hasArizonaPro, hasStatePro, hiFullExamCount } from "@/lib/entitlements";
 
 export async function GET() {
   const session = await getSession();
@@ -20,6 +20,8 @@ export async function GET() {
       planStatus: user.planStatus,
       emailVerified: user.emailVerified,
       arizonaPro,
+      californiaPro: await hasStatePro(session.id, "CA"),
+      hawaiiPro: await hasStatePro(session.id, "HI"),
       planExpiresAt: entitlement?.expiresAt ?? null,
       aiDailyLimit: await aiDailyLimit(session.id),
       fullExamCount: await fullExamCount(session.id),

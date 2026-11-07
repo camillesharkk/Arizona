@@ -10,6 +10,7 @@ import {
   FREE_FULL_EXAMS,
   PRO_DURATION_DAYS,
 } from "@/lib/product";
+import { PRO_PRODUCTS, type ProState } from "@/lib/pro-products";
 
 export type Plan = "free" | "pro";
 
@@ -52,6 +53,12 @@ export async function hasArizonaPro(userId: string | null | undefined) {
   return Boolean(row);
 }
 
+export async function hasStatePro(userId: string | null | undefined, state: ProState) {
+  if (!userId) return false;
+  const store = await getStore();
+  return Boolean(await store.getStateEntitlement(userId, state));
+}
+
 export async function refreshPlanCache(userId: string) {
   const store = await getStore();
   const row = await store.getArizonaEntitlement(userId);
@@ -62,8 +69,9 @@ export async function refreshPlanCache(userId: string) {
   });
 }
 
-export async function grantArizonaPro60d(opts: {
+export async function grantStatePro60d(opts: {
   userId: string;
+  state: ProState;
   provider: "mock" | "lemon_squeezy" | "paddle";
   providerOrderId: string;
   providerCustomerId?: string | null;
@@ -71,18 +79,18 @@ export async function grantArizonaPro60d(opts: {
   const store = await getStore();
   const existing = await store.getEntitlementByProviderOrder(opts.provider, opts.providerOrderId);
   if (existing) {
-    if (existing.userId !== opts.userId) {
+    if (existing.userId !== opts.userId || existing.state !== opts.state) {
       throw new Error("order_user_mismatch");
     }
     return { ok: true, duplicate: true, entitlement: existing };
   }
-  const latestExpiry = await store.getLatestArizonaExpiry(opts.userId);
+  const latestExpiry = await store.getLatestStateExpiry(opts.userId, opts.state);
   const now = new Date();
   const window = nextProWindow(latestExpiry, now);
   const entitlement = await store.insertEntitlement({
     userId: opts.userId,
-    productCode: AZ_PRO_PRODUCT,
-    state: AZ_STATE,
+    productCode: PRO_PRODUCTS[opts.state].code,
+    state: opts.state,
     status: "active",
     startsAt: window.startsAt.toISOString(),
     expiresAt: window.expiresAt.toISOString(),
@@ -90,8 +98,17 @@ export async function grantArizonaPro60d(opts: {
     providerOrderId: opts.providerOrderId,
     providerCustomerId: opts.providerCustomerId ?? null,
   });
-  await refreshPlanCache(opts.userId);
+  if (opts.state === "AZ") await refreshPlanCache(opts.userId);
   return { ok: true, duplicate: false, entitlement };
+}
+
+export async function grantArizonaPro60d(opts: {
+  userId: string;
+  provider: "mock" | "lemon_squeezy" | "paddle";
+  providerOrderId: string;
+  providerCustomerId?: string | null;
+}) {
+  return grantStatePro60d({ ...opts, state: "AZ" });
 }
 
 export async function refundArizonaOrder(userId: string, provider: string, providerOrderId: string) {
@@ -101,9 +118,9 @@ export async function refundArizonaOrder(userId: string, provider: string, provi
 }
 
 export async function canAccessQuestion(userId: string | null | undefined, q: Question) {
-  if (q.state === "CA" || q.state === "HI") return q.is_free;
   if (q.is_free) return true;
-  return hasArizonaPro(userId);
+  if (q.state === "CA" || q.state === "HI" || q.state === "AZ") return hasStatePro(userId, q.state);
+  return false;
 }
 
 export async function visibleQuestions(userId: string | null | undefined) {
@@ -111,9 +128,9 @@ export async function visibleQuestions(userId: string | null | undefined) {
   return publishedQuestions().filter((q) => q.is_free || pro);
 }
 
-export async function aiDailyLimit(userId: string | null | undefined) {
+export async function aiDailyLimit(userId: string | null | undefined, state: ProState = "AZ") {
   if (!userId) return 0;
-  return (await hasArizonaPro(userId)) ? AI_LIMIT_PRO : AI_LIMIT_FREE;
+  return (await hasStatePro(userId, state)) ? AI_LIMIT_PRO : AI_LIMIT_FREE;
 }
 
 export async function canUseAdvancedAnalytics(userId: string | null | undefined) {

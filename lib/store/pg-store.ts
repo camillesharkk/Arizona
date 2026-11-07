@@ -358,6 +358,31 @@ export const pgStore: Store = {
       where user_id = ${userId} and email_type = ${emailType} and period_key = ${periodKey}
     `;
   },
+  async getStateEntitlement(userId, state) {
+    await assertSchema();
+    const rows = await db()`
+      select * from entitlements
+      where user_id = ${userId}
+        and state = ${state}
+        and status = 'active'
+        and starts_at <= now()
+        and expires_at > now()
+      order by expires_at desc
+      limit 1
+    `;
+    return rows[0] ? mapEntitlement(rows[0] as Record<string, unknown>) : null;
+  },
+  async getLatestStateExpiry(userId, state) {
+    await assertSchema();
+    const rows = await db()`
+      select max(expires_at) as expires_at
+      from entitlements
+      where user_id = ${userId} and state = ${state} and status = 'active'
+    `;
+    const v = rows[0]?.expires_at;
+    if (!v) return null;
+    return v instanceof Date ? v : new Date(String(v));
+  },
   async getArizonaEntitlement(userId) {
     await assertSchema();
     const rows = await db()`

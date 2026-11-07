@@ -1,7 +1,8 @@
 import type { CommerceRepo } from "../commerce/repo.ts";
 import type { PricingQuoteRow } from "../commerce/types.ts";
 import { assertQuoteStillValid } from "../commerce/service.ts";
-import { AZ_PRO_PRODUCT_CODE, CURRENCY } from "../pricing/catalog.ts";
+import { CURRENCY } from "../pricing/catalog.ts";
+import { paddleProductIdFor, proStateForCode } from "../pro-products.ts";
 import {
   PADDLE_PROVIDER,
   buildPaddleTransactionPayload,
@@ -26,7 +27,11 @@ export async function ensurePaddleCheckout(opts: {
   | { ok: false; error: string; status: number }
 > {
   const quote = opts.quote;
-  if (quote.productCode !== AZ_PRO_PRODUCT_CODE) return { ok: false, error: "product_mismatch", status: 400 };
+  const productState = proStateForCode(quote.productCode);
+  const productId = productState === "AZ" ? opts.config.productId : productState ? paddleProductIdFor(productState) : null;
+  if (!productState || !productId) {
+    return { ok: false, error: productState ? "product_not_configured" : "product_mismatch", status: productState ? 503 : 400 };
+  }
   if (quote.currency !== CURRENCY) return { ok: false, error: "currency_mismatch", status: 400 };
   if (!isPositiveCents(quote.finalPriceCents)) return { ok: false, error: "price_invalid", status: 400 };
   if (!quote.policyAcceptedAt) return { ok: false, error: "policy_required", status: 400 };
@@ -98,7 +103,7 @@ export async function ensurePaddleCheckout(opts: {
   }
 
   const payload = buildPaddleTransactionPayload({
-    productId: opts.config.productId,
+    productId,
     finalPriceCents: quote.finalPriceCents,
     userId: quote.userId,
     quoteId: quote.id,

@@ -286,6 +286,28 @@ export const fileStore: Store = {
       db.emailLogs[i].messageId = result.messageId || null;
     });
   },
+  async getStateEntitlement(userId, state) {
+    const db = await load();
+    const now = Date.now();
+    return (
+      db.entitlements.find(
+        (e) =>
+          e.userId === userId &&
+          e.state === state &&
+          e.status === "active" &&
+          new Date(e.startsAt).getTime() <= now &&
+          new Date(e.expiresAt).getTime() > now
+      ) ?? null
+    );
+  },
+  async getLatestStateExpiry(userId, state) {
+    const db = await load();
+    const times = db.entitlements
+      .filter((e) => e.userId === userId && e.state === state && e.status === "active")
+      .map((e) => new Date(e.expiresAt).getTime());
+    if (!times.length) return null;
+    return new Date(Math.max(...times));
+  },
   async getArizonaEntitlement(userId) {
     const db = await load();
     const now = Date.now();

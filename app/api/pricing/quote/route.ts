@@ -4,10 +4,10 @@ import { getSession } from "@/lib/session";
 import { getCommerceRepo } from "@/lib/commerce";
 import { createQuote } from "@/lib/commerce/service";
 import { publicBreakdown } from "@/lib/commerce/public";
-import { AZ_PRO_PRODUCT_CODE } from "@/lib/pricing/catalog";
+import { PRO_PRODUCT_CODES } from "@/lib/pro-products";
 
 const schema = z.object({
-  productCode: z.literal(AZ_PRO_PRODUCT_CODE).optional(),
+  productCode: z.enum(PRO_PRODUCT_CODES).optional(),
   applyCredit: z.boolean().optional(),
   policyAccepted: z.boolean(),
 });
@@ -22,6 +22,7 @@ export async function POST(req: Request) {
     userId: session.id,
     applyCredit: Boolean(body.data.applyCredit),
     policyAccepted: body.data.policyAccepted,
+    productCode: body.data.productCode,
   });
   if (!result.ok) {
     const status = result.error === "PRICE_CHANGED" ? 409 : 400;

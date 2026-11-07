@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { caQuestionCounts } from "@/data/ca-questions";
+import { QuestionsClient } from "@/components/QuestionsClient";
+import { publishedCaQuestions, caQuestionCounts } from "@/data/ca-questions";
 import { CA_EXAM, areaLabel, caPaths } from "@/lib/ca-site";
+import { caStudyTopics } from "@/lib/ca-topics";
 import { siteUrl } from "@/lib/site";
 
 const counts = caQuestionCounts();
@@ -11,7 +13,8 @@ export const metadata: Metadata = {
   alternates: { canonical: `${siteUrl()}/california/questions/` },
 };
 
-export default function Page() {
+export default async function Page({ searchParams }: { searchParams: Promise<{ topic?: string }> }) {
+  const { topic } = await searchParams;
   return (
     <main className="wrap">
       <h1>California exam questions</h1>
@@ -24,6 +27,12 @@ export default function Page() {
         </ul>
         <a className="btn btn-primary" href={`${caPaths.practice}?mode=quick`}>Check My Knowledge — 10 Questions</a>
       </div>
+      <QuestionsClient
+        stateCode="CA"
+        topic={topic}
+        questions={publishedCaQuestions()}
+        topicChoices={caStudyTopics.map((topic) => ({ id: topic.id, short: topic.label, label: topic.label }))}
+      />
     </main>
   );
 }
