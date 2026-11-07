@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { hiArticles } from "@/data/hi-articles";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Resources" },
   description: "Official Hawaii notary pages for the exam, appointment, statutes, and rules, plus the study tools on this site.",
-  alternates: { canonical: `${siteUrl()}/hawaii/resources/` },
+  alternates: { canonical: canonicalUrl("/hawaii/resources/") },
 };
 
 export default function Page() {

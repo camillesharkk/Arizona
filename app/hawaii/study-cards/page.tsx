@@ -3,7 +3,7 @@ import { StudyCardsClient } from "@/components/StudyCardsClient";
 import { hiCards } from "@/data/hi-cards";
 import { hiPaths } from "@/lib/hi-site";
 import { hiStudyTopics } from "@/lib/hi-topics";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 import type { PublicStudyCard } from "@/lib/study-cards";
 
 const cards: PublicStudyCard[] = hiCards.map((card) => ({
@@ -24,7 +24,7 @@ const cards: PublicStudyCard[] = hiCards.map((card) => ({
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Study Cards" },
   description: `${hiCards.length} Hawaii notary study cards from HRS Chapter 456 and HAR Chapter 5-11.`,
-  alternates: { canonical: `${siteUrl()}/hawaii/study-cards/` },
+  alternates: { canonical: canonicalUrl("/hawaii/study-cards/") },
 };
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ topic?: string }> }) {

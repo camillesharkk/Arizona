@@ -5,9 +5,9 @@ export const expandedGuides: SeoGuide[] = [
   {
     "id": "how-hard",
     "path": "/how-hard-is-the-arizona-notary-exam/",
-    "title": "How Hard Is the Arizona Notary Exam? 2026",
-    "description": "Assess your readiness with timed practice, manual navigation and a review of weak topics.",
-    "kicker": "How Hard Is the Arizona Notary Exam?",
+    "title": "How Hard Is the Arizona Notary Exam?",
+    "description": "The hard part is applying the right rule under a time limit. A practice score is not an official pass rate, because none is published.",
+    "kicker": "Difficulty",
     "h1": "How Hard Is the Arizona Notary Exam?",
     "lede": "The difficulty is applying notary rules accurately while watching the clock. Open-book access helps you check a rule, but it does not replace knowing which rule applies. We do not have an official pass-rate dataset and do not promise an easy pass.",
     checked: officialExamChecked,
@@ -30,12 +30,6 @@ export const expandedGuides: SeoGuide[] = [
         "href": "/arizona-notary-study-guide/",
         "hrefLabel": "Review your weak chapters"
       },
-      {
-        "heading": "When a larger question bank helps",
-        "body": "The free test is useful for an initial check. Pro provides more scenarios and repeated full practice when you need broader coverage. Choose it because you need more practice, rather than treating a purchase as a guarantee of passing.",
-        "href": "/pricing/",
-        "hrefLabel": "Compare Pro access"
-      }
     ],
     "related": [
       {
@@ -61,7 +55,7 @@ export const expandedGuides: SeoGuide[] = [
   {
     "id": "question-count",
     "path": "/how-many-questions-on-the-arizona-notary-exam/",
-    "title": "How Many Questions Are on the Arizona Notary Exam? 2026",
+    "title": "How Many Questions Are on the Arizona Notary Exam?",
     "description": "Learn the exam length, plan your time and choose between a short diagnostic and timed practice.",
     "kicker": "How Many Questions Are on the Arizona Notary Exam?",
     "h1": "How Many Questions Are on the Arizona Notary Exam?",
@@ -110,7 +104,7 @@ export const expandedGuides: SeoGuide[] = [
   {
     "id": "passing-score",
     "path": "/arizona-notary-exam-passing-score/",
-    "title": "Arizona Notary Exam Passing Score 2026",
+    "title": "Arizona Notary Exam Passing Score",
     "description": "Understand the official passing threshold and how to use an independent practice score.",
     "kicker": "Arizona Notary Exam Passing Score",
     "h1": "Arizona Notary Exam Passing Score",
@@ -159,7 +153,7 @@ export const expandedGuides: SeoGuide[] = [
   {
     "id": "exam-requirements",
     "path": "/arizona-notary-exam-requirements/",
-    "title": "Arizona Notary Exam Requirements 2026",
+    "title": "Arizona Notary Exam Requirements",
     "description": "Separate exam registration, preparation and commission requirements before applying.",
     "kicker": "Arizona Notary Exam Requirements",
     "h1": "Arizona Notary Exam Requirements",
@@ -214,7 +208,7 @@ export const expandedGuides: SeoGuide[] = [
   {
     "id": "faq",
     "path": "/arizona-notary-exam-faq/",
-    "title": "Arizona Notary Exam FAQ 2026",
+    "title": "Arizona Notary Exam FAQ",
     "description": "Practical answers about format, open-book access, retakes and independent free practice.",
     "kicker": "Arizona Notary Exam FAQ",
     "h1": "Arizona Notary Exam FAQ",
@@ -283,7 +277,7 @@ export const expandedGuides: SeoGuide[] = [
   {
     "id": "free-practice",
     "path": "/arizona-notary-practice-test-free/",
-    "title": "Free Arizona Notary Practice Test 2026",
+    "title": "Free Arizona Notary Practice Test",
     "description": "Start a free 10-question diagnostic and understand what is included before choosing more practice.",
     "kicker": "Free Arizona Notary Practice Test",
     "h1": "Free Arizona Notary Practice Test",
@@ -339,7 +333,7 @@ export const expandedGuides: SeoGuide[] = [
   {
     "id": "open-book",
     "path": "/is-the-arizona-notary-exam-open-book/",
-    "title": "Is the Arizona Notary Exam Open Book? 2026",
+    "title": "Is the Arizona Notary Exam Open Book?",
     "description": "Prepare for the built-in manual with a repeatable lookup method and timed practice.",
     "kicker": "Is the Arizona Notary Exam Open Book?",
     "h1": "Is the Arizona Notary Exam Open Book?",
@@ -388,10 +382,10 @@ export const expandedGuides: SeoGuide[] = [
   {
     "id": "retake",
     "path": "/arizona-notary-exam-retake/",
-    "title": "Arizona Notary Exam Retake Rules 2026",
-    "description": "Check the official retry notice and build a focused plan after a failed attempt.",
-    "kicker": "Arizona Notary Exam Retake Rules",
-    "h1": "Arizona Notary Exam Retake Rules",
+    "title": "Arizona Notary Exam Retake Rules: What to Do Next",
+    "description": "After a failed Arizona notary exam, the SOS notice allows three attempts, then a 30-day wait. Confirm the live booking rule before you schedule again.",
+    "kicker": "Retake",
+    "h1": "Arizona Notary Exam Retake Rules: What to Do Next",
     "lede": "The current SOS notice says the exam can be taken three times; after the third failure, you must wait 30 days to reschedule. The notice also lists a $35 charge for each proctored examination. Verify current instructions before booking again.",
     checked: officialExamChecked,
     "sections": [
@@ -408,9 +402,9 @@ export const expandedGuides: SeoGuide[] = [
       },
       {
         "heading": "Avoid memorizing the same answers",
-        "body": "Re-answer a missed question only after explaining its source. Additional scenarios can help check whether you learned the rule or remembered the letter. Pro offers broader practice, while the free Quick 10 gives a starting diagnostic.",
-        "href": "/pricing/",
-        "hrefLabel": "Compare the larger practice bank"
+        "body": "Re-answer a missed question only after explaining its source. Another scenario shows whether you learned the rule or remembered the letter. Start with Quick 10, then reread the chapter for the topic you miss.",
+        "href": "/arizona-notary-practice-test/?mode=quick",
+        "hrefLabel": "Start with Quick 10"
       }
     ],
     "related": [
@@ -437,10 +431,10 @@ export const expandedGuides: SeoGuide[] = [
   {
     "id": "three-day",
     "path": "/arizona-notary-exam-three-day-study-plan/",
-    "title": "Arizona Notary Exam Three-Day Study Plan 2026",
-    "description": "A compact revision schedule with a diagnostic, chapter review and a timed final practice.",
-    "kicker": "Arizona Notary Exam Three-Day Study Plan",
-    "h1": "Arizona Notary Exam Three-Day Study Plan",
+    "title": "Arizona Notary Exam: A 3-Day Study Plan",
+    "description": "Three days of Arizona notary review: a short diagnostic, the chapters you missed, then one timed 45-question set.",
+    "kicker": "Study plan",
+    "h1": "Arizona Notary Exam: A 3-Day Study Plan",
     "lede": "Use this three-day plan for focused review when your test date is near. It is a suggested schedule, not a guarantee that three days is enough. Move the test if you cannot explain the rules or finish practice confidently.",
     checked: officialExamChecked,
     "sections": [
@@ -462,12 +456,6 @@ export const expandedGuides: SeoGuide[] = [
         "href": "/arizona-notary-practice-test/?mode=full",
         "hrefLabel": "Take the timed simulation"
       },
-      {
-        "heading": "Choose additional practice only when needed",
-        "body": "Use Pro if you want further full sets or more scenarios after the free attempt. Keep the error log and source review as the center of your preparation. A larger bank is useful when it supports a clear learning goal.",
-        "href": "/pricing/",
-        "hrefLabel": "Compare Pro practice access"
-      }
     ],
     "related": [
       {

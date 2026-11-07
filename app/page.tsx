@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { StatePicker } from "@/components/StatePicker";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "Choose Your State · Notary Exam Prep" },
   description: "Select your state to find notary practice questions and study materials.",
-  alternates: { canonical: `${siteUrl()}/` },
+  alternates: { canonical: canonicalUrl("/") },
   robots: { index: true, follow: true },
 };
 

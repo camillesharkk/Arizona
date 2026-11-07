@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { StateCheckout } from "@/components/StateCheckout";
 import { caQuestionCounts } from "@/data/ca-questions";
 import { caCards } from "@/data/ca-cards";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 import { caPaths } from "@/lib/ca-site";
 
 const counts = caQuestionCounts();
@@ -10,7 +10,7 @@ const counts = caQuestionCounts();
 export const metadata: Metadata = {
   title: { absolute: "California Notary Practice Access" },
   description: "California Pro is 60 days of extra full exams. The published question bank stays available on the free plan.",
-  alternates: { canonical: `${siteUrl()}/california/pricing/` },
+  alternates: { canonical: canonicalUrl("/california/pricing/") },
 };
 
 export default function Page() {

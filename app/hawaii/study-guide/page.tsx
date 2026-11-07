@@ -3,12 +3,12 @@ import { Suspense } from "react";
 import { CaliforniaGuide } from "@/components/CaliforniaGuide";
 import { hiGuideCheckedOn } from "@/data/hi-study-guide";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Study Guide" },
   description: "Hawaii notary study guide by topic, with the statute or rule for each chapter. Topic groups are this site's outline.",
-  alternates: { canonical: `${siteUrl()}/hawaii/study-guide/` },
+  alternates: { canonical: canonicalUrl("/hawaii/study-guide/") },
 };
 
 export default function Page() {

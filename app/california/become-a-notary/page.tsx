@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { StateSectionCrumb } from "@/components/Breadcrumb";
 import { CA_EXAM } from "@/lib/ca-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "Become a California Notary" },
   description: "California notary appointment steps from the Secretary of State: education, exam, fingerprints, oath, and bond.",
-  alternates: { canonical: `${siteUrl()}/california/become-a-notary/` },
+  alternates: { canonical: canonicalUrl("/california/become-a-notary/") },
 };
 
 export default function Page() {
   return (
     <main className="wrap">
+      <StateSectionCrumb state="CA" name="Become a notary" path="/california/become-a-notary/" />
       <h1>Become a California notary</h1>
       <div className="card">
         <p>The Secretary of State requires an applicant to be 18 or older, be a legal California resident, complete an approved course, pass the written exam, and clear a background check.</p>

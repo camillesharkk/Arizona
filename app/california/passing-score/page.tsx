@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { StateSectionCrumb } from "@/components/Breadcrumb";
 import { CA_EXAM } from "@/lib/ca-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "California Notary Exam Passing Score" },
   description: "The official California notary exam requires a scaled score of at least 70. A scaled score is not a percent.",
-  alternates: { canonical: `${siteUrl()}/california/passing-score/` },
+  alternates: { canonical: canonicalUrl("/california/passing-score/") },
 };
 
 export default function Page() {
   return (
     <main className="wrap">
+      <StateSectionCrumb state="CA" name="Passing score" path="/california/passing-score/" />
       <h1>California passing score</h1>
       <div className="card">
         <p>CPS HR says a scaled score of at least 70 is required. Scaled scores run from 0 to 100 so different exam forms can be compared. A scaled score is not calculated by dividing the number correct by the number of questions.</p>

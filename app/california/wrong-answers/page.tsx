@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { CloudMistakes } from "@/components/CloudMistakes";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "California Wrong Answers" },
   description: "California notary questions missed or saved on this account.",
-  alternates: { canonical: `${siteUrl()}/california/wrong-answers/` },
+  alternates: { canonical: canonicalUrl("/california/wrong-answers/") },
   robots: { index: false, follow: false },
 };
 

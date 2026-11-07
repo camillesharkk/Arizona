@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { StateSectionCrumb } from "@/components/Breadcrumb";
 import { HI_EXAM } from "@/lib/hi-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Exam Passing Score" },
   description: "The Hawaii notary written exam requires at least 80 percent. A score on this site is practice feedback, not an official result.",
-  alternates: { canonical: `${siteUrl()}/hawaii/passing-score/` },
+  alternates: { canonical: canonicalUrl("/hawaii/passing-score/") },
 };
 
 export default function Page() {
   return (
     <main className="wrap">
+      <StateSectionCrumb state="HI" name="Passing score" path="/hawaii/passing-score/" />
       <h1>Hawaii passing score</h1>
       <div className="card">
         <p>HAR §5-11-32 says the written exam requires a minimum of 80 percent. The Attorney General does not publish a question count, a time limit, or a scaled-score formula. This site does not invent those.</p>

@@ -1,9 +1,12 @@
 import { FlashcardsClient } from "@/components/FlashcardsClient";
+import { pageMeta } from "@/lib/seo";
+import { paths } from "@/lib/paths";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "Arizona Notary Flashcards",
-  description: "Arizona notary flashcards for fees, dates, definitions, and prohibited acts.",
-};
+  description: "A short Arizona flip deck for fees, dates, definitions, and prohibited acts. Topic study cards, with a rule and a source on each card, are a separate deck.",
+  path: paths.flashcards,
+});
 
 export default function FlashcardsPage() {
   return (

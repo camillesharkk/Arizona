@@ -6,14 +6,14 @@ import { publishedCaQuestions, caQuestionCounts } from "@/data/ca-questions";
 import { getSource } from "@/data/sources";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
 import { caStudyTopics } from "@/lib/ca-topics";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 const counts = caQuestionCounts();
 
 export const metadata: Metadata = {
   title: { absolute: "California Notary Practice Test" },
   description: "Check 10 California notary questions or take a 45-question, 60-minute practice exam. Forty items are scored.",
-  alternates: { canonical: `${siteUrl()}/california/practice/` },
+  alternates: { canonical: canonicalUrl("/california/practice/") },
 };
 
 export default function Page() {

@@ -3,12 +3,12 @@ import Link from "next/link";
 import { caArticles } from "@/data/ca-articles";
 import { caGuideChapters } from "@/data/ca-study-guide";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "California Notary Resources" },
   description: "Official California notary sources and the study tools on this site.",
-  alternates: { canonical: `${siteUrl()}/california/resources/` },
+  alternates: { canonical: canonicalUrl("/california/resources/") },
 };
 
 const gov = (section: string) =>

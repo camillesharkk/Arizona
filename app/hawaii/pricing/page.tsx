@@ -3,14 +3,14 @@ import { StateCheckout } from "@/components/StateCheckout";
 import { hiCards } from "@/data/hi-cards";
 import { hiQuestionCounts } from "@/data/hi-questions";
 import { hiPaths } from "@/lib/hi-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 const counts = hiQuestionCounts();
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Practice Access" },
   description: "Hawaii Pro is 60 days of extra comprehensive practice. The published question bank stays available on the free plan.",
-  alternates: { canonical: `${siteUrl()}/hawaii/pricing/` },
+  alternates: { canonical: canonicalUrl("/hawaii/pricing/") },
 };
 
 export default function Page() {

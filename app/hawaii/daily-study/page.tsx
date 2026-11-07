@@ -2,14 +2,14 @@ import { redirect } from "next/navigation";
 import { DailyStudyClient } from "@/components/DailyStudyClient";
 import { hiPaths } from "@/lib/hi-site";
 import { paths } from "@/lib/paths";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 import { getSession } from "@/lib/session";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Daily Study" },
   description: "Today’s Hawaii notary cards and questions, plus the reviews that are due.",
-  alternates: { canonical: `${siteUrl()}/hawaii/daily-study/` },
+  alternates: { canonical: canonicalUrl("/hawaii/daily-study/") },
   robots: { index: false, follow: false },
 };
 

@@ -3,7 +3,7 @@ import { HomeStudy, type StudyPreviewCard } from "@/components/HomeStudy";
 import { caCards } from "@/data/ca-cards";
 import { caQuestionCounts } from "@/data/ca-questions";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 const counts = caQuestionCounts();
 const previewCards: StudyPreviewCard[] = caCards.map((card) => ({
@@ -23,7 +23,7 @@ const previewCards: StudyPreviewCard[] = caCards.map((card) => ({
 export const metadata: Metadata = {
   title: { absolute: "California Notary Exam Practice" },
   description: `${counts.published} published California notary practice questions and ${caCards.length} study cards. The 10-question check suggests what to study next.`,
-  alternates: { canonical: `${siteUrl()}/california/` },
+  alternates: { canonical: canonicalUrl("/california/") },
 };
 
 export default function Page() {

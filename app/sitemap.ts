@@ -5,7 +5,7 @@ import { seoGuides } from "@/lib/seo-guides";
 import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const urls = [
@@ -61,9 +61,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const articles = [...caArticles, ...hiArticles];
   const indexed = [...new Set([...urls, ...seoGuides.filter((guide) => guide.index !== false).map((guide) => guide.path), ...articles.map((article) => article.path)])];
-  const updated = new Map(articles.map((article) => [article.path, article.updated]));
+  const updated = new Map<string, string>([
+    ...articles.map((article) => [article.path, article.updated] as const),
+    ...seoGuides.filter((guide) => guide.index !== false).map((guide) => [guide.path, "2026-11-07"] as const),
+    [paths.flashcards, "2026-11-07"],
+  ]);
   return indexed.map((path) => ({
-    url: `${siteUrl()}${path}`,
+    url: canonicalUrl(path),
     changeFrequency: "weekly" as const,
     priority: updated.has(path) ? 0.7 : 0.8,
     ...(updated.has(path) ? { lastModified: updated.get(path) } : {}),

@@ -1,4 +1,4 @@
-import { site, siteUrl } from "@/lib/site";
+import { canonicalUrl, site } from "@/lib/site";
 
 export function JsonLd({ data }: { data: Record<string, unknown> | Record<string, unknown>[] }) {
   return (
@@ -6,31 +6,50 @@ export function JsonLd({ data }: { data: Record<string, unknown> | Record<string
   );
 }
 
-export function defaultGraph(state: "AZ" | "CA" | "HI" = "AZ") {
-  const url = siteUrl();
-  const name = state === "CA" ? "California Exam" : state === "HI" ? "Hawaii Exam" : site.legalName;
-  const siteName = state === "CA" ? "California Exam" : state === "HI" ? "Hawaii Exam" : site.name;
+const origin = "https://arizonanotaryprep.com";
+
+export function defaultGraph() {
   const description =
-    state === "CA"
-      ? "Independent California notary exam practice. Not a government office and not affiliated with the California Secretary of State."
-      : state === "HI"
-        ? "Independent Hawaii notary exam practice. Not a government office and not affiliated with the Hawaii Department of the Attorney General."
-        : site.independent;
+    "Independent notary exam practice for Arizona, California, and Hawaii. Not a government office, and not affiliated with the Arizona Secretary of State, the California Secretary of State, or the Hawaii Department of the Attorney General.";
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Organization",
-        name,
-        url,
+        "@id": `${origin}/#organization`,
+        name: site.legalName,
+        url: origin,
         description,
       },
       {
         "@type": "WebSite",
-        name: siteName,
-        url,
+        "@id": `${origin}/#website`,
+        name: site.legalName,
+        url: origin,
+        description,
+        publisher: { "@id": `${origin}/#organization` },
       },
     ],
+  };
+}
+
+export function articleJson(input: {
+  headline: string;
+  description: string;
+  path: string;
+  datePublished: string;
+  dateModified: string;
+}) {
+  return {
+    "@type": "BlogPosting",
+    headline: input.headline,
+    description: input.description,
+    inLanguage: "en-US",
+    mainEntityOfPage: canonicalUrl(input.path),
+    datePublished: input.datePublished,
+    dateModified: input.dateModified,
+    author: { "@id": `${origin}/#organization` },
+    publisher: { "@id": `${origin}/#organization` },
   };
 }
 
@@ -41,7 +60,7 @@ export function breadcrumbJson(items: { name: string; path: string }[]) {
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      item: `${siteUrl()}${item.path}`,
+      item: canonicalUrl(item.path),
     })),
   };
 }

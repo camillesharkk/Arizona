@@ -3,14 +3,11 @@ import type { ReactNode } from "react";
 import { StateTheme } from "@/components/StateTheme";
 import { hiQuestionCounts } from "@/data/hi-questions";
 import { hiCards } from "@/data/hi-cards";
-import { siteUrl } from "@/lib/site";
-
 const counts = hiQuestionCounts();
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Exam Practice" },
   description: `${counts.published} Hawaii notary practice questions and ${hiCards.length} study cards. Independent of the Hawaii Department of the Attorney General.`,
-  alternates: { canonical: `${siteUrl()}/hawaii/` },
   robots: { index: true, follow: true },
 };
 

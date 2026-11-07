@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { StateSectionCrumb } from "@/components/Breadcrumb";
 import { HI_EXAM } from "@/lib/hi-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Laws" },
   description: "Where to read Hawaii notary statutes and rules: HRS Chapter 456 and HAR Chapter 5-11.",
-  alternates: { canonical: `${siteUrl()}/hawaii/laws/` },
+  alternates: { canonical: canonicalUrl("/hawaii/laws/") },
 };
 
 export default function Page() {
   return (
     <main className="wrap">
+      <StateSectionCrumb state="HI" name="Laws" path="/hawaii/laws/" />
       <h1>Hawaii notary laws</h1>
       <div className="card">
         <p>The commission statute is HRS Chapter 456. The notary rules are HAR Chapter 5-11. HAR §5-11-33 also puts HRS §§502-41 to 502-74 on the written exam. Checked {HI_EXAM.checkedOn}.</p>

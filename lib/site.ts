@@ -6,6 +6,12 @@ export function siteUrl() {
   return "http://localhost:3000";
 }
 
+/** Public canonical host. Preview and local hosts must not become the indexed URL. */
+export function canonicalUrl(path = "/") {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return `https://arizonanotaryprep.com${normalized}`;
+}
+
 export const site = {
   name: "Arizona Exam",
   legalName: "Arizona Notary Exam Practice",

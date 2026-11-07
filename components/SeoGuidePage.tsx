@@ -1,28 +1,59 @@
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
-import { JsonLd, faqJson } from "@/components/JsonLd";
+import { JsonLd, articleJson, faqJson } from "@/components/JsonLd";
 import { getSource } from "@/data/sources";
+import { officialExamChecked } from "@/data/exam-config";
+import { expandedGuides } from "@/lib/seo-expansion";
 import { paths } from "@/lib/paths";
 import { seoGuideById } from "@/lib/seo-guides";
 
+const MODIFIED = "2026-11-07";
+
 export function SeoGuidePage({ id }: { id: string }) {
   const guide = seoGuideById(id);
-  const ctas = (guide.ctas ?? []).slice(0, 2);
+  const cta = guide.ctas?.[0];
   const showFaqSchema = guide.index !== false && Boolean(guide.faqs?.length);
+  const published = expandedGuides.some((item) => item.id === guide.id) ? "2026-10-13" : "2026-09-29";
+  const showKicker = guide.kicker.trim().toLowerCase() !== guide.h1.trim().toLowerCase() && !guide.h1.startsWith(guide.kicker);
+  const crumbs = [
+    { name: "Home", path: "/" },
+    { name: "Arizona", path: paths.home },
+    { name: "Guides", path: paths.guidesIndex },
+    { name: showKicker ? guide.kicker : guide.h1, path: guide.path },
+  ];
   return (
     <main className="wrap hero">
-      {showFaqSchema && guide.faqs ? (
-        <JsonLd data={{ "@context": "https://schema.org", ...faqJson(guide.faqs) } as Record<string, unknown>} />
-      ) : null}
-      <Breadcrumb items={[{ name: "Home", path: paths.home }, { name: "Exam guides", path: paths.guidesIndex }, { name: guide.kicker, path: guide.path }]} />
-      <p className="kicker">{guide.kicker}</p>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            articleJson({
+              headline: guide.h1,
+              description: guide.description,
+              path: guide.path,
+              datePublished: published,
+              dateModified: MODIFIED,
+            }),
+            ...(showFaqSchema && guide.faqs ? [faqJson(guide.faqs)] : []),
+          ],
+        }}
+      />
+      <Breadcrumb items={crumbs} />
+      {showKicker ? <p className="kicker">{guide.kicker}</p> : null}
       <h1>{guide.h1}</h1>
       <p className="lede">{guide.lede}</p>
-      {guide.checked ? <p className="notice">{guide.checked}</p> : null}
-      {ctas[0] ? (
+      <p className="notice">Published {published}. Updated {MODIFIED}. {siteByline()}</p>
+      {guide.checked === officialExamChecked ? (
+        <p className="notice">
+          Question count, time, and the retry rule are kept on the <Link href="/arizona/exam-guide/">Arizona exam guide</Link>.
+        </p>
+      ) : guide.checked ? (
+        <p className="notice">{guide.checked}</p>
+      ) : null}
+      {cta ? (
         <p>
-          <Link className="btn btn-primary" href={ctas[0].href}>
-            {ctas[0].label}
+          <Link className="btn btn-primary" href={cta.href}>
+            {cta.label}
           </Link>
         </p>
       ) : null}
@@ -59,20 +90,6 @@ export function SeoGuidePage({ id }: { id: string }) {
           <p>{item.a}</p>
         </details>
       ))}
-      {ctas[1] ? (
-        <p style={{ marginTop: 18 }}>
-          <Link href={ctas[1].href}>{ctas[1].label}</Link>
-        </p>
-      ) : null}
-      <section className="card" style={{ marginTop: 24 }} aria-label="Choose your next study step">
-        <h2>Put this guide into practice</h2>
-        <ul>
-          <li><Link href={`${paths.practice}?mode=quick`}>Free Quick 10: find a weak topic</Link></li>
-          <li><Link href={`${paths.practice}?mode=full`}>Full 45: practice pacing</Link> — one free Full 45 in this browser.</li>
-          <li><Link href={paths.study}>Study Guide: understand the rule</Link></li>
-          <li><Link href={paths.pricing}>View Pro</Link> for the rest of this site’s practice bank. Official sources on this page stay free.</li>
-        </ul>
-      </section>
       <section className="card" style={{ marginTop: 24 }}>
         <h2>Related reading</h2>
         <ul>
@@ -85,4 +102,8 @@ export function SeoGuidePage({ id }: { id: string }) {
       </section>
     </main>
   );
+}
+
+function siteByline() {
+  return "Written by Arizona Notary Exam Practice.";
 }

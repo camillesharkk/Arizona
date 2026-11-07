@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { StateSectionCrumb } from "@/components/Breadcrumb";
 import { CA_EXAM } from "@/lib/ca-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "California Notary Laws" },
   description: "Primary California notary sources: the Secretary of State handbook and the Government Code.",
-  alternates: { canonical: `${siteUrl()}/california/laws/` },
+  alternates: { canonical: canonicalUrl("/california/laws/") },
 };
 
 export default function Page() {
   return (
     <main className="wrap">
+      <StateSectionCrumb state="CA" name="Laws" path="/california/laws/" />
       <h1>California notary laws</h1>
       <div className="card">
         <ul>

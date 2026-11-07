@@ -5,7 +5,7 @@ import { pageMeta } from "@/lib/seo";
 import { PrepCtas } from "@/components/PrepCtas";
 
 export const metadata = pageMeta({
-  title: "Arizona Notary Exam Prep 2026 | 7-Step Study Plan",
+  title: "Arizona Notary Exam Prep: A 7-Step Plan",
   description: "Prepare for the Arizona notary exam step by step: diagnose weak topics, study the free guide, practice scenarios and complete a timed 45-question test.",
   path: paths.examPrep,
 });
@@ -24,7 +24,7 @@ export default function ExamGuidePage() {
   return (
     <main className="wrap hero">
       <p className="kicker">Exam Prep · Plan your study</p>
-      <h1>Arizona Notary Exam Prep 2026 — A Seven-Step Study Plan</h1>
+      <h1>Arizona Notary Exam Prep: A 7-Step Plan</h1>
       <p className="lede">Start with a short diagnostic, learn the rules, then use a timed test to find what still needs work. Follow one step per day or spread the steps over a longer period.</p>
       <p>This is a suggested study schedule, not an official course or a guarantee of passing. The <Link href={paths.study}>core Study Guide is free</Link>; <Link href={paths.practice}>Practice Test</Link> handles the questions and results.</p>
       <PrepCtas />

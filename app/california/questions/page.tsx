@@ -3,14 +3,14 @@ import { QuestionsClient } from "@/components/QuestionsClient";
 import { publishedCaQuestions, caQuestionCounts } from "@/data/ca-questions";
 import { CA_EXAM, areaLabel, caPaths } from "@/lib/ca-site";
 import { caStudyTopics } from "@/lib/ca-topics";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 const counts = caQuestionCounts();
 
 export const metadata: Metadata = {
   title: { absolute: "California Notary Exam Questions" },
   description: `${counts.published} published California notary questions across the five exam areas.`,
-  alternates: { canonical: `${siteUrl()}/california/questions/` },
+  alternates: { canonical: canonicalUrl("/california/questions/") },
 };
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ topic?: string }> }) {

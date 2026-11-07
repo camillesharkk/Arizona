@@ -1,4 +1,4 @@
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl, site } from "@/lib/site";
 
 export function pageMeta(opts: {
   title: string;
@@ -7,17 +7,16 @@ export function pageMeta(opts: {
   keywords?: string;
   index?: boolean;
 }) {
-  const url = `${siteUrl()}${opts.path}`;
+  const url = canonicalUrl(opts.path);
   return {
-    title: opts.title,
+    title: { absolute: opts.title },
     description: opts.description,
-    keywords: opts.keywords,
     alternates: { canonical: url },
     openGraph: {
       title: opts.title,
       description: opts.description,
       url,
-      siteName: "Arizona Exam",
+      siteName: site.legalName,
       type: "website" as const,
       locale: "en_US",
     },

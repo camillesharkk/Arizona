@@ -1,30 +1,27 @@
 import Link from "next/link";
 import { ArticleLink, ArticleView } from "@/components/ArticleLink";
 import { Breadcrumb } from "@/components/Breadcrumb";
-import { JsonLd, faqJson } from "@/components/JsonLd";
+import { JsonLd, articleJson, faqJson } from "@/components/JsonLd";
 import type { StateArticle } from "@/lib/state-articles";
-import { siteUrl } from "@/lib/site";
 
-export function StateArticlePage({ article, bankNote }: { article: StateArticle; bankNote: string }) {
+export function StateArticlePage({ article }: { article: StateArticle }) {
   const home = article.state === "CA" ? "/california/" : "/hawaii/";
-  const resources = article.state === "CA" ? "/california/resources/" : "/hawaii/resources/";
-  const brand = article.state === "CA" ? "California Exam" : "Hawaii Exam";
+  const stateName = article.state === "CA" ? "California" : "Hawaii";
+  const resources = `${home}resources/`;
   const crumbs = [
-    { name: "Home", path: home },
+    { name: "Home", path: "/" },
+    { name: stateName, path: home },
     { name: "Resources", path: resources },
     { name: article.kicker, path: article.path },
   ];
-  const url = `${siteUrl()}${article.path}`;
   const graph: Record<string, unknown>[] = [
-    {
-      "@type": "BlogPosting",
+    articleJson({
       headline: article.h1,
       description: article.description,
+      path: article.path,
       datePublished: article.updated,
       dateModified: article.updated,
-      mainEntityOfPage: url,
-      publisher: { "@type": "Organization", name: brand, url: siteUrl() },
-    },
+    }),
   ];
   if (article.faqs?.length) graph.push(faqJson(article.faqs));
   return (
@@ -46,8 +43,7 @@ export function StateArticlePage({ article, bankNote }: { article: StateArticle;
           targetMode={article.ledeCta.targetMode}
         />
       </p>
-      <p className="notice">{article.checked}</p>
-      <p className="notice">{bankNote}</p>
+      <p className="notice">Published {article.updated}. Arizona Notary Exam Practice. {article.checked}</p>
       {article.sections.map((section) => (
         <section className="card" key={section.heading} style={{ marginTop: 18 }}>
           <h2>{section.heading}</h2>

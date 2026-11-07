@@ -6,14 +6,14 @@ import { publishedHiQuestions, hiQuestionCounts } from "@/data/hi-questions";
 import { getSource } from "@/data/sources";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
 import { hiStudyTopics } from "@/lib/hi-topics";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 const counts = hiQuestionCounts();
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Practice Test" },
   description: `Free Hawaii notary Quick 10, plus a ${HI_EXAM.practiceQuestionCount}-question Comprehensive Practice with no time limit. This count is this site's practice setting.`,
-  alternates: { canonical: `${siteUrl()}/hawaii/practice/` },
+  alternates: { canonical: canonicalUrl("/hawaii/practice/") },
 };
 
 export default function Page() {

@@ -26,17 +26,17 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(siteUrl()),
     title: {
       default: hawaii ? "Hawaii Notary Exam Practice" : california ? "California Notary Exam Practice" : "Arizona Notary Exam Practice Test 2026",
-      template: hawaii ? "%s · Hawaii Exam" : california ? "%s · California Exam" : "%s · Arizona Exam",
+      template: "%s",
     },
     description: hawaii
       ? "Hawaii notary practice questions and study cards from published official sources. Independent of the Hawaii Department of the Attorney General."
       : california
       ? "California notary practice questions and study cards from published official sources. Independent of the California Secretary of State."
       : "Free Arizona notary practice test, exam questions, and study guide with official-source citations. Independent of the Arizona Secretary of State.",
-    applicationName: hawaii ? "Hawaii Exam" : california ? "California Exam" : site.name,
+    applicationName: site.legalName,
     robots: { index: true, follow: true },
     openGraph: {
-      siteName: hawaii ? "Hawaii Exam" : california ? "California Exam" : site.name,
+      siteName: site.legalName,
       type: "website",
       locale: "en_US",
     },
@@ -58,7 +58,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <Suspense fallback={null}>
           <AnalyticsPageViews />
         </Suspense>
-        <JsonLd data={defaultGraph(state === "CA" || state === "HI" ? state : "AZ")} />
+        <JsonLd data={defaultGraph()} />
         <SavedStateProvider value={saved}>
           <SiteHeader savedState={saved} />
           <PaddleCheckoutResume successOrigin={siteUrl()} />

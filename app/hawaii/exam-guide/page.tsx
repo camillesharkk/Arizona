@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
+import { StateSectionCrumb } from "@/components/Breadcrumb";
 import { HI_EXAM, HI_PRACTICE_QUOTAS } from "@/lib/hi-site";
 import { hiStudyLabel } from "@/lib/hi-topics";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Exam Guide" },
   description: "The Hawaii notary written exam is closed book and requires at least 80 percent. Official question count and time limit are not published.",
-  alternates: { canonical: `${siteUrl()}/hawaii/exam-guide/` },
+  alternates: { canonical: canonicalUrl("/hawaii/exam-guide/") },
 };
 
 export default function Page() {
   return (
     <main className="wrap">
+      <StateSectionCrumb state="HI" name="Exam guide" path="/hawaii/exam-guide/" />
       <h1>Hawaii notary exam</h1>
       <div className="card">
         <p>The Attorney General page says an approved first-time applicant takes a written closed-book exam on the notary laws, rules, and practices. HAR §5-11-32 requires a minimum of 80 percent. Checked {HI_EXAM.checkedOn}.</p>

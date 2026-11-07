@@ -3,12 +3,12 @@ import { Suspense } from "react";
 import { CaliforniaGuide } from "@/components/CaliforniaGuide";
 import { caGuideCheckedOn } from "@/data/ca-study-guide";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "California Notary Study Guide" },
   description: "California notary rules by study topic, with the official source for each chapter.",
-  alternates: { canonical: `${siteUrl()}/california/study-guide/` },
+  alternates: { canonical: canonicalUrl("/california/study-guide/") },
 };
 
 export default function Page() {

@@ -3,7 +3,7 @@ import { StudyCardsClient } from "@/components/StudyCardsClient";
 import { caCards } from "@/data/ca-cards";
 import { caPaths } from "@/lib/ca-site";
 import { caStudyTopics } from "@/lib/ca-topics";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 import type { PublicStudyCard } from "@/lib/study-cards";
 
 const cards: PublicStudyCard[] = caCards.map((card) => ({
@@ -24,7 +24,7 @@ const cards: PublicStudyCard[] = caCards.map((card) => ({
 export const metadata: Metadata = {
   title: { absolute: "California Notary Study Cards" },
   description: `${caCards.length} California notary study cards from the handbook and statutes.`,
-  alternates: { canonical: `${siteUrl()}/california/study-cards/` },
+  alternates: { canonical: canonicalUrl("/california/study-cards/") },
 };
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ topic?: string }> }) {

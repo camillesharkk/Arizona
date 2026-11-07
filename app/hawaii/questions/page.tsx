@@ -3,14 +3,14 @@ import { QuestionsClient } from "@/components/QuestionsClient";
 import { publishedHiQuestions, hiQuestionCounts } from "@/data/hi-questions";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
 import { hiStudyLabel, hiStudyTopics } from "@/lib/hi-topics";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 const counts = hiQuestionCounts();
 
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Exam Questions" },
   description: `${counts.published} published Hawaii notary practice questions, with the same filters and resume behavior as the Arizona bank.`,
-  alternates: { canonical: `${siteUrl()}/hawaii/questions/` },
+  alternates: { canonical: canonicalUrl("/hawaii/questions/") },
 };
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ topic?: string }> }) {

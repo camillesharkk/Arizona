@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { StateSectionCrumb } from "@/components/Breadcrumb";
 import { CA_EXAM } from "@/lib/ca-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "California Notary Exam Guide" },
   description: "The California notary exam has 45 multiple-choice items, a one-hour limit, and a scaled passing score of 70.",
-  alternates: { canonical: `${siteUrl()}/california/exam-guide/` },
+  alternates: { canonical: canonicalUrl("/california/exam-guide/") },
 };
 
 export default function Page() {
   return (
     <main className="wrap">
+      <StateSectionCrumb state="CA" name="Exam guide" path="/california/exam-guide/" />
       <h1>California exam guide</h1>
       <div className="card">
         <p>CPS HR, checked {CA_EXAM.checkedOn}, describes a closed-book exam of 45 multiple-choice items with a one-hour limit. Forty items are scored. Five are not. A candidate may test once in a calendar month.</p>

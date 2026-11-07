@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { StateSectionCrumb } from "@/components/Breadcrumb";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "Become a Hawaii Notary" },
   description: "How a first-time Hawaii notary applicant is approved, tested, and commissioned. Remote online notarization is a separate later step.",
-  alternates: { canonical: `${siteUrl()}/hawaii/become-a-notary/` },
+  alternates: { canonical: canonicalUrl("/hawaii/become-a-notary/") },
 };
 
 export default function Page() {
   return (
     <main className="wrap">
+      <StateSectionCrumb state="HI" name="Become a notary" path="/hawaii/become-a-notary/" />
       <h1>Become a Hawaii notary</h1>
       <div className="card">
         <p>The Department of the Attorney General commissions notaries. A first commission is not the same as a renewal, a restoration, or a remote online notary commission. Checked {HI_EXAM.checkedOn}.</p>

@@ -8,7 +8,7 @@ import { StudyCardsClient } from "@/components/StudyCardsClient";
 
 export const metadata = pageMeta({
   title: "Arizona Notary Study Cards",
-  description: "Arizona notary study cards for every current exam topic, with the rule, a workplace example, and the official source.",
+  description: "Topic study cards for the Arizona exam: each card has the rule, an example, and the official source. The shorter flashcard deck is a separate page.",
   path: paths.studyCards,
 });
 

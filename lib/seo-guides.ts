@@ -39,7 +39,7 @@ const existingGuides: SeoGuide[] = [
   {
     id: "fees",
     path: paths.fees,
-    title: `Arizona Notary Fees and Allowed Charges ${examConfig.year}`,
+    title: "Arizona Notary Fees and Allowed Charges",
     description:
       "Arizona notary fees: A.R.S. § 41-316 and R2-12-1102 cap notarial-act charges. The posted maximum is $10. Inform the requestor before the act. Rush is not a loophole.",
     kicker: "Fees",
@@ -86,7 +86,7 @@ const existingGuides: SeoGuide[] = [
   {
     id: "bond",
     path: paths.bond,
-    title: `Arizona Notary Bond Requirements ${examConfig.year}`,
+    title: "Arizona Notary Bond Requirements",
     description: "Arizona notary bond: A.R.S. § 41-269(D) requires a $5,000 surety bond on file before a commission is issued. The surety is liable to claimants. It is not a substitute for your own insurance.",
     kicker: "Surety bond",
     h1: "Arizona Notary Bond Requirements",
@@ -133,7 +133,7 @@ const existingGuides: SeoGuide[] = [
   {
     id: "ron",
     path: paths.ron,
-    title: `Arizona Remote Online Notary Requirements ${examConfig.year}`,
+    title: "Arizona Remote Online Notary Requirements",
     description:
       "Arizona RON: A.R.S. § 41-263 requires the notary to be in Arizona, notify the SOS before the first remote act, identify the signer, record the session, and use a proper certificate. A casual video call is not RON.",
     kicker: "Remote online notarization",
@@ -182,7 +182,7 @@ const existingGuides: SeoGuide[] = [
   {
     id: "cram",
     path: paths.cram,
-    title: `Arizona Notary Exam Cram Sheet ${examConfig.year}`,
+    title: "Arizona Notary Exam Cram Sheet",
     description: "A one-page Arizona notary exam cram sheet: eligibility, ID, fees, conflicts, RON, and the practice-test target. Confirm the live SOS exam format before test day.",
     kicker: "Cram sheet",
     h1: "Arizona Notary Exam Cram Sheet",
@@ -253,7 +253,7 @@ const existingGuides: SeoGuide[] = [
   {
     id: "mistakes",
     path: paths.mistakesGuide,
-    title: `Arizona Notary Exam Mistakes to Avoid ${examConfig.year}`,
+    title: "Arizona Notary Exam Mistakes to Avoid",
     description:
       "Arizona notary exam mistakes tied to statute: the wrong ID, skipping a verification, a video call treated as RON, a fee over the cap, a spouse conflict, and a practice score treated as a commission.",
     kicker: "Mistakes to avoid",

@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/", disallow: ["/api/", "/dashboard/", "/account/", "/admin/"] },
-    sitemap: `${siteUrl()}/sitemap.xml`,
+    sitemap: canonicalUrl("/sitemap.xml"),
   };
 }

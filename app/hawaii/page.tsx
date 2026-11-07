@@ -3,7 +3,7 @@ import { HomeStudy, type StudyPreviewCard } from "@/components/HomeStudy";
 import { hiCards } from "@/data/hi-cards";
 import { hiQuestionCounts } from "@/data/hi-questions";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
-import { siteUrl } from "@/lib/site";
+import { canonicalUrl } from "@/lib/site";
 
 const counts = hiQuestionCounts();
 const previewCards: StudyPreviewCard[] = hiCards.map((card) => ({
@@ -23,7 +23,7 @@ const previewCards: StudyPreviewCard[] = hiCards.map((card) => ({
 export const metadata: Metadata = {
   title: { absolute: "Hawaii Notary Practice Test" },
   description: `Hawaii notary practice test with ${counts.published} published questions and ${hiCards.length} study cards. Quick 10 is free. Comprehensive Practice is this site's 50-question set.`,
-  alternates: { canonical: `${siteUrl()}/hawaii/` },
+  alternates: { canonical: canonicalUrl("/hawaii/") },
 };
 
 export default function Page() {
