@@ -21,10 +21,7 @@ export async function getDeviceRepo(): Promise<DeviceRepo> {
   return cached;
 }
 
-export {
-  DEVICE_INACTIVE_MS,
-  MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW,
-} from "./policy.ts";
+export { DEVICE_INACTIVE_MS } from "./policy.ts";
 export { createMemoryDeviceRepo } from "./repo.ts";
 export {
   activateDevice,

@@ -14,7 +14,7 @@ import {
   revokeAllDevices,
 } from "../lib/devices/service.ts";
 import { newDeviceToken } from "../lib/devices/label.ts";
-import { DEVICE_INACTIVE_MS, MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW } from "../lib/devices/policy.ts";
+import { DEVICE_INACTIVE_MS } from "../lib/devices/policy.ts";
 import { createMemoryCommerceRepo } from "../lib/commerce/repo.ts";
 import { markProUsed } from "../lib/commerce/service.ts";
 import { readSessionToken, signLegacySession, signSession } from "../lib/session-token.ts";
@@ -141,8 +141,10 @@ async function run() {
     if (r.ok && i < 4) await revokeOwnDevice(churn, { userId: churnUser, deviceId: r.session.id, now });
   }
   const sixth = await activateDevice(churn, { userId: churnUser, token: newDeviceToken(), userAgent: "Chrome/9 Windows", now });
-  if (sixth.ok || sixth.error !== "TOO_MANY_DEVICE_CHANGES") fail("6th new device in 7 days should be limited");
-  else ok("rapid device churn → TOO_MANY_DEVICE_CHANGES");
+  const earlier = await churn.listSessions(churnUser);
+  if (!sixth.ok) fail("6th new device should still sign in");
+  else if (earlier.filter((row) => !row.revokedAt).length < 2) fail("new device login revoked an earlier session");
+  else ok("new devices keep signing in and earlier sessions stay active");
 
   const commerce = createMemoryCommerceRepo();
   await commerce.putUser({ id: userId, createdAt: now.toISOString() });
@@ -156,8 +158,7 @@ async function run() {
   if ((await repo.listSessions(userId)).some((s) => !s.revokedAt)) fail("revoke all left an active session");
   else ok("revoke all devices");
 
-  if (MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW !== 5) fail("churn cap should be 5");
-  else ok("device churn window remains 5 new activations / 7 days");
+  ok("device activation has no count cap");
 
   const jwtUser = "jwt-user";
   const jwtRepo = createMemoryDeviceRepo();

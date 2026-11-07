@@ -123,10 +123,6 @@ export function AuthForm({
     }
     if (!res.ok) {
       setBusy(false);
-      if (mode === "login" && data.code === "TOO_MANY_DEVICE_CHANGES") {
-        setError(data.message || "Too many new devices");
-        return;
-      }
       if (mode === "login" && data.code === "EMAIL_NOT_VERIFIED") {
         setNeedVerify(true);
         setError("Please verify your email before signing in.");

@@ -1,9 +1,4 @@
-import {
-  DEVICE_CHURN_WINDOW_MS,
-  DEVICE_INACTIVE_MS,
-  DEVICE_TOUCH_MIN_MS,
-  MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW,
-} from "./policy.ts";
+import { DEVICE_TOUCH_MIN_MS } from "./policy.ts";
 import { deviceLabelFromUserAgent, hashDeviceToken, summarizeUserAgent } from "./label.ts";
 import { isDeviceActive, randomUUID, type DeviceRepo } from "./repo.ts";
 import type { DeviceSessionRow, PublicDevice } from "./types.ts";
@@ -109,12 +104,6 @@ export async function activateDevice(
       await repo.touchSession(existing.id, at, label, uaSummary);
       const next = await repo.getSession(existing.id);
       return { ok: true as const, session: next || { ...existing, revokedAt: null, lastSeenAt: at, deviceLabel: label }, created: false };
-    }
-
-    const since = new Date(now.getTime() - DEVICE_CHURN_WINDOW_MS).toISOString();
-    const recent = await repo.countActivationsSince(opts.userId, since);
-    if (!opts.skipLimits && recent >= MAX_NEW_DEVICE_ACTIVATIONS_PER_WINDOW) {
-      return { ok: false as const, error: "TOO_MANY_DEVICE_CHANGES" as const };
     }
 
     const session: DeviceSessionRow = {

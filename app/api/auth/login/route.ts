@@ -15,14 +15,18 @@ const schema = z.object({
 export async function POST(req: Request) {
   const raw = await req.json().catch(() => null);
   const body = schema.safeParse(raw);
-  const email = body.success ? body.data.email : "";
-  const limited = consumeLoginAttempt(email, clientIp(req), process.env.OPERATIONS_ADMIN_EMAILS);
-  if (!limited.ok) return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
   if (!body.success) return NextResponse.json({ error: "Invalid credentials" }, { status: 400 });
   const admin = operationsAccess(body.data.email, process.env.OPERATIONS_ADMIN_EMAILS) === "ok";
   const store = await getStore();
   const checked = await checkLoginCredentials(store, body.data.email, body.data.password);
   if (!checked.ok) {
+    const limited = consumeLoginAttempt(body.data.email, clientIp(req), process.env.OPERATIONS_ADMIN_EMAILS);
+    if (!limited.ok) {
+      return NextResponse.json(
+        { error: "Too many incorrect passwords from this network. The account is not locked. Wait a minute, then use the correct password." },
+        { status: 429 }
+      );
+    }
     return NextResponse.json(
       {
         error: checked.error,
@@ -46,16 +50,8 @@ export async function POST(req: Request) {
     },
     { req, skipDeviceLimits: admin }
   );
-  if (!issued.ok && issued.error === "TOO_MANY_DEVICE_CHANGES") {
-    return NextResponse.json(
-      {
-        error: "TOO_MANY_DEVICE_CHANGES",
-        code: "TOO_MANY_DEVICE_CHANGES",
-        message:
-          "For account security, too many new devices have been activated recently. Please try again later or contact support.",
-      },
-      { status: 403 }
-    );
+  if (!issued.ok) {
+    return NextResponse.json({ error: "Could not start the session. Try again." }, { status: 503 });
   }
   return NextResponse.json({ ok: true });
 }
