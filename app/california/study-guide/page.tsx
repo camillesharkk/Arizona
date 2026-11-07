@@ -16,7 +16,7 @@ export default function Page() {
     <main className="wrap">
       <h1>California study guide</h1>
       <p className="lede">
-        Each chapter states the rule, the exception, and a worked example. Checked {caGuideCheckedOn} against the Secretary of State handbook, the qualifications page, and CPS HR. Topic groups on this site are a study outline, not an official question distribution.
+        Each chapter states the rule, the exception, and a worked example. Checked {caGuideCheckedOn} against the Secretary of State handbook, the qualifications page, and CPS HR. The exam facts were read again on November 7, 2026: closed book, 45 items, one hour, scaled 70. Topic groups on this site are a study outline, not an official question distribution. A seven-day order is on the <a href="/california/study-plan/">study plan</a>.
       </p>
       <p>
         <a href={CA_EXAM.sources.handbook}>Secretary of State handbook</a>

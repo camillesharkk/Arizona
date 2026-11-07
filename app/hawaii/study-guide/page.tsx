@@ -16,7 +16,7 @@ export default function Page() {
     <main className="wrap">
       <h1>Hawaii notary study guide</h1>
       <p className="lede">
-        Each chapter states the rule, the exception, and an example. Checked {hiGuideCheckedOn} against HRS Chapter 456, HAR Chapter 5-11, and the Attorney General notary pages. These chapters are a study outline, not official exam weights.
+        Each chapter states the rule, the exception, and an example. Checked {hiGuideCheckedOn} against HRS Chapter 456, HAR Chapter 5-11, and the Attorney General notary pages. The exam page was read again on November 7, 2026: closed book, 80 percent, and no published question count. These chapters are a study outline, not official exam weights. A seven-day order is on the <a href="/hawaii/study-plan/">study plan</a>.
       </p>
       <p>
         <a href={HI_EXAM.sources.statutes}>HRS Chapter 456</a>

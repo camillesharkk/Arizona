@@ -39,7 +39,8 @@ export default function Page() {
       <p>
         <strong>
           The practice bank has {counts.published} questions. {counts.free} are free. Each Full 45 draws {CA_EXAM.questionCount} questions, scores {CA_EXAM.scoredCount}, and allows {CA_EXAM.timeLimitMinutes} minutes.
-        </strong>
+        </strong>{" "}
+        Quick 10 is free and shows each explanation immediately. The official exam is a separate closed-book CPS HR test. These questions are practice, not released exam items.
       </p>
       <Suspense fallback={<p className="notice">Loading exam…</p>}>
         <PracticeLaunch stateCode="CA" />

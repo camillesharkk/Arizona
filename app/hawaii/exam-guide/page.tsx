@@ -23,7 +23,9 @@ export default function Page() {
           ))}
         </ul>
         <p>HAR §5-11-33 lists the written-exam subjects as general principles and practices, HRS Chapter 456, HRS §§502-41 to 502-74, and HAR Chapter 5-11. The Attorney General page also points readers to related sections, including parts of HRS Chapters 502, 603, and 621. Those are two official lists, not one weighted outline.</p>
-        <p>Remote online notarization has its own application and its own exam under HAR §5-11-64. It is not a requirement of the ordinary first commission.</p>
+        <p>Free Quick 10 shows the explanation after each question. One Comprehensive Practice is free. All published Hawaii questions are free. Pro does not add a hidden Hawaii bank. It removes the one-practice limit for 60 days in every available state.</p>
+        <p>A first failure can be retaken without a new application only inside 14 days of the notice. A second failure requires a 90-day wait. Remote online notarization has its own application and its own exam under HAR §5-11-64. It is not a requirement of the ordinary first commission.</p>
+        <p><a href="/hawaii/open-book/">Closed-book rule</a>{" · "}<a href="/hawaii/exam-retake/">Retake rules</a>{" · "}<a href="/hawaii/exam-scheduling/">Scheduling</a></p>
         <p>
           <a href={HI_EXAM.sources.ag}>Attorney General notary page</a>
           {" · "}

@@ -21,7 +21,9 @@ export default function Page() {
           <li>File the $1,000 bond with the circuit clerk where you reside, after a circuit judge approves it. HRS §456-5.</li>
           <li>The commission term is four years from the commission date. HRS §456-1. Renewal is your own duty. A timely renewal is one received within 60 days before expiration. HAR §5-11-12.</li>
         </ol>
+        <p>The exam is closed book. Official question count and time are not published. This site’s 50-question Comprehensive Practice is not that exam. The $1,000 bond is filed after approval and the exam, with the circuit clerk, after a judge approves it.</p>
         <p>Remote online notarization is available only to a notary who already holds an active commission. It has a separate application, a separate exam, and a commission that ends with the notary commission. It is not part of the first application.</p>
+        <p><a href="/hawaii/exam-scheduling/">Scheduling</a>{" · "}<a href="/hawaii/bond/">Bond</a>{" · "}<a href="/hawaii/remote-online-notary/">Remote commission</a></p>
         <p>
           <a href={HI_EXAM.sources.ag}>Attorney General requirements</a>
           {" · "}

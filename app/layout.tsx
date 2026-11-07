@@ -58,7 +58,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <Suspense fallback={null}>
           <AnalyticsPageViews />
         </Suspense>
-        <JsonLd data={defaultGraph()} />
+        <JsonLd data={defaultGraph(state === "CA" || state === "HI" ? state : "AZ")} />
         <SavedStateProvider value={saved}>
           <SiteHeader savedState={saved} />
           <PaddleCheckoutResume successOrigin={siteUrl()} />

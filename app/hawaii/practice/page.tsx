@@ -39,7 +39,8 @@ export default function Page() {
       <p>
         <strong>
           The practice bank has {counts.published} questions. {counts.free} are free. Comprehensive Practice draws {HI_EXAM.practiceQuestionCount} distinct questions and has no time limit. That count is this site's practice setting.
-        </strong>
+        </strong>{" "}
+        Quick 10 is free and shows each explanation immediately. The official exam is a separate closed-book test. Its question count is not the 50 used here.
       </p>
       <Suspense fallback={<p className="notice">Loading exam…</p>}>
         <PracticeLaunch stateCode="HI" />

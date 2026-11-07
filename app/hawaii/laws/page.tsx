@@ -23,7 +23,9 @@ export default function Page() {
           <li><a href={HI_EXAM.sources.manual}>2023 notary manual</a> — practice handbook. A later statute or rule controls if the manual is older.</li>
         </ul>
         <p>HRS §456-9 prints commission fees and says the rules may adjust them. HAR §5-11-46 is the later fee schedule. A practice question names which one it is asking about.</p>
+        <p>Checked again on November 7, 2026. Act 54, Session Laws of Hawaii 2020, has been effective since January 1, 2021. The Attorney General page still says revisions to the administrative rules will be forthcoming. The HAR PDF is the compilation linked from the documents page. It is not proof that every line was amended on the PDF’s file date.</p>
         <p>The FAQ on notary.ehawaii.gov includes older answers. It is not used where it conflicts with the current statute or the 2022 rule compilation.</p>
+        <p><a href="/hawaii/notary-fees/">Act fees and commission fees</a>{" · "}<a href="/hawaii/remote-online-notary/">Remote online notarization</a></p>
       </div>
     </main>
   );

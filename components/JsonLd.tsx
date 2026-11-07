@@ -6,20 +6,28 @@ export function JsonLd({ data }: { data: Record<string, unknown> | Record<string
   );
 }
 
-export function defaultGraph() {
+export function defaultGraph(state: "AZ" | "CA" | "HI" = "AZ") {
   const url = siteUrl();
+  const name = state === "CA" ? "California Exam" : state === "HI" ? "Hawaii Exam" : site.legalName;
+  const siteName = state === "CA" ? "California Exam" : state === "HI" ? "Hawaii Exam" : site.name;
+  const description =
+    state === "CA"
+      ? "Independent California notary exam practice. Not a government office and not affiliated with the California Secretary of State."
+      : state === "HI"
+        ? "Independent Hawaii notary exam practice. Not a government office and not affiliated with the Hawaii Department of the Attorney General."
+        : site.independent;
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Organization",
-        name: site.legalName,
+        name,
         url,
-        description: site.independent,
+        description,
       },
       {
         "@type": "WebSite",
-        name: site.name,
+        name: siteName,
         url,
       },
     ],

@@ -1,4 +1,6 @@
 import type { MetadataRoute } from "next";
+import { caArticles } from "@/data/ca-articles";
+import { hiArticles } from "@/data/hi-articles";
 import { seoGuides } from "@/lib/seo-guides";
 import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
@@ -57,6 +59,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     hiPaths.become,
     hiPaths.pricing,
   ];
-  const indexed = [...new Set([...urls, ...seoGuides.filter((guide) => guide.index !== false).map((guide) => guide.path)])];
-  return indexed.map((path) => ({ url: `${siteUrl()}${path}`, changeFrequency: "weekly" as const, priority: 0.8 }));
+  const articles = [...caArticles, ...hiArticles];
+  const indexed = [...new Set([...urls, ...seoGuides.filter((guide) => guide.index !== false).map((guide) => guide.path), ...articles.map((article) => article.path)])];
+  const updated = new Map(articles.map((article) => [article.path, article.updated]));
+  return indexed.map((path) => ({
+    url: `${siteUrl()}${path}`,
+    changeFrequency: "weekly" as const,
+    priority: updated.has(path) ? 0.7 : 0.8,
+    ...(updated.has(path) ? { lastModified: updated.get(path) } : {}),
+  }));
 }

@@ -21,7 +21,8 @@ export default function Page() {
           <li><a href="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8211.">Government Code section 8211, fees</a></li>
           <li><a href="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8206.">Government Code section 8206, journal</a></li>
         </ul>
-        <p>The Online Notarization Act was signed in 2023. The handbook says California notaries cannot perform remote online notarization until the Secretary of State's technology project is finished or January 1, 2030, whichever is earlier.</p>
+        <p>Checked November 7, 2026. The handbook page links a January 2026 PDF. The Online Notarization Act was signed on September 30, 2023, and became effective on January 1, 2024, in stages. Recognition provisions and Civil Code sections 1182 and 1183 were operative in 2024. Section 8231.18 was operative January 1, 2025. The handbook says notaries still cannot perform remote online notarization until Notary Automation Project 2.0 is finished or January 1, 2030, whichever is earlier. In-person electronic notarization is already allowed.</p>
+        <p><a href="/california/online-notarization/">Current remote-notarization rule</a>{" · "}<a href="/california/notary-fees/">Allowed fees</a></p>
       </div>
     </main>
   );

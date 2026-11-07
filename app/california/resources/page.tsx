@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { caArticles } from "@/data/ca-articles";
 import { caGuideChapters } from "@/data/ca-study-guide";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
 import { siteUrl } from "@/lib/site";
@@ -126,6 +127,17 @@ export default function Page() {
           <span>This site</span>
           <p>A short index of the handbook, the qualifications page, and the sections used in the question bank.</p>
         </li>
+      </ul>
+
+      <h2>Guides</h2>
+      <ul className="resource-list">
+        {caArticles.map((article) => (
+          <li key={article.id}>
+            <Link href={article.path}>{article.h1}</Link>
+            <span>{article.keyword}</span>
+            <p>{article.description}</p>
+          </li>
+        ))}
       </ul>
 
       <h2>Chapters on this site</h2>

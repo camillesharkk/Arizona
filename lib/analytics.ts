@@ -242,7 +242,7 @@ export function applyCommonParams(params?: Record<string, string | number | bool
   if (typeof window !== "undefined" && window.location?.pathname) {
     out.page_path = window.location.pathname;
   }
-  Object.assign(out, readAttribution(), readUpgradeSource(), params || {});
+  Object.assign(out, readAttribution(), readUpgradeSource(), readArticleEntry(), params || {});
   let probe = false;
   let acceptance = false;
   if (typeof window !== "undefined") {
@@ -453,7 +453,33 @@ export function resetAnalyticsDedupe(store: Map<string, number> = recentEvents) 
 }
 
 function dedupeKey(name: string, params: Record<string, string | number | boolean>) {
-  return [name, params.page_path, params.mode, params.product_code, params.entry_point, params.transaction_id].join("|");
+  return [name, params.page_path, params.mode, params.product_code, params.entry_point, params.transaction_id, params.article_id, params.entry_placement].join("|");
+}
+
+const ARTICLE_ENTRY_KEY = "np_article_entry";
+
+export function rememberArticleEntry(entry: { article_id: string; article_state: string; entry_placement: string; target_mode: string }) {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(ARTICLE_ENTRY_KEY, JSON.stringify(entry));
+  } catch {
+    /* storage is optional */
+  }
+}
+
+function readArticleEntry() {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = JSON.parse(window.sessionStorage.getItem(ARTICLE_ENTRY_KEY) || "{}") as Record<string, unknown>;
+    const out: Record<string, string> = {};
+    for (const key of ["article_id", "article_state", "entry_placement", "target_mode"] as const) {
+      const value = cleanAttr(String(raw[key] || ""));
+      if (value) out[key] = value;
+    }
+    return out;
+  } catch {
+    return {};
+  }
 }
 
 export function claimEventSend(

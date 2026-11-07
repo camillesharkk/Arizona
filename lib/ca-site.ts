@@ -51,7 +51,7 @@ export const CA_EXAM = {
     exam: "https://cpshr.us/services/california-notary-exam-2/notary-exam-information/",
     statutes: "https://leginfo.legislature.ca.gov/",
   },
-  checkedOn: "2026-11-05",
+  checkedOn: "2026-11-07",
 };
 
 export function isCaliforniaPath(pathname: string) {

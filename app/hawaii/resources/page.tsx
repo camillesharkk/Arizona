@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { hiArticles } from "@/data/hi-articles";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
 import { siteUrl } from "@/lib/site";
 
@@ -71,6 +72,17 @@ export default function Page() {
           <span>This site</span>
           <p>A short map of the first commission. Remote online notarization is a later, separate application.</p>
         </li>
+      </ul>
+
+      <h2>Guides</h2>
+      <ul className="resource-list">
+        {hiArticles.map((article) => (
+          <li key={article.id}>
+            <Link href={article.path}>{article.h1}</Link>
+            <span>{article.keyword}</span>
+            <p>{article.description}</p>
+          </li>
+        ))}
       </ul>
 
       <h2>Laws and forms</h2>
