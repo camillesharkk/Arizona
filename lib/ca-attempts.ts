@@ -2,10 +2,12 @@ import type { Letter } from "./sitting.ts";
 import { applyMistakeImport, applyReviewImport, type ReviewTopic, type TopicMiss } from "./ca-next.ts";
 import { loadProgress, saveProgress } from "./storage.ts";
 
+export type TopicPracticeState = "CA" | "HI";
+
 export type CaQuickAttempt = {
   id: string;
   owner: string;
-  state: "CA";
+  state: TopicPracticeState;
   mode: "quick";
   sittingMode: string;
   finishedAt: string;
@@ -29,9 +31,10 @@ export type CaStudyRecord = {
   reviewTopics: ReviewTopic[];
 };
 
-const ATTEMPTS = "ca-notary-attempts";
-const STUDY = "ca-notary-study";
-const LOCAL = "ca-notary-local-mistakes";
+function keys(state: TopicPracticeState) {
+  if (state === "HI") return { attempts: "hi-notary-attempts", study: "hi-notary-study", local: "hi-notary-local-mistakes" };
+  return { attempts: "ca-notary-attempts", study: "ca-notary-study", local: "ca-notary-local-mistakes" };
+}
 
 function readList<T>(key: string): T[] {
   if (typeof window === "undefined") return [];
@@ -47,33 +50,34 @@ function writeList(key: string, rows: unknown[]) {
   localStorage.setItem(key, JSON.stringify(rows));
 }
 
-function asAttempt(row: unknown): CaQuickAttempt | null {
+function asAttempt(row: unknown, state: TopicPracticeState): CaQuickAttempt | null {
   if (!row || typeof row !== "object") return null;
   const item = row as Partial<CaQuickAttempt>;
-  if (item.state !== "CA" || item.mode !== "quick") return null;
+  if (item.state !== state || item.mode !== "quick") return null;
   if (typeof item.id !== "string" || typeof item.owner !== "string" || !Array.isArray(item.questionIds)) return null;
   return item as CaQuickAttempt;
 }
 
-export function listCaAttempts(owner: string) {
-  return readList<unknown>(ATTEMPTS)
-    .map(asAttempt)
+export function listCaAttempts(owner: string, state: TopicPracticeState = "CA") {
+  return readList<unknown>(keys(state).attempts)
+    .map((row) => asAttempt(row, state))
     .filter((item): item is CaQuickAttempt => Boolean(item && item.owner === owner))
     .sort((a, b) => b.finishedAt.localeCompare(a.finishedAt));
 }
 
-export function readCaAttempt(owner: string, id: string) {
+export function readCaAttempt(owner: string, id: string, state: TopicPracticeState = "CA") {
   if (!id) return null;
-  return listCaAttempts(owner).find((item) => item.id === id) || null;
+  return listCaAttempts(owner, state).find((item) => item.id === id) || null;
 }
 
-export function latestCaQuick(owner: string) {
-  return listCaAttempts(owner)[0] || null;
+export function latestCaQuick(owner: string, state: TopicPracticeState = "CA") {
+  return listCaAttempts(owner, state)[0] || null;
 }
 
 export function saveCaQuickAttempt(row: CaQuickAttempt) {
   if (typeof window === "undefined" || !row.id || !row.owner) return;
-  const all = readList<unknown>(ATTEMPTS).map(asAttempt).filter((item): item is CaQuickAttempt => Boolean(item));
+  const state = row.state === "HI" ? "HI" : "CA";
+  const all = readList<unknown>(keys(state).attempts).map((item) => asAttempt(item, state)).filter((item): item is CaQuickAttempt => Boolean(item));
   const index = all.findIndex((item) => item.id === row.id);
   if (index >= 0) {
     if (all[index].owner !== row.owner) return;
@@ -81,24 +85,25 @@ export function saveCaQuickAttempt(row: CaQuickAttempt) {
   } else {
     all.unshift(row);
   }
-  writeList(ATTEMPTS, all.slice(0, 30));
+  writeList(keys(state).attempts, all.slice(0, 30));
 }
 
-export function adoptGuestCaRecords(userId: string) {
+export function adoptGuestCaRecords(userId: string, state: TopicPracticeState = "CA") {
   if (typeof window === "undefined" || !userId || userId === "guest") return;
-  const attempts = readList<unknown>(ATTEMPTS).map(asAttempt).filter((item): item is CaQuickAttempt => Boolean(item));
-  writeList(ATTEMPTS, attempts.map((item) => (item.owner === "guest" ? { ...item, owner: userId } : item)));
-  const study = readList<CaStudyRecord>(STUDY).filter((item) => item && typeof item.owner === "string");
+  const store = keys(state);
+  const attempts = readList<unknown>(store.attempts).map((item) => asAttempt(item, state)).filter((item): item is CaQuickAttempt => Boolean(item));
+  writeList(store.attempts, attempts.map((item) => (item.owner === "guest" ? { ...item, owner: userId } : item)));
+  const study = readList<CaStudyRecord>(store.study).filter((item) => item && typeof item.owner === "string");
   const guest = study.find((item) => item.owner === "guest");
   const mine = study.find((item) => item.owner === userId);
   if (guest) {
     const merged = mergeStudy(mine || emptyStudy(userId), guest);
-    writeList(STUDY, [...study.filter((item) => item.owner !== "guest" && item.owner !== userId), merged]);
+    writeList(store.study, [...study.filter((item) => item.owner !== "guest" && item.owner !== userId), merged]);
   }
-  const local = readList<{ owner: string; ids: string[] }>(LOCAL);
+  const local = readList<{ owner: string; ids: string[] }>(store.local);
   const guestIds = local.find((item) => item.owner === "guest")?.ids || [];
   const userIds = local.find((item) => item.owner === userId)?.ids || [];
-  writeList(LOCAL, [
+  writeList(store.local, [
     ...local.filter((item) => item.owner !== "guest" && item.owner !== userId),
     { owner: userId, ids: [...new Set([...userIds, ...guestIds])] },
   ]);
@@ -121,8 +126,8 @@ function mergeStudy(user: CaStudyRecord, guest: CaStudyRecord): CaStudyRecord {
   };
 }
 
-export function caStudyRecord(owner: string): CaStudyRecord {
-  const found = readList<CaStudyRecord>(STUDY).find((item) => item?.owner === owner);
+export function caStudyRecord(owner: string, state: TopicPracticeState = "CA"): CaStudyRecord {
+  const found = readList<CaStudyRecord>(keys(state).study).find((item) => item?.owner === owner);
   return found
     ? {
         owner,
@@ -133,49 +138,49 @@ export function caStudyRecord(owner: string): CaStudyRecord {
     : emptyStudy(owner);
 }
 
-function writeStudy(record: CaStudyRecord) {
-  const all = readList<CaStudyRecord>(STUDY).filter((item) => item?.owner && item.owner !== record.owner);
-  writeList(STUDY, [...all, record]);
+function writeStudy(record: CaStudyRecord, state: TopicPracticeState) {
+  const all = readList<CaStudyRecord>(keys(state).study).filter((item) => item?.owner && item.owner !== record.owner);
+  writeList(keys(state).study, [...all, record]);
 }
 
-export function setCaChapterFlag(owner: string, id: string, field: "reads" | "mastered", on: boolean) {
-  const record = caStudyRecord(owner);
+export function setCaChapterFlag(owner: string, id: string, field: "reads" | "mastered", on: boolean, state: TopicPracticeState = "CA") {
+  const record = caStudyRecord(owner, state);
   const list = new Set(record[field]);
   if (on) list.add(id);
   else list.delete(id);
   const next = { ...record, [field]: [...list] };
-  writeStudy(next);
+  writeStudy(next, state);
   return next;
 }
 
-export function importCaReviewTopics(owner: string, attemptId: string, misses: TopicMiss[]) {
-  const record = caStudyRecord(owner);
+export function importCaReviewTopics(owner: string, attemptId: string, misses: TopicMiss[], state: TopicPracticeState = "CA") {
+  const record = caStudyRecord(owner, state);
   const applied = applyReviewImport(record.reviewTopics, attemptId, misses);
-  writeStudy({ ...record, reviewTopics: applied.next });
+  writeStudy({ ...record, reviewTopics: applied.next }, state);
   return applied;
 }
 
-export function localMistakeIds(owner: string) {
-  const row = readList<{ owner: string; ids: string[] }>(LOCAL).find((item) => item.owner === owner);
-  const progress = loadProgress("CA").wrongIds;
+export function localMistakeIds(owner: string, state: TopicPracticeState = "CA") {
+  const row = readList<{ owner: string; ids: string[] }>(keys(state).local).find((item) => item.owner === owner);
+  const progress = loadProgress(state).wrongIds;
   return [...new Set([...(row?.ids || []), ...progress])];
 }
 
-export function markCaAttemptSynced(owner: string, id: string) {
-  const all = readList<unknown>(ATTEMPTS).map(asAttempt).filter((item): item is CaQuickAttempt => Boolean(item));
+export function markCaAttemptSynced(owner: string, id: string, state: TopicPracticeState = "CA") {
+  const all = readList<unknown>(keys(state).attempts).map((item) => asAttempt(item, state)).filter((item): item is CaQuickAttempt => Boolean(item));
   const index = all.findIndex((item) => item.id === id && item.owner === owner);
   if (index < 0) return;
   all[index] = { ...all[index], synced: true };
-  writeList(ATTEMPTS, all);
+  writeList(keys(state).attempts, all);
 }
 
-export function importLocalMistakes(owner: string, ids: string[]) {
-  const current = localMistakeIds(owner);
+export function importLocalMistakes(owner: string, ids: string[], state: TopicPracticeState = "CA") {
+  const current = localMistakeIds(owner, state);
   const applied = applyMistakeImport(current, ids);
-  const all = readList<{ owner: string; ids: string[] }>(LOCAL).filter((item) => item.owner !== owner);
-  writeList(LOCAL, [...all, { owner, ids: applied.next }]);
-  const progress = loadProgress("CA");
+  const all = readList<{ owner: string; ids: string[] }>(keys(state).local).filter((item) => item.owner !== owner);
+  writeList(keys(state).local, [...all, { owner, ids: applied.next }]);
+  const progress = loadProgress(state);
   const wrongIds = [...new Set([...progress.wrongIds, ...applied.next])];
-  if (wrongIds.length !== progress.wrongIds.length) saveProgress({ wrongIds }, "CA");
+  if (wrongIds.length !== progress.wrongIds.length) saveProgress({ wrongIds }, state);
   return applied;
 }

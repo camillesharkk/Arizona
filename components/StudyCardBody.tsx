@@ -57,17 +57,28 @@ const labels: Record<string, string> = {
   identity: "Identification",
   immigration: "Immigration and language",
   violations: "Misconduct and fees",
+  "application-exam": "Application and exam",
+  "term-renewal": "Term and renewal",
+  authority: "Authority and conflicts",
+  "jurat-oath": "Jurats and oaths",
+  "certificate-seal": "Certificate and seal",
+  documents: "Document problems",
+  "fees-bond": "Fees and bond",
+  "refusal-misconduct": "Refusal and penalties",
+  authentication: "Authentication and apostille",
+  "remote-online": "Remote online notarization",
 };
 
 export function categoryLabel(category: string) {
   return labels[category] ?? category;
 }
 
-export function StudyCardBody({ card, flipped }: { card: StudyCardView; flipped: boolean }) {
+export function StudyCardBody({ card, flipped, labelFor }: { card: StudyCardView; flipped: boolean; labelFor?: (id: string) => string }) {
+  const kicker = labelFor ? labelFor(card.category) : categoryLabel(card.category);
   if (!flipped) {
     return (
       <>
-        <p className="kicker">{categoryLabel(card.category)}{card.kind === "compare" ? " · Compare" : ""}</p>
+        <p className="kicker">{kicker}{card.kind === "compare" ? " · Compare" : ""}</p>
         {card.title ? <p className="study-card-title">{card.title}</p> : null}
         <h3>{card.front}</h3>
       </>

@@ -9,6 +9,9 @@ import { StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
 import { StudyPager } from "@/components/StudyPager";
 import { LoadingNote } from "@/components/QuizChrome";
 import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
+import { publishedHiQuestions } from "@/data/hi-questions";
+import { hiStudyLabel } from "@/lib/hi-topics";
 import { syncCaAttempts } from "@/lib/ca-sync";
 import { paths } from "@/lib/paths";
 
@@ -42,8 +45,8 @@ type View = {
   scheduled?: { questionId: string; prompt: string; nextReviewAt: string | null; wrongCount: number; saved: boolean; due: boolean }[];
 };
 
-export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA" }) {
-  const site = stateCode === "CA" ? caPaths : paths;
+export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA" | "HI" }) {
+  const site = stateCode === "HI" ? hiPaths : stateCode === "CA" ? caPaths : paths;
   const [view, setView] = useState<View | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -57,7 +60,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
   const zone = useMemo(() => Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix", []);
   const visibleStart = useRef<number | null>(null);
 
-  const query = `timeZone=${encodeURIComponent(zone)}${stateCode === "CA" ? "&state=CA" : ""}`;
+  const query = `timeZone=${encodeURIComponent(zone)}${stateCode === "CA" || stateCode === "HI" ? `&state=${stateCode}` : ""}`;
 
   async function load() {
     const id = ++loadId.current;
@@ -65,7 +68,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
     setLoadError(false);
     let hold = false;
     try {
-      if (stateCode === "CA") await syncCaAttempts().catch(() => undefined);
+      if (stateCode === "CA" || stateCode === "HI") await syncCaAttempts(stateCode).catch(() => undefined);
       if (id !== loadId.current) return;
       const response = await fetch(`/api/daily-study/?${query}`, { cache: "no-store" });
       if (id !== loadId.current) return;
@@ -82,7 +85,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
         window.location.href = back;
         return;
       }
-      if (stateCode === "CA" && data.state !== "CA") throw new Error("state");
+      if ((stateCode === "CA" || stateCode === "HI") && data.state !== stateCode) throw new Error("state");
       setView(data);
     } catch {
       if (id === loadId.current) setLoadError(true);
@@ -144,7 +147,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
   const reviewCards = view.reviewCards.filter((card) => pending("review-card").has(`card:${card.id}`));
   const practiceCard = practiceCards[Math.min(practiceIndex, Math.max(practiceCards.length - 1, 0))];
   const reviewCard = reviewCards[Math.min(reviewIndex, Math.max(reviewCards.length - 1, 0))];
-  const bank = stateCode === "CA" ? publishedCaQuestions() : publishedQuestions();
+  const bank = stateCode === "HI" ? publishedHiQuestions() : stateCode === "CA" ? publishedCaQuestions() : publishedQuestions();
   const practiceQuestions = bank.filter((question) => pending("new-question").has(`question:${question.question_id}`));
   const reviewQuestions = bank.filter((question) => pending("review-question").has(`question:${question.question_id}`));
   const entitlement = view.entitlementExpiresAt ? view.entitlementExpiresAt.slice(0, 10) : null;
@@ -157,7 +160,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
         <span>{view.done} / {view.goal} today</span>
         <span>{progress}% of this plan</span>
         <span>Target {view.targetDate}</span>
-        <Link href={stateCode === "CA" ? `${paths.account}?state=CA#study-settings` : `${paths.account}#study-settings`}>Study Settings</Link>
+        <Link href={stateCode === "AZ" ? `${paths.account}#study-settings` : `${paths.account}?state=${stateCode}#study-settings`}>Study Settings</Link>
       </div>
       {stateCode === "AZ" && view.freeOnly ? (
         <p className="notice">
@@ -178,7 +181,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
           {practiceCard ? (
             <>
               <div ref={practiceFace} className="study-face" onClick={() => setFlipped(flipped === "practice" ? null : "practice")} role="button" tabIndex={0}>
-                <StudyCardBody card={practiceCard} flipped={flipped === "practice"} />
+                <StudyCardBody card={practiceCard} flipped={flipped === "practice"} labelFor={stateCode === "HI" ? hiStudyLabel : undefined} />
               </div>
               <div className="row" style={{ marginTop: 12 }}>
                 <button className="btn btn-primary" type="button" onClick={() => mark(practiceCard.id, "studied")}>Mark studied</button>
@@ -210,7 +213,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
           {reviewCard ? (
             <>
               <div ref={reviewFace} className="study-face" onClick={() => setFlipped(flipped === "review" ? null : "review")} role="button" tabIndex={0}>
-                <StudyCardBody card={reviewCard} flipped={flipped === "review"} />
+                <StudyCardBody card={reviewCard} flipped={flipped === "review"} labelFor={stateCode === "HI" ? hiStudyLabel : undefined} />
               </div>
               <div className="row" style={{ marginTop: 12 }}>
                 <button className="btn btn-primary" type="button" onClick={() => mark(reviewCard.id, "remembered")}>Mark reviewed</button>

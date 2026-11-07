@@ -27,7 +27,7 @@ export type Source = {
   version?: string;
 };
 
-export type StateCode = "AZ" | "CA";
+export type StateCode = "AZ" | "CA" | "HI";
 export type ExamArea = "administration" | "acts" | "identity" | "immigration" | "violations";
 
 export type Question = {

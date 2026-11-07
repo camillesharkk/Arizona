@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 import { useResolvedState } from "@/components/SavedState";
 import type { LiveCode } from "@/lib/site-state";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
@@ -15,31 +16,32 @@ import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 type AuthStatus = "loading" | "signed-in" | "signed-out";
 
 function active(pathname: string, href: string) {
-  if (href === "/arizona-notary-exam/" || href === "/arizona/" || href === "/california/") {
-    return pathname === href || pathname === "/arizona" || pathname === "/arizona/" || pathname === "/california" || pathname === "/california/";
+  if (href === "/arizona-notary-exam/" || href === "/arizona/" || href === "/california/" || href === "/hawaii/") {
+    return pathname === href || pathname === "/arizona" || pathname === "/arizona/" || pathname === "/california" || pathname === "/california/" || pathname === "/hawaii" || pathname === "/hawaii/";
   }
   return pathname === href || pathname.startsWith(href);
 }
 
 function navFor(state: LiveCode | null) {
-  if (state !== "CA") return paths;
+  const source = state === "CA" ? caPaths : state === "HI" ? hiPaths : null;
+  if (!source) return paths;
   return {
     ...paths,
-    home: caPaths.home,
-    practice: caPaths.practice,
-    questions: caPaths.questions,
-    study: caPaths.study,
-    studyCards: caPaths.studyCards,
-    mistakes: caPaths.mistakes,
-    daily: caPaths.daily,
-    resources: caPaths.resources,
-    laws: caPaths.laws,
-    become: caPaths.become,
-    pricing: caPaths.pricing,
-    examPrep: caPaths.examGuide,
-    passingScore: caPaths.passingScore,
-    guidesIndex: caPaths.examGuide,
-    flashcards: caPaths.studyCards,
+    home: source.home,
+    practice: source.practice,
+    questions: source.questions,
+    study: source.study,
+    studyCards: source.studyCards,
+    mistakes: source.mistakes,
+    daily: source.daily,
+    resources: source.resources,
+    laws: source.laws,
+    become: source.become,
+    pricing: source.pricing,
+    examPrep: source.examGuide,
+    passingScore: source.passingScore,
+    guidesIndex: source.examGuide,
+    flashcards: source.studyCards,
   };
 }
 
@@ -101,7 +103,7 @@ export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
   useEffect(() => setOpenMore(false), [pathname]);
   useEffect(() => setReturnTo(`${pathname}${window.location.search}`), [pathname]);
   useEffect(() => {
-    if (state === "CA") document.documentElement.dataset.state = "CA";
+    if (state === "CA" || state === "HI") document.documentElement.dataset.state = state;
     else delete document.documentElement.dataset.state;
   }, [state]);
   useEffect(() => {
@@ -140,8 +142,8 @@ export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
       <div className="wrap header-inner">
         <div className="header-left">
           <Link href={state ? nav.home : "/"} className="logo">
-            <span className="logo-mark">{state === "CA" ? "C" : state === "AZ" ? "A" : "N"}</span>
-            {state === "CA" ? "California" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
+            <span className="logo-mark">{state === "CA" ? "C" : state === "HI" ? "H" : state === "AZ" ? "A" : "N"}</span>
+            {state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
           </Link>
           <StateMenu pathname={pathname} current={state} />
         </div>
@@ -201,7 +203,7 @@ export function SiteFooter({ savedState }: { savedState: LiveCode | null }) {
   return (
     <footer className="footer">
       <div className="wrap footer-bar">
-        <p className="footer-brand">{state === "CA" ? "California Exam. Independent practice." : state === "AZ" ? "Arizona Exam. Independent practice." : "Notary Exam Prep. Independent practice."}</p>
+        <p className="footer-brand">{state === "CA" ? "California Exam. Independent practice." : state === "HI" ? "Hawaii Exam. Independent practice." : state === "AZ" ? "Arizona Exam. Independent practice." : "Notary Exam Prep. Independent practice."}</p>
         <nav className="footer-links" aria-label="Help and legal">
           {state ? (
             <>

@@ -5,8 +5,12 @@ import Link from "next/link";
 import type { Question } from "@/lib/types";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
+import { publishedHiQuestions } from "@/data/hi-questions";
 import { pickCaFullExam, pickCaQuickExam, weakestCaArea } from "@/lib/ca-exam";
+import { pickHiFullExam, pickHiQuickExam } from "@/lib/hi-exam";
 import { areaLabel, caPaths } from "@/lib/ca-site";
+import { HI_EXAM, hiPaths } from "@/lib/hi-site";
+import { hiStudyLabel } from "@/lib/hi-topics";
 import { examConfig, officialExam } from "@/data/exam-config";
 import {
   buildQuickExam,
@@ -67,17 +71,20 @@ export function ExamRunner({
   focusArea?: string;
 }) {
   const modeKey = sittingMode || mode;
-  const site = stateCode === "CA" ? caPaths : paths;
-  const examMinutes = stateCode === "CA" ? 60 : examConfig.timeLimitMinutes;
-  const fullSize = stateCode === "CA" ? 45 : examConfig.questionCount;
-  const anonFullKey = stateCode === "CA" ? "ca-anon-full-started" : "az-anon-full-started";
+  const onCa = stateCode === "CA";
+  const onHi = stateCode === "HI";
+  const topicPractice = onCa || onHi;
+  const site = onHi ? hiPaths : onCa ? caPaths : paths;
+  const examMinutes = onHi ? 0 : onCa ? 60 : examConfig.timeLimitMinutes;
+  const fullSize = onHi ? HI_EXAM.practiceQuestionCount : onCa ? 45 : examConfig.questionCount;
+  const anonFullKey = onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : "az-anon-full-started";
   const unscoredRef = useRef<string[]>([]);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const poolLocked = useRef(false);
   const [poolIsPro, setPoolIsPro] = useState(isPro);
   const count = mode === "quick" ? 10 : mode === "full" ? fullSize : 10;
   const byId = useMemo(
-    () => new Map((stateCode === "CA" ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
+    () => new Map((onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
     [stateCode]
   );
   const [owner, setOwner] = useState<string | null>(null);
@@ -104,7 +111,7 @@ export function ExamRunner({
     setPoolIsPro(isPro);
   }, [isPro, reportStart]);
 
-  const timed = mode === "full" && !practice;
+  const timed = mode === "full" && !practice && !onHi;
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, "A" | "B" | "C" | "D">>({});
   const [explainOpen, setExplainOpen] = useState<Record<string, boolean>>({});
@@ -133,20 +140,27 @@ export function ExamRunner({
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   function drawQuestionIds(seed: number) {
-    if (stateCode === "CA") {
+    if (onHi || onCa) {
+      const bank = onHi ? publishedHiQuestions() : publishedCaQuestions();
       if (focusArea) {
-        const pool = publishedCaQuestions().filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
-        return shuffle(pool, seed).slice(0, 10).map((item) => item.question_id);
+        const pool = bank.filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
+        const open = pool.filter((item) => item.is_free || isPro);
+        return shuffle(open.length ? open : pool.filter((item) => item.is_free), seed).slice(0, 10).map((item) => item.question_id);
       }
-      if (mode === "quick") return pickCaQuickExam(seed).map((item) => item.question_id);
+      if (mode === "quick") return (onHi ? pickHiQuickExam(seed) : pickCaQuickExam(seed)).map((item) => item.question_id);
       if (mode === "full") {
+        if (onHi) {
+          const picked = pickHiFullExam(seed);
+          unscoredRef.current = [];
+          return picked ? picked.map((item) => item.question_id) : [];
+        }
         const picked = pickCaFullExam(seed);
         if (!picked) return [];
         unscoredRef.current = picked.unscoredIds;
         return picked.questions.map((item) => item.question_id);
       }
-      const missed = loadProgress("CA").wrongIds;
-      return publishedCaQuestions().filter((item) => missed.includes(item.question_id)).slice(0, 10).map((item) => item.question_id);
+      const missed = loadProgress(onHi ? "HI" : "CA").wrongIds;
+      return bank.filter((item) => missed.includes(item.question_id)).slice(0, 10).map((item) => item.question_id);
     }
     if (mode === "quick") {
       const picked = buildQuickExam({ isPro: reportStart === "answer" ? poolIsPro : isPro, seed, stale: preset });
@@ -211,7 +225,7 @@ export function ExamRunner({
         if (cancel) return;
         const nextOwner = data.user?.id || "guest";
         setSignedIn(Boolean(data.user));
-        setFullExamCount(Number((stateCode === "CA" ? data.user?.caFullExamCount : data.user?.fullExamCount) || 0));
+        setFullExamCount(Number((onHi ? data.user?.hiFullExamCount : onCa ? data.user?.caFullExamCount : data.user?.fullExamCount) || 0));
         const params = new URLSearchParams(window.location.search);
         const startFresh = params.get("start") === "1";
         let existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
@@ -220,9 +234,9 @@ export function ExamRunner({
           existing = null;
         }
         const requestedAttempt = startFresh ? "" : params.get("attempt") || "";
-        if (stateCode === "CA" && requestedAttempt && existing?.examId !== requestedAttempt) {
-          if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner);
-          const archived = readCaAttempt(nextOwner, requestedAttempt);
+        if (topicPractice && requestedAttempt && existing?.examId !== requestedAttempt) {
+          if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner, onHi ? "HI" : "CA");
+          const archived = readCaAttempt(nextOwner, requestedAttempt, onHi ? "HI" : "CA");
           if (archived && archived.mode === "quick" && mode === "quick") {
             viewOnly.current = Boolean(existing);
             setOwner(nextOwner);
@@ -278,7 +292,7 @@ export function ExamRunner({
   }, [bootTry, modeKey]);
 
   useEffect(() => {
-    if (viewOnly.current || !done || stateCode !== "CA" || mode !== "quick") return;
+    if (viewOnly.current || !done || !topicPractice || mode !== "quick") return;
     if (!owner || !examSaveId.current || activeSeed == null || !lockedIds?.length || !questions.length) return;
     const answersNow = answersRef.current;
     const correctIds: string[] = [];
@@ -303,7 +317,7 @@ export function ExamRunner({
     saveCaQuickAttempt({
       id: examSaveId.current,
       owner,
-      state: "CA",
+      state: onHi ? "HI" : "CA",
       mode: "quick",
       sittingMode: modeKey,
       finishedAt: new Date().toISOString(),
@@ -398,14 +412,14 @@ export function ExamRunner({
       <div className="card">
         {mode === "full" ? (
           <>
-            <h2>Full 45 is not available</h2>
+            <h2>{onHi ? "Comprehensive Practice is not available" : onCa ? "Full 45 is not available" : "Full practice is not available"}</h2>
             <p>
-              A full practice test must contain exactly {fullSize} unique published questions. The current
-              eligible bank does not, so the exam was not started. This is not a shortened 45-question test.
+              This practice must contain exactly {fullSize} unique published questions. The current
+              eligible bank does not, so it was not started.
             </p>
           </>
         ) : (
-          <p>Not enough questions in this set. Try Full 45 or open Exam Questions.</p>
+          <p>Not enough questions in this set. Open Exam Questions.</p>
         )}
         <Link className="btn btn-primary" href={site.questions}>
           Start Questions
@@ -514,7 +528,7 @@ export function ExamRunner({
     }
     persistSitting({ examId: examSaveId.current, scored: true });
     const saves: Promise<Response>[] = [];
-    if (!practice || stateCode === "CA") results.forEach((r) => {
+    if (!practice || topicPractice) results.forEach((r) => {
       const letter = current[r.question.question_id];
       if (letter) {
         saves.push(fetch("/api/progress/", {
@@ -547,7 +561,7 @@ export function ExamRunner({
         examId: examSaveId.current,
         state: stateCode,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        ...(stateCode === "CA"
+        ...(topicPractice
           ? {
               wrongIds: results.filter((item) => !item.correct && current[item.question.question_id]).map((item) => item.question.question_id),
               skipped: results.filter((item) => !current[item.question.question_id]).length,
@@ -576,7 +590,7 @@ export function ExamRunner({
           questionCount: questions.length,
           answeredCount: Object.keys(current).length,
           score: pct,
-          passed: stateCode === "CA" ? false : pct >= examConfig.passingScorePercent,
+          passed: topicPractice ? false : pct >= examConfig.passingScorePercent,
           state: stateCode,
           plan: isPro ? "pro" : "free",
           durationSeconds: elapsed,
@@ -592,7 +606,7 @@ export function ExamRunner({
     }));
     const correct = results.filter((r) => r.correct).length;
     const pct = scorePercent(correct, questions.length);
-    const pass = stateCode === "CA" ? false : pct >= examConfig.passingScorePercent;
+    const pass = topicPractice ? false : pct >= examConfig.passingScorePercent;
     const unscored = new Set(unscoredRef.current);
     const scoredRows = stateCode === "CA" && mode === "full" ? results.filter((item) => !unscored.has(item.question.question_id)) : results;
     const scoredCorrect = scoredRows.filter((item) => item.correct).length;
@@ -604,8 +618,8 @@ export function ExamRunner({
     const weak = weakTopics(results, 4).filter((w) => w.wrong > 0);
     const topicAcc = new Map<string, { right: number; total: number; label: string }>();
     results.forEach((r) => {
-      const key = stateCode === "CA" ? r.question.exam_area || r.question.topic : r.question.topic;
-      const cur = topicAcc.get(key) || { right: 0, total: 0, label: stateCode === "CA" ? areaLabel(key) : topicLabel(r.question.topic) };
+      const key = onHi ? r.question.study_topic || r.question.topic : stateCode === "CA" ? r.question.exam_area || r.question.topic : r.question.topic;
+      const cur = topicAcc.get(key) || { right: 0, total: 0, label: onHi ? hiStudyLabel(key) : stateCode === "CA" ? areaLabel(key) : topicLabel(r.question.topic) };
       cur.total += 1;
       if (r.correct) cur.right += 1;
       topicAcc.set(key, cur);
@@ -648,7 +662,7 @@ export function ExamRunner({
           {guided && mode === "quick" ? (
             <>
               <h2>{correct} of {questions.length} correct</h2>
-              {stateCode === "CA" ? (
+              {topicPractice ? (
                 <CaQuickNext
                   correct={correct}
                   total={questions.length}
@@ -666,6 +680,11 @@ export function ExamRunner({
                   fullHref={fullHref}
                   fullResume={fullResume}
                   fullLocked={fullLocked}
+                  paths={onHi ? hiPaths : caPaths}
+                  fullName={onHi ? "Comprehensive Practice" : "Full 45 Practice Exam"}
+                  labelFor={onHi ? hiStudyLabel : undefined}
+                  dailyState={onHi ? "HI" : "CA"}
+                  limitNote={onHi ? "The free Comprehensive Practice on this account or browser is already used." : undefined}
                 />
               ) : (
                 <>
@@ -709,12 +728,16 @@ export function ExamRunner({
           ) : (
             <>
               <h2>
-                {stateCode === "CA" && mode === "full"
+                {onHi && mode === "full"
+                  ? `${correct} of ${questions.length}`
+                  : stateCode === "CA" && mode === "full"
                   ? `${scoredCorrect} of 40 scored`
                   : `${pct}% — ${pass ? "PASS" : "NEEDS REVIEW"}`}
               </h2>
               <p className="lede">
-                {stateCode === "CA" && mode === "full"
+                {onHi && mode === "full"
+                  ? `${correct} of ${questions.length} correct. ${HI_EXAM.practiceNote} A score of ${HI_EXAM.practiceTargetPercent}% is this site's practice target. It is not an official exam result. The Attorney General's written exam requires at least ${HI_EXAM.officialPassingPercent}%.`
+                  : stateCode === "CA" && mode === "full"
                   ? `${scoredCorrect} of 40 scored items correct. Five items are unscored and are marked below. This raw count is study feedback. The official exam uses a scaled score of at least 70, and a scaled score is not a percent.`
                   : `${correct} of ${questions.length} correct. Practice target ${examConfig.passingScorePercent}%. The SOS notice checked ${officialExam.checkedOn} lists ${officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.`}
               </p>
@@ -758,9 +781,9 @@ export function ExamRunner({
               <li key={s}>{s}</li>
             ))}
           </ul>
-          {stateCode === "CA" && mode === "quick" ? null : guided ? (
+          {topicPractice && mode === "quick" ? null : guided ? (
             <div className="result-links">
-              {stateCode === "CA" ? <Link href={site.mistakes}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" />}
+              {topicPractice ? <Link href={site.mistakes}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" />}
               <Link href={site.study}>Review Study Guide</Link>
             </div>
           ) : (
@@ -781,8 +804,10 @@ export function ExamRunner({
             </div>
           )}
           <AccountInvite />
-          {stateCode === "CA" ? (
+          {onCa ? (
             <p className="notice">This is study feedback for California. California Pro is not open, and this raw count is not an official scaled score.</p>
+          ) : onHi ? (
+            <p className="notice">This is study feedback for Hawaii. Hawaii Pro is not open. This score is not an official exam result.</p>
           ) : isPro ? (
             <p className="notice">Pro is active. Keep practicing the topics you missed.</p>
           ) : (
@@ -842,7 +867,7 @@ export function ExamRunner({
           const id = view.question_id;
           setExplainOpen((current) => ({ ...current, [id]: !current[id] }));
         }}
-        tutor={stateCode !== "CA"}
+        tutor={stateCode === "AZ"}
       />
       {past ? (
         <button className="card-corner-btn" type="button" onClick={closePast}>
@@ -913,7 +938,7 @@ export function ExamRunner({
           {restored ? " · Resumed" : ""}
         </span>
         <span className="row">
-          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">Practice mode — instant feedback</span>}
+          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{onHi && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
           <button className="btn btn-ghost" type="button" onClick={startNew}>Start new</button>
         </span>
       </div>

@@ -1,6 +1,6 @@
 export type Letter = "A" | "B" | "C" | "D";
 
-export type SittingState = "AZ" | "CA";
+export type SittingState = "AZ" | "CA" | "HI";
 
 export type Sitting = {
   version: 1;
@@ -27,6 +27,7 @@ export type Sitting = {
 const LETTERS = new Set(["A", "B", "C", "D"]);
 
 export function sittingKey(owner: string, mode: string, state: SittingState = "AZ") {
+  if (state === "HI") return `hi-sitting:HI:${owner}:${mode}`;
   return state === "AZ" ? `az-sitting:AZ:${owner}:${mode}` : `ca-sitting:CA:${owner}:${mode}`;
 }
 

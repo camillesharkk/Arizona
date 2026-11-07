@@ -10,6 +10,7 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const state = url.searchParams.get("state");
   if (state === "CA") return NextResponse.json(await caDailyView(session.id, url.searchParams.get("timeZone") || undefined));
+  if (state === "HI") return NextResponse.json(await dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, "HI"));
   if (state && state !== "AZ") return NextResponse.json({ error: "Unknown state" }, { status: 400 });
   const timeZone = url.searchParams.get("timeZone") || undefined;
   return NextResponse.json(await dailyStudyView(session.id, timeZone));
@@ -27,7 +28,8 @@ export async function POST(req: Request) {
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const body = bodySchema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
-  const state: StudyState = new URL(req.url).searchParams.get("state") === "CA" ? "CA" : "AZ";
+  const requested = new URL(req.url).searchParams.get("state");
+  const state: StudyState = requested === "CA" || requested === "HI" ? requested : "AZ";
   try {
     if (body.data.action === "visible") {
       await addVisibleTime(session.id, body.data.seconds || 0, body.data.attemptId, state);

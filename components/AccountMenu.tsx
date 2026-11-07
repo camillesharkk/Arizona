@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 import { paths } from "@/lib/paths";
 import type { LiveCode } from "@/lib/site-state";
 import { ProAccessNote } from "@/components/ProAccessNote";
@@ -27,9 +28,9 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
   const rootRef = useRef<HTMLDivElement>(null);
   const menuId = "account-menu-dropdown";
   const isPro = me.plan === "pro";
-  const pricing = stateCode === "CA" ? caPaths.pricing : paths.pricing;
-  const mistakes = stateCode === "CA" ? caPaths.mistakes : paths.mistakes;
-  const pricingLabel = stateCode === "CA" ? "California access" : isPro ? "Pro Access" : "Upgrade to Pro";
+  const pricing = stateCode === "HI" ? hiPaths.pricing : stateCode === "CA" ? caPaths.pricing : paths.pricing;
+  const mistakes = stateCode === "HI" ? hiPaths.mistakes : stateCode === "CA" ? caPaths.mistakes : paths.mistakes;
+  const pricingLabel = stateCode === "HI" ? "Hawaii access" : stateCode === "CA" ? "California access" : isPro ? "Pro Access" : "Upgrade to Pro";
   const initial = avatarInitial(me.name, me.email);
 
   useEffect(() => {

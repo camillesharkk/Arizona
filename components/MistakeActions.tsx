@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 import type { QuestionStat } from "@/lib/store/types";
 
 type Action = "mastered" | "favorite" | "remove" | "save";
@@ -12,7 +13,7 @@ export function MistakeActions({
   signedIn = true,
   onAction,
 }: {
-  stateCode: "AZ" | "CA";
+  stateCode: "AZ" | "CA" | "HI";
   studyTopic?: string;
   stat?: QuestionStat | null;
   pending?: string;
@@ -40,11 +41,11 @@ export function MistakeActions({
           </button>
         </>
       ) : null}
-      {stateCode === "CA" && studyTopic ? (
-        <Link className="chip" href={`${caPaths.study}?chapter=${studyTopic}#${studyTopic}`}>Study This Rule</Link>
+      {(stateCode === "CA" || stateCode === "HI") && studyTopic ? (
+        <Link className="chip" href={`${stateCode === "HI" ? hiPaths.study : caPaths.study}?chapter=${studyTopic}#${studyTopic}`}>Study This Rule</Link>
       ) : null}
-      {stateCode === "CA" && studyTopic ? (
-        <Link className="chip" href={`${caPaths.practice}?mode=practice&area=${studyTopic}`}>Practice This Topic</Link>
+      {(stateCode === "CA" || stateCode === "HI") && studyTopic ? (
+        <Link className="chip" href={`${stateCode === "HI" ? hiPaths.practice : caPaths.practice}?mode=practice&area=${studyTopic}`}>Practice This Topic</Link>
       ) : null}
     </div>
   );

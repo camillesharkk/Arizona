@@ -8,7 +8,7 @@ import { availableStates, stateByCode, stateLabel } from "@/lib/states";
 
 function stateHref(pathname: string, code: string) {
   const home = stateByCode(code)?.homePath || "/";
-  if (!pathState(pathname) || (code !== "AZ" && code !== "CA")) return home;
+  if (!pathState(pathname) || (code !== "AZ" && code !== "CA" && code !== "HI")) return home;
   const next = switchStateHref(pathname, code as LiveState);
   return next.split("#")[0]?.split("?")[0] || home;
 }
@@ -56,7 +56,7 @@ export function StateMenu({ pathname, current }: { pathname: string; current: Li
     };
   }, [open]);
 
-  const label = current === "CA" ? "State: CA ▾" : current === "AZ" ? "State: AZ ▾" : "Choose State ▾";
+  const label = current === "CA" ? "State: CA ▾" : current === "HI" ? "State: HI ▾" : current === "AZ" ? "State: AZ ▾" : "Choose State ▾";
   const name = currentName ? `Choose state, current state ${currentName}` : "Choose state";
 
   return (
@@ -86,7 +86,7 @@ export function StateMenu({ pathname, current }: { pathname: string; current: Li
               href={stateHref(pathname, state.code)}
               aria-current={state.code === current ? "true" : undefined}
               onClick={() => {
-                if (state.code === "AZ" || state.code === "CA") writeStateCookie(state.code);
+                if (state.code === "AZ" || state.code === "CA" || state.code === "HI") writeStateCookie(state.code);
               }}
             >
               <span>{stateLabel(state)}</span>

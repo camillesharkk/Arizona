@@ -12,6 +12,7 @@ import { LoadingNote } from "@/components/QuizChrome";
 import { useResolvedState, useSavedState } from "@/components/SavedState";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 import { recoverPendingPurchase, type AnalyticsPaidOrder } from "@/lib/analytics";
 
 const ACCESS_POLL_MS = 1000;
@@ -50,7 +51,7 @@ async function readAccess(res: Response): Promise<AccessPayload | null> {
 
 export function DashboardClient() {
   const state = useResolvedState(useSavedState());
-  const site = state === "CA" ? caPaths : paths;
+  const site = state === "HI" ? hiPaths : state === "CA" ? caPaths : paths;
   const [data, setData] = useState<ProgressPayload | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -213,7 +214,7 @@ export function DashboardClient() {
 
   const user = data!.user!;
   const stats = (data!.stats || []).filter((row) => (row.state || "AZ") === state);
-  const exams = (data!.exams || []).filter((row) => state === "CA" ? row.mode.startsWith("ca-") : !row.mode.startsWith("ca-"));
+  const exams = (data!.exams || []).filter((row) => state === "CA" ? row.mode.startsWith("ca-") : state === "HI" ? row.mode.startsWith("hi-") : !row.mode.startsWith("ca-") && !row.mode.startsWith("hi-"));
   const answered = stats.reduce((n, s) => n + s.rightCount + s.wrongCount, 0);
   const right = stats.reduce((n, s) => n + s.rightCount, 0);
   const acc = answered ? Math.round((right / answered) * 100) : 0;
@@ -225,13 +226,13 @@ export function DashboardClient() {
     byTopic.set(s.topic, cur);
   });
   const ready = readinessScore(stats, exams);
-  const showAsPro = state !== "CA" && isAzPro;
+  const showAsPro = state === "AZ" && isAzPro;
   const hideFreePlan = activating && !showAsPro;
   const weakPlan = [...byTopic.entries()]
     .map(([id, v]) => ({ id, acc: v.r + v.w ? Math.round((v.r / (v.r + v.w)) * 100) : 100, missed: v.w }))
     .sort((a, b) => a.acc - b.acc)
     .slice(0, 3);
-  const planLabel = state === "CA" ? "Free" : showAsPro ? "Pro" : hideFreePlan ? "…" : "Free";
+  const planLabel = state === "CA" || state === "HI" ? "Free" : showAsPro ? "Pro" : hideFreePlan ? "…" : "Free";
   const bestScore = exams.length ? Math.max(...exams.map((row) => row.score)) : null;
   const lastStudy = [...stats.map((row) => row.lastAt), ...exams.map((row) => row.at)].filter(Boolean).sort().at(-1) || null;
 
@@ -254,10 +255,10 @@ export function DashboardClient() {
       <div className="card">
         <h2>Exam readiness {showAsPro ? `${ready}%` : ""}</h2>
         <p>Best score {bestScore ?? "—"}% · Tests taken {exams.length} · Last study {lastStudy?.slice(0, 10) || "—"}</p>
-        {state !== "CA" && !showAsPro && !hideFreePlan && (
+        {state === "AZ" && !showAsPro && !hideFreePlan && (
           <p>Free practice uses the free question pool. Pro adds the rest of the bank, the full study-card deck, more full exams, and the exam readiness score.</p>
         )}
-        {state !== "CA" && !showAsPro && !hideFreePlan && (
+        {state === "AZ" && !showAsPro && !hideFreePlan && (
           <Link className="btn btn-primary" href={paths.pricing}>
             View Pro
           </Link>

@@ -19,7 +19,8 @@ export async function GET(req: Request) {
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const url = new URL(req.url);
   const timeZone = url.searchParams.get("timeZone") || undefined;
-  const state: StudyState = url.searchParams.get("state") === "CA" ? "CA" : "AZ";
+  const requested = url.searchParams.get("state");
+  const state: StudyState = requested === "CA" || requested === "HI" ? requested : "AZ";
   return NextResponse.json(await dailyStudyView(session.id, timeZone, undefined, state));
 }
 
@@ -29,12 +30,14 @@ export async function POST(req: Request) {
   const body = schema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
   try {
-    const state: StudyState = new URL(req.url).searchParams.get("state") === "CA" ? "CA" : "AZ";
+    const requested = new URL(req.url).searchParams.get("state");
+    const state: StudyState = requested === "CA" || requested === "HI" ? requested : "AZ";
     await saveStudySettings(session.id, body.data, body.data.timeZone, state);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Could not save";
     return NextResponse.json({ error: message }, { status: 400 });
   }
-  const state: StudyState = new URL(req.url).searchParams.get("state") === "CA" ? "CA" : "AZ";
+  const requested = new URL(req.url).searchParams.get("state");
+  const state: StudyState = requested === "CA" || requested === "HI" ? requested : "AZ";
   return NextResponse.json(await dailyStudyView(session.id, body.data.timeZone, undefined, state));
 }

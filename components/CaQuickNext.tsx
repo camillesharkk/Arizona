@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { caPaths } from "@/lib/ca-site";
 import { quickNextBand, rankMissedTopics, type TopicMiss } from "@/lib/ca-next";
+import { caStudyLabel } from "@/lib/ca-topics";
 
 export function CaQuickNext({
   correct,
@@ -13,6 +14,11 @@ export function CaQuickNext({
   fullHref,
   fullResume,
   fullLocked,
+  paths = caPaths,
+  fullName = "Full 45 Practice Exam",
+  labelFor = caStudyLabel,
+  dailyState = "CA",
+  limitNote = "The free Full 45 on this account or browser is already used. Opening it shows that limit. California Pro is not open.",
 }: {
   correct: number;
   total: number;
@@ -22,21 +28,26 @@ export function CaQuickNext({
   fullHref: string;
   fullResume: boolean;
   fullLocked: boolean;
+  paths?: typeof caPaths;
+  fullName?: string;
+  labelFor?: (id: string) => string;
+  dailyState?: "CA" | "HI";
+  limitNote?: string;
 }) {
   const band = quickNextBand(correct, total);
-  const topic = rankMissedTopics(misses);
+  const topic = rankMissedTopics(misses, labelFor);
   const wrong = misses.reduce((sum, item) => sum + item.missed, 0);
   const attempt = attemptId ? `attempt=${encodeURIComponent(attemptId)}` : "";
   const guideHref = topic
-    ? `${caPaths.study}?${attempt ? `${attempt}&` : ""}chapter=${encodeURIComponent(topic.id)}#${topic.id}`
-    : caPaths.study;
-  const mistakeHref = `${caPaths.mistakes}${attempt ? `?${attempt}` : ""}`;
-  const fullLabel = fullResume ? "Resume Full 45 Practice Exam" : "Start Full 45 Practice Exam";
+    ? `${paths.study}?${attempt ? `${attempt}&` : ""}chapter=${encodeURIComponent(topic.id)}#${topic.id}`
+    : paths.study;
+  const mistakeHref = `${paths.mistakes}${attempt ? `?${attempt}` : ""}`;
+  const fullLabel = fullResume ? `Resume ${fullName}` : `Start ${fullName}`;
   const [nextReviewAt, setNextReviewAt] = useState("");
   const [signedIn, setSignedIn] = useState(false);
   useEffect(() => {
     const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    fetch(`/api/daily-study/?state=CA&timeZone=${encodeURIComponent(zone)}`, { cache: "no-store" })
+    fetch(`/api/daily-study/?state=${dailyState}&timeZone=${encodeURIComponent(zone)}`, { cache: "no-store" })
       .then((response) => {
         setSignedIn(response.ok);
         return response.ok ? response.json() : null;
@@ -44,7 +55,7 @@ export function CaQuickNext({
       .then((data) => setNextReviewAt(data?.nextReviewAt || ""))
       .catch(() => undefined);
   }, []);
-  const dailyHref = signedIn ? caPaths.daily : `${caPaths.login}?next=${encodeURIComponent(caPaths.daily)}`;
+  const dailyHref = signedIn ? paths.daily : `${paths.login}?next=${encodeURIComponent(paths.daily)}`;
   const fullButton = (
     <a className={band === "review" && topic ? "btn btn-ghost" : "btn btn-primary"} href={fullHref}>
       {fullLabel}
@@ -81,11 +92,11 @@ export function CaQuickNext({
             {reviewButton}
           </>
         ) : null}
-        {band === "perfect" ? <a className="btn btn-ghost" href={caPaths.studyCards}>Explore Study Cards</a> : null}
+        {band === "perfect" ? <a className="btn btn-ghost" href={paths.studyCards}>Explore Study Cards</a> : null}
         <a className="btn btn-ghost" href={dailyHref}>Open Daily Study</a>
         {nextReviewAt ? <span className="notice">Next review {new Date(nextReviewAt).toLocaleString()}.</span> : null}
       </div>
-      {fullLocked && !fullResume ? <p className="notice">The free Full 45 on this account or browser is already used. Opening it shows that limit. California Pro is not open.</p> : null}
+      {fullLocked && !fullResume ? <p className="notice">{limitNote}</p> : null}
     </div>
   );
 }

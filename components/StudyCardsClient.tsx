@@ -8,6 +8,7 @@ import { StudyCardBody } from "@/components/StudyCardBody";
 import { StudyPager } from "@/components/StudyPager";
 import { scrollUnderHeaderSoon } from "@/lib/scroll-under-header";
 import { paths } from "@/lib/paths";
+import { hiStudyLabel } from "@/lib/hi-topics";
 import { isTopicSlug, type PublicStudyCard } from "@/lib/study-cards";
 
 export function StudyCardsClient({
@@ -17,6 +18,7 @@ export function StudyCardsClient({
   cardsHref = paths.studyCards,
   dailyHref = paths.daily,
   practiceHref,
+  labelState,
 }: {
   cards: PublicStudyCard[];
   initialTopic: string;
@@ -24,7 +26,9 @@ export function StudyCardsClient({
   cardsHref?: string;
   dailyHref?: string;
   practiceHref?: (topic: string) => string | undefined;
+  labelState?: "HI";
 }) {
+  const labelFor = labelState === "HI" ? hiStudyLabel : undefined;
   const router = useRouter();
   const [topic, setTopic] = useState(initialTopic);
   const [index, setIndex] = useState(0);
@@ -115,6 +119,7 @@ export function StudyCardsClient({
               </>
             ) : (
               <StudyCardBody
+                labelFor={labelFor}
                 card={{
                   ...card,
                   category: card.topic,

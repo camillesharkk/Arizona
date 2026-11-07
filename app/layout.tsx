@@ -21,19 +21,22 @@ export async function generateMetadata(): Promise<Metadata> {
   const path = (await headers()).get("x-pathname") || "";
   const state = resolveState(path, saved);
   const california = state === "CA";
+  const hawaii = state === "HI";
   return {
     metadataBase: new URL(siteUrl()),
     title: {
-      default: california ? "California Notary Exam Practice" : "Arizona Notary Exam Practice Test 2026",
-      template: california ? "%s · California Exam" : "%s · Arizona Exam",
+      default: hawaii ? "Hawaii Notary Exam Practice" : california ? "California Notary Exam Practice" : "Arizona Notary Exam Practice Test 2026",
+      template: hawaii ? "%s · Hawaii Exam" : california ? "%s · California Exam" : "%s · Arizona Exam",
     },
-    description: california
+    description: hawaii
+      ? "Hawaii notary practice questions and study cards from published official sources. Independent of the Hawaii Department of the Attorney General."
+      : california
       ? "California notary practice questions and study cards from published official sources. Independent of the California Secretary of State."
       : "Free Arizona notary practice test, exam questions, and study guide with official-source citations. Independent of the Arizona Secretary of State.",
-    applicationName: california ? "California Exam" : site.name,
+    applicationName: hawaii ? "Hawaii Exam" : california ? "California Exam" : site.name,
     robots: { index: true, follow: true },
     openGraph: {
-      siteName: california ? "California Exam" : site.name,
+      siteName: hawaii ? "Hawaii Exam" : california ? "California Exam" : site.name,
       type: "website",
       locale: "en_US",
     },
@@ -46,7 +49,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const path = (await headers()).get("x-pathname") || "";
   const state = resolveState(path, saved);
   return (
-    <html lang="en" data-state={state === "CA" ? "CA" : undefined}>
+    <html lang="en" data-state={state === "CA" || state === "HI" ? state : undefined}>
       <body>
         <GoogleAnalytics />
         <MicrosoftClarity />

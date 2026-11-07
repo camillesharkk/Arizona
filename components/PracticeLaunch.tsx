@@ -5,12 +5,15 @@ import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
 import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { clearSitting, openSitting, readSitting, type SittingState } from "@/lib/sitting";
 
 export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState }) {
-  const anonFullKey = stateCode === "CA" ? "ca-anon-full-started" : "az-anon-full-started";
-  const site = stateCode === "CA" ? caPaths : paths;
+  const onHi = stateCode === "HI";
+  const onCa = stateCode === "CA";
+  const anonFullKey = onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : "az-anon-full-started";
+  const site = onHi ? hiPaths : onCa ? caPaths : paths;
   const [mode, setMode] = useState<"pick" | "quick" | "full" | "weak" | "practice">("pick");
   const [focusArea, setFocusArea] = useState("");
   const [isPro, setIsPro] = useState(false);
@@ -40,8 +43,8 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
     fetch("/api/auth/me/")
       .then((r) => r.json())
       .then((d) => {
-        setIsPro(stateCode === "CA" ? false : Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
-        setFullExamCount(Number((stateCode === "CA" ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
+        setIsPro(onCa || onHi ? false : Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
+        setFullExamCount(Number((onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setOwner(d.user?.id || "guest");
         const nextOwner = d.user?.id || "guest";
@@ -138,7 +141,11 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         {(["quick", "full", "weak"] as const).map((id) => {
           const copy = {
             quick: ["Quick 10", "10 questions. The result shows after each answer."],
-            full: ["Full 45", "45 questions, 60 minutes. Results show after you submit."],
+            full: onHi
+              ? ["Comprehensive Practice", "50 questions. No time limit. This count is this site's practice setting."]
+              : onCa
+                ? ["Full 45", "45 questions, 60 minutes. Results show after you submit."]
+                : ["Full 45", "45 questions, 60 minutes. Results show after you submit."],
             weak: ["Weak Areas", "Questions you missed. The longer set is part of Pro."],
           }[id];
           return (
@@ -163,16 +170,18 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   if (mode === "full" && fullLocked) {
     return (
       <div className="card">
-        <h2>Free Full 45 already used</h2>
+        <h2>{onHi ? "Free Comprehensive Practice already used" : "Free Full 45 already used"}</h2>
         <p>
-          {stateCode === "CA"
-            ? "The free California Full 45 is used. California Pro is not open yet, so another full exam cannot start."
+          {onCa || onHi
+            ? (onHi
+              ? "The free Hawaii Comprehensive Practice is used. Hawaii Pro is not open yet, so another one cannot start."
+              : "The free California Full 45 is used. California Pro is not open yet, so another full exam cannot start.")
             : signedIn
-              ? "This account has used its free Full 45. Pro includes more full exams."
-              : "This browser has used its free Full 45. Pro includes more full exams."}
+              ? (onHi ? "This account has used its free Comprehensive Practice. Hawaii Pro is not open." : "This account has used its free Full 45. Pro includes more full exams.")
+              : (onHi ? "This browser has used its free Comprehensive Practice. Hawaii Pro is not open." : "This browser has used its free Full 45. Pro includes more full exams.")}
         </p>
         <Link className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">
-          {stateCode === "CA" ? "See California access" : "Unlock Pro"}
+          {onHi ? "See Hawaii access" : onCa ? "See California access" : "Unlock Pro"}
         </Link>
         <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginLeft: 8 }}>
           Change mode

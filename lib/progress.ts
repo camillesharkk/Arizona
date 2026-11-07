@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
+import { publishedHiQuestions } from "@/data/hi-questions";
 import { applyReviewAnswer, DEFAULT_STUDY_TIME_ZONE, migrateReviewFields } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
 import type { QuestionStat } from "@/lib/store/types";
@@ -30,7 +31,7 @@ export async function recordQuestionAnswer(opts: {
   timeZone?: string;
 }) {
   const store = await getStore();
-  const q = [...publishedQuestions(), ...publishedCaQuestions()].find((x) => x.question_id === opts.questionId);
+  const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId);
   if (!q) throw new Error("unknown_question");
   if (opts.attemptId) {
     const fresh = await store.claimAttempt(opts.userId, opts.attemptId, opts.questionId);
@@ -38,7 +39,7 @@ export async function recordQuestionAnswer(opts: {
   }
   const prev = await store.getStat(opts.userId, opts.questionId);
   const now = new Date().toISOString();
-  const state = q.state === "CA" ? "CA" : "AZ";
+  const state = q.state;
   const savedPlan = await store.getStudyPlan(opts.userId, state);
   const savedSettings = (savedPlan?.document as { settings?: { timeZone?: string } } | undefined)?.settings;
   const timeZone = savedSettings?.timeZone || opts.timeZone || DEFAULT_STUDY_TIME_ZONE;
@@ -48,7 +49,7 @@ export async function recordQuestionAnswer(opts: {
     userId: opts.userId,
     questionId: opts.questionId,
     topic: q.topic,
-    bank: state === "CA" ? "california-notary-exam" : "arizona-notary-exam",
+    bank: state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : "arizona-notary-exam",
     chapter: q.topic,
     state,
     firstCorrect: prev?.firstCorrect ?? opts.correct,

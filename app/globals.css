@@ -23,7 +23,8 @@
   --serif: var(--font);
 }
 
-html[data-state="CA"] {
+html[data-state="CA"],
+html[data-state="HI"] {
   --brand: #0b3a6e;
   --brand-hover: #082c56;
   --brand-dark: #082c56;

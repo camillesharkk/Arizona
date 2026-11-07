@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { seoGuides } from "@/lib/seo-guides";
 import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 import { siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -44,6 +45,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     caPaths.laws,
     caPaths.become,
     caPaths.pricing,
+    hiPaths.home,
+    hiPaths.practice,
+    hiPaths.questions,
+    hiPaths.study,
+    hiPaths.studyCards,
+    hiPaths.resources,
+    hiPaths.examGuide,
+    hiPaths.passingScore,
+    hiPaths.laws,
+    hiPaths.become,
+    hiPaths.pricing,
   ];
   const indexed = [...new Set([...urls, ...seoGuides.filter((guide) => guide.index !== false).map((guide) => guide.path)])];
   return indexed.map((path) => ({ url: `${siteUrl()}${path}`, changeFrequency: "weekly" as const, priority: 0.8 }));

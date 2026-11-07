@@ -20,15 +20,15 @@ function checksFrom(raw: unknown): Record<string, CaCheck> {
   return out;
 }
 
-export async function saveCaExamCheck(userId: string, examId: string, input: { wrongIds: string[]; skipped: number }) {
+export async function saveCaExamCheck(userId: string, examId: string, input: { wrongIds: string[]; skipped: number }, state: "CA" | "HI" = "CA") {
   const store = await getStore();
-  const row = await store.getStudyPlan(userId, "CA");
+  const row = await store.getStudyPlan(userId, state);
   const raw = row?.document && typeof row.document === "object" ? { ...(row.document as Record<string, unknown>) } : {};
   const checks = checksFrom(raw);
   const prev = checks[examId];
   if (prev?.wrongIds.length && input.wrongIds.length === 0) return;
   checks[examId] = { wrong: input.wrongIds.length, skipped: input.skipped, wrongIds: input.wrongIds };
-  await store.saveStudyPlan({ userId, state: "CA", document: { ...raw, checks } });
+  await store.saveStudyPlan({ userId, state, document: { ...raw, checks } });
 }
 
 export async function caDailyView(userId: string, timeZoneHint?: string, now = new Date().toISOString()) {

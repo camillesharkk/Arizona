@@ -1,7 +1,8 @@
+import { hiPaths, isHawaiiPath } from "./hi-site.ts";
 import { paths } from "./paths.ts";
 
 /** Live states on arizonanotaryprep.com. Texas stays on its own app. */
-export const LIVE_STATES = ["AZ", "CA"] as const;
+export const LIVE_STATES = ["AZ", "CA", "HI"] as const;
 export type LiveState = (typeof LIVE_STATES)[number];
 
 export const caPaths = {
@@ -53,37 +54,44 @@ export const CA_EXAM = {
   checkedOn: "2026-11-05",
 };
 
-const SWITCH_PAIRS: [string, string][] = [
-  [caPaths.practice, paths.practice],
-  [caPaths.questions, paths.questions],
-  [caPaths.study, paths.study],
-  [caPaths.studyCards, paths.studyCards],
-  [caPaths.mistakes, paths.mistakes],
-  [caPaths.daily, paths.daily],
-  [caPaths.resources, paths.resources],
-  [caPaths.examGuide, paths.examPrep],
-  [caPaths.passingScore, paths.passingScore],
-  [caPaths.laws, paths.laws],
-  [caPaths.become, paths.become],
-  [caPaths.pricing, paths.pricing],
-  [caPaths.home, paths.home],
-];
-
 export function isCaliforniaPath(pathname: string) {
   return pathname === "/california" || pathname.startsWith("/california/");
 }
 
-/** Matching page in the other live state. Drops topic ids, question ids, and exam query. */
+const SWITCH_FEATURES = ["practice", "questions", "study", "studyCards", "mistakes", "daily", "resources", "examGuide", "passingScore", "laws", "become", "pricing", "home"] as const;
+
+function switchBundle(code: LiveState) {
+  if (code === "CA") return caPaths;
+  if (code === "HI") return hiPaths;
+  return {
+    practice: paths.practice,
+    questions: paths.questions,
+    study: paths.study,
+    studyCards: paths.studyCards,
+    mistakes: paths.mistakes,
+    daily: paths.daily,
+    resources: paths.resources,
+    examGuide: paths.examPrep,
+    passingScore: paths.passingScore,
+    laws: paths.laws,
+    become: paths.become,
+    pricing: paths.pricing,
+    home: paths.home,
+  };
+}
+
+/** Matching page in another live state. Drops topic ids, question ids, and exam query. */
 export function switchStateHref(pathname: string, target: LiveState) {
   const path = pathname.split("?")[0] || "/";
-  const onCa = isCaliforniaPath(path);
-  if (target === "CA" && onCa) return path.endsWith("/") ? path : `${path}/`;
-  if (target === "AZ" && !onCa) return path || paths.home;
-  for (const [ca, az] of SWITCH_PAIRS) {
-    if (onCa && (path === ca || path === ca.slice(0, -1))) return target === "AZ" ? az : ca;
-    if (!onCa && (path === az || path === az.slice(0, -1))) return target === "CA" ? ca : az;
+  const current: LiveState = isHawaiiPath(path) ? "HI" : isCaliforniaPath(path) ? "CA" : "AZ";
+  if (current === target) return path.endsWith("/") ? path : `${path}/`;
+  const here = switchBundle(current);
+  const there = switchBundle(target);
+  for (const feature of SWITCH_FEATURES) {
+    const value = here[feature];
+    if (path === value || path === value.slice(0, -1)) return there[feature];
   }
-  return target === "CA" ? caPaths.home : paths.home;
+  return there.home;
 }
 
 export function areaLabel(area: string) {

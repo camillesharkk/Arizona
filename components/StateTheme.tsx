@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-export function StateTheme({ state }: { state: "CA" }) {
+export function StateTheme({ state }: { state: "CA" | "HI" }) {
   useEffect(() => {
     document.documentElement.dataset.state = state;
   }, [state]);

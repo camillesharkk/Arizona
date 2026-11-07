@@ -1,8 +1,9 @@
 import { isCaliforniaPath } from "@/lib/ca-site";
+import { isHawaiiPath } from "@/lib/hi-site";
 import { isComingSoonPath } from "@/lib/states";
 
 export const STATE_COOKIE = "np_state";
-export type LiveCode = "AZ" | "CA";
+export type LiveCode = "AZ" | "CA" | "HI";
 
 const sharedPaths = ["/login", "/register", "/forgot-password", "/reset-password", "/verify-email", "/account", "/dashboard", "/contact", "/legal"];
 
@@ -12,12 +13,13 @@ export function pathState(pathname: string): LiveCode | null {
   if (path === "/" || isComingSoonPath(path)) return null;
   if (path.startsWith("/api") || path.startsWith("/admin")) return null;
   if (isCaliforniaPath(path)) return "CA";
+  if (isHawaiiPath(path)) return "HI";
   if (sharedPaths.some((item) => path === item || path.startsWith(`${item}/`))) return null;
   return "AZ";
 }
 
 export function parseStateCookie(value: string | undefined | null): LiveCode | null {
-  return value === "AZ" || value === "CA" ? value : null;
+  return value === "AZ" || value === "CA" || value === "HI" ? value : null;
 }
 
 /** A state page wins. Otherwise use the saved choice. */

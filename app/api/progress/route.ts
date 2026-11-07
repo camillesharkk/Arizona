@@ -6,6 +6,8 @@ import { FREE_FULL_EXAMS } from "@/lib/product";
 import { recordProUsage } from "@/lib/commerce/usage";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
+import { publishedHiQuestions } from "@/data/hi-questions";
+import { hiFullExamCount } from "@/lib/entitlements";
 import { saveCaExamCheck } from "@/lib/ca-daily";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
@@ -16,7 +18,7 @@ const answerSchema = z.object({
   selected: z.enum(["A", "B", "C", "D"]),
   attemptId: z.string().min(8).max(80).optional(),
   review: z.boolean().optional(),
-  state: z.enum(["AZ", "CA"]).optional(),
+  state: z.enum(["AZ", "CA", "HI"]).optional(),
   timeZone: z.string().max(80).optional(),
 });
 
@@ -32,37 +34,41 @@ export async function POST(req: Request) {
         correctCount: z.number(),
         total: z.number(),
         examId: z.string().uuid().optional(),
-        state: z.enum(["AZ", "CA"]).optional(),
-        wrongIds: z.array(z.string().max(80)).max(45).optional(),
-        skipped: z.number().int().min(0).max(45).optional(),
+        state: z.enum(["AZ", "CA", "HI"]).optional(),
+        wrongIds: z.array(z.string().max(80)).max(80).optional(),
+        skipped: z.number().int().min(0).max(80).optional(),
         timeZone: z.string().max(80).optional(),
       })
       .safeParse(body);
     if (!exam.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
     const store = await getStore();
     const california = exam.data.state === "CA";
-    if (california && exam.data.examId && exam.data.wrongIds) {
+    const hawaii = exam.data.state === "HI";
+    if ((california || hawaii) && exam.data.examId && exam.data.wrongIds) {
       await saveCaExamCheck(session.id, exam.data.examId, {
         wrongIds: exam.data.wrongIds,
         skipped: exam.data.skipped ?? 0,
-      });
+      }, hawaii ? "HI" : "CA");
     }
     if (exam.data.examId) {
       const existing = (await store.listExams(session.id)).some((row) => row.id === exam.data.examId);
       if (existing) return NextResponse.json({ ok: true, duplicate: true });
     }
-    if (!california && exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
+    if (!california && !hawaii && exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
       return NextResponse.json({ error: "Pro required for additional full exams" }, { status: 402 });
     }
-    const priorFull = !california && exam.data.mode === "full" ? await fullExamCount(session.id) : 0;
+    if (hawaii && exam.data.mode === "full" && (await hiFullExamCount(session.id)) >= FREE_FULL_EXAMS) {
+      return NextResponse.json({ error: "The free Hawaii comprehensive practice is already used" }, { status: 402 });
+    }
+    const priorFull = !california && !hawaii && exam.data.mode === "full" ? await fullExamCount(session.id) : 0;
     const inserted = await recordExam({
-      mode: california ? `ca-${exam.data.mode}` : exam.data.mode,
+      mode: california ? `ca-${exam.data.mode}` : hawaii ? `hi-${exam.data.mode}` : exam.data.mode,
       score: exam.data.score,
       correctCount: exam.data.correctCount,
       total: exam.data.total,
       examId: exam.data.examId,
       userId: session.id,
-      updateBest: !california,
+      updateBest: !california && !hawaii,
     });
     if (!inserted) return NextResponse.json({ ok: true, duplicate: true });
     if (exam.data.mode === "full" && priorFull >= FREE_FULL_EXAMS) {
@@ -72,7 +78,7 @@ export async function POST(req: Request) {
   }
   const parsed = answerSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid answer" }, { status: 400 });
-  const q = [...publishedQuestions(), ...publishedCaQuestions()].find((x) => x.question_id === parsed.data.questionId);
+  const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === parsed.data.questionId);
   if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
   if (parsed.data.state ? parsed.data.state !== q.state : q.state !== "AZ") {
     return NextResponse.json({ error: "Question is not in this state" }, { status: 400 });

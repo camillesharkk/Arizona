@@ -36,8 +36,8 @@ const empty: SavedProgress = {
   scores: [],
 };
 
-function progressKey(email = currentEmail(), state: "AZ" | "CA" = "AZ") {
-  const prefix = state === "CA" ? "ca-notary-" : PREFIX;
+function progressKey(email = currentEmail(), state: "AZ" | "CA" | "HI" = "AZ") {
+  const prefix = state === "CA" ? "ca-notary-" : state === "HI" ? "hi-notary-" : PREFIX;
   return email ? `${prefix}progress:${email}` : `${prefix}progress`;
 }
 
@@ -46,7 +46,7 @@ function notifyProgress() {
   window.dispatchEvent(new Event(PROGRESS_EVENT));
 }
 
-export function loadProgress(state: "AZ" | "CA" = "AZ"): SavedProgress {
+export function loadProgress(state: "AZ" | "CA" | "HI" = "AZ"): SavedProgress {
   if (typeof window === "undefined") return { ...empty };
   try {
     const raw = localStorage.getItem(progressKey(undefined, state));
@@ -57,7 +57,7 @@ export function loadProgress(state: "AZ" | "CA" = "AZ"): SavedProgress {
   }
 }
 
-export function saveProgress(patch: Partial<SavedProgress>, state: "AZ" | "CA" = "AZ"): SavedProgress {
+export function saveProgress(patch: Partial<SavedProgress>, state: "AZ" | "CA" | "HI" = "AZ"): SavedProgress {
   const next = { ...loadProgress(state), ...patch };
   localStorage.setItem(progressKey(undefined, state), JSON.stringify(next));
   notifyProgress();
@@ -74,7 +74,7 @@ export function removeWrong(id: string) {
   saveProgress({ wrongIds: p.wrongIds.filter((x) => x !== id) });
 }
 
-export function recordAnswer(id: string, correct: boolean, state: "AZ" | "CA" = "AZ") {
+export function recordAnswer(id: string, correct: boolean, state: "AZ" | "CA" | "HI" = "AZ") {
   const p = loadProgress(state);
   const answeredIds = p.answeredIds.includes(id) ? p.answeredIds : [...p.answeredIds, id];
   const wrongIds = correct ? p.wrongIds.filter((x) => x !== id) : p.wrongIds.includes(id) ? p.wrongIds : [...p.wrongIds, id];

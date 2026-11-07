@@ -159,7 +159,8 @@ export function AuthForm({
       setInfo("If that email is registered, a reset link is on the way. If you don't see the email, check your spam or junk folder.");
     }
     if (mode === "login") {
-      await syncCaAttempts().catch(() => null);
+      await syncCaAttempts("CA").catch(() => null);
+      await syncCaAttempts("HI").catch(() => null);
       const next = new URLSearchParams(window.location.search).get("next");
       const safe = next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/\\");
       window.location.href = safe ? next : paths.dashboard;

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { caGuideChapters } from "@/data/ca-study-guide";
+import { hiGuideChapters } from "@/data/hi-study-guide";
 import {
   adoptGuestCaRecords,
   caStudyRecord,
@@ -14,14 +15,19 @@ import {
   type CaQuickAttempt,
 } from "@/lib/ca-attempts";
 import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 import { caStudyLabel } from "@/lib/ca-topics";
+import { hiStudyLabel } from "@/lib/hi-topics";
 import { scrollUnderHeaderSoon } from "@/lib/scroll-under-header";
 
 function ownerFrom(userId: string | null) {
   return userId || "guest";
 }
 
-export function CaliforniaGuide() {
+export function CaliforniaGuide({ state = "CA" }: { state?: "CA" | "HI" } = {}) {
+  const chapters = state === "HI" ? hiGuideChapters : caGuideChapters;
+  const paths = state === "HI" ? hiPaths : caPaths;
+  const labelFor = state === "HI" ? hiStudyLabel : caStudyLabel;
   const params = useSearchParams();
   const requested = params.get("attempt") || "";
   const chapter = params.get("chapter") || "";
@@ -36,7 +42,7 @@ export function CaliforniaGuide() {
   const [error, setError] = useState("");
 
   function loadRecord(nextOwner: string, nextAttempt: CaQuickAttempt | null) {
-    const record = caStudyRecord(nextOwner);
+    const record = caStudyRecord(nextOwner, state);
     setReads(record.reads);
     setMastered(record.mastered);
     setTopics(record.reviewTopics);
@@ -48,15 +54,15 @@ export function CaliforniaGuide() {
       .then((response) => (response.ok ? response.json() : Promise.reject(new Error("account"))))
       .then((data) => {
         const userId = data.user?.id || "";
-        if (userId) adoptGuestCaRecords(userId);
+        if (userId) adoptGuestCaRecords(userId, state);
         const nextOwner = ownerFrom(userId);
         setOwner(nextOwner);
         setSignedIn(Boolean(userId));
-        const row = requested ? readCaAttempt(nextOwner, requested) : latestCaQuick(nextOwner);
+        const row = requested ? readCaAttempt(nextOwner, requested, state) : latestCaQuick(nextOwner, state);
         loadRecord(nextOwner, row);
       })
       .catch(() => {
-        const row = requested ? readCaAttempt("guest", requested) : latestCaQuick("guest");
+        const row = requested ? readCaAttempt("guest", requested, state) : latestCaQuick("guest", state);
         loadRecord("guest", row);
       });
   }, [requested]);
@@ -79,7 +85,7 @@ export function CaliforniaGuide() {
     if (!attempt) return;
     setError("");
     try {
-      const result = importCaReviewTopics(owner, attempt.id, attempt.topicMisses);
+      const result = importCaReviewTopics(owner, attempt.id, attempt.topicMisses, state);
       setMessage(result.added
         ? `${result.added} review ${result.added === 1 ? "topic" : "topics"} added · ${result.kept} already listed`
         : `${result.kept} review ${result.kept === 1 ? "topic" : "topics"} already listed`);
@@ -92,7 +98,7 @@ export function CaliforniaGuide() {
 
   function toggle(id: string, field: "reads" | "mastered") {
     const on = field === "reads" ? !reads.includes(id) : !mastered.includes(id);
-    const next = setCaChapterFlag(owner, id, field, on);
+    const next = setCaChapterFlag(owner, id, field, on, state);
     setReads(next.reads);
     setMastered(next.mastered);
   }
@@ -111,7 +117,7 @@ export function CaliforniaGuide() {
           {!attempt ? (
             <>
               <p>No finished Quick 10 is on this account yet.</p>
-              <Link className="btn btn-primary" href={`${caPaths.practice}?mode=quick`}>Start Quick 10</Link>
+              <Link className="btn btn-primary" href={`${paths.practice}?mode=quick`}>Start Quick 10</Link>
             </>
           ) : misses.length === 0 ? (
             <p>No missed topics to import.</p>
@@ -120,7 +126,7 @@ export function CaliforniaGuide() {
               <p>Finished {new Date(attempt.finishedAt).toLocaleString()}.</p>
               <ul>
                 {misses.map((item) => (
-                  <li key={item.id}>{caStudyLabel(item.id)} · {item.missed} missed</li>
+                  <li key={item.id}>{labelFor(item.id)} · {item.missed} missed</li>
                 ))}
               </ul>
               <button className="btn btn-primary" type="button" onClick={importTopics}>Add to My Review Topics</button>
@@ -144,11 +150,11 @@ export function CaliforniaGuide() {
           <ul className="review-topic-list">
             {topics.map((item) => (
               <li key={item.id}>
-                <strong>{caStudyLabel(item.id)}</strong> · {item.missed} missed
+                <strong>{labelFor(item.id)}</strong> · {item.missed} missed
                 <span className="row">
                   <a href={`#${item.id}`}>Read Chapter</a>
-                  <Link href={`${caPaths.studyCards}?topic=${item.id}`}>Study Cards</Link>
-                  <Link href={`${caPaths.practice}?mode=practice&area=${item.id}`}>Practice This Topic</Link>
+                  <Link href={`${paths.studyCards}?topic=${item.id}`}>Study Cards</Link>
+                  <Link href={`${paths.practice}?mode=practice&area=${item.id}`}>Practice This Topic</Link>
                 </span>
               </li>
             ))}
@@ -157,11 +163,11 @@ export function CaliforniaGuide() {
       ) : null}
       <nav className="card toc" aria-label="Chapters">
         <h2>Chapters</h2>
-        {caGuideChapters.map((item) => (
+        {chapters.map((item) => (
           <a key={item.id} href={`#${item.id}`}>{item.title}</a>
         ))}
       </nav>
-      {caGuideChapters.map((item) => (
+      {chapters.map((item) => (
         <article key={item.id} id={item.id} className="card guide-chapter">
           <div className="row space">
             <h2>{item.title}</h2>
@@ -184,12 +190,12 @@ export function CaliforniaGuide() {
             <button className={`chip ${mastered.includes(item.id) ? "on" : ""}`} type="button" onClick={() => toggle(item.id, "mastered")}>
               {mastered.includes(item.id) ? "Mastered" : "Mark mastered"}
             </button>
-            <Link className="btn btn-ghost" href={`${caPaths.studyCards}?topic=${item.id}`}>Study Cards</Link>
-          <Link className="btn btn-primary" href={`${caPaths.practice}?mode=practice&area=${item.id}`}>Practice This Topic</Link>
+            <Link className="btn btn-ghost" href={`${paths.studyCards}?topic=${item.id}`}>Study Cards</Link>
+          <Link className="btn btn-primary" href={`${paths.practice}?mode=practice&area=${item.id}`}>Practice This Topic</Link>
         </div>
       </article>
       ))}
-      <p><Link className="btn btn-primary" href={signedIn ? caPaths.daily : `${caPaths.login}?next=${encodeURIComponent(caPaths.daily)}`}>Continue to Daily Study</Link></p>
+      <p><Link className="btn btn-primary" href={signedIn ? paths.daily : `${paths.login}?next=${encodeURIComponent(paths.daily)}`}>Continue to Daily Study</Link></p>
       {!signedIn ? <p className="notice">Chapter progress on this browser stays with this browser until you sign in.</p> : null}
     </>
   );

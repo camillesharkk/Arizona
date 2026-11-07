@@ -13,7 +13,7 @@ export function WrongAnswersLink({
   className?: string;
   label?: string;
   href?: string;
-  stateCode?: "AZ" | "CA";
+  stateCode?: "AZ" | "CA" | "HI";
 }) {
   const [text, setText] = useState(label);
   const [to, setTo] = useState(href);

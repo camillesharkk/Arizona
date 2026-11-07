@@ -17,7 +17,7 @@ if (!ny || !hi || !co || !tx || !ri) fail("missing sample states");
 
 for (const state of [ny, hi, prepStates.find((item) => item.code === "LA")!, prepStates.find((item) => item.code === "PA")!]) {
   const result = recommendStates(state, prepStates, () => 0);
-  if (!result.similar || codes(result.primary) !== "AZ,CA" || result.others.length) fail(`${state.code} similar ${codes(result.primary)}`);
+  if (!result.similar || codes(result.primary) !== "AZ,CA" || codes(result.others) !== "HI") fail(`${state.code} similar ${codes(result.primary)} ${codes(result.others)}`);
 }
 
 let seen = new Set<string>();
@@ -25,15 +25,15 @@ for (let i = 0; i < 20; i += 1) {
   const result = recommendStates(co, prepStates, () => i / 20);
   if (result.similar || result.primary.length !== 1) fail("colorado primary");
   const primary = result.primary[0]?.code;
-  if (primary !== "AZ" && primary !== "CA") fail("colorado candidate");
-  if (codes(result.others) !== (primary === "AZ" ? "CA" : "AZ")) fail("colorado other");
+  if (primary !== "AZ" && primary !== "CA" && primary !== "HI") fail("colorado candidate");
+  if (result.others.length !== 2 || result.others.some((item) => item.code === primary)) fail("colorado other");
   if (primary) seen.add(primary);
 }
 if (seen.size < 2) fail("colorado random did not reach both states");
 
 for (const state of [tx, ri]) {
   const result = recommendStates(state, prepStates, () => 0);
-  if (result.similar || result.primary.length !== 1 || result.others.length !== 1) fail(`${state.code} random`);
+  if (result.similar || result.primary.length !== 1 || result.others.length !== 2) fail(`${state.code} random`);
 }
 
 const extra: PrepState = {
@@ -60,5 +60,5 @@ const oneOther = recommendStates(co, onlyAz, () => 0.9);
 if (codes(oneOther.primary) !== "AZ" || oneOther.similar || oneOther.others.length) fail("one other");
 
 if (prepStates.length !== 28) fail(`count ${prepStates.length}`);
-if (prepStates.filter((state) => state.status === "available").map((state) => state.code).sort().join() !== "AZ,CA") fail("available");
+if (prepStates.filter((state) => state.status === "available").map((state) => state.code).sort().join() !== "AZ,CA,HI") fail("available");
 console.log("state-recommend-verify ok");

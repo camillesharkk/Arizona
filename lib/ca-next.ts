@@ -4,13 +4,13 @@ export type TopicMiss = { id: string; missed: number };
 
 export type ReviewTopic = { id: string; missed: number; attemptId: string };
 
-export function rankMissedTopics(misses: TopicMiss[]) {
+export function rankMissedTopics(misses: TopicMiss[], labelFor: (id: string) => string = caStudyLabel) {
   const ranked = misses
     .filter((item) => item.missed > 0)
     .sort((a, b) => b.missed - a.missed || a.id.localeCompare(b.id));
   const top = ranked[0];
   if (!top) return null;
-  return { ...top, label: caStudyLabel(top.id) };
+  return { ...top, label: labelFor(top.id) };
 }
 
 export function quickNextBand(correct: number, total: number) {

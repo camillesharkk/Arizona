@@ -1,9 +1,12 @@
 import { caCards } from "@/data/ca-cards";
+import { hiCards } from "@/data/hi-cards";
 import { publishedCaQuestions } from "@/data/ca-questions";
+import { publishedHiQuestions } from "@/data/hi-questions";
 import { publishedQuestions } from "@/data/questions";
 import { localDate } from "@/lib/calendar";
 import { recentCaExams, type CaCheck } from "@/lib/ca-daily-shape";
 import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 import { hasArizonaPro } from "@/lib/entitlements";
 import { publicStudyCards, studyCardCatalog } from "@/lib/study-cards";
 import {
@@ -23,12 +26,14 @@ import {
 import { DEFAULT_STUDY_TIME_ZONE, scheduleReview } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
 
-export type StudyState = "AZ" | "CA";
+export type StudyState = "AZ" | "CA" | "HI";
 
 function pool(state: StudyState, isPro: boolean) {
-  if (state === "CA") {
-    const questions = publishedCaQuestions();
-    const cards = caCards.map((card) => ({
+  if (state === "CA" || state === "HI") {
+    const questions = state === "HI" ? publishedHiQuestions() : publishedCaQuestions();
+    const sourceCards = state === "HI" ? hiCards : caCards;
+    const practice = state === "HI" ? hiPaths.practice : caPaths.practice;
+    const cards = sourceCards.map((card) => ({
       id: card.id,
       topic: card.study,
       category: card.study,
@@ -40,7 +45,7 @@ function pool(state: StudyState, isPro: boolean) {
       mixup: card.mixup,
       sourceLabel: card.source,
       sourceUrl: card.sourceUrl,
-      practiceHref: `${caPaths.practice}?mode=practice&area=${encodeURIComponent(card.study)}`,
+      practiceHref: `${practice}?mode=practice&area=${encodeURIComponent(card.study)}`,
       locked: false,
       pending: false,
     }));
@@ -82,15 +87,16 @@ async function loadDocument(userId: string, state: StudyState, today: string, ti
   const hint = timeZoneHint && timeZoneHint.length < 80 ? timeZoneHint : undefined;
   const doc = normalizeDocument(row?.document, today, hint || DEFAULT_STUDY_TIME_ZONE);
   if (!row && hint) doc.settings.timeZone = hint;
-  return { store, doc, checks: state === "CA" ? keptChecks(row?.document) : undefined };
+  return { store, doc, checks: state === "CA" || state === "HI" ? keptChecks(row?.document) : undefined };
 }
 
 async function saveDocument(store: Awaited<ReturnType<typeof getStore>>, userId: string, state: StudyState, doc: StudyDocument, checks?: Record<string, CaCheck>) {
-  await store.saveStudyPlan({ userId, state, document: state === "CA" && checks ? { ...doc, checks } : doc });
+  await store.saveStudyPlan({ userId, state, document: (state === "CA" || state === "HI") && checks ? { ...doc, checks } : doc });
 }
 
 export async function dailyStudyView(userId: string, timeZoneHint?: string, now = new Date().toISOString(), state: StudyState = "AZ") {
   const pro = state === "AZ" ? await hasArizonaPro(userId) : true;
+  const topicPractice = state === "CA" || state === "HI";
   const storeForExpiry = await getStore();
   const expires = state === "AZ" ? await storeForExpiry.getLatestArizonaExpiry(userId) : null;
   const loaded = await loadDocument(userId, state, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
@@ -101,7 +107,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   const { questions, cards, cardsByQuestion } = pool(state, pro);
   const stats = await store.listStats(userId);
   const stateStats = stats.filter((item) => item.state === state);
-  if (state === "CA") {
+  if (topicPractice) {
     for (const stat of stateStats) {
       if (stat.mastered || stat.wrongCount <= 0 || stat.nextReviewAt) continue;
       stat.nextReviewAt = scheduleReview(stat.lastWrongAt || stat.firstAt || now, stat.reviewStage || 0, timeZone);
@@ -189,7 +195,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     unmappedQuestionIds: built.unmappedQuestionIds,
     nextReviewAt: nextReview,
     taskStatus: built.tasks,
-    ...(state === "CA" ? californiaPlan(questions, stateStats, await store.listExams(userId), checks) : {}),
+    ...(topicPractice ? californiaPlan(questions, stateStats, await store.listExams(userId), checks, state) : {}),
   };
 }
 
@@ -198,6 +204,7 @@ function californiaPlan(
   stats: { questionId: string; state: string; wrongCount: number; savedForReview?: boolean; mastered: boolean; nextReviewAt: string | null; lastWrongAt: string | null; firstAt: string | null }[],
   exams: { id: string; mode: string; correctCount: number; total: number; at: string }[],
   checks: Record<string, CaCheck> | undefined,
+  state: "CA" | "HI",
 ) {
   const byId = new Map(questions.map((question) => [question.question_id, question]));
   const now = new Date().toISOString();
@@ -217,11 +224,11 @@ function californiaPlan(
     })
     .sort((a, b) => (a.nextReviewAt || "9").localeCompare(b.nextReviewAt || "9"));
   return {
-    state: "CA" as const,
-    recent: recentCaExams(exams, checks || {}, stats),
+    state,
+    recent: recentCaExams(exams, checks || {}, stats, state),
     scheduled,
     due: scheduled.filter((item) => item.due).map((item) => ({ questionId: item.questionId, prompt: item.prompt, due: item.nextReviewAt, area: item.area })),
-    hasPractice: recentCaExams(exams, checks || {}, stats).length > 0 || stats.some((stat) => stat.firstAt || stat.savedForReview),
+    hasPractice: recentCaExams(exams, checks || {}, stats, state).length > 0 || stats.some((stat) => stat.firstAt || stat.savedForReview),
   };
 }
 

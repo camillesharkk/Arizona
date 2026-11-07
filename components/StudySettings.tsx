@@ -31,7 +31,8 @@ export function StudySettings() {
   const [message, setMessage] = useState("");
 
   function stateQuery() {
-    return new URLSearchParams(window.location.search).get("state") === "CA" ? "CA" : "AZ";
+    const requested = new URLSearchParams(window.location.search).get("state");
+    return requested === "CA" || requested === "HI" ? requested : "AZ";
   }
 
   async function load() {
