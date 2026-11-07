@@ -12,7 +12,7 @@ import { caStudyLabel, caStudyTopics } from "@/lib/ca-topics";
 import { hiPaths } from "@/lib/hi-site";
 import { hiStudyLabel, hiStudyTopics } from "@/lib/hi-topics";
 import { ExamRunner } from "@/components/ExamRunner";
-import { MistakeActions } from "@/components/MistakeActions";
+import { MistakeActions, mistakeTargets } from "@/components/MistakeActions";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { LoadingNote } from "@/components/QuizChrome";
 import { topicLabel } from "@/lib/quiz";
@@ -475,8 +475,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
               {s.nextReviewAt ? ` · Next review ${new Date(s.nextReviewAt).toLocaleString()}` : ""}
             </p>
             <MistakeActions
-              stateCode={onHi ? "HI" : onCa ? "CA" : "AZ"}
-              studyTopic={topicPractice ? q.study_topic : undefined}
+              {...mistakeTargets(onHi ? "HI" : onCa ? "CA" : "AZ", q)}
               stat={s}
               pending={pending[s.questionId]}
               onAction={(action) => requestAction(s, action)}
