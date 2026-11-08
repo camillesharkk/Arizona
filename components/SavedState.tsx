@@ -21,7 +21,7 @@ export function useResolvedState(savedState: LiveCode | null) {
     const fromPath = pathState(pathname);
     if (fromPath) writeStateCookie(fromPath);
     const match = document.cookie.match(/(?:^|; )np_state=(AZ|CA|HI)/);
-    const remembered = match?.[1] === "AZ" || match?.[1] === "CA" ? match[1] : savedState;
+    const remembered = match?.[1] === "AZ" || match?.[1] === "CA" || match?.[1] === "HI" ? match[1] : savedState;
     setSaved(fromPath ?? remembered);
   }, [pathname, savedState]);
   return resolveState(pathname, saved);

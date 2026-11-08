@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ExamRunner } from "@/components/ExamRunner";
+import { examConfig } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
-import { caPaths } from "@/lib/ca-site";
-import { hiPaths } from "@/lib/hi-site";
+import { CA_EXAM, caPaths } from "@/lib/ca-site";
+import { HI_EXAM, hiPaths } from "@/lib/hi-site";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { clearSitting, openSitting, readSitting, type SittingState } from "@/lib/sitting";
 
@@ -14,6 +16,9 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   const onCa = stateCode === "CA";
   const anonFullKey = onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : "az-anon-full-started";
   const site = onHi ? hiPaths : onCa ? caPaths : paths;
+  const fullCount = onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
+  const fullMinutes = onHi ? HI_EXAM.officialTimeLimitMinutes : onCa ? CA_EXAM.timeLimitMinutes : examConfig.timeLimitMinutes;
+  const searchParams = useSearchParams();
   const [mode, setMode] = useState<"pick" | "quick" | "full" | "weak" | "practice">("pick");
   const [focusArea, setFocusArea] = useState("");
   const [isPro, setIsPro] = useState(false);
@@ -22,41 +27,53 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   const [anonFullUsed, setAnonFullUsed] = useState(false);
   const [gateReady, setGateReady] = useState(false);
   const [authReady, setAuthReady] = useState(false);
+  const [authError, setAuthError] = useState(false);
+  const [authTry, setAuthTry] = useState(0);
+  const [pendingStart, setPendingStart] = useState<"" | "quick" | "full" | "weak">("");
   const [owner, setOwner] = useState("guest");
   const [openModes, setOpenModes] = useState<Record<string, boolean>>({});
   const anonFullThisVisit = useRef(false);
 
   useEffect(() => {
+    const area = searchParams.get("area") || "";
+    const requested = searchParams.get("mode");
+    if (area) {
+      setFocusArea(area);
+      setMode("practice");
+      return;
+    }
+    setFocusArea("");
+    if (requested === "quick" || requested === "full" || requested === "weak") setMode(requested);
+    else setMode("pick");
+  }, [searchParams, stateCode]);
+
+  useEffect(() => {
+    let cancel = false;
+    const controller = new AbortController();
+    setAuthReady(false);
+    setAuthError(false);
+    setOpenModes({});
+    anonFullThisVisit.current = false;
     try {
       setAnonFullUsed(localStorage.getItem(anonFullKey) === "1");
     } catch {
       setAnonFullUsed(false);
     }
     setGateReady(true);
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get("mode");
-    const area = params.get("area") || "";
-    if (area) {
-      setFocusArea(area);
-      setMode("practice");
-    } else if (q === "quick" || q === "full" || q === "weak") setMode(q);
-    fetch("/api/auth/me/")
+    fetch("/api/auth/me/", { signal: controller.signal, cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
+        if (cancel) return;
         setIsPro(Boolean(d.user?.arizonaPro || d.user?.californiaPro || d.user?.hawaiiPro || d.user?.plan === "pro"));
         setFullExamCount(Number((onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setOwner(d.user?.id || "guest");
         const nextOwner = d.user?.id || "guest";
-        const requested = new URLSearchParams(window.location.search).get("mode");
-        const startFresh = new URLSearchParams(window.location.search).get("start") === "1";
+        const liveParams = new URLSearchParams(window.location.search);
+        const requested = liveParams.get("mode");
+        const startFresh = liveParams.get("start") === "1";
         if (startFresh && (requested === "quick" || requested === "full" || requested === "weak") && !openSitting(sessionStorage, nextOwner, requested, stateCode)) {
           clearSitting(sessionStorage, nextOwner, requested, stateCode);
-          const url = new URL(window.location.href);
-          if (url.searchParams.has("attempt")) {
-            url.searchParams.delete("attempt");
-            window.history.replaceState(null, "", url);
-          }
         }
         setOpenModes({
           quick: Boolean(openSitting(sessionStorage, nextOwner, "quick", stateCode)),
@@ -64,9 +81,18 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
           weak: Boolean(openSitting(sessionStorage, nextOwner, "weak", stateCode)),
         });
       })
-      .catch(() => undefined)
-      .finally(() => setAuthReady(true));
-  }, []);
+      .catch((error: unknown) => {
+        if (cancel || (error instanceof DOMException && error.name === "AbortError")) return;
+        setAuthError(true);
+      })
+      .finally(() => {
+        if (!cancel && !controller.signal.aborted) setAuthReady(true);
+      });
+    return () => {
+      cancel = true;
+      controller.abort();
+    };
+  }, [anonFullKey, authTry, onCa, onHi, stateCode]);
 
   const inThisAnonFull = anonFullThisVisit.current && mode === "full";
   const anonBlocked = !isPro && !signedIn && anonFullUsed && !inThisAnonFull;
@@ -120,10 +146,29 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   }
 
   function startFull() {
-    if (!authReady) return;
     if (!isPro && !signedIn && !anonFullUsed) consumeAnonFull();
     enter("full");
   }
+
+  function requestStart(next: "quick" | "full" | "weak") {
+    if (pendingStart) return;
+    if (!authReady) {
+      setPendingStart(next);
+      return;
+    }
+    if (next === "full") startFull();
+    else enter(next);
+  }
+
+  useEffect(() => {
+    if (!authReady || authError || !pendingStart) return;
+    const next = pendingStart;
+    setPendingStart("");
+    if (next === "full") startFull();
+    else enter(next);
+    // The queued click runs once, after this state's access check resolves.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authReady, authError, pendingStart]);
 
   useEffect(() => {
     if (!authReady || !gateReady || mode !== "full" || isPro || signedIn || anonFullThisVisit.current) return;
@@ -131,8 +176,17 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
     consumeAnonFull();
   }, [authReady, gateReady, mode, isPro, signedIn, anonFullUsed]);
 
+  if (authError) {
+    return (
+      <div className="card">
+        <p className="form-error" role="alert">Could not check exam access. The exam was not started.</p>
+        <button className="btn btn-primary" type="button" onClick={() => setAuthTry((n) => n + 1)}>Retry</button>
+      </div>
+    );
+  }
+
   if (mode !== "pick" && (!authReady || !gateReady)) {
-    return <p className="notice">Loading exam…</p>;
+    return <p className="notice" role="status">Loading exam…</p>;
   }
 
   if (mode === "pick") {
@@ -142,10 +196,8 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
           const copy = {
             quick: ["Quick 10", "10 questions. The result shows after each answer."],
             full: onHi
-              ? ["Comprehensive Practice", "50 questions. No time limit. This count is this site's practice setting."]
-              : onCa
-                ? ["Full 45", "45 questions, 60 minutes. Results show after you submit."]
-                : ["Full 45", "45 questions, 60 minutes. Results show after you submit."],
+              ? ["Comprehensive Practice", `${fullCount} questions. No time limit. This count is this site's practice setting.`]
+              : ["Full " + fullCount, `${fullCount} questions, ${fullMinutes ?? examConfig.timeLimitMinutes} minutes. Results show after you submit.`],
             weak: ["Weak Areas", "Questions you missed. The longer set is part of Pro."],
           }[id];
           return (
@@ -158,7 +210,9 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
                   <button className="btn btn-ghost" type="button" onClick={() => beginNew(id)}>Start new</button>
                 </div>
               ) : (
-                <button className="btn btn-primary" type="button" onClick={() => (id === "full" ? startFull() : enter(id))}>Start</button>
+                <button className="btn btn-primary" type="button" disabled={Boolean(pendingStart)} onClick={() => requestStart(id)}>
+                  {pendingStart === id ? "Loading…" : "Start"}
+                </button>
               )}
             </div>
           );

@@ -97,11 +97,15 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
       }
     }
     setGateReady(true);
-    fetch("/api/auth/me/")
+    setAuthReady(false);
+    let cancel = false;
+    const controller = new AbortController();
+    fetch("/api/auth/me/", { signal: controller.signal, cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
+        if (cancel) return;
         const nextOwner = d.user?.id || "guest";
-        setIsPro(onCa || onHi ? false : Boolean(d.user?.arizonaPro || d.user?.plan === "pro"));
+        setIsPro(Boolean(d.user?.arizonaPro || d.user?.californiaPro || d.user?.hawaiiPro || d.user?.plan === "pro"));
         setFullExamCount(Number((onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "quick", stateCode)));
@@ -113,9 +117,17 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
           setHomeQuiz("full");
         }
       })
-      .catch(() => undefined)
-      .finally(() => setAuthReady(true));
-  }, []);
+      .catch((error: unknown) => {
+        if (cancel || (error instanceof DOMException && error.name === "AbortError")) return;
+      })
+      .finally(() => {
+        if (!cancel) setAuthReady(true);
+      });
+    return () => {
+      cancel = true;
+      controller.abort();
+    };
+  }, [anonKey, onCa, onHi, site.practice, stateCode]);
 
   useEffect(() => {
     if (!signedIn) return;
@@ -128,7 +140,7 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
         setTodayLeft(left > 0 ? left : null);
       })
       .catch(() => undefined);
-  }, [signedIn, onCa]);
+  }, [signedIn, onCa, onHi]);
 
   const fullLocked = !fullSittingOpen && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || (!signedIn && anonFullUsed));
 

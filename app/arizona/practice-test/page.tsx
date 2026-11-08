@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { examConfig, officialExam } from "@/data/exam-config";
 import { AnswerExplain } from "@/components/AnswerExplain";
 import { PracticeLaunch } from "@/components/PracticeLaunch";
@@ -36,7 +37,9 @@ export default function PracticeTestPage() {
         Quick 10 and topic practice without Pro use only the {free.length} free questions. The other {pool.length - free.length} are
         Pro-only. One free Full 45 in this browser can include Pro questions.
       </p>
-      <PracticeLaunch />
+      <Suspense fallback={<p className="notice">Loading exam…</p>}>
+        <PracticeLaunch />
+      </Suspense>
       <section className="card" style={{ margin: "20px 0" }}>
         <h2>What happens during and after the test?</h2>
         <p>

@@ -8,7 +8,7 @@ import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { pickCaFullExam, pickCaQuickExam, weakestCaArea } from "@/lib/ca-exam";
 import { pickHiFullExam, pickHiQuickExam } from "@/lib/hi-exam";
-import { areaLabel, caPaths } from "@/lib/ca-site";
+import { areaLabel, CA_EXAM, caPaths } from "@/lib/ca-site";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
 import { hiStudyLabel } from "@/lib/hi-topics";
 import { examConfig, officialExam } from "@/data/exam-config";
@@ -76,7 +76,7 @@ export function ExamRunner({
   const topicPractice = onCa || onHi;
   const site = onHi ? hiPaths : onCa ? caPaths : paths;
   const examMinutes = onHi ? 0 : onCa ? 60 : examConfig.timeLimitMinutes;
-  const fullSize = onHi ? HI_EXAM.practiceQuestionCount : onCa ? 45 : examConfig.questionCount;
+  const fullSize = onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
   const anonFullKey = onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : "az-anon-full-started";
   const unscoredRef = useRef<string[]>([]);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
@@ -219,7 +219,27 @@ export function ExamRunner({
   useEffect(() => {
     let cancel = false;
     setBootError(false);
-    fetch("/api/auth/me/")
+    setOwner(null);
+    setActiveSeed(null);
+    setLockedIds(null);
+    setRestored(false);
+    setDone(false);
+    setAnswers({});
+    answersRef.current = {};
+    setIdx(0);
+    setStartedAt(null);
+    setExplainOpen({});
+    setMarked([]);
+    startReported.current = false;
+    poolLocked.current = false;
+    finishOnce.current = false;
+    localSaved.current = false;
+    examSaveId.current = null;
+    recordedIds.current = [];
+    attemptIds.current = {};
+    viewOnly.current = false;
+    const controller = new AbortController();
+    fetch("/api/auth/me/", { signal: controller.signal, cache: "no-store" })
       .then((response) => (response.ok ? response.json() : Promise.reject(new Error("account"))))
       .then((data) => {
         if (cancel) return;
@@ -281,15 +301,17 @@ export function ExamRunner({
         }
         setRestored(true);
       })
-      .catch(() => {
-        if (!cancel) setBootError(true);
+      .catch((error: unknown) => {
+        if (cancel || (error instanceof DOMException && error.name === "AbortError")) return;
+        setBootError(true);
       });
     return () => {
       cancel = true;
+      controller.abort();
     };
-    // Draw once for this mode. A restored sitting keeps its own question ids.
+    // A new state or mode draws again. Restoring a sitting still keeps that sitting's question ids.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bootTry, modeKey]);
+  }, [bootTry, modeKey, stateCode]);
 
   useEffect(() => {
     if (viewOnly.current || !done || !topicPractice || mode !== "quick") return;
