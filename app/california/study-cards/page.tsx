@@ -40,7 +40,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
         topics={caStudyTopics}
         cardsHref={caPaths.studyCards}
         dailyHref={caPaths.daily}
-        practiceHref={(id) => (id === "all" ? undefined : `${caPaths.practice}?mode=practice&area=${id}`)}
+        practiceBaseHref={caPaths.practice}
       />
     </main>
   );

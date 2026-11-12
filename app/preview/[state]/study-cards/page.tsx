@@ -28,7 +28,14 @@ export default async function Page({ params }: { params: Promise<{ state: string
     <main className="wrap hero">
       <h1>{pack.name} study cards</h1>
       <p className="lede">{cards.length} independent cards. These are not copies of the question stems.</p>
-      <StudyCardsClient cards={cards} initialTopic="all" topics={pack.topics.map((topic) => ({ id: topic.id, label: topic.label }))} />
+      <StudyCardsClient
+        cards={cards}
+        initialTopic="all"
+        topics={pack.topics.map((topic) => ({ id: topic.id, label: topic.label }))}
+        cardsHref={pack.paths.studyCards}
+        dailyHref={pack.paths.daily}
+        practiceBaseHref={pack.paths.practice}
+      />
     </main>
   );
 }

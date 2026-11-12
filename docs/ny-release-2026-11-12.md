@@ -16,6 +16,8 @@ Content checks confirm 203 questions, 29 free, 174 Pro, 50 independently authore
 
 NY remains unavailable in the state registry and omitted from the public sitemap. The existing pack links for passing-score, laws and become-a-notary have no corresponding preview pages. The full required AI Tutor and two-viewport anonymous/free/active/expired browser acceptance matrix has not been certified for this release. These outstanding public-launch gates keep NY closed. Production must deny preview HTML and RSC requests and NY/PA/LA learning mutations, even with STATE_PREVIEW=1.
 
+Production acceptance of the first deployment found an existing CA/HI study-card serialization error. Server pages passed a function into the client card component, causing a streamed rendering error despite HTTP 200. A follow-up replaces that prop with a serializable practice base path, builds topic links in the client, and supplies NY card navigation paths. The HTTP gate now requires actual study-face markup for CA and HI. The stronger check failed against the first production deployment and passed against the corrected local production build.
+
 The release uses a standard fast-forward update to remote main after final verification. Production deployment SHA, alias assignment and runtime observations are recorded in the final handoff after the deployment completes.
 
 ## Latest follow-up: Neon authorized, binding still unproven

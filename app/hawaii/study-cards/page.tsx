@@ -40,7 +40,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
         topics={hiStudyTopics}
         cardsHref={hiPaths.studyCards}
         dailyHref={hiPaths.daily}
-        practiceHref={(id) => (id === "all" ? undefined : `${hiPaths.practice}?mode=practice&area=${id}`)}
+        practiceBaseHref={hiPaths.practice}
         labelState="HI"
       />
     </main>

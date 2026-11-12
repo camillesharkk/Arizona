@@ -17,7 +17,7 @@ export function StudyCardsClient({
   topics = arizonaTopics,
   cardsHref = paths.studyCards,
   dailyHref = paths.daily,
-  practiceHref,
+  practiceBaseHref,
   labelState,
 }: {
   cards: PublicStudyCard[];
@@ -25,7 +25,7 @@ export function StudyCardsClient({
   topics?: readonly { id: string; label: string }[];
   cardsHref?: string;
   dailyHref?: string;
-  practiceHref?: (topic: string) => string | undefined;
+  practiceBaseHref?: string;
   labelState?: "HI";
 }) {
   const labelFor = labelState === "HI" ? hiStudyLabel : undefined;
@@ -41,6 +41,9 @@ export function StudyCardsClient({
   const deck = useMemo(() => cards.filter((card) => topic === "all" || card.topic === topic), [cards, topic]);
   const safeIndex = Math.min(index, Math.max(0, deck.length - 1));
   const card = deck[safeIndex];
+  const practiceHref = topic === "all" ? undefined
+    : practiceBaseHref ? `${practiceBaseHref}?mode=practice&area=${encodeURIComponent(topic)}`
+    : isTopicSlug(topic) ? paths.topic(topic) : undefined;
   const face = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -154,9 +157,9 @@ export function StudyCardsClient({
       ) : (
         <p>No cards in this topic.</p>
       )}
-      {(practiceHref ? practiceHref(topic) : isTopicSlug(topic) ? paths.topic(topic) : undefined) ? (
+      {practiceHref ? (
         <p style={{ marginTop: 12 }}>
-          <Link className="btn btn-primary" href={(practiceHref ? practiceHref(topic) : paths.topic(topic)) || paths.practice}>
+          <Link className="btn btn-primary" href={practiceHref}>
             Practice This Topic
           </Link>
         </p>
