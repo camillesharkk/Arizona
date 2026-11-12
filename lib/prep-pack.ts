@@ -1,4 +1,4 @@
-import { publishedLaQuestions } from "@/data/la-content";
+import { laCards, laTopics, pickLaFullExam, publishedLaQuestions } from "@/data/la-content";
 import { nyCards, nyQuestionCounts, nyTopics, pickNyFullExam, publishedNyQuestions } from "@/data/ny-content";
 import { paCards, paQuestionCounts, paTopics, pickPaFullExam, pickPaQuickExam, publishedPaQuestions } from "@/data/pa-content";
 import { shuffle } from "@/lib/answer-sequence";
@@ -141,22 +141,22 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     slug: "louisiana",
     available: false,
     paths: paths("louisiana"),
-    topics: [{ id: "qualify", label: "Qualification" }, { id: "preassessment", label: "Pre-assessment and the exam" }, { id: "bond", label: "Bond and commission" }, { id: "parish", label: "Parish authority" }],
+    topics: laTopics,
     questions: publishedLaQuestions,
     counts: () => {
       const published = publishedLaQuestions();
       return { published: published.length, free: published.filter((q) => q.is_free).length, pro: published.filter((q) => !q.is_free).length };
     },
     fullCount: 40,
-    fullMinutes: null,
-    fullTitle: "Scenario Practice",
-    fullDetail: "Louisiana's public exam page describes a four-hour computer exam and a scaled score of 70 out of 100. It does not publish the item count. This preview does not offer a full-length practice until the bank and the education-provider question are resolved.",
+    fullMinutes: 90,
+    fullTitle: "40-question scenario practice",
+    fullDetail: "This site's 40-question, 90-minute practice combines general knowledge and linked work scenarios, with all items scored as raw study feedback. The official computer examination lasts four hours and requires a scaled 70 out of 100. Its item count is not published. These statute-based exercises cover selected skills and do not replace the official 2026 study guide or reproduce its full coverage.",
     anonKey: "la-anon-full-started",
     pickQuick: (seed) => quickFrom(publishedLaQuestions(), seed),
-    pickFull: () => null,
-    fullReady: false,
+    pickFull: pickLaFullExam,
+    fullReady: publishedLaQuestions().length >= 40,
     quickReady: publishedLaQuestions().filter((question) => question.is_free).length >= 10,
-    cards: [],
+    cards: laCards,
   },
 };
 

@@ -1,11 +1,24 @@
 import type { Difficulty, Question, TopicId } from "@/lib/types";
+import { shuffle } from "../lib/answer-sequence.ts";
+import { laScenarioRows } from "./la-scenarios.ts";
+export { laCards } from "./la-cards.ts";
 
-export const LA_CHECKED = "2026-11-08";
+export const LA_CHECKED = "2026-11-12";
 export const laTopics = [
   { id: "qualify", label: "Qualification" },
   { id: "preassessment", label: "Pre-assessment and the exam" },
   { id: "bond", label: "Bond and commission" },
   { id: "parish", label: "Parish authority" },
+  { id: "acts", label: "Authentic acts and evidence" },
+  { id: "donations", label: "Donations and forced heirship" },
+  { id: "testaments", label: "Testaments" },
+  { id: "mandates", label: "Mandate and suretyship" },
+  { id: "property", label: "Ownership, usufruct, and servitudes" },
+  { id: "matrimonial", label: "Matrimonial property" },
+  { id: "sales", label: "Sales and contractual rights" },
+  { id: "mortgages", label: "Mortgages" },
+  { id: "registry", label: "Public records" },
+  { id: "obligations", label: "Obligations and consent" },
 ];
 
 type Row = {
@@ -15,9 +28,9 @@ type Row = {
   scenario_id?: string; scenario_text?: string;
 };
 
-const FAQ = "Louisiana Secretary of State, Notary FAQ, checked 2026-11-08";
-const EXAM = "Louisiana Secretary of State, Get Exam Information page, checked 2026-11-08";
-const APPLY = "Louisiana Secretary of State, Application Process page, checked 2026-11-08";
+const FAQ = "Louisiana Secretary of State, Notary FAQ, https://www.sos.la.gov/notary/frequently-asked-questions, checked 2026-11-12";
+const EXAM = "Louisiana Secretary of State, Get Exam Information page, https://www.sos.la.gov/notary/get-exam-information, checked 2026-11-12";
+const APPLY = "Louisiana Secretary of State, Application Process page, https://www.sos.la.gov/notary/application-process, checked 2026-11-12";
 
 const scene = "A Baton Rouge applicant has an approved Application to Qualify. The applicant is not a Louisiana lawyer.";
 
@@ -66,14 +79,39 @@ const rows: Row[] = [
 
 const letters = ["A", "B", "C", "D"] as const;
 export function publishedLaQuestions(): Question[] {
-  return rows.map((row) => ({
+  return [...rows, ...laScenarioRows].map((row) => ({
     question_id: row.id, state: "LA" as const, study_topic: row.study, topic: row.topic, difficulty: row.difficulty,
     question_text: row.text, option_a: row.options[0], option_b: row.options[1], option_c: row.options[2], option_d: row.options[3],
     correct_option: letters[row.correct], explanation: row.why,
     option_feedback: { A: row.miss[0], B: row.miss[1], C: row.miss[2], D: row.miss[3] },
     source_id: "la-official", source_reference: row.source, scenario_id: row.scenario_id, scenario_text: row.scenario_text,
-    effective_from: "2026-01-01", effective_to: null, last_verified_at: LA_CHECKED, version: 1, is_free: row.free, status: "published" as const,
+    effective_from: row.id <= "la-008" ? "2026-01-01" : "2026-11-12", effective_to: null, last_verified_at: LA_CHECKED, version: 1, is_free: row.free, status: "published" as const,
   }));
+}
+
+/** Site-designed 40-item comprehensive practice. All items are scored.
+ * Topic quotas are editorial coverage targets, not an official exam blueprint.
+ * One complete shared scenario is selected per sitting and kept together.
+ */
+export function pickLaFullExam(seed: number) {
+  const bank = publishedLaQuestions();
+  if (bank.length < 40) return null;
+  const scenarioId = shuffle(["la-scene-closing", "la-scene-donation", "la-scene-estate"], seed)[0];
+  const scenario = bank.filter((question) => question.scenario_id === scenarioId);
+  const quotas: [string, number][] = [
+    ["acts", 5], ["donations", 4], ["testaments", 5], ["mandates", 5],
+    ["property", 4], ["matrimonial", 3], ["sales", 4], ["mortgages", 4],
+    ["registry", 3], ["obligations", 1],
+  ];
+  const selected = [...scenario];
+  for (const [topic, count] of quotas) {
+    const already = scenario.filter((question) => question.study_topic === topic).length;
+    const candidates = bank.filter((question) => question.study_topic === topic && !scenario.includes(question));
+    selected.push(...shuffle(candidates, seed + count + selected.length).slice(0, count - already));
+  }
+  const administration = bank.filter((question) => ["qualify", "preassessment", "bond", "parish"].includes(question.study_topic ?? ""));
+  selected.push(...shuffle(administration, seed + 217).slice(0, 2));
+  return { questions: [...scenario, ...shuffle(selected.slice(scenario.length), seed + 701)], unscoredIds: [] as string[] };
 }
 export function laQuestionCounts() {
   const published = publishedLaQuestions();
