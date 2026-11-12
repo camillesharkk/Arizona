@@ -1,8 +1,10 @@
 import type { Difficulty, ExamArea, Question, TopicId } from "@/lib/types";
 import { shuffle } from "../lib/answer-sequence.ts";
+import { paAdditionalQuestions } from "./pa-question-additions.ts";
+import { paAdditionalCards } from "./pa-card-additions.ts";
 
-/** Checked 2026-11-08. Official blanks stay blank in the exam config, not here. */
-export const PA_CHECKED = "2026-11-08";
+/** Statute, current regulations and March 2026 Pearson bulletin read 2026-11-12. */
+export const PA_CHECKED = "2026-11-12";
 
 export const paTopics = [
   { id: "eligibility", area: "obtaining" as const, label: "Who may be appointed" },
@@ -30,15 +32,16 @@ type Row = {
   why: string;
   miss: [string, string, string, string];
   source: string;
+  version?: number;
 };
 
 const SRC = {
-  exam: "Pearson VUE Pennsylvania Notary Examination Candidate Information Bulletin, March 2026, rev. 05/2026, checked 2026-11-08",
-  dosExam: "Pennsylvania Department of State, Examination Requirement page, checked 2026-11-08",
-  bond: "Pennsylvania Department of State, Bonding Requirement page, and 4 Pa. Code § 167.16, checked 2026-11-08",
-  regs: "Pennsylvania Department of State, Notary Regulations Changes, effective March 28, 2026, checked 2026-11-08",
-  fees: "Pennsylvania Department of State, Notary Public Fees page, checked 2026-11-08",
-  rulona: "57 Pa.C.S. Chapter 3, Department of State PDF revised through November 2022, read 2026-11-08",
+  exam: "Pearson VUE Pennsylvania Notary Examination Candidate Information Bulletin, March 2026, rev. 05/2026. https://www.pearsonvue.com/content/dam/VUE/vue/en/documents/publications/283980.pdf Read 2026-11-12.",
+  dosExam: "Pennsylvania Department of State, Examination Requirement. https://www.pa.gov/agencies/dos/programs/notaries/examination-requirement Read 2026-11-12.",
+  bond: "4 Pa. Code § 167.16 and Department 2026 regulation summary. https://www.pa.gov/agencies/dos/programs/notaries/notary-regulations-changes Read 2026-11-12.",
+  regs: "4 Pa. Code Chapter 167 and Department Notary Regulations Changes, effective March 28, 2026. https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/004/chapter167/chap167toc.html Read 2026-11-12.",
+  fees: "Pennsylvania Department of State, Notary Public Fees, and 4 Pa. Code § 167.3. https://www.pa.gov/agencies/dos/programs/notaries/notary-public-fees Read 2026-11-12.",
+  rulona: "57 Pa.C.S. Chapter 3, Department of State PDF revised through November 2022. https://www.pa.gov/content/dam/copapwp-pagov/en/dos/programs/notary/electronic-notarization/RULONA-Act-73-of-2013-as-amended-11-2022.pdf Read 2026-11-12.",
 };
 
 const rows: Row[] = [
@@ -162,11 +165,12 @@ const rows: Row[] = [
   {
     id: "pa-014", area: "performing", study: "identity", topic: "identification", difficulty: "medium", free: false,
     text: "The signer has no acceptable identification. A coworker who is personally known to the notary is standing at the desk and is willing to make a verification on oath. Can that identify the signer under § 307(b)(2)?",
-    options: ["No. Pennsylvania never allows a witness", "Yes, if that credible witness appears personally and is personally known to the notary", "Yes, if the witness sends a text message", "Yes, but only when the signer is outside the United States"],
+    options: ["No. Pennsylvania never allows a witness", "Yes, if the witness appears with the signer, personally knows both notary and signer, has no direct or pecuniary interest, and makes the required verification on oath or affirmation", "Yes, if the witness sends a text message", "Yes, but only when the signer is outside the United States"],
     correct: 1,
-    why: "Section 307(b)(2) allows a verification on oath or affirmation of a credible witness who personally appears and is personally known to the notarial officer.",
-    miss: ["The statute does provide this method.", "Correct. A personally appearing, personally known credible witness may supply the verification.", "A text message is not a personal appearance and oath before the notary.", "This method is not limited to signers outside the United States."],
-    source: SRC.rulona,
+    why: "Section 307(b)(2) permits the credible-witness route. Current 4 Pa. Code § 167.43(b) also requires the witness to appear with the signer, personally know the signer, lack a direct or pecuniary interest, and verify the prescribed identity and lack-of-interest statements on oath or affirmation.",
+    miss: ["The statute does provide this method.", "Correct. Both personal-knowledge relationships, contemporaneous appearance, lack of interest and the required sworn or affirmed verification are necessary.", "A text message does not supply the required contemporaneous appearance and oath.", "This method is not limited to signers outside the United States."],
+    source: `${SRC.rulona} ${SRC.regs}`,
+    version: 2,
   },
   {
     id: "pa-015", area: "performing", study: "acts", topic: "acknowledgments", difficulty: "medium", free: true,
@@ -395,16 +399,15 @@ const rows: Row[] = [
   },
   {
     id: "pa-040", area: "performing", study: "acts", topic: "copy-certification", difficulty: "hard", free: false,
-    text: "A customer brings a record written in a language the notary does not read and asks the notary to notarize the customer's signature on it. A translator is present. Which statement matches the March 28, 2026 summary?",
-    options: ["The notary may never notarize a record the notary cannot read", "The notary may notarize a translation only when the translator makes a verification on oath that the translation is accurate and complete, the translation and verification are attached, and the notarial certificate is in English", "The notary may leave the certificate only in the foreign language", "The translator may sign the notarial certificate"],
+    text: "A customer presents a translated record whose source record is in a language the notary does not understand. Which requirements apply under 4 Pa. Code §§ 167.44(b) and 167.71?",
+    options: ["The notary may never perform an act involving a translated record", "The translator must verify on oath or affirmation that the translation is accurate and complete, the translation and notarized verification must be attached to the record, and the notarial certificate must be in English", "The notary may leave the certificate only in the foreign language", "The translator may sign the notarial certificate for the notary"],
     correct: 1,
-    why: "The regulation summary allows a notary to notarize a translation the notary does not understand only with the translator's sworn verification of accuracy and completeness, attached to the record. The notarial certificate must be in English.",
-    miss: ["The summary does not use an absolute ban once the translation conditions are met.", "Correct. Those attachment and English-certificate conditions are the stated rule.", "The certificate must be in English. Another language may appear beside it only when the notary can read and write that language.", "The translator does not become the notary."],
+    why: "Section 167.44(b) addresses a record that is a translation of a record in a language the notary does not understand. It requires the translator's verification on oath or affirmation of accuracy and completeness and attachment of the translation and notarized verification. Section 167.71 requires an English certificate.",
+    miss: ["The rule permits the act when its translation conditions and the other notarial requirements are met.", "Correct. The translation rule requires the verification and attachments, and the certificate rule requires English.", "The certificate must be in English. A second-language version may be immediately adjacent when read, written and understood by the notary.", "The translator does not execute the notary's certificate for the notary."],
     source: SRC.regs,
+    version: 2,
   },
 ];
-
-const letters = ["A", "B", "C", "D"] as const;
 
 function publish(row: Row): Question {
   const wrong = [0, 1, 2, 3].filter((index) => index !== row.correct).slice(0, 2);
@@ -432,13 +435,13 @@ function publish(row: Row): Question {
     effective_from: "2026-03-28",
     effective_to: null,
     last_verified_at: PA_CHECKED,
-    version: 1,
+    version: row.version ?? 1,
     is_free: row.free,
     status: "published",
   };
 }
 
-const questions = rows.map(publish);
+const questions = [...rows.map(publish), ...paAdditionalQuestions];
 
 export function publishedPaQuestions() {
   return questions.filter((question) => question.status === "published" && question.state === "PA");
@@ -497,6 +500,7 @@ export function pickPaFullExam(seed: number, pool = publishedPaQuestions()) {
 export type PaCard = { id: string; study: string; title: string; front: string; rule: string; boundary: string; mixup: string; source: string; sourceUrl: string };
 
 export const paCards: PaCard[] = [
+  ...paAdditionalCards,
   { id: "pa-card-exam", study: "education-exam", title: "30 items, scaled 75", front: "What is the official Pennsylvania notary exam?", rule: "30 multiple-choice items, 25 scored and 5 unidentified pretest items, in 60 minutes.", boundary: "A scaled score of 75 is the passing score. It is not the number or percent correct.", mixup: "A practice score on this site is not that official scale.", source: "Pearson VUE bulletin, March 2026", sourceUrl: "https://www.pearsonvue.com/content/dam/VUE/vue/en/documents/publications/283980.pdf" },
   { id: "pa-card-course", study: "education-exam", title: "Three hours, then the exam", front: "Does this website replace the required course?", rule: "No. Pennsylvania requires at least three hours of Department-approved education in the six months before the application.", boundary: "This site does not issue that course certificate.", mixup: "A current commission holder still needs the education even when the exam is not required.", source: "57 Pa.C.S. § 322", sourceUrl: "https://www.pa.gov/agencies/dos/programs/notaries/examination-requirement" },
   { id: "pa-card-bond", study: "bond-oath", title: "Which bond amount", front: "Is every Pennsylvania notary on a $25,000 bond today?", rule: "New and reappointed notaries on or after March 28, 2026 obtain a $25,000 bond.", boundary: "A notary who already held a commission on that date may keep the existing bond until that commission expires.", mixup: "The bond protects the customer. It is not errors-and-omissions insurance.", source: "4 Pa. Code § 167.16", sourceUrl: "https://www.pa.gov/agencies/dos/programs/notaries/bonding-requirement" },

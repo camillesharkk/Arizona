@@ -1,3 +1,1 @@
-import type { StateArticle } from "@/lib/state-articles";
-export const paArticleCatalog: StateArticle[] = [];
-export const paReferenceCatalog: Record<string, StateArticle> = {};
+export { paArticles as paArticleCatalog, paReferenceArticles as paReferenceCatalog } from "@/data/pa-articles";
