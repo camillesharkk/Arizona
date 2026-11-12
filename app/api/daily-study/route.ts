@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { addVisibleTime, dailyStudyView, markDailyCard, studyMore, type StudyState } from "@/lib/daily-study";
 import { caDailyView } from "@/lib/ca-daily";
+import { getStore } from "@/lib/store";
 import { getSession } from "@/lib/session";
 import { productionStateBlocked } from "@/lib/state-release";
 
@@ -11,8 +12,9 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const state = url.searchParams.get("state");
   if (productionStateBlocked(state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
+  if (state === "NY") return NextResponse.json(await (await getStore()).learningTransaction(session.id, () => dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, "NY")));
   if (state === "CA") return NextResponse.json(await caDailyView(session.id, url.searchParams.get("timeZone") || undefined));
-  if (state === "HI" || state === "NY" || state === "PA" || state === "LA") {
+  if (state === "HI" || state === "PA" || state === "LA") {
     return NextResponse.json(await dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, state));
   }
   if (state && state !== "AZ") return NextResponse.json({ error: "Unknown state" }, { status: 400 });
@@ -35,7 +37,7 @@ export async function POST(req: Request) {
   const requested = new URL(req.url).searchParams.get("state");
   if (productionStateBlocked(requested)) return NextResponse.json({ error: "State not available" }, { status: 404 });
   const state: StudyState = requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" ? requested : "AZ";
-  try {
+  const update = async () => {
     if (body.data.action === "visible") {
       await addVisibleTime(session.id, body.data.seconds || 0, body.data.attemptId, state);
     } else if (body.data.action === "more") {
@@ -45,10 +47,13 @@ export async function POST(req: Request) {
     } else {
       return NextResponse.json({ error: "Invalid" }, { status: 400 });
     }
+    const timeZone = new URL(req.url).searchParams.get("timeZone") || undefined;
+    return NextResponse.json(await dailyStudyView(session.id, timeZone, undefined, state));
+  };
+  try {
+    return state === "NY" ? await (await getStore()).learningTransaction(session.id, update) : await update();
   } catch (error) {
     const message = error instanceof Error && error.message === "not_allowed" ? "That card is not in your plan." : "Could not save";
     return NextResponse.json({ error: message }, { status: 400 });
   }
-  const timeZone = new URL(req.url).searchParams.get("timeZone") || undefined;
-  return NextResponse.json(await dailyStudyView(session.id, timeZone, undefined, state));
 }

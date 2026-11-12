@@ -10,15 +10,19 @@ import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { recordProUsage } from "@/lib/commerce/usage";
 import { readAiUsage, utcAiDay } from "@/lib/ai/quota";
 import { parseAiProvider, parseProviderDailyCap } from "@/lib/ai/provider";
-import { runTutorTurn } from "@/lib/ai/tutor";
+import { runTutorTurn, tutorOptionOrder } from "@/lib/ai/tutor";
+import { questionById } from "@/lib/prep-pack";
+import { currentQuestionVersion } from "@/lib/question-revisions";
+import { productionStateBlocked } from "@/lib/state-release";
 
 function usagePayload(plan: "free" | "pro", used: number, limit: number, remaining: number) {
   return { plan, used, limit, remaining };
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
+  if (productionStateBlocked(new URL(req.url).searchParams.get("state"))) return NextResponse.json({ error: "State not available" }, { status: 404 });
   const store = await getStore();
   const plan = (await hasArizonaPro(session.id)) ? "pro" : "free";
   const limit = await aiDailyLimit(session.id);
@@ -34,15 +38,24 @@ export async function POST(req: Request) {
   const body = z
     .object({
       questionId: z.string(),
-      selected: z.string().optional(),
+      questionVersion: z.number().int().positive().optional(),
+      state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA"]).optional(),
+      options: z.array(z.string()).length(4).optional(),
+      selected: z.enum(["A", "B", "C", "D"]).optional(),
       mode: z.enum(["explain", "why-correct", "why-wrong", "beginner", "similar"]),
     })
     .safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-  const q = publishedQuestions().find((x) => x.question_id === body.data.questionId)
+  const stored = publishedQuestions().find((x) => x.question_id === body.data.questionId)
     || publishedCaQuestions().find((x) => x.question_id === body.data.questionId)
-    || publishedHiQuestions().find((x) => x.question_id === body.data.questionId);
-  if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
+    || publishedHiQuestions().find((x) => x.question_id === body.data.questionId)
+    || questionById(body.data.questionId);
+  if (!stored) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
+  if (productionStateBlocked(stored.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
+  if (body.data.state && body.data.state !== stored.state) return NextResponse.json({ error: "Question state mismatch" }, { status: 400 });
+  if ((body.data.questionVersion ?? 1) !== currentQuestionVersion(stored.question_id)) return NextResponse.json({ error: "Refresh this question to use its current version" }, { status: 409 });
+  const q = tutorOptionOrder(stored, body.data.options);
+  if (!q) return NextResponse.json({ error: "Question options mismatch" }, { status: 400 });
   if (!(await canAccessQuestion(session.id, q))) return NextResponse.json({ error: "Pro required" }, { status: 402 });
   const store = await getStore();
   const day = utcAiDay();
@@ -83,6 +96,7 @@ export async function POST(req: Request) {
   return NextResponse.json({
     text: delivered.text,
     provider: delivered.provider,
+    fallbackReason: delivered.fallbackReason,
     ...usagePayload(plan, delivered.used, delivered.limit, delivered.remaining),
   });
 }

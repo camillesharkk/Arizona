@@ -1,4 +1,6 @@
-import { mkdir, readFile, writeFile } from "fs/promises";
+import { mkdir, readFile, writeFile, rename } from "fs/promises";
+import { AsyncLocalStorage } from "node:async_hooks";
+import { setTimeout as delay } from "node:timers/promises";
 import path from "path";
 import { randomUUID } from "crypto";
 import { migrateReviewFields } from "../review-schedule.ts";
@@ -36,8 +38,11 @@ const empty = (): FileDb => ({
 
 const filePath = () => path.join(process.env.NOTARY_DATA_DIR || path.join(process.cwd(), ".data"), "store.json");
 let queue: Promise<void> = Promise.resolve();
+const learningDb = new AsyncLocalStorage<FileDb>();
 
 async function load(): Promise<FileDb> {
+  const transaction = learningDb.getStore();
+  if (transaction) return transaction;
   try {
     const raw = await readFile(filePath(), "utf8");
     const parsed = { ...empty(), ...JSON.parse(raw) } as FileDb;
@@ -63,10 +68,23 @@ async function load(): Promise<FileDb> {
 
 async function save(db: FileDb) {
   await mkdir(path.dirname(filePath()), { recursive: true });
-  await writeFile(filePath(), JSON.stringify(db, null, 2));
+  const temporary = `${filePath()}.${randomUUID()}.tmp`;
+  await writeFile(temporary, JSON.stringify(db, null, 2));
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      await rename(temporary, filePath());
+      break;
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code || "";
+      if (attempt >= 5 || !["EPERM", "EACCES", "EBUSY"].includes(code)) throw error;
+      await delay(50 * 2 ** attempt);
+    }
+  }
 }
 
 function mutate<T>(fn: (db: FileDb) => Promise<T> | T): Promise<T> {
+  const transaction = learningDb.getStore();
+  if (transaction) return Promise.resolve().then(() => fn(transaction));
   const run = queue.then(async () => {
     const db = await load();
     const result = await fn(db);
@@ -113,6 +131,9 @@ function freshUser(email: string, passwordHash: string, name: string | null): Us
 }
 
 export const fileStore: Store = {
+  learningTransaction(userId, action) {
+    return mutate(db => learningDb.run(db, () => action(fileStore)));
+  },
   async getUserByEmail(email) {
     const db = await load();
     const user = db.users.find((u) => u.email === email && !u.deletedAt);

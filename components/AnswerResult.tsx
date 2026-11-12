@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { TutorPanel } from "@/components/TutorPanel";
-import { getSource } from "@/data/sources";
+import { findSource } from "@/data/sources";
 import { cleanExplanation, presentExplanation } from "@/lib/explanation";
 import type { Question } from "@/lib/types";
 
@@ -23,7 +23,7 @@ export function AnswerResult({
   const shown = onToggle ? Boolean(open) : localOpen;
   const options = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
   const correct = selected === q.correct_option;
-  const source = getSource(q.source_id);
+  const source = findSource(q.source_id);
   const { short, why } = presentExplanation(q.explanation);
   const notes = (["A", "B", "C", "D"] as const)
     .filter((letter) => letter !== q.correct_option)

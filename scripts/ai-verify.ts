@@ -161,9 +161,10 @@ async function run() {
 
   const examSrc = readFileSync(path.join(process.cwd(), "components/ExamRunner.tsx"), "utf8");
   const qSrc = readFileSync(path.join(process.cwd(), "components/QuestionsClient.tsx"), "utf8");
+  const answerSrc = readFileSync(path.join(process.cwd(), "components/AnswerResult.tsx"), "utf8");
   if (examSrc.includes("consumeAiQuota") || qSrc.includes("consumeAiQuota")) {
     fail("basic question UI wrote ai_usage directly");
-  } else if (!examSrc.includes("q.explanation") || !examSrc.includes("option_feedback")) {
+  } else if (!examSrc.includes("AnswerResult") || !answerSrc.includes("q.explanation") || !answerSrc.includes("option_feedback")) {
     fail("basic question explanation missing from core UI");
   } else ok("basic question explanation never writes ai_usage");
 

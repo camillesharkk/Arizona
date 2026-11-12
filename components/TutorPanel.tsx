@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { Question } from "@/lib/types";
 import { paths } from "@/lib/paths";
 import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
 import { trackEvent } from "@/lib/analytics";
+import { packFor } from "@/lib/prep-pack";
 
 const MODES = [
   { id: "explain", label: "Explain this question" },
@@ -28,64 +30,96 @@ export function TutorPanel({ q, selected }: { q: Question; selected?: "A" | "B" 
   const [err, setErr] = useState("");
   const [usage, setUsage] = useState<Usage | null>(null);
   const [signedIn, setSignedIn] = useState(true);
+  const [answerSource, setAnswerSource] = useState("");
+  const requestId = useRef(0);
+  const pathname = usePathname();
 
   const loadUsage = useCallback(async () => {
-    const res = await fetch("/api/ai/tutor/");
-    if (res.status === 401) {
-      setSignedIn(false);
-      setUsage(null);
-      return;
+    try {
+      const res = await fetch(`/api/ai/tutor/?state=${q.state}`, { signal: AbortSignal.timeout(20000) });
+      if (res.status === 401) {
+        setSignedIn(false);
+        setUsage(null);
+        return;
+      }
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data || typeof data.used !== "number") throw new Error("Invalid Tutor limits response");
+      if (typeof data.used === "number") {
+        setSignedIn(true);
+        setUsage({
+          plan: data.plan === "pro" ? "pro" : "free",
+          used: data.used,
+          limit: data.limit,
+          remaining: data.remaining,
+        });
+      }
+    } catch {
+      setErr("Could not load Tutor limits. Try the request again.");
     }
-    const data = await res.json().catch(() => null);
-    if (res.ok && data && typeof data.used === "number") {
-      setSignedIn(true);
-      setUsage({
-        plan: data.plan === "pro" ? "pro" : "free",
-        used: data.used,
-        limit: data.limit,
-        remaining: data.remaining,
-      });
-    }
-  }, []);
+  }, [q.state]);
 
   useEffect(() => {
     loadUsage();
   }, [loadUsage]);
 
-  useEffect(() => setText(""), [q.question_id, selected]);
+  useEffect(() => {
+    ++requestId.current;
+    setText("");
+    setErr("");
+    setAnswerSource("");
+    setBusy(false);
+    return () => { ++requestId.current; };
+  }, [q.question_id, selected]);
 
   const atLimit = Boolean(usage && usage.remaining <= 0);
   const limit = usage?.limit ?? (usage?.plan === "pro" ? AI_LIMIT_PRO : AI_LIMIT_FREE);
 
   async function ask(mode: string) {
-    if (atLimit) return;
+    if (atLimit || busy || !signedIn) return;
+    const id = ++requestId.current;
     setBusy(true);
     setErr("");
-    const res = await fetch("/api/ai/tutor/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ questionId: q.question_id, selected, mode }),
-    });
-    const data = await res.json();
-    setBusy(false);
-    if (typeof data.used === "number" && typeof data.limit === "number") {
-      setUsage({
-        plan: data.plan === "pro" ? "pro" : usage?.plan || "free",
-        used: data.used,
-        limit: data.limit,
-        remaining: data.remaining ?? Math.max(0, data.limit - data.used),
+    setText("");
+    setAnswerSource("");
+    try {
+      const res = await fetch("/api/ai/tutor/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ questionId: q.question_id, questionVersion: q.version || 1, state: q.state, selected, mode, options: [q.option_a, q.option_b, q.option_c, q.option_d] }),
+        signal: AbortSignal.timeout(20000),
       });
+      const data = await res.json().catch(() => null);
+      if (id !== requestId.current) return;
+      if (res.status === 401) setSignedIn(false);
+      if (!data) throw new Error("Could not read the Tutor response. Please try again.");
+      if (typeof data.used === "number" && typeof data.limit === "number") {
+        setUsage({
+          plan: data.plan === "pro" ? "pro" : usage?.plan || "free",
+          used: data.used,
+          limit: data.limit,
+          remaining: data.remaining ?? Math.max(0, data.limit - data.used),
+        });
+      }
+      if (!res.ok) {
+        setErr(data.error || "Could not explain this question. Please try again.");
+        return;
+      }
+      setText(data.text);
+      setAnswerSource(data.provider === "deepseek" ? "AI-generated explanation."
+        : data.fallbackReason === "local" ? "Local explanation from the verified study material."
+        : "The AI service was unavailable. A local explanation from the verified study material is shown. This delivered answer uses one Tutor request.");
+      trackEvent("ai_tutor_use", {
+        provider: data.provider === "deepseek" ? "deepseek" : "grounded-fallback",
+        plan: data.plan === "pro" ? "pro" : "free",
+        mode,
+      });
+    } catch (error) {
+      if (id === requestId.current) setErr(error instanceof Error && error.name === "TimeoutError"
+        ? "The Tutor request timed out. Please try again."
+        : "Could not reach the Tutor or read its response. Please try again.");
+    } finally {
+      if (id === requestId.current) setBusy(false);
     }
-    if (!res.ok) {
-      setErr(data.error || "Could not explain");
-      return;
-    }
-    setText(data.text);
-    trackEvent("ai_tutor_use", {
-      provider: data.provider === "deepseek" ? "deepseek" : "grounded-fallback",
-      plan: data.plan === "pro" ? "pro" : "free",
-      mode,
-    });
   }
 
   return (
@@ -98,13 +132,14 @@ export function TutorPanel({ q, selected }: { q: Question; selected?: "A" | "B" 
         </p>
       )}
       <p className="notice">
-        Explanations stay free. Each Tutor button uses 1 request. Free accounts get {AI_LIMIT_FREE} a day; Pro gets {AI_LIMIT_PRO}.
+        Explanations stay free. Each delivered Tutor answer uses 1 request. Free accounts get {AI_LIMIT_FREE} a day; Pro gets {AI_LIMIT_PRO}.
       </p>
+      {!signedIn && <p><Link href={`${paths.login}?next=${encodeURIComponent(pathname)}`}>Sign in to use Tutor</Link></p>}
       {atLimit && usage?.plan === "free" && (
         <div className="ai-limit-notice">
           <p>You&apos;ve used all {AI_LIMIT_FREE} free Tutor requests for today.</p>
           <p>Upgrade to Pro for up to {AI_LIMIT_PRO} Tutor requests per day.</p>
-          <Link className="btn btn-primary" href={paths.pricing}>
+          <Link className="btn btn-primary" href={packFor(q.state)?.paths.pricing || paths.pricing}>
             Unlock Pro — {AI_LIMIT_PRO}/day
           </Link>
         </div>
@@ -120,8 +155,8 @@ export function TutorPanel({ q, selected }: { q: Question; selected?: "A" | "B" 
             key={m.id}
             className="chip"
             type="button"
-            disabled={busy || atLimit}
-            aria-disabled={busy || atLimit}
+            disabled={busy || atLimit || !signedIn}
+            aria-disabled={busy || atLimit || !signedIn}
             onClick={() => ask(m.id)}
           >
             {m.label}
@@ -129,7 +164,8 @@ export function TutorPanel({ q, selected }: { q: Question; selected?: "A" | "B" 
         ))}
       </div>
       {busy && <p>Loading…</p>}
-      {err && <p className="form-error">{err}</p>}
+      {err && <p className="form-error" role="alert">{err}</p>}
+      {answerSource && <p role="status">{answerSource}</p>}
       {text && <p style={{ whiteSpace: "pre-wrap" }}>{text}</p>}
     </div>
   );

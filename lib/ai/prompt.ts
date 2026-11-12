@@ -11,6 +11,7 @@ export type TutorPromptInput = {
   selected?: string;
   context: string;
   pinCite: string;
+  state?: StateCode;
 };
 
 const MODE_GUIDE: Record<TutorMode, string> = {
@@ -21,20 +22,21 @@ const MODE_GUIDE: Record<TutorMode, string> = {
   similar: "Generate exactly one similar practice question and a short explanation. Do not generate more than one.",
 };
 
-export function buildTutorInstructions(mode: TutorMode, pinCite: string) {
+export function buildTutorInstructions(mode: TutorMode, pinCite: string, state: StateCode = "AZ") {
+  const name = { AZ: "Arizona", CA: "California", HI: "Hawaii", NY: "New York", PA: "Pennsylvania", LA: "Louisiana" }[state];
   return [
-    "You are an Arizona notary exam-prep tutor.",
+    `You are a ${name} notary exam-prep tutor.`,
     "Use only the supplied verified context.",
-    "Do not invent Arizona law.",
+    `Do not invent ${name} law.`,
     "If the supplied context does not establish the answer, say so.",
-    `Prefer the supplied A.R.S. pin-cite: ${pinCite}.`,
-    "Do not imply affiliation with the Arizona Secretary of State.",
+    `Prefer the supplied ${state === "AZ" ? "A.R.S. pin-cite" : "official reference"}: ${pinCite}.`,
+    `Do not imply affiliation with the ${name} licensing authority.`,
     "Educational exam-prep only, not legal advice.",
     "Return plain text only.",
     "Do not use Markdown.",
     "Do not use *, **, #, backticks, markdown headings or markdown emphasis.",
     "Use short paragraphs and simple numbered or hyphen lists only when useful.",
-    "Preserve A.R.S. citations exactly.",
+    "Preserve the supplied statutory citations exactly.",
     MODE_GUIDE[mode],
   ].join("\n");
 }
@@ -56,5 +58,6 @@ export function buildTutorInput(input: TutorPromptInput) {
 }
 
 export function buildTutorPrompt(input: TutorPromptInput) {
-  return `${buildTutorInstructions(input.mode, input.pinCite)}\n\n${buildTutorInput(input)}`;
+  return `${buildTutorInstructions(input.mode, input.pinCite, input.state)}\n\n${buildTutorInput(input)}`;
 }
+import type { StateCode } from "../types.ts";

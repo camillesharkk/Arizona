@@ -5,11 +5,13 @@ import type { PublicStudyCard } from "@/lib/study-cards";
 
 const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA" };
 
-export default async function Page({ params }: { params: Promise<{ state: string }> }) {
+export default async function Page({ params, searchParams }: { params: Promise<{ state: string }>; searchParams: Promise<{ topic?: string }> }) {
   if (process.env.STATE_PREVIEW !== "1") notFound();
   const code = codes[(await params).state];
   if (!code) notFound();
   const pack = prepPacks[code];
+  const { topic } = await searchParams;
+  const known = topic && pack.topics.some(item => item.id === topic);
   const cards: PublicStudyCard[] = pack.cards.map((card) => ({
     id: card.id,
     topic: card.study,
@@ -30,7 +32,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
       <p className="lede">{cards.length} independent cards. These are not copies of the question stems.</p>
       <StudyCardsClient
         cards={cards}
-        initialTopic="all"
+        initialTopic={known ? topic : "all"}
         topics={pack.topics.map((topic) => ({ id: topic.id, label: topic.label }))}
         cardsHref={pack.paths.studyCards}
         dailyHref={pack.paths.daily}

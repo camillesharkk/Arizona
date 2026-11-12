@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-const base='http://127.0.0.1:3101';
+const base=process.env.NY_TEST_BASE_URL || 'http://127.0.0.1:3101';
 const bank=JSON.parse(fs.readFileSync('.tools/ny-bank-review.json','utf8'));
 const free=bank.find(q=>q.question_id==='ny-001');
 const pro=bank.find(q=>q.question_id==='ny-057');

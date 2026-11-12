@@ -177,7 +177,7 @@ const perfect = recentCaExams([{ ...exams[0], id: 'perfect' }], { perfect: { wro
 assert.equal(perfect[0].wrongIds.length, 0);
 console.log('NY historical exams: state attribution, saved wrong-ID snapshot and empty snapshot preserved independently of current stats');
 if (process.argv.includes('--seed-preview')) {
-  process.env.NOTARY_DATA_DIR = path.resolve('.tools/ny-verification-data');
+  process.env.NOTARY_DATA_DIR = path.resolve(process.env.NY_TEST_DATA_DIR || '.tools/ny-verification-data');
   const { fileStore } = load('lib/store/file-store.ts');
   const { hash } = nativeRequire('bcryptjs');
   for (const kind of ['free', 'pro', 'expired']) {

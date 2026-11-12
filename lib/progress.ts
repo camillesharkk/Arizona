@@ -6,7 +6,7 @@ import { questionById } from "@/lib/prep-pack";
 import { currentQuestionVersion, currentRevisionStat } from "@/lib/question-revisions";
 import { applyReviewAnswer, DEFAULT_STUDY_TIME_ZONE, migrateReviewFields } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
-import type { QuestionStat } from "@/lib/store/types";
+import type { QuestionStat, Store } from "@/lib/store/types";
 import type { UserRow } from "@/lib/store/types";
 
 function today() {
@@ -31,10 +31,14 @@ export async function recordQuestionAnswer(opts: {
   review?: boolean;
   attemptId?: string;
   timeZone?: string;
-}) {
-  const store = await getStore();
+  store?: Store;
+}): Promise<QuestionStat | null> {
+  const store = opts.store || await getStore();
   const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId) ?? questionById(opts.questionId);
   if (!q) throw new Error("unknown_question");
+  if (q.state === "NY" && !opts.store) {
+    return store.learningTransaction(opts.userId, transaction => recordQuestionAnswer({ ...opts, store: transaction }));
+  }
   if (opts.attemptId) {
     const fresh = await store.claimAttempt(opts.userId, opts.attemptId, opts.questionId);
     if (!fresh) return (await store.getStat(opts.userId, opts.questionId)) ?? null;

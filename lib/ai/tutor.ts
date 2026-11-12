@@ -11,8 +11,12 @@ import {
 } from "./provider.ts";
 import { buildTutorInput, buildTutorInstructions, type TutorMode } from "./prompt.ts";
 import type { Store } from "../store/types.ts";
+import type { Question, StateCode } from "../types.ts";
 
 export type TutorQuestion = {
+  state?: StateCode;
+  source_reference?: string;
+  last_verified_at?: string;
   question_text: string;
   topic: string;
   source_id: string;
@@ -24,6 +28,21 @@ export type TutorQuestion = {
   option_c: string;
   option_d: string;
 };
+
+/** Accept a displayed permutation only when every choice matches the stored question. */
+export function tutorOptionOrder(question: Question, options?: string[]): Question | null {
+  if (!options) return question;
+  const letters = ["A", "B", "C", "D"] as const;
+  const original = [question.option_a, question.option_b, question.option_c, question.option_d];
+  const mapping = options.map(text => original.indexOf(text));
+  if (mapping.length !== 4 || mapping.includes(-1) || new Set(mapping).size !== 4) return null;
+  const correct = letters[mapping.indexOf(letters.indexOf(question.correct_option))];
+  return {
+    ...question, option_a: options[0], option_b: options[1], option_c: options[2], option_d: options[3],
+    correct_option: correct,
+    option_feedback: Object.fromEntries(letters.map((letter, index) => [letter, question.option_feedback[letters[mapping[index]]]])) as Question["option_feedback"],
+  };
+}
 
 export async function runTutorTurn(opts: {
   store: Store;
@@ -43,8 +62,10 @@ export async function runTutorTurn(opts: {
 }) {
   const day = opts.day ?? utcAiDay();
   const q = opts.question;
-  const src = getSource(q.source_id);
-  const context = retrieveContext(q.topic, q.question_text, q.source_id);
+  const state = q.state || "AZ";
+  const reference = state === "AZ" ? getSource(q.source_id).reference : q.source_reference || "Official reference unavailable";
+  const context = state === "AZ" ? retrieveContext(q.topic, q.question_text, q.source_id)
+    : [q.explanation, ...Object.entries(q.option_feedback).map(([letter, feedback]) => `${letter}. ${feedback}`), reference, `Verified ${q.last_verified_at || "date unavailable"}`].join("\n");
   const promptInput = {
     mode: opts.mode,
     questionText: q.question_text,
@@ -55,13 +76,14 @@ export async function runTutorTurn(opts: {
     correctOption: q.correct_option,
     selected: opts.selected,
     context,
-    pinCite: src.reference,
+    pinCite: reference,
   };
-  const instructions = buildTutorInstructions(opts.mode, src.reference);
+  const instructions = buildTutorInstructions(opts.mode, reference, state);
   const input = buildTutorInput(promptInput);
 
   let text = "";
   let provider: "deepseek" | "grounded-fallback" = "grounded-fallback";
+  let fallbackReason: string | undefined = opts.provider === "deepseek" ? "missing-key" : "local";
   const key = String(opts.apiKey || "").trim();
   const useDeepSeek = (opts.provider ?? "local") === "deepseek" && Boolean(key);
 
@@ -82,14 +104,18 @@ export async function runTutorTurn(opts: {
       if (result.ok) {
         text = result.text;
         provider = "deepseek";
-      } else if (reserved.token) {
-        await opts.store.releaseSiteQuota(PROVIDER_SITE_CAP_SCOPE, day, reserved.token);
+        fallbackReason = undefined;
+      } else {
+        fallbackReason = result.reason;
+        if (reserved.token) await opts.store.releaseSiteQuota(PROVIDER_SITE_CAP_SCOPE, day, reserved.token);
       }
+    } else {
+      fallbackReason = "site-cap";
     }
   }
 
   if (!text.trim()) {
-    text = localTutor(opts.mode, q, opts.selected, context, src.reference);
+    text = localTutor(opts.mode, q, opts.selected, state === "AZ" ? context : reference, reference);
     provider = "grounded-fallback";
   }
   text = normalizeTutorText(text);
@@ -103,5 +129,5 @@ export async function runTutorTurn(opts: {
     onExceedFreeQuota: opts.onExceedFreeQuota,
   });
   if (!delivered.ok) return delivered;
-  return { ...delivered, text, provider };
+  return { ...delivered, text, provider, fallbackReason };
 }

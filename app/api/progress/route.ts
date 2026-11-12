@@ -13,6 +13,7 @@ import { saveCaExamCheck } from "@/lib/ca-daily";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
 import { productionStateBlocked } from "@/lib/state-release";
+import { saveNyFullSubmission } from "@/lib/ny-full-submission";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 
 const answerSchema = z.object({
@@ -29,6 +30,24 @@ export async function POST(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const body = await req.json().catch(() => null);
+  if (body?.kind === "ny-full") {
+    if (productionStateBlocked("NY")) return NextResponse.json({ error: "State not available" }, { status: 404 });
+    const full = z.object({
+      examId: z.string().uuid(),
+      questions: z.array(z.object({ questionId: z.string(), questionVersion: z.number().int().positive(), selected: z.enum(["A", "B", "C", "D"]).optional() })).length(40),
+      timeZone: z.string().max(80).optional(),
+    }).safeParse(body);
+    if (!full.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
+    try {
+      return NextResponse.json(await saveNyFullSubmission(await getStore(), session.id, full.data));
+    } catch (error) {
+      const code = error instanceof Error ? error.message : "";
+      if (code === "full_trial_used") return NextResponse.json({ error: "The free full practice for this state is already used" }, { status: 402 });
+      if (code === "question_updated") return NextResponse.json({ error: "Question updated; reload before answering", code }, { status: 409 });
+      if (code === "invalid_exam") return NextResponse.json({ error: "Invalid New York exam" }, { status: 400 });
+      throw error;
+    }
+  }
   if (body?.kind === "exam") {
     const exam = z
       .object({

@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import { AsyncLocalStorage } from "node:async_hooks";
 import type {
   AccountDeletionTombstone,
   EmailType,
@@ -88,8 +89,21 @@ function freshUser(email: string, passwordHash: string, name: string | null): Us
 }
 
 export function createMemoryStore(): Store {
-  const db = empty();
-  return {
+  const committed = empty();
+  const scope = new AsyncLocalStorage<Mem>();
+  const lock = `memory-store:${randomUUID()}`;
+  const db = new Proxy(committed, {
+    get: (_target, key) => Reflect.get(scope.getStore() || committed, key),
+    set: (_target, key, value) => Reflect.set(scope.getStore() || committed, key, value),
+  });
+  const methods: Store = {
+    async learningTransaction(userId, action) {
+      if (scope.getStore() !== committed) return action(store);
+      const staged = structuredClone(committed);
+      const result = await scope.run(staged, () => action(store));
+      Object.assign(committed, staged);
+      return result;
+    },
     async getUserByEmail(email) {
       return db.users.find((u) => u.email === email && !u.deletedAt) ?? null;
     },
@@ -349,4 +363,15 @@ export function createMemoryStore(): Store {
       }
     },
   };
+  // Serialize this in-memory backend's methods, including callers outside a learning transaction.
+  const store: Store = new Proxy(methods, {
+    get(target, key) {
+      const method = Reflect.get(target, key);
+      if (typeof method !== "function") return method;
+      return (...args: unknown[]) => scope.getStore()
+        ? method.apply(store, args)
+        : withLock(lock, () => scope.run(committed, () => method.apply(store, args)));
+    },
+  });
+  return store;
 }

@@ -1,10 +1,14 @@
 import postgres from "postgres";
+import { AsyncLocalStorage } from "node:async_hooks";
 import { randomUUID } from "crypto";
 import type { AccountDeletionTombstone, EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
 
 let client: ReturnType<typeof postgres> | null = null;
+const learningSql = new AsyncLocalStorage<{ sql: ReturnType<typeof postgres>; userId: string }>();
 
 function db() {
+  const transaction = learningSql.getStore();
+  if (transaction) return transaction.sql;
   if (!client) {
     client = postgres(process.env.DATABASE_URL as string, {
       max: 1,
@@ -125,6 +129,19 @@ function mapStat(r: Record<string, unknown>): QuestionStat {
 }
 
 export const pgStore: Store = {
+  async learningTransaction<T>(userId: string, action: (store: Store) => Promise<T>): Promise<T> {
+    const current = learningSql.getStore();
+    if (current) {
+      if (current.userId !== userId) throw new Error("Cross-account learning transaction");
+      return action(pgStore);
+    }
+    await assertSchema();
+    await requireRevisionStorage("ny-learning");
+    return db().begin(async transaction => {
+      await transaction`select id from users where id = ${userId} for update`;
+      return learningSql.run({ sql: transaction as unknown as ReturnType<typeof postgres>, userId }, () => action(pgStore));
+    }) as Promise<T>;
+  },
   async getUserByEmail(email) {
     await assertSchema();
     const rows = await db()`select * from users where email = ${email} and deleted_at is null limit 1`;

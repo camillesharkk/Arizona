@@ -77,6 +77,11 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         if (startFresh && (requested === "quick" || requested === "full" || requested === "weak") && !openSitting(sessionStorage, nextOwner, requested, stateCode)) {
           clearSitting(sessionStorage, nextOwner, requested, stateCode);
         }
+        if (stateCode === "NY" && startFresh) {
+          const url = new URL(window.location.href);
+          url.searchParams.delete("start");
+          window.history.replaceState(null, "", url);
+        }
         setOpenModes({
           quick: Boolean(openSitting(sessionStorage, nextOwner, "quick", stateCode)),
           full: Boolean(openSitting(sessionStorage, nextOwner, "full", stateCode)),
@@ -98,7 +103,10 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
 
   const inThisAnonFull = anonFullThisVisit.current && mode === "full";
   const anonBlocked = !isPro && !signedIn && anonFullUsed && !inThisAnonFull;
-  const fullResume = mode === "full" && typeof window !== "undefined" && Boolean(openSitting(sessionStorage, owner, "full", stateCode));
+  const fullResume = mode === "full" && typeof window !== "undefined" && Boolean(
+    openSitting(sessionStorage, owner, "full", stateCode) ||
+    (stateCode === "NY" && new URLSearchParams(window.location.search).get("start") !== "1" && readSitting(sessionStorage, owner, "full", stateCode)?.done)
+  );
   const fullLocked = !fullResume && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || anonBlocked);
 
   function consumeAnonFull() {
@@ -231,9 +239,9 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   if (mode === "full" && fullLocked) {
     return (
       <div className="card">
-        <h2>{onHi ? "Free Comprehensive Practice already used" : "Free Full 45 already used"}</h2>
+        <h2>{pack ? `Free ${pack.fullTitle} already used` : onHi ? "Free Comprehensive Practice already used" : "Free Full 45 already used"}</h2>
         <p>
-          {signedIn
+          {pack ? `This ${signedIn ? "account" : "browser"} has used its free ${pack.fullTitle}. Pro includes more full practices.` : signedIn
             ? (onHi
               ? "This account has used its free Comprehensive Practice. Hawaii Pro includes more of them for 60 days."
               : onCa
@@ -260,7 +268,8 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
       <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginBottom: 16 }}>
         Change mode
       </button>
-      <ExamRunner mode={mode} practice={mode !== "full"} isPro={isPro} sittingMode={focusArea ? `area-${focusArea}` : mode} stateCode={stateCode} focusArea={focusArea || undefined} />
+      <ExamRunner mode={mode} practice={mode !== "full"} isPro={isPro} sittingMode={focusArea ? `area-${focusArea}` : mode} stateCode={stateCode} focusArea={focusArea || undefined}
+        onRecorded={stateCode === "NY" && mode === "full" ? () => setFullExamCount(count => count + 1) : undefined} />
     </div>
   );
 }

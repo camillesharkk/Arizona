@@ -27,40 +27,43 @@ export async function POST(req: Request) {
   if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
   if (productionStateBlocked(body.data.questionId.split("-")[0].toUpperCase())) return NextResponse.json({ error: "State not available" }, { status: 404 });
   const store = await getStore();
-  if (typeof body.data.saveForReview === "boolean") {
-    const question = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(body.data.questionId)].find((item) => item && item.question_id === body.data.questionId);
-    if (!question) return NextResponse.json({ error: "Not found" }, { status: 404 });
-    const stat = await store.getStat(session.id, body.data.questionId);
-    const planState = question.state;
-    const plan = await store.getStudyPlan(session.id, planState);
-    const timeZone = (plan?.document as { settings?: { timeZone?: string } } | undefined)?.settings?.timeZone || DEFAULT_STUDY_TIME_ZONE;
-    const next = savedReviewStat(stat, question, {
-      userId: session.id,
-      save: body.data.saveForReview,
-      now: new Date().toISOString(),
-      timeZone,
-    });
-    if (!next) return NextResponse.json({ error: "Not found" }, { status: 404 });
-    await store.upsertStat(next);
-    return NextResponse.json({ ok: true, savedForReview: Boolean(next.savedForReview), nextReviewAt: next.nextReviewAt });
-  }
-  if (body.data.mastered === undefined && body.data.favorited === undefined && !body.data.remove) {
-    return NextResponse.json({ error: "Choose an action" }, { status: 400 });
-  }
-  const patch = body.data.remove
-    ? { wrongCount: 0, mastered: true, favorited: false, savedForReview: false, nextReviewAt: null }
-    : {
-        ...(body.data.mastered !== undefined ? { mastered: body.data.mastered, ...(body.data.mastered ? { nextReviewAt: null } : {}) } : {}),
-        ...(body.data.favorited !== undefined ? { favorited: body.data.favorited } : {}),
-      };
-  try {
-    const stat = await store.updateReviewStat(session.id, body.data.questionId, patch);
-    if (!stat) return NextResponse.json({ error: "Not found" }, { status: 404 });
-    return NextResponse.json({ ok: true, stat: toClientStat(stat) });
-  } catch (error) {
-    console.error("Could not update wrong-answer record", error);
-    return NextResponse.json({ error: "Could not update this question. Please try again." }, { status: 500 });
-  }
+  const update = async () => {
+    if (typeof body.data.saveForReview === "boolean") {
+      const question = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(body.data.questionId)].find((item) => item && item.question_id === body.data.questionId);
+      if (!question) return NextResponse.json({ error: "Not found" }, { status: 404 });
+      const stat = await store.getStat(session.id, body.data.questionId);
+      const planState = question.state;
+      const plan = await store.getStudyPlan(session.id, planState);
+      const timeZone = (plan?.document as { settings?: { timeZone?: string } } | undefined)?.settings?.timeZone || DEFAULT_STUDY_TIME_ZONE;
+      const next = savedReviewStat(stat, question, {
+        userId: session.id,
+        save: body.data.saveForReview,
+        now: new Date().toISOString(),
+        timeZone,
+      });
+      if (!next) return NextResponse.json({ error: "Not found" }, { status: 404 });
+      await store.upsertStat(next);
+      return NextResponse.json({ ok: true, savedForReview: Boolean(next.savedForReview), nextReviewAt: next.nextReviewAt });
+    }
+    if (body.data.mastered === undefined && body.data.favorited === undefined && !body.data.remove) {
+      return NextResponse.json({ error: "Choose an action" }, { status: 400 });
+    }
+    const patch = body.data.remove
+      ? { wrongCount: 0, mastered: true, favorited: false, savedForReview: false, nextReviewAt: null }
+      : {
+          ...(body.data.mastered !== undefined ? { mastered: body.data.mastered, ...(body.data.mastered ? { nextReviewAt: null } : {}) } : {}),
+          ...(body.data.favorited !== undefined ? { favorited: body.data.favorited } : {}),
+        };
+    try {
+      const stat = await store.updateReviewStat(session.id, body.data.questionId, patch);
+      if (!stat) return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json({ ok: true, stat: toClientStat(stat) });
+    } catch (error) {
+      console.error("Could not update wrong-answer record", error);
+      return NextResponse.json({ error: "Could not update this question. Please try again." }, { status: 500 });
+    }
+  };
+  return body.data.questionId.startsWith("ny-") ? store.learningTransaction(session.id, update) : update();
 }
 
 export async function GET(req: Request) {

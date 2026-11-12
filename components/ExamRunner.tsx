@@ -562,7 +562,9 @@ export function ExamRunner({
     if (!examSaveId.current) examSaveId.current = crypto.randomUUID();
     if (!localSaved.current) {
       localSaved.current = true;
-      if (!practice) results.forEach((r) => recordAnswer(r.question.question_id, r.correct, stateCode));
+      if (!practice) results.forEach((r) => {
+        if (stateCode !== "NY" || current[r.question.question_id]) recordAnswer(r.question.question_id, r.correct, stateCode);
+      });
       const prev = loadProgress(stateCode);
       saveProgress({
         lastScore: pct,
@@ -572,7 +574,18 @@ export function ExamRunner({
     }
     persistSitting({ examId: examSaveId.current, scored: true });
     const saves: Promise<Response>[] = [];
-    if (!practice || topicPractice) results.forEach((r) => {
+    const nyFull = stateCode === "NY" && mode === "full";
+    if (nyFull) saves.push(fetch("/api/progress/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        kind: "ny-full", examId: examSaveId.current,
+        questions: questions.map(item => ({ questionId: item.question_id, questionVersion: item.version,
+          selected: current[item.question_id] ? originalLetter(item.question_id, current[item.question_id]) : undefined })),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      }),
+    }));
+    if (!nyFull && (!practice || topicPractice)) results.forEach((r) => {
       const letter = current[r.question.question_id];
       if (letter) {
         saves.push(fetch("/api/progress/", {
@@ -595,7 +608,7 @@ export function ExamRunner({
       ? results.filter((item) => !unscoredRef.current.includes(item.question.question_id))
       : results;
     const scoredCorrect = scoredResults.filter((item) => item.correct).length;
-    saves.push(fetch("/api/progress/", {
+    if (!nyFull) saves.push(fetch("/api/progress/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -625,6 +638,7 @@ export function ExamRunner({
     }
     setSubmitting(false);
     setDone(true);
+    if (nyFull) onRecorded?.();
     if (!completeReported.current) {
       completeReported.current = true;
       const elapsed = startedAt == null ? undefined : Math.max(0, Math.round((Date.now() - startedAt) / 1000));
@@ -665,8 +679,8 @@ export function ExamRunner({
     const weak = weakTopics(results, 4).filter((w) => w.wrong > 0);
     const topicAcc = new Map<string, { right: number; total: number; label: string }>();
     results.forEach((r) => {
-      const key = onHi ? r.question.study_topic || r.question.topic : stateCode === "CA" ? r.question.exam_area || r.question.topic : r.question.topic;
-      const cur = topicAcc.get(key) || { right: 0, total: 0, label: onHi ? hiStudyLabel(key) : stateCode === "CA" ? areaLabel(key) : topicLabel(r.question.topic) };
+      const key = pack || onHi ? r.question.study_topic || r.question.topic : stateCode === "CA" ? r.question.exam_area || r.question.topic : r.question.topic;
+      const cur = topicAcc.get(key) || { right: 0, total: 0, label: pack ? pack.topics.find(topic => topic.id === key)?.label || key : onHi ? hiStudyLabel(key) : stateCode === "CA" ? areaLabel(key) : topicLabel(r.question.topic) };
       cur.total += 1;
       if (r.correct) cur.right += 1;
       topicAcc.set(key, cur);
@@ -682,10 +696,13 @@ export function ExamRunner({
           }))
         )
       : null;
-    const studyHref = stateCode === "CA"
+    const packMiss = [...topicAcc.entries()].filter(([, value]) => value.total > value.right)
+      .sort(([, a], [, b]) => (b.total - b.right) - (a.total - a.right))[0];
+    const studyHref = pack ? (packMiss ? `${site.studyCards}?topic=${packMiss[0]}` : site.study)
+      : stateCode === "CA"
       ? (caMiss ? `${site.studyCards}?topic=${caMiss.area}` : site.study)
       : (missed ? topicStudyHref(missed.topic, isPro) : paths.study);
-    const recommend = stateCode === "CA" ? caMiss : missed;
+    const recommend = pack ? (packMiss ? { label: packMiss[1].label } : null) : stateCode === "CA" ? caMiss : missed;
     let anonFullUsed = false;
     if (typeof window !== "undefined") {
       try {

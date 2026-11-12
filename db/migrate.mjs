@@ -30,8 +30,14 @@ try {
       continue;
     }
     const body = readFileSync(path.join(dir, file), "utf8");
-    await sql.unsafe(body);
-    await sql`insert into schema_migrations (id) values (${id})`;
+    await sql.begin(async (transaction) => {
+      if (id === "016_question_revisions") {
+        await transaction.unsafe("set local lock_timeout = '5s'");
+        await transaction.unsafe("set local statement_timeout = '30s'");
+      }
+      await transaction.unsafe(body);
+      await transaction`insert into schema_migrations (id) values (${id})`;
+    });
     console.log("Applied:", id);
   }
 

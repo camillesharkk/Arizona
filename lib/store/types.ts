@@ -107,6 +107,7 @@ export type EntitlementRow = {
 };
 
 export type Store = {
+  learningTransaction<T>(userId: string, action: (store: Store) => Promise<T>): Promise<T>;
   getUserByEmail(email: string): Promise<UserRow | null>;
   getUserById(id: string): Promise<UserRow | null>;
   createUser(data: Pick<UserRow, "email" | "passwordHash" | "name">): Promise<UserRow>;
