@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Isolate acceptance builds from a concurrently running development server.
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   reactStrictMode: true,
   trailingSlash: true,
   serverExternalPackages: ["postgres", "posthog-node"],

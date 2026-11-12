@@ -8,16 +8,18 @@ import { examConfig } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
+import { packFor } from "@/lib/prep-pack";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { clearSitting, openSitting, readSitting, type SittingState } from "@/lib/sitting";
 
 export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState }) {
   const onHi = stateCode === "HI";
   const onCa = stateCode === "CA";
-  const anonFullKey = onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : "az-anon-full-started";
-  const site = onHi ? hiPaths : onCa ? caPaths : paths;
-  const fullCount = onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
-  const fullMinutes = onHi ? HI_EXAM.officialTimeLimitMinutes : onCa ? CA_EXAM.timeLimitMinutes : examConfig.timeLimitMinutes;
+  const pack = packFor(stateCode);
+  const anonFullKey = pack ? pack.anonKey : onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : "az-anon-full-started";
+  const site = pack ? pack.paths : onHi ? hiPaths : onCa ? caPaths : paths;
+  const fullCount = pack ? pack.fullCount : onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
+  const fullMinutes = pack ? pack.fullMinutes : onHi ? HI_EXAM.officialTimeLimitMinutes : onCa ? CA_EXAM.timeLimitMinutes : examConfig.timeLimitMinutes;
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<"pick" | "quick" | "full" | "weak" | "practice">("pick");
   const [focusArea, setFocusArea] = useState("");
@@ -65,7 +67,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
       .then((d) => {
         if (cancel) return;
         setIsPro(Boolean(d.user?.arizonaPro || d.user?.californiaPro || d.user?.hawaiiPro || d.user?.plan === "pro"));
-        setFullExamCount(Number((onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
+        setFullExamCount(Number((pack ? d.user?.packFullExamCount?.[stateCode] : onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setOwner(d.user?.id || "guest");
         const nextOwner = d.user?.id || "guest";
@@ -195,7 +197,9 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         {(["quick", "full", "weak"] as const).map((id) => {
           const copy = {
             quick: ["Quick 10", "10 questions. The result shows after each answer."],
-            full: onHi
+            full: pack
+              ? [pack.fullTitle, pack.fullDetail]
+              : onHi
               ? ["Comprehensive Practice", `${fullCount} questions. No time limit. This count is this site's practice setting.`]
               : ["Full " + fullCount, `${fullCount} questions, ${fullMinutes ?? examConfig.timeLimitMinutes} minutes. Results show after you submit.`],
             weak: ["Weak Areas", "Questions you missed. The longer set is part of Pro."],
@@ -210,9 +214,12 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
                   <button className="btn btn-ghost" type="button" onClick={() => beginNew(id)}>Start new</button>
                 </div>
               ) : (
-                <button className="btn btn-primary" type="button" disabled={Boolean(pendingStart)} onClick={() => requestStart(id)}>
-                  {pendingStart === id ? "Loading…" : "Start"}
-                </button>
+                <>
+                  <button className="btn btn-primary" type="button" disabled={Boolean(pendingStart) || (id === "full" && !!pack && !pack.fullReady) || (id === "quick" && !!pack && !pack.quickReady)} onClick={() => requestStart(id)}>
+                    {pendingStart === id ? "Loading…" : (id === "full" && pack && !pack.fullReady) || (id === "quick" && pack && !pack.quickReady) ? "Not open yet" : "Start"}
+                  </button>
+                  {id === "full" && pack && !pack.fullReady ? <p className="notice">The published bank cannot fill this practice yet, so it stays closed.</p> : null}
+                </>
               )}
             </div>
           );

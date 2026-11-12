@@ -28,10 +28,10 @@ export function CaQuickNext({
   fullHref: string;
   fullResume: boolean;
   fullLocked: boolean;
-  paths?: typeof caPaths;
+  paths?: { study: string; mistakes: string; daily: string; login: string; studyCards: string };
   fullName?: string;
   labelFor?: (id: string) => string;
-  dailyState?: "CA" | "HI";
+  dailyState?: string;
   limitNote?: string;
 }) {
   const band = quickNextBand(correct, total);

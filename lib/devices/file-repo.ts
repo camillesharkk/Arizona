@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { createMemoryDeviceRepo, type DeviceRepo } from "./repo.ts";
 
-const filePath = () => path.join(process.cwd(), ".data", "devices.json");
+const filePath = () => path.join(process.env.NOTARY_DATA_DIR || path.join(process.cwd(), ".data"), "devices.json");
 let queue: Promise<void> = Promise.resolve();
 
 async function loadRaw(): Promise<Record<string, unknown>> {

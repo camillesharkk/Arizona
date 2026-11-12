@@ -12,6 +12,8 @@ import { LoadingNote } from "@/components/QuizChrome";
 import { useResolvedState, useSavedState } from "@/components/SavedState";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { caPaths } from "@/lib/ca-site";
+import { packFor } from "@/lib/prep-pack";
+import { examState } from "@/lib/ca-daily-shape";
 import { hiPaths } from "@/lib/hi-site";
 import { recoverPendingPurchase, type AnalyticsPaidOrder } from "@/lib/analytics";
 
@@ -61,7 +63,7 @@ async function readAccess(res: Response): Promise<AccessPayload | null> {
 
 export function DashboardClient() {
   const state = useResolvedState(useSavedState());
-  const site = state === "HI" ? hiPaths : state === "CA" ? caPaths : paths;
+  const site = packFor(state)?.paths || (state === "HI" ? hiPaths : state === "CA" ? caPaths : paths);
   const [data, setData] = useState<ProgressPayload | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -224,7 +226,7 @@ export function DashboardClient() {
 
   const user = data!.user!;
   const stats = (data!.stats || []).filter((row) => (row.state || "AZ") === state);
-  const exams = (data!.exams || []).filter((row) => state === "CA" ? row.mode.startsWith("ca-") : state === "HI" ? row.mode.startsWith("hi-") : !row.mode.startsWith("ca-") && !row.mode.startsWith("hi-"));
+  const exams = (data!.exams || []).filter((row) => examState(row.mode) === (state || "AZ"));
   const answered = stats.reduce((n, s) => n + s.rightCount + s.wrongCount, 0);
   const right = stats.reduce((n, s) => n + s.rightCount, 0);
   const acc = answered ? Math.round((right / answered) * 100) : 0;

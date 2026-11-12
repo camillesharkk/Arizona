@@ -10,6 +10,7 @@ import { pickCaFullExam, pickCaQuickExam, weakestCaArea } from "@/lib/ca-exam";
 import { pickHiFullExam, pickHiQuickExam } from "@/lib/hi-exam";
 import { areaLabel, CA_EXAM, caPaths } from "@/lib/ca-site";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
+import { packFor } from "@/lib/prep-pack";
 import { hiStudyLabel } from "@/lib/hi-topics";
 import { examConfig, officialExam } from "@/data/exam-config";
 import {
@@ -24,6 +25,7 @@ import {
   type Letter,
 } from "@/lib/quiz";
 import { recordAnswer, saveProgress, loadProgress } from "@/lib/storage";
+import { currentQuestionVersion } from '@/lib/question-revisions';
 import { AccountInvite } from "@/components/AccountInvite";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { AnswerResult } from "@/components/AnswerResult";
@@ -73,18 +75,19 @@ export function ExamRunner({
   const modeKey = sittingMode || mode;
   const onCa = stateCode === "CA";
   const onHi = stateCode === "HI";
-  const topicPractice = onCa || onHi;
-  const site = onHi ? hiPaths : onCa ? caPaths : paths;
-  const examMinutes = onHi ? 0 : onCa ? 60 : examConfig.timeLimitMinutes;
-  const fullSize = onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
-  const anonFullKey = onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : "az-anon-full-started";
+  const pack = packFor(stateCode);
+  const topicPractice = onCa || onHi || Boolean(pack);
+  const site = pack ? pack.paths : onHi ? hiPaths : onCa ? caPaths : paths;
+  const examMinutes = pack ? pack.fullMinutes ?? 0 : onHi ? 0 : onCa ? 60 : examConfig.timeLimitMinutes;
+  const fullSize = pack ? pack.fullCount : onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
+  const anonFullKey = pack ? pack.anonKey : onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : "az-anon-full-started";
   const unscoredRef = useRef<string[]>([]);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const poolLocked = useRef(false);
   const [poolIsPro, setPoolIsPro] = useState(isPro);
   const count = mode === "quick" ? 10 : mode === "full" ? fullSize : 10;
   const byId = useMemo(
-    () => new Map((onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
+    () => new Map((pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
     [stateCode]
   );
   const [owner, setOwner] = useState<string | null>(null);
@@ -140,6 +143,22 @@ export function ExamRunner({
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   function drawQuestionIds(seed: number) {
+    if (pack) {
+      const bank = pack.questions();
+      if (focusArea) {
+        const pool = bank.filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
+        const open = pool.filter((item) => item.is_free || isPro);
+        return shuffle(open.length ? open : pool.filter((item) => item.is_free), seed).slice(0, 10).map((item) => item.question_id);
+      }
+      if (mode === "quick") return pack.pickQuick(seed).map((item) => item.question_id);
+      if (mode === "full") {
+        const picked = pack.pickFull(seed);
+        unscoredRef.current = picked?.unscoredIds || [];
+        return picked ? picked.questions.map((item) => item.question_id) : [];
+      }
+      const missed = loadProgress(pack.code).wrongIds;
+      return bank.filter((item) => missed.includes(item.question_id)).slice(0, 10).map((item) => item.question_id);
+    }
     if (onHi || onCa) {
       const bank = onHi ? publishedHiQuestions() : publishedCaQuestions();
       if (focusArea) {
@@ -189,6 +208,7 @@ export function ExamRunner({
       mode: modeKey,
       seed: activeSeed,
       questionIds: lockedIds,
+      questionVersions: Object.fromEntries(lockedIds.map(id => [id, currentQuestionVersion(id)])),
       idx,
       answers,
       explainOpen,
@@ -245,7 +265,7 @@ export function ExamRunner({
         if (cancel) return;
         const nextOwner = data.user?.id || "guest";
         setSignedIn(Boolean(data.user));
-        setFullExamCount(Number((onHi ? data.user?.hiFullExamCount : onCa ? data.user?.caFullExamCount : data.user?.fullExamCount) || 0));
+        setFullExamCount(Number((pack ? data.user?.packFullExamCount?.[stateCode] : onHi ? data.user?.hiFullExamCount : onCa ? data.user?.caFullExamCount : data.user?.fullExamCount) || 0));
         const params = new URLSearchParams(window.location.search);
         const startFresh = params.get("start") === "1";
         let existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
@@ -255,8 +275,8 @@ export function ExamRunner({
         }
         const requestedAttempt = startFresh ? "" : params.get("attempt") || "";
         if (topicPractice && requestedAttempt && existing?.examId !== requestedAttempt) {
-          if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner, onHi ? "HI" : "CA");
-          const archived = readCaAttempt(nextOwner, requestedAttempt, onHi ? "HI" : "CA");
+          if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner, pack ? pack.code : onHi ? "HI" : "CA");
+          const archived = readCaAttempt(nextOwner, requestedAttempt, pack ? pack.code : onHi ? "HI" : "CA");
           if (archived && archived.mode === "quick" && mode === "quick") {
             viewOnly.current = Boolean(existing);
             setOwner(nextOwner);
@@ -339,7 +359,7 @@ export function ExamRunner({
     saveCaQuickAttempt({
       id: examSaveId.current,
       owner,
-      state: onHi ? "HI" : "CA",
+      state: pack ? pack.code : onHi ? "HI" : "CA",
       mode: "quick",
       sittingMode: modeKey,
       finishedAt: new Date().toISOString(),
@@ -347,6 +367,7 @@ export function ExamRunner({
       questionIds: lockedIds,
       answers: answersNow,
       originalAnswers,
+      questionVersions: Object.fromEntries(lockedIds.map(id => [id, currentQuestionVersion(id)])),
       attemptIds: { ...attemptIds.current },
       correctIds,
       wrongIds,
@@ -496,6 +517,7 @@ export function ExamRunner({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           questionId: q.question_id,
+          questionVersion: q.version,
             selected: originalLetter(q.question_id, letter),
             attemptId: attemptId(q.question_id),
             review,
@@ -558,6 +580,7 @@ export function ExamRunner({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             questionId: r.question.question_id,
+            questionVersion: r.question.version,
             selected: originalLetter(r.question.question_id, letter),
             attemptId: attemptId(r.question.question_id),
             review: false,
@@ -567,7 +590,8 @@ export function ExamRunner({
         }));
       }
     });
-    const scoredResults = stateCode === "CA" && mode === "full"
+    const scoreUnscored = (stateCode === "CA" || pack?.code === "PA") && mode === "full";
+    const scoredResults = scoreUnscored
       ? results.filter((item) => !unscoredRef.current.includes(item.question.question_id))
       : results;
     const scoredCorrect = scoredResults.filter((item) => item.correct).length;
@@ -577,9 +601,9 @@ export function ExamRunner({
       body: JSON.stringify({
         kind: "exam",
         mode,
-        score: stateCode === "CA" && mode === "full" ? scorePercent(scoredCorrect, scoredResults.length || 1) : pct,
-        correctCount: stateCode === "CA" && mode === "full" ? scoredCorrect : results.filter((r) => r.correct).length,
-        total: stateCode === "CA" && mode === "full" ? scoredResults.length : questions.length,
+        score: scoreUnscored ? scorePercent(scoredCorrect, scoredResults.length || 1) : pct,
+        correctCount: scoreUnscored ? scoredCorrect : results.filter((r) => r.correct).length,
+        total: scoreUnscored ? scoredResults.length : questions.length,
         examId: examSaveId.current,
         state: stateCode,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -630,7 +654,8 @@ export function ExamRunner({
     const pct = scorePercent(correct, questions.length);
     const pass = topicPractice ? false : pct >= examConfig.passingScorePercent;
     const unscored = new Set(unscoredRef.current);
-    const scoredRows = stateCode === "CA" && mode === "full" ? results.filter((item) => !unscored.has(item.question.question_id)) : results;
+    const splitScore = (stateCode === "CA" || stateCode === "PA") && mode === "full";
+    const scoredRows = splitScore ? results.filter((item) => !unscored.has(item.question.question_id)) : results;
     const scoredCorrect = scoredRows.filter((item) => item.correct).length;
     const caMiss = stateCode === "CA" ? weakestCaArea(questions.map((item) => ({
       question: item,
@@ -702,11 +727,11 @@ export function ExamRunner({
                   fullHref={fullHref}
                   fullResume={fullResume}
                   fullLocked={fullLocked}
-                  paths={onHi ? hiPaths : caPaths}
-                  fullName={onHi ? "Comprehensive Practice" : "Full 45 Practice Exam"}
+                  paths={pack ? pack.paths : onHi ? hiPaths : caPaths}
+                  fullName={pack ? pack.fullTitle : onHi ? "Comprehensive Practice" : "Full 45 Practice Exam"}
                   labelFor={onHi ? hiStudyLabel : undefined}
-                  dailyState={onHi ? "HI" : "CA"}
-                  limitNote={onHi ? "The free Comprehensive Practice on this account or browser is already used." : undefined}
+                  dailyState={pack ? pack.code : onHi ? "HI" : "CA"}
+                  limitNote={pack ? `The free ${pack.fullTitle} on this account or browser is already used.` : onHi ? "The free Comprehensive Practice on this account or browser is already used." : undefined}
                 />
               ) : (
                 <>
@@ -754,6 +779,10 @@ export function ExamRunner({
                   ? `${correct} of ${questions.length}`
                   : stateCode === "CA" && mode === "full"
                   ? `${scoredCorrect} of 40 scored`
+                  : stateCode === "PA" && mode === "full"
+                  ? `${scoredCorrect} of 25 practice-scored`
+                  : pack?.code === "NY" && mode === "full"
+                  ? `${correct} of ${questions.length}`
                   : `${pct}% — ${pass ? "PASS" : "NEEDS REVIEW"}`}
               </h2>
               <p className="lede">
@@ -761,6 +790,10 @@ export function ExamRunner({
                   ? `${correct} of ${questions.length} correct. ${HI_EXAM.practiceNote} A score of ${HI_EXAM.practiceTargetPercent}% is this site's practice target. It is not an official exam result. The Attorney General's written exam requires at least ${HI_EXAM.officialPassingPercent}%.`
                   : stateCode === "CA" && mode === "full"
                   ? `${scoredCorrect} of 40 scored items correct. Five items are unscored and are marked below. This raw count is study feedback. The official exam uses a scaled score of at least 70, and a scaled score is not a percent.`
+                  : stateCode === "PA" && mode === "full"
+                  ? `${scoredCorrect} of 25 practice-scored items correct. Five items were this site's unscored set and are marked below. All 30 still count for study. This raw count is not the official scaled score of 75.`
+                  : pack?.code === "NY" && mode === "full"
+                  ? `${correct} of ${questions.length} correct. This 40-question, 60-minute set is this site's practice. The Department of State reports pass or fail only and does not publish a numeric passing score. This count is not an official result.`
                   : `${correct} of ${questions.length} correct. Practice target ${examConfig.passingScorePercent}%. The SOS notice checked ${officialExam.checkedOn} lists ${officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.`}
               </p>
               {guided && mode === "full" ? (
@@ -1029,8 +1062,8 @@ export function QuestionBlock({
   onToggleExplain?: () => void;
   tutor?: boolean;
 }) {
-  const letters = ["A", "B", "C", "D"] as const;
   const map = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
+  const letters = (["A", "B", "C", "D"] as const).filter((letter) => map[letter]);
   const locked = lockPaid && !q.is_free && !isPro;
   const choiceDisabled = !onChoose || locked || lockChoice;
   return (
@@ -1049,6 +1082,7 @@ export function QuestionBlock({
           )}
         </div>
       </div>
+      {q.scenario_text ? <p className="notice">{q.scenario_text}</p> : null}
       <h3 className="quiz-heading quiz-stem" ref={headingRef} tabIndex={-1}>
         {marked ? <span className="flagged-note"><FlagIcon /> Flagged</span> : null}
         {index + 1}. {q.question_text}

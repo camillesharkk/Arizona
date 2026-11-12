@@ -4,7 +4,7 @@ import { fileStore } from "../store/file-store";
 import { createMemoryCommerceRepo, type CommerceRepo } from "./repo.ts";
 import type { ClockUser } from "./types.ts";
 
-const filePath = () => path.join(process.cwd(), ".data", "commerce.json");
+const filePath = () => path.join(process.env.NOTARY_DATA_DIR || path.join(process.cwd(), ".data"), "commerce.json");
 let queue: Promise<void> = Promise.resolve();
 
 async function loadRaw(): Promise<Record<string, unknown>> {

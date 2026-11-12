@@ -7,6 +7,7 @@ import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
+import { packFor } from "@/lib/prep-pack";
 import { useResolvedState } from "@/components/SavedState";
 import type { LiveCode } from "@/lib/site-state";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
@@ -23,7 +24,7 @@ function active(pathname: string, href: string) {
 }
 
 function navFor(state: LiveCode | null) {
-  const source = state === "CA" ? caPaths : state === "HI" ? hiPaths : null;
+  const source = packFor(state)?.paths || (state === "CA" ? caPaths : state === "HI" ? hiPaths : null);
   if (!source) return paths;
   return {
     ...paths,
@@ -103,7 +104,7 @@ export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
   useEffect(() => setOpenMore(false), [pathname]);
   useEffect(() => setReturnTo(`${pathname}${window.location.search}`), [pathname]);
   useEffect(() => {
-    if (state === "CA" || state === "HI") document.documentElement.dataset.state = state;
+    if (state && state !== "AZ") document.documentElement.dataset.state = state;
     else delete document.documentElement.dataset.state;
   }, [state]);
   useEffect(() => {
@@ -142,8 +143,8 @@ export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
       <div className="wrap header-inner">
         <div className="header-left">
           <Link href={state ? nav.home : "/"} className="logo">
-            <span className="logo-mark">{state === "CA" ? "C" : state === "HI" ? "H" : state === "AZ" ? "A" : "N"}</span>
-            {state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
+            <span className="logo-mark">{state === "CA" ? "C" : state === "HI" ? "H" : state === "NY" ? "Y" : state === "PA" ? "P" : state === "LA" ? "L" : state === "AZ" ? "A" : "N"}</span>
+            {state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
           </Link>
           <StateMenu pathname={pathname} current={state} />
         </div>

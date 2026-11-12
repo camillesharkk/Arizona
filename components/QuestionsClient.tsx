@@ -18,6 +18,7 @@ import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
+import { packFor } from "@/lib/prep-pack";
 import { isActiveQuestion } from "@/lib/question-status";
 import type { Question, StateCode } from "@/lib/types";
 
@@ -397,7 +398,7 @@ export function QuestionsClient({
                 pendingSaves.current.push(fetch("/api/progress/", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ questionId: q.question_id, selected: originalLetter(l), attemptId: attemptId(q.question_id) }),
+                  body: JSON.stringify({ questionId: q.question_id, questionVersion: q.version, state: q.state, selected: originalLetter(l), attemptId: attemptId(q.question_id) }),
                 }));
                 if (l === q.correct_option) {
                   const at = safeIdx;

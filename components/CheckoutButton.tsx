@@ -58,7 +58,7 @@ function formatRemaining(ms: number) {
   return d > 0 ? `${d}d ${clock}` : clock;
 }
 
-export function CheckoutButton({ belowCta, productCode = "az_exam_pro_60d", sourceState }: { belowCta?: ReactNode; productCode?: "az_exam_pro_60d"; sourceState?: "AZ" | "CA" | "HI" }) {
+export function CheckoutButton({ belowCta, productCode = "az_exam_pro_60d", sourceState }: { belowCta?: ReactNode; productCode?: "az_exam_pro_60d"; sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA" }) {
   const [preview, setPreview] = useState<Preview | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [applyCredit, setApplyCredit] = useState(false);

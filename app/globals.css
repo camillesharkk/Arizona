@@ -24,13 +24,32 @@
 }
 
 html[data-state="CA"],
-html[data-state="HI"] {
+html[data-state="HI"],
+html[data-state="NY"] {
   --brand: #0b3a6e;
   --brand-hover: #082c56;
   --brand-dark: #082c56;
   --brand-soft: #e7eef6;
   --state: #0b3a6e;
   --focus: 0 0 0 4px rgba(11, 58, 110, 0.28);
+}
+
+html[data-state="LA"] {
+  --brand: #4c1d95;
+  --brand-hover: #3b0764;
+  --brand-dark: #3b0764;
+  --brand-soft: #f3e8ff;
+  --state: #4c1d95;
+  --focus: 0 0 0 4px rgba(76, 29, 149, 0.28);
+}
+
+html[data-state="PA"] {
+  --brand: #0f3d3e;
+  --brand-hover: #0b2e2f;
+  --brand-dark: #0b2e2f;
+  --brand-soft: #e7f3f3;
+  --state: #0f3d3e;
+  --focus: 0 0 0 4px rgba(15, 61, 62, 0.28);
 }
 
 * { box-sizing: border-box; }

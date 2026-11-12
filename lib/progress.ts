@@ -2,6 +2,8 @@ import { randomUUID } from "crypto";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
+import { questionById } from "@/lib/prep-pack";
+import { currentQuestionVersion, currentRevisionStat } from "@/lib/question-revisions";
 import { applyReviewAnswer, DEFAULT_STUDY_TIME_ZONE, migrateReviewFields } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
 import type { QuestionStat } from "@/lib/store/types";
@@ -31,13 +33,14 @@ export async function recordQuestionAnswer(opts: {
   timeZone?: string;
 }) {
   const store = await getStore();
-  const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId);
+  const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId) ?? questionById(opts.questionId);
   if (!q) throw new Error("unknown_question");
   if (opts.attemptId) {
     const fresh = await store.claimAttempt(opts.userId, opts.attemptId, opts.questionId);
     if (!fresh) return (await store.getStat(opts.userId, opts.questionId)) ?? null;
   }
-  const prev = await store.getStat(opts.userId, opts.questionId);
+  const stored = await store.getStat(opts.userId, opts.questionId);
+  const prev = stored ? currentRevisionStat(stored) : null;
   const now = new Date().toISOString();
   const state = q.state;
   const savedPlan = await store.getStudyPlan(opts.userId, state);
@@ -46,10 +49,12 @@ export async function recordQuestionAnswer(opts: {
   const migrated = prev ? migrateReviewFields(prev, now, timeZone) : null;
   const review = applyReviewAnswer(migrated, { correct: opts.correct, review: Boolean(opts.review), now, timeZone });
   const next: QuestionStat = {
+    questionVersion: currentQuestionVersion(opts.questionId),
+    revisionHistory: prev?.revisionHistory,
     userId: opts.userId,
     questionId: opts.questionId,
     topic: q.topic,
-    bank: state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : "arizona-notary-exam",
+    bank: state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : state === "NY" ? "new-york-notary-exam" : state === "PA" ? "pennsylvania-notary-exam" : state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam",
     chapter: q.topic,
     state,
     firstCorrect: prev?.firstCorrect ?? opts.correct,

@@ -3,14 +3,18 @@ import { z } from "zod";
 import { addVisibleTime, dailyStudyView, markDailyCard, studyMore, type StudyState } from "@/lib/daily-study";
 import { caDailyView } from "@/lib/ca-daily";
 import { getSession } from "@/lib/session";
+import { productionStateBlocked } from "@/lib/state-release";
 
 export async function GET(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const url = new URL(req.url);
   const state = url.searchParams.get("state");
+  if (productionStateBlocked(state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
   if (state === "CA") return NextResponse.json(await caDailyView(session.id, url.searchParams.get("timeZone") || undefined));
-  if (state === "HI") return NextResponse.json(await dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, "HI"));
+  if (state === "HI" || state === "NY" || state === "PA" || state === "LA") {
+    return NextResponse.json(await dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, state));
+  }
   if (state && state !== "AZ") return NextResponse.json({ error: "Unknown state" }, { status: 400 });
   const timeZone = url.searchParams.get("timeZone") || undefined;
   return NextResponse.json(await dailyStudyView(session.id, timeZone));
@@ -29,7 +33,8 @@ export async function POST(req: Request) {
   const body = bodySchema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
   const requested = new URL(req.url).searchParams.get("state");
-  const state: StudyState = requested === "CA" || requested === "HI" ? requested : "AZ";
+  if (productionStateBlocked(requested)) return NextResponse.json({ error: "State not available" }, { status: 404 });
+  const state: StudyState = requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" ? requested : "AZ";
   try {
     if (body.data.action === "visible") {
       await addVisibleTime(session.id, body.data.seconds || 0, body.data.attemptId, state);

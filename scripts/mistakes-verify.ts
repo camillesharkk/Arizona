@@ -25,6 +25,7 @@ const routeRequire = (id: string) => {
       return store.updateReviewStat(...args);
     },
   }) };
+  if (id === "@/lib/state-release") return { productionStateBlocked: () => false };
   // Save-for-review and GET scheduling are outside these action regression checks.
   if (id.startsWith("@/")) return {};
   return require(id);

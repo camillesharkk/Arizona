@@ -877,7 +877,8 @@ export function caQuestionCounts() {
     violations: 0,
   };
   for (const question of published) {
-    if (question.exam_area) areas[question.exam_area] += 1;
+    const area = question.exam_area;
+    if (area === "administration" || area === "acts" || area === "identity" || area === "immigration" || area === "violations") areas[area] += 1;
   }
   return {
     published: published.length,

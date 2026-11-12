@@ -1,3 +1,4 @@
+import type { StateCode } from "./types";
 import type { CaCheck } from "@/lib/ca-daily-shape";
 import { dailyStudyView } from "@/lib/daily-study";
 import { getStore } from "@/lib/store";
@@ -20,13 +21,13 @@ function checksFrom(raw: unknown): Record<string, CaCheck> {
   return out;
 }
 
-export async function saveCaExamCheck(userId: string, examId: string, input: { wrongIds: string[]; skipped: number }, state: "CA" | "HI" = "CA") {
+export async function saveCaExamCheck(userId: string, examId: string, input: { wrongIds: string[]; skipped: number }, state: StateCode = "CA") {
   const store = await getStore();
   const row = await store.getStudyPlan(userId, state);
   const raw = row?.document && typeof row.document === "object" ? { ...(row.document as Record<string, unknown>) } : {};
   const checks = checksFrom(raw);
   const prev = checks[examId];
-  if (prev?.wrongIds.length && input.wrongIds.length === 0) return;
+  if (prev) return;
   checks[examId] = { wrong: input.wrongIds.length, skipped: input.skipped, wrongIds: input.wrongIds };
   await store.saveStudyPlan({ userId, state, document: { ...raw, checks } });
 }

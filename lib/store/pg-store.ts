@@ -23,6 +23,7 @@ export async function ensurePgSchema() {
 }
 
 let schemaReady = false;
+let revisionColumnsReady = false;
 
 async function assertSchema() {
   if (schemaReady) return;
@@ -33,7 +34,24 @@ async function assertSchema() {
   } catch {
     throw new Error("Postgres schema is missing. Set DATABASE_URL and run: npm run db:migrate");
   }
+  revisionColumnsReady = await hasRevisionColumns();
   schemaReady = true;
+}
+
+async function hasRevisionColumns() {
+  const columns = await db()`select column_name from information_schema.columns
+    where table_schema = current_schema() and table_name = 'question_stats'
+    and column_name in ('question_version', 'revision_history')`;
+  return columns.length === 2;
+}
+
+async function requireRevisionStorage(questionId: string) {
+  if (revisionColumnsReady || !questionId.startsWith("ny-")) return;
+  // An operator may apply 016 while this application instance is still warm.
+  revisionColumnsReady = await hasRevisionColumns();
+  if (!revisionColumnsReady) {
+    throw new Error("New York progress requires migration 016 before saving. No answer was saved.");
+  }
 }
 
 function iso(v: unknown) {
@@ -79,6 +97,8 @@ function mapStat(r: Record<string, unknown>): QuestionStat {
   return {
     userId: String(r.user_id),
     questionId: String(r.question_id),
+    questionVersion: Number(r.question_version || 1),
+    revisionHistory: (r.revision_history || []) as QuestionStat["revisionHistory"],
     topic: String(r.topic),
     bank: String(r.bank),
     chapter: String(r.chapter),
@@ -175,16 +195,21 @@ export const pgStore: Store = {
   },
   async upsertStat(stat) {
     await assertSchema();
-    await db()`insert into question_stats (
+    await requireRevisionStorage(stat.questionId);
+    const sql = db();
+    await sql`insert into question_stats (
       user_id, question_id, topic, bank, chapter, state, first_correct, last_correct, wrong_count, right_count,
       review_count, consecutive_correct, review_stage, last_wrong_at, last_reviewed_at, next_review_at, review_plan,
-      last_selected, last_correct_option, first_at, last_at, mastered, favorited, saved_for_review
+      last_selected, last_correct_option, first_at, last_at, mastered, favorited, saved_for_review${revisionColumnsReady ? sql`, question_version, revision_history` : sql``}
     ) values (
       ${stat.userId}, ${stat.questionId}, ${stat.topic}, ${stat.bank}, ${stat.chapter}, ${stat.state},
       ${stat.firstCorrect}, ${stat.lastCorrect}, ${stat.wrongCount}, ${stat.rightCount},
       ${stat.reviewCount}, ${stat.consecutiveCorrect}, ${stat.reviewStage}, ${stat.lastWrongAt}, ${stat.lastReviewedAt}, ${stat.nextReviewAt}, ${stat.reviewPlan || "v2"},
-      ${stat.lastSelected}, ${stat.lastCorrectOption}, ${stat.firstAt}, ${stat.lastAt}, ${stat.mastered}, ${stat.favorited}, ${Boolean(stat.savedForReview)}
+      ${stat.lastSelected}, ${stat.lastCorrectOption}, ${stat.firstAt}, ${stat.lastAt}, ${stat.mastered}, ${stat.favorited}, ${Boolean(stat.savedForReview)}${revisionColumnsReady ? sql`, ${stat.questionVersion ?? 1}, ${JSON.stringify(stat.revisionHistory ?? [])}::jsonb` : sql``}
     ) on conflict (user_id, question_id) do update set
+      ${revisionColumnsReady ? sql`question_version = excluded.question_version, revision_history = excluded.revision_history,` : sql``}
+      first_correct = excluded.first_correct,
+      first_at = excluded.first_at,
       last_correct = excluded.last_correct,
       wrong_count = excluded.wrong_count,
       right_count = excluded.right_count,
@@ -223,6 +248,7 @@ export const pgStore: Store = {
   },
   async claimAttempt(userId, attemptId, questionId) {
     await assertSchema();
+    await requireRevisionStorage(questionId);
     const rows = await db()`insert into answer_attempts (user_id, attempt_id, question_id)
       values (${userId}, ${attemptId}, ${questionId})
       on conflict (user_id, attempt_id) do nothing

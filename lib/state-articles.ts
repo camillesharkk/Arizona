@@ -7,7 +7,7 @@ export type ArticleLink = {
 
 export type StateArticle = {
   id: string;
-  state: "CA" | "HI";
+  state: "CA" | "HI" | "NY" | "PA";
   slug: string;
   path: string;
   keyword: string;
@@ -18,7 +18,7 @@ export type StateArticle = {
   kicker: string;
   lede: string;
   checked: string;
-  updated: "2026-11-07";
+  updated: string;
   ledeCta: ArticleLink;
   sections: { heading: string; body: string; points?: string[]; link?: ArticleLink }[];
   endCta: ArticleLink;

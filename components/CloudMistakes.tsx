@@ -20,7 +20,8 @@ import { paths } from "@/lib/paths";
 import { readCaAttempt, latestCaQuick, type CaQuickAttempt } from "@/lib/ca-attempts";
 import { listPhase } from "@/lib/list-phase";
 import { markMistakePromptSeen, mistakePrompt, readMistakePrompts, type MistakeAction, type MistakePrompt } from "@/lib/mistake-prompts";
-import type { Question } from "@/lib/types";
+import { packFor } from "@/lib/prep-pack";
+import type { Question, StateCode } from "@/lib/types";
 import type { QuestionStat } from "@/lib/store/types";
 
 function dueNow(stat: QuestionStat) {
@@ -35,13 +36,17 @@ function notebookHref(base: string, topic: string, attempt: string) {
   return query ? `${base}?${query}` : base;
 }
 
-export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }: { initialTopic?: string; stateCode?: "AZ" | "CA" | "HI"; attemptId?: string }) {
+export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }: { initialTopic?: string; stateCode?: StateCode; attemptId?: string }) {
   const onCa = stateCode === "CA";
   const onHi = stateCode === "HI";
-  const topicPractice = onCa || onHi;
-  const site = onHi ? hiPaths : onCa ? caPaths : paths;
-  const questionPool = onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions();
-  const topicChoices = topicPractice
+  const pack = packFor(stateCode);
+  const topicPractice = onCa || onHi || Boolean(pack);
+  const practiceState = pack ? pack.code : onHi ? "HI" : "CA";
+  const site = pack ? pack.paths : onHi ? hiPaths : onCa ? caPaths : paths;
+  const questionPool = pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions();
+  const topicChoices = pack
+    ? pack.topics.map((item) => ({ id: item.id, short: item.label }))
+    : topicPractice
     ? (onHi ? hiStudyTopics : caStudyTopics).map((item) => ({ id: item.id, short: item.label }))
     : topics.map((item) => ({ id: item.id, short: item.short }));
   const router = useRouter();
@@ -121,7 +126,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
   async function resolveScope(userId: string, requested: string) {
     if (!requested) return { ids: null as string[] | null, summary: "", note: "" };
     if (topicPractice) {
-      const local = readCaAttempt(userId, requested, onHi ? "HI" : "CA");
+      const local = readCaAttempt(userId, requested, practiceState);
       if (local && local.owner === userId) {
         return {
           ids: local.wrongIds,
@@ -129,10 +134,10 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
           note: "",
         };
       }
-      const daily = await fetch(`/api/daily-study/?state=${onHi ? "HI" : "CA"}&timeZone=${encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix")}&account=${encodeURIComponent(userId)}`, { cache: "no-store" }).catch(() => null);
+      const daily = await fetch(`/api/daily-study/?state=${practiceState}&timeZone=${encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix")}&account=${encodeURIComponent(userId)}`, { cache: "no-store" }).catch(() => null);
       const body = daily?.ok ? await daily.json().catch(() => null) : null;
       const row = Array.isArray(body?.recent) ? body.recent.find((item: { id?: string }) => item.id === requested) : null;
-      if (row && body?.state === (onHi ? "HI" : "CA")) {
+      if (row && body?.state === (practiceState)) {
         const wrongIds = Array.isArray(row.wrongIds) ? row.wrongIds.filter((item: unknown) => typeof item === "string") : [];
         return {
           ids: wrongIds,
@@ -310,7 +315,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         const response = await fetch("/api/progress/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ questionId: id, selected, attemptId: savedAttempt, review: false, state: onHi ? "HI" : "CA" }),
+          body: JSON.stringify({ questionId: id, questionVersion: attempt.questionVersions?.[id] ?? 1, selected, attemptId: savedAttempt, review: false, state: practiceState }),
         });
         const data = await response.json().catch(() => null);
         if (!response.ok) throw new Error(data?.error || "Could not import these mistakes.");
@@ -409,7 +414,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
       <div className="row" style={{ marginTop: 12 }}>
         <Link className="btn btn-primary" href={site.daily}>Open Daily Study</Link>
         <button className="btn btn-ghost" type="button" onClick={begin} disabled={filtered.length === 0}>Practice wrong answers</button>
-        {topicPractice ? <button className="btn btn-ghost" type="button" onClick={() => { setImportOpen((open) => !open); setImportError(""); const practiceState = onHi ? "HI" : "CA"; const found = (attemptId && readCaAttempt(userIdRef.current, attemptId, practiceState)) || latestCaQuick(userIdRef.current, practiceState); setImportAttempt(found); }}>Import Mistakes</button> : null}
+        {topicPractice ? <button className="btn btn-ghost" type="button" onClick={() => { setImportOpen((open) => !open); setImportError(""); const found = (attemptId && readCaAttempt(userIdRef.current, attemptId, practiceState)) || latestCaQuick(userIdRef.current, practiceState); setImportAttempt(found); }}>Import Mistakes</button> : null}
       </div>
       {importOpen && topicPractice ? (
         <div className="card import-panel">
@@ -475,7 +480,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
               {s.nextReviewAt ? ` · Next review ${new Date(s.nextReviewAt).toLocaleString()}` : ""}
             </p>
             <MistakeActions
-              {...mistakeTargets(onHi ? "HI" : onCa ? "CA" : "AZ", q)}
+              {...mistakeTargets(stateCode, q)}
               stat={s}
               pending={pending[s.questionId]}
               onAction={(action) => requestAction(s, action)}

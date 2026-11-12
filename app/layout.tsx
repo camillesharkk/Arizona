@@ -22,19 +22,25 @@ export async function generateMetadata(): Promise<Metadata> {
   const state = resolveState(path, saved);
   const california = state === "CA";
   const hawaii = state === "HI";
+  const preview = path.startsWith("/preview/") || path.startsWith("/louisiana");
+  const title = state === "NY" ? "New York Notary Exam Practice" : state === "PA" ? "Pennsylvania Notary Exam Practice" : state === "LA" ? "Louisiana Notary Exam Practice" : hawaii ? "Hawaii Notary Exam Practice" : california ? "California Notary Exam Practice" : "Arizona Notary Exam Practice Test 2026";
   return {
     metadataBase: new URL(siteUrl()),
     title: {
-      default: hawaii ? "Hawaii Notary Exam Practice" : california ? "California Notary Exam Practice" : "Arizona Notary Exam Practice Test 2026",
+      default: preview ? `${title} preview` : title,
       template: "%s",
     },
-    description: hawaii
+    description: state === "NY"
+      ? "New York notary practice questions and study cards from Department of State sources. Independent of the New York Department of State."
+      : state === "PA"
+      ? "Pennsylvania notary practice questions from Department of State and Pearson VUE sources. Independent of the Pennsylvania Department of State."
+      : hawaii
       ? "Hawaii notary practice questions and study cards from published official sources. Independent of the Hawaii Department of the Attorney General."
       : california
       ? "California notary practice questions and study cards from published official sources. Independent of the California Secretary of State."
       : "Free Arizona notary practice test, exam questions, and study guide with official-source citations. Independent of the Arizona Secretary of State.",
     applicationName: site.legalName,
-    robots: { index: true, follow: true },
+    robots: preview ? { index: false, follow: false } : { index: true, follow: true },
     openGraph: {
       siteName: site.legalName,
       type: "website",
@@ -49,7 +55,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const path = (await headers()).get("x-pathname") || "";
   const state = resolveState(path, saved);
   return (
-    <html lang="en" data-state={state === "CA" || state === "HI" ? state : undefined}>
+    <html lang="en" data-state={state && state !== "AZ" ? state : undefined}>
       <body>
         <GoogleAnalytics />
         <MicrosoftClarity />

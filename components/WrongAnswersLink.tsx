@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
+import type { StateCode } from "@/lib/types";
 
 export function WrongAnswersLink({
   className,
@@ -13,7 +14,7 @@ export function WrongAnswersLink({
   className?: string;
   label?: string;
   href?: string;
-  stateCode?: "AZ" | "CA" | "HI";
+  stateCode?: StateCode;
 }) {
   const [text, setText] = useState(label);
   const [to, setTo] = useState(href);

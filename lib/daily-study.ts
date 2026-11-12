@@ -24,11 +24,48 @@ import {
   type StudySettings,
 } from "@/lib/study-plan";
 import { DEFAULT_STUDY_TIME_ZONE, scheduleReview } from "@/lib/review-schedule";
+import { packFor } from "@/lib/prep-pack";
 import { getStore } from "@/lib/store";
+import type { StateCode } from "@/lib/types";
 
-export type StudyState = "AZ" | "CA" | "HI";
+export type StudyState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA";
+
+function isPack(state: StudyState) {
+  return state === "NY" || state === "PA" || state === "LA";
+}
 
 function pool(state: StudyState, isPro: boolean) {
+  if (isPack(state)) {
+    const pack = packFor(state as StateCode);
+    const questions = (pack?.questions() || []).filter((question) => isPro || question.is_free);
+    const practice = pack?.paths.practice || "/";
+    const cards = (pack?.cards || []).map((card) => ({
+      id: card.id,
+      topic: card.study,
+      category: card.study,
+      title: card.title,
+      front: card.front,
+      back: card.rule,
+      rule: card.rule,
+      boundary: card.boundary,
+      mixup: card.mixup,
+      sourceLabel: card.source,
+      sourceUrl: card.sourceUrl,
+      practiceHref: `${practice}?mode=practice&area=${encodeURIComponent(card.study)}`,
+      locked: false,
+      pending: false,
+    }));
+    const cardsByQuestion = new Map<string, string[]>();
+    for (const card of cards) {
+      for (const question of questions) {
+        if (question.study_topic !== card.topic) continue;
+        const list = cardsByQuestion.get(question.question_id) || [];
+        list.push(card.id);
+        cardsByQuestion.set(question.question_id, list);
+      }
+    }
+    return { questions, cards, cardsByQuestion };
+  }
   if (state === "CA" || state === "HI") {
     const questions = state === "HI" ? publishedHiQuestions() : publishedCaQuestions();
     const sourceCards = state === "HI" ? hiCards : caCards;
@@ -87,16 +124,16 @@ async function loadDocument(userId: string, state: StudyState, today: string, ti
   const hint = timeZoneHint && timeZoneHint.length < 80 ? timeZoneHint : undefined;
   const doc = normalizeDocument(row?.document, today, hint || DEFAULT_STUDY_TIME_ZONE);
   if (!row && hint) doc.settings.timeZone = hint;
-  return { store, doc, checks: state === "CA" || state === "HI" ? keptChecks(row?.document) : undefined };
+  return { store, doc, checks: state === "CA" || state === "HI" || isPack(state) ? keptChecks(row?.document) : undefined };
 }
 
 async function saveDocument(store: Awaited<ReturnType<typeof getStore>>, userId: string, state: StudyState, doc: StudyDocument, checks?: Record<string, CaCheck>) {
-  await store.saveStudyPlan({ userId, state, document: (state === "CA" || state === "HI") && checks ? { ...doc, checks } : doc });
+  await store.saveStudyPlan({ userId, state, document: (state === "CA" || state === "HI" || isPack(state)) && checks ? { ...doc, checks } : doc });
 }
 
 export async function dailyStudyView(userId: string, timeZoneHint?: string, now = new Date().toISOString(), state: StudyState = "AZ") {
   const pro = await hasArizonaPro(userId);
-  const topicPractice = state === "CA" || state === "HI";
+  const topicPractice = state === "CA" || state === "HI" || isPack(state);
   const storeForExpiry = await getStore();
   const account = await storeForExpiry.listEntitlements(userId);
   const expires = accountProExpiry(account, new Date(now));
@@ -205,7 +242,7 @@ function californiaPlan(
   stats: { questionId: string; state: string; wrongCount: number; savedForReview?: boolean; mastered: boolean; nextReviewAt: string | null; lastWrongAt: string | null; firstAt: string | null }[],
   exams: { id: string; mode: string; correctCount: number; total: number; at: string }[],
   checks: Record<string, CaCheck> | undefined,
-  state: "CA" | "HI",
+  state: StudyState,
 ) {
   const byId = new Map(questions.map((question) => [question.question_id, question]));
   const now = new Date().toISOString();

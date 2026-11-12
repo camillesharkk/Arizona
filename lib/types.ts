@@ -27,16 +27,27 @@ export type Source = {
   version?: string;
 };
 
-export type StateCode = "AZ" | "CA" | "HI";
-export type ExamArea = "administration" | "acts" | "identity" | "immigration" | "violations";
+export type StateCode = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA";
+export type ExamArea =
+  | "administration"
+  | "acts"
+  | "identity"
+  | "immigration"
+  | "violations"
+  | "obtaining"
+  | "performing"
+  | "compliance";
 
 export type Question = {
   question_id: string;
   state: StateCode;
   /** California exam content area. Arizona items leave this unset. */
   exam_area?: ExamArea;
-  /** California study topic. One question has one primary exam area. */
+  /** State study topic. One question has one primary exam area. */
   study_topic?: string;
+  /** Shared fact pattern. Later items in the group must still be answerable without the earlier explanation. */
+  scenario_id?: string;
+  scenario_text?: string;
   topic: TopicId;
   difficulty: Difficulty;
   question_text: string;

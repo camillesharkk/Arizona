@@ -1,0 +1,13 @@
+import { notFound } from "next/navigation";
+import { CloudMistakes } from "@/components/CloudMistakes";
+import type { PrepCode } from "@/lib/prep-pack";
+
+const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA" };
+
+export default async function Page({ params, searchParams }: { params: Promise<{ state: string }>; searchParams: Promise<{ topic?: string; attempt?: string }> }) {
+  if (process.env.STATE_PREVIEW !== "1") notFound();
+  const code = codes[(await params).state];
+  if (!code) notFound();
+  const { topic, attempt } = await searchParams;
+  return <CloudMistakes stateCode={code} initialTopic={topic} attemptId={attempt || ""} />;
+}

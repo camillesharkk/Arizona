@@ -2,11 +2,13 @@ import Link from "next/link";
 import { ArticleLink, ArticleView } from "@/components/ArticleLink";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd, articleJson, faqJson } from "@/components/JsonLd";
+import { packFor } from "@/lib/prep-pack";
 import type { StateArticle } from "@/lib/state-articles";
 
 export function StateArticlePage({ article }: { article: StateArticle }) {
-  const home = article.state === "CA" ? "/california/" : "/hawaii/";
-  const stateName = article.state === "CA" ? "California" : "Hawaii";
+  const pack = packFor(article.state);
+  const home = pack ? pack.paths.home : article.state === "CA" ? "/california/" : "/hawaii/";
+  const stateName = pack ? pack.name : article.state === "CA" ? "California" : "Hawaii";
   const resources = `${home}resources/`;
   const crumbs = [
     { name: "Home", path: "/" },

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
-import { aiDailyLimit, caFullExamCount, fullExamCount, getArizonaEntitlement, hasArizonaPro, hasStatePro, hiFullExamCount } from "@/lib/entitlements";
+import { aiDailyLimit, caFullExamCount, fullExamCount, getArizonaEntitlement, hasArizonaPro, hasStatePro, hiFullExamCount, packFullExamCounts } from "@/lib/entitlements";
 
 export async function GET() {
   const session = await getSession();
@@ -27,6 +27,7 @@ export async function GET() {
       fullExamCount: await fullExamCount(session.id),
       caFullExamCount: await caFullExamCount(session.id),
       hiFullExamCount: await hiFullExamCount(session.id),
+      packFullExamCount: await packFullExamCounts(session.id),
     },
   });
 }

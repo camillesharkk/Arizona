@@ -6,6 +6,10 @@ import { readSessionToken, SESSION_COOKIE } from "@/lib/session-token";
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
+  // Deny before rendering (including RSC requests), not merely via noindex or links.
+  if (process.env.VERCEL_ENV === "production" && (path === "/preview" || path.startsWith("/preview/"))) {
+    return new NextResponse("Not found", { status: 404 });
+  }
   if (path.startsWith("/admin")) {
     const token = request.cookies.get(SESSION_COOKIE)?.value;
     const user = token ? await readSessionToken(token) : null;

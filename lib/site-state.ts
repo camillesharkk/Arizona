@@ -1,9 +1,10 @@
 import { isCaliforniaPath } from "@/lib/ca-site";
 import { isHawaiiPath } from "@/lib/hi-site";
 import { isComingSoonPath } from "@/lib/states";
+import type { StateCode } from "@/lib/types";
 
 export const STATE_COOKIE = "np_state";
-export type LiveCode = "AZ" | "CA" | "HI";
+export type LiveCode = StateCode;
 
 const sharedPaths = ["/login", "/register", "/forgot-password", "/reset-password", "/verify-email", "/account", "/dashboard", "/contact", "/legal"];
 
@@ -14,12 +15,17 @@ export function pathState(pathname: string): LiveCode | null {
   if (path.startsWith("/api") || path.startsWith("/admin")) return null;
   if (isCaliforniaPath(path)) return "CA";
   if (isHawaiiPath(path)) return "HI";
+  if (path.startsWith("/preview/new-york") || path.startsWith("/new-york/") || path === "/new-york") return "NY";
+  if (path.startsWith("/preview/pennsylvania") || path.startsWith("/pennsylvania/") || path === "/pennsylvania") return "PA";
+  if (path.startsWith("/preview/louisiana") || path.startsWith("/louisiana/") || path === "/louisiana") return "LA";
   if (sharedPaths.some((item) => path === item || path.startsWith(`${item}/`))) return null;
   return "AZ";
 }
 
+const CODES = new Set<LiveCode>(["AZ", "CA", "HI", "NY", "PA", "LA"]);
+
 export function parseStateCookie(value: string | undefined | null): LiveCode | null {
-  return value === "AZ" || value === "CA" || value === "HI" ? value : null;
+  return value && CODES.has(value as LiveCode) ? (value as LiveCode) : null;
 }
 
 /** A state page wins. Otherwise use the saved choice. */

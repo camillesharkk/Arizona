@@ -34,7 +34,7 @@ const empty = (): FileDb => ({
     studyPlans: [],
 });
 
-const filePath = () => path.join(process.cwd(), ".data", "store.json");
+const filePath = () => path.join(process.env.NOTARY_DATA_DIR || path.join(process.cwd(), ".data"), "store.json");
 let queue: Promise<void> = Promise.resolve();
 
 async function load(): Promise<FileDb> {

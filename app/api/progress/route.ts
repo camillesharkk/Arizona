@@ -7,18 +7,21 @@ import { recordProUsage } from "@/lib/commerce/usage";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
-import { hiFullExamCount } from "@/lib/entitlements";
+import { questionById } from "@/lib/prep-pack";
+import { hiFullExamCount, packFullExamCounts } from "@/lib/entitlements";
 import { saveCaExamCheck } from "@/lib/ca-daily";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
+import { productionStateBlocked } from "@/lib/state-release";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 
 const answerSchema = z.object({
   questionId: z.string(),
+  questionVersion: z.number().int().positive().optional(),
   selected: z.enum(["A", "B", "C", "D"]),
   attemptId: z.string().min(8).max(80).optional(),
   review: z.boolean().optional(),
-  state: z.enum(["AZ", "CA", "HI"]).optional(),
+  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA"]).optional(),
   timeZone: z.string().max(80).optional(),
 });
 
@@ -34,27 +37,33 @@ export async function POST(req: Request) {
         correctCount: z.number(),
         total: z.number(),
         examId: z.string().uuid().optional(),
-        state: z.enum(["AZ", "CA", "HI"]).optional(),
+        state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA"]).optional(),
         wrongIds: z.array(z.string().max(80)).max(80).optional(),
         skipped: z.number().int().min(0).max(80).optional(),
         timeZone: z.string().max(80).optional(),
       })
       .safeParse(body);
     if (!exam.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
+    if (productionStateBlocked(exam.data.state) || productionStateBlocked(exam.data.mode.split("-")[0].toUpperCase())) return NextResponse.json({ error: "State not available" }, { status: 404 });
     const store = await getStore();
     const california = exam.data.state === "CA";
     const hawaii = exam.data.state === "HI";
-    if ((california || hawaii) && exam.data.examId && exam.data.wrongIds) {
+    const packState = exam.data.state === "NY" || exam.data.state === "PA" || exam.data.state === "LA" ? exam.data.state : null;
+    if ((california || hawaii || packState) && exam.data.examId && exam.data.wrongIds) {
       await saveCaExamCheck(session.id, exam.data.examId, {
         wrongIds: exam.data.wrongIds,
         skipped: exam.data.skipped ?? 0,
-      }, hawaii ? "HI" : "CA");
+      }, packState || (hawaii ? "HI" : "CA"));
     }
     if (exam.data.examId) {
       const existing = (await store.listExams(session.id)).some((row) => row.id === exam.data.examId);
       if (existing) return NextResponse.json({ ok: true, duplicate: true });
     }
-    if (!california && !hawaii && exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
+    if (packState && exam.data.mode === "full" && !(await hasStatePro(session.id, packState))) {
+      const used = (await packFullExamCounts(session.id))[packState];
+      if (used >= FREE_FULL_EXAMS) return NextResponse.json({ error: "The free full practice for this state is already used" }, { status: 402 });
+    }
+    if (!california && !hawaii && !packState && exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
       return NextResponse.json({ error: "Pro required for additional full exams" }, { status: 402 });
     }
     if (hawaii && exam.data.mode === "full" && !(await hasStatePro(session.id, "HI")) && (await hiFullExamCount(session.id)) >= FREE_FULL_EXAMS) {
@@ -65,13 +74,13 @@ export async function POST(req: Request) {
     }
     const priorFull = !california && !hawaii && exam.data.mode === "full" ? await fullExamCount(session.id) : 0;
     const inserted = await recordExam({
-      mode: california ? `ca-${exam.data.mode}` : hawaii ? `hi-${exam.data.mode}` : exam.data.mode,
+      mode: california ? `ca-${exam.data.mode}` : hawaii ? `hi-${exam.data.mode}` : packState ? `${packState.toLowerCase()}-${exam.data.mode}` : exam.data.mode,
       score: exam.data.score,
       correctCount: exam.data.correctCount,
       total: exam.data.total,
       examId: exam.data.examId,
       userId: session.id,
-      updateBest: !california && !hawaii,
+      updateBest: !california && !hawaii && !packState,
     });
     if (!inserted) return NextResponse.json({ ok: true, duplicate: true });
     if (exam.data.mode === "full" && priorFull >= FREE_FULL_EXAMS) {
@@ -81,8 +90,12 @@ export async function POST(req: Request) {
   }
   const parsed = answerSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid answer" }, { status: 400 });
-  const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === parsed.data.questionId);
+  const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(parsed.data.questionId)].find((x) => x && x.question_id === parsed.data.questionId);
   if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
+  if (productionStateBlocked(q.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
+  if (q.state === "NY" && (parsed.data.questionVersion ?? 1) !== q.version) {
+    return NextResponse.json({ error: "Question updated; reload before answering", code: "question_updated" }, { status: 409 });
+  }
   if (parsed.data.state ? parsed.data.state !== q.state : q.state !== "AZ") {
     return NextResponse.json({ error: "Question is not in this state" }, { status: 400 });
   }

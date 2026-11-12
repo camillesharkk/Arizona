@@ -10,6 +10,8 @@ import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
 import { hiStudyLabel } from "@/lib/hi-topics";
+import { packFor } from "@/lib/prep-pack";
+import type { StateCode } from "@/lib/types";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { openSitting } from "@/lib/sitting";
 import { loadProgress } from "@/lib/storage";
@@ -22,12 +24,13 @@ export type StudyPreviewCard = StudyCardView & {
   sourceUrl: string;
 };
 
-export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard[]; stateCode?: "AZ" | "CA" | "HI" }) {
+export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard[]; stateCode?: StateCode }) {
   const onCa = stateCode === "CA";
   const onHi = stateCode === "HI";
-  const site = onHi ? hiPaths : onCa ? caPaths : paths;
-  const cardKey = onHi ? "hi-home-card" : onCa ? "ca-home-card" : HOME_CARD_KEY;
-  const anonKey = onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : ANON_FULL_KEY;
+  const pack = packFor(stateCode);
+  const site = pack ? pack.paths : onHi ? hiPaths : onCa ? caPaths : paths;
+  const cardKey = pack ? `${pack.code.toLowerCase()}-home-card` : onHi ? "hi-home-card" : onCa ? "ca-home-card" : HOME_CARD_KEY;
+  const anonKey = pack ? pack.anonKey : onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : ANON_FULL_KEY;
   const [homeQuiz, setHomeQuiz] = useState<"none" | "quick" | "full">("none");
   const [cardIndex, setCardIndex] = useState(0);
   const [cardCategory, setCardCategory] = useState("all");
@@ -106,7 +109,7 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
         if (cancel) return;
         const nextOwner = d.user?.id || "guest";
         setIsPro(Boolean(d.user?.arizonaPro || d.user?.californiaPro || d.user?.hawaiiPro || d.user?.plan === "pro"));
-        setFullExamCount(Number((onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
+        setFullExamCount(Number((pack ? d.user?.packFullExamCount?.[pack.code] : onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "quick", stateCode)));
         setHomeQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "home-quick", stateCode)));
@@ -127,12 +130,12 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
       cancel = true;
       controller.abort();
     };
-  }, [anonKey, onCa, onHi, site.practice, stateCode]);
+  }, [anonKey, onCa, onHi, pack, site.practice, stateCode]);
 
   useEffect(() => {
     if (!signedIn) return;
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    fetch(`/api/daily-study/?timeZone=${encodeURIComponent(timeZone)}${onHi ? "&state=HI" : onCa ? "&state=CA" : ""}`)
+    fetch(`/api/daily-study/?timeZone=${encodeURIComponent(timeZone)}&state=${stateCode}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         const tasks = Array.isArray(data?.taskStatus) ? data.taskStatus : [];
@@ -140,7 +143,7 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
         setTodayLeft(left > 0 ? left : null);
       })
       .catch(() => undefined);
-  }, [signedIn, onCa, onHi]);
+  }, [signedIn, stateCode]);
 
   const fullLocked = !fullSittingOpen && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || (!signedIn && anonFullUsed));
 
@@ -163,11 +166,11 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
   return (
     <>
       <section className="home-welcome" aria-label="Where to start">
-        <h1>{onHi ? "Hawaii Notary Exam Prep" : onCa ? "California Notary Exam Prep" : "Arizona Notary Exam Prep"}</h1>
+        <h1>{pack ? `${pack.name} Prep` : onHi ? "Hawaii Notary Exam Prep" : onCa ? "California Notary Exam Prep" : "Arizona Notary Exam Prep"}</h1>
       </section>
       <div className="home-copy">
-        <p className="home-lead">{onHi ? "Practice Hawaii notary questions and study cards. Quick 10 suggests what to study next. It is not an official score." : onCa ? "Practice the California notary exam with published questions and study cards. The check uses your answers to suggest a next step. It is not an official score." : "Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams."}</p>
-        <p className="home-diagnostic">{onHi ? "Quick 10 is free. Comprehensive Practice is 50 questions with no time limit. That count is this site's practice setting. The official written exam requires at least 80%." : onCa ? "A full practice exam is 45 questions and 60 minutes. Forty items are scored. Five are unscored. The official exam needs a scaled score of at least 70, which is not a percent." : "Answer 10 free questions and find out what to study next."}</p>
+        <p className="home-lead">{pack ? pack.fullDetail : onHi ? "Practice Hawaii notary questions and study cards. Quick 10 suggests what to study next. It is not an official score." : onCa ? "Practice the California notary exam with published questions and study cards. The check uses your answers to suggest a next step. It is not an official score." : "Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams."}</p>
+        <p className="home-diagnostic">{pack ? "Quick 10 is this site's free check. A result of 8 or more is a study recommendation, not an official passing score." : onHi ? "Quick 10 is free. Comprehensive Practice is 50 questions with no time limit. That count is this site's practice setting. The official written exam requires at least 80%." : onCa ? "A full practice exam is 45 questions and 60 minutes. Forty items are scored. Five are unscored. The official exam needs a scaled score of at least 70, which is not a percent." : "Answer 10 free questions and find out what to study next."}</p>
       </div>
       <section className="home-welcome home-welcome-actions" aria-label="Start">
         <div className="home-actions-row">

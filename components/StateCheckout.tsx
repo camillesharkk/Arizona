@@ -3,7 +3,7 @@ import { PRO_DURATION_NOTICE } from "@/lib/pricing/copy";
 import { formatUsd } from "@/lib/pricing/money";
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 
-export function StateCheckout({ source }: { source: "CA" | "HI" }) {
+export function StateCheckout({ source }: { source: "CA" | "HI" | "NY" | "PA" }) {
   return (
     <div className="card">
       <h2>Pro · {formatUsd(STANDARD_PRICE_CENTS)} · 60 days</h2>

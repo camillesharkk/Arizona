@@ -43,6 +43,8 @@ export type TokenRow = {
 };
 
 export type QuestionStat = {
+  questionVersion?: number;
+  revisionHistory?: Omit<QuestionStat, "revisionHistory">[];
   userId: string;
   questionId: string;
   topic: string;

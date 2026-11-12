@@ -186,24 +186,32 @@ export function shuffleQuestionOptions(
   seed: number,
   targetLetter?: Letter
 ): { question: Question; toOriginal: Record<Letter, Letter> } {
-  const texts: Record<Letter, string> = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
+  const active = (q.option_d ? LETTERS : (["A", "B", "C"] as const)) as readonly Letter[];
+  const texts: Record<Letter, string> = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d || "" };
   const fbs = q.option_feedback;
-  const origCorrect = q.correct_option;
+  const origCorrect = active.includes(q.correct_option) ? q.correct_option : active[0];
   const localSeed = mixSeed(seed + hashId(q.question_id));
+  const wanted = targetLetter && active.includes(targetLetter) ? targetLetter : active[localSeed % active.length];
 
   let origForDisplay: Record<Letter, Letter>;
-  if (targetLetter) {
+  if (active.length === 4 && wanted) {
     const others = LETTERS.filter((l) => l !== origCorrect);
-    const destOthers = LETTERS.filter((l) => l !== targetLetter);
-    const shuffledOthers = shuffle(others, localSeed + targetLetter.charCodeAt(0)) as Letter[];
+    const destOthers = LETTERS.filter((l) => l !== wanted);
+    const shuffledOthers = shuffle(others, localSeed + wanted.charCodeAt(0)) as Letter[];
     origForDisplay = { A: "A", B: "B", C: "C", D: "D" };
-    origForDisplay[targetLetter] = origCorrect;
+    origForDisplay[wanted] = origCorrect;
     destOthers.forEach((d, i) => {
       origForDisplay[d] = shuffledOthers[i];
     });
   } else {
-    const order = shuffle([...LETTERS], localSeed) as Letter[];
-    origForDisplay = { A: order[0], B: order[1], C: order[2], D: order[3] };
+    const others = active.filter((l) => l !== origCorrect);
+    const destOthers = active.filter((l) => l !== wanted);
+    const shuffledOthers = shuffle([...others], localSeed + wanted.charCodeAt(0)) as Letter[];
+    origForDisplay = { A: "A", B: "B", C: "C", D: "D" };
+    origForDisplay[wanted] = origCorrect;
+    destOthers.forEach((d, i) => {
+      origForDisplay[d] = shuffledOthers[i];
+    });
   }
 
   const toOriginal = origForDisplay;
@@ -236,7 +244,14 @@ export function presentExamQuestions(
   maps: Record<string, Record<Letter, Letter>>;
   targets: Letter[];
 } {
-  const targets = buildBalancedAnswerSequence(list.length, sessionSeed);
+  const fourChoice = list.every((item) => Boolean(item.option_d));
+  const targets = fourChoice
+    ? buildBalancedAnswerSequence(list.length, sessionSeed)
+    : list.map((item) => {
+        const letters = (item.option_d ? LETTERS : (["A", "B", "C"] as const)) as readonly Letter[];
+        const bag = Array.from({ length: list.length }, (_, index) => letters[index % letters.length]);
+        return bag[Math.abs(sessionSeed + item.question_id.length) % letters.length];
+      });
   const maps: Record<string, Record<Letter, Letter>> = {};
   const questions = list.map((item, i) => {
     const { question, toOriginal } = shuffleQuestionOptions(item, sessionSeed, targets[i]);

@@ -14,6 +14,8 @@ import { publishedHiQuestions } from "@/data/hi-questions";
 import { hiStudyLabel } from "@/lib/hi-topics";
 import { syncCaAttempts } from "@/lib/ca-sync";
 import { paths } from "@/lib/paths";
+import { packFor } from "@/lib/prep-pack";
+import type { StateCode } from "@/lib/types";
 
 type Card = StudyCardView & { id: string };
 type View = {
@@ -45,8 +47,9 @@ type View = {
   scheduled?: { questionId: string; prompt: string; nextReviewAt: string | null; wrongCount: number; saved: boolean; due: boolean }[];
 };
 
-export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA" | "HI" }) {
-  const site = stateCode === "HI" ? hiPaths : stateCode === "CA" ? caPaths : paths;
+export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }) {
+  const pack = packFor(stateCode);
+  const site = pack ? pack.paths : stateCode === "HI" ? hiPaths : stateCode === "CA" ? caPaths : paths;
   const [view, setView] = useState<View | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -60,7 +63,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
   const zone = useMemo(() => Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix", []);
   const visibleStart = useRef<number | null>(null);
 
-  const query = `timeZone=${encodeURIComponent(zone)}${stateCode === "CA" || stateCode === "HI" ? `&state=${stateCode}` : ""}`;
+  const query = `timeZone=${encodeURIComponent(zone)}&state=${stateCode}`;
 
   async function load() {
     const id = ++loadId.current;
@@ -85,7 +88,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: "AZ" | "CA"
         window.location.href = back;
         return;
       }
-      if ((stateCode === "CA" || stateCode === "HI") && data.state !== stateCode) throw new Error("state");
+      if (stateCode !== "AZ" && data.state !== stateCode) throw new Error("state");
       setView(data);
     } catch {
       if (id === loadId.current) setLoadError(true);

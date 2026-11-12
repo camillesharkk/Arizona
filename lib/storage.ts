@@ -1,4 +1,5 @@
 import { currentEmail } from "@/lib/account";
+import { currentQuestionVersion } from './question-revisions.ts';
 
 const PREFIX = "az-notary-";
 export const PROGRESS_EVENT = "az-notary-progress";
@@ -11,6 +12,8 @@ export type ScoreRecord = {
 };
 
 export type SavedProgress = {
+  questionVersions?: Record<string, number>;
+  revisionHistory?: { questionId: string; version: number; answered: boolean; wrong: boolean }[];
   wrongIds: string[];
   flaggedIds: string[];
   answeredIds: string[];
@@ -36,8 +39,8 @@ const empty: SavedProgress = {
   scores: [],
 };
 
-function progressKey(email = currentEmail(), state: "AZ" | "CA" | "HI" = "AZ") {
-  const prefix = state === "CA" ? "ca-notary-" : state === "HI" ? "hi-notary-" : PREFIX;
+function progressKey(email = currentEmail(), state: import("@/lib/types").StateCode = "AZ") {
+  const prefix = state === "CA" ? "ca-notary-" : state === "HI" ? "hi-notary-" : state === "AZ" ? PREFIX : `${state.toLowerCase()}-notary-`;
   return email ? `${prefix}progress:${email}` : `${prefix}progress`;
 }
 
@@ -46,18 +49,29 @@ function notifyProgress() {
   window.dispatchEvent(new Event(PROGRESS_EVENT));
 }
 
-export function loadProgress(state: "AZ" | "CA" | "HI" = "AZ"): SavedProgress {
+export function loadProgress(state: import("@/lib/types").StateCode = "AZ"): SavedProgress {
   if (typeof window === "undefined") return { ...empty };
   try {
     const raw = localStorage.getItem(progressKey(undefined, state));
     if (!raw) return { ...empty };
-    return { ...empty, ...JSON.parse(raw) };
+    const progress: SavedProgress = { ...empty, ...JSON.parse(raw) };
+    if (state === 'NY') {
+      const replaced = [...new Set([...progress.answeredIds, ...progress.wrongIds])].filter(id => (progress.questionVersions?.[id] ?? 1) < currentQuestionVersion(id));
+      if (replaced.length) {
+        progress.revisionHistory = [...(progress.revisionHistory ?? []), ...replaced.map(id => ({ questionId: id, version: progress.questionVersions?.[id] ?? 1, answered: progress.answeredIds.includes(id), wrong: progress.wrongIds.includes(id) }))];
+        progress.answeredIds = progress.answeredIds.filter(id => !replaced.includes(id));
+        progress.wrongIds = progress.wrongIds.filter(id => !replaced.includes(id));
+        progress.questionVersions = { ...progress.questionVersions, ...Object.fromEntries(replaced.map(id => [id, currentQuestionVersion(id)])) };
+        localStorage.setItem(progressKey(undefined, state), JSON.stringify(progress));
+      }
+    }
+    return progress;
   } catch {
     return { ...empty };
   }
 }
 
-export function saveProgress(patch: Partial<SavedProgress>, state: "AZ" | "CA" | "HI" = "AZ"): SavedProgress {
+export function saveProgress(patch: Partial<SavedProgress>, state: import("@/lib/types").StateCode = "AZ"): SavedProgress {
   const next = { ...loadProgress(state), ...patch };
   localStorage.setItem(progressKey(undefined, state), JSON.stringify(next));
   notifyProgress();
@@ -74,11 +88,11 @@ export function removeWrong(id: string) {
   saveProgress({ wrongIds: p.wrongIds.filter((x) => x !== id) });
 }
 
-export function recordAnswer(id: string, correct: boolean, state: "AZ" | "CA" | "HI" = "AZ") {
+export function recordAnswer(id: string, correct: boolean, state: import("@/lib/types").StateCode = "AZ") {
   const p = loadProgress(state);
   const answeredIds = p.answeredIds.includes(id) ? p.answeredIds : [...p.answeredIds, id];
   const wrongIds = correct ? p.wrongIds.filter((x) => x !== id) : p.wrongIds.includes(id) ? p.wrongIds : [...p.wrongIds, id];
-  saveProgress({ answeredIds, wrongIds, lastQuestionId: id }, state);
+  saveProgress({ answeredIds, wrongIds, lastQuestionId: id, questionVersions: { ...p.questionVersions, [id]: currentQuestionVersion(id) } }, state);
 }
 
 export function toggleFlag(id: string) {

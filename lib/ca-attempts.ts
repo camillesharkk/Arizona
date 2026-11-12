@@ -1,8 +1,9 @@
 import type { Letter } from "./sitting.ts";
 import { applyMistakeImport, applyReviewImport, type ReviewTopic, type TopicMiss } from "./ca-next.ts";
 import { loadProgress, saveProgress } from "./storage.ts";
+import { currentQuestionVersion } from './question-revisions.ts';
 
-export type TopicPracticeState = "CA" | "HI";
+export type TopicPracticeState = "CA" | "HI" | "NY" | "PA" | "LA";
 
 export type CaQuickAttempt = {
   id: string;
@@ -13,6 +14,7 @@ export type CaQuickAttempt = {
   finishedAt: string;
   seed: number;
   questionIds: string[];
+  questionVersions?: Record<string, number>;
   answers: Record<string, Letter>;
   originalAnswers: Record<string, Letter>;
   attemptIds: Record<string, string>;
@@ -33,7 +35,9 @@ export type CaStudyRecord = {
 
 function keys(state: TopicPracticeState) {
   if (state === "HI") return { attempts: "hi-notary-attempts", study: "hi-notary-study", local: "hi-notary-local-mistakes" };
-  return { attempts: "ca-notary-attempts", study: "ca-notary-study", local: "ca-notary-local-mistakes" };
+  if (state === "CA") return { attempts: "ca-notary-attempts", study: "ca-notary-study", local: "ca-notary-local-mistakes" };
+  const prefix = state.toLowerCase();
+  return { attempts: `${prefix}-notary-attempts`, study: `${prefix}-notary-study`, local: `${prefix}-notary-local-mistakes` };
 }
 
 function readList<T>(key: string): T[] {
@@ -67,16 +71,18 @@ export function listCaAttempts(owner: string, state: TopicPracticeState = "CA") 
 
 export function readCaAttempt(owner: string, id: string, state: TopicPracticeState = "CA") {
   if (!id) return null;
-  return listCaAttempts(owner, state).find((item) => item.id === id) || null;
+  const item = listCaAttempts(owner, state).find((item) => item.id === id);
+  if (state === 'NY' && item?.questionIds.some(id => (item.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
+  return item || null;
 }
 
 export function latestCaQuick(owner: string, state: TopicPracticeState = "CA") {
-  return listCaAttempts(owner, state)[0] || null;
+  return listCaAttempts(owner, state).find(item => state !== 'NY' || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id))) || null;
 }
 
 export function saveCaQuickAttempt(row: CaQuickAttempt) {
   if (typeof window === "undefined" || !row.id || !row.owner) return;
-  const state = row.state === "HI" ? "HI" : "CA";
+  const state: TopicPracticeState = row.state === "HI" || row.state === "NY" || row.state === "PA" || row.state === "LA" ? row.state : "CA";
   const all = readList<unknown>(keys(state).attempts).map((item) => asAttempt(item, state)).filter((item): item is CaQuickAttempt => Boolean(item));
   const index = all.findIndex((item) => item.id === row.id);
   if (index >= 0) {

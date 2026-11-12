@@ -169,3 +169,10 @@ export async function hiFullExamCount(userId: string) {
   const exams = await store.listExams(userId);
   return exams.filter((e) => e.mode === "hi-full").length;
 }
+
+export async function packFullExamCounts(userId: string) {
+  const store = await getStore();
+  const exams = await store.listExams(userId);
+  const count = (prefix: string) => exams.filter((exam) => exam.mode === prefix).length;
+  return { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full") };
+}

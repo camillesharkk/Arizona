@@ -1,6 +1,9 @@
+import type { StateCode } from "./types.ts";
+import { currentQuestionVersion } from './question-revisions.ts';
+
 export type Letter = "A" | "B" | "C" | "D";
 
-export type SittingState = "AZ" | "CA" | "HI";
+export type SittingState = StateCode;
 
 export type Sitting = {
   version: 1;
@@ -9,6 +12,7 @@ export type Sitting = {
   mode: string;
   seed: number;
   questionIds: string[];
+  questionVersions?: Record<string, number>;
   idx: number;
   answers: Record<string, Letter>;
   explainOpen: Record<string, boolean>;
@@ -28,7 +32,9 @@ const LETTERS = new Set(["A", "B", "C", "D"]);
 
 export function sittingKey(owner: string, mode: string, state: SittingState = "AZ") {
   if (state === "HI") return `hi-sitting:HI:${owner}:${mode}`;
-  return state === "AZ" ? `az-sitting:AZ:${owner}:${mode}` : `ca-sitting:CA:${owner}:${mode}`;
+  if (state === "CA") return `ca-sitting:CA:${owner}:${mode}`;
+  if (state === "AZ") return `az-sitting:AZ:${owner}:${mode}`;
+  return `${state.toLowerCase()}-sitting:${state}:${owner}:${mode}`;
 }
 
 export function remainingSeconds(startedAt: number, limitSeconds: number, now: number) {
@@ -54,6 +60,8 @@ export function parseSitting(raw: unknown, owner: string, mode: string, state: S
   const row = raw as Partial<Sitting>;
   if (row.version !== 1 || row.owner !== owner || row.state !== state || row.mode !== mode) return null;
   if (typeof row.seed !== "number" || !Array.isArray(row.questionIds) || !row.questionIds.length) return null;
+  // Leave the raw saved sitting intact, but never regrade old letters against replacement content.
+  if (state === 'NY' && row.questionIds.some(id => (row.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
   return {
     version: 1,
     owner,
@@ -61,6 +69,7 @@ export function parseSitting(raw: unknown, owner: string, mode: string, state: S
     mode,
     seed: row.seed,
     questionIds: stringList(row.questionIds),
+    questionVersions: row.questionVersions,
     idx: typeof row.idx === "number" && row.idx >= 0 ? Math.floor(row.idx) : 0,
     answers: letters(row.answers),
     explainOpen: row.explainOpen && typeof row.explainOpen === "object" ? (row.explainOpen as Record<string, boolean>) : {},
@@ -76,9 +85,16 @@ export function parseSitting(raw: unknown, owner: string, mode: string, state: S
   };
 }
 
-export function readSitting(storage: Pick<Storage, "getItem">, owner: string, mode: string, state: SittingState = "AZ"): Sitting | null {
+export function readSitting(storage: Pick<Storage, "getItem"> & Partial<Pick<Storage, "setItem">>, owner: string, mode: string, state: SittingState = "AZ"): Sitting | null {
   try {
-    return parseSitting(JSON.parse(storage.getItem(sittingKey(owner, mode, state)) || "null"), owner, mode, state);
+    const key = sittingKey(owner, mode, state);
+    const raw = storage.getItem(key);
+    const parsed = raw ? JSON.parse(raw) : null;
+    const result = parseSitting(parsed, owner, mode, state);
+    if (!result && parsed?.owner === owner && parsed?.state === 'NY' && parsed?.mode === mode && Array.isArray(parsed.questionIds) && parsed.questionIds.some((id: string) => (parsed.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) {
+      storage.setItem?.(`${key}:history:${parsed.examId || parsed.seed}:v${Math.max(...Object.values(parsed.questionVersions || { legacy: 1 }) as number[])}`, raw!);
+    }
+    return result;
   } catch {
     return null;
   }

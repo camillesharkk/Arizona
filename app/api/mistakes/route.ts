@@ -3,11 +3,13 @@ import { z } from "zod";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
+import { questionById } from "@/lib/prep-pack";
 import { savedReviewStat } from "@/lib/review-save";
 import { localDate } from "@/lib/calendar";
 import { compareMistakes, DEFAULT_STUDY_TIME_ZONE, isDue } from "@/lib/review-schedule";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
+import { productionStateBlocked } from "@/lib/state-release";
 import type { QuestionStat } from "@/lib/store/types";
 
 export async function POST(req: Request) {
@@ -23,9 +25,10 @@ export async function POST(req: Request) {
     })
     .safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
+  if (productionStateBlocked(body.data.questionId.split("-")[0].toUpperCase())) return NextResponse.json({ error: "State not available" }, { status: 404 });
   const store = await getStore();
   if (typeof body.data.saveForReview === "boolean") {
-    const question = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((item) => item.question_id === body.data.questionId);
+    const question = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(body.data.questionId)].find((item) => item && item.question_id === body.data.questionId);
     if (!question) return NextResponse.json({ error: "Not found" }, { status: 404 });
     const stat = await store.getStat(session.id, body.data.questionId);
     const planState = question.state;
@@ -65,10 +68,11 @@ export async function GET(req: Request) {
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const url = new URL(req.url);
   const requested = url.searchParams.get("state");
-  const state = requested === "CA" || requested === "HI" ? requested : "AZ";
+  if (productionStateBlocked(requested)) return NextResponse.json({ error: "State not available" }, { status: 404 });
+  const state = requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" ? requested : "AZ";
   const zone = url.searchParams.get("timeZone");
   const timeZone = zone && zone.length < 80 ? zone : DEFAULT_STUDY_TIME_ZONE;
-  const bank = state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : "arizona-notary-exam";
+  const bank = state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : state === "NY" ? "new-york-notary-exam" : state === "PA" ? "pennsylvania-notary-exam" : state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam";
   const store = await getStore();
   const stats = await store.listStats(session.id);
   const now = Date.now();

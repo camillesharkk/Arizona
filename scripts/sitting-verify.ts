@@ -22,6 +22,11 @@ const storage = {
 };
 
 const started = 1_000_000;
+const legacyNy = { version: 1, owner: 'ny-owner', state: 'NY', mode: 'quick', seed: 5, questionIds: ['ny-057'], answers: { 'ny-057': 'B' } };
+storage.setItem('ny-sitting:NY:ny-owner:quick', JSON.stringify(legacyNy));
+check('replaced NY sitting is not regraded', readSitting(storage, 'ny-owner', 'quick', 'NY') === null);
+check('old NY sitting archived before replacement', storage.getItem('ny-sitting:NY:ny-owner:quick:history:5:v1') === JSON.stringify(legacyNy));
+check('current NY sitting remains resumable', Boolean(parseSitting({ ...legacyNy, questionVersions: { 'ny-057': 2 } }, 'ny-owner', 'quick', 'NY')));
 check("timer keeps elapsed time", remainingSeconds(started, 3600, started + 125_000) === 3475);
 check("timer does not reset after a refresh", remainingSeconds(started, 3600, started + 125_000) === 3475);
 check("timer stops at zero", remainingSeconds(started, 60, started + 90_000) === 0);
