@@ -494,6 +494,7 @@ export async function markProUsed(
     featureCode: string;
     entitlements: ActiveEntitlement[];
     now?: Date;
+    eventId?: string;
   }
 ) {
   const now = opts.now ?? new Date();
@@ -504,7 +505,7 @@ export async function markProUsed(
     const orders = await repo.listOrders(opts.userId);
     const order = orders.find((o) => o.entitlementId === ent.id && o.status === "paid") ?? null;
     const inserted = await repo.insertUsage({
-      id: randomUUID(),
+      id: opts.eventId ? `${opts.eventId}:${ent.id}` : randomUUID(),
       userId: opts.userId,
       entitlementId: ent.id,
       orderId: order?.id ?? null,

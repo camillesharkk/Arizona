@@ -13,6 +13,7 @@ function checksFrom(raw: unknown): Record<string, CaCheck> {
     const row = value as Partial<CaCheck>;
     const wrongIds = Array.isArray(row.wrongIds) ? row.wrongIds.filter((item) => typeof item === "string") : [];
     out[id] = {
+      ...row,
       wrong: typeof row.wrong === "number" ? row.wrong : wrongIds.length,
       skipped: typeof row.skipped === "number" ? row.skipped : 0,
       wrongIds,

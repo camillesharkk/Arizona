@@ -1,6 +1,6 @@
 import type { StateArticle } from "@/lib/state-articles";
 
-const root = "/preview/new-york";
+const root = "/new-york";
 const checked = "Official sources checked November 12, 2026.";
 const bulletin = "https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule";
 const nyc = "https://dos.ny.gov/new-york-city-november-december-2026-notary-public-examination-instructions-and-schedule";

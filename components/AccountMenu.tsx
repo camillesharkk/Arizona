@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
+import { packFor } from "@/lib/prep-pack";
 import { paths } from "@/lib/paths";
 import type { LiveCode } from "@/lib/site-state";
 import { ProAccessNote } from "@/components/ProAccessNote";
@@ -28,8 +29,10 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
   const rootRef = useRef<HTMLDivElement>(null);
   const menuId = "account-menu-dropdown";
   const isPro = me.plan === "pro";
-  const pricing = stateCode === "HI" ? hiPaths.pricing : stateCode === "CA" ? caPaths.pricing : paths.pricing;
-  const mistakes = stateCode === "HI" ? hiPaths.mistakes : stateCode === "CA" ? caPaths.mistakes : paths.mistakes;
+  const pack = packFor(stateCode);
+  const settingsHref = `${paths.account}${stateCode && stateCode !== "AZ" ? `?state=${stateCode}` : ""}#study-settings`;
+  const pricing = pack ? pack.paths.pricing : stateCode === "HI" ? hiPaths.pricing : stateCode === "CA" ? caPaths.pricing : paths.pricing;
+  const mistakes = pack ? pack.paths.mistakes : stateCode === "HI" ? hiPaths.mistakes : stateCode === "CA" ? caPaths.mistakes : paths.mistakes;
   const pricingLabel = stateCode === "HI" ? "Hawaii access" : stateCode === "CA" ? "California access" : isPro ? "Pro Access" : "Upgrade to Pro";
   const initial = avatarInitial(me.name, me.email);
 
@@ -89,10 +92,10 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
           <Link role="menuitem" href={stateCode ? mistakes : "/"} onClick={() => setOpen(false)}>
             Wrong Answers
           </Link>
-          <Link role="menuitem" href={`${paths.account}#study-settings`} onClick={() => setOpen(false)}>
+          <Link role="menuitem" href={settingsHref} onClick={() => setOpen(false)}>
             Study Settings
           </Link>
-          <Link role="menuitem" href={paths.account} onClick={() => setOpen(false)}>
+          <Link role="menuitem" href={stateCode && stateCode !== "AZ" ? `${paths.account}?state=${stateCode}` : paths.account} onClick={() => setOpen(false)}>
             Account Settings
           </Link>
           <Link role="menuitem" href={paths.referrals} onClick={() => setOpen(false)}>

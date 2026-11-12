@@ -83,9 +83,11 @@ try {
   assert.equal(data.used, 1, 'Retain the existing delivered-answer quota rule');
   process.env.VERCEL_ENV = 'production';
   const calls = providerCalls;
-  assert.equal((await post(payload(free))).status, 404);
-  assert.equal(providerCalls, calls);
-  console.log('NY Tutor boundary checks passed with simulated provider responses, shuffled choices, current entitlements, failure attribution and production denial.');
+  assert.equal((await post(payload(free))).status, 200);
+  assert.equal(providerCalls, calls + 1);
+  assert.equal((await post({ ...payload(free), questionId: 'pa-001', state: 'PA' })).status, 404);
+  assert.equal(providerCalls, calls + 1);
+  console.log('NY Tutor boundary checks passed with simulated provider responses, shuffled choices, current entitlements, failure attribution, NY production access and PA denial.');
 } finally {
   for (const [key, value] of [['AI_PROVIDER', before.provider], ['DEEPSEEK_API_KEY', before.key], ['VERCEL_ENV', before.vercel]]) {
     if (value === undefined) delete process.env[key]; else process.env[key] = value;

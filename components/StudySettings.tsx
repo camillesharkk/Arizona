@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useResolvedState, useSavedState } from "@/components/SavedState";
 
 type Settings = {
   mode: "recommended" | "custom";
@@ -13,6 +15,7 @@ type Settings = {
 };
 
 type Payload = {
+  stateCode?: string;
   settings: Settings;
   recommended: { newCards: number; newQuestions: number; reviews: number };
   projectedDate: string | null;
@@ -30,32 +33,32 @@ export function StudySettings() {
   const [payload, setPayload] = useState<Payload | null>(null);
   const [message, setMessage] = useState("");
 
-  function stateQuery() {
-    const requested = new URLSearchParams(window.location.search).get("state");
-    return requested === "CA" || requested === "HI" ? requested : "AZ";
-  }
-
-  async function load() {
-    const data = await fetch(`/api/study-settings/?timeZone=${encodeURIComponent(zone)}&state=${stateQuery()}`).then((response) => response.json());
-    if (!data.error) setPayload(data);
-  }
+  const savedState = useResolvedState(useSavedState());
+  const requested = useSearchParams().get("state");
+  const state = requested === "AZ" || requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" ? requested : savedState || "AZ";
 
   useEffect(() => {
-    load();
-  }, [zone]);
+    let cancelled = false;
+    setMessage("");
+    fetch(`/api/study-settings/?timeZone=${encodeURIComponent(zone)}&state=${state}`)
+      .then(response => response.json())
+      .then(data => { if (!cancelled && !data.error) setPayload({ ...data, stateCode: state }); })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, [zone, state]);
 
-  if (!payload) return <section id="study-settings" className="card"><h2>Study Settings</h2><p className="notice">Sign in to save a study plan.</p></section>;
+  if (!payload || payload.stateCode !== state) return <section id="study-settings" className="card"><h2>Study Settings</h2><p className="notice">Sign in to save a study plan.</p></section>;
   const settings = payload.settings;
 
   async function save(next: Partial<Settings> & { restore?: boolean }) {
-    const data = await fetch(`/api/study-settings/?state=${stateQuery()}`, {
+    const data = await fetch(`/api/study-settings/?state=${state}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...settings, ...next, timeZone: settings.timeZone || zone }),
     }).then((response) => response.json());
     if (data.error) setMessage(data.error);
     else {
-      setPayload(data);
+      setPayload({ ...data, stateCode: state });
       setMessage("Saved");
     }
   }

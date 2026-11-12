@@ -1,3 +1,4 @@
+import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
 import { StateCheckout } from "@/components/StateCheckout";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
@@ -5,7 +6,7 @@ import { prepPacks, type PrepCode } from "@/lib/prep-pack";
 const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA" };
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
-  if (process.env.STATE_PREVIEW !== "1") notFound();
+  if (!prepPageEnabled((await params).state)) notFound();
   const code = codes[(await params).state];
   if (!code || code === "LA") notFound();
   const pack = prepPacks[code];

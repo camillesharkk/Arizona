@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
 import { PracticeLaunch } from "@/components/PracticeLaunch";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
@@ -9,14 +10,14 @@ const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
-  if (process.env.STATE_PREVIEW !== "1") notFound();
+  if (!prepPageEnabled((await params).state)) notFound();
   const code = codes[(await params).state];
   if (!code) notFound();
   const pack = prepPacks[code];
   const counts = pack.counts();
   return (
     <main className="wrap hero">
-      <p className="kicker">Practice preview</p>
+      {!pack.available ? <p className="kicker">Practice preview</p> : null}
       <h1>{pack.name} practice</h1>
       <p>
         <strong>{counts.published} published questions. {counts.free} are free and {counts.pro} are Pro.</strong> {pack.fullDetail}

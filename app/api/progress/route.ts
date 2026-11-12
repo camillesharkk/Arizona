@@ -39,7 +39,10 @@ export async function POST(req: Request) {
     }).safeParse(body);
     if (!full.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
     try {
-      return NextResponse.json(await saveNyFullSubmission(await getStore(), session.id, full.data));
+      const { proUsage, ...result } = await saveNyFullSubmission(await getStore(), session.id, full.data);
+      // Commerce uses its existing client after the learning transaction has committed.
+      if (proUsage) await recordProUsage(session.id, proUsage.featureCode, proUsage);
+      return NextResponse.json(result);
     } catch (error) {
       const code = error instanceof Error ? error.message : "";
       if (code === "full_trial_used") return NextResponse.json({ error: "The free full practice for this state is already used" }, { status: 402 });

@@ -861,16 +861,16 @@ export function ExamRunner({
           ) : (
             <div className="result-next">
               {weak.length > 0 ? (
-                <Link className="btn btn-primary" href={`${paths.practice}?mode=weak`}>
+                <Link className="btn btn-primary" href={`${site.practice}?mode=weak`}>
                   Fix My Weak Areas
                 </Link>
               ) : (
-                <Link className="btn btn-primary" href={paths.questions}>
+                <Link className="btn btn-primary" href={site.questions}>
                   Continue Practice
                 </Link>
               )}
-              <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
-              <Link className="btn btn-ghost" href={paths.study}>
+              <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" href={site.mistakes} stateCode={stateCode} />
+              <Link className="btn btn-ghost" href={site.study}>
                 Review Study Guide
               </Link>
             </div>
@@ -885,7 +885,7 @@ export function ExamRunner({
           ) : (
             <p className="notice">
               Free practice uses the free question pool. Pro opens the rest of the bank and more full exams.{" "}
-              <Link href={paths.pricing} data-upgrade-source="exam_results">View Pro</Link>
+              <Link href={site.pricing} data-upgrade-source="exam_results">View Pro</Link>
             </p>
           )}
         </div>

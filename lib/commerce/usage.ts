@@ -3,6 +3,7 @@ import { getStore } from "@/lib/store";
 import { hasArizonaPro, servingEntitlements } from "@/lib/entitlements";
 import { getCommerceRepo } from "./index.ts";
 import { markProUsed } from "./service.ts";
+import { isSiteProProduct } from "../pro-products.ts";
 
 export const PRO_USAGE_FEATURES = [
   "pro_question",
@@ -15,17 +16,26 @@ export const PRO_USAGE_FEATURES = [
 
 export type ProUsageFeature = (typeof PRO_USAGE_FEATURES)[number];
 
-export async function recordProUsage(userId: string, featureCode: ProUsageFeature) {
-  const entitled = await hasArizonaPro(userId);
+export type ProUsageContext = { eventId: string; at: string; entitlementIds: string[] };
+
+export async function recordProUsage(userId: string, featureCode: ProUsageFeature, event?: ProUsageContext) {
+  const entitled = event ? true : await hasArizonaPro(userId);
   if (!entitled) return { recorded: false, reason: "not_entitled" as const };
+  const now = event ? new Date(event.at) : new Date();
+  if (!Number.isFinite(now.getTime())) throw new Error("Invalid Pro usage time");
+  const allowed = event ? new Set(event.entitlementIds) : null;
   const store = await getStore();
-  const ents = await store.listActiveArizonaEntitlements(userId);
-  const serving = servingEntitlements(ents);
+  const ents = (await store.listEntitlements(userId))
+    .filter(entitlement => isSiteProProduct(entitlement.productCode) &&
+      (allowed ? allowed.has(entitlement.id) : entitlement.status === "active"));
+  const serving = servingEntitlements(ents, now);
   if (!serving.length) return { recorded: false, reason: "no_active_entitlement" as const };
   const repo = await getCommerceRepo();
   return markProUsed(repo, {
     userId,
     featureCode,
+    now,
+    eventId: event?.eventId,
     entitlements: serving.map((e) => ({ id: e.id, startsAt: e.startsAt, expiresAt: e.expiresAt })),
   });
 }

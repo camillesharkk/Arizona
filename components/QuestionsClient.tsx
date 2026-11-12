@@ -33,13 +33,14 @@ export function QuestionsClient({
   questions?: Question[];
   topicChoices?: { id: string; short: string; label: string }[];
 }) {
-  const sitePaths = stateCode === "HI" ? hiPaths : stateCode === "CA" ? caPaths : paths;
-  const topicList = topicChoices ?? topics;
+  const pack = packFor(stateCode);
+  const sitePaths = pack ? pack.paths : stateCode === "HI" ? hiPaths : stateCode === "CA" ? caPaths : paths;
+  const topicList = topicChoices ?? pack?.topics.map(item => ({ ...item, short: item.label })) ?? topics;
   const [filter, setFilter] = useState<string>(topic ?? "all");
   const [difficulty, setDifficulty] = useState<"all" | Difficulty>("all");
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, "A" | "B" | "C" | "D">>({});
-  const [progress, setProgress] = useState(() => loadProgress());
+  const [progress, setProgress] = useState(() => loadProgress(stateCode));
   const [resumed, setResumed] = useState(false);
   const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -114,7 +115,7 @@ export function QuestionsClient({
   }, [modeKey, bootTry, stateCode]);
 
   const rawPool = useMemo(() => {
-    let list = (questions ?? publishedQuestions()).filter((q) => q.is_free || isPro);
+    let list = (questions ?? pack?.questions() ?? publishedQuestions()).filter((q) => q.is_free || isPro);
     if (topic) list = list.filter((q) => q.study_topic === topic || q.topic === topic);
     else if (filter !== "all" && filter !== "wrong" && filter !== "unanswered") {
       list = list.filter((q) => q.study_topic === filter || q.topic === filter);
@@ -123,7 +124,7 @@ export function QuestionsClient({
     if (filter === "unanswered") list = list.filter((q) => !progress.answeredIds.includes(q.question_id));
     if (difficulty !== "all") list = list.filter((q) => q.difficulty === difficulty);
     return list;
-  }, [questions, filter, difficulty, topic, progress.wrongIds, progress.answeredIds, isPro]);
+  }, [questions, pack, filter, difficulty, topic, progress.wrongIds, progress.answeredIds, isPro]);
 
   const pool = useMemo(() => {
     const maps: Record<string, Record<Letter, Letter>> = {};
@@ -248,7 +249,7 @@ export function QuestionsClient({
   const selectedTopic: string | null =
     topic ?? (filter !== "all" && filter !== "wrong" && filter !== "unanswered" ? filter : null);
   const topicQuestions = selectedTopic
-    ? (questions ?? publishedQuestions()).filter((item) => (item.study_topic === selectedTopic || item.topic === selectedTopic) && isActiveQuestion(item))
+    ? (questions ?? pack?.questions() ?? publishedQuestions()).filter((item) => (item.study_topic === selectedTopic || item.topic === selectedTopic) && isActiveQuestion(item))
     : [];
   const topicFreeCount = topicQuestions.filter((item) => item.is_free).length;
   const proOnlyTopic = Boolean(selectedTopic && !isPro && topicFreeCount === 0 && topicQuestions.length > 0);
@@ -331,7 +332,7 @@ export function QuestionsClient({
           <p>{correctSession} of {active.length} correct in this sitting.</p>
           <div className="row">
             <Link className="btn btn-primary" href={sitePaths.study}>Review the study guide</Link>
-            <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" />
+            <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" href={sitePaths.mistakes} stateCode={stateCode} />
           </div>
         </div>
       ) : q ? (
@@ -393,8 +394,8 @@ export function QuestionsClient({
                 choiceLock.current = q.question_id;
                 recordedIds.current = [...recordedIds.current, q.question_id];
                 setAnswers((a) => ({ ...a, [q.question_id]: l }));
-                recordAnswer(q.question_id, l === q.correct_option);
-                saveProgress({ lastQuestionId: q.question_id });
+                recordAnswer(q.question_id, l === q.correct_option, stateCode);
+                saveProgress({ lastQuestionId: q.question_id }, stateCode);
                 pendingSaves.current.push(fetch("/api/progress/", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },

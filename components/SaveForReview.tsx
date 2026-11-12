@@ -33,7 +33,7 @@ function rememberServerSaves(rows: { questionId?: string; savedForReview?: boole
 
 function loadSavedReviews() {
   if (!savedKnown) {
-    savedKnown = Promise.all(["/api/mistakes/", "/api/mistakes/?state=CA"].map((url) => fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => null)))
+    savedKnown = Promise.all(["/api/mistakes/", "/api/mistakes/?state=CA", "/api/mistakes/?state=NY"].map((url) => fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => null)))
       .then((payloads) => {
         for (const data of payloads) {
           const rows = Array.isArray(data?.mistakes) ? data.mistakes : [];

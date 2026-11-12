@@ -1,3 +1,4 @@
+import { prepPageEnabled } from "@/lib/state-release";
 import { notFound, redirect } from "next/navigation";
 import { DailyStudyClient } from "@/components/DailyStudyClient";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
@@ -6,7 +7,7 @@ import { getSession } from "@/lib/session";
 const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA" };
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
-  if (process.env.STATE_PREVIEW !== "1") notFound();
+  if (!prepPageEnabled((await params).state)) notFound();
   const slug = (await params).state;
   const code = codes[slug];
   if (!code) notFound();

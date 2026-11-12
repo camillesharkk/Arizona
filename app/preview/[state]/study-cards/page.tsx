@@ -1,3 +1,4 @@
+import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
 import { StudyCardsClient } from "@/components/StudyCardsClient";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
@@ -6,7 +7,7 @@ import type { PublicStudyCard } from "@/lib/study-cards";
 const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA" };
 
 export default async function Page({ params, searchParams }: { params: Promise<{ state: string }>; searchParams: Promise<{ topic?: string }> }) {
-  if (process.env.STATE_PREVIEW !== "1") notFound();
+  if (!prepPageEnabled((await params).state)) notFound();
   const code = codes[(await params).state];
   if (!code) notFound();
   const pack = prepPacks[code];

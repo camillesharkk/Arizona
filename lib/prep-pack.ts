@@ -2,6 +2,7 @@ import { publishedLaQuestions } from "@/data/la-content";
 import { nyCards, nyQuestionCounts, nyTopics, pickNyFullExam, publishedNyQuestions } from "@/data/ny-content";
 import { paCards, paQuestionCounts, paTopics, pickPaFullExam, pickPaQuickExam, publishedPaQuestions } from "@/data/pa-content";
 import { shuffle } from "@/lib/answer-sequence";
+import { nyPaths } from "./ny-site.ts";
 import { paths as sharedPaths } from "@/lib/paths";
 import type { Question, StateCode } from "@/lib/types";
 
@@ -48,8 +49,8 @@ export type PrepPack = {
   code: PrepCode;
   name: string;
   slug: string;
-  /** Public launch is separate from this preview. */
-  available: false;
+  /** Whether this pack has a public learning route. */
+  available: boolean;
   paths: PrepPaths;
   topics: { id: string; label: string }[];
   questions: () => Question[];
@@ -117,8 +118,8 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     code: "NY",
     name: "New York",
     slug: "new-york",
-    available: false,
-    paths: paths("new-york"),
+    available: true,
+    paths: nyPaths,
     topics: nyTopics,
     questions: publishedNyQuestions,
     counts: nyQuestionCounts,

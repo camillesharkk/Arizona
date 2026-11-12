@@ -238,7 +238,7 @@ export function DashboardClient() {
     byTopic.set(s.topic, cur);
   });
   const ready = readinessScore(stats, exams);
-  const showAsPro = state === "AZ" && isAzPro;
+  const showAsPro = (state === "AZ" || state === "NY") && isAzPro;
   const hideFreePlan = activating && !showAsPro;
   const weakPlan = [...byTopic.entries()]
     .map(([id, v]) => ({ id, acc: v.r + v.w ? Math.round((v.r / (v.r + v.w)) * 100) : 100, missed: v.w }))
@@ -282,7 +282,7 @@ export function DashboardClient() {
           <p>Focus next on:</p>
           {weakPlan.map((w) => (
             <p key={w.id}>
-              {topicLabel(w.id as TopicId)} ({w.acc}% accuracy)
+              {packFor(state)?.topics.find(topic => topic.id === w.id)?.label || topicLabel(w.id as TopicId)} ({w.acc}% accuracy)
             </p>
           ))}
           <Link className="btn btn-primary" href={`${site.practice}?mode=weak`}>
@@ -294,7 +294,7 @@ export function DashboardClient() {
         <h2>Topic accuracy</h2>
         {[...byTopic.entries()].map(([id, v]) => (
           <p key={id}>
-            {topicLabel(id as TopicId)}: {v.r + v.w ? Math.round((v.r / (v.r + v.w)) * 100) : 0}% ({v.w} missed)
+            {packFor(state)?.topics.find(topic => topic.id === id)?.label || topicLabel(id as TopicId)}: {v.r + v.w ? Math.round((v.r / (v.r + v.w)) * 100) : 0}% ({v.w} missed)
           </p>
         ))}
       </div>

@@ -3,11 +3,11 @@ import type { StateArticle } from "@/lib/state-articles";
 const exam = "https://dos.ny.gov/notary-public";
 const faq = "https://dos.ny.gov/notary-public-frequently-asked-questions";
 const law = "https://dos.ny.gov/system/files/documents/2026/09/notary-public-license-law_09.2026.pdf";
-const practice = "/preview/new-york/practice/?mode=full";
-const quick = "/preview/new-york/practice/?mode=quick";
+const practice = "/new-york/practice/?mode=full";
+const quick = "/new-york/practice/?mode=quick";
 
 function item(slug: string, article: Omit<StateArticle, "state" | "slug" | "path" | "updated">): StateArticle {
-  return { ...article, state: "NY", slug, path: `/preview/new-york/guides/${slug}/`, updated: "2026-11-08" };
+  return { ...article, state: "NY", slug, path: `/new-york/guides/${slug}/`, updated: "2026-11-08" };
 }
 
 export const nyArticles: StateArticle[] = [
@@ -27,7 +27,7 @@ export const nyArticles: StateArticle[] = [
       { heading: "How this site's practice differs", body: "The 40-question, 60-minute practice on this site is a study setting. It is not the official form. A count of correct answers is not the Department's pass or fail letter. A pass slip from the real exam is valid for two years." },
     ],
     endCta: { href: practice, label: "Open the 40-question practice", placement: "end", targetMode: "full" },
-    related: [{ href: "/preview/new-york/exam-guide/", label: "Exam guide" }, { href: "/preview/new-york/guides/who-skips-the-exam/", label: "Who skips the exam" }],
+    related: [{ href: "/new-york/exam-guide/", label: "Exam guide" }, { href: "/new-york/guides/who-skips-the-exam/", label: "Who skips the exam" }],
   }),
   item("who-skips-the-exam", {
     id: "ny-skip-exam",
@@ -39,13 +39,13 @@ export const nyArticles: StateArticle[] = [
     kicker: "Appointment",
     lede: "A person who is currently a member of the New York State Bar may be appointed without the exam. So may a Unified Court System court clerk who was appointed after a civil-service promotional exam in the court-clerk series. Neither exemption removes the application fee.",
     checked: "Department of State FAQ and Executive Law §130, September 2026 License Law booklet, checked November 8, 2026.",
-    ledeCta: { href: "/preview/new-york/questions/", label: "Review the appointment questions", placement: "lede", targetMode: "topic" },
+    ledeCta: { href: "/new-york/questions/", label: "Review the appointment questions", placement: "lede", targetMode: "topic" },
     sections: [
       { heading: "Who does not get the exemption", body: "A lawyer admitted only in another state is not a current member of the New York bar. Keeping an office in New York does not change that. The adjoining-state rule lets a New York lawyer live next door and keep a New York law office. It does not let a New Jersey-only lawyer skip the exam." },
       { heading: "The fee that stays", body: "Executive Law §131 sets a nonrefundable $60 application fee for appointment and for reappointment. No further fee is charged to issue the commission. The $15 exam fee is a separate charge for people who sit for the exam." },
     ],
     endCta: { href: quick, label: "Try 10 free questions", placement: "end", targetMode: "quick" },
-    related: [{ href: "/preview/new-york/guides/fees/", label: "Fees" }],
+    related: [{ href: "/new-york/guides/fees/", label: "Fees" }],
   }),
   item("fees", {
     id: "ny-fees",
@@ -57,13 +57,13 @@ export const nyArticles: StateArticle[] = [
     kicker: "Fees",
     lede: "Executive Law §136 allows $2 for an oath or affirmation and $2 for each person who acknowledges a written instrument. The Department FAQ allows up to $25 for each electronic notarial act and $2 for a certificate of authenticity. A protest under §135 is capped at 75 cents, plus 10 cents for each notice, up to five.",
     checked: "Executive Law §§135 and 136, the September 2026 booklet, and the Department FAQ, checked November 8, 2026.",
-    ledeCta: { href: "/preview/new-york/practice/?mode=practice&area=fees", label: "Practice the fee questions", placement: "lede", targetMode: "topic" },
+    ledeCta: { href: "/new-york/practice/?mode=practice&area=fees", label: "Practice the fee questions", placement: "lede", targetMode: "topic" },
     sections: [
       { heading: "Charges that are not the $2 fee", body: "The commission application is $60. A mid-term name or address change is $10, except a name change that results from a change in marital status. A duplicate identification card is $10. The Secretary's certificate of official character is $1. A county filing of that certificate is $10, and a sealed county certificate is $5. Authenticating the notary's signature is $3." },
       { heading: "When the fee is zero", body: "Public Officers Law §69 allows no fee for the oath of office of a legislator, military officer, election inspector, poll clerk, or other public officer or employee. County Law §534 requires a staff notary at the county clerk's office to serve the public free of charge. Charging more than a permitted fee can bring treble damages under Public Officers Law §67." },
     ],
     endCta: { href: practice, label: "Take the 40-question practice", placement: "end", targetMode: "full" },
-    related: [{ href: "/preview/new-york/guides/journal/", label: "Journal" }],
+    related: [{ href: "/new-york/guides/journal/", label: "Journal" }],
   }),
   item("journal", {
     id: "ny-journal",
@@ -75,13 +75,13 @@ export const nyArticles: StateArticle[] = [
     kicker: "Journal",
     lede: "Beginning January 25, 2023, every New York notary, including a notary who only meets signers in person, keeps a journal of all notarial acts for 10 years. The entry includes the type of identification.",
     checked: "Department of State FAQ, checked November 8, 2026.",
-    ledeCta: { href: "/preview/new-york/study-cards/", label: "Open the journal card", placement: "lede", targetMode: "guide" },
+    ledeCta: { href: "/new-york/study-cards/", label: "Open the journal card", placement: "lede", targetMode: "guide" },
     sections: [
       { heading: "The traditional entry", body: "The FAQ requires the date, approximate time, and type of act; the name and address of each person; the number and type of services; the type of credential; and the verification procedure. If two witnesses identify the signer, their names and the credentials they used are included." },
       { heading: "The electronic additions", body: "An electronic journal also identifies the communication technology, certification authority, and verification providers, and it includes the audio-visual recording. The recording and a backup are kept at least 10 years. The county clerk's file of the commission is not the journal." },
     ],
     endCta: { href: quick, label: "Check 10 questions", placement: "end", targetMode: "quick" },
-    related: [{ href: "/preview/new-york/guides/electronic-notarization/", label: "Electronic notarization" }],
+    related: [{ href: "/new-york/guides/electronic-notarization/", label: "Electronic notarization" }],
   }),
   item("electronic-notarization", {
     id: "ny-electronic",
@@ -93,13 +93,13 @@ export const nyArticles: StateArticle[] = [
     kicker: "Electronic notarization",
     lede: "An electronic notarial act is performed by a notary who is physically in New York. The notary registers that capability with the Secretary of State before the first electronic act. Remote ink notarization is not permitted after January 31, 2023.",
     checked: "Executive Law §135-c in the September 2026 booklet, and the Department FAQ, checked November 8, 2026.",
-    ledeCta: { href: "/preview/new-york/practice/?mode=practice&area=electronic", label: "Practice the electronic questions", placement: "lede", targetMode: "topic" },
+    ledeCta: { href: "/new-york/practice/?mode=practice&area=electronic", label: "Practice the electronic questions", placement: "lede", targetMode: "topic" },
     sections: [
       { heading: "What the certificate and the signature must do", body: "The certificate says the person appeared through communication technology. The electronic signature is unique to the notary, independently verifiable, under the notary's sole control, attached to the record, and linked so a later change can be detected. An email address change is reported within five days." },
       { heading: "What an office cannot demand", body: "A notary or a business in New York may not require that every notarization be electronic. The notary may refuse an electronic act when not satisfied that the principal is competent or that the signature is knowing and voluntary. That refusal does not rewrite the booklet's rule about a proper requested oath at the desk." },
     ],
     endCta: { href: practice, label: "Use these facts in the 40-question practice", placement: "end", targetMode: "full" },
-    related: [{ href: "/preview/new-york/guides/journal/", label: "Journal" }],
+    related: [{ href: "/new-york/guides/journal/", label: "Journal" }],
   }),
   item("advertising", {
     id: "ny-advertising",
@@ -111,13 +111,13 @@ export const nyArticles: StateArticle[] = [
     kicker: "Advertising",
     lede: "Executive Law §135-b does not apply to New York attorneys. Any other notary who advertises notary services in a language other than English must post, in that language, a notice that the notary is not an attorney and may not give legal advice or accept fees for legal advice.",
     checked: "Executive Law §135-b, September 2026 booklet, checked November 8, 2026.",
-    ledeCta: { href: "/preview/new-york/questions/", label: "See the advertising questions", placement: "lede", targetMode: "topic" },
+    ledeCta: { href: "/new-york/questions/", label: "See the advertising questions", placement: "lede", targetMode: "topic" },
     sections: [
       { heading: "What counts as an advertisement", body: "The statute includes business cards, brochures, and notices, in print or electronic form, when they promote notary services for profit. Words in another language that mean the notary is an attorney are prohibited." },
       { heading: "What a violation can cost", body: "The civil penalty can reach $1,000. The Secretary may suspend on a second violation and remove on a third, after the notary is served with the charges and given a chance to be heard." },
     ],
     endCta: { href: quick, label: "Start with 10 questions", placement: "end", targetMode: "quick" },
-    related: [{ href: "/preview/new-york/guides/who-skips-the-exam/", label: "Attorney exemption" }],
+    related: [{ href: "/new-york/guides/who-skips-the-exam/", label: "Attorney exemption" }],
   }),
   item("disqualifications", {
     id: "ny-disqualifications",
@@ -129,13 +129,13 @@ export const nyArticles: StateArticle[] = [
     kicker: "Conflicts",
     lede: "Holding a commission does not mean the notary can notarize every document. The license-law booklet says a notary who is a party, or directly and pecuniarily interested, is not capable of acting in that case. A grantee cannot take the grantor's acknowledgment. A notary cannot take the notary's own acknowledgment.",
     checked: "September 2026 License Law booklet, disqualifications, and Executive Law §138, checked November 8, 2026.",
-    ledeCta: { href: "/preview/new-york/study-cards/", label: "Compare the conflict cards", placement: "lede", targetMode: "guide" },
+    ledeCta: { href: "/new-york/study-cards/", label: "Compare the conflict cards", placement: "lede", targetMode: "guide" },
     sections: [
       { heading: "The corporation is a different case", body: "Section 138 allows a notary who owns stock, or who is a director, officer, or employee, to take another person's acknowledgment on the company's instrument. The notary still cannot be the person executing that instrument, and cannot protest the company's negotiable instrument if the notary is a party or has a financial interest in it." },
       { heading: "Interest is not cured by a waived fee", body: "The booklet does not say that charging nothing removes the interest. Personal appearance of the signer also does not remove it. The signer can come back with a notary who is outside the transaction." },
     ],
     endCta: { href: practice, label: "Practice the conflict questions", placement: "end", targetMode: "full" },
-    related: [{ href: "/preview/new-york/guides/fees/", label: "Fees" }],
+    related: [{ href: "/new-york/guides/fees/", label: "Fees" }],
   }),
   item("commission-term", {
     id: "ny-term",
@@ -147,13 +147,13 @@ export const nyArticles: StateArticle[] = [
     kicker: "Term",
     lede: "Executive Law §130 sets the appointment at four years. A New York resident who moves out of the state but keeps an office or place of business in New York does not vacate the office of notary. A resident who moves and keeps no New York office does vacate it. A nonresident who loses the New York office also vacates it.",
     checked: "Executive Law §130, September 2026 booklet, checked November 8, 2026.",
-    ledeCta: { href: "/preview/new-york/questions/", label: "Practice the residence questions", placement: "lede", targetMode: "topic" },
+    ledeCta: { href: "/new-york/questions/", label: "Practice the residence questions", placement: "lede", targetMode: "topic" },
     sections: [
       { heading: "Reappointment", body: "Reappointment is another $60 application and another oath. The Secretary may waive the qualifying requirements if the application arrives before expiration or within six months afterward. That waiver is discretionary, and a longer military rule is stated separately in §130." },
       { heading: "Where the signature lives", body: "The Secretary sends the commission, the oath, and the official signature to the county clerk by the 10th day of the following month, with $20 of the application fee. The public can compare a signature at that office." },
     ],
     endCta: { href: quick, label: "Check the residence rules", placement: "end", targetMode: "quick" },
-    related: [{ href: "/preview/new-york/guides/fees/", label: "Fees" }],
+    related: [{ href: "/new-york/guides/fees/", label: "Fees" }],
   }),
   item("acknowledgment-or-oath", {
     id: "ny-acts",
@@ -165,13 +165,13 @@ export const nyArticles: StateArticle[] = [
     kicker: "Notarial acts",
     lede: "An acknowledgment, under Real Property Law §303, is not taken unless the officer knows or has satisfactory evidence that the person is the one described in the instrument and the one who executed it. An oath or affirmation is a different act, priced separately at $2 when a fee is allowed. A notary has no authority to solemnize a marriage or to acknowledge a written contract of marriage.",
     checked: "Real Property Law §§302, 303, and 309-a, Domestic Relations Law §11, and Executive Law §136, checked November 8, 2026.",
-    ledeCta: { href: "/preview/new-york/study-guide/", label: "Read the act comparison", placement: "lede", targetMode: "guide" },
+    ledeCta: { href: "/new-york/study-guide/", label: "Read the act comparison", placement: "lede", targetMode: "guide" },
     sections: [
       { heading: "The certificate", body: "For New York real property, an in-state certificate must conform substantially to the form in §309-a. An out-of-state certificate may conform substantially to §309-b. A married person acknowledges in the same way as an unmarried person. The notary endorses the certificate on the instrument or attaches it." },
       { heading: "A will is not an acknowledgment form", body: "The booklet warns that an acknowledgment is not a substitute for the attestation clause of a will, and that drafting a will for compensation without a law license is the practice of law." },
     ],
     endCta: { href: practice, label: "Practice the act questions", placement: "end", targetMode: "full" },
-    related: [{ href: "/preview/new-york/guides/disqualifications/", label: "Conflicts" }],
+    related: [{ href: "/new-york/guides/disqualifications/", label: "Conflicts" }],
   }),
   item("study-plan", {
     id: "ny-study-plan",
@@ -188,7 +188,7 @@ export const nyArticles: StateArticle[] = [
       { heading: "A usable order", body: "Use the exam guide for the sitting itself. Use the fee and journal pages before memorizing penalties. Eight or more correct on Quick 10 is this site's suggestion to try the longer practice. It is not a Department score. Fewer than eight points to the topic you missed.", points: ["Quick 10 uses free questions and explains the answer.", "The 40-question practice is timed for 60 minutes and is still this site's form.", "Wrong answers stay available for review after you sign in."] },
       { heading: "What not to add", body: "Do not import another state's bond, course hours, or passing score. The pages reviewed for this guide do not state a New York notary bond. They do state a four-year term, a journal, and the fees above." },
     ],
-    endCta: { href: "/preview/new-york/pricing/", label: "See what Pro adds", placement: "end", targetMode: "pricing" },
-    related: [{ href: "/preview/new-york/guides/exam-format/", label: "Exam format" }, { href: "/preview/new-york/exam-guide/", label: "Exam guide" }],
+    endCta: { href: "/new-york/pricing/", label: "See what Pro adds", placement: "end", targetMode: "pricing" },
+    related: [{ href: "/new-york/guides/exam-format/", label: "Exam format" }, { href: "/new-york/exam-guide/", label: "Exam guide" }],
   }),
 ];

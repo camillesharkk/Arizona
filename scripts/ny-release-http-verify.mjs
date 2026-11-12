@@ -9,7 +9,7 @@ for (const state of ['new-york', 'pennsylvania', 'louisiana']) {
     assert.equal(await response.text(), 'Not found');
   }
 }
-for (const path of ['/arizona-notary-exam/', '/california/', '/hawaii/', '/california/study-cards/', '/hawaii/study-cards/']) {
+for (const path of ['/arizona-notary-exam/', '/california/', '/hawaii/', '/california/study-cards/', '/hawaii/study-cards/', '/new-york/', '/new-york/practice/', '/new-york/questions/', '/new-york/study-cards/', '/new-york/pricing/']) {
   const response = await fetch(base + path, { signal: AbortSignal.timeout(30000) });
   assert.equal(response.status, 200, path);
   const html = await response.text();
@@ -17,4 +17,6 @@ for (const path of ['/arizona-notary-exam/', '/california/', '/hawaii/', '/calif
 }
 const sitemap = await (await fetch(base + '/sitemap.xml', { signal: AbortSignal.timeout(30000) })).text();
 assert.doesNotMatch(sitemap, /\/preview\//);
-console.log('Isolated production HTTP: NY/PA/LA HTML and RSC denied before render; AZ/CA/HI homes return 200; CA/HI study cards render; no preview URLs in sitemap');
+assert.match(sitemap, /\/new-york\/practice\//);
+assert.doesNotMatch(sitemap, /\/pennsylvania\/|\/louisiana\//);
+console.log('Isolated production HTTP: NY/PA/LA HTML and RSC denied before render; AZ/CA/HI/NY public routes return 200; state study cards render; NY sitemap public and PA/LA closed');

@@ -1,8 +1,9 @@
+import { nyPaths, isNewYorkPath } from "./ny-site.ts";
 import { hiPaths, isHawaiiPath } from "./hi-site.ts";
 import { paths } from "./paths.ts";
 
 /** Live states on arizonanotaryprep.com. Texas stays on its own app. */
-export const LIVE_STATES = ["AZ", "CA", "HI"] as const;
+export const LIVE_STATES = ["AZ", "CA", "HI", "NY"] as const;
 export type LiveState = (typeof LIVE_STATES)[number];
 
 export const caPaths = {
@@ -63,6 +64,7 @@ const SWITCH_FEATURES = ["practice", "questions", "study", "studyCards", "mistak
 function switchBundle(code: LiveState) {
   if (code === "CA") return caPaths;
   if (code === "HI") return hiPaths;
+  if (code === "NY") return nyPaths;
   return {
     practice: paths.practice,
     questions: paths.questions,
@@ -83,7 +85,7 @@ function switchBundle(code: LiveState) {
 /** Matching page in another live state. Drops topic ids, question ids, and exam query. */
 export function switchStateHref(pathname: string, target: LiveState) {
   const path = pathname.split("?")[0] || "/";
-  const current: LiveState = isHawaiiPath(path) ? "HI" : isCaliforniaPath(path) ? "CA" : "AZ";
+  const current: LiveState = isNewYorkPath(path) ? "NY" : isHawaiiPath(path) ? "HI" : isCaliforniaPath(path) ? "CA" : "AZ";
   if (current === target) return path.endsWith("/") ? path : `${path}/`;
   const here = switchBundle(current);
   const there = switchBundle(target);

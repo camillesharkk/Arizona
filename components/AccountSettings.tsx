@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { StudySettings } from "@/components/StudySettings";
 import { PERSONAL_USE_NOTICE } from "@/lib/pricing/copy";
@@ -153,7 +153,7 @@ export function AccountSettings() {
         </section>
       </div>
     </div>
-      <StudySettings />
+      <Suspense fallback={<p>Loading study settings…</p>}><StudySettings /></Suspense>
     </>
   );
 }
