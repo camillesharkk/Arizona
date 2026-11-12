@@ -40,3 +40,28 @@ Three dedicated `example.invalid` production accounts cover free, active Pro and
 The New York content target remains 203 questions, 29 free, 174 Pro, 50 independent cards and 10 original articles. The three reference pages remain separate from those article records. The earlier preparation report records the source review and isolated browser checks.
 
 Final public-route checks and formal-domain acceptance results are reported with the delivered production SHA and deployment ID. Real payment settlement and payment-webhook delivery require a separate paid or sandbox transaction exercise.
+
+## Public release and actual production acceptance
+
+The public implementation was integrated as `2517f21` and deployed by main `cf8d10f52352a427938890224f99d33be2fccbcb`, deployment `dpl_DjhNNTXy6yTkcn9uYQv87XoQ9Nd9`. Vercel reported READY and the formal-domain alias matched this deployment. Subsequent acceptance-record-only commits do not change the tested product implementation.
+
+New York is available at `/new-york/` and `/new-york/practice/`. The selector, public routes, guides, account links, sitemap and production learning APIs include NY. PA/LA practice and all production preview HTML/RSC paths still return 404. Shared-entry review also corrected NY daily question selection, settings state, local progress state and result return links. The Pro usage receipt commits with the learning data; commerce usage records afterward and can replay the original event on a duplicate submission.
+
+Final integrated verification passed: TypeScript, production build, content audit, public/entry checks, production-mode HTTP checks, progress/version compatibility, Tutor boundaries, full submission tests on memory/file/PostgreSQL, durable usage retry checks and commerce regression. A separate reviewer found no remaining confirmed P1/P2 issue. The content remains 203 questions (29 free, 174 Pro), 50 independent cards, zero question-derived cards and 10 original articles.
+
+Actual formal-domain HTTP checks used dedicated accounts, followed by separate reads to verify persistence:
+
+- Free and expired-Pro identities each saved a 40-question sitting with 40 correct answers. Same-ID retries returned duplicate without adding an exam; a new second free sitting returned 402.
+- Active Pro saved Pro question answers and a complete NY sitting. Free/expired Pro question writes returned 402; stale question versions returned 409. Mistake lists retained NY ownership and excluded NY entries from CA views.
+- All three identities saved NY custom study settings, reread those settings, completed a daily card and reread its done status. NY question IDs, scheduled mistakes and recent NY history persisted. AZ settings were unchanged.
+- Anonymous progress/Tutor writes returned 401. Free and expired identities could use Tutor on a free question, while paid-question Tutor calls returned 402. All three actual free-question calls returned DeepSeek responses with limits 75/300/75. An actual Pro paid-question response retained New York context and did not reference Arizona. Simulated provider failures remain covered separately by the Tutor regression suite.
+- AZ, CA and HI answer submissions through the final production code each returned 200 with the correct state, using a dedicated test identity.
+- The NY purchase flow created a real Paddle checkout transaction for the test free identity at 1,999 cents. The returned checkout URL responded 200. No payment details were entered or payment submitted. Browser checkout display, real settlement and payment-webhook delivery are unverified.
+
+A read-only production snapshot at `2026-11-12T11:34:47Z` verified NY versions, state ownership, scores and receipt-to-sitting associations without errors. Free/expired identities had no Pro usage. The active Pro receipt survived daily/settings writes and its entitlement had the expected earlier `pro_question` usage. All three identities had zero commerce orders, zero recorded paid amount and zero redemption consumption.
+
+Browser observations confirmed New York Available in the public selector, the NY public practice page, a single Start opening a 40-question sitting, and NY-to-CA navigation reaching the correct CA practice page. Further automation repeatedly timed out in the in-app browser and Edge. Native Edge inspection was also blocked by the minimized window. Browser completion of 40 answers, browser refresh/persistence presentation, mobile layout, four-identity visual coverage, checkout display and final cross-state single-Start checks remain unverified in this production round. HTTP persistence and earlier isolated checks are reported separately; they are not substitutes for these missing browser observations.
+
+The first free full-submission request exceeded the acceptance script's 45-second client wait. A separate read confirmed a complete committed 40-question exam. Retrying its original exam ID returned the existing result without consuming another trial. Later acceptance requests used a longer wait. No production learning data was rolled back or deleted.
+
+An additional dedicated active-Pro identity tested its first use through the 40-question endpoint before any ordinary paid-question write. The real production request inserted the stable NY full-exam usage ID; repeating the same exam retained exactly one usage row and one exam. Read-only verification at `2026-11-12T11:37:34Z` also found zero payment orders for that identity. This verifies the new stable-ID insertion separately from the original Pro account's earlier entitlement-level usage deduplication.
