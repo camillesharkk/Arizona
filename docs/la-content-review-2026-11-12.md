@@ -29,6 +29,8 @@ The substantive exercises use different legal issues and fact patterns. Names, a
 
 ## Comprehensive practice
 
+Final entry review added four independently written administration cards covering qualification, pre-assessment, continuing bond/status duties, and residence-parish transfer. The catalog now contains 54 independent cards so every visible study topic has at least one card. This supersedes the earlier 50-card content checkpoint.
+
 The 29-question free pool retains the five legacy free questions and distributes 24 new free items across every substantive topic. This prevents empty free-topic entries; free/Pro totals remain 29/174. Free allocation is a site product setting, not an official exam weighting.
 
 `pickLaFullExam(seed)` returns 40 unique scored questions and an empty `unscoredIds` array. Its 90-minute timer is a site study setting configured by the shared pack. Topic quotas are editorial design choices.
