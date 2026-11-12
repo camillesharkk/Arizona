@@ -40,3 +40,13 @@ Branch: acceptance/pa-ready-20261112. Its separate worktree is C:\Users\20683\.c
 Canonical integration order from a freshly fetched origin/main is shared8d46f78, shared766a211, then PA d4a97f8 and the PA acceptance record. Apply shared commits only once if another state has already integrated them. The branch remains preview-only. After the checkout gate and a PA release instruction, the release task must explicitly open PA public routes, selector/registry, server gates and sitemap, then validate and ordinarily push main and verify the domain's deployment. No such opening or push is part of this acceptance round.
 
 The original D:\webtest\web remains at9def076 with its four local commits, favorite changes and untracked files preserved. Fetched main and the formal-domain deployment were confirmed at e76376b; production PA preview practice remains404 and its public root remains Under development. See the shared acceptance and source-link records for detailed commands and boundaries.
+
+## Independent follow-up verification
+
+A fresh fetch on2026-11-12 retained origin/main e76376b19d49c45d3b341c27b4fa42cea831423f. The formal domain still resolved to READY deployment dpl_FqcJcuQtRZVqToE4CD1FLt9aER3q with that Git SHA. The original checkout remained unchanged and both independent candidates were clean before this follow-up.
+
+Shared verification commit5d31d403c99ac179fd1e0da275be87ca9ca00886 (applied here as5ab894cd8de7a756af63ab2148249323ab06343d) fixes the ignored --state argument. The PA-only candidate now checks PA and retains NY regressions without requiring LA content. Both production preview gates remain checked. Explicitly selected full practice must have a complete draw; invalid state arguments fail.
+
+PA-only scope, references, full saving, Quick10 topic coverage, mocked Tutor context/fallback, content audit and TypeScript checks passed. The200-seed three-choice display regression passed. The content audit again counted203questions (30free/173Pro),50independent cards,10articles,three references and no structural errors or similarity candidates. PGlite passed NY and PA actual-save, historical/favorite, immutable replay and rollback assertions. PA measured101-to-14SQL statements and47.5-to-19.1ms locally; these are not production timings. No browser rerun was needed for this tooling-only change; the16-sitting browser evidence above remains the product acceptance record. No additional external AI request or payment was made.
+
+For later integration, apply the shared tooling commit once after the earlier shared commits, then the applicable state acceptance records. It does not open public routes or resolve the external release conditions above.
