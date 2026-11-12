@@ -29,3 +29,11 @@ Current Paddle sandbox calls returned provider forbidden, exposed as PADDLE_CHEC
 Actual DeepSeek test-server startup was rejected by automatic approval review because authorization did not explicitly cover sending the question payload to that destination. The user was asked asynchronously for permission for at most one PA and one LA request. No denied request was bypassed. Local/browser grounded fallback, state/source/choice prompt tests, quota and free/Pro permissions passed.
 
 No additional database migration is required. The existing016 columns and account/state schema support both packs. Isolated PGlite tests include actual PA014/040 legacy history/favorite preservation, skipped answers, rollback and receipt replay. Warm full-submission statements are14 for NY/PA/LA; this does not attribute the earlier production45-second delay.
+
+## Explicitly authorized live Tutor follow-up
+
+The user approved exactly one PA and one LA payload to api.deepseek.com after the earlier automatic-review rejection. An isolated server using a separate test dataset was then approved. Through actual in-app-browser Quick10 controls, the PA advertising question returned an AI-generated response citing57Pa.C.S.325(a),(c); the LA bond question returned an AI-generated response citing the Louisiana Secretary of State FAQ. The same account counter advanced0→1→2. No account details were included in the supplied provider prompt. The live-AI test server was stopped immediately after these two delivered requests. This supersedes the earlier pending-authorization status; no rejected action was bypassed.
+
+## Independent candidate builds
+
+The PA-only candidate contains shared code and PA content, with the original LA preview retained. The LA-only candidate contains shared code and LA content/cards, with the original PA preview retained. Each passed its target-state content audit, TypeScript and an independent production build. On Windows, the first C-drive builds exposed cross-drive junction resolution to D-drive dependencies; identical lock-matched local dependency copies resolved that environment issue. No package or lockfile changed. Both candidate worktrees were clean after generated build config was restored.

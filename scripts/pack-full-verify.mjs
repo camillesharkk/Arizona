@@ -50,6 +50,21 @@ for(const state of ['PA','LA']) {
   const entitlement=await store.insertEntitlement({userId:user.id,productCode:'az_exam_pro_60d',state:'ALL',status:'active',startsAt:new Date(now-10000).toISOString(),expiresAt:new Date(now+86400000).toISOString(),provider:'mock',providerOrderId:randomUUID(),providerCustomerId:null});
   const paid=await savePackFullSubmission(store,user.id,{...input,examId:randomUUID()});
   assert.equal(paid.proUsage.featureCode,'full_exam_extra');
+  const mixedId=randomUUID();
+  const mixed=input.questions.map((answer,index)=>{
+    const q=draw.questions[index];
+    if(state==='PA') {
+      const wrong=draw.unscoredIds.includes(q.question_id)||q.question_id===draw.questions.find(q=>!draw.unscoredIds.includes(q.question_id)).question_id;
+      return wrong?{...answer,selected:['A','B','C'].find(l=>l!==q.correct_option)}:answer;
+    }
+    if(index<2)return {...answer,selected:undefined};
+    return index<5?{...answer,selected:['A','B','C','D'].find(l=>l!==q.correct_option)}:answer;
+  });
+  const mixedResult=await savePackFullSubmission(store,user.id,{...input,examId:mixedId,questions:mixed});
+  assert.equal(mixedResult.exam.correctCount,state==='PA'?24:35);
+  assert.equal(mixedResult.exam.score,state==='PA'?96:88);
+  const check=(await store.getStudyPlan(user.id,state)).document.checks[mixedId];
+  assert.equal(check.wrongIds.length,state==='PA'?6:3);assert.equal(check.skipped,state==='PA'?0:2);
   await store.setEntitlementStatus(user.id,'mock',entitlement.providerOrderId,'expired');
   await assert.rejects(savePackFullSubmission(store,user.id,{...input,examId:randomUUID()}),/full_trial_used/);
   assert.ok((await store.listStats(user.id)).every(q=>q.state===state));
