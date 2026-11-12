@@ -115,9 +115,12 @@ export type Store = {
   putToken(row: TokenRow): Promise<void>;
   takeToken(token: string, type: TokenRow["type"]): Promise<TokenRow | null>;
   upsertStat(stat: QuestionStat): Promise<QuestionStat>;
+  upsertStats?(stats: QuestionStat[]): Promise<void>;
   updateReviewStat(userId: string, questionId: string, patch: Partial<Pick<QuestionStat, "mastered" | "favorited" | "wrongCount" | "savedForReview" | "nextReviewAt">>): Promise<QuestionStat | null>;
   claimAttempt(userId: string, attemptId: string, questionId: string): Promise<boolean>;
+  claimAttempts?(userId: string, attempts: { attemptId: string; questionId: string }[]): Promise<string[]>;
   getStat(userId: string, questionId: string): Promise<QuestionStat | null>;
+  getStats?(userId: string, questionIds: string[]): Promise<QuestionStat[]>;
   listStats(userId: string): Promise<QuestionStat[]>;
   addExam(row: ExamRow): Promise<boolean>;
   listExams(userId: string): Promise<ExamRow[]>;

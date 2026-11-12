@@ -211,19 +211,38 @@ export const pgStore: Store = {
     };
   },
   async upsertStat(stat) {
+    await this.upsertStats!([stat]);
+    return stat;
+  },
+  async upsertStats(stats) {
+    if (!stats.length) return;
     await assertSchema();
-    await requireRevisionStorage(stat.questionId);
+    for (const stat of stats) await requireRevisionStorage(stat.questionId);
+    const rows = JSON.stringify(stats.map(stat => ({
+      user_id: stat.userId, question_id: stat.questionId, topic: stat.topic,
+      bank: stat.bank, chapter: stat.chapter, state: stat.state,
+      first_correct: stat.firstCorrect, last_correct: stat.lastCorrect,
+      wrong_count: stat.wrongCount, right_count: stat.rightCount,
+      review_count: stat.reviewCount, consecutive_correct: stat.consecutiveCorrect,
+      review_stage: stat.reviewStage, last_wrong_at: stat.lastWrongAt,
+      last_reviewed_at: stat.lastReviewedAt, next_review_at: stat.nextReviewAt,
+      review_plan: stat.reviewPlan || "v2", last_selected: stat.lastSelected,
+      last_correct_option: stat.lastCorrectOption, first_at: stat.firstAt,
+      last_at: stat.lastAt, mastered: stat.mastered, favorited: stat.favorited,
+      saved_for_review: Boolean(stat.savedForReview), question_version: stat.questionVersion ?? 1,
+      revision_history: stat.revisionHistory ?? [],
+    })));
     const sql = db();
     await sql`insert into question_stats (
       user_id, question_id, topic, bank, chapter, state, first_correct, last_correct, wrong_count, right_count,
       review_count, consecutive_correct, review_stage, last_wrong_at, last_reviewed_at, next_review_at, review_plan,
       last_selected, last_correct_option, first_at, last_at, mastered, favorited, saved_for_review${revisionColumnsReady ? sql`, question_version, revision_history` : sql``}
-    ) values (
-      ${stat.userId}, ${stat.questionId}, ${stat.topic}, ${stat.bank}, ${stat.chapter}, ${stat.state},
-      ${stat.firstCorrect}, ${stat.lastCorrect}, ${stat.wrongCount}, ${stat.rightCount},
-      ${stat.reviewCount}, ${stat.consecutiveCorrect}, ${stat.reviewStage}, ${stat.lastWrongAt}, ${stat.lastReviewedAt}, ${stat.nextReviewAt}, ${stat.reviewPlan || "v2"},
-      ${stat.lastSelected}, ${stat.lastCorrectOption}, ${stat.firstAt}, ${stat.lastAt}, ${stat.mastered}, ${stat.favorited}, ${Boolean(stat.savedForReview)}${revisionColumnsReady ? sql`, ${stat.questionVersion ?? 1}, ${JSON.stringify(stat.revisionHistory ?? [])}::jsonb` : sql``}
-    ) on conflict (user_id, question_id) do update set
+    ) select
+      user_id, question_id, topic, bank, chapter, state, first_correct, last_correct, wrong_count, right_count,
+      review_count, consecutive_correct, review_stage, last_wrong_at, last_reviewed_at, next_review_at, review_plan,
+      last_selected, last_correct_option, first_at, last_at, mastered, favorited, saved_for_review${revisionColumnsReady ? sql`, question_version, revision_history` : sql``}
+      from jsonb_populate_recordset(null::question_stats, ${rows}::jsonb)
+      on conflict (user_id, question_id) do update set
       ${revisionColumnsReady ? sql`question_version = excluded.question_version, revision_history = excluded.revision_history,` : sql``}
       first_correct = excluded.first_correct,
       first_at = excluded.first_at,
@@ -246,7 +265,6 @@ export const pgStore: Store = {
       saved_for_review = excluded.saved_for_review,
       updated_at = now()
       where question_stats.user_id = excluded.user_id`;
-    return stat;
   },
   async updateReviewStat(userId, questionId, patch) {
     await assertSchema();
@@ -272,10 +290,28 @@ export const pgStore: Store = {
       returning attempt_id`;
     return rows.length > 0;
   },
+  async claimAttempts(userId, attempts) {
+    if (!attempts.length) return [];
+    await assertSchema();
+    for (const attempt of attempts) await requireRevisionStorage(attempt.questionId);
+    const data = JSON.stringify(attempts.map(attempt => ({ attempt_id: attempt.attemptId, question_id: attempt.questionId })));
+    const rows = await db()`insert into answer_attempts (user_id, attempt_id, question_id)
+      select ${userId}, attempt_id, question_id
+      from jsonb_to_recordset(${data}::jsonb) as attempts(attempt_id text, question_id text)
+      on conflict (user_id, attempt_id) do nothing returning attempt_id`;
+    return rows.map(row => String(row.attempt_id));
+  },
   async getStat(userId, questionId) {
     await assertSchema();
     const rows = await db()`select * from question_stats where user_id = ${userId} and question_id = ${questionId} limit 1`;
     return rows[0] ? mapStat(rows[0] as Record<string, unknown>) : null;
+  },
+  async getStats(userId, questionIds) {
+    if (!questionIds.length) return [];
+    await assertSchema();
+    const rows = await db()`select * from question_stats where user_id = ${userId}
+      and question_id in (select jsonb_array_elements_text(${JSON.stringify(questionIds)}::jsonb))`;
+    return rows.map(row => mapStat(row as Record<string, unknown>));
   },
   async listStats(userId) {
     await assertSchema();

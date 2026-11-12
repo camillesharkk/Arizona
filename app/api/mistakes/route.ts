@@ -63,7 +63,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Could not update this question. Please try again." }, { status: 500 });
     }
   };
-  return body.data.questionId.startsWith("ny-") ? store.learningTransaction(session.id, update) : update();
+  return /^(ny|pa|la)-/.test(body.data.questionId) ? store.learningTransaction(session.id, update) : update();
 }
 
 export async function GET(req: Request) {

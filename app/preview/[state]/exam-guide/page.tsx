@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
       <div className="card">
         <p>{pack.fullDetail}</p>
         <p>Quick 10 is a free check. Eight or more correct is a study recommendation on this site. It is not an official passing score.</p>
-        <p><a href={pack.paths.practice}>Open practice</a>{" · "}<a href={pack.paths.resources}>Sources and articles</a></p>
+        <p><a href={pack.paths.practice}>Open practice</a>{" · "}<a href={pack.paths.resources}>Sources and articles</a>{" · "}<a href={pack.paths.passingScore}>Scores and retakes</a>{" · "}<a href={pack.paths.become}>Apply for a commission</a></p>
       </div>
     </main>
   );

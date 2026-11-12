@@ -13,7 +13,7 @@ import { saveCaExamCheck } from "@/lib/ca-daily";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
 import { productionStateBlocked } from "@/lib/state-release";
-import { saveNyFullSubmission } from "@/lib/ny-full-submission";
+import { savePackFullSubmission } from "@/lib/ny-full-submission";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 
 const answerSchema = z.object({
@@ -30,16 +30,20 @@ export async function POST(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const body = await req.json().catch(() => null);
-  if (body?.kind === "ny-full") {
-    if (productionStateBlocked("NY")) return NextResponse.json({ error: "State not available" }, { status: 404 });
+  if (body?.kind === "ny-full" || body?.kind === "pack-full") {
+    const state = body.kind === "ny-full" ? "NY" : body.state;
+    if (state !== "NY" && state !== "PA" && state !== "LA") return NextResponse.json({ error: "Invalid state" }, { status: 400 });
+    if (productionStateBlocked(state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
     const full = z.object({
       examId: z.string().uuid(),
-      questions: z.array(z.object({ questionId: z.string(), questionVersion: z.number().int().positive(), selected: z.enum(["A", "B", "C", "D"]).optional() })).length(40),
+      questions: z.array(z.object({ questionId: z.string(), questionVersion: z.number().int().positive(), selected: z.enum(["A", "B", "C", "D"]).optional() })).min(1).max(80),
+      seed: z.number().int().min(0).max(1000000000).optional(),
+      unscoredIds: z.array(z.string()).max(5).optional(),
       timeZone: z.string().max(80).optional(),
     }).safeParse(body);
     if (!full.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
     try {
-      const { proUsage, ...result } = await saveNyFullSubmission(await getStore(), session.id, full.data);
+      const { proUsage, ...result } = await savePackFullSubmission(await getStore(), session.id, { ...full.data, state });
       // Commerce uses its existing client after the learning transaction has committed.
       if (proUsage) await recordProUsage(session.id, proUsage.featureCode, proUsage);
       return NextResponse.json(result);
@@ -47,7 +51,7 @@ export async function POST(req: Request) {
       const code = error instanceof Error ? error.message : "";
       if (code === "full_trial_used") return NextResponse.json({ error: "The free full practice for this state is already used" }, { status: 402 });
       if (code === "question_updated") return NextResponse.json({ error: "Question updated; reload before answering", code }, { status: 409 });
-      if (code === "invalid_exam") return NextResponse.json({ error: "Invalid New York exam" }, { status: 400 });
+      if (code === "invalid_exam") return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
       throw error;
     }
   }
@@ -71,6 +75,9 @@ export async function POST(req: Request) {
     const california = exam.data.state === "CA";
     const hawaii = exam.data.state === "HI";
     const packState = exam.data.state === "NY" || exam.data.state === "PA" || exam.data.state === "LA" ? exam.data.state : null;
+    if ((packState || /^(ny|pa|la)-full$/.test(exam.data.mode)) && (exam.data.mode === "full" || exam.data.mode.endsWith("-full"))) {
+      return NextResponse.json({ error: "Submit the complete sitting for server grading" }, { status: 400 });
+    }
     if ((california || hawaii || packState) && exam.data.examId && exam.data.wrongIds) {
       await saveCaExamCheck(session.id, exam.data.examId, {
         wrongIds: exam.data.wrongIds,
@@ -115,7 +122,7 @@ export async function POST(req: Request) {
   const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(parsed.data.questionId)].find((x) => x && x.question_id === parsed.data.questionId);
   if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
   if (productionStateBlocked(q.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  if (q.state === "NY" && (parsed.data.questionVersion ?? 1) !== q.version) {
+  if ((q.state === "NY" || q.state === "PA" || q.state === "LA") && (parsed.data.questionVersion ?? 1) !== q.version) {
     return NextResponse.json({ error: "Question updated; reload before answering", code: "question_updated" }, { status: 409 });
   }
   if (parsed.data.state ? parsed.data.state !== q.state : q.state !== "AZ") {

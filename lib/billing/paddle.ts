@@ -31,7 +31,7 @@ export type PaddleCustomData = {
   user_id: string;
   quote_id: string;
   product_code: string;
-  source_state?: "AZ" | "CA" | "HI" | "NY" | "PA";
+  source_state?: "AZ" | "CA" | "HI" | "NY" | "PA" | "LA";
 };
 
 function missingNamed(env: PaddleEnvMap, keys: string[]) {
@@ -226,7 +226,7 @@ export function buildPaddleTransactionPayload(opts: {
   userId: string;
   quoteId: string;
   productCode: string;
-  sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA";
+  sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA" | "LA";
 }): CreateTransactionRequestBody {
   const customData: PaddleCustomData = {
     user_id: opts.userId,

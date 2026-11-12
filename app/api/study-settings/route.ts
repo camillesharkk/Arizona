@@ -26,7 +26,7 @@ export async function GET(req: Request) {
   if (requested && !["AZ", "CA", "HI", "NY", "PA", "LA"].includes(requested)) return NextResponse.json({ error: "Unknown state" }, { status: 400 });
   const state: StudyState = requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" ? requested : "AZ";
   const read = () => dailyStudyView(session.id, timeZone, undefined, state);
-  return NextResponse.json(state === "NY" ? await (await getStore()).learningTransaction(session.id, read) : await read());
+  return NextResponse.json(["NY", "PA", "LA"].includes(state) ? await (await getStore()).learningTransaction(session.id, read) : await read());
 }
 
 export async function POST(req: Request) {
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     return NextResponse.json(await dailyStudyView(session.id, body.data.timeZone, undefined, state));
   };
   try {
-    return state === "NY" ? await (await getStore()).learningTransaction(session.id, update) : await update();
+    return ["NY", "PA", "LA"].includes(state) ? await (await getStore()).learningTransaction(session.id, update) : await update();
   } catch (error) {
     const message = error instanceof Error ? error.message : "Could not save";
     return NextResponse.json({ error: message }, { status: 400 });

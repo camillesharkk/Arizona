@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { StateTheme } from "@/components/StateTheme";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
+import Link from "next/link";
 
 const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA" };
 
@@ -18,6 +19,7 @@ export default async function Layout({ children, params }: { children: ReactNode
     <div data-state={code}>
       <StateTheme state={code} />
       <p className="notice wrap">Preview only. {prepPacks[code].name} is not a public offering and is not in the state list.</p>
+      <nav className="wrap" aria-label="Preview states"><Link href="/preview/pennsylvania/">Pennsylvania preview</Link>{" · "}<Link href="/preview/louisiana/">Louisiana preview</Link></nav>
       {children}
     </div>
   );

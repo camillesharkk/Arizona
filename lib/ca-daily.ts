@@ -24,13 +24,16 @@ function checksFrom(raw: unknown): Record<string, CaCheck> {
 
 export async function saveCaExamCheck(userId: string, examId: string, input: { wrongIds: string[]; skipped: number }, state: StateCode = "CA") {
   const store = await getStore();
-  const row = await store.getStudyPlan(userId, state);
-  const raw = row?.document && typeof row.document === "object" ? { ...(row.document as Record<string, unknown>) } : {};
-  const checks = checksFrom(raw);
-  const prev = checks[examId];
-  if (prev) return;
-  checks[examId] = { wrong: input.wrongIds.length, skipped: input.skipped, wrongIds: input.wrongIds };
-  await store.saveStudyPlan({ userId, state, document: { ...raw, checks } });
+  const save = async () => {
+    const row = await store.getStudyPlan(userId, state);
+    const raw = row?.document && typeof row.document === "object" ? { ...(row.document as Record<string, unknown>) } : {};
+    const checks = checksFrom(raw);
+    const prev = checks[examId];
+    if (prev) return;
+    checks[examId] = { wrong: input.wrongIds.length, skipped: input.skipped, wrongIds: input.wrongIds };
+    await store.saveStudyPlan({ userId, state, document: { ...raw, checks } });
+  };
+  return ["NY", "PA", "LA"].includes(state) ? store.learningTransaction(userId, save) : save();
 }
 
 export async function caDailyView(userId: string, timeZoneHint?: string, now = new Date().toISOString()) {

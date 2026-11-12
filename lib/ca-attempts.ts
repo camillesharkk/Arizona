@@ -15,6 +15,7 @@ export type CaQuickAttempt = {
   seed: number;
   questionIds: string[];
   questionVersions?: Record<string, number>;
+  presentationVersion?: number;
   answers: Record<string, Letter>;
   originalAnswers: Record<string, Letter>;
   attemptIds: Record<string, string>;
@@ -72,12 +73,12 @@ export function listCaAttempts(owner: string, state: TopicPracticeState = "CA") 
 export function readCaAttempt(owner: string, id: string, state: TopicPracticeState = "CA") {
   if (!id) return null;
   const item = listCaAttempts(owner, state).find((item) => item.id === id);
-  if (state === 'NY' && item?.questionIds.some(id => (item.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
+  if (['NY','PA','LA'].includes(state) && item?.questionIds.some(id => (item.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
   return item || null;
 }
 
 export function latestCaQuick(owner: string, state: TopicPracticeState = "CA") {
-  return listCaAttempts(owner, state).find(item => state !== 'NY' || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id))) || null;
+  return listCaAttempts(owner, state).find(item => !['NY','PA','LA'].includes(state) || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id))) || null;
 }
 
 export function saveCaQuickAttempt(row: CaQuickAttempt) {

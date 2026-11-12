@@ -90,6 +90,10 @@ try {
         if (++writes === 7) throw new Error('injected seventh-answer failure');
         return scoped.upsertStat(stat);
       };
+      if (scoped.upsertStats) failing.upsertStats = async stats => {
+        await scoped.upsertStats(stats.slice(0, 6));
+        throw new Error('injected seventh-answer failure after partial batch');
+      };
       return action(failing);
     });
     await assert.rejects(saveNyFullSubmission(store, user.id, submission), /seventh-answer/);

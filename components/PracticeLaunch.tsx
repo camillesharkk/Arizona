@@ -77,7 +77,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         if (startFresh && (requested === "quick" || requested === "full" || requested === "weak") && !openSitting(sessionStorage, nextOwner, requested, stateCode)) {
           clearSitting(sessionStorage, nextOwner, requested, stateCode);
         }
-        if (stateCode === "NY" && startFresh) {
+        if (pack && startFresh) {
           const url = new URL(window.location.href);
           url.searchParams.delete("start");
           window.history.replaceState(null, "", url);
@@ -105,7 +105,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   const anonBlocked = !isPro && !signedIn && anonFullUsed && !inThisAnonFull;
   const fullResume = mode === "full" && typeof window !== "undefined" && Boolean(
     openSitting(sessionStorage, owner, "full", stateCode) ||
-    (stateCode === "NY" && new URLSearchParams(window.location.search).get("start") !== "1" && readSitting(sessionStorage, owner, "full", stateCode)?.done)
+    (pack && new URLSearchParams(window.location.search).get("start") !== "1" && readSitting(sessionStorage, owner, "full", stateCode)?.done)
   );
   const fullLocked = !fullResume && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || anonBlocked);
 
@@ -269,7 +269,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         Change mode
       </button>
       <ExamRunner mode={mode} practice={mode !== "full"} isPro={isPro} sittingMode={focusArea ? `area-${focusArea}` : mode} stateCode={stateCode} focusArea={focusArea || undefined}
-        onRecorded={stateCode === "NY" && mode === "full" ? () => setFullExamCount(count => count + 1) : undefined} />
+        onRecorded={pack && mode === "full" ? () => setFullExamCount(count => count + 1) : undefined} />
     </div>
   );
 }

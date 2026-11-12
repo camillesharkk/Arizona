@@ -4,7 +4,7 @@ export function SubmitStatus() {
       <span className="submit-spin" aria-hidden="true" />
       <div>
         <p><strong>Checking your answers…</strong></p>
-        <p>Please keep this page open while we prepare your results.</p>
+        <p>Saving your sitting. If this takes too long, your answers stay in this browser; retrying returns the same result.</p>
       </div>
     </div>
   );

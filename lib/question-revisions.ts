@@ -5,8 +5,9 @@ export const NY_REVISIONS: Record<string, number> = {
   'ny-016': 2, 'ny-017': 2, 'ny-053': 2, 'ny-054': 2, 'ny-055': 2,
   'ny-057': 2, 'ny-060': 2, 'ny-062': 2, 'ny-064': 2,
 };
+export const PA_REVISIONS: Record<string, number> = {};
 export function currentQuestionVersion(id: string) {
-  return NY_REVISIONS[id] ?? 1;
+  return NY_REVISIONS[id] ?? PA_REVISIONS[id] ?? 1;
 }
 
 /** Non-destructive projection: retain the prior record before resetting current mastery. */

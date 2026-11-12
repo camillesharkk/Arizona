@@ -8,7 +8,7 @@ const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
   if (!prepPageEnabled((await params).state)) notFound();
   const code = codes[(await params).state];
-  if (!code || code === "LA") notFound();
+  if (!code) notFound();
   const pack = prepPacks[code];
   const counts = pack.counts();
   return (

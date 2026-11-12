@@ -22,7 +22,7 @@ export async function ensurePaddleCheckout(opts: {
   config: PaddleCheckoutConfig;
   now?: Date;
   sdk?: PaddleTransactionsClient;
-  sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA";
+  sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA" | "LA";
 }): Promise<
   | { ok: true; transactionId: string; quoteId: string; finalPriceCents: number; checkoutUrl: string | null }
   | { ok: false; error: string; status: number }

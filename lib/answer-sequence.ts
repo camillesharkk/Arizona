@@ -238,16 +238,19 @@ export function shuffleQuestionOptions(
 
 export function presentExamQuestions(
   list: Question[],
-  sessionSeed: number
+  sessionSeed: number,
+  threeChoiceVersion = 2
 ): {
   questions: Question[];
   maps: Record<string, Record<Letter, Letter>>;
   targets: Letter[];
 } {
   const fourChoice = list.every((item) => Boolean(item.option_d));
+  const threeTargets = shuffle(Array.from({ length: list.length }, (_, index) => (["A", "B", "C"] as const)[index % 3]), sessionSeed);
   const targets = fourChoice
     ? buildBalancedAnswerSequence(list.length, sessionSeed)
-    : list.map((item) => {
+    : list.map((item, index) => {
+        if (threeChoiceVersion >= 2 && !item.option_d) return threeTargets[index];
         const letters = (item.option_d ? LETTERS : (["A", "B", "C"] as const)) as readonly Letter[];
         const bag = Array.from({ length: list.length }, (_, index) => letters[index % letters.length]);
         return bag[Math.abs(sessionSeed + item.question_id.length) % letters.length];

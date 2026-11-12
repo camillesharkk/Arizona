@@ -36,7 +36,7 @@ export async function recordQuestionAnswer(opts: {
   const store = opts.store || await getStore();
   const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId) ?? questionById(opts.questionId);
   if (!q) throw new Error("unknown_question");
-  if (q.state === "NY" && !opts.store) {
+  if ((q.state === "NY" || q.state === "PA" || q.state === "LA") && !opts.store) {
     return store.learningTransaction(opts.userId, transaction => recordQuestionAnswer({ ...opts, store: transaction }));
   }
   if (opts.attemptId) {

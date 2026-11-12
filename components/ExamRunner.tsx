@@ -96,6 +96,7 @@ export function ExamRunner({
   const [bootError, setBootError] = useState(false);
   const [bootTry, setBootTry] = useState(0);
   const [activeSeed, setActiveSeed] = useState<number | null>(null);
+  const [presentationVersion, setPresentationVersion] = useState(2);
   const [lockedIds, setLockedIds] = useState<string[] | null>(null);
   const [restored, setRestored] = useState(false);
   const questions = useMemo(() => {
@@ -104,10 +105,10 @@ export function ExamRunner({
       const question = byId.get(id);
       return question ? [question] : [];
     });
-    const { questions: out, maps } = presentExamQuestions(list, activeSeed);
+    const { questions: out, maps } = presentExamQuestions(list, activeSeed, presentationVersion);
     toOriginalRef.current = maps;
     return out;
-  }, [activeSeed, lockedIds, byId]);
+  }, [activeSeed, lockedIds, byId, presentationVersion]);
 
   useEffect(() => {
     if (reportStart !== "answer" || poolLocked.current) return;
@@ -209,6 +210,7 @@ export function ExamRunner({
       seed: activeSeed,
       questionIds: lockedIds,
       questionVersions: Object.fromEntries(lockedIds.map(id => [id, currentQuestionVersion(id)])),
+      presentationVersion,
       idx,
       answers,
       explainOpen,
@@ -281,6 +283,7 @@ export function ExamRunner({
             viewOnly.current = Boolean(existing);
             setOwner(nextOwner);
             setActiveSeed(archived.seed);
+            setPresentationVersion(archived.presentationVersion ?? 1);
             setLockedIds(archived.questionIds);
             setAnswers(archived.answers);
             answersRef.current = archived.answers;
@@ -301,6 +304,7 @@ export function ExamRunner({
         const ids = existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed);
         setOwner(nextOwner);
         setActiveSeed(seed);
+        setPresentationVersion(existing ? existing.presentationVersion ?? 1 : 2);
         setLockedIds(ids);
         if (!existing) return;
         setIdx(Math.min(existing.idx, Math.max(0, ids.length - 1)));
@@ -368,6 +372,7 @@ export function ExamRunner({
       answers: answersNow,
       originalAnswers,
       questionVersions: Object.fromEntries(lockedIds.map(id => [id, currentQuestionVersion(id)])),
+      presentationVersion,
       attemptIds: { ...attemptIds.current },
       correctIds,
       wrongIds,
@@ -563,7 +568,7 @@ export function ExamRunner({
     if (!localSaved.current) {
       localSaved.current = true;
       if (!practice) results.forEach((r) => {
-        if (stateCode !== "NY" || current[r.question.question_id]) recordAnswer(r.question.question_id, r.correct, stateCode);
+        if (!pack || current[r.question.question_id]) recordAnswer(r.question.question_id, r.correct, stateCode);
       });
       const prev = loadProgress(stateCode);
       saveProgress({
@@ -574,12 +579,13 @@ export function ExamRunner({
     }
     persistSitting({ examId: examSaveId.current, scored: true });
     const saves: Promise<Response>[] = [];
-    const nyFull = stateCode === "NY" && mode === "full";
+    const nyFull = Boolean(pack) && mode === "full";
     if (nyFull) saves.push(fetch("/api/progress/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        kind: "ny-full", examId: examSaveId.current,
+        kind: "pack-full", state: stateCode, seed: activeSeed, examId: examSaveId.current,
+        unscoredIds: unscoredRef.current,
         questions: questions.map(item => ({ questionId: item.question_id, questionVersion: item.version,
           selected: current[item.question_id] ? originalLetter(item.question_id, current[item.question_id]) : undefined })),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -798,7 +804,7 @@ export function ExamRunner({
                   ? `${scoredCorrect} of 40 scored`
                   : stateCode === "PA" && mode === "full"
                   ? `${scoredCorrect} of 25 practice-scored`
-                  : pack?.code === "NY" && mode === "full"
+                  : (pack?.code === "NY" || pack?.code === "LA") && mode === "full"
                   ? `${correct} of ${questions.length}`
                   : `${pct}% — ${pass ? "PASS" : "NEEDS REVIEW"}`}
               </h2>
@@ -809,6 +815,8 @@ export function ExamRunner({
                   ? `${scoredCorrect} of 40 scored items correct. Five items are unscored and are marked below. This raw count is study feedback. The official exam uses a scaled score of at least 70, and a scaled score is not a percent.`
                   : stateCode === "PA" && mode === "full"
                   ? `${scoredCorrect} of 25 practice-scored items correct. Five items were this site's unscored set and are marked below. All 30 still count for study. This raw count is not the official scaled score of 75.`
+                  : pack?.code === "LA" && mode === "full"
+                  ? `${correct} of ${questions.length} correct. This 40-question, 90-minute set is this site's scenario practice. It covers selected statute-based skills, not the complete official study guide or four-hour examination. The official passing score is scaled 70 out of 100; this raw count cannot be converted to that scale.`
                   : pack?.code === "NY" && mode === "full"
                   ? `${correct} of ${questions.length} correct. This 40-question, 60-minute set is this site's practice. The Department of State reports pass or fail only and does not publish a numeric passing score. This count is not an official result.`
                   : `${correct} of ${questions.length} correct. Practice target ${examConfig.passingScorePercent}%. The SOS notice checked ${officialExam.checkedOn} lists ${officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.`}
@@ -900,7 +908,7 @@ export function ExamRunner({
             lockPaid={false}
             extra={
               unscored.has(r.question.question_id) ? (
-                <p className="notice">Unscored. This item did not affect the 40-item count.</p>
+                <p className="notice">Unscored. This item did not affect the {stateCode === "PA" ? "25-item practice" : "40-item"} count.</p>
               ) : stateCode === "CA" ? null : (
                 <SaveForReview questionId={r.question.question_id} hint={false} />
               )
@@ -973,6 +981,7 @@ export function ExamRunner({
     const seed = Math.floor(Math.random() * 1_000_000_000);
     const ids = drawQuestionIds(seed);
     setActiveSeed(seed);
+    setPresentationVersion(2);
     setLockedIds(ids);
     setIdx(0);
     setAnswers({});

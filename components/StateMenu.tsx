@@ -5,8 +5,18 @@ import { useEffect, useRef, useState } from "react";
 import { switchStateHref, type LiveState } from "@/lib/ca-site";
 import { pathState, writeStateCookie, type LiveCode } from "@/lib/site-state";
 import { availableStates, stateByCode, stateLabel } from "@/lib/states";
+import { packFor } from "@/lib/prep-pack";
+import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
+import { paths } from "@/lib/paths";
 
 function stateHref(pathname: string, code: string) {
+  const currentPack = packFor(pathState(pathname));
+  if (currentPack && pathname.startsWith("/preview/")) {
+    const feature = Object.entries(currentPack.paths).find(([, value]) => pathname === value || pathname === value.slice(0, -1))?.[0];
+    const destination = packFor(code)?.paths || (code === "CA" ? caPaths : code === "HI" ? hiPaths : paths);
+    if (feature && feature in destination) return destination[feature as keyof typeof destination];
+  }
   const home = stateByCode(code)?.homePath || "/";
   if (!pathState(pathname) || (code !== "AZ" && code !== "CA" && code !== "HI" && code !== "NY")) return home;
   const next = switchStateHref(pathname, code as LiveState);
@@ -56,7 +66,7 @@ export function StateMenu({ pathname, current }: { pathname: string; current: Li
     };
   }, [open]);
 
-  const label = current === "NY" ? "State: NY ▾" : current === "CA" ? "State: CA ▾" : current === "HI" ? "State: HI ▾" : current === "AZ" ? "State: AZ ▾" : "Choose State ▾";
+  const label = current ? `State: ${current} ▾` : "Choose State ▾";
   const name = currentName ? `Choose state, current state ${currentName}` : "Choose state";
 
   return (
@@ -93,6 +103,11 @@ export function StateMenu({ pathname, current }: { pathname: string; current: Li
               {state.code === current ? <span aria-hidden="true">✓</span> : null}
             </Link>
           ))}
+          {pathname.startsWith("/preview/") ? (["PA", "LA"] as const).map(code => (
+            <Link key={code} role="menuitem" href={stateHref(pathname, code)} onClick={() => writeStateCookie(code)}>
+              {packFor(code)?.name} ({code}) preview
+            </Link>
+          )) : null}
           <Link role="menuitem" href="/">Choose another state</Link>
         </div>
       ) : null}
