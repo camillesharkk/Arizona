@@ -77,7 +77,7 @@ try {
   const results = [];
   for (const state of ['NY', 'PA', 'LA']) {
     const user = await store.createUser({ email: `performance-${state}@example.invalid`, passwordHash: 'isolated', name: null });
-    const seed = 12345;
+    const seed = state === 'PA' ? 12361 : 12345;
     const draw = packFor(state).pickFull(seed);
     assert.ok(draw, `${state} full draw unavailable, prior measurements ${JSON.stringify(results)}`);
     const chosen = state === 'NY' ? packFor(state).questions().slice(0, 40) : draw.questions;
@@ -90,9 +90,13 @@ try {
     const baselineStarted = performance.now();
     await savePackFullSubmission(unbatched, baselineUser.id, { ...submission, examId: randomUUID() });
     const baseline = { statements: queryCount, elapsedMs: Number((performance.now() - baselineStarted).toFixed(1)) };
-    if (state === 'NY') await db.query(`insert into question_stats
-      (user_id, question_id, topic, bank, chapter, question_version, right_count, mastered, favorited)
-      values ($1, $2, 'legacy', 'new-york-notary-exam', 'legacy', 1, 7, true, true)`, [user.id, revisedQuestion.question_id]);
+    const revisions = state === 'NY' ? [revisedQuestion] : state === 'PA' ? packFor(state).questions().filter(question => question.version > 1) : [];
+    for (const revised of revisions) {
+      assert.ok(chosen.some(question => question.question_id === revised.question_id), 'Regression seed must include revised '+revised.question_id);
+      await db.query(`insert into question_stats
+      (user_id, question_id, topic, bank, chapter, state, question_version, right_count, mastered, favorited)
+      values ($1, $2, $3, $4, $3, $5, 1, 7, true, true)`, [user.id, revised.question_id, revised.topic, state === 'PA' ? 'pennsylvania-notary-exam' : 'new-york-notary-exam', state]);
+    }
     queryCount = 0;
     const started = performance.now();
     const result = await savePackFullSubmission(store, user.id, submission);
@@ -101,8 +105,8 @@ try {
     assert.ok(queryCount <= 16, `${state} full submission used ${queryCount} SQL statements, budget 16`);
     assert.equal(result.exam.score, 100);
     assert.equal((await store.listStats(user.id)).length, questions.length);
-    if (state === 'NY') {
-      const revised = await store.getStat(user.id, revisedQuestion.question_id);
+    for (const question of revisions) {
+      const revised = await store.getStat(user.id, question.question_id);
       assert.equal(revised.questionVersion, 2);
       assert.equal(revised.rightCount, 1);
       assert.equal(revised.favorited, true);

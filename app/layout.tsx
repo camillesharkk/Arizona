@@ -34,6 +34,8 @@ export async function generateMetadata(): Promise<Metadata> {
       ? "New York notary practice questions and study cards from Department of State sources. Independent of the New York Department of State."
       : state === "PA"
       ? "Pennsylvania notary practice questions from Department of State and Pearson VUE sources. Independent of the Pennsylvania Department of State."
+      : state === "LA"
+      ? "Louisiana statute-based notary scenarios and study cards. Supplement the official 2026 study guide with independent practice."
       : hawaii
       ? "Hawaii notary practice questions and study cards from published official sources. Independent of the Hawaii Department of the Attorney General."
       : california

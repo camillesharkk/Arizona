@@ -70,7 +70,7 @@ export type PrepPack = {
 
 function quickFrom(questions: Question[], seed: number) {
   const free = questions.filter((question) => question.is_free);
-  const topics = [...new Set(free.map((question) => question.study_topic || question.topic))];
+  const topics = shuffle([...new Set(free.map((question) => question.study_topic || question.topic))], seed);
   const used = new Set<string>();
   const picked: Question[] = [];
   for (let round = 0; round < 4 && picked.length < 10; round += 1) {

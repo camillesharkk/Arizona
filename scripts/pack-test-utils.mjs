@@ -9,6 +9,7 @@ export function testLoader(overrides = {}) {
   const native = createRequire(import.meta.url), cache = new Map();
   function load(file) {
     file = path.resolve(file);
+    if(fs.existsSync(file) && fs.statSync(file).isDirectory())file=path.join(file,'index');
     if (!path.extname(file)) file += fs.existsSync(file+'.ts') ? '.ts' : '.tsx';
     if (cache.has(file)) return cache.get(file).exports;
     const module={exports:{}}; cache.set(file,module);

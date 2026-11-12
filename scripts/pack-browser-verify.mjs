@@ -13,7 +13,7 @@ const results=[],errors=[];fs.mkdirSync('.tools/browser-evidence',{recursive:tru
 const browser=await chromium.launch({channel:'msedge',headless:true});
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 try {
- for(const surface of ['desktop','mobile'])for(const kind of ['anonymous','free','pro','expired']){
+ for(const surface of (process.env.PACK_TEST_SURFACES||'desktop,mobile').split(','))for(const kind of (process.env.PACK_TEST_KINDS||'anonymous,free,pro,expired').split(',')){
   const context=await browser.newContext({viewport:surface==='mobile'?{width:390,height:844}:{width:1440,height:1000},isMobile:surface==='mobile',hasTouch:surface==='mobile'});
   if(kind!=='anonymous'){
    const login=await context.request.post(base+'/api/auth/login/',{data:{email:`pack-${kind}-${surface}@example.invalid`,password:TEST_PASSWORD}});
@@ -44,7 +44,6 @@ try {
     await page.getByRole('button',{name:'Why is this correct?',exact:true}).click();
     const response=await req;assert.equal(response.status(),200);const data=await response.json();
     assert.equal(data.limit,kind==='pro'?300:75);assert.equal(data.provider,'grounded-fallback');
-    await page.getByText(/Saved explanation|Grounded|fallback|unavailable|verified explanation/i).first().waitFor({timeout:5000}).catch(()=>{});
     record.Tutor={provider:data.provider,fallbackReason:data.fallbackReason,limit:data.limit};
    }
    record.quick=true;
@@ -76,7 +75,7 @@ try {
     else await route.continue();
    });
    const start=performance.now();await page.getByRole('button',{name:'Submit exam',exact:true}).click();
-   await page.getByRole('status').filter({hasText:'Saving your sitting'}).waitFor().catch(()=>{});
+   record.waitingCopy=await page.getByRole('status').filter({hasText:'Saving your sitting'}).isVisible();
    if(delay){await page.getByRole('button',{name:'Try again',exact:true}).waitFor({timeout:30000});await page.getByRole('button',{name:'Try again',exact:true}).click();record.timeoutRetry=true;}
    const heading=page.getByRole('heading',{name:state==='PA'?'25 of 25 practice-scored':/40 of 40|40\/40|100/}).first();
    await heading.waitFor({timeout:45000});record.submitMs=Math.round(performance.now()-start);
@@ -89,7 +88,10 @@ try {
     const view=await (await context.request.get(base+'/api/daily-study/?state='+state)).json();assert.ok(view.recent.some(e=>e.id===mine[0].id));record.dailyHistory=true;
     await page.goto(base+root+'wrong-answers/');await page.locator('main').waitFor();record.mistakes=true;
    }
-   for(const slug of ['exam-guide/','resources/','passing-score/','laws/','become-a-notary/','pricing/']){const response=await page.goto(base+root+slug);assert.equal(response.status(),200,`${state}${slug}`);}
+   for(const slug of ['exam-guide/','resources/','passing-score/','laws/','become-a-notary/','pricing/']){
+    const response=await page.goto(base+root+slug,{waitUntil:'networkidle'});assert.equal(response.status(),200,`${state}${slug}`);
+    const title=await page.locator('h1').first().innerText();assert.doesNotMatch(title,/Page not found/i);assert.ok(title.includes(names[state]),`${state}${slug}: ${title}`);
+   }
    record.navigation=true;results.push(record);console.log(JSON.stringify(record));
   }
   await context.close();

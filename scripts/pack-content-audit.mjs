@@ -18,6 +18,8 @@ for(const state of states) {
   check(new Set(bank.map(q=>q.question_id)).size===bank.length,'Duplicate question ids');
   check(new Set(bank.map(q=>norm(q.question_text))).size===bank.length,'Duplicate question stems');
   const topics=new Set(pack.topics.map(t=>t.id));
+  for(const topic of topics)check(bank.some(q=>q.study_topic===topic&&q.is_free),`${topic}: free topic entry has no questions`);
+  for(const topic of topics)check(cards.some(card=>card.study===topic),`${topic}: study-card entry has no independent card`);
   for(const q of bank) {
     const choices=['A','B','C','D'].filter(l=>q['option_'+l.toLowerCase()]?.trim());
     check(q.state===state && q.question_id.startsWith(state.toLowerCase()+'-'),`${q.question_id}: wrong state`);

@@ -2,10 +2,21 @@ import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
 import { StateArticlePage } from "@/components/StateArticle";
 import { nyApplication } from "@/data/ny-guides";
+import { prepReferences } from "@/lib/prep-articles";
 
-export const metadata = { title: nyApplication.title, description: nyApplication.description };
+function articleForState(state: string) {
+  if (!prepPageEnabled(state)) notFound();
+  const code = state === "pennsylvania" ? "PA" : state === "louisiana" ? "LA" : null;
+  const article = state === "new-york" ? nyApplication : code ? prepReferences[code]?.["become-a-notary"] : null;
+  if (!article) notFound();
+  return article;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ state: string }> }) {
+  const article = articleForState((await params).state);
+  return { title: article.title, description: article.description };
+}
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
-  if (!prepPageEnabled((await params).state) || (await params).state !== "new-york") notFound();
-  return <StateArticlePage article={nyApplication} />;
+  return <StateArticlePage article={articleForState((await params).state)} />;
 }
