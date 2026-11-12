@@ -43,3 +43,13 @@ Branch: acceptance/la-ready-20261112. Separate worktree: C:\Users\20683\.codex\w
 Canonical integration order from freshly fetched main is shared8d46f78, shared766a211, then LA76ce917 and183af43 plus its acceptance record. Shared commits are applied once, even if PA was integrated earlier. After its external gates and an explicit LA release instruction, open only LA public routes, selector/registry, server gates and sitemap; rerun affected acceptance, ordinarily push main and verify the deployed SHA/domain. This round deliberately leaves all those production conditions closed.
 
 Production domain checks retained NYpractice200, PA/LApreviewpractice404 and PA/LApublic-root Under development pages. The original checkout and its four local commits and unfinished favorite work remain preserved. The shared record distinguishes browser, HTTP, structural/editorial and PostgreSQL evidence.
+
+## Independent follow-up verification
+
+A fresh fetch on2026-11-12 retained origin/main e76376b19d49c45d3b341c27b4fa42cea831423f. The formal domain still resolved to READY deployment dpl_FqcJcuQtRZVqToE4CD1FLt9aER3q with that Git SHA. The original checkout remained unchanged and both independent candidates were clean before this follow-up.
+
+Shared verification commit5d31d403c99ac179fd1e0da275be87ca9ca00886 fixes an ignored --state argument: an LA-only candidate now checks LA and retains NY regressions without requiring unintegrated PA reference articles. Both production preview gates remain checked. Explicitly selected full practice must have a complete draw; invalid state arguments fail.
+
+The LA-only scope, references, full saving, Quick10 topic coverage, mocked Tutor context/fallback, content audit and TypeScript checks passed. Shared plan-race and commerce mapping checks passed. The content audit again counted203questions (29free/174Pro),54independent cards,10articles,three references and no structural errors or similarity candidates. The PGlite run passed actual-save, historical, immutable replay and rollback assertions for NY and LA; LA measured131→14SQL statements and58.4→22.3ms locally. No browser rerun was needed for this tooling-only change; the16-sitting browser evidence above remains the product acceptance record. No additional external AI request or payment was made.
+
+For later integration, apply this shared tooling commit once after the earlier shared commits, then the applicable state acceptance records. It does not open public routes or resolve the external release conditions above.
