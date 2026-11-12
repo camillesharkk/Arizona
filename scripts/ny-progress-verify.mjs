@@ -100,20 +100,20 @@ const previousVercelEnv = process.env.VERCEL_ENV;
 process.env.VERCEL_ENV = 'production';
 try {
   const { productionStateBlocked } = load('lib/state-release.ts');
-  for (const state of ['PA', 'LA']) {
+  for (const state of ['LA']) {
     assert.equal(productionStateBlocked(state), true);
     assert.equal((await POST(request({kind:'exam',state,mode:'quick',score:0,correctCount:0,total:10}))).status,404);
   }
-  for (const state of ['AZ','CA','HI','NY']) assert.equal(productionStateBlocked(state),false);
+  for (const state of ['AZ','CA','HI','NY','PA']) assert.equal(productionStateBlocked(state),false);
   assert.equal((await POST(request(payload))).status,200);
   assert.equal((await POST(request({...payload,state:'AZ'}))).status,400);
   const { POST: mutateMistake, GET: readMistakes } = load('app/api/mistakes/route.ts');
-  assert.equal((await mutateMistake(request({questionId:'pa-001',favorited:true}))).status,404);
-  assert.equal((await readMistakes(new Request('http://localhost/api/mistakes/?state=PA'))).status,404);
+  assert.equal((await mutateMistake(request({questionId:'la-001',favorited:true}))).status,404);
+  assert.equal((await readMistakes(new Request('http://localhost/api/mistakes/?state=LA'))).status,404);
   const { GET: daily, POST: mutateDaily } = load('app/api/daily-study/route.ts');
-  assert.equal((await daily(new Request('http://localhost/api/daily-study/?state=PA'))).status,404);
-  assert.equal((await mutateDaily(new Request('http://localhost/api/daily-study/?state=PA',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'more',attemptId:'release-test-001'})}))).status,404);
-  console.log('Production: PA/LA learning rejected; NY answers and live states allowed; spoofed answer state denied');
+  assert.equal((await daily(new Request('http://localhost/api/daily-study/?state=LA'))).status,404);
+  assert.equal((await mutateDaily(new Request('http://localhost/api/daily-study/?state=LA',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'more',attemptId:'release-test-001'})}))).status,404);
+  console.log('Production: LA learning rejected; NY answers and live states allowed; spoofed answer state denied');
 } finally {
   if (previousVercelEnv === undefined) delete process.env.VERCEL_ENV;
   else process.env.VERCEL_ENV = previousVercelEnv;

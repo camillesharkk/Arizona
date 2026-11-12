@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { switchStateHref, type LiveState } from "@/lib/ca-site";
+import { LIVE_STATES, switchStateHref, type LiveState } from "@/lib/ca-site";
 import { pathState, writeStateCookie, type LiveCode } from "@/lib/site-state";
 import { availableStates, stateByCode, stateLabel } from "@/lib/states";
 import { packFor } from "@/lib/prep-pack";
@@ -18,7 +18,7 @@ function stateHref(pathname: string, code: string) {
     if (feature && feature in destination) return destination[feature as keyof typeof destination];
   }
   const home = stateByCode(code)?.homePath || "/";
-  if (!pathState(pathname) || (code !== "AZ" && code !== "CA" && code !== "HI" && code !== "NY")) return home;
+  if (!pathState(pathname) || !LIVE_STATES.includes(code as LiveState)) return home;
   const next = switchStateHref(pathname, code as LiveState);
   return next.split("#")[0]?.split("?")[0] || home;
 }
@@ -96,14 +96,14 @@ export function StateMenu({ pathname, current }: { pathname: string; current: Li
               href={stateHref(pathname, state.code)}
               aria-current={state.code === current ? "true" : undefined}
               onClick={() => {
-                if (state.code === "AZ" || state.code === "CA" || state.code === "HI" || state.code === "NY") writeStateCookie(state.code);
+                if (LIVE_STATES.includes(state.code as LiveState)) writeStateCookie(state.code as LiveState);
               }}
             >
               <span>{stateLabel(state)}</span>
               {state.code === current ? <span aria-hidden="true">✓</span> : null}
             </Link>
           ))}
-          {pathname.startsWith("/preview/") ? (["PA", "LA"] as const).map(code => (
+          {pathname.startsWith("/preview/") ? (["PA", "LA"] as const).filter(code => !packFor(code)?.available).map(code => (
             <Link key={code} role="menuitem" href={stateHref(pathname, code)} onClick={() => writeStateCookie(code)}>
               {packFor(code)?.name} ({code}) preview
             </Link>

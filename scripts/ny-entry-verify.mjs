@@ -46,7 +46,7 @@ let response=await POST(request('/api/study-settings/?state=NY',{mode:'custom',n
 assert.equal(JSON.stringify(await store.getStudyPlan(user.id,'AZ')),azBefore);
 assert.equal((await store.getStudyPlan(user.id,'NY')).document.settings.newQuestions,3);
 assert.equal((await GET(request('/api/study-settings/?state=NY'))).status,200);
-for(const state of ['PA','LA'])for(const handler of [GET,POST])assert.equal((await handler(request('/api/study-settings/?state='+state,handler===POST?{}:undefined))).status,404);
+for(const state of ['LA'])for(const handler of [GET,POST])assert.equal((await handler(request('/api/study-settings/?state='+state,handler===POST?{}:undefined))).status,404);
 const daily=load('app/api/daily-study/route.ts');response=await daily.GET(request('/api/daily-study/?state=NY&timeZone=America%2FNew_York'));assert.equal(response.status,200);const view=await response.json();assert.equal(view.state,'NY');assert.ok(view.practiceQuestionIds.length);
 browserFetch=async url=>{assert.match(url,/api\/daily-study/);return Response.json(view);};
 const {DailyStudyClient}=load('components/DailyStudyClient.tsx');hooksOn=true;render(DailyStudyClient,{stateCode:'NY'},true);const dailyEffects=effects;effects=[];for(const effect of dailyEffects)effect();await flush();hooksOn=false;
@@ -65,4 +65,4 @@ const questionNode=all(tree).find(n=>typeof n.type==='function'&&n.type.name==='
 const storage=load('lib/storage.ts');assert.ok(storage.loadProgress('NY').answeredIds.includes(question.question_id));assert.ok(!storage.loadProgress('AZ').answeredIds.includes(question.question_id));assert.equal(storage.loadProgress('NY').lastQuestionId,question.question_id);
 assert.equal(JSON.parse(questionRequests.find(([,opts])=>opts)[1].body).state,'NY');
 const {SaveForReview}=load('components/SaveForReview.tsx');let hydrate=[];browserFetch=async(url,opts)=>{hydrate.push([url,opts]);if(opts)return Response.json({ok:true,savedForReview:false});return Response.json({mistakes:url.includes('state=NY')?[{questionId:question.question_id,savedForReview:true}]:[]});};hooksOn=true;render(SaveForReview,{questionId:question.question_id},true);for(const effect of effects.splice(0))effect();await flush();hooksOn=false;tree=render(SaveForReview,{questionId:question.question_id});let button=all(tree).find(n=>n.type==='button');assert.equal(button.props['aria-pressed'],true);await button.props.onClick();assert.equal(JSON.parse(hydrate.find(([,opts])=>opts)[1].body).saveForReview,false);
-console.log('NY actual settings GET/POST preserve AZ, PA/LA blocked; daily API IDs render NY practice and answer 200; account menu and settings links retain NY; saved review refresh/removal passed.');
+console.log('NY actual settings GET/POST preserve AZ, LA blocked; daily API IDs render NY practice and answer 200; account menu and settings links retain NY; saved review refresh/removal passed.');

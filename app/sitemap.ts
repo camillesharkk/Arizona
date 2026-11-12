@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { caArticles } from "@/data/ca-articles";
 import { nyArticles } from "@/data/ny-articles";
+import { paArticles } from "@/data/pa-articles";
+import { paPaths } from "@/lib/pa-site";
 import { nyPaths } from "@/lib/ny-site";
 import { hiArticles } from "@/data/hi-articles";
 import { seoGuides } from "@/lib/seo-guides";
@@ -71,8 +73,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     nyPaths.laws,
     nyPaths.become,
     nyPaths.pricing,
+    paPaths.home,
+    paPaths.practice,
+    paPaths.questions,
+    paPaths.study,
+    paPaths.studyCards,
+    paPaths.resources,
+    paPaths.examGuide,
+    paPaths.passingScore,
+    paPaths.laws,
+    paPaths.become,
+    paPaths.pricing,
   ];
-  const articles = [...caArticles, ...hiArticles, ...nyArticles];
+  const articles = [...caArticles, ...hiArticles, ...nyArticles, ...paArticles];
   const indexed = [...new Set([...urls, ...seoGuides.filter((guide) => guide.index !== false).map((guide) => guide.path), ...articles.map((article) => article.path)])];
   const updated = new Map<string, string>([
     ...articles.map((article) => [article.path, article.updated] as const),

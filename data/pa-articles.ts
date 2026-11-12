@@ -21,15 +21,15 @@ function official(heading: string, body: string, reference: string, href = rules
 
 function article(slug: string, title: string, description: string, lede: string, sections: Section[]): StateArticle {
   return {
-    id: `pa-${slug}`, state: "PA", slug, path: `/preview/pennsylvania/guides/${slug}/`,
+    id: `pa-${slug}`, state: "PA", slug, path: `/pennsylvania/guides/${slug}/`,
     keyword: `pennsylvania notary ${slug.replaceAll("-", " ")}`,
     intent: description, title, description, h1: title, kicker: "Pennsylvania notary practice",
     lede, checked: "Official statute, current regulations and linked Department materials read November 12, 2026.",
     updated: "2026-11-12",
-    ledeCta: { href: "/preview/pennsylvania/questions/", label: "Explore Pennsylvania practice questions", placement: "lede", targetMode: "topic" },
+    ledeCta: { href: "/pennsylvania/questions/", label: "Explore Pennsylvania practice questions", placement: "lede", targetMode: "topic" },
     sections,
-    endCta: { href: "/preview/pennsylvania/practice/?mode=full", label: "Start 30-question comprehensive practice", placement: "end", targetMode: "full" },
-    related: [{ href: "/preview/pennsylvania/study-cards/", label: "Pennsylvania study cards" }, { href: "/preview/pennsylvania/exam-guide/", label: "Pennsylvania exam guide" }],
+    endCta: { href: "/pennsylvania/practice/?mode=full", label: "Start 30-question comprehensive practice", placement: "end", targetMode: "full" },
+    related: [{ href: "/pennsylvania/study-cards/", label: "Pennsylvania study cards" }, { href: "/pennsylvania/exam-guide/", label: "Pennsylvania exam guide" }],
   };
 }
 
@@ -118,7 +118,7 @@ export const paArticles: StateArticle[] = [
 
 function reference(key: string, title: string, description: string, lede: string, sections: Section[]): StateArticle {
   const result = article(key, title, description, lede, sections);
-  return { ...result, id: `pa-reference-${key}`, path: `/preview/pennsylvania/${key}/` };
+  return { ...result, id: `pa-reference-${key}`, path: `/pennsylvania/${key}/` };
 }
 
 // Core reference routes are additional to the ten independently authored guides.

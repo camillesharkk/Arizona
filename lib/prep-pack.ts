@@ -3,6 +3,7 @@ import { nyCards, nyQuestionCounts, nyTopics, pickNyFullExam, publishedNyQuestio
 import { paCards, paQuestionCounts, paTopics, pickPaFullExam, pickPaQuickExam, publishedPaQuestions } from "@/data/pa-content";
 import { shuffle } from "@/lib/answer-sequence";
 import { nyPaths } from "./ny-site.ts";
+import { paPaths } from "./pa-site.ts";
 import { paths as sharedPaths } from "@/lib/paths";
 import type { Question, StateCode } from "@/lib/types";
 
@@ -98,8 +99,8 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     code: "PA",
     name: "Pennsylvania",
     slug: "pennsylvania",
-    available: false,
-    paths: paths("pennsylvania"),
+    available: true,
+    paths: paPaths,
     topics: paTopics,
     questions: publishedPaQuestions,
     counts: paQuestionCounts,
