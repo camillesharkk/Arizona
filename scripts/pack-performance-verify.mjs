@@ -6,6 +6,7 @@ import { createRequire } from 'node:module';
 import { randomUUID } from 'node:crypto';
 import { performance } from 'node:perf_hooks';
 import ts from 'typescript';
+import { verificationStates } from './pack-test-utils.mjs';
 import { PGlite } from '../.tools/ny-pg/node_modules/@electric-sql/pglite/dist/index.js';
 
 // Execute the real PostgreSQL store against an isolated PostgreSQL WASM engine.
@@ -75,7 +76,7 @@ try {
     return action(scoped);
   });
   const results = [];
-  for (const state of ['NY', 'PA', 'LA']) {
+  for (const state of verificationStates(['NY', 'PA', 'LA'])) {
     const user = await store.createUser({ email: `performance-${state}@example.invalid`, passwordHash: 'isolated', name: null });
     const seed = state === 'PA' ? 12361 : 12345;
     const draw = packFor(state).pickFull(seed);

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import {testLoader} from './pack-test-utils.mjs';
+import {testLoader,verificationStates} from './pack-test-utils.mjs';
 const {prepPacks}=testLoader()('lib/prep-pack.ts');
-for(const state of ['NY','PA','LA']){
+for(const state of verificationStates(['NY','PA','LA'])){
  const pack=prepPacks[state],seen=new Set();
  for(let seed=0;seed<500;seed++)for(const question of pack.pickQuick(seed)){
   assert.equal(question.is_free,true);seen.add(question.study_topic);

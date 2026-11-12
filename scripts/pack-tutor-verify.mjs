@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
-import {testLoader} from './pack-test-utils.mjs';
+import {testLoader,verificationStates} from './pack-test-utils.mjs';
 const load=testLoader(),{runTutorTurn,tutorOptionOrder}=load('lib/ai/tutor.ts');
 const {prepPacks}=load('lib/prep-pack.ts');
 const store=load('lib/store/memory-store.ts').createMemoryStore();
-for(const state of ['PA','LA']){
+const states=verificationStates(['PA','LA']);
+for(const state of states){
  const q=prepPacks[state].questions().find(q=>q.is_free),options=[q.option_c,q.option_a,q.option_b,q.option_d];
  const shown=tutorOptionOrder(q,options);assert.ok(shown);
  let prompt='';
@@ -13,4 +14,4 @@ for(const state of ['PA','LA']){
  assert.equal(fallback.provider,'grounded-fallback');assert.ok(fallback.fallbackReason);assert.ok(fallback.text.length>30);
  assert.equal(tutorOptionOrder(q,['invented','invalid','options','text']),null);
 }
-console.log('PA/LA Tutor: correct state/source/shuffled-choice context, no Arizona context, invalid-choice rejection and attributed provider-outage fallback passed');
+console.log(`${states.join('/')} Tutor: correct state/source/shuffled-choice context, no Arizona context, invalid-choice rejection and attributed provider-outage fallback passed`);

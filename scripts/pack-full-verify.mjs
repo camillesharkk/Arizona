@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import { createRequire } from 'node:module';
 import { randomUUID } from 'node:crypto';
 import ts from 'typescript';
+import { verificationStates } from './pack-test-utils.mjs';
 const native = createRequire(import.meta.url), cache = new Map();
 let store;
 function load(file) {
@@ -18,9 +19,10 @@ function load(file) {
 const {savePackFullSubmission}=load('lib/ny-full-submission.ts');
 assert.equal(typeof savePackFullSubmission,'function','PA/LA need one atomic server-graded submission');
 const {prepPacks}=load('lib/prep-pack.ts');
-for(const state of ['PA','LA']) {
+for(const state of verificationStates(['PA','LA'])) {
   const pack=prepPacks[state];
   const draw=pack.pickFull(7123);
+  if(process.argv.includes('--state')) assert.ok(draw, `${state} selected candidate must have a complete full draw`);
   if(!draw) { assert.equal(state,'LA'); console.log('LA content draw pending; rerun after integration'); continue; }
   store=load('lib/store/memory-store.ts').createMemoryStore();
   const user=await store.createUser({email:randomUUID()+'@example.invalid',passwordHash:'isolated',name:null});

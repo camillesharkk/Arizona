@@ -4,6 +4,15 @@ import vm from 'node:vm';
 import { createRequire } from 'node:module';
 import ts from 'typescript';
 
+// Keep existing-state regressions when checking an independently releasable pack.
+export function verificationStates(defaults, args = process.argv.slice(2)) {
+  const index = args.indexOf('--state');
+  if (index < 0) return defaults;
+  const state = args[index + 1];
+  if (!defaults.includes(state)) throw new Error(`--state must be one of ${defaults.join(', ')}`);
+  return defaults.includes('NY') && state !== 'NY' ? ['NY', state] : [state];
+}
+
 // For isolated scripts only. Production session/auth logic is never replaced by this loader.
 export function testLoader(overrides = {}) {
   const native = createRequire(import.meta.url), cache = new Map();

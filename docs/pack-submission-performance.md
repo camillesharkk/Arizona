@@ -44,3 +44,22 @@ node scripts/ny-progress-verify.mjs
 ```
 
 The PGlite package must exist at `.tools/ny-pg/node_modules/@electric-sql/pglite`, matching the existing isolated PostgreSQL verification scripts.
+
+## Independent-candidate verification
+
+The reference, full-submission, performance, Quick10 and Tutor scripts accept `--state PA` or `--state LA`. Where a script covers NY, the explicit selection retains NY regression coverage. Reference checks always retain public NY wrappers and both production preview gates. An omitted option retains the original combined coverage; an invalid or missing state fails. A selected candidate without a complete full draw fails instead of reporting a pending-content skip.
+
+Run the following from each independent candidate, substituting its state:
+
+```sh
+node scripts/pack-scope-verify.mjs
+node scripts/pack-reference-verify.mjs --state LA
+node scripts/pack-full-verify.mjs --state LA
+node scripts/pack-performance-verify.mjs --state LA
+node scripts/pack-quick-coverage-verify.mjs --state LA
+node scripts/pack-tutor-verify.mjs --state LA
+node scripts/pack-content-audit.mjs --state LA
+npx tsc --noEmit
+```
+
+This corrects the scripts' earlier ignored `--state` argument, which caused an LA-only candidate to inspect unintegrated PA reference pages. It changes verification tooling only. Fresh LA-only PGlite verification retained all replay/rollback/history assertions and measured NY131→14statements (80.8→28.2ms) and LA131→14 (58.4→22.3ms). These local timings are not production measurements.

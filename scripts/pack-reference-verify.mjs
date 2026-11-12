@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
-import { testLoader } from './pack-test-utils.mjs';
+import { testLoader, verificationStates } from './pack-test-utils.mjs';
+
+const states = verificationStates(['NY', 'PA', 'LA']);
 
 process.env.STATE_PREVIEW = '1';
 process.env.VERCEL_ENV = 'preview';
@@ -16,6 +18,7 @@ const publicMetadata = {
 for (const [reference, nyArticle] of Object.entries(references)) {
   const route = load(`app/preview/[state]/${reference}/page.tsx`);
   for (const [slug, code] of [['pennsylvania', 'PA'], ['louisiana', 'LA'], ['new-york', 'NY']]) {
+    if (!states.includes(code)) continue;
     const params = Promise.resolve({ state: slug });
     const expected = code === 'NY' ? nyArticle : prepReferences[code][reference];
     const rendered = await route.default({ params });
@@ -40,4 +43,4 @@ for (const reference of Object.keys(references)) {
     await assert.rejects(route.generateMetadata({ params: Promise.resolve({ state }) }), /not_found/);
   }
 }
-console.log('PA/LA/NY reference routes render registered articles and per-state metadata; public NY wrappers and production gates preserved');
+console.log(`${states.join('/')} reference routes render registered articles and per-state metadata; public NY wrappers and both production gates preserved`);
