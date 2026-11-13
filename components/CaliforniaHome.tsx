@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useEffect, useState } from "react";
 import { caPaths } from "@/lib/ca-site";
 import { openSitting } from "@/lib/sitting";
@@ -31,7 +33,7 @@ export function CaliforniaHome({ questionCount, cardCount }: { questionCount: nu
     } catch {
       apply(owner, false);
     }
-    fetch("/api/auth/me/")
+    fetchAccount()
       .then((response) => response.json())
       .then((data) => {
         owner = data.user?.id || "guest";

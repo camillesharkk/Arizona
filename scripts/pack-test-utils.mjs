@@ -14,7 +14,7 @@ export function verificationStates(defaults, args = process.argv.slice(2)) {
 }
 
 // For isolated scripts only. Production session/auth logic is never replaced by this loader.
-export function testLoader(overrides = {}) {
+export function testLoader(overrides = {}, globals = {}) {
   const native = createRequire(import.meta.url), cache = new Map();
   function load(file) {
     file = path.resolve(file);
@@ -23,7 +23,7 @@ export function testLoader(overrides = {}) {
     if (cache.has(file)) return cache.get(file).exports;
     const module={exports:{}}; cache.set(file,module);
     const require = name => Object.hasOwn(overrides,name) ? overrides[name] : name==='server-only' ? {} : name.startsWith('@/') ? load(name.slice(2)) : name.startsWith('.') ? load(path.resolve(path.dirname(file),name)) : native(name);
-    vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,{module,exports:module.exports,require,console,process,Date,Math,Intl,URL,URLSearchParams,Request,Response,Headers,AbortSignal,AbortController,setTimeout,clearTimeout,fetch,structuredClone,TextEncoder,TextDecoder});
+    vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,{module,exports:module.exports,require,console,process,Date,Math,Intl,URL,URLSearchParams,Request,Response,Headers,AbortSignal,AbortController,setTimeout,clearTimeout,fetch,structuredClone,TextEncoder,TextDecoder,...globals});
     return module.exports;
   }
   return load;

@@ -16,6 +16,7 @@ import { packFor } from "@/lib/prep-pack";
 import { examState } from "@/lib/ca-daily-shape";
 import { hiPaths } from "@/lib/hi-site";
 import { recoverPendingPurchase, type AnalyticsPaidOrder } from "@/lib/analytics";
+import { syncGuestProgress } from "@/lib/ca-sync";
 
 const ACCESS_POLL_MS = 1000;
 const ACCESS_POLL_MAX = 10;
@@ -67,6 +68,7 @@ export function DashboardClient() {
   const [data, setData] = useState<ProgressPayload | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [syncMessage, setSyncMessage] = useState("");
   const [checkEmail, setCheckEmail] = useState(false);
   const [checkoutPhase, setCheckoutPhase] = useState<CheckoutPhase>("boot");
   const [accessRetry, setAccessRetry] = useState(0);
@@ -102,6 +104,9 @@ export function DashboardClient() {
 
     async function loadProgress() {
       try {
+        const imports = await syncGuestProgress();
+        if (cancelled) return;
+        setSyncMessage(imports.find(result => result.pending)?.message || "");
         const response = await fetch("/api/progress/");
         const progress = await response.json().catch(() => null);
         if (cancelled) return;
@@ -250,6 +255,7 @@ export function DashboardClient() {
 
   return (
     <div className="grid">
+      {syncMessage && <p className="notice" role="status">{syncMessage} <button type="button" className="link-button" onClick={() => { setLoaded(false); setAccessRetry(n => n + 1); }}>Retry sync</button></p>}
       {checkEmail && <p className="notice">Check your inbox for a verification email, then click the link.</p>}
       {checkoutPhase === "activated" && <p className="notice">Pro activated successfully.</p>}
       {activating && <CheckoutStatus phase={checkoutPhase} onRefresh={retryAccess} />}

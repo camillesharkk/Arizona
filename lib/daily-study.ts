@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from "node:util";
 import { caCards } from "@/data/ca-cards";
 import { hiCards } from "@/data/hi-cards";
 import { publishedCaQuestions } from "@/data/ca-questions";
@@ -7,7 +8,7 @@ import { localDate } from "@/lib/calendar";
 import { recentCaExams, type CaCheck } from "@/lib/ca-daily-shape";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
-import { accountProExpiry, hasArizonaPro } from "@/lib/entitlements";
+import { accountProCovers, accountProExpiry, hasArizonaPro } from "@/lib/entitlements";
 import { publicStudyCards, studyCardCatalog } from "@/lib/study-cards";
 import {
   applyCardMark,
@@ -124,7 +125,7 @@ async function loadDocument(userId: string, state: StudyState, today: string, ti
   const hint = timeZoneHint && timeZoneHint.length < 80 ? timeZoneHint : undefined;
   const doc = normalizeDocument(row?.document, today, hint || DEFAULT_STUDY_TIME_ZONE);
   if (!row && hint) doc.settings.timeZone = hint;
-  return { store, doc, checks: state === "CA" || state === "HI" || isPack(state) ? keptChecks(row?.document) : undefined };
+  return { store, doc, storedDocument: row?.document, checks: state === "CA" || state === "HI" || isPack(state) ? keptChecks(row?.document) : undefined };
 }
 
 async function saveDocument(store: Awaited<ReturnType<typeof getStore>>, userId: string, state: StudyState, doc: StudyDocument, checks?: Record<string, CaCheck>) {
@@ -132,10 +133,10 @@ async function saveDocument(store: Awaited<ReturnType<typeof getStore>>, userId:
 }
 
 export async function dailyStudyView(userId: string, timeZoneHint?: string, now = new Date().toISOString(), state: StudyState = "AZ") {
-  const pro = await hasArizonaPro(userId);
   const topicPractice = state === "CA" || state === "HI" || isPack(state);
   const storeForExpiry = await getStore();
   const account = await storeForExpiry.listEntitlements(userId);
+  const pro = accountProCovers(account);
   const expires = accountProExpiry(account, new Date(now));
   const loaded = await loadDocument(userId, state, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
   let doc = loaded.doc;
@@ -178,7 +179,8 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   });
   const previousSeconds = doc.days[today]?.visibleSeconds ?? 0;
   doc = { ...doc, days: { ...doc.days, [today]: { tasks: built.tasks, visibleSeconds: previousSeconds } } };
-  await saveDocument(store, userId, state, doc, checks);
+  const document = checks ? { ...doc, checks } : doc;
+  if (!isDeepStrictEqual(loaded.storedDocument, document)) await saveDocument(store, userId, state, doc, checks);
   const projection = projectPlan({
     settings: doc.settings,
     today,

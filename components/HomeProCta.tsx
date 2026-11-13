@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
@@ -18,7 +20,7 @@ export function HomeProCta() {
   const bankSize = eligibleExamPool().length;
 
   useEffect(() => {
-    fetch("/api/auth/me/")
+    fetchAccount()
       .then((r) => r.json())
       .then((d) => {
         setIsPro(Boolean(d.user?.arizonaPro));

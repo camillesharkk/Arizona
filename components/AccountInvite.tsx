@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { shouldInviteAccount, subscribeProgress } from "@/lib/storage";
@@ -10,7 +12,7 @@ export function AccountInvite({ compact }: { compact?: boolean }) {
 
   useEffect(() => {
     const sync = async () => {
-      const me = await fetch("/api/auth/me/").then((r) => r.json()).catch(() => ({ user: null }));
+      const me = await fetchAccount().then((r) => r.json()).catch(() => ({ user: null }));
       setShow(!me.user && shouldInviteAccount());
     };
     sync();

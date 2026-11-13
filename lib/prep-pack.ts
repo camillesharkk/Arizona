@@ -1,30 +1,10 @@
+import { prepNavigation, type PrepCode, type PrepPaths } from "./prep-navigation.ts";
+export type { PrepCode, PrepPaths } from "./prep-navigation.ts";
 import { laCards, laTopics, pickLaFullExam, publishedLaQuestions } from "@/data/la-content";
 import { nyCards, nyQuestionCounts, nyTopics, pickNyFullExam, publishedNyQuestions } from "@/data/ny-content";
 import { paCards, paQuestionCounts, paTopics, pickPaFullExam, pickPaQuickExam, publishedPaQuestions } from "@/data/pa-content";
 import { shuffle } from "@/lib/answer-sequence";
-import { nyPaths } from "./ny-site.ts";
-import { paPaths } from "./pa-site.ts";
-import { laPaths } from "./la-site.ts";
 import type { Question, StateCode } from "@/lib/types";
-
-export type PrepCode = "NY" | "PA" | "LA";
-
-export type PrepPaths = {
-  home: string;
-  practice: string;
-  questions: string;
-  study: string;
-  studyCards: string;
-  mistakes: string;
-  daily: string;
-  resources: string;
-  examGuide: string;
-  passingScore: string;
-  laws: string;
-  become: string;
-  pricing: string;
-  login: string;
-};
 
 export type PrepPack = {
   code: PrepCode;
@@ -77,11 +57,7 @@ const nyCounts = nyQuestionCounts();
 
 export const prepPacks: Record<PrepCode, PrepPack> = {
   PA: {
-    code: "PA",
-    name: "Pennsylvania",
-    slug: "pennsylvania",
-    available: true,
-    paths: paPaths,
+    ...prepNavigation.PA,
     topics: paTopics,
     questions: publishedPaQuestions,
     counts: paQuestionCounts,
@@ -97,11 +73,7 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     cards: paCards,
   },
   NY: {
-    code: "NY",
-    name: "New York",
-    slug: "new-york",
-    available: true,
-    paths: nyPaths,
+    ...prepNavigation.NY,
     topics: nyTopics,
     questions: publishedNyQuestions,
     counts: nyQuestionCounts,
@@ -117,11 +89,7 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     cards: nyCards,
   },
   LA: {
-    code: "LA",
-    name: "Louisiana",
-    slug: "louisiana",
-    available: true,
-    paths: laPaths,
+    ...prepNavigation.LA,
     topics: laTopics,
     questions: publishedLaQuestions,
     counts: () => {

@@ -1,5 +1,8 @@
 "use client";
 
+import { fetchAccount, invalidateAccountRead } from "@/lib/client-account";
+import { syncGuestProgress } from "@/lib/ca-sync";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -7,7 +10,7 @@ import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
-import { packFor } from "@/lib/prep-pack";
+import { packNavigationFor } from "@/lib/prep-navigation";
 import { useResolvedState } from "@/components/SavedState";
 import type { LiveCode } from "@/lib/site-state";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
@@ -24,7 +27,7 @@ function active(pathname: string, href: string) {
 }
 
 function navFor(state: LiveCode | null) {
-  const source = packFor(state)?.paths || (state === "CA" ? caPaths : state === "HI" ? hiPaths : null);
+  const source = packNavigationFor(state)?.paths || (state === "CA" ? caPaths : state === "HI" ? hiPaths : null);
   if (!source) return paths;
   return {
     ...paths,
@@ -79,11 +82,12 @@ export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
   useEffect(() => {
     let cancelled = false;
     const request = window.setTimeout(() => {
-      fetch("/api/auth/me/")
+      fetchAccount()
         .then((r) => r.json())
         .then((d) => {
           if (cancelled) return;
           if (d.user) {
+            void syncGuestProgress(d.user.id);
             setMe(d.user);
             setAuthStatus("signed-in");
           } else {
@@ -127,6 +131,7 @@ export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
 
   async function logout() {
     await fetch("/api/auth/logout/", { method: "POST" });
+    invalidateAccountRead();
     void resetAnalyticsUser();
     setMe(null);
     setAuthStatus("signed-out");

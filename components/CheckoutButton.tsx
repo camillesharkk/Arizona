@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
@@ -71,7 +73,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
   const [hideModal, setHideModal] = useState(false);
 
   const load = useCallback(async (credit: boolean) => {
-    const me = await fetch("/api/auth/me/").then((r) => r.json()).catch(() => ({ user: null }));
+    const me = await fetchAccount().then((r) => r.json()).catch(() => ({ user: null }));
     if (!me.user) {
       setSignedIn(false);
       setPreview(null);

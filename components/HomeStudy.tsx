@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ExamRunner } from "@/components/ExamRunner";
@@ -103,7 +105,7 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
     setAuthReady(false);
     let cancel = false;
     const controller = new AbortController();
-    fetch("/api/auth/me/", { signal: controller.signal, cache: "no-store" })
+    fetchAccount({ signal: controller.signal, cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
         if (cancel) return;

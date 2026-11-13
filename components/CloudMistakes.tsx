@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,6 +23,7 @@ import { readCaAttempt, latestCaQuick, type CaQuickAttempt } from "@/lib/ca-atte
 import { listPhase } from "@/lib/list-phase";
 import { markMistakePromptSeen, mistakePrompt, readMistakePrompts, type MistakeAction, type MistakePrompt } from "@/lib/mistake-prompts";
 import { packFor } from "@/lib/prep-pack";
+import { syncCaAttempts } from "@/lib/ca-sync";
 import type { Question, StateCode } from "@/lib/types";
 import type { QuestionStat } from "@/lib/store/types";
 
@@ -58,6 +61,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
   const [needAuth, setNeedAuth] = useState(false);
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState(false);
+  const [syncMessage, setSyncMessage] = useState("");
   const [source, setSource] = useState<"all" | "incorrect" | "saved">("all");
   const requestId = useRef(0);
   const pendingIds = useRef(new Set<string>());
@@ -87,7 +91,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
     setScopeSummary("");
     setScopeNote("");
     try {
-      const meResponse = await fetch("/api/auth/me/", { cache: "no-store", signal: AbortSignal.timeout(30000) });
+      const meResponse = await fetchAccount({ cache: "no-store", signal: AbortSignal.timeout(30000) });
       if (id !== requestId.current || pendingIds.current.size) return;
       if (!meResponse.ok) throw new Error("account");
       const me = await meResponse.json();
@@ -98,6 +102,9 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         return;
       }
       setNeedAuth(false);
+      const sync = await syncCaAttempts(stateCode, me.user.id);
+      if (id !== requestId.current) return;
+      setSyncMessage(sync.message || "");
       userIdRef.current = me.user.id;
       setSeen(readMistakePrompts(window.localStorage, me.user.id));
       setIsPro(topicPractice ? false : Boolean(me.user.arizonaPro || me.user.plan === "pro"));
@@ -393,6 +400,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         </p>
       ) : null}
       {scopeNote ? <p className="notice" role="status">{scopeNote}</p> : null}
+      {syncMessage ? <p className="notice" role="status">{syncMessage} <button className="btn btn-ghost" onClick={() => void load()}>Retry sync</button></p> : null}
       {!ready && !loadError ? <LoadingNote text="Loading your questions…" /> : null}
       {ready ? (
       <>

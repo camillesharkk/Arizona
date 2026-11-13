@@ -71,7 +71,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
     setLoadError(false);
     let hold = false;
     try {
-      if (stateCode === "CA" || stateCode === "HI") await syncCaAttempts(stateCode).catch(() => undefined);
+      await syncCaAttempts(stateCode);
       if (id !== loadId.current) return;
       const response = await fetch(`/api/daily-study/?${query}`, { cache: "no-store" });
       if (id !== loadId.current) return;

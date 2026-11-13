@@ -1,62 +1,77 @@
 "use client";
 
-import { adoptGuestCaRecords, listCaAttempts, markCaAttemptSynced } from "@/lib/ca-attempts";
+import { adoptGuestCaRecords, hasPendingCaAttempts, listCaAttempts, markCaAttemptSynced, type TopicPracticeState } from "@/lib/ca-attempts";
+import { adoptGuestSittings, readSitting, sittingKey } from "@/lib/sitting";
+import { fetchAccount } from "@/lib/client-account";
 
-/** Post this browser's state checks to the signed-in account. Same attempt ids stay idempotent. */
-const inflight = new Map<string, Promise<{ ok: boolean; pending: boolean }>>();
+type SyncResult = { ok: boolean; pending: boolean; message?: string };
+const states: TopicPracticeState[] = ["AZ", "CA", "HI", "NY", "PA", "LA"];
+const inflight = new Map<string, Promise<SyncResult>>();
 
-export function syncCaAttempts(state: "CA" | "HI" = "CA") {
-  const existing = inflight.get(state);
+export async function syncCaAttempts(state: TopicPracticeState = "CA", userId?: string): Promise<SyncResult> {
+  const guestPrefix = sittingKey("guest", "", state);
+  let hasGuestSitting = false;
+  try {
+    hasGuestSitting = Array.from({ length: sessionStorage.length }, (_, index) => sessionStorage.key(index)).some(key => key?.startsWith(guestPrefix));
+  } catch {
+    // The account page still works when a browser disallows session storage.
+  }
+  if (!hasPendingCaAttempts(state) && !hasGuestSitting) return { ok: true, pending: false };
+  if (!userId) {
+    try {
+      const account = await (await fetchAccount()).json();
+      return account.user?.id ? syncCaAttempts(state, account.user.id) : { ok: true, pending: false };
+    } catch {
+      return { ok: false, pending: true, message: "Your practice is saved on this device. Retry to finish syncing it." };
+    }
+  }
+  const key = `${userId}:${state}`;
+  const existing = inflight.get(key);
   if (existing) return existing;
-  const run = syncOnce(state).finally(() => {
-    inflight.delete(state);
+  const run = syncOnce(state, userId).catch(() => ({ ok: false, pending: true, message: "Your practice is saved on this device. Retry to finish syncing it." })).finally(() => {
+    if (inflight.get(key) === run) inflight.delete(key);
   });
-  inflight.set(state, run);
+  inflight.set(key, run);
   return run;
 }
 
-async function syncOnce(state: "CA" | "HI") {
-  const me = await fetch("/api/auth/me/", { cache: "no-store" });
-  if (!me.ok) return { ok: false, pending: false };
-  const data = await me.json();
-  const userId = data.user?.id as string | undefined;
-  if (!userId) return { ok: true, pending: false };
-  adoptGuestCaRecords(userId, state);
-  const pending = listCaAttempts(userId, state).filter((attempt) => !attempt.synced);
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  for (const attempt of pending) {
-    for (const questionId of attempt.questionIds) {
-      const selected = attempt.originalAnswers[questionId];
-      const attemptId = attempt.attemptIds[questionId];
-      if (!selected || !attemptId) continue;
-      const response = await fetch("/api/progress/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        cache: "no-store",
-        body: JSON.stringify({ questionId, selected, attemptId, review: false, state, timeZone }),
-      });
-      if (!response.ok) return { ok: false, pending: true };
+export function syncGuestProgress(userId?: string) {
+  return Promise.all(states.map(state => syncCaAttempts(state, userId)));
+}
+
+async function syncOnce(state: TopicPracticeState, userId: string): Promise<SyncResult> {
+  if (state === "AZ") {
+    for (const mode of ["quick", "home-quick"]) {
+      const guestSitting = readSitting(sessionStorage, "guest", mode, state);
+      if (guestSitting?.done && guestSitting.examId && !listCaAttempts("guest", state).some(attempt => attempt.id === guestSitting.examId)) {
+        const { archiveGuestArizonaQuick } = await import("@/lib/guest-sitting-attempt");
+        archiveGuestArizonaQuick(guestSitting);
+      }
     }
-    const exam = await fetch("/api/progress/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      cache: "no-store",
+  }
+  adoptGuestCaRecords(userId, state);
+  adoptGuestSittings(sessionStorage, userId, state);
+  const pending = listCaAttempts(userId, state).filter(attempt => !attempt.synced).sort((left, right) => left.finishedAt.localeCompare(right.finishedAt));
+  let message: string | undefined;
+  for (const attempt of pending) {
+    const response = await fetch("/api/progress/import/", {
+      method: "POST", headers: { "Content-Type": "application/json" }, signal: AbortSignal.timeout(20000),
       body: JSON.stringify({
-        kind: "exam",
-        mode: "quick",
-        score: Math.round((attempt.correctIds.length / Math.max(attempt.questionIds.length, 1)) * 100),
-        correctCount: attempt.correctIds.length,
-        total: attempt.questionIds.length,
-        examId: attempt.id,
-        state,
-        wrongIds: attempt.wrongIds,
-        skipped: attempt.skippedIds.length,
-        timeZone,
+        accountId: userId, state, examId: attempt.id, finishedAt: attempt.finishedAt,
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        questions: attempt.questionIds.map(questionId => ({
+          questionId, questionVersion: attempt.questionVersions?.[questionId] ?? 1,
+          selected: attempt.originalAnswers[questionId], attemptId: attempt.attemptIds[questionId],
+        })),
       }),
     });
-    if (!exam.ok && exam.status !== 401) return { ok: false, pending: true };
-    if (exam.status === 401) return { ok: false, pending: true };
-    markCaAttemptSynced(userId, attempt.id, state);
+    if (response.ok) markCaAttemptSynced(userId, attempt.id, state);
+    else {
+      const error = await response.json().catch(() => ({}));
+      message = error.code === "question_updated"
+        ? "An earlier practice uses older questions. Its original result remains saved on this device."
+        : "Your practice is saved on this device. Retry to finish syncing it.";
+    }
   }
-  return { ok: true, pending: false };
+  return { ok: !message, pending: Boolean(message), message };
 }

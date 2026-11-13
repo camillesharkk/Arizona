@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -50,7 +52,7 @@ export function CaliforniaGuide({ state = "CA" }: { state?: "CA" | "HI" } = {}) 
   }
 
   useEffect(() => {
-    fetch("/api/auth/me/")
+    fetchAccount()
       .then((response) => (response.ok ? response.json() : Promise.reject(new Error("account"))))
       .then((data) => {
         const userId = data.user?.id || "";

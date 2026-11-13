@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
@@ -27,7 +29,7 @@ export function WrongAnswersLink({
       const id = ++requestId.current;
       const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix";
       const day = new Intl.DateTimeFormat("en-CA", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
-      fetch("/api/auth/me/", { cache: "no-store" })
+      fetchAccount({ cache: "no-store" })
         .then((r) => r.json())
         .then(async (me) => {
           if (cancel || id !== requestId.current) return;

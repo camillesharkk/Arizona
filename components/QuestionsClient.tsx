@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { publishedQuestions } from "@/data/questions";
@@ -74,7 +76,7 @@ export function QuestionsClient({
     let cancel = false;
     setAuthReady(false);
     setBootError(false);
-    fetch("/api/auth/me/")
+    fetchAccount()
       .then((response) => (response.ok ? response.json() : Promise.reject(new Error("account"))))
       .then((data) => {
         if (cancel) return;

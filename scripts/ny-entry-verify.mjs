@@ -30,7 +30,7 @@ function load(file) {
   return native(name);
  };
  const source=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
- vm.runInNewContext(source,{module,exports:module.exports,require,console,process,Date,Math,URL,URLSearchParams,Intl,structuredClone,localStorage,sessionStorage:localStorage,window:{location:{pathname:'/new-york/daily-study/',search:'?state=NY'},dispatchEvent(){},addEventListener(){},removeEventListener(){}},document:{visibilityState:'visible',addEventListener(){},removeEventListener(){}},fetch:(...args)=>browserFetch(...args),crypto:globalThis.crypto,Event,CustomEvent:globalThis.CustomEvent,requestAnimationFrame:()=>{}});
+ vm.runInNewContext(source,{module,exports:module.exports,require,console,process,Date,Math,URL,URLSearchParams,Intl,AbortSignal,structuredClone,localStorage,sessionStorage:localStorage,window:{location:{pathname:'/new-york/daily-study/',search:'?state=NY'},dispatchEvent(){},addEventListener(){},removeEventListener(){}},document:{visibilityState:'visible',addEventListener(){},removeEventListener(){}},fetch:(...args)=>browserFetch(...args),crypto:globalThis.crypto,Event,CustomEvent:globalThis.CustomEvent,requestAnimationFrame:()=>{}});
  return module.exports;
 }
 function render(fn,props={},reset=false){if(reset)hookValues=[];hookAt=0;return fn(props);}
@@ -63,6 +63,6 @@ hooksOn=true;render(QuestionsClient,{stateCode:'NY',questions:[question]},true);
 assert.ok(all(tree).some(n=>n.type==='button'&&JSON.stringify(n.props.children).includes('Appointment')), 'NY topics appear');
 const questionNode=all(tree).find(n=>typeof n.type==='function'&&n.type.name==='QuestionBlock');assert.ok(questionNode);questionNode.props.onChoose(questionNode.props.q.correct_option);await flush();
 const storage=load('lib/storage.ts');assert.ok(storage.loadProgress('NY').answeredIds.includes(question.question_id));assert.ok(!storage.loadProgress('AZ').answeredIds.includes(question.question_id));assert.equal(storage.loadProgress('NY').lastQuestionId,question.question_id);
-assert.equal(JSON.parse(questionRequests.find(([,opts])=>opts)[1].body).state,'NY');
+assert.equal(JSON.parse(questionRequests.find(([,opts])=>opts?.method==='POST')[1].body).state,'NY');
 const {SaveForReview}=load('components/SaveForReview.tsx');let hydrate=[];browserFetch=async(url,opts)=>{hydrate.push([url,opts]);if(opts)return Response.json({ok:true,savedForReview:false});return Response.json({mistakes:url.includes('state=NY')?[{questionId:question.question_id,savedForReview:true}]:[]});};hooksOn=true;render(SaveForReview,{questionId:question.question_id},true);for(const effect of effects.splice(0))effect();await flush();hooksOn=false;tree=render(SaveForReview,{questionId:question.question_id});let button=all(tree).find(n=>n.type==='button');assert.equal(button.props['aria-pressed'],true);await button.props.onClick();assert.equal(JSON.parse(hydrate.find(([,opts])=>opts)[1].body).saveForReview,false);
 console.log('NY actual settings GET/POST preserve AZ, LA candidate allowed; daily API IDs render NY practice and answer 200; account menu and settings links retain NY; saved review refresh/removal passed.');

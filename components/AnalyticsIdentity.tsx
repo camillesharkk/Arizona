@@ -1,12 +1,14 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useEffect } from "react";
 import { syncAnalyticsIdentity } from "@/lib/analytics";
 
 export function AnalyticsIdentity() {
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/auth/me/")
+    fetchAccount()
       .then((res) => res.json())
       .then((data) => {
         if (cancelled) return;

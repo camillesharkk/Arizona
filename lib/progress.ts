@@ -8,6 +8,46 @@ import { applyReviewAnswer, DEFAULT_STUDY_TIME_ZONE, migrateReviewFields } from 
 import { getStore } from "@/lib/store";
 import type { QuestionStat, Store } from "@/lib/store/types";
 import type { UserRow } from "@/lib/store/types";
+import type { StateCode } from "@/lib/types";
+
+/** Keep the normal answer/revision rules while grouping one imported sitting's I/O. */
+export async function recordQuestionAnswers(opts: {
+  store: Store;
+  userId: string;
+  state: StateCode;
+  answers: { questionId: string; selected: "A" | "B" | "C" | "D"; correct: boolean; attemptId: string }[];
+  plan: Awaited<ReturnType<Store["getStudyPlan"]>>;
+  timeZone?: string;
+}) {
+  const { store, userId, state, plan } = opts;
+  let user = await store.getUserById(userId);
+  let userPatch: Partial<UserRow> | undefined;
+  const answerStore: Store = Object.assign(Object.create(store) as Store, {
+    getStudyPlan: async (id: string, code: StateCode) => id === userId && code === state ? plan : store.getStudyPlan(id, code),
+    getUserById: async (id: string) => id === userId ? user : store.getUserById(id),
+    updateUser: async (id: string, patch: Partial<UserRow>) => {
+      if (id !== userId || !user) return store.updateUser(id, patch);
+      userPatch = { ...userPatch, ...patch };
+      user = { ...user, ...patch };
+      return user;
+    },
+  });
+  const pending: QuestionStat[] = [];
+  if (store.claimAttempts && store.getStats && store.upsertStats) {
+    const fresh = new Set(await store.claimAttempts(userId, opts.answers));
+    const stats = new Map((await store.getStats(userId, opts.answers.map(answer => answer.questionId))).map(stat => [stat.questionId, stat]));
+    answerStore.claimAttempt = async (_id, attemptId) => fresh.has(attemptId);
+    answerStore.getStat = async (_id, questionId) => stats.get(questionId) ?? null;
+    answerStore.upsertStat = async stat => {
+      stats.set(stat.questionId, stat);
+      pending.push(stat);
+      return stat;
+    };
+  }
+  for (const answer of opts.answers) await recordQuestionAnswer({ ...answer, userId, timeZone: opts.timeZone, store: answerStore });
+  if (pending.length) await store.upsertStats!(pending);
+  if (userPatch) await store.updateUser(userId, userPatch);
+}
 
 function today() {
   return new Date().toISOString().slice(0, 10);

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
-import { packFor } from "@/lib/prep-pack";
+import { packNavigationFor } from "@/lib/prep-navigation";
 import { paths } from "@/lib/paths";
 import type { LiveCode } from "@/lib/site-state";
 import { ProAccessNote } from "@/components/ProAccessNote";
@@ -29,7 +29,7 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
   const rootRef = useRef<HTMLDivElement>(null);
   const menuId = "account-menu-dropdown";
   const isPro = me.plan === "pro";
-  const pack = packFor(stateCode);
+  const pack = packNavigationFor(stateCode);
   const settingsHref = `${paths.account}${stateCode && stateCode !== "AZ" ? `?state=${stateCode}` : ""}#study-settings`;
   const pricing = pack ? pack.paths.pricing : stateCode === "HI" ? hiPaths.pricing : stateCode === "CA" ? caPaths.pricing : paths.pricing;
   const mistakes = pack ? pack.paths.mistakes : stateCode === "HI" ? hiPaths.mistakes : stateCode === "CA" ? caPaths.mistakes : paths.mistakes;

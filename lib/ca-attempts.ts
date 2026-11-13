@@ -3,7 +3,7 @@ import { applyMistakeImport, applyReviewImport, type ReviewTopic, type TopicMiss
 import { loadProgress, saveProgress } from "./storage.ts";
 import { currentQuestionVersion } from './question-revisions.ts';
 
-export type TopicPracticeState = "CA" | "HI" | "NY" | "PA" | "LA";
+export type TopicPracticeState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA";
 
 export type CaQuickAttempt = {
   id: string;
@@ -70,6 +70,13 @@ export function listCaAttempts(owner: string, state: TopicPracticeState = "CA") 
     .sort((a, b) => b.finishedAt.localeCompare(a.finishedAt));
 }
 
+export function hasPendingCaAttempts(state: TopicPracticeState) {
+  return readList<unknown>(keys(state).attempts).some(row => {
+    const attempt = asAttempt(row, state);
+    return attempt && !attempt.synced;
+  });
+}
+
 export function readCaAttempt(owner: string, id: string, state: TopicPracticeState = "CA") {
   if (!id) return null;
   const item = listCaAttempts(owner, state).find((item) => item.id === id);
@@ -83,7 +90,7 @@ export function latestCaQuick(owner: string, state: TopicPracticeState = "CA") {
 
 export function saveCaQuickAttempt(row: CaQuickAttempt) {
   if (typeof window === "undefined" || !row.id || !row.owner) return;
-  const state: TopicPracticeState = row.state === "HI" || row.state === "NY" || row.state === "PA" || row.state === "LA" ? row.state : "CA";
+  const state: TopicPracticeState = row.state === "AZ" || row.state === "HI" || row.state === "NY" || row.state === "PA" || row.state === "LA" ? row.state : "CA";
   const all = readList<unknown>(keys(state).attempts).map((item) => asAttempt(item, state)).filter((item): item is CaQuickAttempt => Boolean(item));
   const index = all.findIndex((item) => item.id === row.id);
   if (index >= 0) {

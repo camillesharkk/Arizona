@@ -39,6 +39,25 @@ export function sittingKey(owner: string, mode: string, state: SittingState = "A
   return `${state.toLowerCase()}-sitting:${state}:${owner}:${mode}`;
 }
 
+/** Claim browser sittings once, retaining an existing account sitting and old versions. */
+export function adoptGuestSittings(storage: Storage, owner: string, state: SittingState) {
+  const prefix = sittingKey("guest", "", state);
+  const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index)).filter((key): key is string => Boolean(key?.startsWith(prefix)));
+  for (const key of keys) {
+    try {
+      const row = JSON.parse(storage.getItem(key) || "null");
+      if (row?.version !== 1 || row.owner !== "guest" || row.state !== state || typeof row.mode !== "string") continue;
+      const target = sittingKey(owner, row.mode, state);
+      const current = parseSitting(row, "guest", row.mode, state);
+      const destination = current && !storage.getItem(target) ? target : `${target}:history:${row.examId || row.seed}`;
+      storage.setItem(destination, JSON.stringify({ ...row, owner }));
+      storage.removeItem(key);
+    } catch {
+      // A failed storage write leaves the guest copy available for retry.
+    }
+  }
+}
+
 export function remainingSeconds(startedAt: number, limitSeconds: number, now: number) {
   if (!Number.isFinite(startedAt) || !Number.isFinite(limitSeconds) || limitSeconds < 0) return 0;
   return Math.max(0, limitSeconds - Math.floor((now - startedAt) / 1000));

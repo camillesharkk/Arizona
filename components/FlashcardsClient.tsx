@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { flashcards } from "@/data/flashcards";
@@ -61,7 +63,7 @@ export function FlashcardsClient() {
   }, [isPro]);
 
   useEffect(() => {
-    fetch("/api/auth/me/")
+    fetchAccount()
       .then((r) => r.json())
       .then((d) => setIsPro(Boolean(d.user?.arizonaPro || d.user?.plan === "pro")))
       .catch(() => undefined)

@@ -173,6 +173,31 @@ try {
     assert.equal(JSON.stringify(replayed.proUsage), JSON.stringify(recovered.proUsage));
     assert.equal((await store.listStats(rollbackUser.id)).every(stat => stat.rightCount === 1), true);
   }
+  const { recordQuestionAnswers } = load('lib/progress.ts');
+  const guestQuestions = {
+    AZ: load('data/questions.ts').publishedQuestions(), CA: load('data/ca-questions.ts').publishedCaQuestions(), HI: load('data/hi-questions.ts').publishedHiQuestions(),
+    NY: packFor('NY').questions(), PA: packFor('PA').questions(), LA: packFor('LA').questions(),
+  };
+  for (const [state, bank] of Object.entries(guestQuestions)) {
+    const user = await store.createUser({email:`guest-bulk-${state}@example.invalid`,passwordHash:'isolated',name:null});
+    const answers = bank.filter(question=>question.is_free).slice(0,10).map(question=>({questionId:question.question_id,selected:question.correct_option,correct:true,attemptId:randomUUID()}));
+    const save = () => store.learningTransaction(user.id, async transaction => {
+      const plan = await transaction.getStudyPlan(user.id,state);
+      await recordQuestionAnswers({store:transaction,userId:user.id,state,answers,plan});
+    });
+    queryCount = 0;
+    await save();
+    assert.ok(queryCount <= 10, `${state} ten-answer import used ${queryCount} SQL statements`);
+    await save();
+    assert.ok((await store.listStats(user.id)).every(stat=>stat.rightCount===1),'Keep retry counts immutable');
+    const snapshot = JSON.stringify(await store.listStats(user.id));
+    await assert.rejects(store.learningTransaction(user.id,async transaction=>{
+      await recordQuestionAnswers({store:transaction,userId:user.id,state,answers:answers.map(answer=>({...answer,attemptId:randomUUID()})),plan:null});
+      throw new Error('guest rollback');
+    }),/guest rollback/);
+    assert.equal(JSON.stringify(await store.listStats(user.id)),snapshot,'Roll back all answers after a late failure');
+  }
+  console.log('All six PostgreSQL guest imports use at most 10 SQL statements for 10 answers, preserve retry counts and roll back late failures');
   console.log(JSON.stringify({ environment: 'isolated PGlite, warm schema, no simulated network latency', results }, null, 2));
 } finally {
   await db.close();

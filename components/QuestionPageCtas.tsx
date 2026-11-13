@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { paths } from "@/lib/paths";
@@ -7,7 +9,7 @@ import { paths } from "@/lib/paths";
 export function QuestionPageCtas() {
   const [user, setUser] = useState<{ email: string } | null>(null);
   useEffect(() => {
-    fetch("/api/auth/me/")
+    fetchAccount()
       .then((r) => r.json())
       .then((d) => setUser(d.user))
       .catch(() => setUser(null));

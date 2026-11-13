@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
@@ -73,6 +75,7 @@ export function ExamRunner({
   focusArea?: string;
 }) {
   const modeKey = sittingMode || mode;
+  const cloudSaved = useRef(false);
   const onCa = stateCode === "CA";
   const onHi = stateCode === "HI";
   const pack = packFor(stateCode);
@@ -261,7 +264,7 @@ export function ExamRunner({
     attemptIds.current = {};
     viewOnly.current = false;
     const controller = new AbortController();
-    fetch("/api/auth/me/", { signal: controller.signal, cache: "no-store" })
+    fetchAccount({ signal: controller.signal, cache: "no-store" })
       .then((response) => (response.ok ? response.json() : Promise.reject(new Error("account"))))
       .then((data) => {
         if (cancel) return;
@@ -276,9 +279,9 @@ export function ExamRunner({
           existing = null;
         }
         const requestedAttempt = startFresh ? "" : params.get("attempt") || "";
-        if (topicPractice && requestedAttempt && existing?.examId !== requestedAttempt) {
-          if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner, pack ? pack.code : onHi ? "HI" : "CA");
-          const archived = readCaAttempt(nextOwner, requestedAttempt, pack ? pack.code : onHi ? "HI" : "CA");
+        if (mode === "quick" && requestedAttempt && existing?.examId !== requestedAttempt) {
+          if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner, stateCode);
+          const archived = readCaAttempt(nextOwner, requestedAttempt, stateCode);
           if (archived && archived.mode === "quick" && mode === "quick") {
             viewOnly.current = Boolean(existing);
             setOwner(nextOwner);
@@ -338,7 +341,7 @@ export function ExamRunner({
   }, [bootTry, modeKey, stateCode]);
 
   useEffect(() => {
-    if (viewOnly.current || !done || !topicPractice || mode !== "quick") return;
+    if (viewOnly.current || !done || mode !== "quick") return;
     if (!owner || !examSaveId.current || activeSeed == null || !lockedIds?.length || !questions.length) return;
     const answersNow = answersRef.current;
     const correctIds: string[] = [];
@@ -363,7 +366,7 @@ export function ExamRunner({
     saveCaQuickAttempt({
       id: examSaveId.current,
       owner,
-      state: pack ? pack.code : onHi ? "HI" : "CA",
+      state: stateCode,
       mode: "quick",
       sittingMode: modeKey,
       finishedAt: new Date().toISOString(),
@@ -378,6 +381,7 @@ export function ExamRunner({
       wrongIds,
       skippedIds,
       topicMisses: [...topicCounts.entries()].map(([id, missed]) => ({ id, missed })),
+      synced: cloudSaved.current,
     });
     const url = new URL(window.location.href);
     if (url.searchParams.get("attempt") !== examSaveId.current) {
@@ -642,6 +646,7 @@ export function ExamRunner({
       setSubmitError("We couldn't save this exam. Your answers are still here.");
       return;
     }
+    cloudSaved.current = outcomes.every(outcome => outcome === "ok");
     setSubmitting(false);
     setDone(true);
     if (nyFull) onRecorded?.();

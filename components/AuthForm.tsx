@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
-import { syncCaAttempts } from "@/lib/ca-sync";
+import { invalidateAccountRead } from "@/lib/client-account";
 import { PasswordField } from "@/components/PasswordField";
 import { LoadingNote } from "@/components/QuizChrome";
 
@@ -155,8 +155,7 @@ export function AuthForm({
       setInfo("If that email is registered, a reset link is on the way. If you don't see the email, check your spam or junk folder.");
     }
     if (mode === "login") {
-      await syncCaAttempts("CA").catch(() => null);
-      await syncCaAttempts("HI").catch(() => null);
+      invalidateAccountRead();
       const next = new URLSearchParams(window.location.search).get("next");
       const safe = next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/\\");
       window.location.href = safe ? next : paths.dashboard;

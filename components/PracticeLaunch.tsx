@@ -1,5 +1,7 @@
 "use client";
 
+import { fetchAccount } from "@/lib/client-account";
+
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -62,7 +64,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
       setAnonFullUsed(false);
     }
     setGateReady(true);
-    fetch("/api/auth/me/", { signal: controller.signal, cache: "no-store" })
+    fetchAccount({ signal: controller.signal, cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
         if (cancel) return;
@@ -224,8 +226,8 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
                   </div>
                 ) : (
                   <>
-                    <button className="btn btn-primary" type="button" disabled={Boolean(pendingStart) || (id === "full" && !!pack && !pack.fullReady) || (id === "quick" && !!pack && !pack.quickReady)} onClick={() => requestStart(id)}>
-                      {pendingStart === id ? "Loading…" : (id === "full" && pack && !pack.fullReady) || (id === "quick" && pack && !pack.quickReady) ? "Not open yet" : "Start"}
+                    <button className="btn btn-primary" type="button" disabled={!gateReady || Boolean(pendingStart) || (id === "full" && !!pack && !pack.fullReady) || (id === "quick" && !!pack && !pack.quickReady)} onClick={() => requestStart(id)}>
+                      {!gateReady || pendingStart === id ? "Loading…" : (id === "full" && pack && !pack.fullReady) || (id === "quick" && pack && !pack.quickReady) ? "Not open yet" : "Start"}
                     </button>
                     {id === "full" && pack && !pack.fullReady ? <p className="notice">The published bank cannot fill this practice yet, so it stays closed.</p> : null}
                   </>
