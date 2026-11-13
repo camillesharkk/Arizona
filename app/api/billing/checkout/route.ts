@@ -21,7 +21,9 @@ const postSchema = z.object({
 export async function POST(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
-  const body = postSchema.safeParse(await req.json().catch(() => null));
+  const raw = await req.json().catch(() => null);
+  if (raw?.sourceState === "IN") return NextResponse.json({ error: "Indiana checkout is not configured" }, { status: 503 });
+  const body = postSchema.safeParse(raw);
   if (!body.success) return NextResponse.json({ error: "quote_required" }, { status: 400 });
   const repo = await getCommerceRepo();
   const quote = await repo.getQuote(body.data.quoteId);

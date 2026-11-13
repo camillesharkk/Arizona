@@ -70,7 +70,7 @@ function moreLinks(nav: ReturnType<typeof navFor>, state: LiveCode) {
   ];
 }
 
-export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
+export function SiteHeader({ savedState, indianaPreview = false }: { savedState: LiveCode | null; indianaPreview?: boolean }) {
   const pathname = usePathname() || "";
   const state = useResolvedState(savedState);
   const nav = navFor(state);
@@ -148,10 +148,10 @@ export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
       <div className="wrap header-inner">
         <div className="header-left">
           <Link href={state ? nav.home : "/"} className="logo">
-            <span className="logo-mark">{state === "CT" ? "C" : state === "CA" ? "C" : state === "HI" ? "H" : state === "NY" ? "Y" : state === "PA" ? "P" : state === "LA" ? "L" : state === "AZ" ? "A" : "N"}</span>
-            {state === "NC" ? "North Carolina" : state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
+            <span className="logo-mark">{state === "IN" ? "I" : state === "CT" ? "C" : state === "CA" ? "C" : state === "HI" ? "H" : state === "NY" ? "Y" : state === "PA" ? "P" : state === "LA" ? "L" : state === "AZ" ? "A" : "N"}</span>
+            {state === "IN" ? "Indiana" : state === "NC" ? "North Carolina" : state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
           </Link>
-          <StateMenu pathname={pathname} current={state} />
+          <StateMenu pathname={pathname} current={state} indianaPreview={indianaPreview} />
         </div>
         {links.length ? <nav className="nav nav-desktop" aria-label="Primary">
           <div className="nav-scroll">
@@ -192,7 +192,7 @@ export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
             </Link>
           )}
           {state && !onHome && (
-            <Link className="btn btn-primary header-cta" href={nav.practice}>
+            <Link className="btn btn-primary header-cta" href={state === "IN" ? `${nav.practice}?mode=quick` : nav.practice}>
               Start Free Test
             </Link>
           )}

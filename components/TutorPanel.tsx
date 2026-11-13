@@ -138,10 +138,10 @@ export function TutorPanel({ q, selected }: { q: Question; selected?: "A" | "B" 
       {atLimit && usage?.plan === "free" && (
         <div className="ai-limit-notice">
           <p>You&apos;ve used all {AI_LIMIT_FREE} free Tutor requests for today.</p>
-          <p>Upgrade to Pro for up to {AI_LIMIT_PRO} Tutor requests per day.</p>
+          {q.state !== "IN" ? <><p>Upgrade to Pro for up to {AI_LIMIT_PRO} Tutor requests per day.</p>
           <Link className="btn btn-primary" href={packFor(q.state)?.paths.pricing || paths.pricing}>
             Unlock Pro — {AI_LIMIT_PRO}/day
-          </Link>
+          </Link></> : <p>Your free Tutor allowance resets tomorrow. You can keep reviewing explanations and study cards.</p>}
         </div>
       )}
       {atLimit && usage?.plan === "pro" && (

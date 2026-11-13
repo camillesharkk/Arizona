@@ -82,7 +82,7 @@ export function parseSitting(raw: unknown, owner: string, mode: string, state: S
   if (row.version !== 1 || row.owner !== owner || row.state !== state || row.mode !== mode) return null;
   if (typeof row.seed !== "number" || !Array.isArray(row.questionIds) || !row.questionIds.length) return null;
   // Leave the raw saved sitting intact, but never regrade old letters against replacement content.
-  if (['NY','PA','LA','CT','NC'].includes(state) && row.questionIds.some(id => (row.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
+  if (['NY','PA','LA','CT','NC','IN'].includes(state) && row.questionIds.some(id => (row.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
   return {
     version: 1,
     owner,
@@ -113,7 +113,7 @@ export function readSitting(storage: Pick<Storage, "getItem"> & Partial<Pick<Sto
     const raw = storage.getItem(key);
     const parsed = raw ? JSON.parse(raw) : null;
     const result = parseSitting(parsed, owner, mode, state);
-    if (!result && parsed?.owner === owner && parsed?.state === state && ['NY','PA','LA','CT','NC'].includes(state) && parsed?.mode === mode && Array.isArray(parsed.questionIds) && parsed.questionIds.some((id: string) => (parsed.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) {
+    if (!result && parsed?.owner === owner && parsed?.state === state && ['NY','PA','LA','CT','NC','IN'].includes(state) && parsed?.mode === mode && Array.isArray(parsed.questionIds) && parsed.questionIds.some((id: string) => (parsed.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) {
       storage.setItem?.(`${key}:history:${parsed.examId || parsed.seed}:v${Math.max(...Object.values(parsed.questionVersions || { legacy: 1 }) as number[])}`, raw!);
     }
     return result;

@@ -19,6 +19,7 @@ function load(file) {
   const module = { exports: {} };
   cache.set(file, module);
   const require = name => {
+    if (name === 'server-only') return {}; // Node verification replaces Next's server-module marker.
     if (name === '@/lib/store') return { getStore: async () => store };
     if (name === 'postgres') return () => postgresAdapter;
     if (name === 'fs/promises') return { ...native(name), rename: async (...args) => {

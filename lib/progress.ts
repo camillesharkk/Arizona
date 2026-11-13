@@ -2,7 +2,7 @@ import { randomUUID } from "crypto";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
-import { questionById } from "@/lib/prep-pack";
+import { serverQuestionById as questionById } from "@/lib/server-questions";
 import { currentQuestionVersion, currentRevisionStat } from "@/lib/question-revisions";
 import { applyReviewAnswer, DEFAULT_STUDY_TIME_ZONE, migrateReviewFields } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
@@ -76,7 +76,7 @@ export async function recordQuestionAnswer(opts: {
   const store = opts.store || await getStore();
   const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId) ?? questionById(opts.questionId);
   if (!q) throw new Error("unknown_question");
-  if ((q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT" || state === "NC") && !opts.store) {
+  if ((q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT" || q.state === "NC" || q.state === "IN") && !opts.store) {
     return store.learningTransaction(opts.userId, transaction => recordQuestionAnswer({ ...opts, store: transaction }));
   }
   if (opts.attemptId) {
@@ -98,8 +98,8 @@ export async function recordQuestionAnswer(opts: {
     userId: opts.userId,
     questionId: opts.questionId,
     topic: q.topic,
-    bank: state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : state === "NY" ? "new-york-notary-exam" : state === "PA" ? "pennsylvania-notary-exam" : state === "NC" ? "north-carolina-notary-practice" : state === "CT" ? "connecticut-notary-exam" : state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam",
-    chapter: q.topic,
+    bank: state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : state === "NY" ? "new-york-notary-exam" : state === "PA" ? "pennsylvania-notary-exam" : state === "NC" ? "north-carolina-notary-practice" : state === "IN" ? "indiana-notary-exam" : state === "CT" ? "connecticut-notary-exam" : state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam",
+    chapter: q.state === "IN" ? q.study_topic || q.topic : q.topic,
     state,
     firstCorrect: prev?.firstCorrect ?? opts.correct,
     lastCorrect: opts.correct,

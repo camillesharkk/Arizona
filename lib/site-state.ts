@@ -11,6 +11,7 @@ const sharedPaths = ["/login", "/register", "/forgot-password", "/reset-password
 /** State implied by the URL. Shared pages and coming-soon pages do not imply one. */
 export function pathState(pathname: string): LiveCode | null {
   const path = (pathname.split("?")[0] || "/").split("#")[0] || "/";
+  if (path === "/indiana" || path.startsWith("/indiana/") || path.startsWith("/preview/indiana")) return "IN";
   if (path === "/" || (isComingSoonPath(path) && !path.startsWith("/north-carolina"))) return null;
   if (path.startsWith("/api") || path.startsWith("/admin")) return null;
   if (isCaliforniaPath(path)) return "CA";
@@ -24,7 +25,7 @@ export function pathState(pathname: string): LiveCode | null {
   return "AZ";
 }
 
-const CODES = new Set<LiveCode>(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC"]);
+const CODES = new Set<LiveCode>(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"]);
 
 export function parseStateCookie(value: string | undefined | null): LiveCode | null {
   return value && CODES.has(value as LiveCode) ? (value as LiveCode) : null;

@@ -4,7 +4,7 @@ import { StudyCardsClient } from "@/components/StudyCardsClient";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
 import type { PublicStudyCard } from "@/lib/study-cards";
 
-const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", "north-carolina": "NC" };
+const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", indiana: "IN", "north-carolina": "NC" };
 
 export default async function Page({ params, searchParams }: { params: Promise<{ state: string }>; searchParams: Promise<{ topic?: string }> }) {
   if (!prepPageEnabled((await params).state)) notFound();

@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { PracticeLaunch } from "@/components/PracticeLaunch";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
 
-const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", "north-carolina": "NC" };
+const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", indiana: "IN", "north-carolina": "NC" };
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 

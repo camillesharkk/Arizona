@@ -11,6 +11,10 @@ export const sources: Record<string, Source> = {
     ["ct_fee_act", "Statute", "P.A. 26-81 §13, effective July 1, 2026", ctSources.feeAct],
   ].map(([id, type, title, url]) => [id, { source_id: id, source_type: type as Source["source_type"], title, reference: title, url, last_verified_at: CT_CHECKED_ON, last_checked_at: CT_CHECKED_ON, version: id === "ct_manual" ? "Rev. 2026-1" : "checked 2026-11-13" }])),
   ...ncSources,
+  "in-faq": {"source_id": "in-faq", "source_type": "SOS", "title": "Indiana SOS New Notary System FAQ (May 4, 2026)", "reference": "New-system FAQ, published 2026-05-04", "url": "https://www.in.gov/sos/business/files/New-Notary-System-FAQs-5-4-26.pdf", "last_verified_at": "2026-11-13", "last_checked_at": "2026-11-13"},
+  "in-sos-2025": {"source_id": "in-sos-2025", "source_type": "SOS", "title": "Indiana SOS 2025 Recorders Conference", "reference": "SOS presentation, April 15, 2025", "url": "https://www.in.gov/sboa/files/Grosser_SOS-Business-Services-Division_Notary.pdf", "last_verified_at": "2026-11-13", "last_checked_at": "2026-11-13"},
+  "in-guide-2024": {"source_id": "in-guide-2024", "source_type": "Manual", "title": "Indiana Notary Public Guide (May 20, 2024)", "reference": "Specific indexed official-guide passages; see Indiana evidence review", "url": "https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf", "last_verified_at": "2026-11-13", "last_checked_at": "2026-11-13"},
+
   sos_handbook: {
     source_id: "sos_handbook",
     source_type: "Manual",

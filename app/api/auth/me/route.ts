@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { accountProExpiry, ctProCovers } from "@/lib/account-pro";
-import { getArizonaEntitlement } from "@/lib/entitlements";
+import { getArizonaEntitlement, indianaEntitlement } from "@/lib/entitlements";
 import { stateProCovers, stateProExpiry } from "@/lib/state-pro";
 import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
 
@@ -14,6 +14,7 @@ export async function GET() {
     store.getUserById(session.id),
     store.listEntitlements(session.id),
     store.listExams(session.id),
+    getIndianaEntitlement(session.id),
   ]);
   if (!user) return NextResponse.json({ user: null }, { headers: { "Cache-Control": "private, no-store" } });
   const entitlement = await getArizonaEntitlement(session.id, entitlements);
@@ -36,11 +37,13 @@ export async function GET() {
       californiaPro: arizonaPro,
       hawaiiPro: arizonaPro,
       planExpiresAt: expiry?.toISOString() ?? null,
+      indianaPro: Boolean(indianaEntitlement(entitlements)),
+      indianaProExpiresAt: indianaEntitlement(entitlements)?.expiresAt ?? null,
       aiDailyLimit: arizonaPro ? AI_LIMIT_PRO : AI_LIMIT_FREE,
       fullExamCount: count("full"),
       caFullExamCount: count("ca-full"),
       hiFullExamCount: count("hi-full"),
-      packFullExamCount: { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full"), NC: count("nc-full") },
+      packFullExamCount: { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full"), NC: count("nc-full"), IN: count("in-full") },
     },
   }, { headers: { "Cache-Control": "private, no-store" } });
 }

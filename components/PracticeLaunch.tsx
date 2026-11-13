@@ -227,7 +227,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         </section>
       ) : null}
       <div className="grid grid-3">
-        {(["quick", "full", "weak"] as const).map((id) => {
+        {(stateCode === "IN" ? ["quick", "full"] as const : ["quick", "full", "weak"] as const).map((id) => {
           const copy = {
             quick: ["Quick 10", "10 questions. The result shows after each answer."],
             full: pack
@@ -265,6 +265,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
             </Fragment>
           );
         })}
+        {stateCode === "IN" ? <div className="card"><h3>Topic Practice</h3><p>Choose a topic. Each set shows the number of questions available to your plan.</p>{pack?.topics.map(topic => <p key={topic.id}><Link href={`${site.practice}?mode=practice&area=${topic.id}`}>{topic.label}</Link></p>)}</div> : null}
       </div>
       </>
     );

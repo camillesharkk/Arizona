@@ -43,6 +43,8 @@ import { adoptGuestCaRecords, readCaAttempt, saveCaQuickAttempt } from "@/lib/ca
 import { CtResultNext } from "@/components/CtResultNext";
 import { ctSources } from "@/lib/ct-site";
 import { NcPracticeNext } from "@/components/NcPracticeNext";
+import { startIndianaPractice, clearIndianaStart } from "@/lib/in-client";
+import { IndianaNext } from "@/components/IndianaNext";
 import { CaQuickNext } from "@/components/CaQuickNext";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
@@ -97,14 +99,16 @@ export function ExamRunner({
   const [poolIsPro, setPoolIsPro] = useState(isPro);
   const fullSize = pack ? (pack.fullCountFor?.(isPro) ?? pack.fullCount) : onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
   const count = mode === "quick" ? 10 : mode === "full" ? fullSize : 10;
+  const [indianaQuestions, setIndianaQuestions] = useState<Question[] | null>(null);
   const byId = useMemo(
-    () => new Map((pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
-    [stateCode]
+    () => new Map((stateCode === "IN" && indianaQuestions ? indianaQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
+    [stateCode, indianaQuestions]
   );
   const [owner, setOwner] = useState<string | null>(null);
   const [signedIn, setSignedIn] = useState(false);
   const [fullExamCount, setFullExamCount] = useState(0);
   const [bootError, setBootError] = useState(false);
+  const [bootMessage, setBootMessage] = useState("");
   const [bootTry, setBootTry] = useState(0);
   const [activeSeed, setActiveSeed] = useState<number | null>(null);
   const [presentationVersion, setPresentationVersion] = useState(2);
@@ -141,6 +145,7 @@ export function ExamRunner({
   const choiceLock = useRef<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const resultHeadingRef = useRef<HTMLHeadingElement | null>(null);
+  const resultRef = useRef<HTMLDivElement | null>(null);
   const answersRef = useRef(answers);
   const finishOnce = useRef(false);
   const localSaved = useRef(false);
@@ -155,12 +160,13 @@ export function ExamRunner({
   answersRef.current = answers;
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
-  function drawQuestionIds(seed: number) {
+  function drawQuestionIds(seed: number, inBank?: Question[]) {
+    if (stateCode === "IN" && preset?.length) return preset.filter(item => item.state === "IN" && (item.is_free || isPro)).map(item => item.question_id);
     if (stateCode === "CT" && preset && mode !== "full") {
       return preset.filter(item => item.state === "CT" && (item.is_free || isPro)).map(item => item.question_id);
     }
     if (pack) {
-      const bank = pack.questions().filter(item => stateCode !== "NC" || isPro || item.is_free);
+      const bank = (inBank ?? pack.questions()).filter(item => stateCode !== "NC" || isPro || item.is_free);
       if (stateCode === "NC" && preset?.length) return preset.filter(item => bank.some(question => question.question_id === item.question_id)).map(item => item.question_id);
       if (focusArea) {
         const pool = bank.filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
@@ -258,6 +264,7 @@ export function ExamRunner({
     let cancel = false;
     setBootError(false);
     initializedScope.current = "";
+    setBootMessage("");
     setOwner(null);
     setActiveSeed(null);
     setLockedIds(null);
@@ -280,8 +287,16 @@ export function ExamRunner({
     const controller = new AbortController();
     fetchAccount({ signal: controller.signal, cache: "no-store" })
       .then((response) => (response.ok ? response.json() : Promise.reject(new Error("account"))))
-      .then((data) => {
+      .then(async (data) => {
         if (cancel) return;
+        let inBank: Question[] | undefined;
+        if (stateCode === "IN") {
+          const response = await fetch("/api/indiana/questions/", { signal: controller.signal, cache: "no-store" });
+          if (!response.ok) throw new Error("questions");
+          inBank = (await response.json()).questions;
+          if (cancel) return;
+          setIndianaQuestions(inBank || []);
+        }
         const nextOwner = data.user?.id || "guest";
         setSignedIn(Boolean(data.user));
         setFullExamCount(Number((pack ? data.user?.packFullExamCount?.[stateCode] : onHi ? data.user?.hiFullExamCount : onCa ? data.user?.caFullExamCount : data.user?.fullExamCount) || 0));
@@ -318,14 +333,22 @@ export function ExamRunner({
           }
         }
         viewOnly.current = false;
-        const seed = existing?.seed ?? Math.floor(Math.random() * 1_000_000_000);
+        let seed = existing?.seed ?? Math.floor(Math.random() * 1_000_000_000);
+        let serverIds: string[] | undefined;
+        if (stateCode === "IN" && mode === "full" && !existing?.done) {
+          const sitting = await startIndianaPractice(nextOwner, existing?.examId || undefined);
+          if (cancel) return;
+          seed = sitting.seed; serverIds = sitting.questionIds; examSaveId.current = sitting.examId;
+          if (sitting.questions) setIndianaQuestions(sitting.questions);
+        }
         if (existing?.unscoredIds?.length) unscoredRef.current = existing.unscoredIds;
-        const savedIds = existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed);
+        const savedIds = serverIds || (existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed, inBank));
         const ctPro = Boolean(data.user?.connecticutPro);
         const ids = stateCode === "CT" && mode !== "full" ? savedIds.filter(id => {
           const question = byId.get(id);
           return question && (question.is_free || ctPro);
         }) : savedIds;
+        if (stateCode === "IN" && inBank && ids.some(id => !inBank!.some(question => question.question_id === id))) throw new Error("Indiana Pro access is required to reopen this saved set. Your stored result has not been changed.");
         setOwner(nextOwner);
         setActiveSeed(seed);
         setPresentationVersion(existing ? existing.presentationVersion ?? 1 : 2);
@@ -340,7 +363,7 @@ export function ExamRunner({
         setDone(existing.done);
         attemptIds.current = existing.attemptIds;
         recordedIds.current = existing.recordedIds;
-        examSaveId.current = existing.examId;
+        examSaveId.current = stateCode === "IN" && mode === "full" ? examSaveId.current || existing.examId : existing.examId;
         localSaved.current = existing.scored;
         if (existing.startedAt != null) {
           startReported.current = true;
@@ -352,6 +375,7 @@ export function ExamRunner({
       })
       .catch((error: unknown) => {
         if (cancel || (error instanceof DOMException && error.name === "AbortError")) return;
+        setBootMessage(error instanceof Error ? error.message : "");
         setBootError(true);
       });
     return () => {
@@ -420,6 +444,8 @@ export function ExamRunner({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [owner, activeSeed, lockedIds, idx, answers, explainOpen, marked, startedAt, done, modeKey]);
 
+  useEffect(() => { if (stateCode === "IN" && done) scrollUnderHeaderAfterLayout(resultRef.current); }, [stateCode, done]);
+
   function reportExamStart() {
     if (startReported.current || !questions.length) return;
     startReported.current = true;
@@ -480,7 +506,7 @@ export function ExamRunner({
     if (bootError) {
       return (
         <div className="card">
-          <p className="form-error" role="alert">Could not load this practice set.</p>
+          <p className="form-error" role="alert">Could not load this practice set.{stateCode === "IN" && bootMessage ? ` ${bootMessage}` : ""}</p>
           <button className="btn btn-primary" type="button" onClick={() => setBootTry((n) => n + 1)}>Retry</button>
         </div>
       );
@@ -563,7 +589,7 @@ export function ExamRunner({
             timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         }),
       }).then(() => onRecorded?.()).catch(() => undefined);
-      if (mode === "weak" && isPro && !weakReported.current) {
+      if (stateCode !== "IN" && mode === "weak" && isPro && !weakReported.current) {
         weakReported.current = true;
         fetch("/api/billing/pro-usage/", {
           method: "POST",
@@ -614,11 +640,11 @@ export function ExamRunner({
     const saves: Promise<Response>[] = [];
     const fullSubmission = mode === "full";
     let savedFullCount: number | undefined;
-    if (fullSubmission) saves.push(fetch("/api/progress/", {
+    if (fullSubmission) saves.push(fetch(stateCode === "IN" ? "/api/indiana/sitting/" : "/api/progress/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        kind: "pack-full", state: stateCode, seed: activeSeed, examId: examSaveId.current, accountId: owner === "guest" ? undefined : owner,
+        kind: "pack-full", ...(stateCode === "IN" ? { action: "submit" } : {}), state: stateCode, seed: activeSeed, examId: examSaveId.current, accountId: owner === "guest" ? undefined : owner,
         unscoredIds: unscoredRef.current,
         questions: questions.map(item => ({ questionId: item.question_id, questionVersion: item.version, attemptId: attemptIds.current[item.question_id],
           selected: current[item.question_id] ? originalLetter(item.question_id, current[item.question_id]) : undefined })),
@@ -684,6 +710,7 @@ export function ExamRunner({
     }
     cloudSaved.current = outcomes.every(outcome => outcome === "ok");
     setSubmitting(false);
+    if (stateCode === "IN" && mode === "full" && owner) clearIndianaStart(owner);
     setDone(true);
     if (fullSubmission) {
       setFullExamCount(savedFullCount ?? Math.max(fullExamCount, FREE_FULL_EXAMS));
@@ -731,7 +758,7 @@ export function ExamRunner({
     results.forEach((r) => {
       const key = pack || onHi ? r.question.study_topic || r.question.topic : stateCode === "CA" ? r.question.exam_area || r.question.topic : r.question.topic;
       const cur = topicAcc.get(key) || { right: 0, total: 0, label: pack ? pack.topics.find(topic => topic.id === key)?.label || key : onHi ? hiStudyLabel(key) : stateCode === "CA" ? areaLabel(key) : topicLabel(r.question.topic) };
-      cur.total += 1;
+      if (stateCode !== "IN" || answers[r.question.question_id]) cur.total += 1;
       if (r.correct) cur.right += 1;
       topicAcc.set(key, cur);
     });
@@ -772,7 +799,7 @@ export function ExamRunner({
     const mistakesHref = mode === "full" && examSaveId.current ? `${site.mistakes}?attempt=${examSaveId.current}` : site.mistakes;
     return (
       <div className="grid">
-        <div className="card result-summary">
+        <div className="card result-summary" ref={resultRef}>
           <span className="kicker">Result</span>
           {stateCode === "NC" ? (
             <>
@@ -791,7 +818,7 @@ export function ExamRunner({
           ) : guided && mode === "quick" ? (
             <>
               <h2>{correct} of {questions.length} correct</h2>
-              {topicPractice ? (
+              {stateCode === "IN" ? <IndianaNext mode="quick" correct={correct} total={questions.length} topics={[...topicAcc.entries()].map(([id,value]) => ({ id,...value }))} fullHref={fullHref} fullLocked={fullLocked} /> : topicPractice ? (
                 <CaQuickNext
                   correct={correct}
                   total={questions.length}
@@ -857,7 +884,9 @@ export function ExamRunner({
           ) : (
             <>
               <h2>
-                {onHi && mode === "full"
+                {stateCode === "IN"
+                  ? `${correct}/${questions.length}`
+                  : onHi && mode === "full"
                   ? `${correct} of ${questions.length}`
                   : stateCode === "CA" && mode === "full"
                   ? `${scoredCorrect} of 40 scored`
@@ -868,7 +897,9 @@ export function ExamRunner({
                   : `${pct}% — ${pass ? "PASS" : "NEEDS REVIEW"}`}
               </h2>
               <p className="lede">
-                {onHi && mode === "full"
+                {stateCode === "IN"
+                  ? `${pct}% correct in this site practice. ${mode === "full" ? "Indiana’s official exam uses a 24/30 reference line. This practice score does not complete the official course or exam." : "Review the rules below and try the topic again."}`
+                  : onHi && mode === "full"
                   ? `${correct} of ${questions.length} correct. ${HI_EXAM.practiceNote} A score of ${HI_EXAM.practiceTargetPercent}% is this site's practice target. It is not an official exam result. The Attorney General's written exam requires at least ${HI_EXAM.officialPassingPercent}%.`
                   : stateCode === "CA" && mode === "full"
                   ? `${scoredCorrect} of 40 scored items correct. Five items are unscored and are marked below. This raw count is study feedback. The official exam uses a scaled score of at least 70, and a scaled score is not a percent.`
@@ -880,7 +911,7 @@ export function ExamRunner({
                   ? `${correct} of ${questions.length} correct. This 40-question, 60-minute set is this site's practice. The Department of State reports pass or fail only and does not publish a numeric passing score. This count is not an official result.`
                   : `${correct} of ${questions.length} correct. Practice target ${examConfig.passingScorePercent}%. The SOS notice checked ${officialExam.checkedOn} lists ${officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.`}
               </p>
-              {guided && mode === "full" ? (
+              {guided && mode === "full" && stateCode === "IN" ? <IndianaNext mode="full" correct={correct} total={questions.length} topics={[...topicAcc.entries()].map(([id,value]) => ({ id,...value }))} fullHref={fullHref} fullLocked={fullLocked} /> : guided && mode === "full" ? (
                 <div className="result-next">
                   {recommend ? (
                     <a className="btn btn-primary" href={studyHref}>Review {recommend.label}</a>
@@ -898,7 +929,7 @@ export function ExamRunner({
           <h3>Topic accuracy</h3>
           {[...topicAcc.entries()].map(([id, v]) => (
             <p key={id}>
-              {v.label}: {Math.round((v.right / v.total) * 100)}% ({v.total - v.right} missed)
+              {v.label}: {v.total ? Math.round((v.right / v.total) * 100) : 0}% ({v.total - v.right} missed)
             </p>
           ))}
           {stateCode !== "NC" && !guided && weak.length > 0 && (
@@ -947,7 +978,7 @@ export function ExamRunner({
             <p className="notice">This is study feedback for California. Forty items are scored. This raw count is not an official scaled score.</p>
           ) : onHi ? (
             <p className="notice">This is study feedback for Hawaii. This score is this site's practice result, not an official exam result.</p>
-          ) : isPro ? (
+          ) : stateCode === "IN" ? <p className="notice">{isPro ? "Indiana Pro is active for this account." : "Free practice uses the Indiana free pool. Indiana Pro purchases are not open in this candidate."}</p> : isPro ? (
             <p className="notice">Pro is active. Keep practicing the topics you missed.</p>
           ) : (
             <p className="notice">
@@ -1038,7 +1069,7 @@ export function ExamRunner({
     if (!window.confirm("Start a new set? This replaces the unfinished one.")) return;
     clearSitting(sessionStorage, owner, modeKey, stateCode);
     const seed = Math.floor(Math.random() * 1_000_000_000);
-    const ids = drawQuestionIds(seed);
+    const ids = drawQuestionIds(seed, indianaQuestions || undefined);
     setActiveSeed(seed);
     setPresentationVersion(2);
     setLockedIds(ids);
@@ -1078,7 +1109,7 @@ export function ExamRunner({
           {restored ? " · Resumed" : ""}
         </span>
         <span className="row">
-          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{(onHi || stateCode === "CT" || stateCode === "NC") && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
+          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{(onHi || stateCode === "CT" || stateCode === "NC" || stateCode === "IN") && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
           <button className="btn btn-ghost" type="button" onClick={startNew}>Start new</button>
         </span>
       </div>

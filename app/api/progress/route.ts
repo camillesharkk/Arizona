@@ -6,7 +6,9 @@ import { recordProUsage } from "@/lib/commerce/usage";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
-import { packFor, questionById } from "@/lib/prep-pack";
+import { packFor } from "@/lib/prep-pack";
+import { serverQuestionById as questionById } from "@/lib/server-questions";
+import { hiFullExamCount, packFullExamCounts } from "@/lib/entitlements";
 import { saveCaExamCheck } from "@/lib/ca-daily";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
@@ -21,7 +23,7 @@ const answerSchema = z.object({
   selected: z.enum(["A", "B", "C", "D"]),
   attemptId: z.string().min(8).max(80).optional(),
   review: z.boolean().optional(),
-  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC"]).optional(),
+  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"]).optional(),
   timeZone: z.string().max(80).optional(),
 });
 
@@ -47,10 +49,11 @@ export async function POST(req: Request) {
     try {
       const { proUsage, ...result } = await savePackFullSubmission(await getStore(), session.id, { ...full.data, state });
       // Commerce uses its existing client after the learning transaction has committed.
-      if (proUsage) await recordProUsage(session.id, proUsage.featureCode, proUsage, state);
+      if (proUsage && state !== "IN") await recordProUsage(session.id, proUsage.featureCode, proUsage, state);
       return NextResponse.json(result);
     } catch (error) {
       const code = error instanceof Error ? error.message : "";
+      if (code === "pro_required") return NextResponse.json({ error: "Indiana Pro required" }, { status: 402 });
       if (code === "full_trial_used") return NextResponse.json({ error: "The free full practice for this state is already used" }, { status: 402 });
       if (code === "question_updated") return NextResponse.json({ error: "Question updated; reload before answering", code }, { status: 409 });
       if (code === "legacy_attempts_required") return NextResponse.json({ error: "Restore the original saved sitting to finish saving this earlier practice", code }, { status: 409 });
@@ -66,7 +69,7 @@ export async function POST(req: Request) {
         correctCount: z.number(),
         total: z.number(),
         examId: z.string().uuid().optional(),
-        state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC"]).optional(),
+        state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"]).optional(),
         wrongIds: z.array(z.string().max(80)).max(80).optional(),
         skipped: z.number().int().min(0).max(80).optional(),
         timeZone: z.string().max(80).optional(),
@@ -77,7 +80,7 @@ export async function POST(req: Request) {
     const store = await getStore();
     const california = exam.data.state === "CA";
     const hawaii = exam.data.state === "HI";
-    const packState = exam.data.state === "NY" || exam.data.state === "PA" || exam.data.state === "LA" || exam.data.state === "CT" || exam.data.state === "NC" ? exam.data.state : null;
+    const packState = exam.data.state === "NY" || exam.data.state === "PA" || exam.data.state === "LA" || exam.data.state === "CT" || exam.data.state === "NC" || exam.data.state === "IN" ? exam.data.state : null;
     if (exam.data.mode === "full" || exam.data.mode.endsWith("-full")) {
       return NextResponse.json({ error: "Submit the complete sitting for server grading" }, { status: 400 });
     }
@@ -108,7 +111,7 @@ export async function POST(req: Request) {
   const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(parsed.data.questionId)].find((x) => x && x.question_id === parsed.data.questionId);
   if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
   if (productionStateBlocked(q.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  if ((q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT" || state === "NC") && (parsed.data.questionVersion ?? 1) !== q.version) {
+  if ((q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT" || q.state === "NC" || q.state === "IN") && (parsed.data.questionVersion ?? 1) !== q.version) {
     return NextResponse.json({ error: "Question updated; reload before answering", code: "question_updated" }, { status: 409 });
   }
   if (parsed.data.state ? parsed.data.state !== q.state : q.state !== "AZ") {
@@ -126,13 +129,14 @@ export async function POST(req: Request) {
     timeZone: parsed.data.timeZone,
   });
   if (!stat) return NextResponse.json({ ok: true, duplicate: true, correct });
-  if (!q.is_free) {
+  if (!q.is_free && q.state !== "IN") {
     await recordProUsage(session.id, "pro_question", undefined, q.state);
   }
   return NextResponse.json({ ok: true, correct, stat: toClientStat(stat) });
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  if (productionStateBlocked(new URL(req.url).searchParams.get("state"))) return NextResponse.json({ error: "State not available" }, { status: 404 });
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const store = await getStore();
@@ -154,6 +158,8 @@ export async function GET() {
     hawaiiPro: arizonaPro,
     ncPro,
     ncPlanExpiresAt: stateProExpiry(entitlements, "NC")?.toISOString() ?? null,
+    indianaPro: Boolean(indianaEntitlement(entitlements)),
+    indianaProExpiresAt: indianaEntitlement(entitlements)?.expiresAt ?? null,
     advancedAnalytics: arizonaPro,
   });
 }

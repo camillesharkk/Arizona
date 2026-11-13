@@ -170,7 +170,7 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
   return (
     <>
       <section className="home-welcome" aria-label="Where to start">
-        <h1>{pack ? `${pack.name} Prep` : onHi ? "Hawaii Notary Exam Prep" : onCa ? "California Notary Exam Prep" : "Arizona Notary Exam Prep"}</h1>
+        <h1>{stateCode === "IN" ? "Indiana Notary Exam Prep" : pack ? `${pack.name} Prep` : onHi ? "Hawaii Notary Exam Prep" : onCa ? "California Notary Exam Prep" : "Arizona Notary Exam Prep"}</h1>
       </section>
       <div className="home-copy">
         <p className="home-lead">{pack ? pack.fullDetail : onHi ? "Practice Hawaii notary questions and study cards. Quick 10 suggests what to study next. It is not an official score." : onCa ? "Practice the California notary exam with published questions and study cards. The check uses your answers to suggest a next step. It is not an official score." : "Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams."}</p>
@@ -179,9 +179,9 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
       <section className="home-welcome home-welcome-actions" aria-label="Start">
         <div className="home-actions-row">
           <a className="btn btn-primary" href={`${site.practice}?mode=quick`}>
-            Check My Knowledge — 10 Questions
+            {stateCode === "IN" ? "Start Free Practice" : "Check My Knowledge — 10 Questions"}
           </a>
-          {fullAction}
+          {stateCode === "IN" ? <a className="btn btn-ghost" href={`${site.become}#course-exam`}>Official Course &amp; Exam</a> : fullAction}
         </div>
         {quickOpen ? <p className="notice">You have an unfinished 10-question check. This continues it.</p> : null}
         {fullLocked && authReady && gateReady ? (
@@ -202,6 +202,11 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
           </button>
         ) : null}
       </section>
+      {stateCode === "IN" ? <section className="card" aria-label="30-Question Mock Exam">
+        <h2>30-Question Mock Exam</h2><p>30 original questions. No timer. One free mock per account or guest browser identity; IN Pro includes more sets.</p>
+        <Link className="btn btn-primary" href={fullHref}>Start 30-Question Mock Exam</Link>
+        <p className="notice">{pack?.counts().published} published questions · {pack?.counts().free} free · {pack?.counts().pro} Pro · {pack?.cards.length} independent study cards.</p>
+      </section> : null}
     <div className="study-stack">
 
       <p className="home-continue">

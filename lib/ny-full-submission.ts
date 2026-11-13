@@ -1,4 +1,4 @@
-import { packFor, questionById } from "./prep-pack";
+import { packFor } from "./prep-pack";
 import { publishedQuestions } from "../data/questions";
 import { publishedCaQuestions } from "../data/ca-questions";
 import { publishedHiQuestions } from "../data/hi-questions";
@@ -10,6 +10,9 @@ import { pickHiFullExam } from "./hi-exam";
 import type { StateCode } from "./types";
 import { accountProCovers, ctProCovers } from "./account-pro.ts";
 import { stateProCovers, NC_PRO_PRODUCT } from "./state-pro.ts";
+import { serverQuestionById as questionById } from "./server-questions";
+import { indianaEntitlement } from "./entitlements";
+import { requireIndianaSitting } from "./indiana-sitting";
 import { isSiteProProduct } from "./pro-products.ts";
 import type { ProUsageContext } from "./commerce/usage";
 import { applyStreak, recordQuestionAnswer } from "./progress";
@@ -66,10 +69,11 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     }
     const now = new Date();
     const entitlements = await transaction.listEntitlements(userId);
-    const pro = stateProCovers(entitlements, state, now);
+    const pro = state === "IN" ? Boolean(indianaEntitlement(entitlements, now)) : state === "CT" ? ctProCovers(entitlements, now) : stateProCovers(entitlements, state, now);
     const expectedCount = config.fullCountFor?.(pro) ?? config.fullCount;
     if (input.questions.length !== expectedCount || new Set(input.questions.map(answer => answer.questionId)).size !== expectedCount) throw new Error("invalid_exam");
-    const draw = state !== "NY" && Number.isSafeInteger(input.seed) ? config.pickFull(input.seed!, pro) : null;
+    if (state === "IN") await requireIndianaSitting(transaction, userId, input.examId, input.questions, pro);
+    const draw = state !== "IN" && state !== "NY" && Number.isSafeInteger(input.seed) ? config.pickFull(input.seed!, pro) : null;
     const matchesDraw = Boolean(draw && draw.questions.every((question, index) => question.question_id === input.questions[index]?.questionId));
     if ((state === "LA" || state === "CT") && !matchesDraw) throw new Error("invalid_exam");
     // A bank expansion must not redraw a saved PA sitting. A legacy sitting may
@@ -110,7 +114,7 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     else if (pro && questions.some(({ question, selected }) => selected && !question.is_free)) proUsageFeature = "pro_question";
     const proUsage: UsageReceipt | undefined = proUsageFeature ? {
       eventId: `${mode}:${input.examId}`, featureCode: proUsageFeature, at: now.toISOString(),
-      entitlementIds: entitlements.filter(entitlement => entitlement.status === "active" && (state === "NC" ? entitlement.productCode === NC_PRO_PRODUCT && entitlement.state === "NC" : isSiteProProduct(entitlement.productCode))
+      entitlementIds: entitlements.filter(entitlement => entitlement.status === "active" && (state === "IN" ? entitlement.productCode === "in_exam_pro_60d" && entitlement.state === "IN" : state === "NC" ? entitlement.productCode === NC_PRO_PRODUCT && entitlement.state === "NC" : isSiteProProduct(entitlement.productCode))
         && new Date(entitlement.startsAt) <= now && new Date(entitlement.expiresAt) > now).map(entitlement => entitlement.id),
     } : undefined;
     const wrongIds: string[] = [];

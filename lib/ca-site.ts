@@ -1,5 +1,6 @@
 import { ctPaths, isConnecticutPath } from "./ct-site";
 import { ncPaths, isNorthCarolinaPath } from "./nc-site.ts";
+import { inPaths, isIndianaPath } from "./in-site.ts";
 import { nyPaths, isNewYorkPath } from "./ny-site.ts";
 import { paPaths, isPennsylvaniaPath } from "./pa-site.ts";
 import { laPaths, isLouisianaPath } from "./la-site.ts";
@@ -7,7 +8,7 @@ import { hiPaths, isHawaiiPath } from "./hi-site.ts";
 import { paths } from "./paths.ts";
 
 /** Live states on arizonanotaryprep.com. Texas stays on its own app. */
-export const LIVE_STATES = ["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC"] as const;
+export const LIVE_STATES = ["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"] as const;
 export type LiveState = (typeof LIVE_STATES)[number];
 
 export const caPaths = {
@@ -67,6 +68,7 @@ const SWITCH_FEATURES = ["practice", "questions", "study", "studyCards", "mistak
 
 function switchBundle(code: LiveState) {
   if (code === "NC") return ncPaths;
+  if (code === "IN") return inPaths;
   if (code === "CA") return caPaths;
   if (code === "HI") return hiPaths;
   if (code === "NY") return nyPaths;
@@ -93,7 +95,7 @@ function switchBundle(code: LiveState) {
 /** Matching page in another live state. Drops topic ids, question ids, and exam query. */
 export function switchStateHref(pathname: string, target: LiveState) {
   const path = pathname.split("?")[0] || "/";
-  const current: LiveState = isNorthCarolinaPath(path) ? "NC" : isConnecticutPath(path) ? "CT" : isLouisianaPath(path) ? "LA" : isPennsylvaniaPath(path) ? "PA" : isNewYorkPath(path) ? "NY" : isHawaiiPath(path) ? "HI" : isCaliforniaPath(path) ? "CA" : "AZ";
+  const current: LiveState = isIndianaPath(path) ? "IN" : isNorthCarolinaPath(path) ? "NC" : isConnecticutPath(path) ? "CT" : isLouisianaPath(path) ? "LA" : isPennsylvaniaPath(path) ? "PA" : isNewYorkPath(path) ? "NY" : isHawaiiPath(path) ? "HI" : isCaliforniaPath(path) ? "CA" : "AZ";
   if (current === target) return path.endsWith("/") ? path : `${path}/`;
   const here = switchBundle(current);
   const there = switchBundle(target);

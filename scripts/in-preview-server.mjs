@@ -1,0 +1,10 @@
+import path from 'node:path';
+import {spawn} from 'node:child_process';
+const build=process.argv.includes('--build'),start=process.argv.includes('--start'),production=process.argv.includes('--production-gates');
+const data=path.resolve('.tools/indiana-data');
+const env={...process.env,DATABASE_URL:'local-isolated',NOTARY_DATA_DIR:data,STATE_PREVIEW:'1',VERCEL_ENV:production?'production':'preview',AI_PROVIDER:'local',NEXT_DIST_DIR:'.tools/indiana-build',AUTH_SECRET:'indiana-local-acceptance-only-not-production-2026'};
+for(const key of ['PADDLE_API_KEY','PADDLE_WEBHOOK_SECRET','DEEPSEEK_API_KEY','RESEND_API_KEY','NEXT_PUBLIC_GA_ID','NEXT_PUBLIC_CLARITY_ID'])delete env[key];
+const args=build?['build']:[start?'start':'dev','--hostname','127.0.0.1','--port',process.env.IN_TEST_PORT||'3420'];
+const child=spawn(process.execPath,['node_modules/next/dist/bin/next',...args],{env,stdio:'inherit',windowsHide:true});
+for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>child.kill(signal));
+child.on('exit',code=>process.exit(code||0));

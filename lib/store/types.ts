@@ -106,7 +106,19 @@ export type EntitlementRow = {
   updatedAt: string;
 };
 
+export type GuestExamRow = {
+  owner: string;
+  state: string;
+  examId: string;
+  sitting: unknown;
+  result: Omit<ExamRow, "userId"> | null;
+};
+
 export type Store = {
+  getGuestExam(owner: string, state: string): Promise<GuestExamRow | null>;
+  reserveGuestExam(row: Omit<GuestExamRow, "result">): Promise<GuestExamRow>;
+  finishGuestExam(owner: string, state: string, examId: string, result: Omit<ExamRow, "userId">): Promise<{ row: GuestExamRow; duplicate: boolean }>;
+
   learningTransaction<T>(userId: string, action: (store: Store) => Promise<T>): Promise<T>;
   getUserByEmail(email: string): Promise<UserRow | null>;
   getUserById(id: string): Promise<UserRow | null>;

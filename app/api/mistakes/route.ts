@@ -3,11 +3,12 @@ import { z } from "zod";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
-import { questionById } from "@/lib/prep-pack";
+import { serverQuestionById as questionById } from "@/lib/server-questions";
 import { canAccessQuestion } from "@/lib/entitlements";
 import { savedReviewStat } from "@/lib/review-save";
 import { localDate } from "@/lib/calendar";
 import { compareMistakes, DEFAULT_STUDY_TIME_ZONE, isDue } from "@/lib/review-schedule";
+import { canAccessQuestion } from "@/lib/entitlements";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { productionStateBlocked } from "@/lib/state-release";
@@ -32,6 +33,7 @@ export async function POST(req: Request) {
     if (typeof body.data.saveForReview === "boolean") {
       const question = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(body.data.questionId)].find((item) => item && item.question_id === body.data.questionId);
       if (!question) return NextResponse.json({ error: "Not found" }, { status: 404 });
+      if (question.state === "IN" && !await canAccessQuestion(session.id, question)) return NextResponse.json({ error: "Indiana Pro required" }, { status: 402 });
       const stat = await store.getStat(session.id, body.data.questionId);
       if (question.state === "CT" && !stat && !await canAccessQuestion(session.id, question)) {
         return NextResponse.json({ error: "Pro required" }, { status: 402 });
@@ -67,7 +69,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Could not update this question. Please try again." }, { status: 500 });
     }
   };
-  return /^(ny|pa|la|ct|nc)-/.test(body.data.questionId) ? store.learningTransaction(session.id, update) : update();
+  return /^(ny|pa|la|ct|nc|in)-/.test(body.data.questionId) ? store.learningTransaction(session.id, update) : update();
 }
 
 export async function GET(req: Request) {
@@ -76,10 +78,10 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const requested = url.searchParams.get("state");
   if (productionStateBlocked(requested)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  const state = requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" || requested === "CT" || requested === "NC" ? requested : "AZ";
+  const state = requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" || requested === "CT" || requested === "NC" || requested === "IN" ? requested : "AZ";
   const zone = url.searchParams.get("timeZone");
   const timeZone = zone && zone.length < 80 ? zone : DEFAULT_STUDY_TIME_ZONE;
-  const bank = state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : state === "NY" ? "new-york-notary-exam" : state === "PA" ? "pennsylvania-notary-exam" : state === "NC" ? "north-carolina-notary-practice" : state === "CT" ? "connecticut-notary-exam" : state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam";
+  const bank = state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : state === "NY" ? "new-york-notary-exam" : state === "PA" ? "pennsylvania-notary-exam" : state === "NC" ? "north-carolina-notary-practice" : state === "IN" ? "indiana-notary-exam" : state === "CT" ? "connecticut-notary-exam" : state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam";
   const store = await getStore();
   const stats = await store.listStats(session.id);
   const now = Date.now();

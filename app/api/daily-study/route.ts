@@ -36,7 +36,7 @@ export async function POST(req: Request) {
   if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
   const requested = new URL(req.url).searchParams.get("state");
   if (productionStateBlocked(requested)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  const state: StudyState = requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" || requested === "CT" || requested === "NC" ? requested : "AZ";
+  const state: StudyState = requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" || requested === "CT" || requested === "NC" || requested === "IN" ? requested : "AZ";
   const update = async () => {
     if (body.data.action === "visible") {
       await addVisibleTime(session.id, body.data.seconds || 0, body.data.attemptId, state);
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     return NextResponse.json(await dailyStudyView(session.id, timeZone, undefined, state));
   };
   try {
-    return ["NY", "PA", "LA", "CT", "NC"].includes(state) ? await (await getStore()).learningTransaction(session.id, update) : await update();
+    return ["NY", "PA", "LA", "CT", "NC", "IN"].includes(state) ? await (await getStore()).learningTransaction(session.id, update) : await update();
   } catch (error) {
     const message = error instanceof Error && error.message === "not_allowed" ? "That card is not in your plan." : "Could not save";
     return NextResponse.json({ error: message }, { status: 400 });

@@ -22,15 +22,15 @@ export async function generateMetadata(): Promise<Metadata> {
   const state = resolveState(path, saved);
   const california = state === "CA";
   const hawaii = state === "HI";
-  const preview = path.startsWith("/preview/") || path.startsWith("/louisiana") || path.startsWith("/connecticut");
-  const title = state === "CT" ? "Connecticut Notary Prep" : state === "NY" ? "New York Notary Exam Practice" : state === "PA" ? "Pennsylvania Notary Exam Practice" : state === "LA" ? "Louisiana Notary Exam Practice" : hawaii ? "Hawaii Notary Exam Practice" : california ? "California Notary Exam Practice" : "Arizona Notary Exam Practice Test 2026";
+  const preview = path.startsWith("/preview/") || path.startsWith("/louisiana") || path.startsWith("/connecticut") || path.startsWith("/indiana") || path.startsWith("/north-carolina");
+  const title = state === "IN" ? "Indiana Notary Exam Prep" : state === "NC" ? "North Carolina Notary Prep" : state === "CT" ? "Connecticut Notary Prep" : state === "NY" ? "New York Notary Exam Practice" : state === "PA" ? "Pennsylvania Notary Exam Practice" : state === "LA" ? "Louisiana Notary Exam Practice" : hawaii ? "Hawaii Notary Exam Practice" : california ? "California Notary Exam Practice" : "Arizona Notary Exam Practice Test 2026";
   return {
     metadataBase: new URL(siteUrl()),
     title: {
       default: preview ? `${title} preview` : title,
       template: "%s",
     },
-    description: state === "NY"
+    description: state === "IN" ? "Original Indiana notary practice, independent study cards and first-application guidance with official references." : state === "NY"
       ? "New York notary practice questions and study cards from Department of State sources. Independent of the New York Department of State."
       : state === "PA"
       ? "Pennsylvania notary practice questions from Department of State and Pearson VUE sources. Independent of the Pennsylvania Department of State."
@@ -68,7 +68,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         </Suspense>
         <JsonLd data={defaultGraph()} />
         <SavedStateProvider value={saved}>
-          <SiteHeader savedState={saved} />
+          <SiteHeader savedState={saved} indianaPreview={process.env.VERCEL_ENV !== "production" && process.env.STATE_PREVIEW === "1"} />
           <PaddleCheckoutResume successOrigin={siteUrl()} />
           {children}
           <SiteFooter savedState={saved} />

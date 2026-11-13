@@ -6,6 +6,7 @@ import type {
   EntitlementRow,
   EntitlementStatus,
   ExamRow,
+  GuestExamRow,
   QuestionStat,
   Store,
   TokenRow,
@@ -13,6 +14,7 @@ import type {
 } from "./types.ts";
 
 type Mem = {
+  guestExams: GuestExamRow[];
   users: UserRow[];
   tokens: TokenRow[];
   stats: QuestionStat[];
@@ -29,6 +31,7 @@ type Mem = {
 
 function empty(): Mem {
   return {
+    guestExams: [],
     users: [],
     tokens: [],
     stats: [],
@@ -97,6 +100,23 @@ export function createMemoryStore(): Store {
     set: (_target, key, value) => Reflect.set(scope.getStore() || committed, key, value),
   });
   const methods: Store = {
+    async getGuestExam(owner, state) {
+      return db.guestExams.find(row => row.owner === owner && row.state === state) ?? null;
+    },
+    async reserveGuestExam(row) {
+      const existing = db.guestExams.find(item => item.owner === row.owner && item.state === row.state);
+      if (existing) return existing;
+      const created = { ...row, result: null };
+      db.guestExams.push(created);
+      return created;
+    },
+    async finishGuestExam(owner, state, examId, result) {
+      const row = db.guestExams.find(item => item.owner === owner && item.state === state);
+      if (!row || row.examId !== examId) throw new Error("invalid_exam");
+      const duplicate = Boolean(row.result);
+      if (!duplicate) row.result = result;
+      return { row, duplicate };
+    },
     async learningTransaction(userId, action) {
       if (scope.getStore() !== committed) return action(store);
       const staged = structuredClone(committed);

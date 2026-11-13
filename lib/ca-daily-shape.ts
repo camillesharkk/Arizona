@@ -2,7 +2,7 @@ import type { StateCode } from "./types.ts";
 
 export function examState(mode: string): StateCode {
   const prefix = mode.split("-")[0].toUpperCase();
-  return prefix === "CA" || prefix === "HI" || prefix === "NY" || prefix === "PA" || prefix === "LA" || prefix === "CT" || prefix === "NC" ? prefix : "AZ";
+  return prefix === "CA" || prefix === "HI" || prefix === "NY" || prefix === "PA" || prefix === "LA" || prefix === "CT" || prefix === "NC" || prefix === "IN" ? prefix : "AZ";
 }
 
 export type CaCheck = { wrong: number; skipped: number; wrongIds: string[] };

@@ -1,3 +1,4 @@
+import { productionStateBlocked } from "@/lib/state-release";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { operationsAccess } from "@/lib/operations/report-view";
@@ -10,6 +11,7 @@ export async function middleware(request: NextRequest) {
       (process.env.VERCEL_ENV === "production" || process.env.NEXT_PUBLIC_CT_PREVIEW !== "1")) {
     return new NextResponse("Not found", { status: 404 });
   }
+  if (productionStateBlocked("IN") && (path === "/indiana" || path.startsWith("/indiana/"))) return new NextResponse("Not found", { status: 404 });
   // Deny before rendering (including RSC requests), not merely via noindex or links.
   if (process.env.VERCEL_ENV === "production" && (path === "/preview" || path.startsWith("/preview/"))) {
     return new NextResponse("Not found", { status: 404 });
@@ -17,6 +19,7 @@ export async function middleware(request: NextRequest) {
   if (process.env.VERCEL_ENV === "production" && (path === "/north-carolina" || path.startsWith("/north-carolina/"))) {
     return new NextResponse("Not found", { status: 404 });
   }
+  if (!productionStateBlocked("IN") && (path === "/preview/indiana" || path.startsWith("/preview/indiana/"))) { const url = request.nextUrl.clone(); url.pathname = path.replace("/preview/indiana", "/indiana"); return NextResponse.redirect(url); }
   if (path.startsWith("/admin")) {
     const token = request.cookies.get(SESSION_COOKIE)?.value;
     const user = token ? await readSessionToken(token) : null;

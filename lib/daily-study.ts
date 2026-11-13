@@ -10,7 +10,7 @@ import { localDate } from "@/lib/calendar";
 import { recentCaExams, type CaCheck } from "@/lib/ca-daily-shape";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
-import { accountProCovers, accountProExpiry } from "@/lib/entitlements";
+import { accountProCovers, accountProExpiry, hasStatePro, indianaEntitlement } from "@/lib/entitlements";
 import { publicStudyCards, studyCardCatalog } from "@/lib/study-cards";
 import {
   applyCardMark,
@@ -28,20 +28,21 @@ import {
 } from "@/lib/study-plan";
 import { DEFAULT_STUDY_TIME_ZONE, scheduleReview } from "@/lib/review-schedule";
 import { stateProCovers, stateProExpiry } from "@/lib/state-pro";
+import { publishedInQuestions } from "@/data/in-questions";
 import { packFor } from "@/lib/prep-pack";
 import { getStore } from "@/lib/store";
 import type { StateCode } from "@/lib/types";
 
-export type StudyState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC";
+export type StudyState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN";
 
 function isPack(state: StudyState) {
-  return state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC";
+  return state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN";
 }
 
 function pool(state: StudyState, isPro: boolean) {
   if (isPack(state)) {
     const pack = packFor(state as StateCode);
-    const questions = (pack?.questions() || []).filter((question) => isPro || question.is_free);
+    const questions = (state === "IN" ? publishedInQuestions() : pack?.questions() || []).filter((question) => isPro || question.is_free);
     const practice = pack?.paths.practice || "/";
     const cards = (pack?.cards || []).map((card) => ({
       id: card.id,
@@ -139,8 +140,9 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   const topicPractice = state === "CA" || state === "HI" || isPack(state);
   const storeForExpiry = await getStore();
   const account = await storeForExpiry.listEntitlements(userId);
-  const pro = stateProCovers(account, state);
-  const expires = stateProExpiry(account, state, new Date(now));
+  const indiana = state === "IN" ? indianaEntitlement(account, new Date(now)) : null;
+  const pro = state === "IN" ? Boolean(indiana) : state === "CT" ? ctProCovers(account) : stateProCovers(account, state);
+  const expires = state === "IN" ? (indiana ? new Date(indiana.expiresAt) : null) : state === "CT" ? accountProExpiry(account, new Date(now), "CT") : stateProExpiry(account, state, new Date(now));
   const loaded = await loadDocument(userId, state, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
   let doc = loaded.doc;
   const { store, checks } = loaded;
@@ -221,7 +223,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     projectedDate: projection.date,
     projectReason: projection.reason,
     entitlementExpiresAt: expires ? expires.toISOString() : null,
-    freeOnly: (state === "AZ" || state === "CT" || state === "NC") && !pro,
+    freeOnly: (state === "AZ" || state === "CT" || state === "NC" || state === "IN") && !pro,
     freeQuestionCount: pool(state, false).questions.length,
     questionCount: pool(state, true).questions.length,
     freeCardCount: pool(state, false).cards.length,

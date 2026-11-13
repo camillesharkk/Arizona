@@ -17,14 +17,15 @@ function stateHref(pathname: string, code: string) {
     const destination = packNavigationFor(code)?.paths || (code === "CA" ? caPaths : code === "HI" ? hiPaths : paths);
     if (feature && feature in destination) return destination[feature as keyof typeof destination];
   }
-  const home = stateByCode(code)?.homePath || "/";
+  const home = code === "IN" ? "/indiana/" : stateByCode(code)?.homePath || "/";
   if (!pathState(pathname) || !LIVE_STATES.includes(code as LiveState)) return home;
   const next = switchStateHref(pathname, code as LiveState);
   return next.split("#")[0]?.split("?")[0] || home;
 }
 
-export function StateMenu({ pathname, current }: { pathname: string; current: LiveCode | null }) {
+export function StateMenu({ pathname, current, indianaPreview = false }: { pathname: string; current: LiveCode | null; indianaPreview?: boolean }) {
   const states = availableStates();
+  if (indianaPreview) { const indiana = stateByCode("IN"); if (indiana) states.push({ ...indiana, status: "available", homePath: "/indiana/" }); }
   const currentName = current ? stateByCode(current)?.name : "";
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);

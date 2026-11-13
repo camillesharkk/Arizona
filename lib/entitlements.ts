@@ -11,7 +11,7 @@ import {
   FREE_FULL_EXAMS,
   PRO_DURATION_DAYS,
 } from "@/lib/product";
-import { SITE_PRO_PRODUCT_CODE } from "@/lib/pro-products";
+import { isSiteProProduct, SITE_PRO_PRODUCT_CODE } from "@/lib/pro-products";
 import { accountProCovers, accountProExpiry, ctProCovers } from "./account-pro.ts";
 
 export { accountProCovers, accountProExpiry };
@@ -38,7 +38,7 @@ export async function getArizonaEntitlement(userId: string | null | undefined, e
   if (!accountProCovers(rows, now)) return null;
   const expiry = accountProExpiry(rows, now);
   const current = rows
-    .filter((row) => row.state !== "CT" && row.status === "active" && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
+    .filter((row) => row.state !== "CT" && row.state !== "IN" && row.state !== "NC" && isSiteProProduct(row.productCode) && row.status === "active" && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
     .sort((a, b) => new Date(b.expiresAt).getTime() - new Date(a.expiresAt).getTime())[0];
   if (!current || !expiry) return null;
   return { ...current, state: "ALL", expiresAt: expiry.toISOString() };
@@ -65,9 +65,23 @@ export async function hasArizonaPro(userId: string | null | undefined) {
   return Boolean(row);
 }
 
+export const IN_PRO_PRODUCT = "in_exam_pro_60d";
+
+export function indianaEntitlement(rows: EntitlementRow[], now = new Date()): EntitlementRow | null {
+  return rows.filter(row => row.productCode === IN_PRO_PRODUCT && row.state === "IN" && row.status === "active"
+    && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
+    .sort((a, b) => Date.parse(b.expiresAt) - Date.parse(a.expiresAt))[0] ?? null;
+}
+
+export async function getIndianaEntitlement(userId: string | null | undefined): Promise<EntitlementRow | null> {
+  if (!userId) return null;
+  return indianaEntitlement(await (await getStore()).listEntitlements(userId));
+}
+
 export async function hasStatePro(userId: string | null | undefined, _state?: string) {
   if (_state === "CT") return userId ? ctProCovers(await (await getStore()).listEntitlements(userId)) : false;
   if (_state === "NC") return userId ? stateProCovers(await (await getStore()).listEntitlements(userId), "NC") : false;
+  if (_state === "IN") return Boolean(await getIndianaEntitlement(userId));
   return hasArizonaPro(userId);
 }
 
@@ -92,15 +106,17 @@ export async function grantStatePro60d(opts: {
   const existing = await store.getEntitlementByProviderOrder(opts.provider, opts.providerOrderId);
   if (existing) {
     if (existing.userId !== opts.userId) throw new Error("order_user_mismatch");
+    if ((opts.state === "IN") !== (existing.productCode === IN_PRO_PRODUCT && existing.state === "IN")) throw new Error("order_state_mismatch");
     return { ok: true, duplicate: true, entitlement: existing };
   }
   const rows = await store.listEntitlements(opts.userId);
   const now = new Date();
-  const state = opts.state === "NC" ? "NC" : "ALL";
-  const window = nextProWindow(stateProExpiry(rows, state, now), now);
+  const latestIndiana = indianaEntitlement(rows, now);
+  const state = opts.state === "NC" ? "NC" : opts.state === "IN" ? "IN" : "ALL";
+  const window = nextProWindow(state === "IN" ? (latestIndiana ? new Date(latestIndiana.expiresAt) : null) : stateProExpiry(rows, state, now), now);
   const entitlement = await store.insertEntitlement({
     userId: opts.userId,
-    productCode: state === "NC" ? NC_PRO_PRODUCT : SITE_PRO_PRODUCT_CODE,
+    productCode: state === "NC" ? NC_PRO_PRODUCT : state === "IN" ? IN_PRO_PRODUCT : SITE_PRO_PRODUCT_CODE,
     state,
     status: "active",
     startsAt: window.startsAt.toISOString(),
@@ -178,5 +194,5 @@ export async function packFullExamCounts(userId: string) {
   const store = await getStore();
   const exams = await store.listExams(userId);
   const count = (prefix: string) => exams.filter((exam) => exam.mode === prefix).length;
-  return { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full"), NC: count("nc-full") };
+  return { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full"), NC: count("nc-full"), IN: count("in-full") };
 }

@@ -14,7 +14,7 @@ export default function Page() {
     <main className="wrap state-picker-page">
       <h1>Choose Your State</h1>
       <p className="home-lead">Select your state to find notary practice questions and study materials.</p>
-      <StatePicker />
+      <StatePicker indianaPreview={process.env.VERCEL_ENV !== "production" && process.env.STATE_PREVIEW === "1"} />
     </main>
   );
 }

@@ -25,8 +25,9 @@ const noticeCopy: Record<Exclude<Notice, null>, string> = {
   outside: "That location isn't in a listed U.S. state. Choose a state below.",
 };
 
-export function StatePicker() {
-  const states = statesByName(prepStates);
+export function StatePicker({ indianaPreview = false }: { indianaPreview?: boolean }) {
+  const catalog = indianaPreview ? prepStates.map(state => state.code === "IN" ? { ...state, status: "available" as const, homePath: "/indiana/" } : state) : prepStates;
+  const states = statesByName(catalog);
   const [query, setQuery] = useState("");
   const [finding, setFinding] = useState(false);
   const [notice, setNotice] = useState<Notice>(null);

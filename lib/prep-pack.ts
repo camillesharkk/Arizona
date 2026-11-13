@@ -1,5 +1,8 @@
 import { ncCards, ncTopics, ncQuestionCounts, publishedNcQuestions } from "@/data/nc-content";
 import { NC_PRACTICE } from "./nc-site.ts";
+import { inFreeQuestions } from "@/data/in-free-questions";
+import { inBankCounts, inTopics } from "@/data/in-bank-summary";
+import { inPublicCards as inCards } from "@/data/in-public-cards";
 import { prepNavigation, type PrepCode, type PrepPaths } from "./prep-navigation.ts";
 export type { PrepCode, PrepPaths } from "./prep-navigation.ts";
 import { laCards, laTopics, pickLaFullExam, publishedLaQuestions } from "@/data/la-content";
@@ -89,6 +92,22 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     quickReady: ncQuestionCounts().free >= 10,
     cards: ncCards,
   },
+  IN: {
+    ...prepNavigation.IN,
+    topics: [...inTopics],
+    questions: () => inFreeQuestions,
+    counts: () => inBankCounts,
+    fullCount: 30,
+    fullMinutes: null,
+    fullTitle: "30-Question Mock Exam",
+    fullDetail: "Our mock exam uses 30 original questions, four choices per question, and no timer. These are site practice settings. Indiana’s official exam has 30 questions and requires 24 correct; this practice does not fulfill the official requirement.",
+    anonKey: "in-anon-full-started",
+    pickQuick: (seed) => quickFrom(inFreeQuestions, seed),
+    pickFull: (seed) => { const questions = shuffle(inFreeQuestions, seed).slice(0, 30); return questions.length === 30 ? { questions, unscoredIds: [] } : null; },
+    fullReady: inBankCounts.free >= 30,
+    quickReady: inBankCounts.free >= 10,
+    cards: inCards,
+  },
   PA: {
     ...prepNavigation.PA,
     topics: paTopics,
@@ -153,5 +172,5 @@ export function packFor(state: StateCode | string | null | undefined): PrepPack 
 }
 
 export function questionById(id: string) {
-  return [...publishedPaQuestions(), ...publishedNyQuestions(), ...publishedLaQuestions(), ...publishedCtQuestions(), ...publishedNcQuestions()].find((question) => question.question_id === id) || null;
+  return [...inFreeQuestions, ...publishedPaQuestions(), ...publishedNyQuestions(), ...publishedLaQuestions(), ...publishedCtQuestions(), ...publishedNcQuestions()].find((question) => question.question_id === id) || null;
 }

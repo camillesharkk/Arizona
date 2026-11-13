@@ -1,7 +1,7 @@
 import postgres from "postgres";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { randomUUID } from "crypto";
-import type { AccountDeletionTombstone, EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
+import type { AccountDeletionTombstone, EmailType, EntitlementRow, EntitlementStatus, ExamRow, GuestExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
 
 let client: ReturnType<typeof postgres> | null = null;
 const learningSql = new AsyncLocalStorage<{ sql: ReturnType<typeof postgres>; userId: string }>();
@@ -128,7 +128,39 @@ function mapStat(r: Record<string, unknown>): QuestionStat {
   };
 }
 
+function mapGuestExam(row: Record<string, unknown>): GuestExamRow {
+  const document = (value: unknown) => typeof value === "string" ? JSON.parse(value) : value;
+  return { owner: String(row.owner), state: String(row.state), examId: String(row.exam_id),
+    sitting: document(row.sitting), result: row.result == null ? null : document(row.result) };
+}
+
 export const pgStore: Store = {
+  async getGuestExam(owner, state) {
+    await assertSchema();
+    const rows = await db()`select * from guest_exams where owner = ${owner} and state = ${state} limit 1`;
+    return rows[0] ? mapGuestExam(rows[0] as Record<string, unknown>) : null;
+  },
+  async reserveGuestExam(row) {
+    await assertSchema();
+    const sitting = JSON.stringify(row.sitting);
+    const rows = await db()`insert into guest_exams (owner, state, exam_id, sitting)
+      values (${row.owner}, ${row.state}, ${row.examId}, ${sitting})
+      on conflict (owner, state) do nothing returning *`;
+    if (rows[0]) return mapGuestExam(rows[0] as Record<string, unknown>);
+    const existing = await this.getGuestExam(row.owner, row.state);
+    if (!existing) throw new Error("invalid_exam");
+    return existing;
+  },
+  async finishGuestExam(owner, state, examId, result) {
+    await assertSchema();
+    const encoded = JSON.stringify(result);
+    const rows = await db()`update guest_exams set result = ${encoded}
+      where owner = ${owner} and state = ${state} and exam_id = ${examId} and result is null returning *`;
+    if (rows[0]) return { row: mapGuestExam(rows[0] as Record<string, unknown>), duplicate: false };
+    const row = await this.getGuestExam(owner, state);
+    if (!row || row.examId !== examId || !row.result) throw new Error("invalid_exam");
+    return { row, duplicate: true };
+  },
   async learningTransaction<T>(userId: string, action: (store: Store) => Promise<T>): Promise<T> {
     const current = learningSql.getStore();
     if (current) {

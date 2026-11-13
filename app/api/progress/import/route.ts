@@ -3,7 +3,7 @@ import { z } from "zod";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
-import { questionById } from "@/lib/prep-pack";
+import { serverQuestionById as questionById } from "@/lib/server-questions";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { productionStateBlocked } from "@/lib/state-release";
@@ -11,7 +11,7 @@ import { recordQuestionAnswers } from "@/lib/progress";
 
 const schema = z.object({
   accountId: z.string().min(1),
-  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC"]),
+  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"]),
   examId: z.string().uuid(),
   finishedAt: z.string().datetime(),
   timeZone: z.string().max(80).optional(),

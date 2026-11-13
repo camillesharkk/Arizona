@@ -142,7 +142,7 @@ export function subscribeProgress(cb: () => void) {
   };
 }
 
-export function shouldInviteAccount() {
+export function shouldInviteAccount(state: import("@/lib/types").StateCode = "AZ") {
   if (currentEmail()) return false;
-  return loadProgress().answeredIds.length >= ACCOUNT_INVITE_AFTER;
+  return loadProgress(state).answeredIds.length >= ACCOUNT_INVITE_AFTER;
 }

@@ -2,7 +2,7 @@ import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
 
-const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", "north-carolina": "NC" };
+const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", indiana: "IN", "north-carolina": "NC" };
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
   if (!prepPageEnabled((await params).state)) notFound();

@@ -4,9 +4,10 @@ import { setTimeout as delay } from "node:timers/promises";
 import path from "path";
 import { randomUUID } from "crypto";
 import { migrateReviewFields } from "../review-schedule.ts";
-import type { AccountDeletionTombstone, EmailType, EntitlementRow, EntitlementStatus, ExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
+import type { AccountDeletionTombstone, EmailType, EntitlementRow, EntitlementStatus, ExamRow, GuestExamRow, QuestionStat, Store, TokenRow, UserRow } from "./types";
 
 type FileDb = {
+  guestExams: GuestExamRow[];
   users: UserRow[];
   tokens: TokenRow[];
   stats: QuestionStat[];
@@ -22,6 +23,7 @@ type FileDb = {
 };
 
 const empty = (): FileDb => ({
+  guestExams: [],
   users: [],
   tokens: [],
     stats: [],
@@ -131,6 +133,27 @@ function freshUser(email: string, passwordHash: string, name: string | null): Us
 }
 
 export const fileStore: Store = {
+  async getGuestExam(owner, state) {
+    return (await load()).guestExams.find(row => row.owner === owner && row.state === state) ?? null;
+  },
+  reserveGuestExam(row) {
+    return mutate(db => {
+      const existing = db.guestExams.find(item => item.owner === row.owner && item.state === row.state);
+      if (existing) return existing;
+      const created = { ...row, result: null };
+      db.guestExams.push(created);
+      return created;
+    });
+  },
+  finishGuestExam(owner, state, examId, result) {
+    return mutate(db => {
+      const row = db.guestExams.find(item => item.owner === owner && item.state === state);
+      if (!row || row.examId !== examId) throw new Error("invalid_exam");
+      const duplicate = Boolean(row.result);
+      if (!duplicate) row.result = result;
+      return { row, duplicate };
+    });
+  },
   learningTransaction(userId, action) {
     return mutate(db => learningDb.run(db, () => action(fileStore)));
   },

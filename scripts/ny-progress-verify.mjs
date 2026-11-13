@@ -18,6 +18,7 @@ function load(file) {
   const module = { exports: {} };
   cache.set(file, module);
   const require = name => {
+    if (name === 'server-only') return {}; // Node verification replaces Next's server-module marker.
     if (name === '@/lib/store') return { getStore: async () => store };
     if (name === '@/lib/session') return { getSession: async () => ({ id: 'isolated-test' }) };
     if (name === '@/lib/entitlements') return { ...load('lib/entitlements.ts'), canAccessQuestion: async (_id, q) => q.is_free || allowPro, hasArizonaPro: async () => allowPro };
