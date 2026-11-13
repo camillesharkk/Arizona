@@ -7,7 +7,7 @@ export type ArticleLink = {
 
 export type StateArticle = {
   id: string;
-  state: "CA" | "HI" | "NY" | "PA" | "LA" | "CT";
+  state: "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN";
   slug: string;
   path: string;
   keyword: string;

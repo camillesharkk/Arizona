@@ -177,6 +177,17 @@ export const inPublicCards = [
     "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {
+    "id": "in-card-017",
+    "study": "identification",
+    "title": "Compare the appearing signer and the record",
+    "front": "What must agree when examining a signer’s identity?",
+    "rule": "Carefully examine the identification and compare signatures. The guide directs matching the identification and document name.",
+    "boundary": "Another person’s credential does not identify the signer merely because a name matches.",
+    "mixup": "A nickname does not remove the guide’s matching instruction.",
+    "source": "Indiana SOS Guide (May 2024), p.44",
+    "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
+  },
+  {
     "id": "in-card-018",
     "study": "notarial-acts",
     "title": "Acknowledgment confirms execution",
@@ -243,6 +254,17 @@ export const inPublicCards = [
     "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {
+    "id": "in-card-024",
+    "study": "notarial-acts",
+    "title": "Official vital records and copy affidavits",
+    "front": "Does a notary stamp create an official certified vital record?",
+    "rule": "Obtain an official certified vital record from its authorized custodian. A notarized true-copy affidavit is the signer’s sworn statement.",
+    "boundary": "The receiving agency decides which document meets its requirements.",
+    "mixup": "Notarial authority does not appoint the notary as a vital-record custodian.",
+    "source": "Indiana SOS Guide (May 2024), p.19",
+    "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
+  },
+  {
     "id": "in-card-025",
     "study": "notarial-acts",
     "title": "The Indiana notary stays in Indiana",
@@ -298,6 +320,17 @@ export const inPublicCards = [
     "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {
+    "id": "in-card-030",
+    "study": "certificates",
+    "title": "Certify the act that actually occurred",
+    "front": "Can an acknowledgment certificate describe an unperformed ceremony?",
+    "rule": "The certificate records the signer’s appearance, identification and free and willing acknowledgment. Complete that procedure before attesting to it.",
+    "boundary": "The document may be signed before or during an acknowledgment, but not after notarization.",
+    "mixup": "Intending to perform an act later does not establish that it has already occurred.",
+    "source": "Indiana SOS Guide (May 2024), p.52",
+    "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
+  },
+  {
     "id": "in-card-031",
     "study": "certificates",
     "title": "Correct the certificate you executed",
@@ -306,6 +339,17 @@ export const inPublicCards = [
     "boundary": "A correction must accurately reflect the act that occurred.",
     "mixup": "A correction is not permission to invent an earlier appearance or oath.",
     "source": "IC 33-42-9-12(k)",
+    "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
+  },
+  {
+    "id": "in-card-032",
+    "study": "certificates",
+    "title": "Correct a smeared stamp visibly",
+    "front": "What correction does the guide describe for a smeared impression?",
+    "rule": "Reapply the stamp and initial the original smeared impression. Make certificate corrections visibly, with initials and date.",
+    "boundary": "Do not use whiteout. Record changes in the journal.",
+    "mixup": "Certificate correction does not authorize rewriting the underlying agreement.",
+    "source": "Indiana SOS Guide (May 2024), p.17",
     "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {
@@ -331,6 +375,17 @@ export const inPublicCards = [
     "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {
+    "id": "in-card-035",
+    "study": "seals-records",
+    "title": "A seal must reproduce with the record",
+    "front": "Why check the impression before handing back the document?",
+    "rule": "The official seal must be capable of being copied together with its record.",
+    "boundary": "A faint or incomplete impression can defeat legibility.",
+    "mixup": "A visible mark on the original is not enough if essential details disappear in copying.",
+    "source": "IC 33-42-10-2(b)",
+    "sourceUrl": "https://secure.in.gov/counties/shelby/recorder/recorder-fee-schedule/"
+  },
+  {
     "id": "in-card-036",
     "study": "seals-records",
     "title": "No shared stamping device",
@@ -339,6 +394,17 @@ export const inPublicCards = [
     "boundary": "Keep control even when the employer paid for supplies.",
     "mixup": "A supervisor's approval is not the commissioned notary's performance of the act.",
     "source": "IC 33-42-10-3(a)–(b)",
+    "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
+  },
+  {
+    "id": "in-card-037",
+    "study": "seals-records",
+    "title": "Report a stolen stamping device",
+    "front": "Which offices does the guide identify after stamp theft?",
+    "rule": "Report the incident to police, then report the fact to the Secretary of State’s Business Services Division.",
+    "boundary": "Buying a replacement stamp does not give those offices notice.",
+    "mixup": "Possession of a stolen stamp never transfers the personal commission.",
+    "source": "Indiana SOS Guide (May 2024), p.40",
     "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {
@@ -384,6 +450,17 @@ export const inPublicCards = [
     "mixup": "A document going abroad does not authorize an Indiana notary to issue the Secretary of State's authentication.",
     "source": "INBiz Business Services, Apostilles",
     "sourceUrl": "https://inbiz.in.gov/business-services"
+  },
+  {
+    "id": "in-card-042",
+    "study": "seals-records",
+    "title": "Ordinary fees and disclosed service charges",
+    "front": "How should a single-signature ordinary notarization be priced?",
+    "rule": "The guide states a $10 maximum for an individual ordinary notarization. For a single signature and one act, do not multiply the fee merely by page count.",
+    "boundary": "Inform clients in advance of additional lawful service charges. Follow the separate applicable limits.",
+    "mixup": "A maximum is not a mandatory charge. Application costs are different from customer fees.",
+    "source": "Indiana SOS Guide (May 2024), p.23",
+    "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {
     "id": "in-card-043",

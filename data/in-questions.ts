@@ -94,23 +94,11 @@ const letters = ["A", "B", "C", "D"] as const;
 const sortedGroups = [...groups, ...inAdditionalGroups].sort((a,b) => a.card-b.card);
 // These clauses have corroboration in a statutory mirror but no actually read
 // official passage supporting their precise boundary. They remain candidates.
-const draftConcepts = new Map<number,string>([
-  [17,"Additional-ID statutory discretion not retrieved from an official primary passage"],
-  [24,"Designated-signer statutory procedure not retrieved from an official primary passage"],
-  [30,"Express no-presigned-certificate provision not retrieved from an official primary passage"],
-  [32,"Express prohibition on alteration of seal impressions not retrieved from official primary text"],
-  [35,"Seal reproducibility provision not retrieved from official primary text"],
-  [37,"Ordinary-device lost/stolen notice provision not retrieved from official primary text"],
-  [42,"Per-signature and displayed-fee statute not retrieved; simplified per-act official slides do not resolve its boundaries"],
-]);
-const guidePages: Record<number,string> = {1:"8",3:"8",13:"20, 26, 54",14:"20",15:"20",16:"20-21",18:"7, 51-52",19:"17, 51-53",20:"54",21:"54",22:"55-56",23:"19, 56",26:"15, 26, 43",27:"25",28:"26",29:"15-17",31:"17",33:"26",34:"17-18",36:"18, 22",38:"18",39:"27-28",40:"26",41:"23",43:"7, 18-19",44:"22",45:"25",46:"21",47:"7, 21",48:"7, 21",49:"7, 22",50:"7, 22"};
-const draftItems = new Map<string,string>([
-  ["38:2","Ordinary-device representative duty on death not retrieved in official primary text"],
-  ["38:3","Expanded statutory device-disabling alternatives not retrieved in ordinary official primary text"],
-  ["40:0","Explicit statutory no-immunity clause not retrieved in official primary text"],
-  ["46:3","General refusal-unless-prohibited clause not retrieved in official primary text"],
-]);
+const draftConcepts = new Map<number,string>();
+const guidePages: Record<number,string> = {1:"8",3:"8",17:"44",24:"19",30:"52",32:"17",35:"18",37:"40",42:"23",13:"20, 26, 54",14:"20",15:"20",16:"20-21",18:"7, 51-52",19:"17, 51-53",20:"54",21:"54",22:"55-56",23:"19, 56",26:"15, 26, 43",27:"25",28:"26",29:"15-17",31:"17",33:"26",34:"17-18",36:"18, 22",38:"18",39:"27-28",40:"26",41:"23",43:"7, 18-19",44:"22",45:"25",46:"21",47:"7, 21",48:"7, 21",49:"7, 22",50:"7, 22"};
+const draftItems = new Map<string,string>();
 const evidenceFor = (group: Group) => {
+  if (group.card === 35) return {source_id:"in-shelby-seal",source_reference:"Shelby County Recorder, IC 33-42-10-2(b), seal capable of being copied with the record; https://secure.in.gov/counties/shelby/recorder/recorder-fee-schedule/; primary text read 2026-11-13"};
   const primary = group.source.startsWith("Indiana Secretary of State, New") ? "in-faq" : group.source.startsWith("Indiana Secretary of State, 2025") ? "in-sos-2025" : "in-guide-2024";
   const accessed = primary === "in-guide-2024" ? `Official indexed Guide passages pp. ${guidePages[group.card] ?? "not established"}; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf` : "Official complete PDF text read 2026-11-13";
   return {source_id:primary,source_reference:`${group.source}; ${accessed}. Code links are cross-references, not a claim that the 2026 Code body was opened.`};

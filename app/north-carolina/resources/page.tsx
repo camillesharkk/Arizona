@@ -1,3 +1,4 @@
+import { ncArticles } from '@/data/new-state-articles';
 import { ncOfficial, NC_CHECKED } from "@/data/nc-resources";
 import { NcCourseFinder } from "@/components/NcCourseFinder";
 import { NcApplicationGuide } from "@/components/NcApplicationGuide";
@@ -23,6 +24,7 @@ export default function Page() {
         </ul>
         <p className="notice">The Secretary of State's live ordinary-notary, forms and rules pages were checked on {NC_CHECKED}. Use the linked forms page for current submission instructions.</p>
       </section>
+      <section className="card"><h2>Study notes</h2><ul>{ncArticles.map(article=><li key={article.id}><a href={article.path}>{article.title}</a></li>)}</ul></section>
       <NcApplicationGuide />
     </main>
   );

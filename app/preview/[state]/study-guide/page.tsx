@@ -9,7 +9,7 @@ import { PA_CHECKED } from "@/data/pa-content";
 import { LA_CHECKED } from "@/data/la-content";
 
 const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", indiana: "IN" };
-const checkedOn = { NY: NY_CHECKED, PA: PA_CHECKED, LA: LA_CHECKED, CT: "2026-11-13", NC: "2026-11-13" };
+const checkedOn = { NY: NY_CHECKED, PA: PA_CHECKED, LA: LA_CHECKED, CT: "2026-11-13", NC: "2026-11-13", IN: "2026-11-13" };
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
   const { state } = await params;
@@ -30,7 +30,8 @@ export default async function Page({ params }: { params: Promise<{ state: string
     sitePaths={pack.paths}
     fullExamLabel={pack.fullTitle}
     chapters={pack.topics.map((topic) => {
-      const material = prepGuideTopics[code][topic.id];
+      const material = prepGuideTopics[code]?.[topic.id];
+      if (!material) throw new Error(`Missing guide material: ${code}/${topic.id}`);
       const concepts = pack.cards.filter((card) => card.study === topic.id);
       return {
         id: topic.id,

@@ -54,3 +54,18 @@ Official 2026 Indiana Code and Administrative Code routes returned JavaScript sh
 The $75 first-application charge was found in the official December 2024 publication. The current FAQ expressly states $75 for renewal and did not separately restate the initial charge. No live payment screen was reviewed. The cards do not publish a current first-application amount. [SOS December 2024 update](https://www.in.gov/sboa/files/SOS_Indiana-Notary-Public-Update_NEO_2024.pdf)
 
 2026 SB253 introduced wording supplied no enacted-law proof and was excluded. Drafts retain authored work for later evidence review. Question publication additionally requires every linked concept to occur in the published card export and every tested detail to have its own primary support. A published broad card does not establish an unsupported narrower question claim.
+
+## Integrated revision on 2026-11-13
+
+This section supersedes the 170-question/43-card candidate count above. The gated integration candidate contains 203 questions (60 free, 143 Pro) and 50 independent cards. Unverified narrow claims were replaced or narrowed; clearing draft status was not based on accepting an unread statute mirror.
+
+- Card/group 017 now addresses actual identity and signature comparison, including the guide's Robert/Bob example on p.44. It no longer tests the unread additional-identification discretion clause.
+- Card/group 024 now distinguishes issuer-certified vital records from a signer's copy affidavit, using the guide's already reviewed copy discussion on p.19. It no longer tests the designated-signer statute.
+- Card/group 030 describes truthful certification of an actually performed acknowledgment and its signature timing, from the retrieved indexed guide p.52. No claim of independently opening IC 33-42-9-12(h) is made.
+- Card/group 032 now uses the actual correction instructions retrieved on p.17: visible correction, initials/date, reapplying a smeared stamp and recording the change. It does not assert an unread seal-alteration clause.
+- Card/group 035 uses the actual official Shelby County Recorder text reproducing IC 33-42-10-2(b), not an unread guide passage. The source registry and per-question reference identify that page.
+- Card/group 037 is limited to the guide p.40 stolen-device police/Business Services reporting procedure. Unsupported guardian and general lost-device details were removed.
+- Card/group 042 uses single-signature ordinary-act examples and advance lawful service-charge disclosure from guide p.23. The unreconciled broader per-signature-versus-per-act wording is not used to resolve a multi-signature fee problem.
+- Four extra draft items were replaced with supported cessation, liability and willingness scenarios. IDs of these never-public drafts were retained; published historical question IDs and versions were not changed.
+
+Primary material actually retrieved during this revision includes indexed official guide passages on pp.17,23,40,43,44,52 and the county recorder's seal provision. The full 2026 IGA Code shell and guide binary could not be opened; no complete current-Code or full-guide reread is claimed. Existing dated official sources and the May 2026 workflow FAQ remain the stated basis. Public release and commerce activation remain blocked pending the coordinated release review.

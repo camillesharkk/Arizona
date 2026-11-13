@@ -11,7 +11,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
   const code = codes[(await params).state];
   if (!code) notFound();
   if (code === "NC") return <NcPricing />;
-  if (code === "IN") notFound();
+  if (code === "IN" || code === "CT") notFound();
   const pack = prepPacks[code];
   const counts = pack.counts();
   if (code === "LA") {

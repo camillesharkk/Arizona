@@ -4,14 +4,14 @@ import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { getIndianaEntitlement } from "@/lib/entitlements";
 import { productionStateBlocked } from "@/lib/state-release";
-import { ensureIndianaGuest, indianaGuestSitting } from "@/lib/indiana-guest";
+import { ensureIndianaGuest, readIndianaGuest, indianaGuestSitting } from "@/lib/indiana-guest";
 import { indianaSittingQuestions, readIndianaSitting, startIndianaSitting, validateIndianaAnswers, type IndianaSitting } from "@/lib/indiana-sitting";
 import { savePackFullSubmission } from "@/lib/ny-full-submission";
 
 const headers = { "Cache-Control": "private, no-store" };
 const schema = z.discriminatedUnion("action", [
-  z.object({ action: z.literal("start"), examId: z.string().uuid().optional() }),
-  z.object({ action: z.literal("submit"), examId: z.string().uuid(), timeZone: z.string().max(80).optional(),
+  z.object({ action: z.literal("start"), examId: z.string().uuid().optional(), accountId: z.string().min(1).optional() }),
+  z.object({ action: z.enum(["submit", "import"]), examId: z.string().uuid(), accountId: z.string().min(1).optional(), timeZone: z.string().max(80).optional(),
     questions: z.array(z.object({ questionId: z.string().max(80), questionVersion: z.number().int().positive(), selected: z.enum(["A", "B", "C", "D"]).optional() })).length(30) }),
 ]);
 function blocked() {
@@ -53,12 +53,29 @@ export async function POST(request: Request) {
   const input = parsed.data;
   try {
     const session = await getSession();
+    if (input.accountId && input.accountId !== session?.id) return NextResponse.json({ error: "Account changed" }, { status: 409 });
     const store = await getStore();
     if (session) {
-      if (input.action === "start") return NextResponse.json(view(await startIndianaSitting(store, session.id, input.examId)), { headers });
-      const { proUsage: _usage, ...result } = await savePackFullSubmission(store, session.id, { ...input, state: "IN" });
+      if (input.action === "start") {
+        const guest = await readIndianaGuest();
+        const saved = guest && input.examId ? await store.getGuestExam(guest.owner, "IN") : null;
+        const adopt = saved && !saved.result && saved.examId === input.examId ? saved.sitting as IndianaSitting : undefined;
+        return NextResponse.json(view(await startIndianaSitting(store, session.id, input.examId, adopt)), { headers });
+      }
+      let guestSitting: IndianaSitting | undefined;
+      if (input.action === "import") {
+        const guest = await readIndianaGuest();
+        const saved = guest ? await store.getGuestExam(guest.owner, "IN") : null;
+        const original = (saved?.result as { answers?: typeof input.questions } | null)?.answers;
+        const clean = (answers: typeof input.questions) => answers.map(({ questionId, questionVersion, selected }) => ({ questionId, questionVersion, selected }));
+        if (!saved || saved.examId !== input.examId || !saved.result || !original || JSON.stringify(clean(original)) !== JSON.stringify(clean(input.questions))) throw new Error("invalid_exam");
+        guestSitting = saved.sitting as IndianaSitting;
+        validateIndianaAnswers(guestSitting, input.questions);
+      }
+      const { proUsage: _usage, ...result } = await savePackFullSubmission(store, session.id, { ...input, state: "IN", guestSitting });
       return NextResponse.json(result, { headers });
     }
+    if (input.action === "import") throw new Error("invalid_exam");
     const guest = await ensureIndianaGuest();
     if (input.action === "start") {
       const sitting = indianaGuestSitting(guest);
@@ -74,7 +91,7 @@ export async function POST(request: Request) {
     const sitting = saved.sitting as IndianaSitting;
     const questions = validateIndianaAnswers(sitting, input.questions);
     const correctCount = questions.filter((question, index) => input.questions[index].selected === question.correct_option).length;
-    const exam = { id: input.examId, mode: "in-full", score: Math.round(correctCount / 30 * 100), correctCount, total: 30, at: sitting.startedAt };
+    const exam = { id: input.examId, mode: "in-full", score: Math.round(correctCount / 30 * 100), correctCount, total: 30, at: sitting.startedAt, answers: input.questions };
     const result = await store.finishGuestExam(guest.owner, "IN", input.examId, exam);
     return NextResponse.json({ ok: true, duplicate: result.duplicate, exam: result.row.result }, { headers });
   } catch (error) { return failed(error); }

@@ -42,7 +42,7 @@ export function recoverWrongIds(examAt: string, stats: CaStatLike[], state = "CA
 }
 
 export function recentCaExams(exams: CaExamLike[], checks: Record<string, CaCheck>, stats: CaStatLike[], state = "CA") {
-  const fullLabel = state === "NC" ? "Comprehensive Practice" : state === "CT" ? "Comprehensive Practice" : state === "HI" ? "Comprehensive Practice" : state === "PA" ? "30-question practice" : state === "NY" ? "40-question practice" : state === "LA" ? "Scenario practice" : "Full 45";
+  const fullLabel = state === "IN" ? "30-Question Mock Exam" : state === "NC" ? "Comprehensive Practice" : state === "CT" ? "Comprehensive Practice" : state === "HI" ? "Comprehensive Practice" : state === "PA" ? "30-question practice" : state === "NY" ? "40-question practice" : state === "LA" ? "Scenario practice" : "Full 45";
   return exams
     .filter((exam) => examState(exam.mode) === state)
     .sort((a, b) => b.at.localeCompare(a.at))

@@ -708,7 +708,7 @@ export function ExamRunner({
       setSubmitError("We couldn't save this exam. Your answers are still here.");
       return;
     }
-    cloudSaved.current = outcomes.every(outcome => outcome === "ok");
+    cloudSaved.current = outcomes.every(outcome => outcome === "ok") && !(stateCode === "IN" && owner === "guest");
     setSubmitting(false);
     if (stateCode === "IN" && mode === "full" && owner) clearIndianaStart(owner);
     setDone(true);

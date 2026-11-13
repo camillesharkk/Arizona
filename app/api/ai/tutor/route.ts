@@ -82,7 +82,7 @@ export async function POST(req: Request) {
     model: process.env.AI_MODEL,
     providerDailyCap: parseProviderDailyCap(),
     onExceedFreeQuota: async () => {
-      if (q.state !== "IN") await recordProUsage(session.id, "ai_tutor_pro_quota", undefined, state);
+      if (q.state !== "IN") await recordProUsage(session.id, "ai_tutor_pro_quota", undefined, q.state);
     },
   });
   if (!delivered.ok && delivered.reason === "empty") {

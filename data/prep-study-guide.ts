@@ -8,7 +8,7 @@ export type PrepGuideTopic = {
 };
 
 /** Chapter introductions and worked scenarios complement the reviewed concept explanations. */
-export const prepGuideTopics: Record<PrepCode, Record<string, PrepGuideTopic>> = {
+export const prepGuideTopics: Partial<Record<PrepCode, Record<string, PrepGuideTopic>>> = {
   NY: {
     "exam-day": {
       summary: "Prepare for the written examination, recognize the limits of a practice result, and keep professional-conduct rules in your study routine.",

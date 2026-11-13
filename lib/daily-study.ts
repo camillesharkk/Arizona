@@ -1,5 +1,4 @@
 import { ctProCovers } from "@/lib/account-pro";
-import { hasStatePro } from "@/lib/entitlements";
 import { isDeepStrictEqual } from "node:util";
 import { caCards } from "@/data/ca-cards";
 import { hiCards } from "@/data/hi-cards";

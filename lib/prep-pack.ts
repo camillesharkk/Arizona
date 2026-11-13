@@ -167,7 +167,7 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
 };
 
 export function packFor(state: StateCode | string | null | undefined): PrepPack | null {
-  if (state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC") return prepPacks[state];
+  if (state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN") return prepPacks[state];
   return null;
 }
 

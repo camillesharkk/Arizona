@@ -52,7 +52,7 @@ export async function readIndianaSitting(store: Store, userId: string) {
   return ((await store.getStudyPlan(userId, IN_SITTING_STATE))?.document as SittingDocument | undefined)?.sitting ?? null;
 }
 
-export async function startIndianaSitting(store: Store, userId: string, examId?: string) {
+export async function startIndianaSitting(store: Store, userId: string, examId?: string, guestSitting?: IndianaSitting) {
   return store.learningTransaction(userId, async transaction => {
     const document = (await transaction.getStudyPlan(userId, IN_SITTING_STATE))?.document as SittingDocument | undefined;
     const exams = await transaction.listExams(userId);
@@ -64,15 +64,17 @@ export async function startIndianaSitting(store: Store, userId: string, examId?:
       return active;
     }
     if (!pro && (document?.trialUsed || exams.some(exam => exam.mode === "in-full"))) throw new Error("full_trial_used");
-    const sitting = newIndianaSitting(pro, examId);
+    const sitting = guestSitting && guestSitting.examId === examId ? guestSitting : newIndianaSitting(pro, examId);
+    indianaSittingQuestions(sitting);
     await transaction.saveStudyPlan({ userId, state: IN_SITTING_STATE, document: { ...document, trialUsed: document?.trialUsed || !pro, sitting } });
     return sitting;
   });
 }
 
 /** Called inside the same account lock and rollback boundary as grading. */
-export async function requireIndianaSitting(store: Store, userId: string, examId: string, answers: IndianaAnswer[], pro: boolean) {
-  const sitting = await readIndianaSitting(store, userId);
+export async function requireIndianaSitting(store: Store, userId: string, examId: string, answers: IndianaAnswer[], pro: boolean, guestSitting?: IndianaSitting) {
+  const current = await readIndianaSitting(store, userId);
+  const sitting = current?.examId === examId ? current : guestSitting;
   if (!sitting || sitting.examId !== examId) throw new Error("invalid_exam");
   if (sitting.pro && !pro) throw new Error("pro_required");
   validateIndianaAnswers(sitting, answers);

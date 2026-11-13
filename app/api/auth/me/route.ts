@@ -14,7 +14,6 @@ export async function GET() {
     store.getUserById(session.id),
     store.listEntitlements(session.id),
     store.listExams(session.id),
-    getIndianaEntitlement(session.id),
   ]);
   if (!user) return NextResponse.json({ user: null }, { headers: { "Cache-Control": "private, no-store" } });
   const entitlement = await getArizonaEntitlement(session.id, entitlements);
@@ -36,7 +35,7 @@ export async function GET() {
       ncPlanExpiresAt: stateProExpiry(entitlements, "NC")?.toISOString() ?? null,
       californiaPro: arizonaPro,
       hawaiiPro: arizonaPro,
-      planExpiresAt: expiry?.toISOString() ?? null,
+      planExpiresAt: entitlement?.expiresAt ?? null,
       indianaPro: Boolean(indianaEntitlement(entitlements)),
       indianaProExpiresAt: indianaEntitlement(entitlements)?.expiresAt ?? null,
       aiDailyLimit: arizonaPro ? AI_LIMIT_PRO : AI_LIMIT_FREE,

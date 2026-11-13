@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const state = url.searchParams.get("state");
   if (productionStateBlocked(state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  if (state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC") return NextResponse.json(await (await getStore()).learningTransaction(session.id, () => dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, state)));
+  if (state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN") return NextResponse.json(await (await getStore()).learningTransaction(session.id, () => dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, state)));
   if (state === "CA") return NextResponse.json(await caDailyView(session.id, url.searchParams.get("timeZone") || undefined));
   if (state === "HI") {
     return NextResponse.json(await dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, state));

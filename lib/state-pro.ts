@@ -1,3 +1,4 @@
+import { isSiteProProduct } from "./pro-products.ts";
 import { accountProCovers, accountProExpiry } from "./account-pro.ts";
 import type { EntitlementRow } from "./store/types.ts";
 
@@ -23,7 +24,17 @@ export function stateProCovers(rows: EntitlementRow[], state: string, now = new 
   return state === "NC" ? Boolean(stateProExpiry(rows, state, now)) : accountProCovers(rows, now);
 }
 
-export function clientStatePro(user: { ncPro?: boolean; arizonaPro?: boolean; californiaPro?: boolean; hawaiiPro?: boolean; plan?: string } | null | undefined, state: string) {
+export function clientStatePro(user: { ncPro?: boolean; connecticutPro?: boolean; indianaPro?: boolean; arizonaPro?: boolean; californiaPro?: boolean; hawaiiPro?: boolean; plan?: string } | null | undefined, state: string) {
+  if (state === "IN") return Boolean(user?.indianaPro);
+  if (state === "CT") return Boolean(user?.connecticutPro);
   if (state === "NC") return Boolean(user?.ncPro);
   return Boolean(user?.arizonaPro || user?.californiaPro || user?.hawaiiPro || user?.plan === "pro");
+}
+
+/** Apply the same product/state scope to usage attribution as to authorization. */
+export function entitlementServesState(row: EntitlementRow, state: string) {
+ if(state==='NC')return row.state==='NC' && row.productCode===NC_PRO_PRODUCT;
+ if(state==='IN')return row.state==='IN' && row.productCode==='in_exam_pro_60d';
+ if(state==='CT')return (row.state==='CT' || row.state==='ALL') && isSiteProProduct(row.productCode);
+ return row.state!=='CT' && isSiteProProduct(row.productCode);
 }

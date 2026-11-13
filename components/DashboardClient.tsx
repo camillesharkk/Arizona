@@ -29,6 +29,8 @@ type ProgressPayload = {
   californiaPro?: boolean;
   hawaiiPro?: boolean;
   ncPro?: boolean;
+  connecticutPro?: boolean;
+  connecticutProExpiresAt?: string | null;
   ncPlanExpiresAt?: string | null;
   indianaPro?: boolean;
   indianaProExpiresAt?: string | null;
@@ -38,6 +40,8 @@ type CheckoutPhase = "boot" | "off" | "activating" | "activated" | "timeout" | "
 
 type AccessPayload = {
   ncPro?: boolean;
+  connecticutPro?: boolean;
+  connecticutProExpiresAt?: string | null;
   arizonaPro?: boolean;
   californiaPro?: boolean;
   hawaiiPro?: boolean;
@@ -254,7 +258,7 @@ export function DashboardClient() {
     byTopic.set(key, cur);
   });
   const ready = readinessScore(stats, exams);
-  const showAsPro = (state === "AZ" || state === "NY" || state === "NC") && isAzPro;
+  const showAsPro = (state === "AZ" || state === "NY" || state === "NC" || state === "CT") && isAzPro;
   const hideFreePlan = activating && !showAsPro;
   const weakPlan = [...byTopic.entries()]
     .map(([id, v]) => ({ id, acc: v.r + v.w ? Math.round((v.r / (v.r + v.w)) * 100) : 100, missed: v.w }))

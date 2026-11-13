@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { rememberArticleEntry, trackAnalyticsEvent } from "@/lib/analytics";
 
-type Entry = { articleId: string; articleState: "CA" | "HI" | "NY" | "PA" | "LA" | "CT" };
+type Entry = { articleId: string; articleState: "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN" };
 
 export function ArticleView({ articleId, articleState }: Entry) {
   useEffect(() => {

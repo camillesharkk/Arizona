@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
-import { canAccessQuestion, getArizonaEntitlement } from "@/lib/entitlements";
+import { canAccessQuestion, getArizonaEntitlement, indianaEntitlement } from "@/lib/entitlements";
 import { recordProUsage } from "@/lib/commerce/usage";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
+import { ctProCovers, accountProExpiry } from "@/lib/account-pro";
 import { packFor } from "@/lib/prep-pack";
 import { serverQuestionById as questionById } from "@/lib/server-questions";
 import { hiFullExamCount, packFullExamCounts } from "@/lib/entitlements";
@@ -150,13 +151,15 @@ export async function GET(req: Request) {
   const expiry = stateProExpiry(entitlements, "AZ");
   const ncPro = stateProCovers(entitlements, "NC");
   return NextResponse.json({
-    stats: stats.map(toClientStat),
-    exams: exams.map(toClientExam),
+    stats: stats.filter(stat => !productionStateBlocked(stat.state)).map(toClientStat),
+    exams: exams.filter(exam => !productionStateBlocked(exam.mode.split("-")[0].toUpperCase())).map(toClientExam),
     user: user ? toClientUser(user, arizonaPro, expiry?.toISOString() ?? user.planExpiresAt) : null,
     arizonaPro,
     californiaPro: arizonaPro,
     hawaiiPro: arizonaPro,
     ncPro,
+    connecticutPro: ctProCovers(entitlements),
+    connecticutProExpiresAt: ctProCovers(entitlements) ? accountProExpiry(entitlements, new Date(), "CT")?.toISOString() ?? null : null,
     ncPlanExpiresAt: stateProExpiry(entitlements, "NC")?.toISOString() ?? null,
     indianaPro: Boolean(indianaEntitlement(entitlements)),
     indianaProExpiresAt: indianaEntitlement(entitlements)?.expiresAt ?? null,

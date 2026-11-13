@@ -1,7 +1,7 @@
 import "server-only";
 import { getStore } from "@/lib/store";
 import { hasStatePro, servingEntitlements } from "@/lib/entitlements";
-import { NC_PRO_PRODUCT } from "../state-pro.ts";
+import { NC_PRO_PRODUCT, entitlementServesState } from "../state-pro.ts";
 import { getCommerceRepo } from "./index.ts";
 import { markProUsed } from "./service.ts";
 import { isSiteProProduct } from "../pro-products.ts";
@@ -27,7 +27,7 @@ export async function recordProUsage(userId: string, featureCode: ProUsageFeatur
   const allowed = event ? new Set(event.entitlementIds) : null;
   const store = await getStore();
   const ents = (await store.listEntitlements(userId))
-    .filter(entitlement => (state === "NC" ? entitlement.state === "NC" && entitlement.productCode === NC_PRO_PRODUCT : isSiteProProduct(entitlement.productCode)) &&
+    .filter(entitlement => entitlementServesState(entitlement, state) &&
       (allowed ? allowed.has(entitlement.id) : entitlement.status === "active"));
   const serving = servingEntitlements(ents, now);
   if (!serving.length) return { recorded: false, reason: "no_active_entitlement" as const };

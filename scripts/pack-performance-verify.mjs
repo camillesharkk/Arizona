@@ -23,6 +23,8 @@ function load(file) {
   const module = { exports: {} };
   cache.set(file, module);
   const require = name => {
+    if (name === 'server-only') return {};
+    if (name === 'server-only') return {};
     if (name === '@/lib/store') return { getStore: async () => load('lib/store/pg-store.ts').pgStore };
     if (name === 'postgres') return () => sql;
     if (name.startsWith('@/')) return load(name.slice(2));

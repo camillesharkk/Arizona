@@ -111,7 +111,8 @@ export async function grantStatePro60d(opts: {
   }
   const rows = await store.listEntitlements(opts.userId);
   const now = new Date();
-  const latestIndiana = indianaEntitlement(rows, now);
+  const latestIndiana = rows.filter(row => row.productCode === IN_PRO_PRODUCT && row.state === "IN" && row.status === "active")
+    .sort((a,b) => Date.parse(b.expiresAt)-Date.parse(a.expiresAt))[0] ?? null;
   const state = opts.state === "NC" ? "NC" : opts.state === "IN" ? "IN" : "ALL";
   const window = nextProWindow(state === "IN" ? (latestIndiana ? new Date(latestIndiana.expiresAt) : null) : stateProExpiry(rows, state, now), now);
   const entitlement = await store.insertEntitlement({

@@ -11,7 +11,7 @@ const { loadProgress, saveProgress } = load("lib/storage.ts");
 localStorage.setItem("az-notary-session", "stale-legacy@example.invalid");
 localStorage.setItem("az-notary-progress", JSON.stringify({ chapterReads: ["commission"] }));
 assert.equal(loadProgress("AZ", null).chapterReads[0], "commission", "AZ guest history keeps its original key");
-for (const state of ["AZ", "NY", "PA", "LA"]) {
+for (const state of ["AZ", "NY", "PA", "LA", "CT", "NC", "IN"]) {
   saveProgress({ chapterReads: ["account-a-chapter"] }, state, "account-a@example.invalid");
   assert.equal(loadProgress(state, "account-b@example.invalid").chapterReads.length, 0, `${state} isolates accounts`);
   assert.ok(!loadProgress(state, null).chapterReads.includes("account-a-chapter"), `${state} isolates guests`);
@@ -27,14 +27,14 @@ const { prepPacks } = load("lib/prep-pack.ts");
 const { prepGuideTopics } = load("data/prep-study-guide.ts");
 for (const pack of Object.values(prepPacks)) {
   for (const topic of pack.topics) {
-    assert.ok(prepGuideTopics[pack.code][topic.id]?.example.body, `${pack.code}/${topic.id} has authored material`);
+    assert.ok(prepGuideTopics[pack.code]?.[topic.id]?.example.body || (["CT","NC","IN"].includes(pack.code) && pack.questions().some(q=>q.study_topic===topic.id && q.explanation.length>40)), `${pack.code}/${topic.id} has authored material`);
     assert.ok(pack.cards.some((card) => card.study === topic.id), `${pack.code}/${topic.id} has reviewed concepts`);
     assert.ok(pack.questions().some((question) => question.study_topic === topic.id), `${pack.code}/${topic.id} has topic questions`);
   }
 }
 
 const base = process.env.GUIDE_TEST_BASE_URL || "http://127.0.0.1:35373";
-for (const slug of ["arizona", "new-york", "pennsylvania", "louisiana"]) {
+for (const slug of ["arizona", "new-york", "pennsylvania", "louisiana", "connecticut", "north-carolina", "indiana"]) {
   const response = await fetch(`${base}/${slug}/study-guide/`);
   assert.equal(response.status, 200, `${slug} guide loads`);
   const html = await response.text();

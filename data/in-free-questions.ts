@@ -374,37 +374,6 @@ export const inFreeQuestions: Question[] = [
     "status": "published"
   },
   {
-    "question_id": "in-052",
-    "state": "IN",
-    "study_topic": "identification",
-    "topic": "identification",
-    "difficulty": "medium",
-    "question_text": "Does knowing a signer personally remove the appearance requirement for an ordinary signature notarization?",
-    "option_a": "No, the signer must still appear",
-    "option_b": "Yes; friends never need to appear",
-    "option_c": "Yes; if the notary keeps the document overnight",
-    "option_d": "Yes; if no fee is charged",
-    "correct_option": "A",
-    "explanation": "Identity and personal appearance are separate requirements; knowing the signer does not permit notarizing an absent signer.",
-    "option_feedback": {
-      "A": "Identity and personal appearance are separate requirements; knowing the signer does not permit notarizing an absent signer.",
-      "B": "Friendship does not waive appearance.",
-      "C": "Possession of the record does not bring the signer before the notary.",
-      "D": "A free act still requires the principal's appearance."
-    },
-    "source_id": "in-guide-2024",
-    "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Duties; Indiana Code Article 33-42; https://iga.in.gov/laws/2026/ic/titles/33#33-42; IC 33-42-9-3; Official indexed Guide passages pp. 20, 26, 54; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
-    "concept_ids": [
-      "in-card-013"
-    ],
-    "effective_from": "2026-11-13",
-    "effective_to": null,
-    "last_verified_at": "2026-11-13",
-    "version": 1,
-    "is_free": true,
-    "status": "published"
-  },
-  {
     "question_id": "in-054",
     "state": "IN",
     "study_topic": "identification",
@@ -453,37 +422,6 @@ export const inFreeQuestions: Question[] = [
       "B": "Employment authority does not establish personal knowledge.",
       "C": "The guide specifically warns against treating a new introduction by an employer as the necessary personal familiarity.",
       "D": "A handshake is not sufficient familiarity."
-    },
-    "source_id": "in-guide-2024",
-    "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Identification: Personal Knowledge; Official indexed Guide passages pp. 20; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
-    "concept_ids": [
-      "in-card-014"
-    ],
-    "effective_from": "2026-11-13",
-    "effective_to": null,
-    "last_verified_at": "2026-11-13",
-    "version": 1,
-    "is_free": true,
-    "status": "published"
-  },
-  {
-    "question_id": "in-056",
-    "state": "IN",
-    "study_topic": "identification",
-    "topic": "identification",
-    "difficulty": "medium",
-    "question_text": "A notary recognizes a customer from years of substantial dealings and has no reasonable identity doubt. Which method may apply?",
-    "option_a": "Personal knowledge",
-    "option_b": "An employer exception",
-    "option_c": "Automatic copy certification",
-    "option_d": "A waiver of every other notarial duty",
-    "correct_option": "A",
-    "explanation": "Prior dealings and sufficient familiarity can establish the personal-knowledge method described in the guide.",
-    "option_feedback": {
-      "A": "Prior dealings and sufficient familiarity can establish the personal-knowledge method described in the guide.",
-      "B": "No employer exception is needed for personal knowledge.",
-      "C": "Copy certification addresses a copy, not the individual's identity.",
-      "D": "Identity does not waive appearance, willingness, or certificate duties."
     },
     "source_id": "in-guide-2024",
     "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Identification: Personal Knowledge; Official indexed Guide passages pp. 20; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
@@ -613,6 +551,68 @@ export const inFreeQuestions: Question[] = [
     "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Identification: Credible Witness; Official indexed Guide passages pp. 20-21; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
     "concept_ids": [
       "in-card-016"
+    ],
+    "effective_from": "2026-11-13",
+    "effective_to": null,
+    "last_verified_at": "2026-11-13",
+    "version": 1,
+    "is_free": true,
+    "status": "published"
+  },
+  {
+    "question_id": "in-066",
+    "state": "IN",
+    "study_topic": "identification",
+    "topic": "identification",
+    "difficulty": "easy",
+    "question_text": "At an Indiana closing, a customer signs Bob while the identification and record use Robert. What does the official guide direct the notary to request?",
+    "option_a": "Accept any nickname without inquiry",
+    "option_b": "Sign Robert for the customer",
+    "option_c": "A signature matching the identification and document name",
+    "option_d": "Change the identification card",
+    "correct_option": "C",
+    "explanation": "The guide directs the notary to insist that the signature agree with the name on the identification and document.",
+    "option_feedback": {
+      "A": "A familiar nickname does not meet the guide’s stated matching instruction.",
+      "B": "The customer must execute the signature, not the notary.",
+      "C": "The guide directs the notary to insist that the signature agree with the name on the identification and document.",
+      "D": "The notary has no authority to alter the credential."
+    },
+    "source_id": "in-guide-2024",
+    "source_reference": "Indiana SOS Guide (May 2024), p.44; signer identity and signature comparison; Official indexed Guide passages pp. 44; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
+    "concept_ids": [
+      "in-card-017"
+    ],
+    "effective_from": "2026-11-13",
+    "effective_to": null,
+    "last_verified_at": "2026-11-13",
+    "version": 1,
+    "is_free": true,
+    "status": "published"
+  },
+  {
+    "question_id": "in-067",
+    "state": "IN",
+    "study_topic": "identification",
+    "topic": "identification",
+    "difficulty": "medium",
+    "question_text": "A customer presents a driver’s license, but its photograph depicts someone else. What must happen before the acknowledgment?",
+    "option_a": "Certify identity and investigate tomorrow",
+    "option_b": "The identity discrepancy must be resolved",
+    "option_c": "Rely only on a matching surname",
+    "option_d": "Ask the employer to approve the photograph",
+    "correct_option": "B",
+    "explanation": "The guide calls for careful examination of reliable identification and positive identification of the appearing signer.",
+    "option_feedback": {
+      "A": "Identity must be established for the act being certified.",
+      "B": "The guide calls for careful examination of reliable identification and positive identification of the appearing signer.",
+      "C": "A matching surname does not establish that this is the credential holder.",
+      "D": "Employer approval does not identify the customer."
+    },
+    "source_id": "in-guide-2024",
+    "source_reference": "Indiana SOS Guide (May 2024), p.44; signer identity and signature comparison; Official indexed Guide passages pp. 44; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
+    "concept_ids": [
+      "in-card-017"
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
@@ -777,37 +777,6 @@ export const inFreeQuestions: Question[] = [
     "status": "published"
   },
   {
-    "question_id": "in-079",
-    "state": "IN",
-    "study_topic": "notarial-acts",
-    "topic": "jurats",
-    "difficulty": "medium",
-    "question_text": "Must the notary actually administer an oath or affirmation for a verification requiring one?",
-    "option_a": "No; the seal automatically administers it",
-    "option_b": "Yes, administer the oath or affirmation",
-    "option_c": "No; a printed title of Affidavit is enough",
-    "option_d": "No; the customer can swear next week",
-    "correct_option": "B",
-    "explanation": "A completed jurat certifies a sworn or affirmed act that must actually occur before the notary.",
-    "option_feedback": {
-      "A": "A seal is not administration of an oath.",
-      "B": "A completed jurat certifies a sworn or affirmed act that must actually occur before the notary.",
-      "C": "A document heading does not administer a verbal undertaking.",
-      "D": "A later oath cannot be certified as already administered."
-    },
-    "source_id": "in-guide-2024",
-    "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Oaths and Affirmations; Official indexed Guide passages pp. 54; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
-    "concept_ids": [
-      "in-card-020"
-    ],
-    "effective_from": "2026-11-13",
-    "effective_to": null,
-    "last_verified_at": "2026-11-13",
-    "version": 1,
-    "is_free": true,
-    "status": "published"
-  },
-  {
     "question_id": "in-082",
     "state": "IN",
     "study_topic": "notarial-acts",
@@ -892,6 +861,37 @@ export const inFreeQuestions: Question[] = [
     "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Certified Copies and True Copies; Indiana Secretary of State, 2025 Recorders Conference presentation; https://www.in.gov/sboa/files/Grosser_SOS-Business-Services-Division_Notary.pdf; Forms of Notarial Acts; Official indexed Guide passages pp. 19, 56; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
     "concept_ids": [
       "in-card-023"
+    ],
+    "effective_from": "2026-11-13",
+    "effective_to": null,
+    "last_verified_at": "2026-11-13",
+    "version": 1,
+    "is_free": true,
+    "status": "published"
+  },
+  {
+    "question_id": "in-094",
+    "state": "IN",
+    "study_topic": "notarial-acts",
+    "topic": "copy-certification",
+    "difficulty": "easy",
+    "question_text": "A customer needs an officially certified Indiana birth record for a passport application and brings a photocopy. Where should the customer obtain the official certified record?",
+    "option_a": "From any notary with a large seal",
+    "option_b": "From the authorized record custodian",
+    "option_c": "By writing original on the photocopy",
+    "option_d": "By buying a second photocopy",
+    "correct_option": "B",
+    "explanation": "A notary’s stamp on a photocopy does not turn it into the issuing authority’s certified vital record.",
+    "option_feedback": {
+      "A": "Seal size does not confer issuing-custodian authority.",
+      "B": "A notary’s stamp on a photocopy does not turn it into the issuing authority’s certified vital record.",
+      "C": "A handwritten label does not create an official record.",
+      "D": "Additional copies do not establish official certification."
+    },
+    "source_id": "in-guide-2024",
+    "source_reference": "Indiana SOS Guide (May 2024), p.19; official certified copies and true-copy affidavits; Official indexed Guide passages pp. 19; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
+    "concept_ids": [
+      "in-card-024"
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
@@ -1087,37 +1087,6 @@ export const inFreeQuestions: Question[] = [
     "status": "published"
   },
   {
-    "question_id": "in-111",
-    "state": "IN",
-    "study_topic": "certificates",
-    "topic": "acknowledgments",
-    "difficulty": "medium",
-    "question_text": "A notary's assistant offers to sign the certificate in the notary's name. Is that proper?",
-    "option_a": "Yes; whenever the office is busy",
-    "option_b": "No; the notary's official signature is personal",
-    "option_c": "Yes; if the employer approves",
-    "option_d": "Yes; if the assistant watched the meeting",
-    "correct_option": "B",
-    "explanation": "The assistant cannot exercise the commission by imitating the notary's signature.",
-    "option_feedback": {
-      "A": "Workload does not authorize another person to sign as the notary.",
-      "B": "The assistant cannot exercise the commission by imitating the notary's signature.",
-      "C": "Employer permission does not delegate public office.",
-      "D": "Observation does not transfer the commission."
-    },
-    "source_id": "in-sos-2025",
-    "source_reference": "Indiana Secretary of State, 2025 Recorders Conference presentation; https://www.in.gov/sboa/files/Grosser_SOS-Business-Services-Division_Notary.pdf; Notary Signatures; Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Certificates; Official complete PDF text read 2026-11-13. Code links are cross-references, not a claim that the 2026 Code body was opened.",
-    "concept_ids": [
-      "in-card-028"
-    ],
-    "effective_from": "2026-11-13",
-    "effective_to": null,
-    "last_verified_at": "2026-11-13",
-    "version": 1,
-    "is_free": true,
-    "status": "published"
-  },
-  {
     "question_id": "in-114",
     "state": "IN",
     "study_topic": "certificates",
@@ -1149,28 +1118,28 @@ export const inFreeQuestions: Question[] = [
     "status": "published"
   },
   {
-    "question_id": "in-115",
+    "question_id": "in-118",
     "state": "IN",
     "study_topic": "certificates",
-    "topic": "acknowledgments",
-    "difficulty": "medium",
-    "question_text": "Why is an unattached completed certificate risky?",
-    "option_a": "It grants the recipient a commission",
-    "option_b": "It automatically increases the statutory fee",
-    "option_c": "It could be attached to the wrong record",
-    "option_d": "It makes every statement in any record true",
-    "correct_option": "C",
-    "explanation": "The guide's loose-certificate warning supports secure attachment so the certification remains connected to the actual document.",
+    "topic": "prohibited-acts",
+    "difficulty": "easy",
+    "question_text": "May a notary sign and seal blank certificates for use while the notary is away?",
+    "option_a": "No; a certificate must correspond to an act actually performed",
+    "option_b": "Yes; if each customer pays in advance",
+    "option_c": "Yes; if the notary returns within a week",
+    "option_d": "Yes; if the employer locks them in a drawer",
+    "correct_option": "A",
+    "explanation": "Presigned blank certificates allow others to create false evidence of acts the notary did not perform.",
     "option_feedback": {
-      "A": "A certificate does not commission its holder.",
-      "B": "Attachment does not determine a new fee category.",
-      "C": "The guide's loose-certificate warning supports secure attachment so the certification remains connected to the actual document.",
-      "D": "No certificate has that effect."
+      "A": "Presigned blank certificates allow others to create false evidence of acts the notary did not perform.",
+      "B": "Prepayment does not authorize an unperformed act.",
+      "C": "A later return does not validate fabricated acts.",
+      "D": "Storage does not make presigned future certifications proper."
     },
-    "source_id": "in-sos-2025",
-    "source_reference": "Indiana Secretary of State, 2025 Recorders Conference presentation; https://www.in.gov/sboa/files/Grosser_SOS-Business-Services-Division_Notary.pdf; Certificate Attachment; Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Loose Certificates; Official complete PDF text read 2026-11-13. Code links are cross-references, not a claim that the 2026 Code body was opened.",
+    "source_id": "in-guide-2024",
+    "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Duties and Loose Certificates; Official indexed Guide passages pp. 52; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
     "concept_ids": [
-      "in-card-029"
+      "in-card-030"
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
@@ -1202,6 +1171,37 @@ export const inFreeQuestions: Question[] = [
     "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Making Corrections; Official indexed Guide passages pp. 17; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
     "concept_ids": [
       "in-card-031"
+    ],
+    "effective_from": "2026-11-13",
+    "effective_to": null,
+    "last_verified_at": "2026-11-13",
+    "version": 1,
+    "is_free": true,
+    "status": "published"
+  },
+  {
+    "question_id": "in-126",
+    "state": "IN",
+    "study_topic": "certificates",
+    "topic": "seals-fees",
+    "difficulty": "easy",
+    "question_text": "While completing a certificate, an Indiana notary smears the stamp impression. What procedure does the guide describe?",
+    "option_a": "Leave the smeared impression unexplained",
+    "option_b": "Ask the customer to draw a replacement seal",
+    "option_c": "Reapply the stamp and initial the original smeared impression",
+    "option_d": "Use whiteout over every certificate field",
+    "correct_option": "C",
+    "explanation": "The guide expressly describes reapplying a smeared stamp and initialing the original impression.",
+    "option_feedback": {
+      "A": "The guide provides a specific correction procedure.",
+      "B": "The customer cannot reproduce the notary’s official device.",
+      "C": "The guide expressly describes reapplying a smeared stamp and initialing the original impression.",
+      "D": "The correction instructions prohibit whiteout."
+    },
+    "source_id": "in-guide-2024",
+    "source_reference": "Indiana SOS Guide (May 2024), p.17; making corrections during notarization; Official indexed Guide passages pp. 17; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
+    "concept_ids": [
+      "in-card-032"
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
@@ -1304,6 +1304,37 @@ export const inFreeQuestions: Question[] = [
     "status": "published"
   },
   {
+    "question_id": "in-138",
+    "state": "IN",
+    "study_topic": "seals-records",
+    "topic": "seals-fees",
+    "difficulty": "easy",
+    "question_text": "Why must an official seal impression be legible and reproducible?",
+    "option_a": "So the customer can reuse it on another record",
+    "option_b": "Its required information must remain readable when the record is copied",
+    "option_c": "So the notary can avoid signing",
+    "option_d": "So all document contents become true",
+    "correct_option": "B",
+    "explanation": "Indiana's stamping requirements include an impression capable of photographic reproduction with the record.",
+    "option_feedback": {
+      "A": "The impression belongs to the particular notarized record.",
+      "B": "Indiana's stamping requirements include an impression capable of photographic reproduction with the record.",
+      "C": "A reproducible seal does not replace a signature.",
+      "D": "Reproducibility has no truth-guarantee effect."
+    },
+    "source_id": "in-shelby-seal",
+    "source_reference": "Shelby County Recorder, IC 33-42-10-2(b), seal capable of being copied with the record; https://secure.in.gov/counties/shelby/recorder/recorder-fee-schedule/; primary text read 2026-11-13",
+    "concept_ids": [
+      "in-card-035"
+    ],
+    "effective_from": "2026-11-13",
+    "effective_to": null,
+    "last_verified_at": "2026-11-13",
+    "version": 1,
+    "is_free": true,
+    "status": "published"
+  },
+  {
     "question_id": "in-142",
     "state": "IN",
     "study_topic": "seals-records",
@@ -1335,28 +1366,28 @@ export const inFreeQuestions: Question[] = [
     "status": "published"
   },
   {
-    "question_id": "in-143",
+    "question_id": "in-146",
     "state": "IN",
     "study_topic": "seals-records",
     "topic": "seals-fees",
-    "difficulty": "medium",
-    "question_text": "An employer buys the seal and wants to keep it in a drawer accessible to all staff. What should the notary insist on?",
-    "option_a": "Personal control that prevents unauthorized use",
-    "option_b": "Unlimited staff access",
-    "option_c": "A rule allowing stamping when the notary is absent",
-    "option_d": "Customer permission for each coworker",
-    "correct_option": "A",
-    "explanation": "The device's purchaser cannot override the commissioned notary's responsibility for its security and use.",
+    "difficulty": "easy",
+    "question_text": "An Indiana notary discovers that the stamp was stolen. Which reporting sequence does the official FAQ direct?",
+    "option_a": "Wait until the commission expires",
+    "option_b": "Notify only the stamp retailer",
+    "option_c": "Report to the police, then to the Secretary of State’s Business Services Division",
+    "option_d": "Ask the suspected thief to use the stamp carefully",
+    "correct_option": "C",
+    "explanation": "The stolen-device FAQ identifies both police reporting and notice to the commissioning office.",
     "option_feedback": {
-      "A": "The device's purchaser cannot override the commissioned notary's responsibility for its security and use.",
-      "B": "Other staff cannot use the personal commission.",
-      "C": "The notary's absence does not delegate authority.",
-      "D": "A customer cannot commission the coworker."
+      "A": "The guide directs reporting the stolen device.",
+      "B": "Ordering equipment does not notify either named authority.",
+      "C": "The stolen-device FAQ identifies both police reporting and notice to the commissioning office.",
+      "D": "The thief has no authority to use the commission."
     },
     "source_id": "in-guide-2024",
-    "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Notary Seal; Indiana Code Article 33-42; https://iga.in.gov/laws/2026/ic/titles/33#33-42; IC 33-42-10-3; Official indexed Guide passages pp. 18, 22; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
+    "source_reference": "Indiana SOS Guide (May 2024), p.40; stolen stamping device FAQ; Official indexed Guide passages pp. 40; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
     "concept_ids": [
-      "in-card-036"
+      "in-card-037"
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
@@ -1383,37 +1414,6 @@ export const inFreeQuestions: Question[] = [
       "B": "A used device does not confer authority on a successor.",
       "C": "Future access risks unauthorized use.",
       "D": "A device cannot transfer or revive the ended commission."
-    },
-    "source_id": "in-guide-2024",
-    "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Seal at End of Commission; Indiana Code Article 33-42; https://iga.in.gov/laws/2026/ic/titles/33#33-42; IC 33-42-10-3; Official indexed Guide passages pp. 18; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
-    "concept_ids": [
-      "in-card-038"
-    ],
-    "effective_from": "2026-11-13",
-    "effective_to": null,
-    "last_verified_at": "2026-11-13",
-    "version": 1,
-    "is_free": true,
-    "status": "published"
-  },
-  {
-    "question_id": "in-151",
-    "state": "IN",
-    "study_topic": "seals-records",
-    "topic": "seals-fees",
-    "difficulty": "medium",
-    "question_text": "Does an expired physical stamp allow the former notary to keep performing acts?",
-    "option_a": "Yes; if the notary has many years of experience",
-    "option_b": "Yes; when the customer asks politely",
-    "option_c": "Yes; until the ink runs out",
-    "option_d": "No, the commission has expired",
-    "correct_option": "D",
-    "explanation": "The commission's validity controls authority; an old device cannot extend the term.",
-    "option_feedback": {
-      "A": "Experience does not extend official authority.",
-      "B": "Customer preference cannot revive an ended commission.",
-      "C": "Ink supply has no bearing on the commission's expiration.",
-      "D": "The commission's validity controls authority; an old device cannot extend the term."
     },
     "source_id": "in-guide-2024",
     "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Seal at End of Commission; Indiana Code Article 33-42; https://iga.in.gov/laws/2026/ic/titles/33#33-42; IC 33-42-10-3; Official indexed Guide passages pp. 18; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
@@ -1459,54 +1459,23 @@ export const inFreeQuestions: Question[] = [
     "status": "published"
   },
   {
-    "question_id": "in-155",
-    "state": "IN",
-    "study_topic": "seals-records",
-    "topic": "journals",
-    "difficulty": "medium",
-    "question_text": "Why can a properly maintained journal help a traditional notary?",
-    "option_a": "It makes an absent signer personally appear",
-    "option_b": "It guarantees the notary can never be sued",
-    "option_c": "It authorizes higher fees automatically",
-    "option_d": "It can document what act occurred and the evidence reviewed",
-    "correct_option": "D",
-    "explanation": "A contemporaneous record can assist with later questions about the date, principal, act, identification, and other relevant details.",
-    "option_feedback": {
-      "A": "A record cannot supply missing personal appearance.",
-      "B": "Recordkeeping does not create immunity.",
-      "C": "A journal does not increase statutory fee limits.",
-      "D": "A contemporaneous record can assist with later questions about the date, principal, act, identification, and other relevant details."
-    },
-    "source_id": "in-guide-2024",
-    "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Duties: Journal Recommendation; Official indexed Guide passages pp. 27-28; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
-    "concept_ids": [
-      "in-card-039"
-    ],
-    "effective_from": "2026-11-13",
-    "effective_to": null,
-    "last_verified_at": "2026-11-13",
-    "version": 1,
-    "is_free": true,
-    "status": "published"
-  },
-  {
-    "question_id": "in-159",
+    "question_id": "in-158",
     "state": "IN",
     "study_topic": "seals-records",
     "topic": "prohibited-acts",
-    "difficulty": "medium",
-    "question_text": "A notary follows an employer's order to falsify a certificate. Who remains responsible for the notary's official conduct?",
-    "option_a": "Nobody because the employer ordered it",
-    "option_b": "Only the customer can ever be responsible",
-    "option_c": "Only the seal manufacturer",
-    "option_d": "The notary remains personally responsible",
-    "correct_option": "D",
-    "explanation": "The SOS presentation emphasizes independent judgment and personal responsibility despite employment; employer involvement does not excuse the notary.",
+    "difficulty": "easy",
+    "question_text": "A careless notarial act causes a person financial harm. Which consequence does the guide identify?",
+    "option_a": "Guaranteed renewal as compensation",
+    "option_b": "Civil liability for damages",
+    "option_c": "Automatic immunity because the notary holds an office",
+    "option_d": "Liability only for the stamp manufacturer",
+    "correct_option": "B",
+    "explanation": "The guide identifies civil liability, possible criminal consequences and commission loss for improper performance.",
     "option_feedback": {
-      "A": "An order does not make misconduct consequence-free.",
-      "B": "The notary has independent official duties.",
-      "C": "Manufacturing a device is not performing the act.",
-      "D": "The SOS presentation emphasizes independent judgment and personal responsibility despite employment; employer involvement does not excuse the notary."
+      "A": "Misconduct does not guarantee renewal.",
+      "B": "The guide identifies civil liability, possible criminal consequences and commission loss for improper performance.",
+      "C": "The guide describes liability rather than blanket immunity.",
+      "D": "The notary remains responsible for performance."
     },
     "source_id": "in-guide-2024",
     "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Liability; Indiana Code Article 33-42; https://iga.in.gov/laws/2026/ic/titles/33#33-42; IC 33-42-12-1(g); Indiana Secretary of State, 2025 Recorders Conference presentation; https://www.in.gov/sboa/files/Grosser_SOS-Business-Services-Division_Notary.pdf; Employees and Discipline; Official indexed Guide passages pp. 26; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
@@ -1543,6 +1512,37 @@ export const inFreeQuestions: Question[] = [
     "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Secretary of State Apostilles and Authentications; Official indexed Guide passages pp. 23; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
     "concept_ids": [
       "in-card-041"
+    ],
+    "effective_from": "2026-11-13",
+    "effective_to": null,
+    "last_verified_at": "2026-11-13",
+    "version": 1,
+    "is_free": true,
+    "status": "published"
+  },
+  {
+    "question_id": "in-166",
+    "state": "IN",
+    "study_topic": "seals-records",
+    "topic": "seals-fees",
+    "difficulty": "easy",
+    "question_text": "An Indiana customer requests one ordinary acknowledgment of one signature. What maximum notarial fee does the official guide state for that notarization?",
+    "option_a": "$75",
+    "option_b": "$25",
+    "option_c": "Any amount if the customer is urgent",
+    "option_d": "$10",
+    "correct_option": "D",
+    "explanation": "The guide states a maximum of ten dollars for an individual ordinary notarization. This scenario involves one signature and one act.",
+    "option_feedback": {
+      "A": "An application charge is different from a customer’s notarial fee.",
+      "B": "The ordinary individual notarization here has the guide’s $10 ceiling.",
+      "C": "Urgency does not remove the fee limit.",
+      "D": "The guide states a maximum of ten dollars for an individual ordinary notarization. This scenario involves one signature and one act."
+    },
+    "source_id": "in-guide-2024",
+    "source_reference": "Indiana SOS Guide (May 2024), p.23; fees and advance service-charge disclosure; Official indexed Guide passages pp. 23; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
+    "concept_ids": [
+      "in-card-042"
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
