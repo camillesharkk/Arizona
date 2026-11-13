@@ -45,9 +45,19 @@ Rapid automated answers on the live Pro account exposed the existing 20-second Q
 
 The shared Quick result wait now allows 60 seconds using the existing `settleSave` timeout parameter. Its retry IDs and answer storage remain preserved. The final UI patch also exposes the IN Tutor upgrade link and removes repeated shared-Pro wording from pricing. A fresh optimized production build passed. The same injected 22-second result-response delay reproduced the old early failure and passed on the patched build, showing the result and surviving refresh with exactly one result-save request. Local evidence is `.tools/quick-save-delay.log`. CT/NC/IN exhausted-Tutor browser checks also passed. Independent review found no P1/P2 in these follow-ups.
 
+## Final code production acceptance
+
+Follow-up commit `f566b6738ac2f31e49d639c3d60adfef4f22c811` deployed as `dpl_3VH7HVccf6Ad2Vm9pFoX9Y46YEgp`. READY, matching SHA and the formal domain alias were verified at `2026-11-13T18:25:10Z`.
+
+All six Pro browser cases passed on that live patched deployment by `2026-11-13T18:30:08Z`. They cover CT/NC/IN at 1440px and 390px, fast consecutive Quick10 answers, result save/refresh, read/unread Guide persistence, shared pricing and horizontal overflow. Browser runtime errors were zero. The earlier production Quick result-save failure is resolved in these real-domain retests. Evidence is `.tools/all-state-production-browser-pro.json` and `.tools/all-state-production-browser-evidence/`.
+
+The final code's nine directory/home entries and eighteen new-state core pages were rechecked at `2026-11-13T18:27:47Z`, including indexability, canonical URLs, sitemap entries and production `/preview/` isolation. Evidence is `.tools/all-state-final-public-pages.json`.
+
+At `2026-11-13T18:30:32Z`, the patched deployment's ten-minute runtime error/fatal and HTTP5xx queries each returned zero records with no excluded intervals. The final documentation-only update records this accepted code. Physical-phone testing, a real payment and a live payment webhook remain unverified. Indiana's source-access limits remain documented in `in-content-source-audit.md`.
+
 ## Earlier protected checkpoint, 2026-11-13
 
-## Scope and current production
+### Scope and production at the protected checkpoint
 
 Requested state work found in the existing chats and candidate branches: AZ, CA, HI, NY, PA, LA, CT, IN and NC. The three outstanding candidates were Connecticut `e06ae62`, North Carolina `0edb4f3`, and Indiana `c7dd289` plus the preview device-lock fix `360949b` and deployment records.
 
@@ -55,7 +65,7 @@ Read-only Vercel verification during this task returned project `sharkkk/arizona
 
 The missing release work was the integration of separately delivered candidates into production, coupled with retained access/indexing/purchase gates. Indiana also had only 170 published candidate questions and 43 cards before this task.
 
-## Isolated implementation
+### Isolated implementation
 
 Managed worktree: `C:/Users/20683/.codex/worktrees/all-state-launch/web`. Based on freshly fetched `origin/main`; the original `D:/webtest/web` local commits and uncommitted work were preserved. No force push, production database change, payment, email or public release occurred.
 
@@ -69,7 +79,7 @@ All three Study Guides now use the same `StudyGuide` component as the mature sta
 
 Indiana's previously unsupported draft claims were narrowed or replaced using the dated primary passages actually retrieved. See `in-content-source-audit.md` for exact changes and the remaining full-Code/full-guide access limitation. Counts and structural checks are not a claim of a complete independent legal review.
 
-## Integration defects fixed
+### Integration defects fixed
 
 - Restore IN `packFor` and daily-state routing without falling back to AZ or losing transactions.
 - Preserve current complete-exam atomic save and retry behavior while combining CT/NC/IN APIs.
@@ -80,7 +90,7 @@ Indiana's previously unsupported draft claims were narrowed or replaced using th
 - Return CT Pro flags in progress and show the correct Dashboard plan.
 - Preserve each candidate's production gates and exclude blocked-state learning records from generic production progress responses.
 
-## Verification evidence
+### Verification evidence
 
 - Content checks for CT, NC and IN pass; unique IDs/stems, card links, 60/143 splits and repeatable draws checked.
 - Fresh TypeScript and optimized gated candidate build pass. A separate build under production configuration also passes with all three candidate gates enabled.
@@ -94,7 +104,7 @@ Indiana's previously unsupported draft claims were narrowed or replaced using th
 - HTTP against isolated production configuration confirms nine CT/NC/IN practice/guide/article routes remain 404. Existing main-state production behavior was read, not modified.
 - Browser widths emulate desktop and mobile; no physical phone was tested. This is local candidate acceptance, not public production acceptance.
 
-## Release block and exact remaining operations
+### Release block and operations remaining at that checkpoint
 
 Automatic approval review rejected a command that combined removing production gates/noindex, opening all three states, and enabling shared purchase access. Its stated reason was public legal-content and billing risk and asserted rollout-scope concerns. The user's request is to deploy every previously requested state; no further generic deployment authorization is needed. The rejection was respected: public availability, middleware protection, noindex, robots/sitemap exclusion and purchase suppression remain in place.
 
