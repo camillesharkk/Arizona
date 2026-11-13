@@ -69,7 +69,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
       .then((r) => r.json())
       .then((d) => {
         if (cancel) return;
-        setIsPro(Boolean(d.user?.arizonaPro || d.user?.californiaPro || d.user?.hawaiiPro || d.user?.plan === "pro"));
+        setIsPro(Boolean(stateCode === "CT" ? d.user?.connecticutPro : d.user?.arizonaPro || d.user?.californiaPro || d.user?.hawaiiPro || d.user?.plan === "pro"));
         setFullExamCount(Number((pack ? d.user?.packFullExamCount?.[stateCode] : onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setOwner(d.user?.id || "guest");
@@ -169,6 +169,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   }
 
   function requestStart(next: "quick" | "full" | "weak") {
+    if (stateCode === "CT" && next === "weak") { document.getElementById("ct-topics")?.scrollIntoView({ behavior: "smooth" }); return; }
     if (pendingStart) return;
     if (!authReady) {
       setPendingStart(next);
@@ -218,7 +219,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
               : onHi
               ? ["Comprehensive Practice", `${fullCount} questions. No time limit. This count is this site's practice setting.`]
               : ["Full " + fullCount, `${fullCount} questions, ${fullMinutes ?? examConfig.timeLimitMinutes} minutes. Results show after you submit.`],
-            weak: ["Weak Areas", "Questions you missed. The longer set is part of Pro."],
+            weak: [stateCode === "CT" ? "Topic Practice" : "Weak Areas", stateCode === "CT" ? "Choose a Connecticut topic from the list below." : "Questions you missed. The longer set is part of Pro."],
           }[id];
           return (
             <Fragment key={id}>
@@ -269,9 +270,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
                 ? "This browser has used its free Full 45. California Pro includes more full exams for 60 days."
                 : "This browser has used its free Full 45. Pro includes more full exams.")}
         </p>
-        <Link className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">
-          Unlock Pro
-        </Link>
+        {pack?.purchaseEnabled !== false ? <Link className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">Unlock Pro</Link> : <Link className="btn btn-primary" href={`${site.practice}?mode=quick`}>Start Free Quick 10</Link>}
         <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginLeft: 8 }}>
           Change mode
         </button>

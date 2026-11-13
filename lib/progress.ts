@@ -76,7 +76,7 @@ export async function recordQuestionAnswer(opts: {
   const store = opts.store || await getStore();
   const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId) ?? questionById(opts.questionId);
   if (!q) throw new Error("unknown_question");
-  if ((q.state === "NY" || q.state === "PA" || q.state === "LA") && !opts.store) {
+  if ((q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT") && !opts.store) {
     return store.learningTransaction(opts.userId, transaction => recordQuestionAnswer({ ...opts, store: transaction }));
   }
   if (opts.attemptId) {
@@ -98,7 +98,7 @@ export async function recordQuestionAnswer(opts: {
     userId: opts.userId,
     questionId: opts.questionId,
     topic: q.topic,
-    bank: state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : state === "NY" ? "new-york-notary-exam" : state === "PA" ? "pennsylvania-notary-exam" : state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam",
+    bank: state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : state === "NY" ? "new-york-notary-exam" : state === "PA" ? "pennsylvania-notary-exam" : state === "CT" ? "connecticut-notary-exam" : state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam",
     chapter: q.topic,
     state,
     firstCorrect: prev?.firstCorrect ?? opts.correct,

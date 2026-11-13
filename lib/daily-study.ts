@@ -1,3 +1,5 @@
+import { ctProCovers } from "@/lib/account-pro";
+import { hasStatePro } from "@/lib/entitlements";
 import { isDeepStrictEqual } from "node:util";
 import { caCards } from "@/data/ca-cards";
 import { hiCards } from "@/data/hi-cards";
@@ -8,7 +10,7 @@ import { localDate } from "@/lib/calendar";
 import { recentCaExams, type CaCheck } from "@/lib/ca-daily-shape";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
-import { accountProCovers, accountProExpiry, hasArizonaPro } from "@/lib/entitlements";
+import { accountProCovers, accountProExpiry } from "@/lib/entitlements";
 import { publicStudyCards, studyCardCatalog } from "@/lib/study-cards";
 import {
   applyCardMark,
@@ -29,10 +31,10 @@ import { packFor } from "@/lib/prep-pack";
 import { getStore } from "@/lib/store";
 import type { StateCode } from "@/lib/types";
 
-export type StudyState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA";
+export type StudyState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT";
 
 function isPack(state: StudyState) {
-  return state === "NY" || state === "PA" || state === "LA";
+  return state === "NY" || state === "PA" || state === "LA" || state === "CT";
 }
 
 function pool(state: StudyState, isPro: boolean) {
@@ -136,8 +138,8 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   const topicPractice = state === "CA" || state === "HI" || isPack(state);
   const storeForExpiry = await getStore();
   const account = await storeForExpiry.listEntitlements(userId);
-  const pro = accountProCovers(account);
-  const expires = accountProExpiry(account, new Date(now));
+  const pro = state === "CT" ? ctProCovers(account) : accountProCovers(account);
+  const expires = accountProExpiry(account, new Date(now), state === "CT" ? "CT" : undefined);
   const loaded = await loadDocument(userId, state, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
   let doc = loaded.doc;
   const { store, checks } = loaded;
@@ -218,7 +220,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     projectedDate: projection.date,
     projectReason: projection.reason,
     entitlementExpiresAt: expires ? expires.toISOString() : null,
-    freeOnly: state === "AZ" && !pro,
+    freeOnly: (state === "AZ" || state === "CT") && !pro,
     freeQuestionCount: pool(state, false).questions.length,
     questionCount: pool(state, true).questions.length,
     freeCardCount: pool(state, false).cards.length,
@@ -314,7 +316,7 @@ export async function saveStudySettings(userId: string, patch: Partial<StudySett
 }
 
 export async function markDailyCard(userId: string, input: { cardId: string; action: "studied" | "remembered" | "need-review"; attemptId: string }, state: StudyState = "AZ") {
-  const pro = await hasArizonaPro(userId);
+  const pro = await hasStatePro(userId, state);
   const allowed = new Set(pool(state, pro).cards.map((card) => card.id));
   if (!allowed.has(input.cardId)) throw new Error("not_allowed");
   const now = new Date().toISOString();
@@ -328,7 +330,7 @@ export async function markDailyCard(userId: string, input: { cardId: string; act
 
 export async function studyMore(userId: string, state: StudyState = "AZ") {
   await dailyStudyView(userId, undefined, undefined, state);
-  const pro = await hasArizonaPro(userId);
+  const pro = await hasStatePro(userId, state);
   const { questions, cards } = pool(state, pro);
   const now = new Date().toISOString();
   const { store, doc, checks } = await loadDocument(userId, state, localDate(now, DEFAULT_STUDY_TIME_ZONE));

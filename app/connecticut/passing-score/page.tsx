@@ -1,0 +1,4 @@
+import { ctPaths, ctSources } from '@/lib/ct-site';
+import { pageMeta } from '@/lib/seo';
+export const metadata = pageMeta({ title: 'Connecticut Application Examination Requirement', description: 'The examination is incorporated in eLicense.', path: '/connecticut/passing-score/', index: false });
+export default function Page() { return <main className="wrap hero"><h1>Application Examination Requirement</h1><p>The examination is incorporated in eLicense. Manual §2.2 requires every examination question to be answered correctly before appointment. This website reports the correct count and topic performance for the practice set you completed.</p><p><a href={ctSources.manual}>Official Manual</a>{' · '}<a href={ctSources.licensing}>Official Licensing Instructions</a></p><p><a href={ctPaths.become}>First Application Checklist</a>{' · '}<a href={`${ctPaths.practice}?mode=quick`}>Practice With the Handbook</a></p></main>; }

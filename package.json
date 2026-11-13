@@ -25,7 +25,9 @@
     "outcome:verify": "node --experimental-strip-types scripts/exam-outcome-verify.ts",
     "study:verify": "node --experimental-strip-types scripts/study-review-verify.ts",
     "guide:verify": "node scripts/study-guide-verify.mjs",
-    "mistakes:verify": "node --experimental-strip-types scripts/mistakes-verify.ts"
+    "mistakes:verify": "node --experimental-strip-types scripts/mistakes-verify.ts",
+    "ct:verify": "node scripts/ct-verify.mjs",
+    "ct:preview": "node scripts/ct-preview-server.mjs"
   },
   "dependencies": {
     "@paddle/paddle-js": "^1.6.5",

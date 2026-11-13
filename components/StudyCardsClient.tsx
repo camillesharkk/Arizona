@@ -14,6 +14,7 @@ import { isTopicSlug, type PublicStudyCard } from "@/lib/study-cards";
 export function StudyCardsClient({
   cards,
   initialTopic,
+  initialCardId,
   topics = arizonaTopics,
   cardsHref = paths.studyCards,
   dailyHref = paths.daily,
@@ -22,6 +23,7 @@ export function StudyCardsClient({
 }: {
   cards: PublicStudyCard[];
   initialTopic: string;
+  initialCardId?: string;
   topics?: readonly { id: string; label: string }[];
   cardsHref?: string;
   dailyHref?: string;
@@ -48,9 +50,9 @@ export function StudyCardsClient({
 
   useEffect(() => {
     setTopic(initialTopic);
-    setIndex(0);
+    setIndex(Math.max(0, cards.filter(card => initialTopic === "all" || card.topic === initialTopic).findIndex(card => card.id === initialCardId)));
     setFlipped(false);
-  }, [initialTopic]);
+  }, [initialTopic, initialCardId, cards]);
 
   function pick(next: string) {
     setTopic(next);

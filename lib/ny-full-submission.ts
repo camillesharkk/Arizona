@@ -8,7 +8,7 @@ import { HI_EXAM } from "./hi-site";
 import { pickCaFullExam } from "./ca-exam";
 import { pickHiFullExam } from "./hi-exam";
 import type { StateCode } from "./types";
-import { accountProCovers } from "./account-pro.ts";
+import { accountProCovers, ctProCovers } from "./account-pro.ts";
 import { isSiteProProduct } from "./pro-products.ts";
 import type { ProUsageContext } from "./commerce/usage";
 import { applyStreak, recordQuestionAnswer } from "./progress";
@@ -66,7 +66,7 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     if (input.questions.length !== config.fullCount || new Set(input.questions.map(answer => answer.questionId)).size !== config.fullCount) throw new Error("invalid_exam");
     const draw = state !== "NY" && Number.isSafeInteger(input.seed) ? config.pickFull(input.seed!) : null;
     const matchesDraw = Boolean(draw && draw.questions.every((question, index) => question.question_id === input.questions[index]?.questionId));
-    if (state === "LA" && !matchesDraw) throw new Error("invalid_exam");
+    if ((state === "LA" || state === "CT") && !matchesDraw) throw new Error("invalid_exam");
     // A bank expansion must not redraw a saved PA sitting. A legacy sitting may
     // supply its persisted unscored identities, but every quota is checked here.
     const splitScore = state === "PA" || state === "CA";
@@ -99,7 +99,7 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     }
     const now = new Date();
     const entitlements = await transaction.listEntitlements(userId);
-    const pro = accountProCovers(entitlements, now);
+    const pro = state === "CT" ? ctProCovers(entitlements, now) : accountProCovers(entitlements, now);
     const fullCount = exams.filter(exam => exam.mode === mode && exam.id !== input.examId).length;
     if (!existing && !pro && fullCount >= FREE_FULL_EXAMS) throw new Error("full_trial_used");
     let proUsageFeature: "full_exam_extra" | "pro_question" | undefined;

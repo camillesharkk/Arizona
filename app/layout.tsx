@@ -22,8 +22,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const state = resolveState(path, saved);
   const california = state === "CA";
   const hawaii = state === "HI";
-  const preview = path.startsWith("/preview/") || path.startsWith("/louisiana");
-  const title = state === "NY" ? "New York Notary Exam Practice" : state === "PA" ? "Pennsylvania Notary Exam Practice" : state === "LA" ? "Louisiana Notary Exam Practice" : hawaii ? "Hawaii Notary Exam Practice" : california ? "California Notary Exam Practice" : "Arizona Notary Exam Practice Test 2026";
+  const preview = path.startsWith("/preview/") || path.startsWith("/louisiana") || path.startsWith("/connecticut");
+  const title = state === "CT" ? "Connecticut Notary Prep" : state === "NY" ? "New York Notary Exam Practice" : state === "PA" ? "Pennsylvania Notary Exam Practice" : state === "LA" ? "Louisiana Notary Exam Practice" : hawaii ? "Hawaii Notary Exam Practice" : california ? "California Notary Exam Practice" : "Arizona Notary Exam Practice Test 2026";
   return {
     metadataBase: new URL(siteUrl()),
     title: {

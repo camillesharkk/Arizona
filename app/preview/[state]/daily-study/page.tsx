@@ -4,7 +4,7 @@ import { DailyStudyClient } from "@/components/DailyStudyClient";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
 import { getSession } from "@/lib/session";
 
-const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA" };
+const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", connecticut: "CT" };
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
   if (!prepPageEnabled((await params).state)) notFound();

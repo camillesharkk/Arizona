@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import { testLoader } from './pack-test-utils.mjs';
+const { accountProCovers, ctProCovers } = testLoader()('lib/account-pro.ts');
+const row = { id: 'test', userId: 'local', productCode: 'az_exam_pro_60d', state: 'CT', status: 'active', startsAt: new Date(Date.now()-1000).toISOString(), expiresAt: new Date(Date.now()+86400000).toISOString(), provider: 'mock', providerOrderId: 'test' };
+assert.equal(ctProCovers([row]), true);
+assert.equal(accountProCovers([row]), false, 'CT-only access must not grant account-wide access');
+assert.equal(ctProCovers([{...row,state:'AZ'}]), false);
+assert.equal(ctProCovers([{...row,state:'ALL'}]), true);
+assert.equal(ctProCovers([{...row,expiresAt:new Date(Date.now()-1).toISOString()}]), false);
+console.log('CT and ALL scope, reverse isolation, and expiry passed');

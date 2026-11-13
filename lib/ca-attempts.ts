@@ -3,7 +3,7 @@ import { applyMistakeImport, applyReviewImport, type ReviewTopic, type TopicMiss
 import { loadProgress, saveProgress } from "./storage.ts";
 import { currentQuestionVersion } from './question-revisions.ts';
 
-export type TopicPracticeState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA";
+export type TopicPracticeState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT";
 
 export type CaQuickAttempt = {
   id: string;
@@ -87,17 +87,17 @@ export function hasPendingCaAttempts(state: TopicPracticeState) {
 export function readCaAttempt(owner: string, id: string, state: TopicPracticeState = "CA") {
   if (!id) return null;
   const item = listCaAttempts(owner, state).find((item) => item.id === id);
-  if (['NY','PA','LA'].includes(state) && item?.questionIds.some(id => (item.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
+  if (['NY','PA','LA','CT'].includes(state) && item?.questionIds.some(id => (item.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
   return item || null;
 }
 
 export function latestCaQuick(owner: string, state: TopicPracticeState = "CA") {
-  return listCaAttempts(owner, state).find(item => item.mode === "quick" && (!['NY','PA','LA'].includes(state) || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id)))) || null;
+  return listCaAttempts(owner, state).find(item => item.mode === "quick" && (!['NY','PA','LA','CT'].includes(state) || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id)))) || null;
 }
 
 export function saveCaQuickAttempt(row: CaQuickAttempt) {
   if (typeof window === "undefined" || !row.id || !row.owner) return;
-  const state: TopicPracticeState = row.state === "AZ" || row.state === "HI" || row.state === "NY" || row.state === "PA" || row.state === "LA" ? row.state : "CA";
+  const state: TopicPracticeState = row.state === "AZ" || row.state === "HI" || row.state === "NY" || row.state === "PA" || row.state === "LA" || row.state === "CT" ? row.state : "CA";
   const all = readList<unknown>(keys(state).attempts).map((item) => asAttempt(item, state)).filter((item): item is CaQuickAttempt => Boolean(item));
   const index = all.findIndex((item) => item.id === row.id);
   if (index >= 0) {

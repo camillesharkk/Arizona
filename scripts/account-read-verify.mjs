@@ -17,7 +17,7 @@ const user = await store.createUser({email:'read-check@example.invalid',password
 session = {id:user.id};
 const { GET } = load('app/api/auth/me/route.ts');
 await store.insertEntitlement({userId:user.id,productCode:'az_exam_pro_60d',state:'ALL',status:'active',startsAt:new Date(Date.now()-86400000*2).toISOString(),expiresAt:new Date(Date.now()-86400000).toISOString(),provider:'mock',providerOrderId:crypto.randomUUID(),providerCustomerId:null});
-for(const mode of ['full','ca-full','hi-full','ny-full','pa-full','la-full']) await store.addExam({id:crypto.randomUUID(),userId:user.id,mode,score:70,correctCount:7,total:10,at:new Date().toISOString()});
+for(const mode of ['full','ca-full','hi-full','ny-full','pa-full','la-full','ct-full']) await store.addExam({id:crypto.randomUUID(),userId:user.id,mode,score:70,correctCount:7,total:10,at:new Date().toISOString()});
 for(const active of [false,true]) {
   if(active) await store.insertEntitlement({userId:user.id,productCode:'az_exam_pro_60d',state:'ALL',status:'active',startsAt:new Date(Date.now()-86400000).toISOString(),expiresAt:new Date(Date.now()+86400000).toISOString(),provider:'mock',providerOrderId:crypto.randomUUID(),providerCustomerId:null});
   entitlementReads = 0; examReads = 0;
@@ -27,13 +27,13 @@ for(const active of [false,true]) {
   assert.equal(result.user.hawaiiPro,active);
   assert.equal(result.user.aiDailyLimit,active?300:75);
   for(const field of ['fullExamCount','caFullExamCount','hiFullExamCount']) assert.equal(result.user[field],1);
-  assert.deepEqual(result.user.packFullExamCount,{NY:1,PA:1,LA:1});
+  assert.deepEqual(result.user.packFullExamCount,{NY:1,PA:1,LA:1,CT:1});
   assert.equal(entitlementReads,1,'Read account-wide entitlements once per response');
   assert.equal(examReads,1,'Read exam history once per response');
 }
-console.log('Account response retains all-state rights, AI limits and six-state counts with one entitlement/history read');
+console.log('Account response retains all-state rights, AI limits and seven-state counts with one entitlement/history read');
 const { dailyStudyView, saveStudySettings } = load('lib/daily-study.ts');
-for (const state of ['AZ','CA','HI','NY','PA','LA']) {
+for (const state of ['AZ','CA','HI','NY','PA','LA','CT']) {
   const now = new Date().toISOString();
   planWrites = 0;
   await dailyStudyView(user.id,'America/New_York',now,state);
@@ -49,4 +49,4 @@ for (const state of ['AZ','CA','HI','NY','PA','LA']) {
   assert.equal(updated.settings.newQuestions,3);
   assert.equal((await store.getStudyPlan(user.id,state)).document.checks.receipt.submissionVersion,1,'Keep the immutable full-practice receipt across daily reads and settings changes');
 }
-console.log('Six-state Daily Study initializes once, skips unchanged writes and retains edited settings');
+console.log('Seven-state Daily Study initializes once, skips unchanged writes and retains edited settings');

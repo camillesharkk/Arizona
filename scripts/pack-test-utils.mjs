@@ -46,7 +46,7 @@ if (process.argv.includes('--seed')) {
     if(kind!=='free' && !(await store.listEntitlements(user.id)).length) await store.insertEntitlement({userId:user.id,productCode:'az_exam_pro_60d',state:'ALL',status:'active',startsAt:new Date(Date.now()-86400000*2).toISOString(),expiresAt:new Date(Date.now()+(kind==='pro'?86400000*30:-86400000)).toISOString(),provider:'mock',providerOrderId:`pack-${kind}-${surface}`,providerCustomerId:null});
   }
   fs.mkdirSync('.tools',{recursive:true});
-  const bank={AZ:load('data/questions.ts').publishedQuestions(),CA:load('data/ca-questions.ts').publishedCaQuestions(),HI:load('data/hi-questions.ts').publishedHiQuestions(),NY:load('data/ny-content.ts').publishedNyQuestions(),PA:load('data/pa-content.ts').publishedPaQuestions(),LA:load('data/la-content.ts').publishedLaQuestions()};
+  const bank={AZ:load('data/questions.ts').publishedQuestions(),CA:load('data/ca-questions.ts').publishedCaQuestions(),HI:load('data/hi-questions.ts').publishedHiQuestions(),NY:load('data/ny-content.ts').publishedNyQuestions(),PA:load('data/pa-content.ts').publishedPaQuestions(),LA:load('data/la-content.ts').publishedLaQuestions(),CT:load('data/ct-content.ts').publishedCtQuestions()};
   fs.writeFileSync('.tools/pack-bank.json',JSON.stringify(bank,null,2));
   console.log(JSON.stringify({data,accounts:9,questionCounts:Object.fromEntries(Object.entries(bank).map(([state,qs])=>[state,qs.length]))}));
 }

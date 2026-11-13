@@ -17,12 +17,13 @@ export function pathState(pathname: string): LiveCode | null {
   if (isHawaiiPath(path)) return "HI";
   if (path.startsWith("/preview/new-york") || path.startsWith("/new-york/") || path === "/new-york") return "NY";
   if (path.startsWith("/preview/pennsylvania") || path.startsWith("/pennsylvania/") || path === "/pennsylvania") return "PA";
+  if (path.startsWith("/connecticut/") || path === "/connecticut") return "CT";
   if (path.startsWith("/preview/louisiana") || path.startsWith("/louisiana/") || path === "/louisiana") return "LA";
   if (sharedPaths.some((item) => path === item || path.startsWith(`${item}/`))) return null;
   return "AZ";
 }
 
-const CODES = new Set<LiveCode>(["AZ", "CA", "HI", "NY", "PA", "LA"]);
+const CODES = new Set<LiveCode>(["AZ", "CA", "HI", "NY", "PA", "LA", "CT"]);
 
 export function parseStateCookie(value: string | undefined | null): LiveCode | null {
   return value && CODES.has(value as LiveCode) ? (value as LiveCode) : null;

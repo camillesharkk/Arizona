@@ -1,0 +1,4 @@
+import { ctPaths, ctSources } from '@/lib/ct-site';
+import { pageMeta } from '@/lib/seo';
+export const metadata = pageMeta({ title: 'Connecticut Handbook Practice Guide', description: 'Open the official manual before answering a scenario.', path: '/connecticut/exam-guide/', index: false });
+export default function Page() { return <main className="wrap hero"><h1>Handbook Practice Guide</h1><p>Open the official manual before answering a scenario. Locate the governing rule, decide how it applies, then check the explanation and each incorrect choice. Quick 10 and topic practice use the free question pool. Comprehensive Practice uses 40 site-configured questions with no timer.</p><p><a href={ctSources.manual}>Official Manual</a>{' · '}<a href={ctSources.licensing}>Official Licensing Instructions</a></p><p><a href={ctPaths.become}>First Application Checklist</a>{' · '}<a href={`${ctPaths.practice}?mode=quick`}>Practice With the Handbook</a></p></main>; }

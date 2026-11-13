@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
-import { aiDailyLimit, canAccessQuestion, hasArizonaPro } from "@/lib/entitlements";
+import { aiDailyLimit, canAccessQuestion, hasStatePro } from "@/lib/entitlements";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
@@ -24,8 +24,9 @@ export async function GET(req: Request) {
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   if (productionStateBlocked(new URL(req.url).searchParams.get("state"))) return NextResponse.json({ error: "State not available" }, { status: 404 });
   const store = await getStore();
-  const plan = (await hasArizonaPro(session.id)) ? "pro" : "free";
-  const limit = await aiDailyLimit(session.id);
+  const state = new URL(req.url).searchParams.get("state") || "AZ";
+  const plan = (await hasStatePro(session.id, state)) ? "pro" : "free";
+  const limit = await aiDailyLimit(session.id, state);
   const usage = await readAiUsage(store, session.id, limit);
   return NextResponse.json(usagePayload(plan, usage.used, usage.limit, usage.remaining));
 }
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
     .object({
       questionId: z.string(),
       questionVersion: z.number().int().positive().optional(),
-      state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA"]).optional(),
+      state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT"]).optional(),
       options: z.array(z.string()).length(4).optional(),
       selected: z.enum(["A", "B", "C", "D"]).optional(),
       mode: z.enum(["explain", "why-correct", "why-wrong", "beginner", "similar"]),
@@ -59,8 +60,8 @@ export async function POST(req: Request) {
   if (!(await canAccessQuestion(session.id, q))) return NextResponse.json({ error: "Pro required" }, { status: 402 });
   const store = await getStore();
   const day = utcAiDay();
-  const plan = (await hasArizonaPro(session.id)) ? "pro" : "free";
-  const limit = await aiDailyLimit(session.id);
+  const plan = (await hasStatePro(session.id, stored.state)) ? "pro" : "free";
+  const limit = await aiDailyLimit(session.id, stored.state);
   const before = await readAiUsage(store, session.id, limit, day);
   if (before.used >= limit) {
     return NextResponse.json(

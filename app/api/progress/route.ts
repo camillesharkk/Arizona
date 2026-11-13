@@ -20,7 +20,7 @@ const answerSchema = z.object({
   selected: z.enum(["A", "B", "C", "D"]),
   attemptId: z.string().min(8).max(80).optional(),
   review: z.boolean().optional(),
-  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA"]).optional(),
+  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT"]).optional(),
   timeZone: z.string().max(80).optional(),
 });
 
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
         correctCount: z.number(),
         total: z.number(),
         examId: z.string().uuid().optional(),
-        state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA"]).optional(),
+        state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT"]).optional(),
         wrongIds: z.array(z.string().max(80)).max(80).optional(),
         skipped: z.number().int().min(0).max(80).optional(),
         timeZone: z.string().max(80).optional(),
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
     const store = await getStore();
     const california = exam.data.state === "CA";
     const hawaii = exam.data.state === "HI";
-    const packState = exam.data.state === "NY" || exam.data.state === "PA" || exam.data.state === "LA" ? exam.data.state : null;
+    const packState = exam.data.state === "NY" || exam.data.state === "PA" || exam.data.state === "LA" || exam.data.state === "CT" ? exam.data.state : null;
     if (exam.data.mode === "full" || exam.data.mode.endsWith("-full")) {
       return NextResponse.json({ error: "Submit the complete sitting for server grading" }, { status: 400 });
     }
@@ -107,7 +107,7 @@ export async function POST(req: Request) {
   const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(parsed.data.questionId)].find((x) => x && x.question_id === parsed.data.questionId);
   if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
   if (productionStateBlocked(q.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  if ((q.state === "NY" || q.state === "PA" || q.state === "LA") && (parsed.data.questionVersion ?? 1) !== q.version) {
+  if ((q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT") && (parsed.data.questionVersion ?? 1) !== q.version) {
     return NextResponse.json({ error: "Question updated; reload before answering", code: "question_updated" }, { status: 409 });
   }
   if (parsed.data.state ? parsed.data.state !== q.state : q.state !== "AZ") {

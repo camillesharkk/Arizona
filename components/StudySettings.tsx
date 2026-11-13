@@ -35,7 +35,7 @@ export function StudySettings() {
 
   const savedState = useResolvedState(useSavedState());
   const requested = useSearchParams().get("state");
-  const state = requested === "AZ" || requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" ? requested : savedState || "AZ";
+  const state = requested === "AZ" || requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" || requested === "CT" ? requested : savedState || "AZ";
 
   useEffect(() => {
     let cancelled = false;

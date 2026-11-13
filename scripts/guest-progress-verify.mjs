@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { testLoader } from './pack-test-utils.mjs';
 
+// Exercise the candidate CT import with its preview flag enabled in this process.
+process.env.NEXT_PUBLIC_CT_PREVIEW = "1";
+
 let store;
 let owner;
 const load = testLoader({
@@ -18,6 +21,7 @@ const banks = {
   NY: load('data/ny-content.ts').publishedNyQuestions(),
   PA: load('data/pa-content.ts').publishedPaQuestions(),
   LA: load('data/la-content.ts').publishedLaQuestions(),
+  CT: load('data/ct-content.ts').publishedCtQuestions(),
 };
 const post = body => POST(new Request('http://localhost/api/progress/import/', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }));
 for (const [state, bank] of Object.entries(banks)) {

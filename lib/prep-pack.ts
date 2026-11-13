@@ -3,6 +3,8 @@ export type { PrepCode, PrepPaths } from "./prep-navigation.ts";
 import { laCards, laTopics, pickLaFullExam, publishedLaQuestions } from "@/data/la-content";
 import { nyCards, nyQuestionCounts, nyTopics, pickNyFullExam, publishedNyQuestions } from "@/data/ny-content";
 import { paCards, paQuestionCounts, paTopics, pickPaFullExam, pickPaQuickExam, publishedPaQuestions } from "@/data/pa-content";
+import { ctCards, ctTopics, ctQuestionCounts, publishedCtQuestions, pickCtFullExam } from "@/data/ct-content";
+import { ctExam } from "@/lib/ct-site";
 import { shuffle } from "@/lib/answer-sequence";
 import type { Question, StateCode } from "@/lib/types";
 
@@ -20,6 +22,8 @@ export type PrepPack = {
   fullMinutes: number | null;
   fullTitle: string;
   fullDetail: string;
+  purchaseEnabled?: boolean;
+  handbookUrl?: string;
   practiceNotice?: { title: string; body: string; anchor: string };
   anonKey: string;
   pickQuick: (seed: number) => Question[];
@@ -56,6 +60,15 @@ const paCounts = paQuestionCounts();
 const nyCounts = nyQuestionCounts();
 
 export const prepPacks: Record<PrepCode, PrepPack> = {
+  CT: {
+    ...prepNavigation.CT, topics: ctTopics, questions: publishedCtQuestions, counts: ctQuestionCounts,
+    fullCount: ctExam.practiceQuestionCount, fullMinutes: null, fullTitle: "Comprehensive Practice",
+    fullDetail: `${ctExam.practiceQuestionCount} questions drawn from this site's Connecticut pool. No time limit. Use the official handbook while practicing.`,
+    anonKey: "ct-anon-full-started", pickQuick: seed => quickFrom(publishedCtQuestions(), seed),
+    pickFull: pickCtFullExam, fullReady: publishedCtQuestions().length >= ctExam.practiceQuestionCount,
+    quickReady: ctQuestionCounts().free >= 10, cards: ctCards, purchaseEnabled: false,
+    handbookUrl: "https://portal.ct.gov/-/media/sots/business-services/notary/state_of_connecticut_notary_public_manual_rev2023.pdf?hash=16EF7EBB701DFF05F62495C282351BFF&rev=a50b095808bf4eb2a715e864480fe05a",
+  },
   PA: {
     ...prepNavigation.PA,
     topics: paTopics,
@@ -115,10 +128,10 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
 };
 
 export function packFor(state: StateCode | string | null | undefined): PrepPack | null {
-  if (state === "NY" || state === "PA" || state === "LA") return prepPacks[state];
+  if (state === "NY" || state === "PA" || state === "LA" || state === "CT") return prepPacks[state];
   return null;
 }
 
 export function questionById(id: string) {
-  return [...publishedPaQuestions(), ...publishedNyQuestions(), ...publishedLaQuestions()].find((question) => question.question_id === id) || null;
+  return [...publishedPaQuestions(), ...publishedNyQuestions(), ...publishedLaQuestions(), ...publishedCtQuestions()].find((question) => question.question_id === id) || null;
 }

@@ -4,7 +4,7 @@ import {spawn} from 'node:child_process';
 const live=process.argv.includes('--sandbox'), production=process.argv.includes('--production-gates'), built=process.argv.includes('--built'), building=process.argv.includes('--build');
 const data=path.resolve(process.env.PACK_TEST_DATA_DIR||'.tools/pack-data');
 if(!data.startsWith(path.resolve('.tools')+path.sep))throw new Error('Acceptance data must be in .tools');
-const env={...process.env,DATABASE_URL:'local-isolated',NOTARY_DATA_DIR:data,STATE_PREVIEW:'1',VERCEL_ENV:production?'production':'preview',AI_PROVIDER:'local',MOR_PROVIDER:'paddle',NEXT_DIST_DIR:built||building?'.tools/pack-build':'.tools/pack-dev'};
+const env={...process.env,DATABASE_URL:'local-isolated',NOTARY_DATA_DIR:data,STATE_PREVIEW:'1',VERCEL_ENV:production?'production':'preview',AI_PROVIDER:'local',MOR_PROVIDER:'paddle',NEXT_DIST_DIR:process.env.NEXT_DIST_DIR||(built||building?'.tools/pack-build':'.tools/pack-dev')};
 // Never load a database URL, production token, webhook secret or email settings.
 if(live) {
   const source=fs.readFileSync('D:/webtest/web/.env.local','utf8');

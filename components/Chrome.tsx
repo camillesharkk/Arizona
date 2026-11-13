@@ -148,8 +148,8 @@ export function SiteHeader({ savedState }: { savedState: LiveCode | null }) {
       <div className="wrap header-inner">
         <div className="header-left">
           <Link href={state ? nav.home : "/"} className="logo">
-            <span className="logo-mark">{state === "CA" ? "C" : state === "HI" ? "H" : state === "NY" ? "Y" : state === "PA" ? "P" : state === "LA" ? "L" : state === "AZ" ? "A" : "N"}</span>
-            {state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
+            <span className="logo-mark">{state === "CT" ? "C" : state === "CA" ? "C" : state === "HI" ? "H" : state === "NY" ? "Y" : state === "PA" ? "P" : state === "LA" ? "L" : state === "AZ" ? "A" : "N"}</span>
+            {state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
           </Link>
           <StateMenu pathname={pathname} current={state} />
         </div>

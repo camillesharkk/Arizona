@@ -11,7 +11,7 @@ import {
   PRO_DURATION_DAYS,
 } from "@/lib/product";
 import { SITE_PRO_PRODUCT_CODE } from "@/lib/pro-products";
-import { accountProCovers, accountProExpiry } from "./account-pro.ts";
+import { accountProCovers, accountProExpiry, ctProCovers } from "./account-pro.ts";
 
 export { accountProCovers, accountProExpiry };
 
@@ -29,15 +29,15 @@ export type SessionUser = {
 
 export { AZ_PRO_PRODUCT, AZ_STATE, PRO_DURATION_DAYS, AI_LIMIT_FREE, AI_LIMIT_PRO, FREE_FULL_EXAMS, FREE_WEAK_PREVIEW, FREE_FLASHCARD_PREVIEW } from "@/lib/product";
 
-export async function getArizonaEntitlement(userId: string | null | undefined): Promise<EntitlementRow | null> {
+export async function getArizonaEntitlement(userId: string | null | undefined, entitlements?: EntitlementRow[]): Promise<EntitlementRow | null> {
   if (!userId) return null;
   const store = await getStore();
-  const rows = await store.listEntitlements(userId);
+  const rows = entitlements ?? await store.listEntitlements(userId);
   const now = new Date();
   if (!accountProCovers(rows, now)) return null;
   const expiry = accountProExpiry(rows, now);
   const current = rows
-    .filter((row) => row.status === "active" && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
+    .filter((row) => row.state !== "CT" && row.status === "active" && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
     .sort((a, b) => new Date(b.expiresAt).getTime() - new Date(a.expiresAt).getTime())[0];
   if (!current || !expiry) return null;
   return { ...current, state: "ALL", expiresAt: expiry.toISOString() };
@@ -65,6 +65,7 @@ export async function hasArizonaPro(userId: string | null | undefined) {
 }
 
 export async function hasStatePro(userId: string | null | undefined, _state?: string) {
+  if (_state === "CT") return userId ? ctProCovers(await (await getStore()).listEntitlements(userId)) : false;
   return hasArizonaPro(userId);
 }
 
@@ -126,7 +127,7 @@ export async function refundArizonaOrder(userId: string, provider: string, provi
 
 export async function canAccessQuestion(userId: string | null | undefined, q: Question) {
   if (q.is_free) return true;
-  return hasArizonaPro(userId);
+  return hasStatePro(userId, q.state);
 }
 
 export async function visibleQuestions(userId: string | null | undefined) {
@@ -136,7 +137,7 @@ export async function visibleQuestions(userId: string | null | undefined) {
 
 export async function aiDailyLimit(userId: string | null | undefined, _state?: string) {
   if (!userId) return 0;
-  return (await hasArizonaPro(userId)) ? AI_LIMIT_PRO : AI_LIMIT_FREE;
+  return (await hasStatePro(userId, _state)) ? AI_LIMIT_PRO : AI_LIMIT_FREE;
 }
 
 export async function canUseAdvancedAnalytics(userId: string | null | undefined) {
@@ -174,5 +175,5 @@ export async function packFullExamCounts(userId: string) {
   const store = await getStore();
   const exams = await store.listExams(userId);
   const count = (prefix: string) => exams.filter((exam) => exam.mode === prefix).length;
-  return { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full") };
+  return { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full") };
 }

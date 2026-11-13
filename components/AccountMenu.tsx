@@ -15,6 +15,8 @@ export type HeaderUser = {
   plan: "free" | "pro";
   name: string | null;
   planExpiresAt?: string | null;
+  connecticutPro?: boolean;
+  connecticutProExpiresAt?: string | null;
 };
 
 export function avatarInitial(name: string | null, email: string): string {
@@ -28,7 +30,8 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const menuId = "account-menu-dropdown";
-  const isPro = me.plan === "pro";
+  const isPro = stateCode === "CT" ? Boolean(me.connecticutPro) : me.plan === "pro";
+  const expiresAt = stateCode === "CT" ? me.connecticutProExpiresAt : me.planExpiresAt;
   const pack = packNavigationFor(stateCode);
   const settingsHref = `${paths.account}${stateCode && stateCode !== "AZ" ? `?state=${stateCode}` : ""}#study-settings`;
   const pricing = pack ? pack.paths.pricing : stateCode === "HI" ? hiPaths.pricing : stateCode === "CA" ? caPaths.pricing : paths.pricing;
@@ -79,9 +82,9 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
             <p className="account-plan-row">
               {isPro ? <span className="badge badge-pro">Pro</span> : <span className="badge">Free plan</span>}
             </p>
-            {isPro && me.planExpiresAt ? (
+            {isPro && expiresAt ? (
               <p className="notice" style={{ margin: "6px 0 0" }}>
-                <ProAccessNote plan={me.plan} planExpiresAt={me.planExpiresAt} compact />
+                <ProAccessNote plan={isPro ? "pro" : "free"} planExpiresAt={expiresAt} compact />
               </p>
             ) : null}
           </div>
@@ -104,9 +107,7 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
           <Link role="menuitem" href={paths.billing} onClick={() => setOpen(false)}>
             Billing & Access
           </Link>
-          <Link role="menuitem" href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>
-            {pricingLabel}
-          </Link>
+          {stateCode !== "CT" ? <Link role="menuitem" href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>{pricingLabel}</Link> : null}
           <div className="account-menu-sep" role="separator" />
           <button className="account-signout" type="button" role="menuitem" onClick={onLogout}>
             Sign out

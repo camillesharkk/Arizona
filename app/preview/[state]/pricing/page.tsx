@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { StateCheckout } from "@/components/StateCheckout";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
 
-const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA" };
+const codes: Record<string, Exclude<PrepCode, "CT">> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA" };
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
   if (!prepPageEnabled((await params).state)) notFound();

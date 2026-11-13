@@ -40,6 +40,8 @@ import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
 import { clearSitting, openSitting, readSitting, remainingSeconds, writeSitting, type Sitting, type SittingState } from "@/lib/sitting";
 import { weakestMissedTopic, topicStudyHref } from "@/lib/next-step";
 import { adoptGuestCaRecords, readCaAttempt, saveCaQuickAttempt } from "@/lib/ca-attempts";
+import { CtResultNext } from "@/components/CtResultNext";
+import { ctSources } from "@/lib/ct-site";
 import { CaQuickNext } from "@/components/CaQuickNext";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
@@ -74,8 +76,12 @@ export function ExamRunner({
   stateCode?: SittingState;
   focusArea?: string;
 }) {
-  const modeKey = sittingMode || mode;
+  const baseModeKey = sittingMode || mode;
+  const modeKey = stateCode === "CT" && preset
+    ? `${baseModeKey}:${preset.map(question => question.question_id).join(",")}`
+    : baseModeKey;
   const cloudSaved = useRef(false);
+  const initializedScope = useRef("");
   const onCa = stateCode === "CA";
   const onHi = stateCode === "HI";
   const pack = packFor(stateCode);
@@ -118,7 +124,7 @@ export function ExamRunner({
     setPoolIsPro(isPro);
   }, [isPro, reportStart]);
 
-  const timed = mode === "full" && !practice && !onHi;
+  const timed = mode === "full" && !practice && (pack ? pack.fullMinutes !== null : !onHi);
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, "A" | "B" | "C" | "D">>({});
   const [explainOpen, setExplainOpen] = useState<Record<string, boolean>>({});
@@ -132,6 +138,7 @@ export function ExamRunner({
   const startReported = useRef(false);
   const choiceLock = useRef<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const resultHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const answersRef = useRef(answers);
   const finishOnce = useRef(false);
   const localSaved = useRef(false);
@@ -147,6 +154,9 @@ export function ExamRunner({
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   function drawQuestionIds(seed: number) {
+    if (stateCode === "CT" && preset && mode !== "full") {
+      return preset.filter(item => item.state === "CT" && (item.is_free || isPro)).map(item => item.question_id);
+    }
     if (pack) {
       const bank = pack.questions();
       if (focusArea) {
@@ -161,7 +171,7 @@ export function ExamRunner({
         return picked ? picked.questions.map((item) => item.question_id) : [];
       }
       const missed = loadProgress(pack.code).wrongIds;
-      return bank.filter((item) => missed.includes(item.question_id)).slice(0, 10).map((item) => item.question_id);
+      return bank.filter((item) => missed.includes(item.question_id) && (stateCode !== "CT" || item.is_free || isPro)).slice(0, 10).map((item) => item.question_id);
     }
     if (onHi || onCa) {
       const bank = onHi ? publishedHiQuestions() : publishedCaQuestions();
@@ -231,7 +241,7 @@ export function ExamRunner({
   }
 
   function persistSitting(patch: Partial<Sitting> = {}) {
-    if (viewOnly.current) return;
+    if (viewOnly.current || (stateCode === "CT" && initializedScope.current !== modeKey)) return;
     const sitting = currentSitting(patch);
     if (!sitting) return;
     try {
@@ -244,6 +254,7 @@ export function ExamRunner({
   useEffect(() => {
     let cancel = false;
     setBootError(false);
+    initializedScope.current = "";
     setOwner(null);
     setActiveSeed(null);
     setLockedIds(null);
@@ -289,6 +300,7 @@ export function ExamRunner({
             setPresentationVersion(archived.presentationVersion ?? 1);
             unscoredRef.current = archived.unscoredIds || [];
             setLockedIds(archived.questionIds);
+            initializedScope.current = modeKey;
             setAnswers(archived.answers);
             answersRef.current = archived.answers;
             setDone(true);
@@ -305,11 +317,17 @@ export function ExamRunner({
         viewOnly.current = false;
         const seed = existing?.seed ?? Math.floor(Math.random() * 1_000_000_000);
         if (existing?.unscoredIds?.length) unscoredRef.current = existing.unscoredIds;
-        const ids = existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed);
+        const savedIds = existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed);
+        const ctPro = Boolean(data.user?.connecticutPro);
+        const ids = stateCode === "CT" && mode !== "full" ? savedIds.filter(id => {
+          const question = byId.get(id);
+          return question && (question.is_free || ctPro);
+        }) : savedIds;
         setOwner(nextOwner);
         setActiveSeed(seed);
         setPresentationVersion(existing ? existing.presentationVersion ?? 1 : 2);
         setLockedIds(ids);
+        initializedScope.current = modeKey;
         if (!existing) return;
         setIdx(Math.min(existing.idx, Math.max(0, ids.length - 1)));
         setAnswers(existing.answers);
@@ -430,6 +448,12 @@ export function ExamRunner({
     if (booted && timed && seconds === 0 && startedAt && !done) finish();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds, timed, done, booted, startedAt]);
+
+  useEffect(() => {
+    if (stateCode !== "CT" || !done) return;
+    resultHeadingRef.current?.focus({ preventScroll: true });
+    scrollUnderHeaderAfterLayout(resultHeadingRef.current);
+  }, [done, stateCode]);
 
   const q = questions[idx];
   const selected = q ? answers[q.question_id] : undefined;
@@ -747,7 +771,15 @@ export function ExamRunner({
       <div className="grid">
         <div className="card result-summary">
           <span className="kicker">Result</span>
-          {guided && mode === "quick" ? (
+          {stateCode === "CT" ? (
+            <>
+              <h2 ref={resultHeadingRef} tabIndex={-1}>{correct} of {questions.length} correct</h2>
+              <p className="lede">Your Connecticut practice result.</p>
+              <CtResultNext correct={correct} total={questions.length}
+                missedTopics={[...topicAcc.entries()].filter(([, value]) => value.right < value.total).map(([id, value]) => ({ id, label: value.label }))}
+                attemptId={mode === "quick" || signedIn ? examSaveId.current || "" : ""} />
+            </>
+          ) : guided && mode === "quick" ? (
             <>
               <h2>{correct} of {questions.length} correct</h2>
               {topicPractice ? (
@@ -879,7 +911,7 @@ export function ExamRunner({
               <li key={s}>{s}</li>
             ))}
           </ul>
-          {topicPractice && mode === "quick" ? null : guided ? (
+          {stateCode === "CT" || (topicPractice && mode === "quick") ? null : guided ? (
             <div className="result-links">
               {topicPractice ? <Link href={mistakesHref}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" href={mistakesHref} stateCode={stateCode} />}
               <Link href={site.study}>Review Study Guide</Link>
@@ -902,7 +934,7 @@ export function ExamRunner({
             </div>
           )}
           <AccountInvite />
-          {onCa ? (
+          {stateCode === "CT" ? <p className="notice">Free learning uses the Connecticut free question pool.</p> : onCa ? (
             <p className="notice">This is study feedback for California. Forty items are scored. This raw count is not an official scaled score.</p>
           ) : onHi ? (
             <p className="notice">This is study feedback for Hawaii. This score is this site's practice result, not an official exam result.</p>
@@ -1037,7 +1069,7 @@ export function ExamRunner({
           {restored ? " · Resumed" : ""}
         </span>
         <span className="row">
-          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{onHi && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
+          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{(onHi || stateCode === "CT") && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
           <button className="btn btn-ghost" type="button" onClick={startNew}>Start new</button>
         </span>
       </div>
@@ -1126,6 +1158,7 @@ export function QuestionBlock({
           )}
         </div>
       </div>
+      {q.state === "CT" ? <p><a href={ctSources.manual} target="_blank" rel="noopener noreferrer">Open Official Handbook</a></p> : null}
       {q.scenario_text ? <p className="notice">{q.scenario_text}</p> : null}
       <h3 className="quiz-heading quiz-stem" ref={headingRef} tabIndex={-1}>
         {marked ? <span className="flagged-note"><FlagIcon /> Flagged</span> : null}
@@ -1135,8 +1168,8 @@ export function QuestionBlock({
         <div className="explain">
           <strong>Pro question</strong>
           <p>This item is in the full question bank. Unlock Pro to turn weak topics into passing scores.</p>
-          <Link className="btn btn-primary" href={paths.pricing} data-upgrade-source="locked_question">
-            Unlock Pro
+          <Link className="btn btn-primary" href={q.state === "CT" ? "/connecticut/practice/?mode=quick" : paths.pricing} data-upgrade-source="locked_question">
+            {q.state === "CT" ? "Start Free Quick 10" : "Unlock Pro"}
           </Link>
         </div>
       ) : null}

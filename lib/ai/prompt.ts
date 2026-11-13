@@ -23,7 +23,7 @@ const MODE_GUIDE: Record<TutorMode, string> = {
 };
 
 export function buildTutorInstructions(mode: TutorMode, pinCite: string, state: StateCode = "AZ") {
-  const name = { AZ: "Arizona", CA: "California", HI: "Hawaii", NY: "New York", PA: "Pennsylvania", LA: "Louisiana" }[state];
+  const name = { AZ: "Arizona", CA: "California", HI: "Hawaii", NY: "New York", PA: "Pennsylvania", LA: "Louisiana", CT: "Connecticut" }[state];
   return [
     `You are a ${name} notary exam-prep tutor.`,
     "Use only the supplied verified context.",
