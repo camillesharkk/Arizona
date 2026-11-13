@@ -701,7 +701,8 @@ export function ExamRunner({
       }),
     }));
     persistSitting({ examId: examSaveId.current, scored: localSaved.current });
-    const outcomes = await Promise.all(saves.map((save) => settleSave(save)));
+    // Quick practice saves each answer before the result, so rapid answers can queue.
+    const outcomes = await Promise.all(saves.map((save) => settleSave(save, mode === "quick" ? 60000 : 20000)));
     if (outcomes.some((outcome) => outcome === "fail")) {
       finishOnce.current = false;
       setSubmitting(false);

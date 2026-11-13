@@ -27,7 +27,23 @@ The current Vercel database value is sensitive. A broad environment retrieval wa
 - Shared Guide DOM/progress checks passed for AZ/NY/PA/LA/CT/NC/IN. Independent code review found no remaining P1/P2 in the final public-release changes after the IN usage fix.
 - Browser widths emulate mobile and desktop. Physical phones, a real payment and a live payment webhook remain outside the completed checks. Indiana's full-Code/full-guide source-access limitation is detailed in `in-content-source-audit.md`.
 
-Git publication, matching Vercel production deployment and public-domain acceptance are recorded in the final production acceptance section when observed.
+## Initial production acceptance
+
+Release commit `29a5a78d4debbf8459a5abc442597fa9f5bc27ab` was ordinarily pushed to `main`. Vercel deployment `dpl_BQ9UMcCCNLqhhtB4dLaJWxzuCe7y` was verified READY with the production alias `arizonanotaryprep.com` and the matching Git SHA at `2026-11-13T18:09:49Z`.
+
+Public-domain HTTP acceptance completed at `2026-11-13T18:20:22Z`. All nine directory entries and homes, eighteen CT/NC/IN core pages, indexing/canonical/sitemap checks and nine combinations of the dedicated free/active-Pro/expired accounts with the three new states passed. Checks covered free/paid boundaries, cross-state/version rejection, answer/full-save idempotency, favorites, state-isolated Daily Study/settings, CT40/NC60/IN30 complete submissions and Tutor plan limits.
+
+Three unpaid Paddle checkouts were created, one from each new state's source, using the existing account product. Repeating each quote returned the same transaction. No payment was submitted. Transactions are `txn_01m7b1wv92hb5vqqkctc85mzen` (CT), `txn_01m7b1ypqx2376vknyysz76v3t` (NC) and `txn_01m7b20rajg1kted0dw86ew2r3` (IN). Evidence is `.tools/all-state-production-http.json`.
+
+Six real-domain guest-browser cases passed, covering CT/NC/IN at 1440px/390px with Quick10, Guide persistence, result refresh, pricing and overflow checks. The 390px IN case also completed an anonymous 30-question sitting and verified its durable production result after refresh. Browser runtime errors were zero. Evidence is `.tools/all-state-production-browser-guest.json`.
+
+Runtime error/fatal and HTTP5xx queries for this deployment returned zero records in the sampled ten-minute windows, most recently checked at `2026-11-13T18:18:50Z`, with no excluded log intervals.
+
+## Quick-save follow-up
+
+Rapid automated answers on the live Pro account exposed the existing 20-second Quick result-save timeout while the preceding per-answer writes were still queued. The server returned no corresponding API error responses. The result stayed on the last question with the retry message and preserved answers.
+
+The shared Quick result wait now allows 60 seconds using the existing `settleSave` timeout parameter. Its retry IDs and answer storage remain preserved. The final UI patch also exposes the IN Tutor upgrade link and removes repeated shared-Pro wording from pricing. A fresh optimized production build passed. The same injected 22-second result-response delay reproduced the old early failure and passed on the patched build, showing the result and surviving refresh with exactly one result-save request. Local evidence is `.tools/quick-save-delay.log`. CT/NC/IN exhausted-Tutor browser checks also passed. Independent review found no P1/P2 in these follow-ups.
 
 ## Earlier protected checkpoint, 2026-11-13
 
