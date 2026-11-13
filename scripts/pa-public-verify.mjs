@@ -7,9 +7,9 @@ process.env.STATE_PREVIEW = '1';
 const load = testLoader();
 const { productionStateBlocked, prepPageEnabled } = load('lib/state-release.ts');
 assert.equal(productionStateBlocked('PA'), false, 'PA public learning APIs must be enabled');
-assert.equal(productionStateBlocked('LA'), true, 'LA learning stays restricted');
+assert.equal(productionStateBlocked('LA'), false, 'LA candidate enables learning');
 assert.equal(prepPageEnabled('pennsylvania'), true);
-assert.equal(prepPageEnabled('louisiana'), false);
+assert.equal(prepPageEnabled('louisiana'), true);
 const { switchStateHref } = load('lib/ca-site.ts');
 assert.equal(switchStateHref('/new-york/practice/?mode=full', 'PA'), '/pennsylvania/practice/');
 assert.equal(switchStateHref('/pennsylvania/practice/', 'NY'), '/new-york/practice/');
@@ -19,7 +19,7 @@ const { stateByCode } = load('lib/states.ts');
 assert.equal(prepPacks.PA.available, true);
 assert.equal(stateByCode('PA').homePath, '/pennsylvania/');
 assert.equal(stateByCode('PA').status, 'available');
-assert.equal(stateByCode('LA').status, 'comingSoon');
+assert.equal(stateByCode('LA').status, 'available');
 for (const [key, path] of Object.entries(prepPacks.PA.paths)) {
   assert.ok(key === 'login' || path.startsWith('/pennsylvania/'), key + ' must use the public PA path');
 }
@@ -30,12 +30,12 @@ assert.doesNotMatch(JSON.stringify([paArticles, paReferenceArticles]), /\/previe
 const sitemap = load('app/sitemap.ts').default().map(entry => new URL(entry.url).pathname);
 for (const path of [prepPacks.PA.paths.home, prepPacks.PA.paths.practice, prepPacks.PA.paths.pricing, ...paArticles.map(article => article.path), ...Object.values(paReferenceArticles).map(article => article.path)]) assert.ok(sitemap.includes(path), path + ' missing from sitemap');
 assert.ok(sitemap.includes('/new-york/'));
-assert.ok(!sitemap.some(path => path.startsWith('/preview/') || path.startsWith('/louisiana/')));
+assert.ok(!sitemap.some(path => path.startsWith('/preview/')));
 for (const route of ['', 'practice/', 'questions/', 'study-guide/', 'study-cards/', 'wrong-answers/', 'daily-study/', 'resources/', 'exam-guide/', 'passing-score/', 'laws/', 'become-a-notary/', 'pricing/']) {
   const file = 'app/pennsylvania/' + route + 'page.tsx';
   assert.ok(fs.existsSync(file), file + ' missing');
 }
-console.log('PA public routes, state entry, learning gates, article links and sitemap passed; LA stays restricted');
+console.log('PA public routes, state entry, learning gates, article links and sitemap passed; LA candidate retains public PA');
 
 // Render the actual selector with its menu open, without browser globals or effects.
 const menuLoad = testLoader({
@@ -50,6 +50,6 @@ function elements(node) {
 }
 const nyMenu = elements(StateMenu({ pathname: '/new-york/practice/', current: 'NY' }));
 assert.ok(nyMenu.some(node => node.props?.role === 'menuitem' && node.props.href === '/pennsylvania/practice/'));
-assert.ok(!nyMenu.some(node => node.props?.href?.startsWith('/louisiana/')));
+assert.ok(nyMenu.some(node => node.props?.href === '/louisiana/practice/'));
 const paMenu = elements(StateMenu({ pathname: '/pennsylvania/practice/', current: 'PA' }));
 assert.ok(paMenu.some(node => node.props?.role === 'menuitem' && node.props.href === '/new-york/practice/'));

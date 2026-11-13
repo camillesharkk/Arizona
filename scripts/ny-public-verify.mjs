@@ -30,14 +30,14 @@ try {
   const { stateByCode, availableStates } = load("lib/states.ts");
   assert.equal(stateByCode("NY").status, "available");
   assert.equal(stateByCode("NY").homePath, "/new-york/");
-  assert.deepEqual(Array.from(availableStates(), state => state.code).sort(), ["AZ", "CA", "HI", "NY", "PA"]);
+  assert.deepEqual(Array.from(availableStates(), state => state.code).sort(), ["AZ", "CA", "HI", "LA", "NY", "PA"]);
   const { productionStateBlocked } = load("lib/state-release.ts");
   assert.equal(productionStateBlocked("NY"), false);
-  for (const state of ["LA"]) assert.equal(productionStateBlocked(state), true);
+  for (const state of ["LA"]) assert.equal(productionStateBlocked(state), false);
   const { prepPacks } = load("lib/prep-pack.ts");
   assert.equal(prepPacks.NY.available, true);
   for (const [key, value] of Object.entries(prepPacks.NY.paths)) if (key !== "login") assert.ok(value.startsWith("/new-york/"), key);
-  for (const code of ["LA"]) assert.equal(prepPacks[code].available, false);
+  for (const code of ["LA"]) assert.equal(prepPacks[code].available, true);
   const { switchStateHref } = load("lib/ca-site.ts");
   assert.equal(switchStateHref("/california/practice/", "NY"), "/new-york/practice/");
   assert.equal(switchStateHref("/new-york/study-cards/", "HI"), "/hawaii/study-cards/");
@@ -61,8 +61,8 @@ try {
   for (const feature of pages.filter(feature => !["daily-study", "wrong-answers"].includes(feature))) assert.ok(urls.includes(`/new-york/${feature ? feature + "/" : ""}`), feature);
   for (const article of nyArticles) assert.ok(urls.includes(article.path), article.path);
   assert.ok(!urls.some(url => url.startsWith("/preview/")));
-  assert.ok(!urls.some(url => /^\/louisiana\//.test(url)));
-  console.log("NY public routing, state switching, canonical metadata, internal links, sitemap and LA production isolation passed.");
+  assert.ok(urls.some(url => /^\/louisiana\//.test(url)));
+  console.log("NY public routing, state switching, canonical metadata, internal links, sitemap and LA public integration passed.");
 } finally {
   if (previous === undefined) delete process.env.VERCEL_ENV; else process.env.VERCEL_ENV = previous;
 }

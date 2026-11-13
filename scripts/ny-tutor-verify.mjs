@@ -85,9 +85,10 @@ try {
   const calls = providerCalls;
   assert.equal((await post(payload(free))).status, 200);
   assert.equal(providerCalls, calls + 1);
-  assert.equal((await post({ ...payload(free), questionId: 'la-001', state: 'LA' })).status, 404);
-  assert.equal(providerCalls, calls + 1);
-  console.log('NY Tutor boundary checks passed with simulated provider responses, shuffled choices, current entitlements, failure attribution, NY production access and LA denial.');
+  const laFree = load('data/la-content.ts').publishedLaQuestions().find(question => question.is_free);
+  assert.equal((await post(payload(laFree))).status, 200);
+  assert.equal(providerCalls, calls + 2);
+  console.log('NY Tutor boundary checks passed with simulated provider responses, shuffled choices, current entitlements, failure attribution, NY production access and LA candidate access.');
 } finally {
   for (const [key, value] of [['AI_PROVIDER', before.provider], ['DEEPSEEK_API_KEY', before.key], ['VERCEL_ENV', before.vercel]]) {
     if (value === undefined) delete process.env[key]; else process.env[key] = value;

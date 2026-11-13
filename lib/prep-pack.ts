@@ -4,7 +4,7 @@ import { paCards, paQuestionCounts, paTopics, pickPaFullExam, pickPaQuickExam, p
 import { shuffle } from "@/lib/answer-sequence";
 import { nyPaths } from "./ny-site.ts";
 import { paPaths } from "./pa-site.ts";
-import { paths as sharedPaths } from "@/lib/paths";
+import { laPaths } from "./la-site.ts";
 import type { Question, StateCode } from "@/lib/types";
 
 export type PrepCode = "NY" | "PA" | "LA";
@@ -25,26 +25,6 @@ export type PrepPaths = {
   pricing: string;
   login: string;
 };
-
-function paths(slug: string): PrepPaths {
-  const root = `/preview/${slug}`;
-  return {
-    home: `${root}/`,
-    practice: `${root}/practice/`,
-    questions: `${root}/questions/`,
-    study: `${root}/study-guide/`,
-    studyCards: `${root}/study-cards/`,
-    mistakes: `${root}/wrong-answers/`,
-    daily: `${root}/daily-study/`,
-    resources: `${root}/resources/`,
-    examGuide: `${root}/exam-guide/`,
-    passingScore: `${root}/passing-score/`,
-    laws: `${root}/laws/`,
-    become: `${root}/become-a-notary/`,
-    pricing: `${root}/pricing/`,
-    login: sharedPaths.login,
-  };
-}
 
 export type PrepPack = {
   code: PrepCode;
@@ -139,8 +119,8 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     code: "LA",
     name: "Louisiana",
     slug: "louisiana",
-    available: false,
-    paths: paths("louisiana"),
+    available: true,
+    paths: laPaths,
     topics: laTopics,
     questions: publishedLaQuestions,
     counts: () => {

@@ -1,10 +1,11 @@
 import { nyPaths, isNewYorkPath } from "./ny-site.ts";
 import { paPaths, isPennsylvaniaPath } from "./pa-site.ts";
+import { laPaths, isLouisianaPath } from "./la-site.ts";
 import { hiPaths, isHawaiiPath } from "./hi-site.ts";
 import { paths } from "./paths.ts";
 
 /** Live states on arizonanotaryprep.com. Texas stays on its own app. */
-export const LIVE_STATES = ["AZ", "CA", "HI", "NY", "PA"] as const;
+export const LIVE_STATES = ["AZ", "CA", "HI", "NY", "PA", "LA"] as const;
 export type LiveState = (typeof LIVE_STATES)[number];
 
 export const caPaths = {
@@ -67,6 +68,7 @@ function switchBundle(code: LiveState) {
   if (code === "HI") return hiPaths;
   if (code === "NY") return nyPaths;
   if (code === "PA") return paPaths;
+  if (code === "LA") return laPaths;
   return {
     practice: paths.practice,
     questions: paths.questions,
@@ -87,7 +89,7 @@ function switchBundle(code: LiveState) {
 /** Matching page in another live state. Drops topic ids, question ids, and exam query. */
 export function switchStateHref(pathname: string, target: LiveState) {
   const path = pathname.split("?")[0] || "/";
-  const current: LiveState = isPennsylvaniaPath(path) ? "PA" : isNewYorkPath(path) ? "NY" : isHawaiiPath(path) ? "HI" : isCaliforniaPath(path) ? "CA" : "AZ";
+  const current: LiveState = isLouisianaPath(path) ? "LA" : isPennsylvaniaPath(path) ? "PA" : isNewYorkPath(path) ? "NY" : isHawaiiPath(path) ? "HI" : isCaliforniaPath(path) ? "CA" : "AZ";
   if (current === target) return path.endsWith("/") ? path : `${path}/`;
   const here = switchBundle(current);
   const there = switchBundle(target);

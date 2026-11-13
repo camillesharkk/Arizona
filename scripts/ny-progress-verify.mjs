@@ -20,7 +20,7 @@ function load(file) {
   const require = name => {
     if (name === '@/lib/store') return { getStore: async () => store };
     if (name === '@/lib/session') return { getSession: async () => ({ id: 'isolated-test' }) };
-    if (name === '@/lib/entitlements') return { canAccessQuestion: async (_id, q) => q.is_free || allowPro };
+    if (name === '@/lib/entitlements') return { ...load('lib/entitlements.ts'), canAccessQuestion: async (_id, q) => q.is_free || allowPro, hasArizonaPro: async () => allowPro };
     if (name === '@/lib/commerce/usage') return { recordProUsage: async () => undefined };
     // Use the actual exam snapshot persistence for NY historical records.
     if (name === '@/lib/account') return { currentEmail: () => null };
@@ -101,19 +101,19 @@ process.env.VERCEL_ENV = 'production';
 try {
   const { productionStateBlocked } = load('lib/state-release.ts');
   for (const state of ['LA']) {
-    assert.equal(productionStateBlocked(state), true);
-    assert.equal((await POST(request({kind:'exam',state,mode:'quick',score:0,correctCount:0,total:10}))).status,404);
+    assert.equal(productionStateBlocked(state), false);
+    assert.equal((await POST(request({kind:'exam',state,mode:'quick',score:0,correctCount:0,total:10}))).status,200);
   }
   for (const state of ['AZ','CA','HI','NY','PA']) assert.equal(productionStateBlocked(state),false);
   assert.equal((await POST(request(payload))).status,200);
   assert.equal((await POST(request({...payload,state:'AZ'}))).status,400);
   const { POST: mutateMistake, GET: readMistakes } = load('app/api/mistakes/route.ts');
-  assert.equal((await mutateMistake(request({questionId:'la-001',favorited:true}))).status,404);
-  assert.equal((await readMistakes(new Request('http://localhost/api/mistakes/?state=LA'))).status,404);
+  assert.equal((await mutateMistake(request({questionId:'la-001',favorited:true}))).status,200);
+  assert.equal((await readMistakes(new Request('http://localhost/api/mistakes/?state=LA'))).status,200);
   const { GET: daily, POST: mutateDaily } = load('app/api/daily-study/route.ts');
-  assert.equal((await daily(new Request('http://localhost/api/daily-study/?state=LA'))).status,404);
-  assert.equal((await mutateDaily(new Request('http://localhost/api/daily-study/?state=LA',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'more',attemptId:'release-test-001'})}))).status,404);
-  console.log('Production: LA learning rejected; NY answers and live states allowed; spoofed answer state denied');
+  assert.equal((await daily(new Request('http://localhost/api/daily-study/?state=LA'))).status,200);
+  assert.equal((await mutateDaily(new Request('http://localhost/api/daily-study/?state=LA',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'more',attemptId:'release-test-001'})}))).status,200);
+  console.log('Production: LA candidate learning allowed; NY answers and live states allowed; spoofed answer state denied');
 } finally {
   if (previousVercelEnv === undefined) delete process.env.VERCEL_ENV;
   else process.env.VERCEL_ENV = previousVercelEnv;
@@ -173,7 +173,8 @@ const exams = await store.listExams('isolated-test');
 assert.equal(exams.find(exam => exam.id === examId).mode, 'ny-quick');
 const historic = recentCaExams(exams, snapshot, [], 'NY');
 assert.deepEqual(Array.from(historic[0].wrongIds), ['ny-001']);
-const perfect = recentCaExams([{ ...exams[0], id: 'perfect' }], { perfect: { wrong: 0, skipped: 0, wrongIds: [] } }, [{ questionId: 'ny-unrelated', state: 'NY', wrongCount: 1, mastered: false, nextReviewAt: null, lastWrongAt: exams[0].at }], 'NY');
+const savedNyExam = exams.find(exam => exam.id === examId);
+const perfect = recentCaExams([{ ...savedNyExam, id: 'perfect' }], { perfect: { wrong: 0, skipped: 0, wrongIds: [] } }, [{ questionId: 'ny-unrelated', state: 'NY', wrongCount: 1, mastered: false, nextReviewAt: null, lastWrongAt: savedNyExam.at }], 'NY');
 assert.equal(perfect[0].wrongIds.length, 0);
 console.log('NY historical exams: state attribution, saved wrong-ID snapshot and empty snapshot preserved independently of current stats');
 if (process.argv.includes('--seed-preview')) {

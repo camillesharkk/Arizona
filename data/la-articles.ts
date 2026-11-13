@@ -1,7 +1,7 @@
 import type { StateArticle } from "@/lib/state-articles";
 import { laCodeUrl, type laCivilCode } from "./la-scenarios.ts";
 
-const practice = "/preview/louisiana/practice/?mode=full";
+const practice = "/louisiana/practice/?mode=full";
 const exam = "https://www.sos.la.gov/notary/get-exam-information";
 const apply = "https://www.sos.la.gov/notary/application-process";
 const faq = "https://www.sos.la.gov/notary/frequently-asked-questions";
@@ -14,14 +14,14 @@ function section(heading: string, body: string, article: keyof typeof laCivilCod
 
 function item(slug: string, title: string, description: string, lede: string, sections: Section[]): StateArticle {
   return {
-    id: `la-article-${slug}`, state: "LA", slug, path: `/preview/louisiana/guides/${slug}/`,
+    id: `la-article-${slug}`, state: "LA", slug, path: `/louisiana/guides/${slug}/`,
     keyword: `louisiana notary ${slug.replaceAll("-", " ")}`, intent: description,
     title, description, h1: title, kicker: "Louisiana notarial practice", lede,
     checked: "Current Louisiana Legislature consolidated Civil Code pages opened and reviewed November 12, 2026. These original statutory exercises supplement the Secretary of State's official study guide.",
     updated: "2026-11-12", sections,
-    ledeCta: { href: "/preview/louisiana/study-cards/", label: "Review the Louisiana study cards", placement: "lede", targetMode: "guide" },
+    ledeCta: { href: "/louisiana/study-cards/", label: "Review the Louisiana study cards", placement: "lede", targetMode: "guide" },
     endCta: { href: practice, label: "Start the 40-item comprehensive practice", placement: "end", targetMode: "full" },
-    related: [{ href: "/preview/louisiana/laws/", label: "Official laws and source notes" }, { href: "/preview/louisiana/exam-guide/", label: "Louisiana examination guide" }],
+    related: [{ href: "/louisiana/laws/", label: "Official laws and source notes" }, { href: "/louisiana/exam-guide/", label: "Louisiana examination guide" }],
   };
 }
 
@@ -100,7 +100,7 @@ export const laArticles: StateArticle[] = [
 ];
 
 function reference(slug: string, title: string, lede: string, sections: Section[]): StateArticle {
-  return { ...item(slug, title, lede, lede, sections), path: `/preview/louisiana/${slug}/` };
+  return { ...item(slug, title, lede, lede, sections), path: `/louisiana/${slug}/` };
 }
 
 export const laReferenceArticles: Record<string, StateArticle> = {

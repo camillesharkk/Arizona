@@ -1,11 +1,10 @@
-/** Unreleased packs remain unavailable on production, even if preview is enabled. */
-export function productionStateBlocked(state: unknown): boolean {
-  return process.env.VERCEL_ENV === "production" &&
-    state === "LA";
+/** All configured packs have a public learning route in this release candidate. */
+export function productionStateBlocked(_state: unknown): boolean {
+  return false;
 }
 
-/** Shared page renderers also serve the released pack routes. */
+/** Production middleware continues to reject every /preview/ URL. */
 export function prepPageEnabled(stateSlug: string): boolean {
-  return stateSlug === "new-york" || stateSlug === "pennsylvania" ||
+  return stateSlug === "new-york" || stateSlug === "pennsylvania" || stateSlug === "louisiana" ||
     (process.env.VERCEL_ENV !== "production" && process.env.STATE_PREVIEW === "1");
 }

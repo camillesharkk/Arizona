@@ -39,8 +39,8 @@ process.env.VERCEL_ENV = 'production';
 for (const reference of Object.keys(references)) {
   const route = load(`app/preview/[state]/${reference}/page.tsx`);
   for (const state of ['louisiana']) {
-    await assert.rejects(route.default({ params: Promise.resolve({ state }) }), /not_found/);
-    await assert.rejects(route.generateMetadata({ params: Promise.resolve({ state }) }), /not_found/);
+    assert.ok(await route.default({ params: Promise.resolve({ state }) }));
+    assert.ok(await route.generateMetadata({ params: Promise.resolve({ state }) }));
   }
 }
-console.log(`${states.join('/')} reference routes render registered articles and per-state metadata; public NY wrappers and LA renderer gate preserved; HTTP verification covers preview middleware`);
+console.log(`${states.join('/')} reference routes render registered articles and per-state metadata; public NY wrappers and LA candidate renderer allowed; HTTP verification covers preview middleware`);

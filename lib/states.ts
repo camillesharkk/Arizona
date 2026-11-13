@@ -22,7 +22,7 @@ export const prepStates: PrepState[] = [
   { code: "HI", name: "Hawaii", slug: "hawaii", status: "available", homePath: "/hawaii/", examGroup: "formalExam", developmentProgress: null },
   { code: "IL", name: "Illinois", slug: "illinois", status: "comingSoon", homePath: null, examGroup: "onlineApplicationOrTraining", developmentProgress: 50 },
   { code: "IN", name: "Indiana", slug: "indiana", status: "comingSoon", homePath: null, examGroup: "onlineApplicationOrTraining", developmentProgress: 50 },
-  { code: "LA", name: "Louisiana", slug: "louisiana", status: "comingSoon", homePath: null, examGroup: "formalExam", developmentProgress: 50 },
+  { code: "LA", name: "Louisiana", slug: "louisiana", status: "available", homePath: "/louisiana/", examGroup: "formalExam", developmentProgress: null },
   { code: "ME", name: "Maine", slug: "maine", status: "comingSoon", homePath: null, examGroup: "onlineApplicationOrTraining", developmentProgress: 50 },
   { code: "MD", name: "Maryland", slug: "maryland", status: "comingSoon", homePath: null, examGroup: "onlineApplicationOrTraining", developmentProgress: 50 },
   { code: "MO", name: "Missouri", slug: "missouri", status: "comingSoon", homePath: null, examGroup: "onlineApplicationOrTraining", developmentProgress: 50 },

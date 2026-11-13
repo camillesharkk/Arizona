@@ -45,8 +45,8 @@ for (const slug of ['pennsylvania', 'louisiana', 'new-york']) {
     }
   }
 }
-assert.match(await (await fetch(base + '/louisiana/')).text(), /Under development/);
-assert.equal((await fetch(base + '/louisiana/practice/')).status, 404);
+assert.doesNotMatch(await (await fetch(base + '/louisiana/')).text(), /Under development/);
+assert.equal((await fetch(base + '/louisiana/practice/')).status, 200);
 const rights = [];
 for (const kind of ['free', 'pro', 'expired']) {
   const email = `pa-public-${kind}-${randomUUID()}@example.invalid`;
@@ -64,9 +64,9 @@ for (const kind of ['free', 'pro', 'expired']) {
   assert.ok((await dailyPage.text()).includes('Daily Study'), 'Signed-in daily study renders');
   for (const route of ['/api/mistakes/', '/api/daily-study/', '/api/study-settings/', '/api/ai/tutor/']) {
     assert.equal((await request(route + '?state=PA')).status, 200, route + ' PA');
-    assert.equal((await request(route + '?state=LA')).status, 404, route + ' LA');
+    assert.equal((await request(route + '?state=LA')).status, 200, route + ' LA');
   }
-  assert.equal((await request('/api/progress/', { kind: 'pack-full', state: 'LA' })).status, 404);
+  assert.equal((await request('/api/progress/', { kind: 'pack-full', state: 'LA' })).status, 400);
   const paid = prepPacks.PA.questions().find(question => !question.is_free);
   const paidResponse = await request('/api/progress/', { state: 'PA', questionId: paid.question_id, questionVersion: paid.version, selected: paid.correct_option, attemptId: randomUUID() });
   assert.equal(paidResponse.status, kind === 'pro' ? 200 : 402);
@@ -82,12 +82,12 @@ for (const kind of ['free', 'pro', 'expired']) {
   assert.equal((await repeated.json()).duplicate, true);
   const progress = await (await request('/api/progress/')).json();
   assert.equal(progress.exams.filter(exam => exam.id === input.examId).length, 1);
-  rights.push({ identity: kind, paFull: 200, paidAnswer: paidResponse.status, laLearning: 404, immutableReplay: true });
+  rights.push({ identity: kind, paFull: 200, paidAnswer: paidResponse.status, laLearning: 200, immutableReplay: true });
 }
 const sitemap = await (await fetch(base + '/sitemap.xml')).text();
 assert.match(sitemap, /\/pennsylvania\/practice\//);
 assert.match(sitemap, /\/new-york\/practice\//);
-assert.doesNotMatch(sitemap, /\/preview\/|\/louisiana\//);
-const result = { checkedAt: new Date().toISOString(), pages, rights, previewHtmlAndRsc: 'all blocked', sitemap: 'PA and NY included; LA and preview excluded' };
+assert.doesNotMatch(sitemap, /\/preview\//);
+const result = { checkedAt: new Date().toISOString(), pages, rights, previewHtmlAndRsc: 'all blocked', sitemap: 'PA, LA and NY included; preview excluded' };
 fs.writeFileSync('.tools/pa-public-http-result.json', JSON.stringify(result, null, 2));
 console.log(JSON.stringify(result, null, 2));
