@@ -3,7 +3,7 @@ import { getSession } from "@/lib/session";
 import { hasStatePro } from "@/lib/entitlements";
 import { publishedInQuestions } from "@/data/in-questions";
 import { pageMeta } from "@/lib/seo";
-export const metadata = pageMeta({ title: "Indiana Notary Questions", description: "Practice published original Indiana notary questions by topic.", path: "/indiana/questions/", index: false });
+export const metadata = pageMeta({ title: "Indiana Notary Questions", description: "Practice published original Indiana notary questions by topic.", path: "/indiana/questions/", index: true });
 export default async function Page() {
  const session = await getSession(); const pro = await hasStatePro(session?.id,"IN");
  const questions = publishedInQuestions().filter(q => q.is_free || pro);

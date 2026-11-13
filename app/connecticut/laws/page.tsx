@@ -1,4 +1,4 @@
 import { ctPaths, ctSources } from '@/lib/ct-site';
 import { pageMeta } from '@/lib/seo';
-export const metadata = pageMeta({ title: 'Connecticut Connecticut Rules and Current Sources', description: 'Review C.', path: '/connecticut/laws/', index: false });
+export const metadata = pageMeta({ title: 'Connecticut Connecticut Rules and Current Sources', description: 'Review C.', path: '/connecticut/laws/', index: true });
 export default function Page() { return <main className="wrap hero"><h1>Connecticut Rules and Current Sources</h1><p>Review C.G.S. §§3-94a–3-95b together with current effective amendments. P.A. 26-81 §13 raised the act-fee ceiling to $10 plus mileage capped at the IRS business standard mileage rate, effective July 1, 2026.</p><p><a href={ctSources.manual}>Official Manual</a>{' · '}<a href={ctSources.licensing}>Official Licensing Instructions</a></p><p><a href={ctPaths.become}>First Application Checklist</a>{' · '}<a href={`${ctPaths.practice}?mode=quick`}>Practice With the Handbook</a></p></main>; }

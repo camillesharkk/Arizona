@@ -4,7 +4,7 @@ import { ncQuestionCounts } from "@/data/nc-content";
 import { pageMeta } from "@/lib/seo";
 import { ncPaths } from "@/lib/nc-site";
 
-export const metadata = pageMeta({ title: "North Carolina Notary Prep", description: "Find an approved ordinary-notary course, try a free Quick 10 and review North Carolina notary rules before and after class.", path: ncPaths.home, index: false });
+export const metadata = pageMeta({ title: "North Carolina Notary Prep", description: "Find an approved ordinary-notary course, try a free Quick 10 and review North Carolina notary rules before and after class.", path: ncPaths.home, index: true });
 
 export default function Page() {
   const counts = ncQuestionCounts();

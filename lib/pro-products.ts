@@ -7,6 +7,8 @@ const HISTORICAL_PRO_CODES = new Set([
   SITE_PRO_PRODUCT_CODE,
   "ca_exam_pro_60d",
   "hi_exam_pro_60d",
+  "in_exam_pro_60d",
+  "nc_exam_pro_60d",
 ]);
 
 export function isSiteProProduct(code: string) {

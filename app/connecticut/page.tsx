@@ -3,7 +3,7 @@ import { ctPaths, ctSources } from '@/lib/ct-site';
 import { ctQuestionCounts, ctTopics, ctCards } from '@/data/ct-content';
 import { pageMeta } from '@/lib/seo';
 
-export const metadata = pageMeta({ title: 'Connecticut Notary Prep', description: 'Handbook lookup practice, original Connecticut scenarios and a first-application checklist.', path: ctPaths.home, index: false });
+export const metadata = pageMeta({ title: 'Connecticut Notary Prep', description: 'Handbook lookup practice, original Connecticut scenarios and a first-application checklist.', path: ctPaths.home, index: true });
 export default function Page() {
   const counts = ctQuestionCounts();
   return (

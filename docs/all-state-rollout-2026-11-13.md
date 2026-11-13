@@ -1,4 +1,35 @@
-# All requested states — integrated candidate, 2026-11-13
+# All requested states release, 2026-11-14
+
+## Public release configuration
+
+The user confirmed that CT, NC and IN use the existing account-wide 60-day Pro product. The nine requested states are AZ, CA, HI, NY, PA, LA, CT, IN and NC. All nine now have available catalog entries in this release. CT/NC/IN public routes, indexable metadata, canonical URLs, sitemap entries and the shared pricing/checkout entry points are enabled. Production `/preview/` remains private.
+
+New purchases from every state use `az_exam_pro_60d` with state `ALL`. Recognized historical CT/IN/NC and AZ/CA/HI grants participate in shared account access. Existing expiry, revocation/refund status, per-order deduplication and queued 60-day renewal behavior apply. Indiana paid answers, extra full practices and Tutor requests beyond the free allowance now record the serving shared order's Pro usage.
+
+The earlier automatic-review rejection was revisited after the user's explicit Pro choice and fresh verification. The isolated public-activation operation was approved and completed. The earlier protected-checkpoint section below is retained as history.
+
+## Production database migration
+
+The current Vercel database value is sensitive. A broad environment retrieval was rejected by automatic review. Production binding was instead established through one unique normal answer request on the designated existing test account and a read-only lookup of that exact attempt in Neon.
+
+- Project `crimson-mouse-71453887`, production branch `br-raspy-fog-a76oj2y2`, database `neondb`, endpoint `ep-twilight-block-a7q49u9i.ap-southeast-2.aws.neon.tech`.
+- Correlation attempt `state-launch-binding-e26d650f-cc5c-4a16-9f80-2da9715c6f66`, absent before the production request and present exactly once afterward.
+- Recovery branch `br-curly-morning-a7rpqs4x`, named `all-states-pre017-20261114`, parent LSN `0/490FCA8`, created `2026-11-13T17:55:41Z`. Its independent read-only endpoint was connected and the original sixteen migrations, test correlation and pre-migration counts verified.
+- Applied only additive `017_guest_exams.sql` and its migration record in one transaction with lock/statement timeouts. Migration SHA-256 `402ebf89bb11c1c31871dbef65638e42b6c297f9a581e5c1fca41786b4f8f1f4`.
+- Verified all seventeen migration records and the exact six new columns. Existing counts before/after were users 22, question stats 1320, exams 55 and entitlements 8. Local evidence is `.tools/production-context.json` and `.tools/migration017-result.json`.
+
+## Fresh public-configuration verification
+
+- Optimized Next.js production build passed with `VERCEL_ENV=production`, preview flags disabled and isolated local file storage. Build evidence is `.tools/all-state-public-build.log`.
+- All 24 browser cases passed again against this public build, covering CT/NC/IN at 1440px and 390px with guest/free/Pro/expired identities. Quick10, full practice CT40/NC60/IN30, unique questions, read/unread Guide persistence, refresh, guest sign-in import and overflow passed with zero browser runtime errors. Complete matrix is `.tools/all-state-public-browser-result.json`.
+- HTTP acceptance passed for nine public directory entries, eighteen new-state pages with indexing/canonical/sitemap checks and nine account-state combinations. Paid access, duplicate answer/full save, favorites, state isolation, Daily Study, settings and Tutor-plan boundaries passed. Evidence is `.tools/all-state-public-http.json`.
+- All-state Pro, release catalog, CT content/rights, NC integration, account-read, IN handlers, five integration regressions and the new IN Pro-use regression passed. Existing AZ question/quiz, commerce/Paddle and memory/file/PostgreSQL complete-exam checks passed. Warm PGlite AZ/CA/HI/NY/PA/LA/CT full submissions retain atomic save and retry behavior.
+- Shared Guide DOM/progress checks passed for AZ/NY/PA/LA/CT/NC/IN. Independent code review found no remaining P1/P2 in the final public-release changes after the IN usage fix.
+- Browser widths emulate mobile and desktop. Physical phones, a real payment and a live payment webhook remain outside the completed checks. Indiana's full-Code/full-guide source-access limitation is detailed in `in-content-source-audit.md`.
+
+Git publication, matching Vercel production deployment and public-domain acceptance are recorded in the final production acceptance section when observed.
+
+## Earlier protected checkpoint, 2026-11-13
 
 ## Scope and current production
 

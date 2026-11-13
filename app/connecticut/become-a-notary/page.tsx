@@ -1,7 +1,7 @@
 import { ctPaths, ctSources, CT_CHECKED_ON } from '@/lib/ct-site';
 import { pageMeta } from '@/lib/seo';
 
-export const metadata = pageMeta({ title: 'Connecticut First Application Checklist', description: 'Prepare the required forms, complete the eLicense application examination and record your appointment after approval.', path: ctPaths.become, index: false });
+export const metadata = pageMeta({ title: 'Connecticut First Application Checklist', description: 'Prepare the required forms, complete the eLicense application examination and record your appointment after approval.', path: ctPaths.become, index: true });
 const steps = [
   { title: 'Check eligibility and read the current manual', body: 'Be at least 18 and either reside in Connecticut or have your principal place of business in Connecticut at application and appointment. Read the Secretary’s current manual, Rev. 2026-1. Keep your residential address and valid email ready. A nonresident also supplies the principal Connecticut business address.', href: ctSources.manual, label: 'Read Official Manual', source: 'Manual §§2.1–2.2 and C.G.S. §3-94b' },
   { title: 'Prepare the Jurat and Writing Sample', body: 'Complete the writing sample in your own handwriting. Subscribe and swear to the jurat before a person authorized to administer an oath, and have the jurat fully completed. Prepare the completed document for upload in eLicense.', href: ctSources.jurat, label: 'Open Jurat and Writing Sample', source: 'Current licensing and official forms pages' },

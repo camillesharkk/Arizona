@@ -25,7 +25,7 @@ function stateHref(pathname: string, code: string) {
 
 export function StateMenu({ pathname, current, indianaPreview = false }: { pathname: string; current: LiveCode | null; indianaPreview?: boolean }) {
   const states = availableStates();
-  if (indianaPreview) { const indiana = stateByCode("IN"); if (indiana) states.push({ ...indiana, status: "available", homePath: "/indiana/" }); }
+  if (indianaPreview && !states.some(state => state.code === "IN")) { const indiana = stateByCode("IN"); if (indiana) states.push({ ...indiana, status: "available", homePath: "/indiana/" }); }
   const currentName = current ? stateByCode(current)?.name : "";
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);

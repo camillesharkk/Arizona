@@ -7,16 +7,8 @@ import { readSessionToken, SESSION_COOKIE } from "@/lib/session-token";
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  if ((path === "/connecticut" || path.startsWith("/connecticut/")) &&
-      (process.env.VERCEL_ENV === "production" || process.env.NEXT_PUBLIC_CT_PREVIEW !== "1")) {
-    return new NextResponse("Not found", { status: 404 });
-  }
-  if (productionStateBlocked("IN") && (path === "/indiana" || path.startsWith("/indiana/"))) return new NextResponse("Not found", { status: 404 });
   // Deny before rendering (including RSC requests), not merely via noindex or links.
   if (process.env.VERCEL_ENV === "production" && (path === "/preview" || path.startsWith("/preview/"))) {
-    return new NextResponse("Not found", { status: 404 });
-  }
-  if (process.env.VERCEL_ENV === "production" && (path === "/north-carolina" || path.startsWith("/north-carolina/"))) {
     return new NextResponse("Not found", { status: 404 });
   }
   if (!productionStateBlocked("IN") && (path === "/preview/indiana" || path.startsWith("/preview/indiana/"))) { const url = request.nextUrl.clone(); url.pathname = path.replace("/preview/indiana", "/indiana"); return NextResponse.redirect(url); }

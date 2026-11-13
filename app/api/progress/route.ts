@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     try {
       const { proUsage, ...result } = await savePackFullSubmission(await getStore(), session.id, { ...full.data, state });
       // Commerce uses its existing client after the learning transaction has committed.
-      if (proUsage && state !== "IN") await recordProUsage(session.id, proUsage.featureCode, proUsage, state);
+      if (proUsage) await recordProUsage(session.id, proUsage.featureCode, proUsage, state);
       return NextResponse.json(result);
     } catch (error) {
       const code = error instanceof Error ? error.message : "";
@@ -130,7 +130,7 @@ export async function POST(req: Request) {
     timeZone: parsed.data.timeZone,
   });
   if (!stat) return NextResponse.json({ ok: true, duplicate: true, correct });
-  if (!q.is_free && q.state !== "IN") {
+  if (!q.is_free) {
     await recordProUsage(session.id, "pro_question", undefined, q.state);
   }
   return NextResponse.json({ ok: true, correct, stat: toClientStat(stat) });

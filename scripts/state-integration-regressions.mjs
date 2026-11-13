@@ -11,11 +11,11 @@ await check('Three Indiana grants extend through 180 days',async()=>{
 const user=await store.createUser({email:randomUUID()+'@example.invalid',passwordHash:'isolated',name:null});const grant=load('lib/entitlements.ts').grantStatePro60d;const rows=[];
 for(let i=0;i<3;i++)rows.push((await grant({userId:user.id,state:'IN',provider:'mock',providerOrderId:randomUUID()})).entitlement);
 assert.ok(Date.parse(rows[2].expiresAt)-Date.parse(rows[0].startsAt)>=180*86400000-1000,'Third renewal must not overlap the second');});
-await check('CT usage does not mark AZ-only purchase used',async()=>{
+await check('Global Pro usage attributes serving shared orders',async()=>{
 const user=await store.createUser({email:randomUUID()+'@example.invalid',passwordHash:'isolated',name:null});const now=Date.now();
 const create=state=>store.insertEntitlement({userId:user.id,productCode:'az_exam_pro_60d',state,status:'active',startsAt:new Date(now-86400000).toISOString(),expiresAt:new Date(now+86400000).toISOString(),provider:'mock',providerOrderId:randomUUID(),providerCustomerId:null});const ct=await create('CT'),az=await create('AZ');
-await load('lib/commerce/usage.ts').recordProUsage(user.id,'pro_question',undefined,'CT');assert.deepEqual(Array.from(used),[ct.id]);
-await load('lib/commerce/usage.ts').recordProUsage(user.id,'pro_question',undefined,'AZ');assert.deepEqual(Array.from(used),[az.id]);});
+await load('lib/commerce/usage.ts').recordProUsage(user.id,'pro_question',undefined,'CT');assert.deepEqual(Array.from(used).sort(),[ct.id,az.id].sort());
+await load('lib/commerce/usage.ts').recordProUsage(user.id,'pro_question',undefined,'AZ');assert.deepEqual(Array.from(used).sort(),[ct.id,az.id].sort());});
 await check('Completed Indiana guest sitting imports unchanged and idempotently after login',async()=>{
 session=null;const route=load('app/api/indiana/sitting/route.ts');const start=await (await route.POST(post({action:'start',examId:randomUUID()}))).json();assert.equal(start.questions.length,30);
 const questions=start.questions.map((q,i)=>({questionId:q.question_id,questionVersion:q.version,selected:i<2?['A','B','C','D'].find(x=>x!==q.correct_option):q.correct_option}));

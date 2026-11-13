@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {testLoader} from './pack-test-utils.mjs';
 const load=testLoader();
-const publicMode=process.argv.includes('--public');
+const publicMode=!process.argv.includes('--protected');
 const states=['AZ','CA','HI','NY','PA','LA','CT','NC','IN'];
 const catalog=load('lib/states.ts');
 assert.deepEqual(Array.from(catalog.availableStates(),s=>s.code).sort(),(publicMode ? [...states] : ['AZ','CA','HI','NY','PA','LA']).sort(),'Public catalog must match the selected release mode');

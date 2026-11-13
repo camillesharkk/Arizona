@@ -17,6 +17,7 @@ import { examState } from "@/lib/ca-daily-shape";
 import { hiPaths } from "@/lib/hi-site";
 import { recoverPendingPurchase, type AnalyticsPaidOrder } from "@/lib/analytics";
 import { syncGuestProgress } from "@/lib/ca-sync";
+import { clientStatePro } from "@/lib/state-pro";
 
 const ACCESS_POLL_MS = 1000;
 const ACCESS_POLL_MAX = 10;
@@ -54,10 +55,7 @@ type AccessPayload = {
 };
 
 function proForState(row: { arizonaPro?: boolean; californiaPro?: boolean; hawaiiPro?: boolean; ncPro?: boolean; connecticutPro?: boolean; indianaPro?: boolean } | null | undefined, state: string) {
-  if (state === "IN") return Boolean(row?.indianaPro);
-  if (state === "CT") return Boolean(row?.connecticutPro);
-  if (state === "NC") return Boolean(row?.ncPro);
-  return Boolean(row?.arizonaPro || row?.californiaPro || row?.hawaiiPro);
+  return clientStatePro(row, state);
 }
 
 function clearCheckoutQuery() {
@@ -112,7 +110,7 @@ export function DashboardClient() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setCheckEmail(params.get("checkEmail") === "1");
-    const pending = state !== "IN" && params.get("checkout") === "success";
+    const pending = params.get("checkout") === "success";
 
     let cancelled = false;
 
@@ -264,7 +262,7 @@ export function DashboardClient() {
     .map(([id, v]) => ({ id, acc: v.r + v.w ? Math.round((v.r / (v.r + v.w)) * 100) : 100, missed: v.w }))
     .sort((a, b) => a.acc - b.acc)
     .slice(0, 3);
-  const planLabel = state === "IN" ? data?.indianaPro ? "Pro" : "Free" : state === "CA" || state === "HI" ? "Free" : showAsPro ? "Pro" : hideFreePlan ? "…" : "Free";
+  const planLabel = isAzPro ? "Pro" : hideFreePlan ? "…" : "Free";
   const bestScore = exams.length ? Math.max(...exams.map((row) => row.score)) : null;
   const lastStudy = [...stats.map((row) => row.lastAt), ...exams.map((row) => row.at)].filter(Boolean).sort().at(-1) || null;
 
@@ -280,7 +278,7 @@ export function DashboardClient() {
         <div className="stat"><b>{user.streakDays}</b><span>{state === "IN" ? "Account streak" : "Day streak"}</span></div>
         <div className="stat"><b>{planLabel}</b><span>Plan</span></div>
       </div>
-      {state === "IN" && data?.indianaPro && data.indianaProExpiresAt ? <p className="notice">Indiana Pro · Active until {new Date(data.indianaProExpiresAt).toLocaleDateString("en-US")}</p> : null}
+      {state === "IN" && data?.indianaPro && data.indianaProExpiresAt ? <p className="notice">All-state Pro · Active until {new Date(data.indianaProExpiresAt).toLocaleDateString("en-US")}</p> : null}
       {showAsPro && (
         <div className="card">
           {state === "NC" ? <p>North Carolina Pro{data?.ncPlanExpiresAt ? ` · Active until ${formatProUntil(data.ncPlanExpiresAt)}` : ""}</p> : <ProAccessNote plan="pro" planExpiresAt={user.planExpiresAt} />}

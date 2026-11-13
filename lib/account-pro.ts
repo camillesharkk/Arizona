@@ -1,12 +1,8 @@
 import type { EntitlementRow } from "./store/types.ts";
 import { isSiteProProduct } from "./pro-products.ts";
 
-function scopeMatches(row: EntitlementRow, scope?: "CT") {
-  return scope === "CT" ? row.state === "CT" || row.state === "ALL" : row.state !== "CT";
-}
-
-export function accountProExpiry(rows: EntitlementRow[], now = new Date(), scope?: "CT"): Date | null {
-  const active = rows.filter((row) => scopeMatches(row, scope) && row.status === "active" && isSiteProProduct(row.productCode) && new Date(row.expiresAt).getTime() > now.getTime());
+export function accountProExpiry(rows: EntitlementRow[], now = new Date(), _scope?: "CT"): Date | null {
+  const active = rows.filter((row) => row.status === "active" && isSiteProProduct(row.productCode) && new Date(row.expiresAt).getTime() > now.getTime());
   const byOrder = new Map<string, EntitlementRow>();
   for (const row of active) {
     const key = `${row.provider}:${row.providerOrderId}`;
@@ -29,11 +25,11 @@ export function ctProCovers(rows: EntitlementRow[], now = new Date()) {
   return accountProCovers(rows, now, "CT");
 }
 
-export function accountProCovers(rows: EntitlementRow[], now = new Date(), scope?: "CT") {
-  const expiry = accountProExpiry(rows, now, scope);
+export function accountProCovers(rows: EntitlementRow[], now = new Date(), _scope?: "CT") {
+  const expiry = accountProExpiry(rows, now);
   if (!expiry || expiry.getTime() <= now.getTime()) return false;
   return rows.some((row) => {
-    if (!scopeMatches(row, scope) || row.status !== "active" || !isSiteProProduct(row.productCode)) return false;
+    if (row.status !== "active" || !isSiteProProduct(row.productCode)) return false;
     return new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime();
   });
 }

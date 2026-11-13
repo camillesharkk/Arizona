@@ -1,6 +1,6 @@
 import { ncOfficial, NC_CHECKED } from "@/data/nc-resources";
 import { pageMeta } from "@/lib/seo";
-export const metadata = pageMeta({ title: "North Carolina Notary Law", description: "Official North Carolina statutes and administrative rules for traditional notaries.", path: "/north-carolina/laws/", index: false });
+export const metadata = pageMeta({ title: "North Carolina Notary Law", description: "Official North Carolina statutes and administrative rules for traditional notaries.", path: "/north-carolina/laws/", index: true });
 export default function Page() {
   return (
     <main className="wrap hero">

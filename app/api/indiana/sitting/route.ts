@@ -7,6 +7,7 @@ import { productionStateBlocked } from "@/lib/state-release";
 import { ensureIndianaGuest, readIndianaGuest, indianaGuestSitting } from "@/lib/indiana-guest";
 import { indianaSittingQuestions, readIndianaSitting, startIndianaSitting, validateIndianaAnswers, type IndianaSitting } from "@/lib/indiana-sitting";
 import { savePackFullSubmission } from "@/lib/ny-full-submission";
+import { recordProUsage } from "@/lib/commerce/usage";
 
 const headers = { "Cache-Control": "private, no-store" };
 const schema = z.discriminatedUnion("action", [
@@ -72,7 +73,8 @@ export async function POST(request: Request) {
         guestSitting = saved.sitting as IndianaSitting;
         validateIndianaAnswers(guestSitting, input.questions);
       }
-      const { proUsage: _usage, ...result } = await savePackFullSubmission(store, session.id, { ...input, state: "IN", guestSitting });
+      const { proUsage, ...result } = await savePackFullSubmission(store, session.id, { ...input, state: "IN", guestSitting });
+      if (proUsage) await recordProUsage(session.id, proUsage.featureCode, proUsage, "IN");
       return NextResponse.json(result, { headers });
     }
     if (input.action === "import") throw new Error("invalid_exam");

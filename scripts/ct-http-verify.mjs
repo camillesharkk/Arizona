@@ -34,10 +34,10 @@ for (const kind of ['free', 'pro', 'expired', 'otherstate', 'all']) {
   const cookie = login.headers.getSetCookie().map(value => value.split(';')[0]).join('; ');
   const request = (route, body) => fetch(base + route, { method: body ? 'POST' : 'GET', headers: { cookie, 'content-type': 'application/json' }, ...(body ? { body: JSON.stringify(body) } : {}), signal: AbortSignal.timeout(60000) });
   const json = async (route, body) => { const response = await request(route, body); assert.equal(response.status, 200, route + ': ' + await response.clone().text()); return response.json(); };
-  const premium = kind === 'pro' || kind === 'all';
+  const premium = kind === 'pro' || kind === 'all' || kind === 'otherstate';
   const me = await json('/api/auth/me/');
   assert.equal(me.user.connecticutPro, premium);
-  if (kind === "pro") assert.equal(me.user.arizonaPro, false);
+  if (kind === "pro") assert.equal(me.user.arizonaPro, true);
   const azBefore = await json('/api/mistakes/?state=AZ');
   const free = pack.questions().find(q => q.is_free), paid = pack.questions().find(q => !q.is_free);
   const wrong = ['A','B','C','D'].find(letter => letter !== free.correct_option);

@@ -5,7 +5,7 @@ import { recordProUsage } from "@/lib/commerce/usage";
 import { productionStateBlocked } from "@/lib/state-release";
 
 const schema = z.object({
-  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "NC"]).optional(),
+  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"]).optional(),
   featureCode: z.enum([
     "pro_question",
     "full_exam_extra",

@@ -28,7 +28,9 @@ for(const active of [false,true]) {
   assert.equal(result.user.aiDailyLimit,active?300:75);
   for(const field of ['fullExamCount','caFullExamCount','hiFullExamCount']) assert.equal(result.user[field],1);
   assert.deepEqual(result.user.packFullExamCount,{NY:1,PA:1,LA:1,CT:1,NC:0,IN:0});
-  assert.equal(result.user.ncPro, false);
+  assert.equal(result.user.ncPro, active);
+  assert.equal(result.user.indianaPro, active);
+  assert.equal(result.user.connecticutPro, active);
   assert.equal(entitlementReads,1,'Read account-wide entitlements once per response');
   assert.equal(examReads,1,'Read exam history once per response');
 }

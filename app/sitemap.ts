@@ -1,3 +1,8 @@
+import { ctArticles } from "@/data/ct-articles";
+import { inArticles, ncArticles } from "@/data/new-state-articles";
+import { ctPaths } from "@/lib/ct-site";
+import { inPaths } from "@/lib/in-site";
+import { ncPaths } from "@/lib/nc-site";
 import type { MetadataRoute } from "next";
 import { caArticles } from "@/data/ca-articles";
 import { nyArticles } from "@/data/ny-articles";
@@ -97,8 +102,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     laPaths.laws,
     laPaths.become,
     laPaths.pricing,
+    ...[ctPaths, inPaths, ncPaths].flatMap(paths => [paths.home, paths.practice, paths.questions, paths.study, paths.studyCards, paths.resources, paths.examGuide, paths.passingScore, paths.laws, paths.become, paths.pricing]),
   ];
-  const articles = [...caArticles, ...hiArticles, ...nyArticles, ...paArticles, ...laArticles];
+  const articles = [...caArticles, ...hiArticles, ...nyArticles, ...paArticles, ...laArticles, ...ctArticles, ...inArticles, ...ncArticles];
   const indexed = [...new Set([...urls, ...seoGuides.filter((guide) => guide.index !== false).map((guide) => guide.path), ...articles.map((article) => article.path)])];
   const updated = new Map<string, string>([
     ...articles.map((article) => [article.path, article.updated] as const),

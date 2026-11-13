@@ -1,4 +1,12 @@
-import { ctPaths, ctSources } from '@/lib/ct-site';
-import { pageMeta } from '@/lib/seo';
-export const metadata = pageMeta({ title: 'Connecticut Connecticut Learning Access', description: 'Free Quick 10, free topic practice, the study guide, rule cards and first-application checklist are available in this candidate.', path: '/connecticut/pricing/', index: false });
-export default function Page() { return <main className="wrap hero"><h1>Connecticut Learning Access</h1><p>Free Quick 10, free topic practice, the study guide, rule cards and first-application checklist are available in this candidate. Existing valid CT or ALL Pro entitlements open the additional practice pool through server-side checks. Purchase setup is pending.</p><p><a href={ctSources.manual}>Official Manual</a>{' · '}<a href={ctSources.licensing}>Official Licensing Instructions</a></p><p><a href={ctPaths.become}>First Application Checklist</a>{' · '}<a href={`${ctPaths.practice}?mode=quick`}>Practice With the Handbook</a></p></main>; }
+import SharedPage from "@/app/preview/[state]/pricing/page";
+import { pageMeta } from "@/lib/seo";
+
+export const metadata = pageMeta({
+  title: "Connecticut Notary Pro Access",
+  description: "One purchase covers Connecticut and every available state for 60 days.",
+  path: "/connecticut/pricing/",
+});
+
+export default function Page() {
+  return SharedPage({ params: Promise.resolve({ state: "connecticut" }) });
+}

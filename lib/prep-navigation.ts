@@ -29,7 +29,7 @@ export type PrepPaths = {
 export const prepNavigation = {
   CT: { code: "CT", name: "Connecticut", slug: "connecticut", available: stateByCode("CT")?.status === "available", paths: ctPaths },
   NC: { code: "NC", name: "North Carolina", slug: "north-carolina", available: stateByCode("NC")?.status === "available", paths: ncPaths },
-  IN: { code: "IN", name: "Indiana", slug: "indiana", available: false, paths: inPaths },
+  IN: { code: "IN", name: "Indiana", slug: "indiana", available: stateByCode("IN")?.status === "available", paths: inPaths },
   PA: { code: "PA", name: "Pennsylvania", slug: "pennsylvania", available: stateByCode("PA")?.status === "available", paths: paPaths },
   NY: { code: "NY", name: "New York", slug: "new-york", available: stateByCode("NY")?.status === "available", paths: nyPaths },
   LA: { code: "LA", name: "Louisiana", slug: "louisiana", available: stateByCode("LA")?.status === "available", paths: laPaths },

@@ -72,7 +72,7 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     fullDetail: `${ctExam.practiceQuestionCount} questions drawn from this site's Connecticut pool. No time limit. Use the official handbook while practicing.`,
     anonKey: "ct-anon-full-started", pickQuick: seed => quickFrom(publishedCtQuestions(), seed),
     pickFull: pickCtFullExam, fullReady: publishedCtQuestions().length >= ctExam.practiceQuestionCount,
-    quickReady: ctQuestionCounts().free >= 10, cards: ctCards, purchaseEnabled: false,
+    quickReady: ctQuestionCounts().free >= 10, cards: ctCards, purchaseEnabled: true,
     handbookUrl: "https://portal.ct.gov/-/media/sots/business-services/notary/state_of_connecticut_notary_public_manual_rev2023.pdf?hash=16EF7EBB701DFF05F62495C282351BFF&rev=a50b095808bf4eb2a715e864480fe05a",
   },
   NC: {
@@ -90,7 +90,7 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     pickFull: (seed, isPro = false) => ({ questions: shuffle(publishedNcQuestions().filter(q => isPro || q.is_free), seed).slice(0, NC_PRACTICE.comprehensiveLimit), unscoredIds: [] }),
     fullReady: ncQuestionCounts().free >= 10,
     quickReady: ncQuestionCounts().free >= 10,
-    cards: ncCards,
+    cards: ncCards, purchaseEnabled: true,
   },
   IN: {
     ...prepNavigation.IN,
@@ -106,7 +106,7 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     pickFull: (seed) => { const questions = shuffle(inFreeQuestions, seed).slice(0, 30); return questions.length === 30 ? { questions, unscoredIds: [] } : null; },
     fullReady: inBankCounts.free >= 30,
     quickReady: inBankCounts.free >= 10,
-    cards: inCards,
+    cards: inCards, purchaseEnabled: true,
   },
   PA: {
     ...prepNavigation.PA,

@@ -71,12 +71,13 @@ try {
   const now = Date.now();
   const grant = (userId,productCode,state,overrides={}) => store.insertEntitlement({userId,productCode,state,status:'active',startsAt:new Date(now-1000).toISOString(),expiresAt:new Date(now+86400000).toISOString(),provider:'mock',providerOrderId:randomUUID(),providerCustomerId:null,...overrides});
   for (const code of ['az_exam_pro_60d','ca_exam_pro_60d','hi_exam_pro_60d']) await grant(legacy.id,code,'ALL');
-  assert.equal(await rights.hasStatePro(legacy.id,'IN'),false,'legacy shared Pro must not grant Indiana');
+  assert.equal(await rights.hasStatePro(legacy.id,'IN'),true,'Historical shared Pro covers Indiana');
   assert.equal(await rights.hasStatePro(legacy.id,'NY'),true);
   for (const state of ['NY','PA','LA']) await grant(legacy.id,'az_exam_pro_60d',state);
-  assert.equal(await rights.hasStatePro(legacy.id,'IN'),false);
-  await grant(user.id,'in_exam_pro_60d','ALL');
-  assert.equal(await rights.hasStatePro(user.id,'IN'),false,'Indiana product requires Indiana state');
+  assert.equal(await rights.hasStatePro(legacy.id,'IN'),true);
+  const historical = await grant(user.id,'in_exam_pro_60d','ALL');
+  assert.equal(await rights.hasStatePro(user.id,'IN'),true,'Historical Indiana products now participate in shared Pro');
+  await store.setEntitlementStatus(user.id,'mock',historical.providerOrderId,'revoked');
   for (const overrides of [{startsAt:new Date(now+100000).toISOString()},{expiresAt:new Date(now-1).toISOString()},{status:'refunded'},{status:'revoked'},{status:'expired'}]) {
     const row = await grant(user.id,'in_exam_pro_60d','IN',overrides);
     assert.equal(rights.indianaEntitlement([row],new Date(now)),null);
@@ -86,20 +87,20 @@ try {
   assert.ok(rights.indianaEntitlement([boundary],new Date(now)));
   assert.equal(rights.indianaEntitlement([boundary],new Date(now+1)),null);
   const paid = await rights.grantStatePro60d({userId:user.id,state:'IN',provider:'mock',providerOrderId:'indiana-grant-1'});
-  assert.equal(paid.entitlement.productCode,'in_exam_pro_60d');
-  assert.equal(paid.entitlement.state,'IN');
+  assert.equal(paid.entitlement.productCode,'az_exam_pro_60d');
+  assert.equal(paid.entitlement.state,'ALL');
   assert.equal(Date.parse(paid.entitlement.expiresAt)-Date.parse(paid.entitlement.startsAt),60*86400000);
   assert.equal((await rights.grantStatePro60d({userId:user.id,state:'IN',provider:'mock',providerOrderId:'indiana-grant-1'})).duplicate,true);
   assert.equal(await rights.hasStatePro(user.id,'IN'),true);
-  for (const state of ['AZ','CA','HI','NY','PA','LA']) assert.equal(await rights.hasStatePro(user.id,state),false,`Indiana must not grant ${state}`);
-  assert.equal(rights.accountProExpiry(await store.listEntitlements(user.id)),null);
+  for (const state of ['AZ','CA','HI','NY','PA','LA']) assert.equal(await rights.hasStatePro(user.id,state),true,`Indiana-source purchase covers ${state}`);
+  assert.ok(rights.accountProExpiry(await store.listEntitlements(user.id)));
   const beforeLegacy = rights.accountProExpiry(await store.listEntitlements(legacy.id)).toISOString();
   await rights.grantStatePro60d({userId:legacy.id,state:'IN',provider:'mock',providerOrderId:'separate-indiana-window'});
   const afterLegacy = rights.accountProExpiry(await store.listEntitlements(legacy.id)).toISOString();
-  assert.ok(Math.abs(Date.parse(beforeLegacy)-Date.parse(afterLegacy))<1000,'Indiana purchase must not extend legacy account Pro');
+  assert.ok(Math.abs(Date.parse(afterLegacy)-Date.parse(beforeLegacy)-60*86400000)<1000,'Indiana-source purchase extends shared Pro by 60 days');
   assert.equal(await rights.aiDailyLimit(user.id,'IN'),rights.AI_LIMIT_PRO);
-  assert.equal(await rights.aiDailyLimit(user.id,'AZ'),rights.AI_LIMIT_FREE);
-  console.log('Entitlements: dedicated product+state+active interval, all old-state isolation, grant idempotency and separate 60-day window passed');
+  assert.equal(await rights.aiDailyLimit(user.id,'AZ'),rights.AI_LIMIT_PRO);
+  console.log('Entitlements: shared product, active interval, all-state access, grant idempotency and queued 60-day renewal passed');
 
   const content = load('data/in-questions.ts');
   const bank = content.publishedInQuestions(), freeCount=bank.filter(q=>q.is_free).length;
@@ -117,9 +118,8 @@ try {
   session = {id:user.id};
   assert.equal((await (await endpoints.GET()).json()).questions.length,bank.length);
   const trialUser = await store.createUser({email:'indiana-trial@example.invalid',passwordHash:'isolated',name:null});
-  await grant(trialUser.id,'az_exam_pro_60d','ALL');
   session = {id:trialUser.id};
-  assert.equal((await (await endpoints.GET()).json()).questions.length,freeCount,'shared legacy Pro must not expose IN paid answers');
+  assert.equal((await (await endpoints.GET()).json()).questions.length,freeCount,'Free account receives the Indiana free pool');
   const progress = load('app/api/progress/route.ts');
   const answer = q => ({questionId:q.question_id,questionVersion:q.version,selected:q.correct_option,state:'IN',attemptId:randomUUID()});
   assert.equal((await progress.POST(request('/api/progress/',answer(locked)))).status,402);
@@ -132,15 +132,15 @@ try {
   session = {id:user.id};
   const account = (await (await me.GET()).json()).user;
   assert.equal(account.indianaPro,true);
-  assert.equal(account.arizonaPro,false);
-  assert.equal(account.plan,'free');
+  assert.equal(account.arizonaPro,true);
+  assert.equal(account.plan,'pro');
   assert.ok(account.indianaProExpiresAt);
   assert.equal(account.packFullExamCount.IN,0);
   assert.equal((await progress.POST(request('/api/progress/',answer(locked)))).status,200);
   session={id:legacy.id};
   assert.equal((await progress.POST(request('/api/progress/',answer(locked)))).status,200);
   const commerce=await load('lib/commerce/index.ts').getCommerceRepo();
-  assert.equal((await commerce.listUsageForUser(legacy.id)).length,0,'Indiana use must not mark a separate legacy product as used');
+  assert.equal((await commerce.listUsageForUser(legacy.id)).length,6,'Indiana paid answers mark the six currently serving shared orders used');
   session={id:user.id};
   const mistakes = load('app/api/mistakes/route.ts');
   const save = await mistakes.POST(request('/api/mistakes/',{questionId:locked.question_id,saveForReview:true}));
@@ -164,7 +164,7 @@ try {
   const aiDay=load('lib/ai/quota.ts').utcAiDay();
   await Promise.all(Array.from({length:rights.AI_LIMIT_FREE},()=>store.bumpAi(legacy.id,aiDay)));
   assert.equal((await tutor.POST(request('/api/ai/tutor/',{questionId:locked.question_id,questionVersion:locked.version,state:'IN',mode:'explain'}))).status,200);
-  assert.equal((await commerce.listUsageForUser(legacy.id)).length,0,'Indiana extra Tutor quota must not mark legacy product use');
+  assert.equal((await commerce.listUsageForUser(legacy.id)).length,6,'Indiana Pro Tutor quota marks shared serving orders used');
   session={id:user.id};
   console.log(`Actual account/question/progress/mistakes/Daily Study/Tutor handlers: ${freeCount} free vs ${bank.length} published paid-accessible, state/version guards and isolated flags passed`);
 
@@ -248,21 +248,13 @@ try {
 
   session={id:trialUser.id};
   const checkout=load('app/api/billing/checkout/route.ts');
-  assert.equal((await checkout.POST(request('/api/billing/checkout/',{sourceState:'IN'}))).status,503);
-  for(const preview of ['0','1']) {
-    process.env.VERCEL_ENV=preview==='1'?'production':'preview';
-    process.env.STATE_PREVIEW=preview;
-    assert.equal((await endpoints.GET()).status,404);
-    assert.equal((await fullRoute.GET()).status,404);
-    assert.equal((await fullRoute.POST(request('/api/indiana/sitting/',{action:'start'}))).status,404);
-    assert.equal((await progress.GET(new Request('http://localhost/api/progress/?state=IN'))).status,404);
-    assert.equal((await progress.POST(request('/api/progress/',answer(free)))).status,404);
-    for(const file of ['daily-study','study-settings','mistakes','ai/tutor']) assert.equal((await load(`app/api/${file}/route.ts`).GET(new Request(`http://localhost/api/${file}/?state=IN`))).status,404);
-    const all=await (await progress.GET(new Request('http://localhost/api/progress/'))).json();
-    assert.ok(all.stats.every(stat=>stat.state!=='IN'));
-    assert.ok(all.exams.every(exam=>!exam.mode.startsWith('in-')));
-  }
-  console.log('Release gates: every Indiana read/write path blocked in production or without STATE_PREVIEW=1; explicit Indiana checkout returns503 before quote/provider fallback');
+  assert.equal((await checkout.POST(request('/api/billing/checkout/',{sourceState:'IN'}))).status,400,'Shared checkout requires a server quote');
+  process.env.VERCEL_ENV='production';
+  process.env.STATE_PREVIEW='0';
+  assert.equal((await endpoints.GET()).status,200,'Indiana question access is open in production');
+  assert.equal((await fullRoute.GET()).status,200,'Indiana sitting access is open in production');
+  assert.equal((await progress.GET(new Request('http://localhost/api/progress/?state=IN'))).status,200);
+  console.log('Public release: Indiana reads are available in production and shared checkout validates quotes');
 } finally {
   for (const [key,value] of Object.entries(previous)) { if(value===undefined) delete process.env[key]; else process.env[key]=value; }
   fs.rmSync(dir,{recursive:true,force:true});

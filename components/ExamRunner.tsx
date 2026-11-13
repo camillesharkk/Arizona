@@ -978,7 +978,7 @@ export function ExamRunner({
             <p className="notice">This is study feedback for California. Forty items are scored. This raw count is not an official scaled score.</p>
           ) : onHi ? (
             <p className="notice">This is study feedback for Hawaii. This score is this site's practice result, not an official exam result.</p>
-          ) : stateCode === "IN" ? <p className="notice">{isPro ? "Indiana Pro is active for this account." : "Free practice uses the Indiana free pool. Indiana Pro purchases are not open in this candidate."}</p> : isPro ? (
+          ) : stateCode === "IN" ? <p className="notice">{isPro ? "Indiana Pro is active for this account." : "Free practice uses 60 Indiana questions. Pro opens all 203 questions across every available state for 60 days."}</p> : isPro ? (
             <p className="notice">Pro is active. Keep practicing the topics you missed.</p>
           ) : (
             <p className="notice">

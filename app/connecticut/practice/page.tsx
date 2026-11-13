@@ -3,7 +3,7 @@ import { PracticeLaunch } from '@/components/PracticeLaunch';
 import { ctTopics, ctQuestionCounts } from '@/data/ct-content';
 import { ctPaths, ctExam } from '@/lib/ct-site';
 import { pageMeta } from '@/lib/seo';
-export const metadata = pageMeta({ title: 'Connecticut Handbook Practice', description: 'Free Quick 10, topic practice and untimed comprehensive Connecticut scenarios.', path: ctPaths.practice, index: false });
+export const metadata = pageMeta({ title: 'Connecticut Handbook Practice', description: 'Free Quick 10, topic practice and untimed comprehensive Connecticut scenarios.', path: ctPaths.practice, index: true });
 export default function Page() {
   const counts = ctQuestionCounts();
   return <main className="wrap hero"><h1>Connecticut Handbook Practice</h1>

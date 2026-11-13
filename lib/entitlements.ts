@@ -1,4 +1,3 @@
-import { stateProCovers, stateProExpiry, NC_PRO_PRODUCT } from "./state-pro.ts";
 import type { Question } from "@/lib/types";
 import { publishedQuestions } from "@/data/questions";
 import { getStore } from "@/lib/store";
@@ -38,7 +37,7 @@ export async function getArizonaEntitlement(userId: string | null | undefined, e
   if (!accountProCovers(rows, now)) return null;
   const expiry = accountProExpiry(rows, now);
   const current = rows
-    .filter((row) => row.state !== "CT" && row.state !== "IN" && row.state !== "NC" && isSiteProProduct(row.productCode) && row.status === "active" && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
+    .filter((row) => isSiteProProduct(row.productCode) && row.status === "active" && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
     .sort((a, b) => new Date(b.expiresAt).getTime() - new Date(a.expiresAt).getTime())[0];
   if (!current || !expiry) return null;
   return { ...current, state: "ALL", expiresAt: expiry.toISOString() };
@@ -68,9 +67,12 @@ export async function hasArizonaPro(userId: string | null | undefined) {
 export const IN_PRO_PRODUCT = "in_exam_pro_60d";
 
 export function indianaEntitlement(rows: EntitlementRow[], now = new Date()): EntitlementRow | null {
-  return rows.filter(row => row.productCode === IN_PRO_PRODUCT && row.state === "IN" && row.status === "active"
+  if (!accountProCovers(rows, now)) return null;
+  const serving = rows.filter(row => isSiteProProduct(row.productCode) && row.status === "active"
     && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
-    .sort((a, b) => Date.parse(b.expiresAt) - Date.parse(a.expiresAt))[0] ?? null;
+    .sort((a, b) => Date.parse(b.expiresAt) - Date.parse(a.expiresAt))[0];
+  const expiry = accountProExpiry(rows, now);
+  return serving && expiry ? { ...serving, expiresAt: expiry.toISOString() } : null;
 }
 
 export async function getIndianaEntitlement(userId: string | null | undefined): Promise<EntitlementRow | null> {
@@ -79,9 +81,6 @@ export async function getIndianaEntitlement(userId: string | null | undefined): 
 }
 
 export async function hasStatePro(userId: string | null | undefined, _state?: string) {
-  if (_state === "CT") return userId ? ctProCovers(await (await getStore()).listEntitlements(userId)) : false;
-  if (_state === "NC") return userId ? stateProCovers(await (await getStore()).listEntitlements(userId), "NC") : false;
-  if (_state === "IN") return Boolean(await getIndianaEntitlement(userId));
   return hasArizonaPro(userId);
 }
 
@@ -106,19 +105,16 @@ export async function grantStatePro60d(opts: {
   const existing = await store.getEntitlementByProviderOrder(opts.provider, opts.providerOrderId);
   if (existing) {
     if (existing.userId !== opts.userId) throw new Error("order_user_mismatch");
-    if ((opts.state === "IN") !== (existing.productCode === IN_PRO_PRODUCT && existing.state === "IN")) throw new Error("order_state_mismatch");
+    if (!isSiteProProduct(existing.productCode)) throw new Error("product_mismatch");
     return { ok: true, duplicate: true, entitlement: existing };
   }
   const rows = await store.listEntitlements(opts.userId);
   const now = new Date();
-  const latestIndiana = rows.filter(row => row.productCode === IN_PRO_PRODUCT && row.state === "IN" && row.status === "active")
-    .sort((a,b) => Date.parse(b.expiresAt)-Date.parse(a.expiresAt))[0] ?? null;
-  const state = opts.state === "NC" ? "NC" : opts.state === "IN" ? "IN" : "ALL";
-  const window = nextProWindow(state === "IN" ? (latestIndiana ? new Date(latestIndiana.expiresAt) : null) : stateProExpiry(rows, state, now), now);
+  const window = nextProWindow(accountProExpiry(rows, now), now);
   const entitlement = await store.insertEntitlement({
     userId: opts.userId,
-    productCode: state === "NC" ? NC_PRO_PRODUCT : state === "IN" ? IN_PRO_PRODUCT : SITE_PRO_PRODUCT_CODE,
-    state,
+    productCode: SITE_PRO_PRODUCT_CODE,
+    state: "ALL",
     status: "active",
     startsAt: window.startsAt.toISOString(),
     expiresAt: window.expiresAt.toISOString(),
@@ -126,7 +122,7 @@ export async function grantStatePro60d(opts: {
     providerOrderId: opts.providerOrderId,
     providerCustomerId: opts.providerCustomerId ?? null,
   });
-  if (state !== "NC") await refreshPlanCache(opts.userId);
+  await refreshPlanCache(opts.userId);
   return { ok: true, duplicate: false, entitlement };
 }
 

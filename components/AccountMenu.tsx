@@ -111,7 +111,7 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
           <Link role="menuitem" href={paths.billing} onClick={() => setOpen(false)}>
             Billing & Access
           </Link>
-          {stateCode !== "CT" ? <Link role="menuitem" href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>{pricingLabel}</Link> : null}
+          <Link role="menuitem" href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>{pricingLabel}</Link>
           <div className="account-menu-sep" role="separator" />
           <button className="account-signout" type="button" role="menuitem" onClick={onLogout}>
             Sign out

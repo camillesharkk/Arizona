@@ -60,7 +60,7 @@ function formatRemaining(ms: number) {
   return d > 0 ? `${d}d ${clock}` : clock;
 }
 
-export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_60d", sourceState }: { belowCta?: ReactNode; ctaLabel?: string; productCode?: "az_exam_pro_60d"; sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" }) {
+export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_60d", sourceState }: { belowCta?: ReactNode; ctaLabel?: string; productCode?: "az_exam_pro_60d"; sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN" }) {
   const [preview, setPreview] = useState<Preview | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [applyCredit, setApplyCredit] = useState(false);

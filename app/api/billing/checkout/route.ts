@@ -15,14 +15,13 @@ import { getPaddleCheckoutConfig, isPaddleProvider, isPositiveCents } from "@/li
 
 const postSchema = z.object({
   quoteId: z.string().uuid(),
-  sourceState: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA"]).optional(),
+  sourceState: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"]).optional(),
 });
 
 export async function POST(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const raw = await req.json().catch(() => null);
-  if (raw?.sourceState === "IN") return NextResponse.json({ error: "Indiana checkout is not configured" }, { status: 503 });
   const body = postSchema.safeParse(raw);
   if (!body.success) return NextResponse.json({ error: "quote_required" }, { status: 400 });
   const repo = await getCommerceRepo();

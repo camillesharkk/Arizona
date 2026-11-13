@@ -3,7 +3,7 @@ import { ncOfficial, NC_CHECKED } from "@/data/nc-resources";
 import { NcCourseFinder } from "@/components/NcCourseFinder";
 import { NcApplicationGuide } from "@/components/NcApplicationGuide";
 import { pageMeta } from "@/lib/seo";
-export const metadata = pageMeta({ title: "North Carolina Notary Resources", description: "Official courses, 2026 manual, initial application, statutes and administrative rules.", path: "/north-carolina/resources/", index: false });
+export const metadata = pageMeta({ title: "North Carolina Notary Resources", description: "Official courses, 2026 manual, initial application, statutes and administrative rules.", path: "/north-carolina/resources/", index: true });
 export default function Page() {
   return (
     <main className="wrap hero">

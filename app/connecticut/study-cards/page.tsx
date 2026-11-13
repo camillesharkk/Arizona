@@ -2,7 +2,7 @@ import { StudyCardsClient } from '@/components/StudyCardsClient';
 import { ctCards, ctTopics } from '@/data/ct-content';
 import { ctPaths } from '@/lib/ct-site';
 import { pageMeta } from '@/lib/seo';
-export const metadata = pageMeta({ title: 'Connecticut Notary Study Cards', description: 'Independent Connecticut rule cards with official references and topic practice.', path: ctPaths.studyCards, index: false });
+export const metadata = pageMeta({ title: 'Connecticut Notary Study Cards', description: 'Independent Connecticut rule cards with official references and topic practice.', path: ctPaths.studyCards, index: true });
 export default async function Page({ searchParams }: { searchParams: Promise<{ topic?: string; card?: string }> }) {
   const { topic, card } = await searchParams;
   const cards = ctCards.map(item => ({ ...item, topic: item.study, back: item.rule, sourceLabel: item.source, locked: false, pending: false }));
