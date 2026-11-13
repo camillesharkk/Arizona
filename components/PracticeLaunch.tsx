@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ExamRunner } from "@/components/ExamRunner";
@@ -206,30 +206,38 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
           const copy = {
             quick: ["Quick 10", "10 questions. The result shows after each answer."],
             full: pack
-              ? [pack.fullTitle, pack.fullDetail]
+              ? [pack.fullTitle, pack.practiceNotice ? `${fullCount} questions, ${fullMinutes} minutes. Results show after you submit.` : pack.fullDetail]
               : onHi
               ? ["Comprehensive Practice", `${fullCount} questions. No time limit. This count is this site's practice setting.`]
               : ["Full " + fullCount, `${fullCount} questions, ${fullMinutes ?? examConfig.timeLimitMinutes} minutes. Results show after you submit.`],
             weak: ["Weak Areas", "Questions you missed. The longer set is part of Pro."],
           }[id];
           return (
-            <div className="card" key={id}>
-              <h3>{copy[0]}</h3>
-              <p>{copy[1]}</p>
-              {openModes[id] ? (
-                <div className="row">
-                  <button className="btn btn-primary" type="button" onClick={() => resume(id)}>Resume</button>
-                  <button className="btn btn-ghost" type="button" onClick={() => beginNew(id)}>Start new</button>
-                </div>
-              ) : (
-                <>
-                  <button className="btn btn-primary" type="button" disabled={Boolean(pendingStart) || (id === "full" && !!pack && !pack.fullReady) || (id === "quick" && !!pack && !pack.quickReady)} onClick={() => requestStart(id)}>
-                    {pendingStart === id ? "Loading…" : (id === "full" && pack && !pack.fullReady) || (id === "quick" && pack && !pack.quickReady) ? "Not open yet" : "Start"}
-                  </button>
-                  {id === "full" && pack && !pack.fullReady ? <p className="notice">The published bank cannot fill this practice yet, so it stays closed.</p> : null}
-                </>
-              )}
-            </div>
+            <Fragment key={id}>
+              <div className="card">
+                <h3>{copy[0]}</h3>
+                <p>{copy[1]}</p>
+                {openModes[id] ? (
+                  <div className="row">
+                    <button className="btn btn-primary" type="button" onClick={() => resume(id)}>Resume</button>
+                    <button className="btn btn-ghost" type="button" onClick={() => beginNew(id)}>Start new</button>
+                  </div>
+                ) : (
+                  <>
+                    <button className="btn btn-primary" type="button" disabled={Boolean(pendingStart) || (id === "full" && !!pack && !pack.fullReady) || (id === "quick" && !!pack && !pack.quickReady)} onClick={() => requestStart(id)}>
+                      {pendingStart === id ? "Loading…" : (id === "full" && pack && !pack.fullReady) || (id === "quick" && pack && !pack.quickReady) ? "Not open yet" : "Start"}
+                    </button>
+                    {id === "full" && pack && !pack.fullReady ? <p className="notice">The published bank cannot fill this practice yet, so it stays closed.</p> : null}
+                  </>
+                )}
+              </div>
+              {id === "full" && pack?.practiceNotice ? (
+                <section className="practice-mode-note" aria-labelledby={pack.practiceNotice.anchor}>
+                  <h2 className="guide-chapter" id={pack.practiceNotice.anchor}>{pack.practiceNotice.title}</h2>
+                  <p className="notice">{pack.practiceNotice.body}</p>
+                </section>
+              ) : null}
+            </Fragment>
           );
         })}
       </div>

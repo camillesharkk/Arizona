@@ -313,6 +313,9 @@ h2 { font-size: 1.5rem; }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-2 { grid-template-columns: repeat(2, 1fr); }
+.practice-mode-note { grid-column: 1 / -1; order: 1; }
+.practice-mode-note h2 { margin: 0 0 8px; font-size: 1.1rem; }
+.practice-mode-note .notice { margin: 0; }
 
 .card {
   background: var(--bg);
@@ -882,6 +885,7 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
 }
 @media (max-width: 640px) {
   .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .practice-mode-note { order: 0; }
   .stats-mobile { grid-template-columns: 1fr 1fr; }
   h1 { font-size: 1.85rem; }
   .card { padding: 16px; }

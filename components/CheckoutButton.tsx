@@ -58,7 +58,7 @@ function formatRemaining(ms: number) {
   return d > 0 ? `${d}d ${clock}` : clock;
 }
 
-export function CheckoutButton({ belowCta, productCode = "az_exam_pro_60d", sourceState }: { belowCta?: ReactNode; productCode?: "az_exam_pro_60d"; sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" }) {
+export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_60d", sourceState }: { belowCta?: ReactNode; ctaLabel?: string; productCode?: "az_exam_pro_60d"; sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" }) {
   const [preview, setPreview] = useState<Preview | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [applyCredit, setApplyCredit] = useState(false);
@@ -331,7 +331,7 @@ export function CheckoutButton({ belowCta, productCode = "az_exam_pro_60d", sour
 
       {isGuest ? (
         <Link className="btn btn-primary pricing-cta" href={paths.register}>
-          Create Free Account to Unlock Offer
+          {ctaLabel || "Create Free Account to Unlock Offer"}
         </Link>
       ) : (
         <button
@@ -340,7 +340,7 @@ export function CheckoutButton({ belowCta, productCode = "az_exam_pro_60d", sour
           onClick={go}
           disabled={busy || signedIn !== true || !policy}
         >
-          {busy ? "Working…" : `Get 60-Day Pro — ${ctaPrice}`}
+          {busy ? "Working…" : ctaLabel || `Get 60-Day Pro — ${ctaPrice}`}
         </button>
       )}
       {belowCta}

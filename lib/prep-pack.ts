@@ -40,6 +40,7 @@ export type PrepPack = {
   fullMinutes: number | null;
   fullTitle: string;
   fullDetail: string;
+  practiceNotice?: { title: string; body: string; anchor: string };
   anonKey: string;
   pickQuick: (seed: number) => Question[];
   pickFull: (seed: number) => { questions: Question[]; unscoredIds: string[] } | null;
@@ -130,6 +131,11 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     fullCount: 40,
     fullMinutes: 90,
     fullTitle: "40-question scenario practice",
+    practiceNotice: {
+      title: "About this practice test",
+      body: "These optional practice tests help you prepare for the official Louisiana notary exam. Your practice time, scores, and completion records are for your own study. They are not reported to the state and do not count toward any official exam, training, or application requirement. This website is independent of the Louisiana Secretary of State and the official exam provider.",
+      anchor: "about-this-practice",
+    },
     fullDetail: "This site's 40-question, 90-minute practice combines general knowledge and linked work scenarios, with all items scored as raw study feedback. The official computer examination lasts four hours and requires a scaled 70 out of 100. Its item count is not published. These statute-based exercises cover selected skills and do not replace the official 2026 study guide or reproduce its full coverage.",
     anonKey: "la-anon-full-started",
     pickQuick: (seed) => quickFrom(publishedLaQuestions(), seed),

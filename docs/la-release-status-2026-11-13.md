@@ -1,5 +1,34 @@
 # Louisiana release status — November 13, 2026
 
+## Owner-confirmed product scope and preview copy
+
+The owner confirmed that arizonanotaryprep.com has never registered as a Louisiana notary examination preparation provider, has never engaged a commissioned notary instructor for any state, and has no provider registration confirmation, instructor Notary IDs/statewide-authority evidence or provider performance bond. The proposed LA offering is paid self-service access to questions, mock practice, explanations, cards, review tools and AI explanations.
+
+The current statute defines paid preparation providers broadly in terms of courses of instruction or study. The official provider page and FAQ require registration generally. The reviewed sources do not specifically explain how those requirements apply to an automated question bank with AI explanations and no instructor. Applicability to this exact product form is now an independent question for the Notary Division. Earlier interpretations in this historical record should be read with that unresolved product-specific question. LA's existing production restriction remains in place under the owner's explicit instruction. [R.S.35:191.4](https://www.legis.la.gov/Legis/Law.aspx?d=670801), [official FAQ](https://www.sos.la.gov/notary/frequently-asked-questions)
+
+The requested full English statement now appears once on the LA mode chooser, following the full-practice entry. At 1440x1000 the three mode cards retain equal height and the note spans the next row, aligned with the mode area's left edge. At 390x844 the note follows the full card with a 16px gap, before Weak Areas. The stable about-this-practice heading reuses the existing guide-chapter scroll margin. The note disappears when a practice starts.
+
+The LA Pro buying area now leads with the requested title, value sentence and three purchase benefits, followed by the existing account-specific price and Get 60-Day Pro control. Existing refund, promotion and repeat-purchase duration terms are retained. Its only added below-button line links to the full statement. The link uses laPaths.practice and retains the /preview prefix when opened from a preview URL. Desktop and mobile browser checks verified the preview link destination and visible anchor heading. The mobile heading appeared below the fixed header without horizontal overflow. A local future-public pricing path also generated and opened /louisiana/practice/#about-this-practice.
+
+Anonymous preview pricing displayed 22.21 dollars. A newly seeded dedicated free account displayed the dynamically calculated 19.99-dollar newcomer offer, with the original refund/promotion checkbox. The guest purchase control still opened the existing registration entry, and the signed-in button retains the original quote/checkout handler. The desktop full Start entered Question 1 of 40, and mobile Quick10 entered Question 1 of 10. Existing production checkout evidence is reused. PA practice/pricing HTTP checks contained no LA copy. The content audit retained 203 questions, 29 free/174 Pro and 54 independent cards, and the shared product/source-state commerce regression passed. TypeScript and the 240-page production build passed. The LA branch started clean at 0cb24de, and a fresh fetch succeeded with origin/main still 07f0fcf.
+
+Local preview is served at http://127.0.0.1:3424/preview/louisiana/practice/ and http://127.0.0.1:3424/preview/louisiana/pricing/. Browser artifacts are ignored under .tools as la-copy-practice-desktop.png, la-copy-pro-desktop.png, la-copy-pro-mobile.png, la-copy-pro-mobile-signed.png and la-copy-anchor-mobile.png. This follow-up changes LA copy/layout and its optional shared presentation fields only.
+
+### Inquiry ready for the owner to send
+
+To notaries@sos.la.gov. The official Notary Division contact number is 225-922-0507. [Official contact page](https://www.sos.la.gov/notary/notary-certifications-contact-us), [published division email](https://www.sos.la.gov/media/nkuc2x5a/notary-study-guide-order-form.pdf)
+
+Subject — Registration requirements for proposed self-service Louisiana exam-prep tools
+
+Dear Notary Division,
+
+I operate arizonanotaryprep.com and am planning paid self-service preparation tools for the Louisiana notary exam. Users would receive 60-day access to original practice questions, timed mock tests, answer explanations, flashcards, review tracking and AI-generated explanations. The service has no live teaching or commissioned notary instructors. Practice time, scores and completion records are for personal study and are not submitted toward official requirements. We currently have no Louisiana education-provider registration.
+
+Could you confirm whether this product falls under R.S.35:191.4 and whether provider registration, statewide-commissioned instructors and the annual 25000-dollar performance bond are required? If so, how should a self-service provider complete the instructor and course-hours fields? Please direct us to the applicable process, forms or written guidance.
+
+Thank you,
+Arizona Notary Prep
+
 ## Follow-up under the updated release instruction
 
 The owner accepted the existing production checkout evidence showing US$19.99 and 60-day all-state Pro as the payment release condition for both states. That condition is satisfied. Actual payment, provider callback and payment-created entitlement activation are outside this release gate. The existing unpaid checkout results and browser screenshots are reused.

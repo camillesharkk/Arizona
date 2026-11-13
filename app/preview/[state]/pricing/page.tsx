@@ -11,6 +11,9 @@ export default async function Page({ params }: { params: Promise<{ state: string
   if (!code) notFound();
   const pack = prepPacks[code];
   const counts = pack.counts();
+  if (code === "LA") {
+    return <main className="wrap"><StateCheckout source={code} /></main>;
+  }
   return (
     <main className="wrap">
       <h1>{pack.name} practice access</h1>
