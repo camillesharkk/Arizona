@@ -30,3 +30,17 @@ Before release, the branch fast-forwarded to `0aa92cc4a48a6f03b2b602b3ea40ec2424
 CT and NC continue from their own worktrees and release gates. Merge their state enums, sync list, question lookup and route guards with this shared version. Preserve CT's specific Pro check and draw validation, and NC's permission-dependent count/draw, free-pool restriction and state Pro receipt mapping. Rebuild their previews to apply the metadata config and rerun the candidate-specific browser, guest full import and cross-state checks.
 
 The database dependency is the existing production structure through migration 016. Full-submission receipts use additive fields inside the existing study-plan JSON document.
+
+## Production verification
+
+Code commit `203caccfc49eff28fb81cbc0b16d444aa9a0dbe0` was pushed normally to main. Vercel deployment `dpl_FHwRWjk4wf7sktPKXkfpcpK4NNez`, `arizona-bi5z9wj7b-sharkkk.vercel.app`, reached READY and the formal domain resolved to that deployment and SHA.
+
+- Actual HTTP on the formal domain passed six-state Pro full submission, server grading, refreshed answer/history reads, immutable duplicate results and Daily Study history. AZ/CA/HI free and expired-Pro accounts each used their first state trial successfully. NY/PA/LA free and expired accounts already had their trial and received 402 with unchanged answers and history.
+- Successful production submissions took 4.32 to 7.72 seconds from the test client. Each new full saved all 30, 40, 45 or 50 answers. CA retained a 40-item scored denominator and PA retained 25. Dedicated test accounts were used for every write.
+- The production browser refreshed the original NY guest Quick 10 notebook and showed the same original 0/10 result with 10 missed questions. This supplements the earlier desktop/mobile sign-in acceptance. The new complete AZ desktop and LA mobile browser sittings were verified locally. Their production counterparts were exercised through HTTP.
+- Public homes and candidate placeholders returned one current canonical and robots tag in HEAD. Auth server HTML deferred credential forms. CT/IN/NC practice and public-state preview routes returned 404. Production `guide:verify` passed AZ/NY/PA/LA chapter content and existing storage-isolation regressions.
+- A 30-minute Vercel runtime query scoped to the code deployment returned zero matching error records after acceptance.
+
+After the write suites finished, three sequential authenticated samples per route measured these medians from the same test machine. HTML response headers arrived in 359 to 387 ms for Login, NY Practice, Study Guide, Wrong Answers and Daily Study. The complete HTML responses ranged from 371 to 955 ms. Account, wrong-answer and Daily Study API response medians were 1,236 ms, 1,462 ms and 2,792 ms. The earlier baseline medians were 3,391 ms, 1,558 ms and 3,291 ms respectively. These measurements describe the sampled HTTP responses, with network and warm-instance variation.
+
+The login page's gzip-normalized script payload decreased from 317,178 to 174,878 bytes. The NY guide decreased from 308,591 to 182,041 bytes while incorporating the separately released complete guide. The question-intensive Practice, Wrong Answers and Daily Study payloads remained near their previous size. Raw measurement and acceptance evidence is retained under the isolated worktree's `.tools` directory.
