@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from "node:async_hooks";
 import type { DeviceRepo } from "./repo.ts";
 import type { DeviceActivationRow, DeviceSessionRow } from "./types.ts";
 
@@ -19,7 +20,12 @@ function mapSession(r: Record<string, unknown>): DeviceSessionRow {
   };
 }
 
-export function createPgDeviceRepo(sql: any): DeviceRepo {
+export function createPgDeviceRepo(pool: any): DeviceRepo {
+  const transaction = new AsyncLocalStorage<any>();
+  const sql = (strings: TemplateStringsArray, ...values: unknown[]) => {
+    const connection = transaction.getStore() ?? pool;
+    return connection(strings, ...values);
+  };
   return {
     async getSession(id) {
       const rows = await sql`select * from device_sessions where id = ${id} limit 1`;
@@ -106,12 +112,11 @@ export function createPgDeviceRepo(sql: any): DeviceRepo {
       return Number(rows[0]?.n || 0);
     },
     async withUserLock(userId, fn) {
-      await sql`select pg_advisory_lock(hashtext(${`device:${userId}`}))`;
-      try {
-        return await fn();
-      } finally {
-        await sql`select pg_advisory_unlock(hashtext(${`device:${userId}`}))`;
-      }
+      // Transaction pooling must keep the lock and device writes on one backend.
+      return pool.begin(async (connection: any) => {
+        await connection`select pg_advisory_xact_lock(hashtext(${`device:${userId}`}))`;
+        return transaction.run(connection, fn);
+      });
     },
   };
 }
