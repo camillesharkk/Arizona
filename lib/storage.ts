@@ -39,7 +39,7 @@ const empty: SavedProgress = {
   scores: [],
 };
 
-function progressKey(email = currentEmail(), state: import("@/lib/types").StateCode = "AZ") {
+function progressKey(email: string | null = currentEmail(), state: import("@/lib/types").StateCode = "AZ") {
   const prefix = state === "CA" ? "ca-notary-" : state === "HI" ? "hi-notary-" : state === "AZ" ? PREFIX : `${state.toLowerCase()}-notary-`;
   return email ? `${prefix}progress:${email}` : `${prefix}progress`;
 }
@@ -49,10 +49,10 @@ function notifyProgress() {
   window.dispatchEvent(new Event(PROGRESS_EVENT));
 }
 
-export function loadProgress(state: import("@/lib/types").StateCode = "AZ"): SavedProgress {
+export function loadProgress(state: import("@/lib/types").StateCode = "AZ", owner?: string | null): SavedProgress {
   if (typeof window === "undefined") return { ...empty };
   try {
-    const raw = localStorage.getItem(progressKey(undefined, state));
+    const raw = localStorage.getItem(progressKey(owner, state));
     if (!raw) return { ...empty };
     const progress: SavedProgress = { ...empty, ...JSON.parse(raw) };
     if (state === 'NY') {
@@ -62,7 +62,7 @@ export function loadProgress(state: import("@/lib/types").StateCode = "AZ"): Sav
         progress.answeredIds = progress.answeredIds.filter(id => !replaced.includes(id));
         progress.wrongIds = progress.wrongIds.filter(id => !replaced.includes(id));
         progress.questionVersions = { ...progress.questionVersions, ...Object.fromEntries(replaced.map(id => [id, currentQuestionVersion(id)])) };
-        localStorage.setItem(progressKey(undefined, state), JSON.stringify(progress));
+        localStorage.setItem(progressKey(owner, state), JSON.stringify(progress));
       }
     }
     return progress;
@@ -71,9 +71,9 @@ export function loadProgress(state: import("@/lib/types").StateCode = "AZ"): Sav
   }
 }
 
-export function saveProgress(patch: Partial<SavedProgress>, state: import("@/lib/types").StateCode = "AZ"): SavedProgress {
-  const next = { ...loadProgress(state), ...patch };
-  localStorage.setItem(progressKey(undefined, state), JSON.stringify(next));
+export function saveProgress(patch: Partial<SavedProgress>, state: import("@/lib/types").StateCode = "AZ", owner?: string | null): SavedProgress {
+  const next = { ...loadProgress(state, owner), ...patch };
+  localStorage.setItem(progressKey(owner, state), JSON.stringify(next));
   notifyProgress();
   return next;
 }
