@@ -198,6 +198,7 @@ try {
   const guestQuestions = {
     AZ: load('data/questions.ts').publishedQuestions(), CA: load('data/ca-questions.ts').publishedCaQuestions(), HI: load('data/hi-questions.ts').publishedHiQuestions(),
     NY: packFor('NY').questions(), PA: packFor('PA').questions(), LA: packFor('LA').questions(), CT: packFor('CT').questions(),
+    NC: packFor("NC").questions(),
   };
   for (const [state, bank] of Object.entries(guestQuestions)) {
     const user = await store.createUser({email:`guest-bulk-${state}@example.invalid`,passwordHash:'isolated',name:null});

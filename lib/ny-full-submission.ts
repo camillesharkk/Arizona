@@ -9,6 +9,7 @@ import { pickCaFullExam } from "./ca-exam";
 import { pickHiFullExam } from "./hi-exam";
 import type { StateCode } from "./types";
 import { accountProCovers, ctProCovers } from "./account-pro.ts";
+import { stateProCovers, NC_PRO_PRODUCT } from "./state-pro.ts";
 import { isSiteProProduct } from "./pro-products.ts";
 import type { ProUsageContext } from "./commerce/usage";
 import { applyStreak, recordQuestionAnswer } from "./progress";
@@ -63,8 +64,12 @@ export async function savePackFullSubmission(store: Store, userId: string, input
         return { ok: true, duplicate: true, exam: existing, fullExamCount: savedFullCount, proUsage: savedDocument?.checks?.[input.examId]?.proUsage };
       }
     }
-    if (input.questions.length !== config.fullCount || new Set(input.questions.map(answer => answer.questionId)).size !== config.fullCount) throw new Error("invalid_exam");
-    const draw = state !== "NY" && Number.isSafeInteger(input.seed) ? config.pickFull(input.seed!) : null;
+    const now = new Date();
+    const entitlements = await transaction.listEntitlements(userId);
+    const pro = stateProCovers(entitlements, state, now);
+    const expectedCount = config.fullCountFor?.(pro) ?? config.fullCount;
+    if (input.questions.length !== expectedCount || new Set(input.questions.map(answer => answer.questionId)).size !== expectedCount) throw new Error("invalid_exam");
+    const draw = state !== "NY" && Number.isSafeInteger(input.seed) ? config.pickFull(input.seed!, pro) : null;
     const matchesDraw = Boolean(draw && draw.questions.every((question, index) => question.question_id === input.questions[index]?.questionId));
     if ((state === "LA" || state === "CT") && !matchesDraw) throw new Error("invalid_exam");
     // A bank expansion must not redraw a saved PA sitting. A legacy sitting may
@@ -97,9 +102,7 @@ export async function savePackFullSubmission(store: Store, userId: string, input
         if (questions.filter(({ question }) => question.exam_area === quota.area && !unscored.has(question.question_id)).length !== quota.count) throw new Error("invalid_exam");
       }
     }
-    const now = new Date();
-    const entitlements = await transaction.listEntitlements(userId);
-    const pro = state === "CT" ? ctProCovers(entitlements, now) : accountProCovers(entitlements, now);
+    if (state === "NC" && questions.some(({ question }) => !pro && !question.is_free)) throw new Error("invalid_exam");
     const fullCount = exams.filter(exam => exam.mode === mode && exam.id !== input.examId).length;
     if (!existing && !pro && fullCount >= FREE_FULL_EXAMS) throw new Error("full_trial_used");
     let proUsageFeature: "full_exam_extra" | "pro_question" | undefined;
@@ -107,7 +110,7 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     else if (pro && questions.some(({ question, selected }) => selected && !question.is_free)) proUsageFeature = "pro_question";
     const proUsage: UsageReceipt | undefined = proUsageFeature ? {
       eventId: `${mode}:${input.examId}`, featureCode: proUsageFeature, at: now.toISOString(),
-      entitlementIds: entitlements.filter(entitlement => entitlement.status === "active" && isSiteProProduct(entitlement.productCode)
+      entitlementIds: entitlements.filter(entitlement => entitlement.status === "active" && (state === "NC" ? entitlement.productCode === NC_PRO_PRODUCT && entitlement.state === "NC" : isSiteProProduct(entitlement.productCode))
         && new Date(entitlement.startsAt) <= now && new Date(entitlement.expiresAt) > now).map(entitlement => entitlement.id),
     } : undefined;
     const wrongIds: string[] = [];

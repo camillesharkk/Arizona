@@ -1,5 +1,7 @@
 "use client";
 
+import { clientStatePro } from "@/lib/state-pro";
+
 import { fetchAccount } from "@/lib/client-account";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -81,7 +83,7 @@ export function QuestionsClient({
       .then((data) => {
         if (cancel) return;
         const nextOwner = data.user?.id || "guest";
-        const pro = Boolean(stateCode === "CT" ? data.user?.connecticutPro : data.user?.arizonaPro || data.user?.californiaPro || data.user?.hawaiiPro || data.user?.plan === "pro");
+        const pro = clientStatePro(data.user, stateCode);
         const existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
         setOwner(nextOwner);
         setIsPro(pro);

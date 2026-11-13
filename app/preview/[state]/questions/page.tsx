@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { QuestionsClient } from "@/components/QuestionsClient";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
 
-const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", connecticut: "CT" };
+const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", connecticut: "CT", "north-carolina": "NC" };
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
   if (!prepPageEnabled((await params).state)) notFound();

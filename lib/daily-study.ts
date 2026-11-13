@@ -27,14 +27,15 @@ import {
   type StudySettings,
 } from "@/lib/study-plan";
 import { DEFAULT_STUDY_TIME_ZONE, scheduleReview } from "@/lib/review-schedule";
+import { stateProCovers, stateProExpiry } from "@/lib/state-pro";
 import { packFor } from "@/lib/prep-pack";
 import { getStore } from "@/lib/store";
 import type { StateCode } from "@/lib/types";
 
-export type StudyState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT";
+export type StudyState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC";
 
 function isPack(state: StudyState) {
-  return state === "NY" || state === "PA" || state === "LA" || state === "CT";
+  return state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC";
 }
 
 function pool(state: StudyState, isPro: boolean) {
@@ -138,8 +139,8 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   const topicPractice = state === "CA" || state === "HI" || isPack(state);
   const storeForExpiry = await getStore();
   const account = await storeForExpiry.listEntitlements(userId);
-  const pro = state === "CT" ? ctProCovers(account) : accountProCovers(account);
-  const expires = accountProExpiry(account, new Date(now), state === "CT" ? "CT" : undefined);
+  const pro = stateProCovers(account, state);
+  const expires = stateProExpiry(account, state, new Date(now));
   const loaded = await loadDocument(userId, state, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
   let doc = loaded.doc;
   const { store, checks } = loaded;
@@ -220,7 +221,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     projectedDate: projection.date,
     projectReason: projection.reason,
     entitlementExpiresAt: expires ? expires.toISOString() : null,
-    freeOnly: (state === "AZ" || state === "CT") && !pro,
+    freeOnly: (state === "AZ" || state === "CT" || state === "NC") && !pro,
     freeQuestionCount: pool(state, false).questions.length,
     questionCount: pool(state, true).questions.length,
     freeCardCount: pool(state, false).cards.length,

@@ -1,4 +1,5 @@
 import type { Source } from "../lib/types.ts";
+import { ncSources } from "./nc-sources.ts";
 
 import { ctSources, CT_CHECKED_ON } from "../lib/ct-site.ts";
 
@@ -9,6 +10,7 @@ export const sources: Record<string, Source> = {
     ["ct_forms", "SOS", "Connecticut Official Notary Forms", ctSources.forms],
     ["ct_fee_act", "Statute", "P.A. 26-81 §13, effective July 1, 2026", ctSources.feeAct],
   ].map(([id, type, title, url]) => [id, { source_id: id, source_type: type as Source["source_type"], title, reference: title, url, last_verified_at: CT_CHECKED_ON, last_checked_at: CT_CHECKED_ON, version: id === "ct_manual" ? "Rev. 2026-1" : "checked 2026-11-13" }])),
+  ...ncSources,
   sos_handbook: {
     source_id: "sos_handbook",
     source_type: "Manual",

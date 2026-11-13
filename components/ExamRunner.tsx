@@ -42,6 +42,7 @@ import { weakestMissedTopic, topicStudyHref } from "@/lib/next-step";
 import { adoptGuestCaRecords, readCaAttempt, saveCaQuickAttempt } from "@/lib/ca-attempts";
 import { CtResultNext } from "@/components/CtResultNext";
 import { ctSources } from "@/lib/ct-site";
+import { NcPracticeNext } from "@/components/NcPracticeNext";
 import { CaQuickNext } from "@/components/CaQuickNext";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
@@ -88,12 +89,13 @@ export function ExamRunner({
   const topicPractice = onCa || onHi || Boolean(pack);
   const site = pack ? pack.paths : onHi ? hiPaths : onCa ? caPaths : paths;
   const examMinutes = pack ? pack.fullMinutes ?? 0 : onHi ? 0 : onCa ? 60 : examConfig.timeLimitMinutes;
-  const fullSize = pack ? pack.fullCount : onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
+
   const anonFullKey = pack ? pack.anonKey : onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : "az-anon-full-started";
   const unscoredRef = useRef<string[]>([]);
   const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
   const poolLocked = useRef(false);
   const [poolIsPro, setPoolIsPro] = useState(isPro);
+  const fullSize = pack ? (pack.fullCountFor?.(isPro) ?? pack.fullCount) : onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
   const count = mode === "quick" ? 10 : mode === "full" ? fullSize : 10;
   const byId = useMemo(
     () => new Map((pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
@@ -158,7 +160,8 @@ export function ExamRunner({
       return preset.filter(item => item.state === "CT" && (item.is_free || isPro)).map(item => item.question_id);
     }
     if (pack) {
-      const bank = pack.questions();
+      const bank = pack.questions().filter(item => stateCode !== "NC" || isPro || item.is_free);
+      if (stateCode === "NC" && preset?.length) return preset.filter(item => bank.some(question => question.question_id === item.question_id)).map(item => item.question_id);
       if (focusArea) {
         const pool = bank.filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
         const open = pool.filter((item) => item.is_free || isPro);
@@ -166,7 +169,7 @@ export function ExamRunner({
       }
       if (mode === "quick") return pack.pickQuick(seed).map((item) => item.question_id);
       if (mode === "full") {
-        const picked = pack.pickFull(seed);
+        const picked = pack.pickFull(seed, isPro);
         unscoredRef.current = picked?.unscoredIds || [];
         return picked ? picked.questions.map((item) => item.question_id) : [];
       }
@@ -565,7 +568,7 @@ export function ExamRunner({
         fetch("/api/billing/pro-usage/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ featureCode: "weak_areas" }),
+          body: JSON.stringify({ featureCode: "weak_areas", state: stateCode }),
         }).catch(() => undefined);
       }
       if (letter === q.correct_option) {
@@ -771,7 +774,13 @@ export function ExamRunner({
       <div className="grid">
         <div className="card result-summary">
           <span className="kicker">Result</span>
-          {stateCode === "CT" ? (
+          {stateCode === "NC" ? (
+            <>
+              <h2>{correct} of {questions.length} correct</h2>
+              <p className="lede">Your {mode === "quick" ? "Quick 10" : mode === "full" ? "Comprehensive Practice" : "Topic Practice"} result. {questions.filter(item => !answers[item.question_id]).length} skipped.</p>
+              <NcPracticeNext correct={correct} total={questions.length} topics={[...topicAcc.entries()].map(([id, value]) => ({ id, ...value }))} quick={mode === "quick"} />
+            </>
+          ) : stateCode === "CT" ? (
             <>
               <h2 ref={resultHeadingRef} tabIndex={-1}>{correct} of {questions.length} correct</h2>
               <p className="lede">Your Connecticut practice result.</p>
@@ -892,7 +901,7 @@ export function ExamRunner({
               {v.label}: {Math.round((v.right / v.total) * 100)}% ({v.total - v.right} missed)
             </p>
           ))}
-          {!guided && weak.length > 0 && (
+          {stateCode !== "NC" && !guided && weak.length > 0 && (
             <div style={{ marginTop: 16 }}>
               <p>
                 <strong>Your weakest areas are:</strong>
@@ -911,7 +920,7 @@ export function ExamRunner({
               <li key={s}>{s}</li>
             ))}
           </ul>
-          {stateCode === "CT" || (topicPractice && mode === "quick") ? null : guided ? (
+          {stateCode === "CT" || stateCode === "NC" || (topicPractice && mode === "quick") ? null : guided ? (
             <div className="result-links">
               {topicPractice ? <Link href={mistakesHref}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" href={mistakesHref} stateCode={stateCode} />}
               <Link href={site.study}>Review Study Guide</Link>
@@ -1069,7 +1078,7 @@ export function ExamRunner({
           {restored ? " · Resumed" : ""}
         </span>
         <span className="row">
-          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{(onHi || stateCode === "CT") && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
+          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{(onHi || stateCode === "CT" || stateCode === "NC") && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
           <button className="btn btn-ghost" type="button" onClick={startNew}>Start new</button>
         </span>
       </div>

@@ -3,6 +3,7 @@ import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { accountProExpiry, ctProCovers } from "@/lib/account-pro";
 import { getArizonaEntitlement } from "@/lib/entitlements";
+import { stateProCovers, stateProExpiry } from "@/lib/state-pro";
 import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
 
 export async function GET() {
@@ -30,14 +31,16 @@ export async function GET() {
       arizonaPro,
       connecticutPro,
       connecticutProExpiresAt: connecticutPro ? accountProExpiry(entitlements, new Date(), "CT")?.toISOString() ?? null : null,
+      ncPro: stateProCovers(entitlements, "NC"),
+      ncPlanExpiresAt: stateProExpiry(entitlements, "NC")?.toISOString() ?? null,
       californiaPro: arizonaPro,
       hawaiiPro: arizonaPro,
-      planExpiresAt: entitlement?.expiresAt ?? null,
+      planExpiresAt: expiry?.toISOString() ?? null,
       aiDailyLimit: arizonaPro ? AI_LIMIT_PRO : AI_LIMIT_FREE,
       fullExamCount: count("full"),
       caFullExamCount: count("ca-full"),
       hiFullExamCount: count("hi-full"),
-      packFullExamCount: { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full") },
+      packFullExamCount: { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full"), NC: count("nc-full") },
     },
   }, { headers: { "Cache-Control": "private, no-store" } });
 }

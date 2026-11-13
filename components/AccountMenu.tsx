@@ -8,7 +8,7 @@ import { hiPaths } from "@/lib/hi-site";
 import { packNavigationFor } from "@/lib/prep-navigation";
 import { paths } from "@/lib/paths";
 import type { LiveCode } from "@/lib/site-state";
-import { ProAccessNote } from "@/components/ProAccessNote";
+import { ProAccessNote, formatProUntil } from "@/components/ProAccessNote";
 
 export type HeaderUser = {
   email: string;
@@ -17,6 +17,8 @@ export type HeaderUser = {
   planExpiresAt?: string | null;
   connecticutPro?: boolean;
   connecticutProExpiresAt?: string | null;
+  ncPro?: boolean;
+  ncPlanExpiresAt?: string | null;
 };
 
 export function avatarInitial(name: string | null, email: string): string {
@@ -30,8 +32,8 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const menuId = "account-menu-dropdown";
-  const isPro = stateCode === "CT" ? Boolean(me.connecticutPro) : me.plan === "pro";
-  const expiresAt = stateCode === "CT" ? me.connecticutProExpiresAt : me.planExpiresAt;
+  const isPro = stateCode === "NC" ? Boolean(me.ncPro) : stateCode === "CT" ? Boolean(me.connecticutPro) : me.plan === "pro";
+  const expiresAt = stateCode === "NC" ? me.ncPlanExpiresAt : stateCode === "CT" ? me.connecticutProExpiresAt : me.planExpiresAt;
   const pack = packNavigationFor(stateCode);
   const settingsHref = `${paths.account}${stateCode && stateCode !== "AZ" ? `?state=${stateCode}` : ""}#study-settings`;
   const pricing = pack ? pack.paths.pricing : stateCode === "HI" ? hiPaths.pricing : stateCode === "CA" ? caPaths.pricing : paths.pricing;

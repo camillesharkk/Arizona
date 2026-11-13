@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     .object({
       questionId: z.string(),
       questionVersion: z.number().int().positive().optional(),
-      state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT"]).optional(),
+      state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC"]).optional(),
       options: z.array(z.string()).length(4).optional(),
       selected: z.enum(["A", "B", "C", "D"]).optional(),
       mode: z.enum(["explain", "why-correct", "why-wrong", "beginner", "similar"]),
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
     model: process.env.AI_MODEL,
     providerDailyCap: parseProviderDailyCap(),
     onExceedFreeQuota: async () => {
-      await recordProUsage(session.id, "ai_tutor_pro_quota");
+      await recordProUsage(session.id, "ai_tutor_pro_quota", undefined, state);
     },
   });
   if (!delivered.ok && delivered.reason === "empty") {

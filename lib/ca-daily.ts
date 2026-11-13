@@ -33,7 +33,7 @@ export async function saveCaExamCheck(userId: string, examId: string, input: { w
     checks[examId] = { wrong: input.wrongIds.length, skipped: input.skipped, wrongIds: input.wrongIds };
     await store.saveStudyPlan({ userId, state, document: { ...raw, checks } });
   };
-  return ["NY", "PA", "LA", "CT"].includes(state) ? store.learningTransaction(userId, save) : save();
+  return ["NY", "PA", "LA", "CT", "NC"].includes(state) ? store.learningTransaction(userId, save) : save();
 }
 
 export async function caDailyView(userId: string, timeZoneHint?: string, now = new Date().toISOString()) {

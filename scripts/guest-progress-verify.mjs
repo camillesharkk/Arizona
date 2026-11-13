@@ -6,6 +6,7 @@ import { testLoader } from './pack-test-utils.mjs';
 process.env.NEXT_PUBLIC_CT_PREVIEW = "1";
 
 let store;
+process.env.STATE_PREVIEW = '1';
 let owner;
 const load = testLoader({
   '@/lib/store': { getStore: async () => store },
@@ -22,6 +23,7 @@ const banks = {
   PA: load('data/pa-content.ts').publishedPaQuestions(),
   LA: load('data/la-content.ts').publishedLaQuestions(),
   CT: load('data/ct-content.ts').publishedCtQuestions(),
+  NC: load('data/nc-content.ts').publishedNcQuestions(),
 };
 const post = body => POST(new Request('http://localhost/api/progress/import/', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }));
 for (const [state, bank] of Object.entries(banks)) {

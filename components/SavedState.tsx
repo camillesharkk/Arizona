@@ -20,7 +20,7 @@ export function useResolvedState(savedState: LiveCode | null) {
   useLayoutEffect(() => {
     const fromPath = pathState(pathname);
     if (fromPath) writeStateCookie(fromPath);
-    const match = document.cookie.match(/(?:^|; )np_state=(AZ|CA|HI|NY|PA|LA|CT)/);
+    const match = document.cookie.match(/(?:^|; )np_state=(AZ|CA|HI|NY|PA|LA|CT|NC)/);
     const remembered = match?.[1] === "AZ" || match?.[1] === "CA" || match?.[1] === "HI" || match?.[1] === "NY" || match?.[1] === "PA" || match?.[1] === "LA" || match?.[1] === "CT" ? match[1] : savedState;
     setSaved(fromPath ?? remembered);
   }, [pathname, savedState]);

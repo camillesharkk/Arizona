@@ -7,7 +7,7 @@ import { topicLabel } from "@/lib/quiz";
 import type { TopicId } from "@/lib/types";
 import { readinessScore } from "@/lib/stats";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
-import { ProAccessNote } from "@/components/ProAccessNote";
+import { ProAccessNote, formatProUntil } from "@/components/ProAccessNote";
 import { LoadingNote } from "@/components/QuizChrome";
 import { useResolvedState, useSavedState } from "@/components/SavedState";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
@@ -28,11 +28,14 @@ type ProgressPayload = {
   arizonaPro?: boolean;
   californiaPro?: boolean;
   hawaiiPro?: boolean;
+  ncPro?: boolean;
+  ncPlanExpiresAt?: string | null;
 };
 
 type CheckoutPhase = "boot" | "off" | "activating" | "activated" | "timeout" | "session";
 
 type AccessPayload = {
+  ncPro?: boolean;
   arizonaPro?: boolean;
   californiaPro?: boolean;
   hawaiiPro?: boolean;
@@ -42,7 +45,8 @@ type AccessPayload = {
   orders?: AnalyticsPaidOrder[];
 };
 
-function proForState(row: { arizonaPro?: boolean; californiaPro?: boolean; hawaiiPro?: boolean } | null | undefined, _state: string) {
+function proForState(row: { arizonaPro?: boolean; californiaPro?: boolean; hawaiiPro?: boolean; ncPro?: boolean } | null | undefined, state: string) {
+  if (state === "NC") return Boolean(row?.ncPro);
   return Boolean(row?.arizonaPro || row?.californiaPro || row?.hawaiiPro);
 }
 
@@ -243,7 +247,7 @@ export function DashboardClient() {
     byTopic.set(s.topic, cur);
   });
   const ready = readinessScore(stats, exams);
-  const showAsPro = (state === "AZ" || state === "NY") && isAzPro;
+  const showAsPro = (state === "AZ" || state === "NY" || state === "NC") && isAzPro;
   const hideFreePlan = activating && !showAsPro;
   const weakPlan = [...byTopic.entries()]
     .map(([id, v]) => ({ id, acc: v.r + v.w ? Math.round((v.r / (v.r + v.w)) * 100) : 100, missed: v.w }))
@@ -267,7 +271,7 @@ export function DashboardClient() {
       </div>
       {showAsPro && (
         <div className="card">
-          <ProAccessNote plan="pro" planExpiresAt={user.planExpiresAt} />
+          {state === "NC" ? <p>North Carolina Pro{data?.ncPlanExpiresAt ? ` · Active until ${formatProUntil(data.ncPlanExpiresAt)}` : ""}</p> : <ProAccessNote plan="pro" planExpiresAt={user.planExpiresAt} />}
         </div>
       )}
       <div className="card">

@@ -27,13 +27,14 @@ for(const active of [false,true]) {
   assert.equal(result.user.hawaiiPro,active);
   assert.equal(result.user.aiDailyLimit,active?300:75);
   for(const field of ['fullExamCount','caFullExamCount','hiFullExamCount']) assert.equal(result.user[field],1);
-  assert.deepEqual(result.user.packFullExamCount,{NY:1,PA:1,LA:1,CT:1});
+  assert.deepEqual(result.user.packFullExamCount,{NY:1,PA:1,LA:1,CT:1,NC:1});
+  assert.equal(result.user.ncPro, false);
   assert.equal(entitlementReads,1,'Read account-wide entitlements once per response');
   assert.equal(examReads,1,'Read exam history once per response');
 }
 console.log('Account response retains all-state rights, AI limits and seven-state counts with one entitlement/history read');
 const { dailyStudyView, saveStudySettings } = load('lib/daily-study.ts');
-for (const state of ['AZ','CA','HI','NY','PA','LA','CT']) {
+for (const state of ['AZ','CA','HI','NY','PA','LA','CT','NC']) {
   const now = new Date().toISOString();
   planWrites = 0;
   await dailyStudyView(user.id,'America/New_York',now,state);

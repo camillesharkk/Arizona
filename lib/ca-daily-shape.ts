@@ -2,7 +2,7 @@ import type { StateCode } from "./types.ts";
 
 export function examState(mode: string): StateCode {
   const prefix = mode.split("-")[0].toUpperCase();
-  return prefix === "CA" || prefix === "HI" || prefix === "NY" || prefix === "PA" || prefix === "LA" || prefix === "CT" ? prefix : "AZ";
+  return prefix === "CA" || prefix === "HI" || prefix === "NY" || prefix === "PA" || prefix === "LA" || prefix === "CT" || prefix === "NC" ? prefix : "AZ";
 }
 
 export type CaCheck = { wrong: number; skipped: number; wrongIds: string[] };
@@ -42,7 +42,7 @@ export function recoverWrongIds(examAt: string, stats: CaStatLike[], state = "CA
 }
 
 export function recentCaExams(exams: CaExamLike[], checks: Record<string, CaCheck>, stats: CaStatLike[], state = "CA") {
-  const fullLabel = state === "CT" ? "Comprehensive Practice" : state === "HI" ? "Comprehensive Practice" : state === "PA" ? "30-question practice" : state === "NY" ? "40-question practice" : state === "LA" ? "Scenario practice" : "Full 45";
+  const fullLabel = state === "NC" ? "Comprehensive Practice" : state === "CT" ? "Comprehensive Practice" : state === "HI" ? "Comprehensive Practice" : state === "PA" ? "30-question practice" : state === "NY" ? "40-question practice" : state === "LA" ? "Scenario practice" : "Full 45";
   return exams
     .filter((exam) => examState(exam.mode) === state)
     .sort((a, b) => b.at.localeCompare(a.at))

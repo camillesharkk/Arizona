@@ -1,5 +1,7 @@
 "use client";
 
+import { clientStatePro } from "@/lib/state-pro";
+
 import { fetchAccount } from "@/lib/client-account";
 
 import { useEffect, useRef, useState } from "react";
@@ -110,7 +112,7 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
       .then((d) => {
         if (cancel) return;
         const nextOwner = d.user?.id || "guest";
-        setIsPro(Boolean(d.user?.arizonaPro || d.user?.californiaPro || d.user?.hawaiiPro || d.user?.plan === "pro"));
+        setIsPro(clientStatePro(d.user, stateCode));
         setFullExamCount(Number((pack ? d.user?.packFullExamCount?.[pack.code] : onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setQuickOpen(Boolean(openSitting(sessionStorage, nextOwner, "quick", stateCode)));

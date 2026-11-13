@@ -107,7 +107,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
       setSyncMessage(sync.message || "");
       userIdRef.current = me.user.id;
       setSeen(readMistakePrompts(window.localStorage, me.user.id));
-      setIsPro(stateCode === "CT" ? Boolean(me.user.connecticutPro) : topicPractice ? false : Boolean(me.user.arizonaPro || me.user.plan === "pro"));
+      setIsPro(stateCode === "NC" ? Boolean(me.user.ncPro) : stateCode === "CT" ? Boolean(me.user.connecticutPro) : topicPractice ? false : Boolean(me.user.arizonaPro || me.user.plan === "pro"));
       const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix";
       const day = new Intl.DateTimeFormat("en-CA", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
       const response = await fetch(`/api/mistakes/?state=${stateCode}&timeZone=${encodeURIComponent(zone)}&day=${day}&account=${encodeURIComponent(me.user.id)}`, { cache: "no-store", signal: AbortSignal.timeout(30000) });
@@ -363,7 +363,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         <button className="btn btn-ghost" type="button" onClick={() => { setQueue(null); load(); }}>
           Back
         </button>
-        <ExamRunner mode="weak" practice review preset={queue} isPro={stateCode === "CT" ? isPro : topicPractice ? true : isPro} sittingMode={`review-${source}-${topic}${stateCode === "CT" ? `-${attemptId || "all"}` : ""}`} stateCode={stateCode} />
+        <ExamRunner mode="weak" practice review preset={queue} isPro={stateCode === "CT" || stateCode === "NC" ? isPro : topicPractice ? true : isPro} sittingMode={`review-${source}-${topic}${stateCode === "CT" ? `-${attemptId || "all"}` : ""}`} stateCode={stateCode} />
       </div>,
     );
   }

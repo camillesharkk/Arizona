@@ -9,7 +9,7 @@ import { PA_CHECKED } from "@/data/pa-content";
 import { LA_CHECKED } from "@/data/la-content";
 
 const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA" };
-const checkedOn = { NY: NY_CHECKED, PA: PA_CHECKED, LA: LA_CHECKED };
+const checkedOn = { NY: NY_CHECKED, PA: PA_CHECKED, LA: LA_CHECKED, CT: "2026-11-13", NC: "2026-11-13" };
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {
   const { state } = await params;

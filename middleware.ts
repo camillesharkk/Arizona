@@ -14,6 +14,9 @@ export async function middleware(request: NextRequest) {
   if (process.env.VERCEL_ENV === "production" && (path === "/preview" || path.startsWith("/preview/"))) {
     return new NextResponse("Not found", { status: 404 });
   }
+  if (process.env.VERCEL_ENV === "production" && (path === "/north-carolina" || path.startsWith("/north-carolina/"))) {
+    return new NextResponse("Not found", { status: 404 });
+  }
   if (path.startsWith("/admin")) {
     const token = request.cookies.get(SESSION_COOKIE)?.value;
     const user = token ? await readSessionToken(token) : null;

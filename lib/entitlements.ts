@@ -1,3 +1,4 @@
+import { stateProCovers, stateProExpiry, NC_PRO_PRODUCT } from "./state-pro.ts";
 import type { Question } from "@/lib/types";
 import { publishedQuestions } from "@/data/questions";
 import { getStore } from "@/lib/store";
@@ -66,6 +67,7 @@ export async function hasArizonaPro(userId: string | null | undefined) {
 
 export async function hasStatePro(userId: string | null | undefined, _state?: string) {
   if (_state === "CT") return userId ? ctProCovers(await (await getStore()).listEntitlements(userId)) : false;
+  if (_state === "NC") return userId ? stateProCovers(await (await getStore()).listEntitlements(userId), "NC") : false;
   return hasArizonaPro(userId);
 }
 
@@ -94,11 +96,12 @@ export async function grantStatePro60d(opts: {
   }
   const rows = await store.listEntitlements(opts.userId);
   const now = new Date();
-  const window = nextProWindow(accountProExpiry(rows, now), now);
+  const state = opts.state === "NC" ? "NC" : "ALL";
+  const window = nextProWindow(stateProExpiry(rows, state, now), now);
   const entitlement = await store.insertEntitlement({
     userId: opts.userId,
-    productCode: SITE_PRO_PRODUCT_CODE,
-    state: "ALL",
+    productCode: state === "NC" ? NC_PRO_PRODUCT : SITE_PRO_PRODUCT_CODE,
+    state,
     status: "active",
     startsAt: window.startsAt.toISOString(),
     expiresAt: window.expiresAt.toISOString(),
@@ -106,7 +109,7 @@ export async function grantStatePro60d(opts: {
     providerOrderId: opts.providerOrderId,
     providerCustomerId: opts.providerCustomerId ?? null,
   });
-  await refreshPlanCache(opts.userId);
+  if (state !== "NC") await refreshPlanCache(opts.userId);
   return { ok: true, duplicate: false, entitlement };
 }
 
@@ -135,9 +138,9 @@ export async function visibleQuestions(userId: string | null | undefined) {
   return publishedQuestions().filter((q) => q.is_free || pro);
 }
 
-export async function aiDailyLimit(userId: string | null | undefined, _state?: string) {
+export async function aiDailyLimit(userId: string | null | undefined, state?: string) {
   if (!userId) return 0;
-  return (await hasStatePro(userId, _state)) ? AI_LIMIT_PRO : AI_LIMIT_FREE;
+  return (await hasStatePro(userId, state)) ? AI_LIMIT_PRO : AI_LIMIT_FREE;
 }
 
 export async function canUseAdvancedAnalytics(userId: string | null | undefined) {
@@ -175,5 +178,5 @@ export async function packFullExamCounts(userId: string) {
   const store = await getStore();
   const exams = await store.listExams(userId);
   const count = (prefix: string) => exams.filter((exam) => exam.mode === prefix).length;
-  return { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full") };
+  return { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full"), NC: count("nc-full") };
 }

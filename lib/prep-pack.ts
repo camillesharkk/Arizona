@@ -1,3 +1,5 @@
+import { ncCards, ncTopics, ncQuestionCounts, publishedNcQuestions } from "@/data/nc-content";
+import { NC_PRACTICE } from "./nc-site.ts";
 import { prepNavigation, type PrepCode, type PrepPaths } from "./prep-navigation.ts";
 export type { PrepCode, PrepPaths } from "./prep-navigation.ts";
 import { laCards, laTopics, pickLaFullExam, publishedLaQuestions } from "@/data/la-content";
@@ -19,6 +21,7 @@ export type PrepPack = {
   questions: () => Question[];
   counts: () => { published: number; free: number; pro: number };
   fullCount: number;
+  fullCountFor?: (isPro: boolean) => number;
   fullMinutes: number | null;
   fullTitle: string;
   fullDetail: string;
@@ -27,7 +30,7 @@ export type PrepPack = {
   practiceNotice?: { title: string; body: string; anchor: string };
   anonKey: string;
   pickQuick: (seed: number) => Question[];
-  pickFull: (seed: number) => { questions: Question[]; unscoredIds: string[] } | null;
+  pickFull: (seed: number, isPro?: boolean) => { questions: Question[]; unscoredIds: string[] } | null;
   /** False when the published bank cannot fill the stated practice. */
   fullReady: boolean;
   quickReady: boolean;
@@ -69,6 +72,23 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     quickReady: ctQuestionCounts().free >= 10, cards: ctCards, purchaseEnabled: false,
     handbookUrl: "https://portal.ct.gov/-/media/sots/business-services/notary/state_of_connecticut_notary_public_manual_rev2023.pdf?hash=16EF7EBB701DFF05F62495C282351BFF&rev=a50b095808bf4eb2a715e864480fe05a",
   },
+  NC: {
+    ...prepNavigation.NC,
+    topics: ncTopics,
+    questions: publishedNcQuestions,
+    counts: ncQuestionCounts,
+    fullCount: Math.min(NC_PRACTICE.comprehensiveLimit, ncQuestionCounts().published),
+    fullMinutes: NC_PRACTICE.minutes,
+    fullCountFor: (isPro) => Math.min(NC_PRACTICE.comprehensiveLimit, isPro ? ncQuestionCounts().published : ncQuestionCounts().free),
+    fullTitle: "Comprehensive Practice",
+    fullDetail: "Prepare before class and review after class with original practice questions. Comprehensive Practice draws up to 60 accessible questions with no time limit. Your results describe this practice session.",
+    anonKey: "nc-anon-full-started",
+    pickQuick: (seed) => quickFrom(publishedNcQuestions(), seed),
+    pickFull: (seed, isPro = false) => ({ questions: shuffle(publishedNcQuestions().filter(q => isPro || q.is_free), seed).slice(0, NC_PRACTICE.comprehensiveLimit), unscoredIds: [] }),
+    fullReady: ncQuestionCounts().free >= 10,
+    quickReady: ncQuestionCounts().free >= 10,
+    cards: ncCards,
+  },
   PA: {
     ...prepNavigation.PA,
     topics: paTopics,
@@ -80,7 +100,7 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     fullDetail: "30 questions and 60 minutes, each with three choices. Twenty-five stand in for the scored items, in the 4/18/3 outline. Five are this site's unscored items, mixed in and not identified until you submit. The official passing result is a scaled score of 75, not a raw percent.",
     anonKey: "pa-anon-full-started",
     pickQuick: pickPaQuickExam,
-    pickFull: pickPaFullExam,
+    pickFull: (seed) => pickPaFullExam(seed),
     fullReady: paCounts.published >= 30,
     quickReady: paCounts.free >= 10,
     cards: paCards,
@@ -128,10 +148,10 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
 };
 
 export function packFor(state: StateCode | string | null | undefined): PrepPack | null {
-  if (state === "NY" || state === "PA" || state === "LA" || state === "CT") return prepPacks[state];
+  if (state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC") return prepPacks[state];
   return null;
 }
 
 export function questionById(id: string) {
-  return [...publishedPaQuestions(), ...publishedNyQuestions(), ...publishedLaQuestions(), ...publishedCtQuestions()].find((question) => question.question_id === id) || null;
+  return [...publishedPaQuestions(), ...publishedNyQuestions(), ...publishedLaQuestions(), ...publishedCtQuestions(), ...publishedNcQuestions()].find((question) => question.question_id === id) || null;
 }

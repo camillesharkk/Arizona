@@ -13,6 +13,7 @@ import { getStore } from "@/lib/store";
 import { productionStateBlocked } from "@/lib/state-release";
 import { savePackFullSubmission } from "@/lib/ny-full-submission";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
+import { stateProCovers, stateProExpiry } from "@/lib/state-pro";
 
 const answerSchema = z.object({
   questionId: z.string(),
@@ -20,7 +21,7 @@ const answerSchema = z.object({
   selected: z.enum(["A", "B", "C", "D"]),
   attemptId: z.string().min(8).max(80).optional(),
   review: z.boolean().optional(),
-  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT"]).optional(),
+  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC"]).optional(),
   timeZone: z.string().max(80).optional(),
 });
 
@@ -46,7 +47,7 @@ export async function POST(req: Request) {
     try {
       const { proUsage, ...result } = await savePackFullSubmission(await getStore(), session.id, { ...full.data, state });
       // Commerce uses its existing client after the learning transaction has committed.
-      if (proUsage) await recordProUsage(session.id, proUsage.featureCode, proUsage);
+      if (proUsage) await recordProUsage(session.id, proUsage.featureCode, proUsage, state);
       return NextResponse.json(result);
     } catch (error) {
       const code = error instanceof Error ? error.message : "";
@@ -65,7 +66,7 @@ export async function POST(req: Request) {
         correctCount: z.number(),
         total: z.number(),
         examId: z.string().uuid().optional(),
-        state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT"]).optional(),
+        state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC"]).optional(),
         wrongIds: z.array(z.string().max(80)).max(80).optional(),
         skipped: z.number().int().min(0).max(80).optional(),
         timeZone: z.string().max(80).optional(),
@@ -76,7 +77,7 @@ export async function POST(req: Request) {
     const store = await getStore();
     const california = exam.data.state === "CA";
     const hawaii = exam.data.state === "HI";
-    const packState = exam.data.state === "NY" || exam.data.state === "PA" || exam.data.state === "LA" || exam.data.state === "CT" ? exam.data.state : null;
+    const packState = exam.data.state === "NY" || exam.data.state === "PA" || exam.data.state === "LA" || exam.data.state === "CT" || exam.data.state === "NC" ? exam.data.state : null;
     if (exam.data.mode === "full" || exam.data.mode.endsWith("-full")) {
       return NextResponse.json({ error: "Submit the complete sitting for server grading" }, { status: 400 });
     }
@@ -107,7 +108,7 @@ export async function POST(req: Request) {
   const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(parsed.data.questionId)].find((x) => x && x.question_id === parsed.data.questionId);
   if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
   if (productionStateBlocked(q.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  if ((q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT") && (parsed.data.questionVersion ?? 1) !== q.version) {
+  if ((q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT" || state === "NC") && (parsed.data.questionVersion ?? 1) !== q.version) {
     return NextResponse.json({ error: "Question updated; reload before answering", code: "question_updated" }, { status: 409 });
   }
   if (parsed.data.state ? parsed.data.state !== q.state : q.state !== "AZ") {
@@ -126,7 +127,7 @@ export async function POST(req: Request) {
   });
   if (!stat) return NextResponse.json({ ok: true, duplicate: true, correct });
   if (!q.is_free) {
-    await recordProUsage(session.id, "pro_question");
+    await recordProUsage(session.id, "pro_question", undefined, q.state);
   }
   return NextResponse.json({ ok: true, correct, stat: toClientStat(stat) });
 }
@@ -135,20 +136,24 @@ export async function GET() {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const store = await getStore();
-  const [stats, exams, user, entitlement] = await Promise.all([
+  const [stats, exams, user, entitlements] = await Promise.all([
     store.listStats(session.id),
     store.listExams(session.id),
     store.getUserById(session.id),
-    getArizonaEntitlement(session.id),
+    store.listEntitlements(session.id),
   ]);
-  const arizonaPro = Boolean(entitlement);
+  const arizonaPro = stateProCovers(entitlements, "AZ");
+  const expiry = stateProExpiry(entitlements, "AZ");
+  const ncPro = stateProCovers(entitlements, "NC");
   return NextResponse.json({
     stats: stats.map(toClientStat),
     exams: exams.map(toClientExam),
-    user: user ? toClientUser(user, arizonaPro, entitlement?.expiresAt ?? user.planExpiresAt) : null,
+    user: user ? toClientUser(user, arizonaPro, expiry?.toISOString() ?? user.planExpiresAt) : null,
     arizonaPro,
     californiaPro: arizonaPro,
     hawaiiPro: arizonaPro,
+    ncPro,
+    ncPlanExpiresAt: stateProExpiry(entitlements, "NC")?.toISOString() ?? null,
     advancedAnalytics: arizonaPro,
   });
 }

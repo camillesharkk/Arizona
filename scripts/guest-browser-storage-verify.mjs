@@ -21,6 +21,7 @@ const banks = {
   HI: load('data/hi-questions.ts').publishedHiQuestions(), NY: load('data/ny-content.ts').publishedNyQuestions(),
   PA: load('data/pa-content.ts').publishedPaQuestions(), LA: load('data/la-content.ts').publishedLaQuestions(),
   CT: load('data/ct-content.ts').publishedCtQuestions(),
+  NC: load('data/nc-content.ts').publishedNcQuestions(),
 };
 for (const [state, bank] of Object.entries(banks)) {
   const question = bank.find(question => question.is_free);

@@ -1,5 +1,6 @@
 "use client";
 
+import { clientStatePro } from "@/lib/state-pro";
 import { fetchAccount } from "@/lib/client-account";
 
 import { Fragment, useEffect, useRef, useState } from "react";
@@ -21,12 +22,13 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   const pack = packFor(stateCode);
   const anonFullKey = pack ? pack.anonKey : onHi ? "hi-anon-full-started" : onCa ? "ca-anon-full-started" : "az-anon-full-started";
   const site = pack ? pack.paths : onHi ? hiPaths : onCa ? caPaths : paths;
-  const fullCount = pack ? pack.fullCount : onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
+
   const fullMinutes = pack ? pack.fullMinutes : onHi ? HI_EXAM.officialTimeLimitMinutes : onCa ? CA_EXAM.timeLimitMinutes : examConfig.timeLimitMinutes;
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<"pick" | "quick" | "full" | "weak" | "practice">("pick");
   const [focusArea, setFocusArea] = useState("");
   const [isPro, setIsPro] = useState(false);
+  const fullCount = pack ? (pack.fullCountFor?.(isPro) ?? pack.fullCount) : onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
   const [fullExamCount, setFullExamCount] = useState(0);
   const [signedIn, setSignedIn] = useState(false);
   const [anonFullUsed, setAnonFullUsed] = useState(false);
@@ -69,7 +71,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
       .then((r) => r.json())
       .then((d) => {
         if (cancel) return;
-        setIsPro(Boolean(stateCode === "CT" ? d.user?.connecticutPro : d.user?.arizonaPro || d.user?.californiaPro || d.user?.hawaiiPro || d.user?.plan === "pro"));
+        setIsPro(clientStatePro(d.user, stateCode));
         setFullExamCount(Number((pack ? d.user?.packFullExamCount?.[stateCode] : onHi ? d.user?.hiFullExamCount : onCa ? d.user?.caFullExamCount : d.user?.fullExamCount) || 0));
         setSignedIn(Boolean(d.user));
         setOwner(d.user?.id || "guest");
@@ -210,6 +212,20 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
 
   if (mode === "pick") {
     return (
+      <>
+      {stateCode === "NC" ? (
+        <section className="card" style={{ marginBottom: 18 }}>
+          <h2>Topic Practice</h2>
+          <p>Choose a rule to review using questions available to your account.</p>
+          <div className="tool-row">
+            {pack?.topics.map(topic => (
+              <Link className="chip" key={topic.id} href={`${site.practice}?mode=practice&area=${topic.id}`}>
+                {topic.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
       <div className="grid grid-3">
         {(["quick", "full", "weak"] as const).map((id) => {
           const copy = {
@@ -250,6 +266,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
           );
         })}
       </div>
+      </>
     );
   }
 

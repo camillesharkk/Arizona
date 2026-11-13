@@ -11,7 +11,7 @@ const sharedPaths = ["/login", "/register", "/forgot-password", "/reset-password
 /** State implied by the URL. Shared pages and coming-soon pages do not imply one. */
 export function pathState(pathname: string): LiveCode | null {
   const path = (pathname.split("?")[0] || "/").split("#")[0] || "/";
-  if (path === "/" || isComingSoonPath(path)) return null;
+  if (path === "/" || (isComingSoonPath(path) && !path.startsWith("/north-carolina"))) return null;
   if (path.startsWith("/api") || path.startsWith("/admin")) return null;
   if (isCaliforniaPath(path)) return "CA";
   if (isHawaiiPath(path)) return "HI";
@@ -19,11 +19,12 @@ export function pathState(pathname: string): LiveCode | null {
   if (path.startsWith("/preview/pennsylvania") || path.startsWith("/pennsylvania/") || path === "/pennsylvania") return "PA";
   if (path.startsWith("/connecticut/") || path === "/connecticut") return "CT";
   if (path.startsWith("/preview/louisiana") || path.startsWith("/louisiana/") || path === "/louisiana") return "LA";
+  if (path.startsWith("/preview/north-carolina") || path.startsWith("/north-carolina/") || path === "/north-carolina") return "NC";
   if (sharedPaths.some((item) => path === item || path.startsWith(`${item}/`))) return null;
   return "AZ";
 }
 
-const CODES = new Set<LiveCode>(["AZ", "CA", "HI", "NY", "PA", "LA", "CT"]);
+const CODES = new Set<LiveCode>(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC"]);
 
 export function parseStateCookie(value: string | undefined | null): LiveCode | null {
   return value && CODES.has(value as LiveCode) ? (value as LiveCode) : null;

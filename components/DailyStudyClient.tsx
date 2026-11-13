@@ -236,12 +236,12 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         </section>
         {practiceQuestions.length ? (
           <div className="daily-practice-quiz">
-            <ExamRunner mode="practice" practice isPro={stateCode === "CT" && view?.freeOnly === false} preset={practiceQuestions} onRecorded={load} sittingMode={stateCode === "CT" ? `daily-practice-${view?.today}` : "daily-practice"} stateCode={stateCode} />
+            <ExamRunner mode="practice" practice isPro={(stateCode === "CT" || stateCode === "NC") && view?.freeOnly === false} preset={practiceQuestions} onRecorded={load} sittingMode={stateCode === "CT" ? `daily-practice-${view?.today}` : "daily-practice"} stateCode={stateCode} />
           </div>
         ) : null}
         {reviewQuestions.length ? (
           <div className="daily-review-quiz">
-            <ExamRunner mode="weak" practice review isPro={stateCode === "CT" && view?.freeOnly === false} preset={reviewQuestions} onRecorded={load} sittingMode={stateCode === "CT" ? `daily-review-${view?.today}` : "daily-review"} stateCode={stateCode} />
+            <ExamRunner mode="weak" practice review isPro={(stateCode === "CT" || stateCode === "NC") && view?.freeOnly === false} preset={reviewQuestions} onRecorded={load} sittingMode={stateCode === "CT" ? `daily-review-${view?.today}` : "daily-review"} stateCode={stateCode} />
           </div>
         ) : null}
       </div>
