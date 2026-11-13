@@ -2,7 +2,9 @@
 
 ## Scope and branch
 
-Branch: `feature/indiana-notary-prep-20261113`. Base: `3c693ace5cbba4b4c454c9c2e1ae78b2aa14d390`, fetched `origin/main`. Native managed worktree: `C:/Users/20683/.codex/worktrees/indiana-candidate-1113/web`. The original `D:/webtest/web` checkout and its unrelated New York/mistake changes were left intact. This candidate has no push, merge, deployment, production database operation or payment.
+Branch: `feature/indiana-notary-prep-20261113`. Base: `3c693ace5cbba4b4c454c9c2e1ae78b2aa14d390`, fetched `origin/main`. Native managed worktree: `C:/Users/20683/.codex/worktrees/indiana-candidate-1113/web`. The original `D:/webtest/web` checkout and its unrelated New York/mistake changes were left intact. This document records the initial local acceptance checkpoint.
+
+The local acceptance checkpoint below predates the subsequently authorized cloud preview. Its deployment, isolated database migrations, account fixtures and cloud checks are recorded in [the preview deployment record](indiana-preview-deployment-2026-11-13.md).
 
 This is an implemented, locally reviewable candidate with an explicit content-verification shortfall. It is **not ready for public opening**.
 
@@ -74,6 +76,6 @@ Resolved during acceptance: Windows cross-drive dependency junction caused Next 
 ## Opening requirements
 
 1. Resolve exact official primary-source gaps, review the drafts and reach 203 published valid questions / 50 independent cards. Recheck current Code/IAC, current first-application fee and any changed official workflow.
-2. For a PostgreSQL-backed preview/release, review and apply candidate migration `017_guest_exams.sql` to the **confirmed intended database** with its recovery/compatibility procedure. No migration has been run against an external database here.
+2. The subsequently authorized isolated cloud preview has all 17 migrations, including `017_guest_exams.sql`. A later production release requires confirming its intended database and recovery/compatibility procedure before applying that migration.
 3. Configure and verify an IN product/price and dedicated checkout/webhook mapping before enabling purchases. The present 503 is deliberate; an AZ product must never silently sell IN access.
 4. In a later explicitly authorized release, review the IN availability registry, production route/API gates, preview banner, robots/canonicals and sitemap together. This branch deliberately leaves IN unavailable publicly and blocks it even if a production STATE_PREVIEW flag is accidentally enabled.
