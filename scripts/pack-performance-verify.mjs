@@ -8,6 +8,7 @@ import { performance } from 'node:perf_hooks';
 import ts from 'typescript';
 import { verificationStates } from './pack-test-utils.mjs';
 import { PGlite } from '../.tools/ny-pg/node_modules/@electric-sql/pglite/dist/index.js';
+import { types as postgresTypes } from '../node_modules/postgres/src/types.js';
 
 // Execute the real PostgreSQL store against an isolated PostgreSQL WASM engine.
 // No environment connection string or production connection is used.
@@ -44,7 +45,17 @@ function sql(strings, ...values) {
       return text + '$' + parameters.length + string;
     }, '');
     queryCount += 1;
-    return db.query(flatten(fragment), parameters).then(result => result.rows).then(resolve, reject);
+    const query = flatten(fragment);
+    return db.describeQuery(query).then(description => {
+      // Match the installed production driver's serializer for server-inferred JSON parameters.
+      const encoded = parameters.map((value, index) => {
+        const type = description.queryParams[index].dataTypeID;
+        return typeof value === 'string' && (type === 114 || type === 3802)
+          ? postgresTypes.json.serialize(value)
+          : value;
+      });
+      return db.query(query, encoded);
+    }).then(result => result.rows).then(resolve, reject);
   };
   return fragment;
 }

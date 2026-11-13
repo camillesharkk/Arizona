@@ -218,6 +218,7 @@ export const pgStore: Store = {
     if (!stats.length) return;
     await assertSchema();
     for (const stat of stats) await requireRevisionStorage(stat.questionId);
+    // Bind serialized JSON as text so postgres.js does not JSON-encode the string again.
     const rows = JSON.stringify(stats.map(stat => ({
       user_id: stat.userId, question_id: stat.questionId, topic: stat.topic,
       bank: stat.bank, chapter: stat.chapter, state: stat.state,
@@ -241,7 +242,7 @@ export const pgStore: Store = {
       user_id, question_id, topic, bank, chapter, state, first_correct, last_correct, wrong_count, right_count,
       review_count, consecutive_correct, review_stage, last_wrong_at, last_reviewed_at, next_review_at, review_plan,
       last_selected, last_correct_option, first_at, last_at, mastered, favorited, saved_for_review${revisionColumnsReady ? sql`, question_version, revision_history` : sql``}
-      from jsonb_populate_recordset(null::question_stats, ${rows}::jsonb)
+      from jsonb_populate_recordset(null::question_stats, ${rows}::text::jsonb)
       on conflict (user_id, question_id) do update set
       ${revisionColumnsReady ? sql`question_version = excluded.question_version, revision_history = excluded.revision_history,` : sql``}
       first_correct = excluded.first_correct,
@@ -297,7 +298,7 @@ export const pgStore: Store = {
     const data = JSON.stringify(attempts.map(attempt => ({ attempt_id: attempt.attemptId, question_id: attempt.questionId })));
     const rows = await db()`insert into answer_attempts (user_id, attempt_id, question_id)
       select ${userId}, attempt_id, question_id
-      from jsonb_to_recordset(${data}::jsonb) as attempts(attempt_id text, question_id text)
+      from jsonb_to_recordset(${data}::text::jsonb) as attempts(attempt_id text, question_id text)
       on conflict (user_id, attempt_id) do nothing returning attempt_id`;
     return rows.map(row => String(row.attempt_id));
   },
@@ -310,7 +311,7 @@ export const pgStore: Store = {
     if (!questionIds.length) return [];
     await assertSchema();
     const rows = await db()`select * from question_stats where user_id = ${userId}
-      and question_id in (select jsonb_array_elements_text(${JSON.stringify(questionIds)}::jsonb))`;
+      and question_id in (select jsonb_array_elements_text(${JSON.stringify(questionIds)}::text::jsonb))`;
     return rows.map(row => mapStat(row as Record<string, unknown>));
   },
   async listStats(userId) {
