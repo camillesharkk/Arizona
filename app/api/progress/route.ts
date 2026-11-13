@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
-import { canAccessQuestion, canTakeFullExam, hasStatePro, fullExamCount, caFullExamCount, getArizonaEntitlement } from "@/lib/entitlements";
-import { FREE_FULL_EXAMS } from "@/lib/product";
+import { canAccessQuestion, getArizonaEntitlement } from "@/lib/entitlements";
 import { recordProUsage } from "@/lib/commerce/usage";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
-import { questionById } from "@/lib/prep-pack";
-import { hiFullExamCount, packFullExamCounts } from "@/lib/entitlements";
+import { packFor, questionById } from "@/lib/prep-pack";
 import { saveCaExamCheck } from "@/lib/ca-daily";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
@@ -32,16 +30,19 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
   if (body?.kind === "ny-full" || body?.kind === "pack-full") {
     const state = body.kind === "ny-full" ? "NY" : body.state;
-    if (state !== "NY" && state !== "PA" && state !== "LA") return NextResponse.json({ error: "Invalid state" }, { status: 400 });
+    if (state !== "AZ" && state !== "CA" && state !== "HI" && !packFor(state)) return NextResponse.json({ error: "Invalid state" }, { status: 400 });
     if (productionStateBlocked(state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
     const full = z.object({
       examId: z.string().uuid(),
-      questions: z.array(z.object({ questionId: z.string(), questionVersion: z.number().int().positive(), selected: z.enum(["A", "B", "C", "D"]).optional() })).min(1).max(80),
+      questions: z.array(z.object({ questionId: z.string(), questionVersion: z.number().int().positive(), selected: z.enum(["A", "B", "C", "D"]).optional(), attemptId: z.string().min(8).max(80).optional() })).min(1).max(80),
       seed: z.number().int().min(0).max(1000000000).optional(),
       unscoredIds: z.array(z.string()).max(5).optional(),
       timeZone: z.string().max(80).optional(),
+      accountId: z.string().min(1).optional(),
+      finishedAt: z.string().datetime().optional(),
     }).safeParse(body);
     if (!full.success) return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
+    if (full.data.accountId && full.data.accountId !== session.id) return NextResponse.json({ error: "Account changed" }, { status: 409 });
     try {
       const { proUsage, ...result } = await savePackFullSubmission(await getStore(), session.id, { ...full.data, state });
       // Commerce uses its existing client after the learning transaction has committed.
@@ -51,6 +52,7 @@ export async function POST(req: Request) {
       const code = error instanceof Error ? error.message : "";
       if (code === "full_trial_used") return NextResponse.json({ error: "The free full practice for this state is already used" }, { status: 402 });
       if (code === "question_updated") return NextResponse.json({ error: "Question updated; reload before answering", code }, { status: 409 });
+      if (code === "legacy_attempts_required") return NextResponse.json({ error: "Restore the original saved sitting to finish saving this earlier practice", code }, { status: 409 });
       if (code === "invalid_exam") return NextResponse.json({ error: "Invalid exam" }, { status: 400 });
       throw error;
     }
@@ -75,7 +77,7 @@ export async function POST(req: Request) {
     const california = exam.data.state === "CA";
     const hawaii = exam.data.state === "HI";
     const packState = exam.data.state === "NY" || exam.data.state === "PA" || exam.data.state === "LA" ? exam.data.state : null;
-    if ((packState || /^(ny|pa|la)-full$/.test(exam.data.mode)) && (exam.data.mode === "full" || exam.data.mode.endsWith("-full"))) {
+    if (exam.data.mode === "full" || exam.data.mode.endsWith("-full")) {
       return NextResponse.json({ error: "Submit the complete sitting for server grading" }, { status: 400 });
     }
     if ((california || hawaii || packState) && exam.data.examId && exam.data.wrongIds) {
@@ -88,20 +90,6 @@ export async function POST(req: Request) {
       const existing = (await store.listExams(session.id)).some((row) => row.id === exam.data.examId);
       if (existing) return NextResponse.json({ ok: true, duplicate: true });
     }
-    if (packState && exam.data.mode === "full" && !(await hasStatePro(session.id, packState))) {
-      const used = (await packFullExamCounts(session.id))[packState];
-      if (used >= FREE_FULL_EXAMS) return NextResponse.json({ error: "The free full practice for this state is already used" }, { status: 402 });
-    }
-    if (!california && !hawaii && !packState && exam.data.mode === "full" && !(await canTakeFullExam(session.id))) {
-      return NextResponse.json({ error: "Pro required for additional full exams" }, { status: 402 });
-    }
-    if (hawaii && exam.data.mode === "full" && !(await hasStatePro(session.id, "HI")) && (await hiFullExamCount(session.id)) >= FREE_FULL_EXAMS) {
-      return NextResponse.json({ error: "The free Hawaii comprehensive practice is already used" }, { status: 402 });
-    }
-    if (california && exam.data.mode === "full" && !(await hasStatePro(session.id, "CA")) && (await caFullExamCount(session.id)) >= FREE_FULL_EXAMS) {
-      return NextResponse.json({ error: "The free California full exam is already used" }, { status: 402 });
-    }
-    const priorFull = !california && !hawaii && exam.data.mode === "full" ? await fullExamCount(session.id) : 0;
     const inserted = await recordExam({
       mode: california ? `ca-${exam.data.mode}` : hawaii ? `hi-${exam.data.mode}` : packState ? `${packState.toLowerCase()}-${exam.data.mode}` : exam.data.mode,
       score: exam.data.score,
@@ -112,9 +100,6 @@ export async function POST(req: Request) {
       updateBest: !california && !hawaii && !packState,
     });
     if (!inserted) return NextResponse.json({ ok: true, duplicate: true });
-    if (exam.data.mode === "full" && priorFull >= FREE_FULL_EXAMS) {
-      await recordProUsage(session.id, "full_exam_extra");
-    }
     return NextResponse.json({ ok: true });
   }
   const parsed = answerSchema.safeParse(body);

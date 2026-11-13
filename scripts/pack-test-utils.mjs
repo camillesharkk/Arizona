@@ -23,7 +23,7 @@ export function testLoader(overrides = {}, globals = {}) {
     if (cache.has(file)) return cache.get(file).exports;
     const module={exports:{}}; cache.set(file,module);
     const require = name => Object.hasOwn(overrides,name) ? overrides[name] : name==='server-only' ? {} : name.startsWith('@/') ? load(name.slice(2)) : name.startsWith('.') ? load(path.resolve(path.dirname(file),name)) : native(name);
-    vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,{module,exports:module.exports,require,console,process,Date,Math,Intl,URL,URLSearchParams,Request,Response,Headers,AbortSignal,AbortController,setTimeout,clearTimeout,fetch,structuredClone,TextEncoder,TextDecoder,...globals});
+    vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,{module,exports:module.exports,require,console,process,Date,Math,Error,Intl,URL,URLSearchParams,Request,Response,Headers,AbortSignal,AbortController,setTimeout,clearTimeout,fetch,structuredClone,TextEncoder,TextDecoder,...globals});
     return module.exports;
   }
   return load;

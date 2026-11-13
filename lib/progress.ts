@@ -53,7 +53,7 @@ function today() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function applyStreak(user: UserRow): Partial<UserRow> {
+export function applyStreak(user: UserRow): Partial<UserRow> {
   const d = today();
   if (user.lastStudyDate === d) return { lastStudyAt: new Date().toISOString() };
   const y = new Date();

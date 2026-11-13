@@ -13,6 +13,7 @@ import { HI_EXAM, hiPaths } from "@/lib/hi-site";
 import { packFor } from "@/lib/prep-pack";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { clearSitting, openSitting, readSitting, type SittingState } from "@/lib/sitting";
+import { readCaAttempt } from "@/lib/ca-attempts";
 
 export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState }) {
   const onHi = stateCode === "HI";
@@ -76,10 +77,12 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         const liveParams = new URLSearchParams(window.location.search);
         const requested = liveParams.get("mode");
         const startFresh = liveParams.get("start") === "1";
-        if (startFresh && (requested === "quick" || requested === "full" || requested === "weak") && !openSitting(sessionStorage, nextOwner, requested, stateCode)) {
+        const legacyFull = requested === "full" ? readSitting(sessionStorage, nextOwner, "full", stateCode) : null;
+        const legacyFinishedFull = !pack && legacyFull?.done && !readCaAttempt(nextOwner, legacyFull.examId || "", stateCode);
+        if (startFresh && !legacyFinishedFull && (requested === "quick" || requested === "full" || requested === "weak") && !openSitting(sessionStorage, nextOwner, requested, stateCode)) {
           clearSitting(sessionStorage, nextOwner, requested, stateCode);
         }
-        if (pack && startFresh) {
+        if (startFresh) {
           const url = new URL(window.location.href);
           url.searchParams.delete("start");
           window.history.replaceState(null, "", url);
@@ -107,7 +110,10 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   const anonBlocked = !isPro && !signedIn && anonFullUsed && !inThisAnonFull;
   const fullResume = mode === "full" && typeof window !== "undefined" && Boolean(
     openSitting(sessionStorage, owner, "full", stateCode) ||
-    (pack && new URLSearchParams(window.location.search).get("start") !== "1" && readSitting(sessionStorage, owner, "full", stateCode)?.done)
+    (new URLSearchParams(window.location.search).get("start") !== "1" && (
+      readSitting(sessionStorage, owner, "full", stateCode)?.done ||
+      readCaAttempt(owner, new URLSearchParams(window.location.search).get("attempt") || "", stateCode)?.mode === "full"
+    ))
   );
   const fullLocked = !fullResume && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || anonBlocked);
 
@@ -278,8 +284,8 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
       <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginBottom: 16 }}>
         Change mode
       </button>
-      <ExamRunner mode={mode} practice={mode !== "full"} isPro={isPro} sittingMode={focusArea ? `area-${focusArea}` : mode} stateCode={stateCode} focusArea={focusArea || undefined}
-        onRecorded={pack && mode === "full" ? () => setFullExamCount(count => count + 1) : undefined} />
+      <ExamRunner key={`${stateCode}:${mode}:${focusArea}`} mode={mode} practice={mode !== "full"} isPro={isPro} sittingMode={focusArea ? `area-${focusArea}` : mode} stateCode={stateCode} focusArea={focusArea || undefined}
+        onRecorded={mode === "full" ? count => setFullExamCount(current => count ?? Math.max(current, FREE_FULL_EXAMS)) : undefined} />
     </div>
   );
 }

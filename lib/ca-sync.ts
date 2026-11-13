@@ -40,13 +40,11 @@ export function syncGuestProgress(userId?: string) {
 }
 
 async function syncOnce(state: TopicPracticeState, userId: string): Promise<SyncResult> {
-  if (state === "AZ") {
-    for (const mode of ["quick", "home-quick"]) {
-      const guestSitting = readSitting(sessionStorage, "guest", mode, state);
-      if (guestSitting?.done && guestSitting.examId && !listCaAttempts("guest", state).some(attempt => attempt.id === guestSitting.examId)) {
-        const { archiveGuestArizonaQuick } = await import("@/lib/guest-sitting-attempt");
-        archiveGuestArizonaQuick(guestSitting);
-      }
+  for (const mode of ["quick", "home-quick", "full", "home-full"]) {
+    const guestSitting = readSitting(sessionStorage, "guest", mode, state);
+    if (guestSitting?.done && guestSitting.examId && !listCaAttempts("guest", state).some(attempt => attempt.id === guestSitting.examId)) {
+      const { archiveGuestSitting } = await import("@/lib/guest-sitting-attempt");
+      archiveGuestSitting(guestSitting);
     }
   }
   adoptGuestCaRecords(userId, state);
@@ -54,10 +52,11 @@ async function syncOnce(state: TopicPracticeState, userId: string): Promise<Sync
   const pending = listCaAttempts(userId, state).filter(attempt => !attempt.synced).sort((left, right) => left.finishedAt.localeCompare(right.finishedAt));
   let message: string | undefined;
   for (const attempt of pending) {
-    const response = await fetch("/api/progress/import/", {
+    const response = await fetch(attempt.mode === "full" ? "/api/progress/" : "/api/progress/import/", {
       method: "POST", headers: { "Content-Type": "application/json" }, signal: AbortSignal.timeout(20000),
       body: JSON.stringify({
         accountId: userId, state, examId: attempt.id, finishedAt: attempt.finishedAt,
+        ...(attempt.mode === "full" ? { kind: "pack-full", seed: attempt.seed, unscoredIds: attempt.unscoredIds } : {}),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         questions: attempt.questionIds.map(questionId => ({
           questionId, questionVersion: attempt.questionVersions?.[questionId] ?? 1,
@@ -70,6 +69,8 @@ async function syncOnce(state: TopicPracticeState, userId: string): Promise<Sync
       const error = await response.json().catch(() => ({}));
       message = error.code === "question_updated"
         ? "An earlier practice uses older questions. Its original result remains saved on this device."
+        : response.status === 402
+        ? "Your full practice is saved on this device. This account has used its free full practice for this state. Pro access allows it to sync."
         : "Your practice is saved on this device. Retry to finish syncing it.";
     }
   }

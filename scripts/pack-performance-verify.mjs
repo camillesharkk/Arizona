@@ -173,6 +173,27 @@ try {
     assert.equal(JSON.stringify(replayed.proUsage), JSON.stringify(recovered.proUsage));
     assert.equal((await store.listStats(rollbackUser.id)).every(stat => stat.rightCount === 1), true);
   }
+  const classicDraws = {
+    AZ: { questions: load('lib/quiz.ts').pickFullExam(614), unscoredIds: [] },
+    CA: load('lib/ca-exam.ts').pickCaFullExam(614),
+    HI: { questions: load('lib/hi-exam.ts').pickHiFullExam(614), unscoredIds: [] },
+  };
+  for (const [state, draw] of Object.entries(classicDraws)) {
+    const user = await store.createUser({email:`classic-full-${state}@example.invalid`,passwordHash:'isolated',name:null});
+    const submission = {state,seed:614,examId:randomUUID(),unscoredIds:draw.unscoredIds,questions:draw.questions.map(question=>({questionId:question.question_id,questionVersion:question.version,selected:question.correct_option}))};
+    queryCount = 0;
+    const saved = await savePackFullSubmission(store,user.id,submission);
+    const statements = queryCount;
+    assert.equal(saved.exam.score,100);assert.equal(saved.fullExamCount,1);
+    assert.ok(statements<=16,state+' full sitting stays within the batched SQL budget');
+    assert.equal((await store.listStats(user.id)).length,draw.questions.length);
+    const snapshot = JSON.stringify(await store.listStats(user.id));
+    const replay = await savePackFullSubmission(store,user.id,submission);
+    assert.equal(replay.duplicate,true);assert.equal(replay.fullExamCount,1);
+    assert.equal(JSON.stringify(await store.listStats(user.id)),snapshot);
+    await assert.rejects(savePackFullSubmission(store,user.id,{...submission,examId:randomUUID()}),/full_trial_used/);
+    console.log(`${state}: ${draw.questions.length} answers and full history commit in ${statements} SQL statements, duplicate and trial count stable`);
+  }
   const { recordQuestionAnswers } = load('lib/progress.ts');
   const guestQuestions = {
     AZ: load('data/questions.ts').publishedQuestions(), CA: load('data/ca-questions.ts').publishedCaQuestions(), HI: load('data/hi-questions.ts').publishedHiQuestions(),

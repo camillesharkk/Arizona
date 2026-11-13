@@ -9,13 +9,14 @@ export type CaQuickAttempt = {
   id: string;
   owner: string;
   state: TopicPracticeState;
-  mode: "quick";
+  mode: "quick" | "full";
   sittingMode: string;
   finishedAt: string;
   seed: number;
   questionIds: string[];
   questionVersions?: Record<string, number>;
   presentationVersion?: number;
+  unscoredIds?: string[];
   answers: Record<string, Letter>;
   originalAnswers: Record<string, Letter>;
   attemptIds: Record<string, string>;
@@ -55,10 +56,16 @@ function writeList(key: string, rows: unknown[]) {
   localStorage.setItem(key, JSON.stringify(rows));
 }
 
+function retainedAttempts(rows: CaQuickAttempt[]) {
+  const pending = rows.filter(row => !row.synced);
+  const acknowledged = rows.filter(row => row.synced).slice(0, 30);
+  return [...pending, ...acknowledged];
+}
+
 function asAttempt(row: unknown, state: TopicPracticeState): CaQuickAttempt | null {
   if (!row || typeof row !== "object") return null;
   const item = row as Partial<CaQuickAttempt>;
-  if (item.state !== state || item.mode !== "quick") return null;
+  if (item.state !== state || (item.mode !== "quick" && item.mode !== "full")) return null;
   if (typeof item.id !== "string" || typeof item.owner !== "string" || !Array.isArray(item.questionIds)) return null;
   return item as CaQuickAttempt;
 }
@@ -85,7 +92,7 @@ export function readCaAttempt(owner: string, id: string, state: TopicPracticeSta
 }
 
 export function latestCaQuick(owner: string, state: TopicPracticeState = "CA") {
-  return listCaAttempts(owner, state).find(item => !['NY','PA','LA'].includes(state) || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id))) || null;
+  return listCaAttempts(owner, state).find(item => item.mode === "quick" && (!['NY','PA','LA'].includes(state) || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id)))) || null;
 }
 
 export function saveCaQuickAttempt(row: CaQuickAttempt) {
@@ -99,7 +106,7 @@ export function saveCaQuickAttempt(row: CaQuickAttempt) {
   } else {
     all.unshift(row);
   }
-  writeList(keys(state).attempts, all.slice(0, 30));
+  writeList(keys(state).attempts, retainedAttempts(all));
 }
 
 export function adoptGuestCaRecords(userId: string, state: TopicPracticeState = "CA") {
@@ -185,7 +192,7 @@ export function markCaAttemptSynced(owner: string, id: string, state: TopicPract
   const index = all.findIndex((item) => item.id === id && item.owner === owner);
   if (index < 0) return;
   all[index] = { ...all[index], synced: true };
-  writeList(keys(state).attempts, all);
+  writeList(keys(state).attempts, retainedAttempts(all));
 }
 
 export function importLocalMistakes(owner: string, ids: string[], state: TopicPracticeState = "CA") {

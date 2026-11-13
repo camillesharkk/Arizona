@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   reactStrictMode: true,
   trailingSlash: true,
+  // Keep metadata in the managed head across client-side state navigation.
+  htmlLimitedBots: /.*/,
   serverExternalPackages: ["postgres", "posthog-node"],
   async redirects() {
     return [

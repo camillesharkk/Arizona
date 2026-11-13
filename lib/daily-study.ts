@@ -125,11 +125,11 @@ async function loadDocument(userId: string, state: StudyState, today: string, ti
   const hint = timeZoneHint && timeZoneHint.length < 80 ? timeZoneHint : undefined;
   const doc = normalizeDocument(row?.document, today, hint || DEFAULT_STUDY_TIME_ZONE);
   if (!row && hint) doc.settings.timeZone = hint;
-  return { store, doc, storedDocument: row?.document, checks: state === "CA" || state === "HI" || isPack(state) ? keptChecks(row?.document) : undefined };
+  return { store, doc, storedDocument: row?.document, checks: keptChecks(row?.document) };
 }
 
 async function saveDocument(store: Awaited<ReturnType<typeof getStore>>, userId: string, state: StudyState, doc: StudyDocument, checks?: Record<string, CaCheck>) {
-  await store.saveStudyPlan({ userId, state, document: (state === "CA" || state === "HI" || isPack(state)) && checks ? { ...doc, checks } : doc });
+  await store.saveStudyPlan({ userId, state, document: checks ? { ...doc, checks } : doc });
 }
 
 export async function dailyStudyView(userId: string, timeZoneHint?: string, now = new Date().toISOString(), state: StudyState = "AZ") {
@@ -235,7 +235,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     unmappedQuestionIds: built.unmappedQuestionIds,
     nextReviewAt: nextReview,
     taskStatus: built.tasks,
-    ...(topicPractice ? californiaPlan(questions, stateStats, await store.listExams(userId), checks, state) : {}),
+    ...californiaPlan(questions, stateStats, await store.listExams(userId), checks, state),
   };
 }
 

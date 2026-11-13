@@ -42,10 +42,9 @@ export function recoverWrongIds(examAt: string, stats: CaStatLike[], state = "CA
 }
 
 export function recentCaExams(exams: CaExamLike[], checks: Record<string, CaCheck>, stats: CaStatLike[], state = "CA") {
-  const prefix = state === "HI" ? "hi-" : state === "CA" ? "ca-" : `${state.toLowerCase()}-`;
   const fullLabel = state === "HI" ? "Comprehensive Practice" : state === "PA" ? "30-question practice" : state === "NY" ? "40-question practice" : state === "LA" ? "Scenario practice" : "Full 45";
   return exams
-    .filter((exam) => exam.mode.startsWith(prefix))
+    .filter((exam) => examState(exam.mode) === state)
     .sort((a, b) => b.at.localeCompare(a.at))
     .slice(0, 8)
     .map((exam) => {

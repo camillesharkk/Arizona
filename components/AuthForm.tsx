@@ -29,6 +29,9 @@ export function AuthForm({
   const [resendBusy, setResendBusy] = useState(false);
   const [registerBlock, setRegisterBlock] = useState<"email-failed" | "unverified-exists" | null>(null);
   const [needVerify, setNeedVerify] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => { setReady(true); }, []);
 
   useEffect(() => {
     if (mode !== "register") return;
@@ -173,9 +176,10 @@ export function AuthForm({
   }
 
   const hideCreate = mode === "register" && registerBlock !== null;
+  if (!ready) return <><LoadingNote text="Loading sign-in…" /><noscript><p>Enable JavaScript to sign in and save your practice.</p></noscript></>;
 
   return (
-    <form className="card clarity-mask" onSubmit={submit}>
+    <form className="card clarity-mask" method="post" action={`/api/auth/${mode}/`} onSubmit={submit}>
       {(mode === "login" || mode === "register" || mode === "forgot") && (
         <label className="field">
           Email

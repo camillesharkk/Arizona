@@ -42,8 +42,11 @@ for (const state of ['AZ','CA','HI','NY','PA','LA']) {
   await dailyStudyView(user.id,'America/New_York',now,state);
   assert.equal(planWrites,0,state+' repeated reads preserve the unchanged document');
   assert.equal(entitlementReads,1,state+' daily access reads entitlements once');
+  const initialPlan = await store.getStudyPlan(user.id,state);
+  await store.saveStudyPlan({userId:user.id,state,document:{...initialPlan.document,checks:{receipt:{wrong:0,skipped:0,wrongIds:[],submissionVersion:1}}}});
   await saveStudySettings(user.id,{mode:'custom',newQuestions:3},'America/New_York',state);
   const updated = await dailyStudyView(user.id,'America/New_York',now,state);
   assert.equal(updated.settings.newQuestions,3);
+  assert.equal((await store.getStudyPlan(user.id,state)).document.checks.receipt.submissionVersion,1,'Keep the immutable full-practice receipt across daily reads and settings changes');
 }
 console.log('Six-state Daily Study initializes once, skips unchanged writes and retains edited settings');

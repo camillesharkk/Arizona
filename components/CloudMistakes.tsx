@@ -44,7 +44,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
   const onHi = stateCode === "HI";
   const pack = packFor(stateCode);
   const topicPractice = onCa || onHi || Boolean(pack);
-  const practiceState = pack ? pack.code : onHi ? "HI" : "CA";
+  const practiceState = stateCode;
   const site = pack ? pack.paths : onHi ? hiPaths : onCa ? caPaths : paths;
   const questionPool = pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions();
   const topicChoices = pack
@@ -132,26 +132,24 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
 
   async function resolveScope(userId: string, requested: string) {
     if (!requested) return { ids: null as string[] | null, summary: "", note: "" };
-    if (topicPractice) {
-      const local = readCaAttempt(userId, requested, practiceState);
-      if (local && local.owner === userId) {
-        return {
-          ids: local.wrongIds,
-          summary: `This practice · ${new Date(local.finishedAt).toLocaleString()} · ${local.correctIds.length}/${local.questionIds.length} · ${local.wrongIds.length} missed`,
-          note: "",
-        };
-      }
-      const daily = await fetch(`/api/daily-study/?state=${practiceState}&timeZone=${encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix")}&account=${encodeURIComponent(userId)}`, { cache: "no-store" }).catch(() => null);
-      const body = daily?.ok ? await daily.json().catch(() => null) : null;
-      const row = Array.isArray(body?.recent) ? body.recent.find((item: { id?: string }) => item.id === requested) : null;
-      if (row && body?.state === (practiceState)) {
-        const wrongIds = Array.isArray(row.wrongIds) ? row.wrongIds.filter((item: unknown) => typeof item === "string") : [];
-        return {
-          ids: wrongIds,
-          summary: `This practice · ${row.label || "Practice"} · ${row.correct}/${row.total} · ${wrongIds.length} missed`,
-          note: "",
-        };
-      }
+    const local = readCaAttempt(userId, requested, practiceState);
+    if (local && local.owner === userId) {
+      return {
+        ids: local.wrongIds,
+        summary: `This practice · ${new Date(local.finishedAt).toLocaleString()} · ${local.correctIds.filter(id => !local.unscoredIds?.includes(id)).length}/${local.questionIds.length - (local.unscoredIds?.length || 0)} · ${local.wrongIds.length} missed`,
+        note: "",
+      };
+    }
+    const daily = await fetch(`/api/daily-study/?state=${practiceState}&timeZone=${encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix")}&account=${encodeURIComponent(userId)}`, { cache: "no-store" }).catch(() => null);
+    const body = daily?.ok ? await daily.json().catch(() => null) : null;
+    const row = Array.isArray(body?.recent) ? body.recent.find((item: { id?: string }) => item.id === requested) : null;
+    if (row && body?.state === (practiceState)) {
+      const wrongIds = Array.isArray(row.wrongIds) ? row.wrongIds.filter((item: unknown) => typeof item === "string") : [];
+      return {
+        ids: wrongIds,
+        summary: `This practice · ${row.label || "Practice"} · ${row.correct}/${row.total} · ${wrongIds.length} missed`,
+        note: "",
+      };
     }
     return { ids: null, summary: "", note: "That practice is not on this account. Showing every saved record for this state." };
   }

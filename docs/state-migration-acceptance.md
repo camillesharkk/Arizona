@@ -13,6 +13,21 @@ Every state must pass this sequence before release, on desktop and mobile.
 
 Use the shared `syncGuestProgress` / `syncCaAttempts` path and authenticated `/api/progress/import/` endpoint. Retain browser data until the server acknowledges it. The default post-login dashboard waits for import completion before reading progress. Cover older homepage Quick 10 sittings as well as the Practice page. Every newly supported state must be included in the shared migration state list and the six-state regression scripts. This import reuses the production schema with migration 016.
 
+## Full practice and completed-result restoration
+
+- Submit the entire full sitting with `kind=pack-full` through `/api/progress/`. Its server transaction validates the state, versions, answer choices and applicable blueprint, grades the answers, writes the review snapshot and exam, and consumes the state's trial together. Ordinary Pro-question authorization stays in effect outside this sitting.
+- A retry of the same committed exam returns its original result and authoritative `fullExamCount`. Concurrent new free sittings admit one trial. A late failure rolls back answers, history and trial usage together.
+- Retain completed guest full sittings with canonical letters, original seed, question and presentation versions, unscored identities, attempt IDs and timestamp. Login imports them through the same authoritative full endpoint with an account-ID guard. The first imported full consumes the account's free full allowance for that state. An excess full stays on the device with an explanation and can sync after Pro becomes active.
+- Preserve every unacknowledged archive row when pruning local history. Limit acknowledged cache rows separately. Verify a pending full survives at least 35 subsequent Quick 10 saves.
+- Cover classic AZ/CA/HI metadata-only legacy records whose answers were partially saved. Reuse the original per-question attempt IDs to finish the missing writes once, retain the original matching score and timestamp, and keep the trial consumed. A legacy repair without those identifiers must retain the original browser data and return a conflict instead of duplicating existing counts.
+- A completed sitting or matching archive for the current owner may display its result after the trial is used. Viewing that result grants no new trial. Consume `start=1` once for every state, including older classic-state full URLs. After a full result, follow a topic link and verify a fresh question view and separate storage key. Remount the runner when the state, mode or topic changes.
+- Daily Study reads, settings updates and card actions preserve each state's full-submission receipt and wrong-ID snapshot, including AZ.
+
+## Login and navigation metadata
+
+- Login, registration and password forms expose credentials only after their client submit handlers are mounted. Native fallback uses POST to the matching auth endpoint. Test server HTML without JavaScript and a slow initialization, and verify no password enters a GET URL.
+- Check canonical and robots tags after initial load, client-side state navigation, back/forward, and direct reload. Each completed navigation has one current canonical and one applicable robots tag, including candidate noindex pages. The shared Next config uses blocking metadata for all user agents so metadata stays in the managed head. [Next configuration documentation](https://nextjs.org/docs/app/api-reference/config/next-config-js/htmlLimitedBots)
+
 ## Reusable loading checks
 
 - Read account entitlements and exam history once per account response. Share concurrent browser account reads and invalidate them on session changes. Recheck later requests against the server.
@@ -24,3 +39,9 @@ Use the shared `syncGuestProgress` / `syncCaAttempts` path and authenticated `/a
 ## Regression commands
 
 Run `node scripts/guest-progress-verify.mjs`, `node scripts/guest-browser-storage-verify.mjs`, `node scripts/dashboard-guest-verify.mjs`, `node scripts/account-read-verify.mjs`, `node scripts/ny-entry-verify.mjs`, `node scripts/ny-progress-verify.mjs` and `node scripts/pack-performance-verify.mjs`. Run `node scripts/guest-progress-http-verify.mjs` and the existing HTTP suites against seeded local data, followed by type checking, a production build and browser acceptance through the real sign-in return path. Production verification uses dedicated test accounts.
+
+Full-practice regressions also run `node scripts/legacy-full-verify.mjs`, `node scripts/guest-full-verify.mjs`, `node scripts/practice-restoration-verify.mjs` and `node scripts/auth-entry-verify.mjs`. Run `node scripts/shared-entry-http-verify.mjs` against a fresh isolated directory seeded with `pack-test-utils.mjs --seed`, using `PACK_TEST_BASE_URL` for that server. It deliberately consumes each dedicated free/expired account's first full trial.
+
+## Integrating independent state candidates
+
+Apply shared fixes while retaining the candidate's state enums, question lookup, guest-sync state list and server release gates. Preserve CT's own entitlement check and exact draw validation. Preserve NC's state entitlement check, `fullCountFor`/permission-dependent draw and free-pool restriction. Those candidate extensions are reconciled with the shared atomic submission transaction when integrating. Rebuild after changing Next metadata configuration, then rerun each candidate's guest login, full practice, topic navigation, metadata and existing-state regressions. A shared fix does not open a candidate state.

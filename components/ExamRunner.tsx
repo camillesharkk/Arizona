@@ -70,7 +70,7 @@ export function ExamRunner({
   sittingMode?: string;
   /** Wrong-answer practice. A normal practice correct does not move the review plan. */
   review?: boolean;
-  onRecorded?: () => void;
+  onRecorded?: (fullExamCount?: number) => void;
   stateCode?: SittingState;
   focusArea?: string;
 }) {
@@ -279,14 +279,15 @@ export function ExamRunner({
           existing = null;
         }
         const requestedAttempt = startFresh ? "" : params.get("attempt") || "";
-        if (mode === "quick" && requestedAttempt && existing?.examId !== requestedAttempt) {
+        if ((mode === "quick" || mode === "full") && requestedAttempt && existing?.examId !== requestedAttempt) {
           if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner, stateCode);
           const archived = readCaAttempt(nextOwner, requestedAttempt, stateCode);
-          if (archived && archived.mode === "quick" && mode === "quick") {
+          if (archived && archived.mode === mode) {
             viewOnly.current = Boolean(existing);
             setOwner(nextOwner);
             setActiveSeed(archived.seed);
             setPresentationVersion(archived.presentationVersion ?? 1);
+            unscoredRef.current = archived.unscoredIds || [];
             setLockedIds(archived.questionIds);
             setAnswers(archived.answers);
             answersRef.current = archived.answers;
@@ -341,7 +342,7 @@ export function ExamRunner({
   }, [bootTry, modeKey, stateCode]);
 
   useEffect(() => {
-    if (viewOnly.current || !done || mode !== "quick") return;
+    if (viewOnly.current || !done || (mode !== "quick" && mode !== "full")) return;
     if (!owner || !examSaveId.current || activeSeed == null || !lockedIds?.length || !questions.length) return;
     const answersNow = answersRef.current;
     const correctIds: string[] = [];
@@ -367,7 +368,7 @@ export function ExamRunner({
       id: examSaveId.current,
       owner,
       state: stateCode,
-      mode: "quick",
+      mode,
       sittingMode: modeKey,
       finishedAt: new Date().toISOString(),
       seed: activeSeed,
@@ -376,6 +377,7 @@ export function ExamRunner({
       originalAnswers,
       questionVersions: Object.fromEntries(lockedIds.map(id => [id, currentQuestionVersion(id)])),
       presentationVersion,
+      unscoredIds: mode === "full" ? [...unscoredRef.current] : [],
       attemptIds: { ...attemptIds.current },
       correctIds,
       wrongIds,
@@ -583,19 +585,26 @@ export function ExamRunner({
     }
     persistSitting({ examId: examSaveId.current, scored: true });
     const saves: Promise<Response>[] = [];
-    const nyFull = Boolean(pack) && mode === "full";
-    if (nyFull) saves.push(fetch("/api/progress/", {
+    const fullSubmission = mode === "full";
+    let savedFullCount: number | undefined;
+    if (fullSubmission) saves.push(fetch("/api/progress/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        kind: "pack-full", state: stateCode, seed: activeSeed, examId: examSaveId.current,
+        kind: "pack-full", state: stateCode, seed: activeSeed, examId: examSaveId.current, accountId: owner === "guest" ? undefined : owner,
         unscoredIds: unscoredRef.current,
-        questions: questions.map(item => ({ questionId: item.question_id, questionVersion: item.version,
+        questions: questions.map(item => ({ questionId: item.question_id, questionVersion: item.version, attemptId: attemptIds.current[item.question_id],
           selected: current[item.question_id] ? originalLetter(item.question_id, current[item.question_id]) : undefined })),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       }),
+    }).then(async response => {
+      if (response.ok) {
+        const result = await response.clone().json();
+        if (Number.isInteger(result.fullExamCount) && result.fullExamCount >= 0) savedFullCount = result.fullExamCount;
+      }
+      return response;
     }));
-    if (!nyFull && (!practice || topicPractice)) results.forEach((r) => {
+    if (!fullSubmission && (!practice || topicPractice)) results.forEach((r) => {
       const letter = current[r.question.question_id];
       if (letter) {
         saves.push(fetch("/api/progress/", {
@@ -618,7 +627,7 @@ export function ExamRunner({
       ? results.filter((item) => !unscoredRef.current.includes(item.question.question_id))
       : results;
     const scoredCorrect = scoredResults.filter((item) => item.correct).length;
-    if (!nyFull) saves.push(fetch("/api/progress/", {
+    if (!fullSubmission) saves.push(fetch("/api/progress/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -649,7 +658,10 @@ export function ExamRunner({
     cloudSaved.current = outcomes.every(outcome => outcome === "ok");
     setSubmitting(false);
     setDone(true);
-    if (nyFull) onRecorded?.();
+    if (fullSubmission) {
+      setFullExamCount(savedFullCount ?? Math.max(fullExamCount, FREE_FULL_EXAMS));
+      onRecorded?.(savedFullCount);
+    }
     if (!completeReported.current) {
       completeReported.current = true;
       const elapsed = startedAt == null ? undefined : Math.max(0, Math.round((Date.now() - startedAt) / 1000));
@@ -730,6 +742,7 @@ export function ExamRunner({
       ? `${site.home}?exam=full`
       : `${site.practice}?mode=full${practiceFull ? "" : "&start=1"}`;
     const dailyHref = signedIn ? site.daily : `${site.login}?next=${encodeURIComponent(site.daily)}`;
+    const mistakesHref = mode === "full" && examSaveId.current ? `${site.mistakes}?attempt=${examSaveId.current}` : site.mistakes;
     return (
       <div className="grid">
         <div className="card result-summary">
@@ -835,7 +848,7 @@ export function ExamRunner({
                   <p className="notice">
                     {signedIn
                       ? "Missed questions stay on your review schedule. Daily Study shows a question when it is due."
-                      : "Daily Study needs a sign-in. This exam stays in this browser. It is not added to Daily Study unless you were signed in when you submitted."}
+                      : "Sign in to sync this practice and open Daily Study. If your account has used its free full practice for this state, Pro access is required."}
                   </p>
                 </div>
               ) : null}
@@ -868,7 +881,7 @@ export function ExamRunner({
           </ul>
           {topicPractice && mode === "quick" ? null : guided ? (
             <div className="result-links">
-              {topicPractice ? <Link href={site.mistakes}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" />}
+              {topicPractice ? <Link href={mistakesHref}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" href={mistakesHref} stateCode={stateCode} />}
               <Link href={site.study}>Review Study Guide</Link>
             </div>
           ) : (
@@ -882,7 +895,7 @@ export function ExamRunner({
                   Continue Practice
                 </Link>
               )}
-              <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" href={site.mistakes} stateCode={stateCode} />
+              <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" href={mistakesHref} stateCode={stateCode} />
               <Link className="btn btn-ghost" href={site.study}>
                 Review Study Guide
               </Link>
