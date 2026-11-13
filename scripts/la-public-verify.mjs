@@ -29,4 +29,4 @@ for (const path of [prepPacks.LA.paths.home, prepPacks.LA.paths.practice, prepPa
 assert.ok(sitemap.includes('/pennsylvania/practice/'));
 assert.ok(!sitemap.some(path => path.startsWith('/preview/')));
 for (const route of ['', 'practice/', 'questions/', 'study-guide/', 'study-cards/', 'wrong-answers/', 'daily-study/', 'resources/', 'exam-guide/', 'passing-score/', 'laws/', 'become-a-notary/', 'pricing/']) assert.ok(fs.existsSync('app/louisiana/' + route + 'page.tsx'));
-console.log('Pending LA opening routes, bank/card counts, switching and sitemap passed; production deployment awaits registration evidence');
+console.log('LA public routes, bank/card counts, state switching and sitemap passed');
