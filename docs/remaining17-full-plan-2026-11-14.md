@@ -17,10 +17,10 @@ Comprehensive Practice initially uses forty unique accessible questions with no 
 - [x] Add content validation for unique scenarios, source references, topic coverage, 203 questions, 60/143 access, fifty independent cards, authored chapters and ten articles per state.
 - [x] Replace the free-launch capability gates with complete shared routes and components. Add questions, study cards, pricing, article routes and source-correct internal links.
 - [x] Connect authorized server bank reads, authoritative full-exam validation, account full counts, wrong answers, Daily Study and Tutor for all seventeen states.
-- [ ] Reuse the shared Pro checkout and validate source-state attribution, quote idempotency, active/expired rights and existing webhook/account behavior.
+- [x] Reuse the shared Pro checkout and validate source-state attribution, quote idempotency, active/expired rights and existing webhook/account behavior.
 - [x] Run structural, real-handler, file/PostgreSQL transaction and existing-state regressions. Build the production configuration.
 - [x] Validate each state's Quick 10 guest-login return at both desktop/mobile viewports and its complete Pro workflow in preview, with both viewport sizes represented. Cover free/expired bank authorization, actual full trials, account counts and Pro gates for every state. Include guide read progress, cards, topic drills, full sitting, refresh, wrong answers, Tutor and checkout entry. The all-state local matrix separately covers Pro expiry at both widths.
-- [ ] Synchronize main, integrate ordinary commits, publish and track the matching production deployment to READY. Recheck all seventeen full-product entries and existing-state core paths on the formal domain.
+- [x] Synchronize main, integrate ordinary commits, publish and track the matching production deployment to READY. Recheck all seventeen full-product entries and existing-state core paths on the formal domain.
 
 ## Implementation ownership
 
