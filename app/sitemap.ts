@@ -1,3 +1,5 @@
+import { fullStateSummary } from '@/data/full-state-summary';
+import { fullStateArticles } from '@/data/full-state-articles';
 import { freeStateCatalog, freeStatePaths, releasedFreeStates } from "@/lib/free-state-catalog";
 import { ctArticles } from "@/data/ct-articles";
 import { inArticles, ncArticles } from "@/data/new-state-articles";
@@ -22,9 +24,9 @@ import { canonicalUrl } from "@/lib/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   const urls = [
     "/",
-    ...freeStateCatalog.filter(([code]) => releasedFreeStates.includes(code)).flatMap(([, , slug]) => {
+    ...freeStateCatalog.filter(([code]) => releasedFreeStates.includes(code)).flatMap(([code, , slug]) => {
       const site = freeStatePaths(slug);
-      return [site.home, site.practice, site.study, site.become, site.resources, site.examGuide, site.laws];
+      return [site.home, site.practice, site.study, site.become, site.resources, site.examGuide, site.laws, ...(fullStateSummary[code]?.ready ? [site.questions, site.studyCards, site.pricing, ...(fullStateArticles[code] || []).map(article => article.path)] : [])];
     }),
     paths.home,
     paths.practice,

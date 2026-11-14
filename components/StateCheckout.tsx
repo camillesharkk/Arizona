@@ -1,5 +1,7 @@
 "use client";
 
+import type { StateCode } from "@/lib/types";
+
 import { usePathname } from "next/navigation";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { laPaths } from "@/lib/la-site";
@@ -7,7 +9,7 @@ import { PRO_DURATION_NOTICE } from "@/lib/pricing/copy";
 import { formatUsd } from "@/lib/pricing/money";
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 
-export function StateCheckout({ source }: { source: "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN" }) {
+export function StateCheckout({ source }: { source: StateCode }) {
   const pathname = usePathname();
   if (source === "LA") {
     const practicePath = pathname.startsWith("/preview/") ? `/preview${laPaths.practice}` : laPaths.practice;

@@ -1,3 +1,4 @@
+import { fullStateSources } from './full-state-sources.ts';
 import { freeStateSources } from "./free-state-questions.ts";
 import type { Source } from "../lib/types.ts";
 import { ncSources } from "./nc-sources.ts";
@@ -6,6 +7,7 @@ import { ctSources, CT_CHECKED_ON } from "../lib/ct-site.ts";
 
 export const sources: Record<string, Source> = {
   ...freeStateSources,
+  ...fullStateSources,
   ...Object.fromEntries([
     ["ct_manual", "Manual", "Connecticut Notary Public Manual, Rev. 2026-1", ctSources.manual],
     ["ct_licensing", "SOS", "Connecticut Secretary of the State, Licensing", ctSources.licensing],

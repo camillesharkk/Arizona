@@ -1,5 +1,7 @@
 "use client";
 
+import { fullStateSummary } from "@/data/full-state-summary";
+
 import { isFreeState } from "@/lib/free-state-catalog";
 import { stateByCode } from "@/lib/states";
 import { fetchAccount, invalidateAccountRead } from "@/lib/client-account";
@@ -143,7 +145,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const onHome = Boolean(state) && (pathname === nav.home || pathname === `${nav.home.replace(/\/$/, "")}`);
   const signInHref = `${paths.login}?next=${encodeURIComponent(returnTo)}`;
   const links = state ? primaryLinks(nav) : [];
-  const extra = state ? moreLinks(nav, state).filter(item => !isFreeState(state) || item.label !== "Study cards") : [];
+  const extra = state ? moreLinks(nav, state).filter(item => !isFreeState(state) || fullStateSummary[state]?.ready || item.label !== "Study cards") : [];
 
   return (
     <header className="site-header">

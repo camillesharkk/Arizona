@@ -1,3 +1,6 @@
+import { fullStateSummary } from '@/data/full-state-summary';
+import { fullStatePublicQuestions } from '@/data/full-state-public-questions';
+import { fullStateCards } from '@/data/full-state-cards';
 import { ncCards, ncTopics, ncQuestionCounts, publishedNcQuestions } from "@/data/nc-content";
 import { NC_PRACTICE } from "./nc-site.ts";
 import { inFreeQuestions } from "@/data/in-free-questions";
@@ -70,16 +73,24 @@ function quickFrom(questions: Question[], seed: number) {
 const paCounts = paQuestionCounts();
 const nyCounts = nyQuestionCounts();
 
-const freePacks = Object.fromEntries(freeStateCatalog.map(([code]) => [code, {
-  ...prepNavigation[code], freeLaunch: true,
-  topics: freeStateContent[code]?.topics || [], questions: () => freeStateQuestions(code),
-  counts: () => ({ published: freeStateQuestions(code).length, free: freeStateQuestions(code).length, pro: 0 }),
-  fullCount: 0, fullMinutes: null, fullTitle: "Comprehensive Practice", fullDetail: "",
-  anonKey: `${code.toLowerCase()}-anon-full-started`,
-  pickQuick: (seed: number) => quickFrom(freeStateQuestions(code), seed),
-  pickFull: () => null, fullReady: false, quickReady: freeStateQuestions(code).length >= 10,
-  cards: [], purchaseEnabled: false,
-} satisfies PrepPack])) as unknown as Record<FreeStateCode, PrepPack>;
+const freePacks = Object.fromEntries(freeStateCatalog.map(([code]) => {
+  const summary = fullStateSummary[code];
+  const ready = Boolean(summary?.ready);
+  const questions = () => fullStatePublicQuestions[code] || freeStateQuestions(code);
+  return [code, {
+    ...prepNavigation[code], freeLaunch: !ready,
+    topics: freeStateContent[code]?.topics || [], questions,
+    counts: () => summary || { published: questions().length, free: questions().length, pro: 0 },
+    fullCount: ready ? 40 : 0, fullMinutes: null, fullTitle: "Comprehensive Practice",
+    fullDetail: ready ? "40 original questions drawn from your accessible state question pool, with no time limit. The score describes this site's practice session. Follow the official application guide for state assessment requirements." : "",
+    anonKey: `${code.toLowerCase()}-anon-full-started`,
+    pickQuick: (seed: number) => quickFrom(questions(), seed),
+    pickFull: (seed: number) => ready ? { questions: shuffle(questions(), seed).slice(0, 40), unscoredIds: [] } : null,
+    fullReady: ready, quickReady: questions().length >= 10,
+    cards: fullStateCards[code] || [], purchaseEnabled: ready,
+    handbookUrl: freeStateContent[code]?.sources.find(source => /manual|handbook/i.test(source.title))?.url,
+  } satisfies PrepPack];
+})) as unknown as Record<FreeStateCode, PrepPack>;
 
 export const prepPacks: Record<PrepCode, PrepPack> = {
   ...freePacks,
@@ -190,5 +201,5 @@ export function packFor(state: StateCode | string | null | undefined): PrepPack 
 }
 
 export function questionById(id: string) {
-  return [...freeStateCatalog.flatMap(([code]) => freeStateQuestions(code)), ...inFreeQuestions, ...publishedPaQuestions(), ...publishedNyQuestions(), ...publishedLaQuestions(), ...publishedCtQuestions(), ...publishedNcQuestions()].find((question) => question.question_id === id) || null;
+  return [...freeStateCatalog.flatMap(([code]) => prepPacks[code].questions()), ...inFreeQuestions, ...publishedPaQuestions(), ...publishedNyQuestions(), ...publishedLaQuestions(), ...publishedCtQuestions(), ...publishedNcQuestions()].find((question) => question.question_id === id) || null;
 }

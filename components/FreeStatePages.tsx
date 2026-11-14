@@ -1,3 +1,4 @@
+import { prepPacks } from '@/lib/prep-pack';
 import Link from 'next/link';
 import { freeStateContent } from '@/data/free-state-content';
 import { freeStatePaths, type FreeStateCode } from '@/lib/free-state-catalog';
@@ -12,6 +13,8 @@ export function FreeStateSources({ code }: { code: FreeStateCode }) {
 export function FreeStateHome({ code }: { code: FreeStateCode }) {
   const content = freeStateContent[code]!;
   const site = freeStatePaths(content.slug);
+  const pack = prepPacks[code];
+  const counts = pack.counts();
   const officialFirst = content.processKind !== 'Independent exam';
   const handbook = content.sources.find(source => /handbook|manual/i.test(source.title));
   return <main className="wrap hero">
@@ -22,7 +25,10 @@ export function FreeStateHome({ code }: { code: FreeStateCode }) {
       <a className={officialFirst ? 'btn btn-primary' : 'btn btn-ghost'} href={content.officialNext.url}>{content.officialNext.label}</a>
     </div>
     {officialFirst && handbook ? <p><a href={handbook.url}>Read the official handbook</a></p> : null}
-    <p>Ten original questions with explanations and official references. Free and untimed.</p>
+    <p>{pack.freeLaunch ? 'Ten free original questions with explanations and official references.' : `${counts.published} original questions with explanations and official references. ${counts.free} free questions and ${counts.pro} Pro questions.`}</p>
+    {!pack.freeLaunch ? <section className="card"><h2>Comprehensive Practice</h2><p>{pack.fullDetail}</p><div className="tool-row">
+      <Link className="btn btn-primary" href={`${site.practice}?mode=full`}>Start Comprehensive Practice</Link>
+      <Link className="btn btn-ghost" href={site.pricing}>Get 60-Day Pro</Link></div></section> : null}
     <section className="card"><h2>First-time application</h2><p>{content.training}</p><p>{content.assessment}</p>
       <Link href={site.become}>Application steps and exceptions</Link>
     </section>
@@ -30,6 +36,7 @@ export function FreeStateHome({ code }: { code: FreeStateCode }) {
       <Link className="btn btn-ghost" href={site.study}>Study Guide</Link>
       <Link className="btn btn-ghost" href={site.mistakes}>Wrong Answers</Link>
       <Link className="btn btn-ghost" href={site.resources}>Official resources</Link>
+      {!pack.freeLaunch ? <><Link className="btn btn-ghost" href={site.studyCards}>Study Cards</Link><Link className="btn btn-ghost" href={site.daily}>Daily Study</Link><Link className="btn btn-ghost" href={site.questions}>Question Bank</Link></> : null}
     </div></section>
     <FreeStateSources code={code} />
   </main>;

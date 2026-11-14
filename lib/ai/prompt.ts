@@ -23,7 +23,7 @@ const MODE_GUIDE: Record<TutorMode, string> = {
 };
 
 export function buildTutorInstructions(mode: TutorMode, pinCite: string, state: StateCode = "AZ") {
-  const names: Partial<Record<StateCode, string>> = { AZ: "Arizona", CA: "California", HI: "Hawaii", NY: "New York", PA: "Pennsylvania", LA: "Louisiana", CT: "Connecticut", NC: "North Carolina", IN: "Indiana" };
+  const names: Partial<Record<StateCode, string>> = { AZ: "Arizona", CA: "California", HI: "Hawaii", NY: "New York", PA: "Pennsylvania", LA: "Louisiana", CT: "Connecticut", NC: "North Carolina", IN: "Indiana", AR: "Arkansas", CO: "Colorado", IL: "Illinois", ME: "Maine", MD: "Maryland", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NJ: "New Jersey", NM: "New Mexico", OH: "Ohio", OR: "Oregon", UT: "Utah", VT: "Vermont", WI: "Wisconsin", WY: "Wyoming" };
   const name = names[state] || state;
   return [
     `You are a ${name} notary exam-prep tutor.`,

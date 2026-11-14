@@ -15,7 +15,7 @@ import { getPaddleCheckoutConfig, isPaddleProvider, isPositiveCents } from "@/li
 
 const postSchema = z.object({
   quoteId: z.string().uuid(),
-  sourceState: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"]).optional(),
+  sourceState: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY"]).optional(),
 });
 
 export async function POST(req: Request) {

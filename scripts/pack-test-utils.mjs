@@ -22,6 +22,7 @@ export function testLoader(overrides = {}, globals = {}) {
     if (!path.extname(file)) file += fs.existsSync(file+'.ts') ? '.ts' : '.tsx';
     if (cache.has(file)) return cache.get(file).exports;
     const module={exports:{}}; cache.set(file,module);
+    if (path.extname(file) === ".json") { module.exports = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")); return module.exports; }
     const require = name => Object.hasOwn(overrides,name) ? overrides[name] : name==='server-only' ? {} : name.startsWith('@/') ? load(name.slice(2)) : name.startsWith('.') ? load(path.resolve(path.dirname(file),name)) : native(name);
     vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,{module,exports:module.exports,require,console,process,Date,Math,Error,Intl,URL,URLSearchParams,Request,Response,Headers,AbortSignal,AbortController,setTimeout,clearTimeout,fetch,structuredClone,TextEncoder,TextDecoder,...globals});
     return module.exports;

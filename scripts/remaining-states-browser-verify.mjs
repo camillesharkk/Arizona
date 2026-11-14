@@ -46,7 +46,8 @@ async function finishQuick(page, pack) {
   await page.getByRole('button', { name: 'See results', exact: true }).click();
   await page.locator('.result-summary').waitFor({ timeout: 90000 });
   assert.match(await page.locator('.result-summary').innerText(), /7 of 10 correct/);
-  assert.equal(await page.locator('.result-summary a').filter({ hasText: /View Pro|Full Practice/ }).count(), 0);
+  if (pack.freeLaunch) assert.equal(await page.locator('.result-summary a').filter({ hasText: /View Pro|Full Practice/ }).count(), 0);
+  else assert.equal(await page.locator('.result-summary a').filter({ hasText: '60-Day Pro' }).count(), 1);
   assert.equal(await page.locator('.result-summary a').filter({ hasText: freeStateContent[pack.code].officialNext.label }).count(), 1);
   await page.getByRole('button', { name: 'Show explanation', exact: true }).first().click();
   const source = page.locator('.answer-result .explain a').first();
@@ -67,8 +68,8 @@ try {
       assert.equal(await page.locator(`a[href="${freeStateContent[code].officialNext.url}"]`).count() > 0, true);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `${code} home overflow`);
       await page.goto(base + pack.paths.study);
-      await page.getByRole('heading', { name: 'Application order', exact: true }).waitFor();
-      assert.ok(await page.locator('section.guide-chapter').count() >= 3);
+      await page.getByRole('heading', { name: pack.freeLaunch ? 'Application order' : 'Chapters', exact: true }).waitFor();
+      assert.ok(await page.locator(pack.freeLaunch ? 'section.guide-chapter' : 'article.card').count() >= 3);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `${code} guide overflow`);
       // Use a real client navigation through the existing state menu between successive states.
       if (process.env.STATE17_SWITCH === '1') {
@@ -79,9 +80,10 @@ try {
         await page.waitForURL(url => url.pathname === pack.paths.practice);
       } else await page.goto(base + pack.paths.practice);
       await page.getByRole('heading', { name: 'Quick 10', exact: true }).waitFor();
-      await page.getByRole('button', { name: 'Start', exact: true }).waitFor();
-      assert.equal(await page.getByRole('button', { name: 'Start', exact: true }).count(), 1);
-      await page.getByRole('button', { name: 'Start', exact: true }).click();
+      const quickCard = page.locator('.card').filter({ has: page.getByRole('heading', { name: 'Quick 10', exact: true }) });
+      await quickCard.getByRole('button', { name: 'Start', exact: true }).waitFor();
+      assert.equal(await quickCard.getByRole('button', { name: 'Start', exact: true }).count(), 1);
+      await quickCard.getByRole('button', { name: 'Start', exact: true }).click();
       await page.locator('.q-option').first().waitFor({ timeout: 45000 });
       const ids = await finishQuick(page, pack);
       await page.reload();

@@ -1,10 +1,12 @@
 "use client";
 
+import type { StateCode } from "@/lib/types";
+
 import Link from "next/link";
 import { useEffect } from "react";
 import { rememberArticleEntry, trackAnalyticsEvent } from "@/lib/analytics";
 
-type Entry = { articleId: string; articleState: "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN" };
+type Entry = { articleId: string; articleState: Exclude<StateCode, 'AZ'> };
 
 export function ArticleView({ articleId, articleState }: Entry) {
   useEffect(() => {

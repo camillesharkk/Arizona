@@ -1,3 +1,4 @@
+import type { StateCode } from "@/lib/types";
 import type { CommerceRepo } from "../commerce/repo.ts";
 import type { PricingQuoteRow } from "../commerce/types.ts";
 import { assertQuoteStillValid } from "../commerce/service.ts";
@@ -22,7 +23,7 @@ export async function ensurePaddleCheckout(opts: {
   config: PaddleCheckoutConfig;
   now?: Date;
   sdk?: PaddleTransactionsClient;
-  sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN";
+  sourceState?: StateCode;
 }): Promise<
   | { ok: true; transactionId: string; quoteId: string; finalPriceCents: number; checkoutUrl: string | null }
   | { ok: false; error: string; status: number }

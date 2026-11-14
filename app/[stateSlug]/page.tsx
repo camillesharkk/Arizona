@@ -1,3 +1,4 @@
+import { fullStateSummary } from '@/data/full-state-summary';
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -17,7 +18,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ stateSlug: string }> }): Promise<Metadata> {
   const state = stateBySlug((await params).stateSlug);
   const free = state && freeStateForSlug(state.slug);
-  if (free && freeStateContent[free[0]]) return pageMeta({ title: `${free[1]} Notary Prep — Free Practice and Application Guide`, description: freeStateContent[free[0]]!.summary, path: `/${free[2]}/`, index: releasedFreeStates.includes(free[0]) && process.env.VERCEL_ENV !== 'preview' });
+  if (free && freeStateContent[free[0]]) return pageMeta({ title: fullStateSummary[free[0]]?.ready ? `${free[1]} Notary Prep — Practice, Study Guide and Pro` : `${free[1]} Notary Prep — Free Practice and Application Guide`, description: freeStateContent[free[0]]!.summary, path: `/${free[2]}/`, index: releasedFreeStates.includes(free[0]) && process.env.VERCEL_ENV !== 'preview' });
   if (!state || state.status !== "comingSoon") return {};
   return {
     title: { absolute: `${stateLabel(state)} Notary Prep` },

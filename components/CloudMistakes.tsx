@@ -1,5 +1,8 @@
 "use client";
 
+import { clientStatePro } from '@/lib/state-pro';
+import { isFreeState } from '@/lib/free-state-catalog';
+
 import { fetchAccount } from "@/lib/client-account";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -46,8 +49,8 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
   const topicPractice = onCa || onHi || Boolean(pack);
   const practiceState = stateCode;
   const site = pack ? pack.paths : onHi ? hiPaths : onCa ? caPaths : paths;
-  const [indianaQuestions, setIndianaQuestions] = useState<Question[] | null>(null);
-  const questionPool = stateCode === "IN" && indianaQuestions ? indianaQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions();
+  const [authorizedQuestions, setAuthorizedQuestions] = useState<Question[] | null>(null);
+  const questionPool = authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions();
   const topicChoices = pack
     ? pack.topics.map((item) => ({ id: item.id, short: item.label }))
     : topicPractice
@@ -108,8 +111,8 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
       setSyncMessage(sync.message || "");
       userIdRef.current = me.user.id;
       setSeen(readMistakePrompts(window.localStorage, me.user.id));
-      setIsPro(stateCode === "IN" ? Boolean(me.user.indianaPro) : stateCode === "NC" ? Boolean(me.user.ncPro) : stateCode === "CT" ? Boolean(me.user.connecticutPro) : topicPractice ? false : Boolean(me.user.arizonaPro || me.user.plan === "pro"));
-      if (stateCode === "IN") { const response = await fetch("/api/indiana/questions/", { cache: "no-store" }); if (!response.ok) throw new Error("questions"); const bank = await response.json(); if (id !== requestId.current) return; setIndianaQuestions(bank.questions); }
+      setIsPro(clientStatePro(me.user, stateCode));
+      if (stateCode === "IN" || isFreeState(stateCode)) { const response = await fetch(stateCode === "IN" ? "/api/indiana/questions/" : `/api/state/questions/?state=${stateCode}`, { cache: "no-store" }); if (!response.ok) throw new Error("questions"); const bank = await response.json(); if (id !== requestId.current) return; setAuthorizedQuestions(bank.questions); }
       const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix";
       const day = new Intl.DateTimeFormat("en-CA", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
       const response = await fetch(`/api/mistakes/?state=${stateCode}&timeZone=${encodeURIComponent(zone)}&day=${day}&account=${encodeURIComponent(me.user.id)}`, { cache: "no-store", signal: AbortSignal.timeout(30000) });
@@ -365,7 +368,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         <button className="btn btn-ghost" type="button" onClick={() => { setQueue(null); load(); }}>
           Back
         </button>
-        <ExamRunner mode="weak" practice review preset={queue} isPro={stateCode === "CT" || stateCode === "NC" || stateCode === "IN" ? isPro : topicPractice ? true : isPro} sittingMode={`review-${source}-${topic}${stateCode === "CT" ? `-${attemptId || "all"}` : ""}`} stateCode={stateCode} />
+        <ExamRunner mode="weak" practice review preset={queue} isPro={stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode) ? isPro : topicPractice ? true : isPro} sittingMode={`review-${source}-${topic}${stateCode === "CT" ? `-${attemptId || "all"}` : ""}`} stateCode={stateCode} />
       </div>,
     );
   }
@@ -421,7 +424,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
       </div>
       <div className="row" style={{ marginTop: 12 }}>
         <Link className="btn btn-primary" href={site.daily}>Open Daily Study</Link>
-        <button className="btn btn-ghost" type="button" onClick={begin} disabled={filtered.length === 0}>Practice wrong answers</button>
+        <button className="btn btn-ghost" type="button" onClick={begin} disabled={filtered.length === 0 || (isFreeState(stateCode) && !filtered.some(stat => questionPool.some(question => question.question_id === stat.questionId)))}>Practice wrong answers</button>
         {topicPractice ? <button className="btn btn-ghost" type="button" onClick={() => { setImportOpen((open) => !open); setImportError(""); const found = (attemptId && readCaAttempt(userIdRef.current, attemptId, practiceState)) || latestCaQuick(userIdRef.current, practiceState); setImportAttempt(found); }}>Import Mistakes</button> : null}
       </div>
       {importOpen && topicPractice ? (

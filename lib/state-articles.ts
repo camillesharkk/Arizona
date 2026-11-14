@@ -1,3 +1,4 @@
+import type { StateCode } from './types';
 export type ArticleLink = {
   href: string;
   label: string;
@@ -7,7 +8,7 @@ export type ArticleLink = {
 
 export type StateArticle = {
   id: string;
-  state: "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN";
+  state: Exclude<StateCode, 'AZ'>;
   slug: string;
   path: string;
   keyword: string;

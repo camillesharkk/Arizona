@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     .object({
       questionId: z.string(),
       questionVersion: z.number().int().positive().optional(),
-      state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"]).optional(),
+      state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY"]).optional(),
       options: z.array(z.string()).length(4).optional(),
       selected: z.enum(["A", "B", "C", "D"]).optional(),
       mode: z.enum(["explain", "why-correct", "why-wrong", "beginner", "similar"]),

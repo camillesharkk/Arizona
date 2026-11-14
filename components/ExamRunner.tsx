@@ -101,15 +101,16 @@ export function ExamRunner({
   const [poolIsPro, setPoolIsPro] = useState(isPro);
   const fullSize = pack ? (pack.fullCountFor?.(isPro) ?? pack.fullCount) : onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
   const count = mode === "quick" ? 10 : mode === "full" ? fullSize : 10;
-  const [indianaQuestions, setIndianaQuestions] = useState<Question[] | null>(null);
+  const [authorizedQuestions, setAuthorizedQuestions] = useState<Question[] | null>(null);
   const byId = useMemo(
-    () => new Map((stateCode === "IN" && indianaQuestions ? indianaQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
-    [stateCode, indianaQuestions]
+    () => new Map((authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
+    [stateCode, authorizedQuestions]
   );
   const [owner, setOwner] = useState<string | null>(null);
   const [signedIn, setSignedIn] = useState(false);
   const [fullExamCount, setFullExamCount] = useState(0);
   const [bootError, setBootError] = useState(false);
+  const [restrictedResult, setRestrictedResult] = useState<ReturnType<typeof readCaAttempt>>(null);
   const [bootMessage, setBootMessage] = useState("");
   const [bootTry, setBootTry] = useState(0);
   const [activeSeed, setActiveSeed] = useState<number | null>(null);
@@ -168,7 +169,7 @@ export function ExamRunner({
       return preset.filter(item => item.state === "CT" && (item.is_free || isPro)).map(item => item.question_id);
     }
     if (pack) {
-      const bank = (inBank ?? pack.questions()).filter(item => stateCode !== "NC" || isPro || item.is_free);
+      const bank = (inBank ?? pack.questions()).filter(item => (stateCode !== "NC" && !isFreeState(stateCode)) || isPro || item.is_free);
       if ((stateCode === "NC" || isFreeState(stateCode)) && preset?.length) return preset.filter(item => bank.some(question => question.question_id === item.question_id)).map(item => item.question_id);
       if (focusArea) {
         const pool = bank.filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
@@ -177,7 +178,9 @@ export function ExamRunner({
       }
       if (mode === "quick") return pack.pickQuick(seed).map((item) => item.question_id);
       if (mode === "full") {
-        const picked = pack.pickFull(seed, isPro);
+        const picked = isFreeState(stateCode)
+          ? { questions: shuffle(bank, seed).slice(0, pack.fullCount), unscoredIds: [] }
+          : pack.pickFull(seed, isPro);
         unscoredRef.current = picked?.unscoredIds || [];
         return picked ? picked.questions.map((item) => item.question_id) : [];
       }
@@ -265,6 +268,7 @@ export function ExamRunner({
   useEffect(() => {
     let cancel = false;
     setBootError(false);
+    setRestrictedResult(null);
     initializedScope.current = "";
     setBootMessage("");
     setOwner(null);
@@ -292,12 +296,13 @@ export function ExamRunner({
       .then(async (data) => {
         if (cancel) return;
         let inBank: Question[] | undefined;
-        if (stateCode === "IN") {
-          const response = await fetch("/api/indiana/questions/", { signal: controller.signal, cache: "no-store" });
+        if (stateCode === "IN" || isFreeState(stateCode)) {
+          const bankUrl = stateCode === "IN" ? "/api/indiana/questions/" : `/api/state/questions/?state=${stateCode}`;
+          const response = await fetch(bankUrl, { signal: controller.signal, cache: "no-store" });
           if (!response.ok) throw new Error("questions");
           inBank = (await response.json()).questions;
           if (cancel) return;
-          setIndianaQuestions(inBank || []);
+          setAuthorizedQuestions(inBank || []);
         }
         const nextOwner = data.user?.id || "guest";
         setSignedIn(Boolean(data.user));
@@ -314,7 +319,9 @@ export function ExamRunner({
           if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner, stateCode);
           const archived = readCaAttempt(nextOwner, requestedAttempt, stateCode);
           if (archived && archived.mode === mode) {
-            viewOnly.current = Boolean(existing);
+            const restricted = isFreeState(stateCode) && inBank && archived.questionIds.some(id => !inBank!.some(question => question.question_id === id));
+            if (restricted) setRestrictedResult(archived);
+            viewOnly.current = Boolean(existing) || Boolean(restricted);
             setOwner(nextOwner);
             setActiveSeed(archived.seed);
             setPresentationVersion(archived.presentationVersion ?? 1);
@@ -341,7 +348,7 @@ export function ExamRunner({
           const sitting = await startIndianaPractice(nextOwner, existing?.examId || undefined);
           if (cancel) return;
           seed = sitting.seed; serverIds = sitting.questionIds; examSaveId.current = sitting.examId;
-          if (sitting.questions) setIndianaQuestions(sitting.questions);
+          if (sitting.questions) setAuthorizedQuestions(sitting.questions);
         }
         if (existing?.unscoredIds?.length) unscoredRef.current = existing.unscoredIds;
         const savedIds = serverIds || (existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed, inBank));
@@ -350,7 +357,12 @@ export function ExamRunner({
           const question = byId.get(id);
           return question && (question.is_free || ctPro);
         }) : savedIds;
-        if (stateCode === "IN" && inBank && ids.some(id => !inBank!.some(question => question.question_id === id))) throw new Error("Indiana Pro access is required to reopen this saved set. Your stored result has not been changed.");
+        if ((stateCode === "IN" || isFreeState(stateCode)) && inBank && ids.some(id => !inBank!.some(question => question.question_id === id))) {
+          const archived = existing?.done && existing.examId && isFreeState(stateCode) ? readCaAttempt(nextOwner, existing.examId, stateCode) : null;
+          if (!archived) throw new Error("Pro access is required to reopen this saved set. Your stored result is preserved.");
+          setRestrictedResult(archived);
+          viewOnly.current = true;
+        }
         setOwner(nextOwner);
         setActiveSeed(seed);
         setPresentationVersion(existing ? existing.presentationVersion ?? 1 : 2);
@@ -739,6 +751,14 @@ export function ExamRunner({
     }
   }
 
+  if (done && restrictedResult && isFreeState(stateCode)) {
+    return <div className="grid"><div className="card result-summary">
+      <span className="kicker">Saved result</span><h2>{restrictedResult.correctIds.length} of {restrictedResult.questionIds.length} correct</h2>
+      <p>Your completed score and progress are saved. Pro opens the paid questions and explanations in this practice.</p>
+      <FreeStateResultNext code={stateCode} attemptId={restrictedResult.id} />
+    </div></div>;
+  }
+
   if (done) {
     const results = questions.map((item) => ({
       question: item,
@@ -996,6 +1016,7 @@ export function ExamRunner({
           <QuestionBlock
             key={r.question.question_id}
             q={r.question}
+            tutor={isFreeState(stateCode) && !pack?.freeLaunch}
             index={i}
             selected={answers[r.question.question_id]}
             reveal
@@ -1074,7 +1095,7 @@ export function ExamRunner({
     if (!window.confirm("Start a new set? This replaces the unfinished one.")) return;
     clearSitting(sessionStorage, owner, modeKey, stateCode);
     const seed = Math.floor(Math.random() * 1_000_000_000);
-    const ids = drawQuestionIds(seed, indianaQuestions || undefined);
+    const ids = drawQuestionIds(seed, authorizedQuestions || undefined);
     setActiveSeed(seed);
     setPresentationVersion(2);
     setLockedIds(ids);
@@ -1255,7 +1276,7 @@ export function QuestionBlock({
         })}
       </div>
       {reveal && !locked ? (
-        <AnswerResult q={q} selected={selected} open={explainOpen} onToggle={onToggleExplain} tutor={tutor && !isFreeState(q.state)} />
+        <AnswerResult q={q} selected={selected} open={explainOpen} onToggle={onToggleExplain} tutor={tutor && !packFor(q.state)?.freeLaunch} />
       ) : null}
     </div>
   );

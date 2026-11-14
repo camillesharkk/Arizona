@@ -1,3 +1,5 @@
+import { serverStateQuestions } from '../data/full-state-server';
+import { isFreeState } from './free-state-catalog';
 import { ctProCovers } from "@/lib/account-pro";
 import { isDeepStrictEqual } from "node:util";
 import { caCards } from "@/data/ca-cards";
@@ -41,7 +43,7 @@ function isPack(state: StudyState) {
 function pool(state: StudyState, isPro: boolean) {
   if (isPack(state)) {
     const pack = packFor(state as StateCode);
-    const questions = (state === "IN" ? publishedInQuestions() : pack?.questions() || []).filter((question) => isPro || question.is_free);
+    const questions = (state === "IN" ? publishedInQuestions() : isFreeState(state) ? serverStateQuestions(state) : pack?.questions() || []).filter((question) => isPro || question.is_free);
     const practice = pack?.paths.practice || "/";
     const cards = (pack?.cards || []).map((card) => ({
       id: card.id,
@@ -222,7 +224,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     projectedDate: projection.date,
     projectReason: projection.reason,
     entitlementExpiresAt: expires ? expires.toISOString() : null,
-    freeOnly: (state === "AZ" || state === "CT" || state === "NC" || state === "IN") && !pro,
+    freeOnly: (state === "AZ" || state === "CT" || state === "NC" || state === "IN" || isFreeState(state)) && !pro,
     freeQuestionCount: pool(state, false).questions.length,
     questionCount: pool(state, true).questions.length,
     freeCardCount: pool(state, false).cards.length,

@@ -1,3 +1,6 @@
+import { serverStateQuestions } from '../data/full-state-server';
+import { isFreeState } from './free-state-catalog';
+import { shuffle } from './answer-sequence';
 import { packFor } from "./prep-pack";
 import { publishedQuestions } from "../data/questions";
 import { publishedCaQuestions } from "../data/ca-questions";
@@ -74,9 +77,13 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     const expectedCount = pack?.fullCountFor?.(pro) ?? config.fullCount;
     if (input.questions.length !== expectedCount || new Set(input.questions.map(answer => answer.questionId)).size !== expectedCount) throw new Error("invalid_exam");
     if (state === "IN") await requireIndianaSitting(transaction, userId, input.examId, input.questions, pro, input.guestSitting);
-    const draw = state !== "IN" && state !== "NY" && Number.isSafeInteger(input.seed) ? (pack ? pack.pickFull(input.seed!, pro) : classic[state as keyof typeof classic].pickFull(input.seed!)) : null;
-    const matchesDraw = Boolean(draw && draw.questions.every((question, index) => question.question_id === input.questions[index]?.questionId));
-    if ((state === "LA" || state === "CT") && !matchesDraw) throw new Error("invalid_exam");
+    const draw = state !== "IN" && state !== "NY" && Number.isSafeInteger(input.seed) ? (isFreeState(state) ? { questions: shuffle(serverStateQuestions(state).filter(question => pro || question.is_free), input.seed!).slice(0, expectedCount), unscoredIds: [] } : pack ? pack.pickFull(input.seed!, pro) : classic[state as keyof typeof classic].pickFull(input.seed!)) : null;
+    const matchesCurrentDraw = Boolean(draw && draw.questions.every((question, index) => question.question_id === input.questions[index]?.questionId));
+    const matchesFreeDraw = isFreeState(state) && pro && Number.isSafeInteger(input.seed) &&
+      shuffle(serverStateQuestions(state).filter(question => question.is_free), input.seed!).slice(0, expectedCount)
+        .every((question, index) => question.question_id === input.questions[index]?.questionId);
+    const matchesDraw = matchesCurrentDraw || matchesFreeDraw;
+    if ((state === "LA" || state === "CT" || isFreeState(state)) && !matchesDraw) throw new Error("invalid_exam");
     // A bank expansion must not redraw a saved PA sitting. A legacy sitting may
     // supply its persisted unscored identities, but every quota is checked here.
     const splitScore = state === "PA" || state === "CA";

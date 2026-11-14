@@ -1,3 +1,4 @@
+import { fullStateSummary } from '../data/full-state-summary.ts';
 import type { PrepPaths } from './prep-navigation';
 import type { ExamGroup } from './states';
 
@@ -23,12 +24,14 @@ export function isFreeState(state: unknown): state is FreeStateCode {
 export function freeStatePaths(slug: string): PrepPaths {
   const home = `/${slug}/`;
   const study = `${home}study-guide/`;
+  const code = freeStateCatalog.find(([, , stateSlug]) => stateSlug === slug)?.[0];
+  const ready = Boolean(code && fullStateSummary[code]?.ready);
   return {
     home, practice: `${home}practice/`, mistakes: `${home}wrong-answers/`,
     study, become: `${home}become-a-notary/`, resources: `${home}resources/`,
     examGuide: `${home}exam-guide/`, laws: `${home}laws/`,
-    questions: `${home}practice/`, studyCards: study, daily: `${home}daily-study/`,
-    passingScore: `${home}exam-guide/`, pricing: home, login: '/login/',
+    questions: ready ? `${home}questions/` : `${home}practice/`, studyCards: ready ? `${home}study-cards/` : study, daily: `${home}daily-study/`,
+    passingScore: `${home}exam-guide/`, pricing: ready ? `${home}pricing/` : home, login: '/login/',
   };
 }
 

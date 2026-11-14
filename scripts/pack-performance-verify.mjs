@@ -22,8 +22,8 @@ function load(file) {
   if (cache.has(file)) return cache.get(file).exports;
   const module = { exports: {} };
   cache.set(file, module);
+  if (path.extname(file) === ".json") { module.exports = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")); return module.exports; }
   const require = name => {
-    if (name === 'server-only') return {};
     if (name === 'server-only') return {};
     if (name === '@/lib/store') return { getStore: async () => load('lib/store/pg-store.ts').pgStore };
     if (name === 'postgres') return () => sql;
@@ -89,7 +89,7 @@ try {
     return action(scoped);
   });
   const results = [];
-  for (const state of verificationStates(['NY', 'PA', 'LA', 'CT'])) {
+  for (const state of verificationStates(['NY', 'PA', 'LA', 'CT', ...Object.keys(load('data/full-state-summary.ts').fullStateSummary)])) {
     const user = await store.createUser({ email: `performance-${state}@example.invalid`, passwordHash: 'isolated', name: null });
     const seed = state === 'PA' ? 12361 : 12345;
     const draw = packFor(state).pickFull(seed);
@@ -151,7 +151,11 @@ try {
       provider: 'mock', providerOrderId: randomUUID(), providerCustomerId: null,
     });
     const lateFailure = Object.create(store);
-    const rollbackSubmission = { ...submission, examId: randomUUID() };
+    const rollbackQuestions = load('lib/free-state-catalog.ts').isFreeState(state)
+      ? load('lib/answer-sequence.ts').shuffle(load('data/full-state-server.ts').serverStateQuestions(state), seed).slice(0, 40)
+          .map(question => ({ questionId: question.question_id, questionVersion: question.version, selected: question.correct_option }))
+      : questions;
+    const rollbackSubmission = { ...submission, examId: randomUUID(), questions: rollbackQuestions };
     lateFailure.learningTransaction = (id, action) => store.learningTransaction(id, transaction => {
       const scoped = Object.create(transaction);
       scoped.addExam = async exam => {

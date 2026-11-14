@@ -7,6 +7,7 @@ const { pathState } = load('lib/site-state.ts');
 const { switchStateHref } = load('lib/ca-site.ts');
 const { freeStateContent } = load('data/free-state-content.ts');
 const { sources } = load('data/sources.ts');
+const { fullStateSummary } = load('data/full-state-summary.ts');
 const codes = (process.env.VERIFY_STATES || 'AR,CO,IL,ME,MD,MO,MT,NE,NV,NJ,NM,OH,OR,UT,VT,WI,WY').split(',');
 for (const code of codes) {
   const pack = packFor(code);
@@ -18,8 +19,8 @@ for (const code of codes) {
   assert.equal(pathState(pack.paths.practice), code);
   assert.equal(switchStateHref('/california/practice/', code), pack.paths.practice);
   assert.equal(switchStateHref(pack.paths.practice, 'CA'), '/california/practice/');
-  assert.equal(pack.fullReady, false);
-  assert.equal(pack.purchaseEnabled, false);
+  assert.equal(pack.fullReady, Boolean(fullStateSummary[code]?.ready));
+  assert.equal(pack.purchaseEnabled, Boolean(fullStateSummary[code]?.ready));
   const content = freeStateContent[code];
   assert.ok(content.sources.length > 0);
   assert.ok(pack.topics.length >= 3);
@@ -32,4 +33,4 @@ for (const code of codes) {
     assert.ok(pack.topics.some(topic => topic.id === question.study_topic));
   }
 }
-console.log(`${codes.length} state packs, sources, explanations, Quick 10 draws, state paths and free launch gates passed`);
+console.log(`${codes.length} state packs, sources, explanations, Quick 10 draws, state paths and reviewed product gates passed`);

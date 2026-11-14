@@ -1,3 +1,4 @@
+import type { StateCode } from "@/lib/types";
 import { Environment, Paddle, type CreateTransactionRequestBody } from "@paddle/paddle-node-sdk";
 import { AZ_PRO_PRODUCT_CODE, CURRENCY } from "../pricing/catalog.ts";
 import { isSiteProProduct } from "../pro-products.ts";
@@ -31,7 +32,7 @@ export type PaddleCustomData = {
   user_id: string;
   quote_id: string;
   product_code: string;
-  source_state?: "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN";
+  source_state?: StateCode;
 };
 
 function missingNamed(env: PaddleEnvMap, keys: string[]) {
@@ -226,7 +227,7 @@ export function buildPaddleTransactionPayload(opts: {
   userId: string;
   quoteId: string;
   productCode: string;
-  sourceState?: "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN";
+  sourceState?: StateCode;
 }): CreateTransactionRequestBody {
   const customData: PaddleCustomData = {
     user_id: opts.userId,

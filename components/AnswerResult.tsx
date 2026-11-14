@@ -1,6 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from 'next/link';
+import { isFreeState } from '@/lib/free-state-catalog';
+import { prepNavigation } from '@/lib/prep-navigation';
+import { fullStateSummary } from '@/data/full-state-summary';
 import { TutorPanel } from "@/components/TutorPanel";
 import { findSource } from "@/data/sources";
 import { cleanExplanation, presentExplanation } from "@/lib/explanation";
@@ -24,6 +28,8 @@ export function AnswerResult({
   const options = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
   const correct = selected === q.correct_option;
   const source = findSource(q.source_id);
+  const topicPaths = isFreeState(q.state) && fullStateSummary[q.state]?.ready ? prepNavigation[q.state].paths : null;
+  const topic = encodeURIComponent(q.study_topic || q.topic);
   const { short, why } = presentExplanation(q.explanation);
   const notes = (["A", "B", "C", "D"] as const)
     .filter((letter) => letter !== q.correct_option)
@@ -72,6 +78,11 @@ export function AnswerResult({
               {q.last_verified_at ? ` · Last verified ${q.last_verified_at}` : ""}
             </p>
           )}
+          {topicPaths ? <div className="tool-row">
+            <Link href={`${topicPaths.study}#${topic}`}>Study This Rule</Link>
+            <Link href={`${topicPaths.studyCards}?topic=${topic}`}>Study Cards</Link>
+            <Link href={`${topicPaths.practice}?mode=practice&area=${topic}`}>Practice This Topic</Link>
+          </div> : null}
           {tutor && selected ? <TutorPanel q={q} selected={selected} /> : null}
         </div>
       ) : null}
