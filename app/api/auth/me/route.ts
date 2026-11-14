@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { accountProExpiry, ctProCovers } from "@/lib/account-pro";
-import { getArizonaEntitlement, indianaEntitlement } from "@/lib/entitlements";
+import { getArizonaEntitlement, indianaEntitlement, packFullExamCounts } from "@/lib/entitlements";
 import { stateProCovers, stateProExpiry } from "@/lib/state-pro";
 import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
 
@@ -42,7 +42,7 @@ export async function GET() {
       fullExamCount: count("full"),
       caFullExamCount: count("ca-full"),
       hiFullExamCount: count("hi-full"),
-      packFullExamCount: { NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full"), NC: count("nc-full"), IN: count("in-full") },
+      packFullExamCount: await packFullExamCounts(session.id, exams),
     },
   }, { headers: { "Cache-Control": "private, no-store" } });
 }

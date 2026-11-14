@@ -2,7 +2,7 @@ import { freeStateCatalog } from './free-state-catalog.ts';
 import type { Question } from "@/lib/types";
 import { publishedQuestions } from "@/data/questions";
 import { getStore } from "@/lib/store";
-import type { EntitlementRow } from "@/lib/store/types";
+import type { EntitlementRow, ExamRow } from "@/lib/store/types";
 import {
   AI_LIMIT_FREE,
   AI_LIMIT_PRO,
@@ -188,9 +188,8 @@ export async function hiFullExamCount(userId: string) {
   return exams.filter((e) => e.mode === "hi-full").length;
 }
 
-export async function packFullExamCounts(userId: string) {
-  const store = await getStore();
-  const exams = await store.listExams(userId);
+export async function packFullExamCounts(userId: string, savedExams?: ExamRow[]) {
+  const exams = savedExams ?? await (await getStore()).listExams(userId);
   const count = (prefix: string) => exams.filter((exam) => exam.mode === prefix).length;
   return { ...Object.fromEntries(freeStateCatalog.map(([code]) => [code, count(`${code.toLowerCase()}-full`)])), NY: count("ny-full"), PA: count("pa-full"), LA: count("la-full"), CT: count("ct-full"), NC: count("nc-full"), IN: count("in-full") };
 }

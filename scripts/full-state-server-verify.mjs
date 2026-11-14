@@ -21,6 +21,7 @@ const tutor = load('app/api/ai/tutor/route.ts');
 const daily = load('app/api/daily-study/route.ts');
 const proUsageRoute = load('app/api/billing/pro-usage/route.ts');
 const mistakes = load('app/api/mistakes/route.ts');
+const authMe = load('app/api/auth/me/route.ts');
 const { serverStateQuestions } = load('data/full-state-server.ts');
 const { shuffle } = load('lib/answer-sequence.ts');
 const { packFullExamCounts } = load('lib/entitlements.ts');
@@ -96,6 +97,7 @@ for (const code of codes) {
   assert.equal(projected.stats.find(stat => stat.questionId === legacyStat.questionId).chapter, bank.find(question => question.question_id === legacyStat.questionId).study_topic);
   assert.equal((await store.getStat(freeUser.id, legacyStat.questionId)).wrongCount, legacyStat.wrongCount);
   assert.equal((await packFullExamCounts(freeUser.id))[code], 1);
+  assert.equal((await (await authMe.GET()).json()).user.packFullExamCount[code], 1, `${code} account exposes its consumed full trial`);
   assert.equal((await postProgress(full(free, 43))).status, 402, `${code} free full trial limit`);
   const wrong = await (await mistakes.GET(request(`/api/mistakes/?state=${code}`))).json();
   assert.equal(wrong.mistakes.length, 4);
