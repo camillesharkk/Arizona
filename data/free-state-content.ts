@@ -5751,5 +5751,853 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
         "reference": "W.S. 32-3-118(a)"
       }
     ]
+  },
+  "RI": {
+    "code": "RI",
+    "name": "Rhode Island",
+    "slug": "rhode-island",
+    "group": "recommendedAssessment",
+    "processKind": "Knowledge-based commission application",
+    "summary": "Rhode Island applicants must demonstrate sufficient knowledge of notarial powers and duties. The Department recommends its free training and Knowledge Assessment with an 80% target before applying for a four-year commission.",
+    "training": "Review Chapter 42-30.1, the Standards of Conduct and the official manual. The Department recommends free live or self-guided training before applying or renewing.",
+    "assessment": "The official Knowledge Assessment is an educational knowledge tool. The Department states an 80% target. Its linked entry requires candidate information, and no public item count or time limit was verified.",
+    "steps": [
+      "Confirm age 18 or older, U.S. citizenship or permanent legal residence, English literacy, the qualifying Rhode Island connection and absence of disqualification.",
+      "Review the official law, Standards and manual, use the free training and aim for at least 80% on the Department Knowledge Assessment.",
+      "Complete both application pages with original signatures and appear before a Rhode Island notary for the oath of office.",
+      "Submit the original application and the ordinary $80 fee by mail or in person to the Department of State. Email applications are not accepted.",
+      "Receive the commission certificate, check its name and dates, and obtain a compliant inked stamp. A traditional journal is strongly recommended."
+    ],
+    "exceptions": [
+      "Rhode Island attorneys and CPAs in good standing may qualify through their professional credentials regardless of residence. Follow the current form documentation instructions.",
+      "Certain public officials have special appointment and fee provisions under section 42-30.1-15(d). Ordinary applicants should use the regular application route."
+    ],
+    "renewal": "Renew using the existing permanent notary ID, original renewal form, oath and ordinary $80 fee. The Department recommends training and the 80% assessment target for renewals too. Section 42-30.1-15(g) and the renewal page allow a 30-day post-expiration holdover. After that period, stop acting until reappointed.",
+    "ron": "First hold a Rhode Island commission, choose an approved solution provider, complete its training, and submit the information update with electronic signature and stamp samples. There is no fee for that update. Wait for Department confirmation before acting electronically or remotely. The remote notary must be physically in Rhode Island. Remote recordings require at least ten-year retention.",
+    "officialNext": {
+      "label": "View Official Requirements",
+      "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/ApplyForNewCommission"
+    },
+    "sources": [
+      {
+        "id": "ri-law-3",
+        "title": "R.I. Gen. Laws 42-30.1-3",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-3.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-3",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-4",
+        "title": "R.I. Gen. Laws 42-30.1-4",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-4.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-4",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-5",
+        "title": "R.I. Gen. Laws 42-30.1-5",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-5.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-5",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-6",
+        "title": "R.I. Gen. Laws 42-30.1-6",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-6.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-6",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-7",
+        "title": "R.I. Gen. Laws 42-30.1-7",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-7.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-7",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-8",
+        "title": "R.I. Gen. Laws 42-30.1-8",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-8.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-8",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-12.1",
+        "title": "R.I. Gen. Laws 42-30.1-12.1",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-12.1.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-12.1",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-12.2",
+        "title": "R.I. Gen. Laws 42-30.1-12.2",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-12.2.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-12.2",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-13",
+        "title": "R.I. Gen. Laws 42-30.1-13",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-13.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-13",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-14",
+        "title": "R.I. Gen. Laws 42-30.1-14",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-14.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-14",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-15",
+        "title": "R.I. Gen. Laws 42-30.1-15",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-15.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-15",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-16",
+        "title": "R.I. Gen. Laws 42-30.1-16",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-16.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-16",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-18",
+        "title": "R.I. Gen. Laws 42-30.1-18",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-18.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-18",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-19",
+        "title": "R.I. Gen. Laws 42-30.1-19",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-19.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-19",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-law-20.1",
+        "title": "R.I. Gen. Laws 42-30.1-20.1",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-20.1.htm",
+        "reference": "R.I. Gen. Laws 42-30.1-20.1",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-sos-apply",
+        "title": "Apply for a New Commission",
+        "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/ApplyForNewCommission",
+        "reference": "Steps 1-6",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-sos-renew",
+        "title": "Renew Your Existing Commission",
+        "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/RenewExistingCommission",
+        "reference": "Steps 1-5 and Did you know",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-manual",
+        "title": "Rhode Island Notary Public Manual, revised July 2024",
+        "url": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf",
+        "reference": "Printed pages 3-21",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-standards",
+        "title": "Standards of Conduct, effective September 22, 2022",
+        "url": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf",
+        "reference": "Sections 1-8",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-application",
+        "title": "Notary Application/Renewal Form, April 2025",
+        "url": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Application-Renewal-Form.pdf",
+        "reference": "Instructions and applicant/oath pages",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-sos-resources",
+        "title": "Notary Educational Resources",
+        "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/EducationalResources",
+        "reference": "Self-guided training and knowledge assessment",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-sos-remote",
+        "title": "Apply to Become an Electronic or Remote Online Notary",
+        "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/BecomeRemoteNotary",
+        "reference": "Steps 1-5",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-sos-digital",
+        "title": "Electronic and Remote Online Notarization",
+        "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/RemoteNotary",
+        "reference": "Comparison of electronic notarization and RON",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "ri-remote-guide",
+        "title": "Remote Online Notarization Performance Guide",
+        "url": "https://docs.sos.ri.gov/documents/businessservices/remote-notary-guide.pdf",
+        "reference": "Before you begin and performance steps",
+        "checkedAt": "2026-11-14"
+      }
+    ],
+    "specs": {
+      "questions": null,
+      "minutes": null,
+      "passing": "80% knowledge-assessment target",
+      "credential": null
+    },
+    "difference": "Comprehensive Practice is a site study setting. The official assessment target does not establish a published official exam length, timing rule, or a commission. Rhode Island law includes a 30-day holdover and distinct digital authorization.",
+    "topics": [
+      {
+        "id": "appointment",
+        "label": "Qualifications and application"
+      },
+      {
+        "id": "identity",
+        "label": "Appearance and identity"
+      },
+      {
+        "id": "acts",
+        "label": "Acknowledgments, oaths and signature witnessing"
+      },
+      {
+        "id": "certificates",
+        "label": "Accurate notarial certificates"
+      },
+      {
+        "id": "copies",
+        "label": "Copy certification and official records"
+      },
+      {
+        "id": "tools-fees",
+        "label": "Stamps, fees and control of tools"
+      },
+      {
+        "id": "conduct",
+        "label": "Conflicts, advertising and professional conduct"
+      },
+      {
+        "id": "records",
+        "label": "Journals and commission maintenance"
+      },
+      {
+        "id": "access",
+        "label": "Accessible service and special circumstances"
+      },
+      {
+        "id": "digital",
+        "label": "Electronic and remote online notarization"
+      }
+    ],
+    "questions": [
+      {
+        "id": "ri-001",
+        "topic": "commission",
+        "studyTopic": "appointment",
+        "stem": "Before applying, an office assistant asks how to demonstrate notarial knowledge. What does the Department recommend?",
+        "options": [
+          "Use its training and aim for at least 80% on the Knowledge Assessment",
+          "Buy a private examination certificate",
+          "Skip preparation if an employer pays",
+          "Treat a practice-site score as appointment"
+        ],
+        "answer": "A",
+        "explanation": "The application page recommends training and an assessment score of at least 80%.",
+        "feedback": [
+          "The application page recommends training and an assessment score of at least 80%.",
+          "The Department identifies its own educational resources.",
+          "Employer payment does not demonstrate sufficient knowledge.",
+          "A study score does not issue a commission."
+        ],
+        "sourceId": "ri-sos-apply",
+        "reference": "Step 1, Know Your Powers and Duties"
+      },
+      {
+        "id": "ri-002",
+        "topic": "identification",
+        "studyTopic": "identity",
+        "stem": "A signer presents a recognizable driver's license that expired two years ago. What is the statutory age-of-ID rule?",
+        "options": [
+          "Every expired license is automatically barred",
+          "Any license remains usable forever",
+          "It falls within the permitted three-year expiration window",
+          "Only a Rhode Island license can qualify"
+        ],
+        "answer": "C",
+        "explanation": "Section 6 allows a driver's license current or expired no more than three years, subject to satisfactory identification.",
+        "feedback": [
+          "The statute expressly permits the three-year window.",
+          "The statute limits expiration to three years.",
+          "Section 6 allows a driver's license current or expired no more than three years, subject to satisfactory identification.",
+          "The statute does not impose that state-only restriction."
+        ],
+        "sourceId": "ri-law-6",
+        "reference": "Section 42-30.1-6(b)(1)(i)"
+      },
+      {
+        "id": "ri-003",
+        "topic": "jurats",
+        "studyTopic": "acts",
+        "stem": "A signed affidavit requires a jurat, but the customer refuses any oath or affirmation. What should the notary do?",
+        "options": [
+          "Stamp the existing signature alone",
+          "Replace the vow with a journal signature",
+          "Decline to complete the jurat without the required vow",
+          "Ask a coworker to swear later"
+        ],
+        "answer": "C",
+        "explanation": "A jurat requires the signer's appearance, identification, signing before the notary and an oath or affirmation.",
+        "feedback": [
+          "A jurat includes an oath or affirmation.",
+          "A journal signature does not administer the vow.",
+          "A jurat requires the signer's appearance, identification, signing before the notary and an oath or affirmation.",
+          "The principal must make the required vow."
+        ],
+        "sourceId": "ri-standards",
+        "reference": "Section 2(g), jurat"
+      },
+      {
+        "id": "ri-004",
+        "topic": "acknowledgments",
+        "studyTopic": "certificates",
+        "stem": "An acknowledgment certificate has blank venue and date lines. The signer asks the notary to stamp it now. What is appropriate?",
+        "options": [
+          "Let the recipient fill the venue later",
+          "Complete truthful certificate information before signing and stamping",
+          "Stamp only the edge of the page",
+          "Use the date printed on the contract automatically"
+        ],
+        "answer": "B",
+        "explanation": "The Standards prohibit executing a false certificate or signing or stamping an incomplete one.",
+        "feedback": [
+          "The notary must avoid an incomplete certificate.",
+          "The Standards prohibit executing a false certificate or signing or stamping an incomplete one.",
+          "Stamp placement does not cure missing facts.",
+          "The certificate must describe the actual notarial event."
+        ],
+        "sourceId": "ri-standards",
+        "reference": "Section 4(d)-(e)"
+      },
+      {
+        "id": "ri-005",
+        "topic": "copy-certification",
+        "studyTopic": "copies",
+        "stem": "A customer asks for a notary-certified copy of a birth certificate available from vital records. What should the notary explain?",
+        "options": [
+          "A notary stamp replaces vital-record certification",
+          "The customer's consent removes the restriction",
+          "Reducing the copy to half size makes it eligible",
+          "Obtain the certified copy from the official custodian"
+        ],
+        "answer": "D",
+        "explanation": "The Standards exclude vital records and specified public records available as certified copies from official sources.",
+        "feedback": [
+          "Vital records fall outside this copy-certification authority.",
+          "Consent does not expand the notary's authority.",
+          "Changing size does not change the record category.",
+          "The Standards exclude vital records and specified public records available as certified copies from official sources."
+        ],
+        "sourceId": "ri-standards",
+        "reference": "Sections 2(c) and 4(a)(1)"
+      },
+      {
+        "id": "ri-006",
+        "topic": "seals-fees",
+        "studyTopic": "tools-fees",
+        "stem": "A notary plans to charge for one ordinary notarization. When must the fee be disclosed?",
+        "options": [
+          "Before performing the notarial act",
+          "Only after the stamp is applied",
+          "Only if the signer complains",
+          "At the next commission renewal"
+        ],
+        "answer": "A",
+        "explanation": "Section 20.1 requires disclosure before the act and sets a $25 ceiling per document or notarization.",
+        "feedback": [
+          "Section 20.1 requires disclosure before the act and sets a $25 ceiling per document or notarization.",
+          "The statute requires prior disclosure.",
+          "A complaint is not the disclosure trigger.",
+          "Renewal does not notify this customer."
+        ],
+        "sourceId": "ri-law-20.1",
+        "reference": "Section 42-30.1-20.1(a)"
+      },
+      {
+        "id": "ri-007",
+        "topic": "prohibited-acts",
+        "studyTopic": "conduct",
+        "stem": "A nonlawyer advertises immigration advice solely because they hold a notary commission. What authority does that commission supply?",
+        "options": [
+          "Authority to represent immigration applicants",
+          "Authority to charge for immigration legal advice",
+          "Authority for notarial acts within applicable law",
+          "Authority to draft any legal petition"
+        ],
+        "answer": "C",
+        "explanation": "Section 18 separates notarial authority from legal drafting, legal advice and immigration-consulting work.",
+        "feedback": [
+          "A commission does not authorize immigration representation.",
+          "The statute prohibits relying on the commission for that work.",
+          "Section 18 separates notarial authority from legal drafting, legal advice and immigration-consulting work.",
+          "A commission does not authorize legal drafting."
+        ],
+        "sourceId": "ri-law-18",
+        "reference": "Section 42-30.1-18(a)"
+      },
+      {
+        "id": "ri-008",
+        "topic": "journals",
+        "studyTopic": "records",
+        "stem": "A traditional paper notary chooses to keep a journal. Which information should be excluded under the Standards?",
+        "options": [
+          "Social Security and credit card numbers",
+          "Date and time of the act",
+          "Type of notarial act",
+          "Fee charged for the act"
+        ],
+        "answer": "A",
+        "explanation": "Section 3(e) recommends journal details while directing notaries to avoid Social Security and credit card numbers.",
+        "feedback": [
+          "Section 3(e) recommends journal details while directing notaries to avoid Social Security and credit card numbers.",
+          "The Standards recommend recording date and time.",
+          "Act type belongs in the recommended record.",
+          "The fee is a recommended journal item."
+        ],
+        "sourceId": "ri-standards",
+        "reference": "Section 3(e)"
+      },
+      {
+        "id": "ri-009",
+        "topic": "prohibited-acts",
+        "studyTopic": "access",
+        "stem": "A competent older signer meets all requirements. May the notary refuse solely because of advanced age?",
+        "options": [
+          "Yes, everyone above retirement age is disqualified",
+          "The Standards prohibit that sole basis for refusal",
+          "Yes, a relative must always sign instead",
+          "Only if the customer pays a higher fee"
+        ],
+        "answer": "B",
+        "explanation": "Advanced age alone is an impermissible basis for refusing an otherwise proper act.",
+        "feedback": [
+          "The Standards expressly reject age-only refusal.",
+          "Advanced age alone is an impermissible basis for refusing an otherwise proper act.",
+          "Age alone does not require a substitute signer.",
+          "A higher fee does not cure discriminatory refusal."
+        ],
+        "sourceId": "ri-standards",
+        "reference": "Section 4(b)"
+      },
+      {
+        "id": "ri-010",
+        "topic": "electronic-ron",
+        "studyTopic": "digital",
+        "stem": "An active RI notary has purchased a remote platform and mailed the registration request. When may remote acts begin?",
+        "options": [
+          "Immediately upon paying the vendor",
+          "After Department confirmation of the remote authority",
+          "When the first customer consents",
+          "After creating a personal video-call account"
+        ],
+        "answer": "B",
+        "explanation": "The Department requires registration with samples and confirmation before electronic or remote notarization.",
+        "feedback": [
+          "Vendor payment is not Department authorization.",
+          "The Department requires registration with samples and confirmation before electronic or remote notarization.",
+          "Consent does not replace authorization.",
+          "An ordinary call account does not establish compliance."
+        ],
+        "sourceId": "ri-sos-remote",
+        "reference": "Steps 3-4"
+      }
+    ]
+  },
+  "TX": {
+    "code": "TX",
+    "name": "Texas",
+    "slug": "texas",
+    "group": "courseQuiz",
+    "processKind": "SOS education course and assessment before application",
+    "summary": "Texas applications and renewals submitted from January 1, 2026 require education established and offered by the Secretary of State. Review original practice questions on current duties, then complete the official course and application in SOSPortal.",
+    "training": "Complete the appropriate SOS traditional education or continuing education course before applying. The course cannot exceed two hours. The nonrefundable course fee is $20 for each attempt. Online appointment or renewal adds the applicable online subject-matter course. Proof of successful completion must be within the one year preceding application submission under the adopted application rules.",
+    "assessment": "The adopted rules require at least 70% correct during the SOS course. Official portal guides give 30 minutes for the assessment and require final submission. The public official item count was not verified. This site provides independent Practice Questions and Course Review.",
+    "steps": [
+      "Confirm Texas residency, age 18 or older and eligibility under Government Code §406.004.",
+      "Create or sign into SOSPortal. A previously commissioned applicant should find the existing notary profile before completing education.",
+      "Pay for and successfully complete the SOS traditional education requirement before applying. Take the course within 90 days after SOS receives the course fee.",
+      "Obtain proof of the ordinary $10,000 surety bond from a Texas-licensed surety agency.",
+      "Submit the prescribed application, officer statement, bond proof and required filing fees through SOSPortal. Ordinary statutory filing components total $21, separate from education, bond premium and portal charges. Supply course-completion proof within the one year preceding submission and required proof of course-fee payment.",
+      "After approval, download and review the commission. Take the oath before another authorized officer before performing duties, then use a compliant seal and record system."
+    ],
+    "exceptions": [
+      "The statutory bond exception for persons serving primarily as state officers or employees has a separate SOS state-employee process. The public SOS state-employee pathway limits those notarizations to the state agency.",
+      "Pre-September 1, 2025 appointees are protected from retroactive initial education under §406.023(d)(4). Their later reappointment remains subject to continuing education.",
+      "Online notarization requires separate online authority, applicable SOS education, compliant technology and records.",
+      "Published 1 TAC §87.12 provides a narrow residency exception for qualified escrow officers resident in New Mexico, Oklahoma, Arkansas or Louisiana who meet its remaining conditions."
+    ],
+    "renewal": "Complete continuing education before applying for reappointment. The application window opens 90 days before the current term expires. Renew the traditional commission and receive its certificate before renewing online authority. A pending application does not extend an expired term.",
+    "ron": "Hold current Texas traditional authority, complete the online SOS education requirement, obtain a compliant X.509/PKI digital certificate and electronic seal, and apply for online authority. Meet identity, secure audio-video, certificate and record requirements. Online authority expires with the traditional commission. The published online application fee is $50 plus current portal payment charges.",
+    "officialNext": {
+      "label": "Open Texas SOS education and application instructions",
+      "url": "https://www.sos.state.tx.us/statdoc/notary-public.shtml"
+    },
+    "sources": [
+      {
+        "id": "tx-gov",
+        "title": "Texas Government Code Chapter 406",
+        "url": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+        "reference": "Chapter 406, current codified text",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "tx-cprc",
+        "title": "Texas Civil Practice and Remedies Code Chapter 121",
+        "url": "https://tcss.legis.texas.gov/resources/CP/htm/CP.121.htm",
+        "reference": "Chapter 121, including HB4202 effective June 20, 2025",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "tx-2026",
+        "title": "Texas SOS adopted education rules effective January 1, 2026",
+        "url": "https://www.sos.texas.gov/texreg/archive/December262025/Adopted%20Rules/1.ADMINISTRATION.html",
+        "reference": "1 TAC §§87.5,87.8,87.9,87.13,87.14,87.20; December 26, 2025 Texas Register",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "tx-traditional",
+        "title": "SOS traditional application and education portal guide",
+        "url": "https://www.sos.state.tx.us/statdoc/guides/TraditionalNotaryApplication.pdf",
+        "reference": "Complete the Traditional Notary Education Course; revised December 16, 2025",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "tx-online-guide",
+        "title": "SOS online application and education portal guide",
+        "url": "https://www.sos.state.tx.us/statdoc/guides/OnlineNotaryApplication.pdf",
+        "reference": "Complete the Online Notary Education Course; revised December 16, 2025",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "tx-entry",
+        "title": "Texas SOS notary application entry",
+        "url": "https://www.sos.state.tx.us/statdoc/notary-public.shtml",
+        "reference": "Traditional, online and state employee application instructions",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "tx-start",
+        "title": "Texas SOS Getting Started as an Online Notary",
+        "url": "https://www.sos.state.tx.us/statdoc/gettingstarted.shtml",
+        "reference": "Current commission, digital certificate, electronic seal and renewal order",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "tx-education",
+        "title": "Texas SOS public notary educational information",
+        "url": "https://www.sos.state.tx.us/statdoc/edinfo.shtml",
+        "reference": "Definitions, prohibited acts and sample certificates",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "tx-online-education",
+        "title": "Texas SOS online notary educational information",
+        "url": "https://www.sos.texas.gov/statdoc/online-np-educational.shtml",
+        "reference": "Online identity, records and certificate samples",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "tx-rules",
+        "title": "Texas SOS published Chapter 87 rules",
+        "url": "https://www.sos.texas.gov/statdoc/1-87.pdf",
+        "reference": "§87.50 personal information in notary record books; use 2026 adopted rules for education",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "tx-faq",
+        "title": "Texas SOS notary FAQ",
+        "url": "https://www.sos.texas.gov/statdoc/faqs2300.shtml",
+        "reference": "Traditional and online notary questions",
+        "checkedAt": "2026-11-14"
+      }
+    ],
+    "specs": {
+      "questions": null,
+      "minutes": 30,
+      "passing": "70% correct in the SOS course assessment",
+      "credential": null
+    },
+    "difference": "Texas uses SOS-offered education with an assessment for 2026 applications and renewals. The 30-minute assessment differs from the course length of up to two hours. Independent practice does not fulfill the official education requirement.",
+    "topics": [
+      {
+        "id": "education",
+        "label": "2026 Education and Course Review"
+      },
+      {
+        "id": "appointment",
+        "label": "Commission, Bond and Renewal"
+      },
+      {
+        "id": "appearance",
+        "label": "Appearance and Identity"
+      },
+      {
+        "id": "acknowledgments",
+        "label": "Acknowledgments and Representatives"
+      },
+      {
+        "id": "oaths",
+        "label": "Oaths, Jurats and Accessible Signing"
+      },
+      {
+        "id": "records",
+        "label": "Record Books and Retention"
+      },
+      {
+        "id": "seals",
+        "label": "Seals and Certificates"
+      },
+      {
+        "id": "fees",
+        "label": "Notarial Fees"
+      },
+      {
+        "id": "ethics",
+        "label": "Professional Conduct"
+      },
+      {
+        "id": "online",
+        "label": "Online Notarization"
+      }
+    ],
+    "questions": [
+      {
+        "id": "tx-001",
+        "topic": "new-laws",
+        "studyTopic": "education",
+        "stem": "A first-time applicant opens SOSPortal in November 2026. What must be completed before the application?",
+        "options": [
+          "The SOS education requirement",
+          "A private practice subscription only",
+          "Education after the commission arrives",
+          "Only an employer orientation"
+        ],
+        "answer": "A",
+        "explanation": "The adopted rule requires successful SOS education before the application.",
+        "feedback": [
+          "The adopted rule requires successful SOS education before the application.",
+          "Private practice does not fulfill the SOS course requirement.",
+          "The rule places education before applying.",
+          "Employer orientation cannot replace the prescribed SOS course."
+        ],
+        "sourceId": "tx-2026",
+        "reference": "87.8(a),(c)"
+      },
+      {
+        "id": "tx-002",
+        "topic": "commission",
+        "studyTopic": "appointment",
+        "stem": "An approved applicant wants to administer the oath on their own commission. What is required?",
+        "options": [
+          "Ask the seal vendor to waive it",
+          "Take the oath before another authorized officer",
+          "Self-administer the oath while recording a video",
+          "Replace the oath with the bond invoice"
+        ],
+        "answer": "B",
+        "explanation": "The applicant cannot execute their own oath of office.",
+        "feedback": [
+          "A vendor cannot waive statutory qualification.",
+          "The applicant cannot execute their own oath of office.",
+          "A recording does not authorize self-administration.",
+          "A bond invoice does not perform the oath."
+        ],
+        "sourceId": "tx-gov",
+        "reference": "406.010(c),(d)"
+      },
+      {
+        "id": "tx-003",
+        "topic": "identification",
+        "studyTopic": "appearance",
+        "stem": "A traditional notary receives a signed document by courier while the signer remains at home. What is missing?",
+        "options": [
+          "The courier's permission",
+          "A higher fee",
+          "The signer's required physical appearance",
+          "A larger seal"
+        ],
+        "answer": "C",
+        "explanation": "Traditional appearance requires contemporaneous physical presence allowing communication and identification.",
+        "feedback": [
+          "The courier cannot appear as the absent signer.",
+          "Payment cannot supply appearance.",
+          "Traditional appearance requires contemporaneous physical presence allowing communication and identification.",
+          "Seal size does not supply appearance."
+        ],
+        "sourceId": "tx-gov",
+        "reference": "406.0091(d)"
+      },
+      {
+        "id": "tx-004",
+        "topic": "acknowledgments",
+        "studyTopic": "acknowledgments",
+        "stem": "A signer personally appears with a deed already signed. What must the signer communicate for an acknowledgment?",
+        "options": [
+          "That every statement is sworn true",
+          "That the recorder has approved it",
+          "That the notary drafted it",
+          "That the signer executed it for its stated purposes and consideration"
+        ],
+        "answer": "D",
+        "explanation": "The acknowledgment requires the executing person's acknowledgment before the officer.",
+        "feedback": [
+          "That describes an oath-based procedure rather than the statutory acknowledgment.",
+          "Recorder approval is not the grantor's acknowledgment.",
+          "Drafting is not an element of the acknowledgment.",
+          "The acknowledgment requires the executing person's acknowledgment before the officer."
+        ],
+        "sourceId": "tx-cprc",
+        "reference": "121.004(a)"
+      },
+      {
+        "id": "tx-005",
+        "topic": "jurats",
+        "studyTopic": "oaths",
+        "stem": "A customer requests a sworn affidavit. Which authorized act supplies the solemn promise about its statements?",
+        "options": [
+          "Administering an oath or affirmation",
+          "Stamping the signature silently",
+          "Certifying the paper's market value",
+          "Promising that the recipient will accept it"
+        ],
+        "answer": "A",
+        "explanation": "Texas notaries may administer oaths, and the actual promise must occur.",
+        "feedback": [
+          "Texas notaries may administer oaths, and the actual promise must occur.",
+          "A stamp does not administer an oath.",
+          "A notary commission does not authorize valuation.",
+          "Acceptance is not the affiant's oath."
+        ],
+        "sourceId": "tx-gov",
+        "reference": "406.016(a)(3)"
+      },
+      {
+        "id": "tx-006",
+        "topic": "journals",
+        "studyTopic": "records",
+        "stem": "A current traditional notary plans to shred a 2026 record after the four-year commission ends. What rule controls?",
+        "options": [
+          "Keep it for one month after renewal",
+          "Retain it until the tenth anniversary of notarization",
+          "Destroy every record at expiration",
+          "Keep only paid transactions"
+        ],
+        "answer": "B",
+        "explanation": "Current §406.014(g) measures retention from each notarization.",
+        "feedback": [
+          "Renewal does not create that retention period.",
+          "Current §406.014(g) measures retention from each notarization.",
+          "Commission expiration does not end statutory retention.",
+          "No-fee acts remain subject to the record requirements."
+        ],
+        "sourceId": "tx-gov",
+        "reference": "406.014(g)"
+      },
+      {
+        "id": "tx-007",
+        "topic": "seals-fees",
+        "studyTopic": "seals",
+        "stem": "A stamp lists the notary's name and expiration but omits the SOS identifying number. What is needed?",
+        "options": [
+          "The notary's driver's license number",
+          "A verbal explanation instead",
+          "A seal containing the identifying number and all required elements",
+          "The customer's account number"
+        ],
+        "answer": "C",
+        "explanation": "Section 406.013(a) expressly requires the identifying number.",
+        "feedback": [
+          "That is not the prescribed SOS identifying number.",
+          "Speech does not cure the deficient seal.",
+          "Section 406.013(a) expressly requires the identifying number.",
+          "A customer account is unrelated to seal content."
+        ],
+        "sourceId": "tx-gov",
+        "reference": "406.013(a)"
+      },
+      {
+        "id": "tx-008",
+        "topic": "seals-fees",
+        "studyTopic": "fees",
+        "stem": "One deed has three signatures covered by one acknowledgment certificate. Under the statutory schedule, what is the maximum acknowledgment fee for that certificate?",
+        "options": [
+          "$30",
+          "$3",
+          "$25",
+          "$12"
+        ],
+        "answer": "D",
+        "explanation": "For one acknowledgment certificate covering all three signatures, the schedule permits $10 for the first signature plus $1 for each of the two additional signatures.",
+        "feedback": [
+          "The SOS distinguishes separate certificates. This question uses one certificate, so the two additional signatures are $1 each.",
+          "This omits the authorized first-signature amount.",
+          "The online supplement is a separate category and the question specifies the acknowledgment schedule.",
+          "For one acknowledgment certificate covering all three signatures, the schedule permits $10 for the first signature plus $1 for each of the two additional signatures."
+        ],
+        "sourceId": "tx-online-education",
+        "reference": "FAQ 9, same-certificate versus separate-certificate examples; Government Code 406.024(a)(5)"
+      },
+      {
+        "id": "tx-009",
+        "topic": "prohibited-acts",
+        "studyTopic": "ethics",
+        "stem": "A nonlawyer notary proposes an advertisement using the title notario publico. What does Texas law provide?",
+        "options": [
+          "The phrase is prohibited for advertising the notarial services",
+          "A disclaimer always authorizes the phrase",
+          "It is permitted whenever the audience speaks Spanish",
+          "It is permitted if no fee is charged"
+        ],
+        "answer": "A",
+        "explanation": "Section 406.017 specifically regulates this advertising conduct.",
+        "feedback": [
+          "Section 406.017 specifically regulates this advertising conduct.",
+          "The prohibited phrase has a separate rule.",
+          "Audience language does not remove the statutory restriction.",
+          "The advertising prohibition is not limited to paid notarizations."
+        ],
+        "sourceId": "tx-gov",
+        "reference": "406.017(a)(4)"
+      },
+      {
+        "id": "tx-010",
+        "topic": "electronic-ron",
+        "studyTopic": "online",
+        "stem": "An online notary selects the direct-credential method under Government Code section 406.110(b)(2). Which combination must that method include?",
+        "options": [
+          "A credit card payment alone",
+          "Remote credential presentation, credential analysis and identity proofing",
+          "A photograph sent by email alone",
+          "The principal's typed name alone"
+        ],
+        "answer": "B",
+        "explanation": "The selected section 406.110(b)(2) method requires remote credential presentation, credential analysis and identity proofing. The published rule also recognizes a qualifying credible-witness route.",
+        "feedback": [
+          "Payment is not the statutory identity process.",
+          "The selected section 406.110(b)(2) method requires remote credential presentation, credential analysis and identity proofing. The published rule also recognizes a qualifying credible-witness route.",
+          "This omits analysis and identity proofing.",
+          "A typed name does not fulfill the prescribed process."
+        ],
+        "sourceId": "tx-gov",
+        "reference": "406.110(b)(2), selected direct-credential branch; 1 TAC 87.41(d)(2)-(3), credible-witness alternative"
+      }
+    ]
   }
 };

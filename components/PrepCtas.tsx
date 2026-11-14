@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { paths } from "@/lib/paths";
 
-export function PrepCtas({ studyCards = false, guide = true, pro = true, sitePaths = paths, fullExamLabel = "Full 45 practice exam" }: {
+export function PrepCtas({ studyCards = false, guide = true, pro = true, fullPractice = true, sitePaths = paths, fullExamLabel = "Full 45 practice exam" }: {
   studyCards?: boolean;
   guide?: boolean;
   pro?: boolean;
+  fullPractice?: boolean;
   sitePaths?: { practice: string; study: string; pricing: string; studyCards: string };
   fullExamLabel?: string;
 }) {
@@ -13,9 +14,9 @@ export function PrepCtas({ studyCards = false, guide = true, pro = true, sitePat
       <Link className="btn btn-primary" href={`${sitePaths.practice}?mode=quick`}>
         Free 10-question test
       </Link>
-      <Link className="btn btn-ghost" href={`${sitePaths.practice}?mode=full`}>
+      {fullPractice ? <Link className="btn btn-ghost" href={`${sitePaths.practice}?mode=full`}>
         {fullExamLabel}
-      </Link>
+      </Link> : null}
       {guide ? (
         <Link className="btn btn-ghost" href={sitePaths.study}>
           Study Guide

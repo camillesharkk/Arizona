@@ -2,7 +2,7 @@
 
 import { fullStateSummary } from "@/data/full-state-summary";
 
-import { isFreeState } from "@/lib/free-state-catalog";
+import { freeStateFeatures, isFreeState } from "@/lib/free-state-catalog";
 import { stateByCode } from "@/lib/states";
 import { fetchAccount, invalidateAccountRead } from "@/lib/client-account";
 import { syncGuestProgress } from "@/lib/ca-sync";
@@ -68,7 +68,7 @@ function moreLinks(nav: ReturnType<typeof navFor>, state: LiveCode) {
   return [
     { href: nav.questions, label: "Questions" },
     { href: nav.flashcards, label: "Study cards" },
-    { href: nav.examPrep, label: "Exam guide" },
+    { href: nav.examPrep, label: isFreeState(state) && freeStateFeatures[state]?.fullPractice === false ? "Requirements guide" : "Exam guide" },
     { href: nav.become, label: "Become a Notary" },
     ...(state === "AZ" ? [{ href: paths.courses, label: "Courses" }] : []),
   ];

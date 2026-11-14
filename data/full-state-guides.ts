@@ -2862,5 +2862,460 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         "Remote certificates name the technology used."
       ]
     }
+  },
+  "RI": {
+    "appointment": {
+      "summary": "Follow Rhode Island's knowledge-based commission route from qualifications through the original application oath, issuance and renewal. Treat education, appointment and digital authorization as distinct steps.",
+      "sections": [
+        {
+          "heading": "Qualify and prepare before filing",
+          "body": "Section 42-30.1-15 requires the ordinary applicant to be at least 18, be a U.S. citizen or permanent legal resident, read and write English, have Rhode Island residence, employment or practice, avoid disqualification and demonstrate sufficient knowledge. The Department recommends its free training and Knowledge Assessment with an 80% target. The public linked entry did not establish the assessment's question count or time limit. RI bar members and specified CPAs have a professional-credential route regardless of residence. Use the current application instructions for their required evidence."
+        },
+        {
+          "heading": "Original oath, fee and ongoing authority",
+          "body": "The first-commission and renewal pages direct applicants to complete both pages with original signatures, appear before a Rhode Island notary for the oath and submit the ordinary $80 fee with the application by mail or in person. The Department rejects email applications. The ordinary commission term is four years. Section 15(g) permits an unreappointed notary to officiate for 30 days after expiration, and the renewal page repeats that limited holdover. Beyond it, await reappointment before acting. Official basis checked November 14, 2026, section 15, the April 2025 application form and the SOS application and renewal pages."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — the late renewal",
+        "body": "A notary discovers that the commission expired six weeks earlier and mails a complete renewal. The old notary ID remains permanent, but six weeks exceeds the statutory 30-day holdover. Mailing the renewal does not immediately restore authority. The notary arranges another properly authorized notary for the pending customer and waits for reappointment."
+      },
+      "keyFacts": [
+        "The ordinary commission lasts four years and the ordinary filing fee is $80.",
+        "The Department recommends an 80% Knowledge Assessment target.",
+        "The statutory post-expiration holdover is limited to 30 days."
+      ]
+    },
+    "identity": {
+      "summary": "Establish who appears through sufficient personal dealings, qualifying government identification or a properly sworn credible witness. Keep identity separate from appearance and willingness.",
+      "sections": [
+        {
+          "heading": "Apply the legislature's identity categories",
+          "body": "Section 42-30.1-6 recognizes personal knowledge based on dealings sufficient to provide reasonable certainty of identity. It also lists a passport, driver's license or government-issued nondriver ID current or expired no more than three years. Another government identification category uses the same timing limit, requires a signature or photograph and must satisfy the notary. The manual's identification discussion contains narrower language, so this chapter uses the statutory text for the expiration and signature-or-photograph questions. Copies, private memberships and a confident introduction do not automatically supply a listed identity method."
+        },
+        {
+          "heading": "Witnesses, doubts and the current appearance",
+          "body": "A credible witness verifies identity through oath or affirmation and must be known to the notary or identified by the specified credentials. The Standards describe honesty, reliability and impartiality, with personal knowledge of the principal. Section 6(c) permits further information or credentials when needed to assure identity. Even satisfactory ID does not replace the current personal appearance required by section 5, the actual requested act or the capacity and willingness assessment. Official basis checked November 14, 2026, sections 5 and 6 and Standards section 2."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — a clear license with a mismatch",
+        "body": "A customer presents a driver's license expired two years ago, but the photograph does not resemble the person at the desk. The expiration falls within the statutory three-year window. The mismatch still prevents treating the document as conclusive. The notary requests additional appropriate evidence under section 6(c) and proceeds only if the person is satisfactorily identified."
+      },
+      "keyFacts": [
+        "Listed IDs may be current or expired no more than three years.",
+        "Other government ID under section 6(b)(1)(ii) requires a signature or photograph.",
+        "A credible witness supplies identity verification on oath or affirmation."
+      ]
+    },
+    "acts": {
+      "summary": "Choose the procedure the customer actually needs and perform each of its elements. Rhode Island distinguishes acknowledgment, jurat, standalone oath or affirmation, signature witnessing and copy certification.",
+      "sections": [
+        {
+          "heading": "Voluntary acknowledgment and witnessed signing",
+          "body": "For an acknowledgment, section 42-30.1-4(a) requires the notary to determine the appearing person's identity and that the signature is theirs. The manual describes acknowledging that execution was competent and voluntary, including representative capacity when applicable. An already affixed signature can be acknowledged through the proper procedure. Signature witnessing instead requires the identified person to sign in the notary's presence. Its certificate describes the observed signing event. A notary who sees an old signature cannot truthfully claim to have witnessed its earlier affixation."
+        },
+        {
+          "heading": "Truthfulness vows and completion",
+          "body": "The Standards define a jurat through appearance, identification, signing before the notary and an oath or affirmation vouching for the signed document's truthfulness or accuracy. An affirmation is legally equivalent to an oath and uses personal honor without a religious invocation. Printed words on an affidavit do not administer the vow. Complete the corresponding certificate with facts matching the actual procedure, and distinguish a standalone oral oath from a certificate-based document act. Official basis checked November 14, 2026, section 4, Standards section 2 and manual pages 10-13."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — the wrong certificate",
+        "body": "A customer asks for a jurat on a statement signed at home and says there is no time for an oath. The notary explains that the requested jurat requires signing before the notary and a genuine oath or affirmation. Applying an acknowledgment certificate just to avoid those steps would change the requested act. The customer obtains instructions about the needed act and returns for the proper procedure."
+      },
+      "keyFacts": [
+        "An acknowledgment may address an existing signature through the proper acknowledgment.",
+        "A jurat includes an oath or affirmation and signing before the notary.",
+        "Signature witnessing observes signing and does not inherently include a truthfulness oath."
+      ]
+    },
+    "certificates": {
+      "summary": "Make every official certificate describe the notarial event truthfully. Check the principal, venue, date, act, commissioned signature and required commission details before execution.",
+      "sections": [
+        {
+          "heading": "Truthful, complete official statements",
+          "body": "Standards section 3(b) calls for the commissioned signature, official title, commission expiration and notary identification number. Section 4 prohibits false certificate information and signing or stamping an incomplete certificate. Preprinted facts require the same care as handwritten entries. An acknowledgment performed today takes today's actual acknowledgment facts even if the underlying document was signed earlier. A document's destination does not determine where the notary actually performs the act. Do not send an ordinary consumer a signed blank certificate for later completion or attachment."
+        },
+        {
+          "heading": "Form choices and remote record association",
+          "body": "The Standards recognize specified alternative-state certificates, printed forms that prohibit alteration and established conveyancing forms. Their sample certificates do not erase those stated exceptions. A narrow commercial non-consumer attorney-escrow exception has several conditions and does not authorize false facts. For remote certificates, section 42-30.1-12.2 requires contemporaneous execution, signature and date, jurisdiction, title and applicable expiration. The act must be performed before the notary signs. Connect the certificate securely to a tangible record or logically associate it with an electronic record. Official basis checked November 14, 2026, Standards sections 3-4 and section 12.2."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — an incorrect printed venue",
+        "body": "A customer brings a form printed for another state, and the certificate lists that state's county. The lawful act is performed in Providence. The notary checks the permitted form and makes sure the certificate truthfully identifies the actual venue and procedure. Retaining a false printed location merely because it arrived on the form would not satisfy truthful certification."
+      },
+      "keyFacts": [
+        "A preprinted certificate still needs accurate event facts.",
+        "Do not sign or stamp an incomplete certificate.",
+        "A remote certificate must remain connected to the record it certifies."
+      ]
+    },
+    "copies": {
+      "summary": "Classify the original, verify the whole reproduction and use the appropriate certificate. Official-record custodians and apostille services perform different functions from an ordinary notarial copy certification.",
+      "sections": [
+        {
+          "heading": "Record category and faithful reproduction",
+          "body": "Standards sections 2(c) and 4(a)(1) exclude vital records and specified public or publicly recordable records available as certified copies from official sources. Direct a birth, marriage or death certificate request to the proper custodian. A customer's possession of the original does not change its official category. For an eligible record, the notary copies, supervises copying or compares the copy, then determines accuracy and completeness. Section 42-30.1-4(d) requires a full, true and accurate reproduction. Inspect reverse sides, attachments and page sequence."
+        },
+        {
+          "heading": "Electronic sources and foreign-use authentication",
+          "body": "Section 42-30.1-3(b) expressly permits certifying that a tangible copy accurately reproduces an electronic record. That authority requires actual accuracy. Copy certification does not prove the author's claims, guarantee enforceability or issue an apostille. The manual identifies the Department of State as the office authenticating Rhode Island public officials' signatures for applicable apostille or certification processes. Determine what the receiving authority actually requests before treating a simple copy certificate as sufficient. Official basis checked November 14, 2026, sections 3-4, Standards sections 2-4 and manual pages 14 and 21."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — two different requests",
+        "body": "A customer presents a birth certificate and a private letter, asking for certified copies of both. The notary refers the vital-record request to the official custodian. The private letter can be evaluated under the eligible-copy procedure. Its reverse-side notes must be reproduced and compared before the notary can truthfully certify a complete copy."
+      },
+      "keyFacts": [
+        "Check official-record exclusions before copying.",
+        "Certify only a full, true and accurate reproduction.",
+        "An apostille authenticates an official signature through a separate process."
+      ]
+    },
+    "tools-fees": {
+      "summary": "Use a personal, compliant and copyable stamp. Quote lawful fees before performing the service and protect the commission's tools even when an employer paid for them.",
+      "sections": [
+        {
+          "heading": "Required stamp and personal custody",
+          "body": "The SOS and Standards prescribe an inked circular or rectangular stamp with an edge border, the exact commissioned name and the words Notary Public and Rhode Island. The notary ID and expiration may be added to the stamp, while certificate-completion duties are separate. Section 42-30.1-13 requires the stamp to be copyable with the record. The manual explains how an embosser can be made inked and copyable with a highlighter. The stamp belongs exclusively to the notary and cannot be used by a coworker. Employer payment does not transfer that ownership."
+        },
+        {
+          "heading": "Fee ceiling and prompt tool reports",
+          "body": "Section 42-30.1-20.1 sets a $25 maximum per document or notarization for traditional and remote acts and requires prior disclosure to the service user. The notary may charge less or work free. Disclosure after completion remains too late even if the amount is below the ceiling. Standards section 5 calls for immediate written notice to the Department when a stamp is lost, stolen, damaged or otherwise unworkable, followed by notice of recovery or replacement. Official basis checked November 14, 2026, sections 13 and 20.1, Standards sections 3 and 5 and manual pages 7 and 18."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — employer-paid tools",
+        "body": "A bank buys a stamp for its commissioned employee and later asks a receptionist to use it while the notary is absent. The employee must retain control. The bank's purchase did not commission the receptionist or transfer the stamp's exclusive use. The customer needs a properly authorized notary to perform the complete act."
+      },
+      "keyFacts": [
+        "The ordinary stamp needs an edge border and the required name and state wording.",
+        "The notarial fee ceiling is $25 per document or notarization with advance disclosure.",
+        "Report a lost, stolen or unworkable stamp immediately in writing."
+      ]
+    },
+    "conduct": {
+      "summary": "Preserve impartiality, respect the limits of the commission and make truthful representations about notarial services. Separate conflicts and advertising duties from the mechanics of stamping.",
+      "sections": [
+        {
+          "heading": "Financial and relationship conflicts",
+          "body": "Standards section 4 restricts notarizing as a party, named person or financially interested participant, subject to stated exceptions. It also lists spouse, domestic partner, parent, guardian, child and sibling relationships including specified in-law, step and half relatives. The Standards include narrow notice-only and RI-attorney-related exceptions. Apply their actual conditions. A different surname, no notarial fee or a customer's consent does not automatically remove a prohibited relationship or financial stake. Employment does not relieve a notary from screening the real transaction."
+        },
+        {
+          "heading": "Public representations and consequences",
+          "body": "Section 42-30.1-18 does not grant legal-drafting, legal-advice or immigration-representation powers through a notary commission. Non-RI-attorney notaries must avoid the restricted notario titles and follow the prominent multilingual advertising disclaimer rule. Except as otherwise allowed by law, do not withhold the customer's original record. Section 16 permits discipline for dishonest applications, noncompliance and listed integrity failures while providing notice and hearing and preserving other remedies. Official basis checked November 14, 2026, sections 16 and 18 and Standards section 4."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — two sources of conflict",
+        "body": "A nonattorney notary is asked to acknowledge a sibling's signature on a business sale that also pays the notary a share of the proceeds. The family relationship and financial interest each require examination under the Standards. Waiving the small notarial fee would not remove either issue. The parties arrange an impartial notary outside those conflicts."
+      },
+      "keyFacts": [
+        "Listed close-family and financial interests trigger the Standards' restrictions.",
+        "A commission does not license legal or immigration advice.",
+        "Nonattorney advertising requires the applicable prominent disclaimer in each language used."
+      ]
+    },
+    "records": {
+      "summary": "Maintain an accurate commission file and useful records of notarial acts. Distinguish the recommended traditional journal, end-of-term practices and mandatory remote recording retention.",
+      "sections": [
+        {
+          "heading": "Document the actual ceremony",
+          "body": "Standards section 3(e) recommends a permanently bound chronological journal for traditional acts. Recommended details include date and time, act and document description, principal and witness information, identity evidence, fee and reasons for noncompletion. Do not record Social Security or credit card numbers. A journal should record the procedure that actually occurred and distinguish principal from witness. It cannot establish an appearance, oath or signature that never occurred. Digital and remote acts have additional record and recording duties under their governing authorities."
+        },
+        {
+          "heading": "Update, renew and conclude the commission",
+          "body": "Standards section 5 calls for residence and name changes to be reported within ten days. The SOS says the notary ID is permanent and should be reused for renewal, even following expiration. Timely completed renewals preserve the expiration month and day. If qualifications end, address resignation and written notice. Section 7 calls for stamps to be disabled and recommends retaining an elected traditional journal for seven years after expiration, resignation or revocation. Section 12.1 separately requires the default ten-year remote recording retention. Official basis checked November 14, 2026, Standards sections 3 and 5-7, the renewal page and section 12.1."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — a refused request",
+        "body": "A customer appears with unreliable identification and the notary cannot resolve the mismatch. The notary declines to complete the act and, in the elected traditional journal, records the date, requested act, actual evidence and reason for noncompletion. The entry does not falsely claim that an acknowledgment was completed and excludes Social Security or credit card numbers."
+      },
+      "keyFacts": [
+        "The traditional journal is recommended best practice.",
+        "Do not record Social Security or credit card numbers.",
+        "Keep the seven-year traditional-journal recommendation distinct from the ten-year remote-recording requirement."
+      ]
+    },
+    "access": {
+      "summary": "Provide an effective way for the principal to understand and participate. Consider capacity and voluntariness individually while following the official guidance for reading, translation and assisted signing.",
+      "sections": [
+        {
+          "heading": "Accessible communication and individual assessment",
+          "body": "The manual recommends reading the document to blind or illiterate signers, allowing rereading and documenting the assistance as described. A nonlawyer's reading does not become authority for legal advice. For a deaf signer, use competent sign language or the recommended written communication. For a signer who does not speak the notary's language, the manual permits an interpreter and oral translation, with a recommended accuracy oath and certificate notation. The notary must understand the certificate language and still assess identity, comprehension and free will. The Standards prohibit refusal solely on listed grounds such as disability or advanced age."
+        },
+        {
+          "heading": "Representative and directed-signature boundaries",
+          "body": "The manual recommends obtaining a power-of-attorney copy and noting an appearing attorney-in-fact's representative capacity. A representative's identity must be distinguished from the absent principal's identity. Section 42-30.1-8 permits a physically unable person to direct another individual other than the notarial officer to sign and requires an explanatory annotation. The manual and Standards describe a different notary-assisted route. This chapter uses the statute's express route and preserves that unresolved conflict for authoritative clarification. Official basis checked November 14, 2026, sections 7-8, Standards section 4 and manual pages 15-16."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — written participation",
+        "body": "A deaf signer and the notary do not share competent sign language. They communicate in writing about the requested act and the signer's willingness. The notary checks identity and capacity under the ordinary requirements and notes the communication method in the elected journal. The signer participates personally, and a companion is not treated as automatically speaking or signing for them."
+      },
+      "keyFacts": [
+        "Disability and advanced age alone do not establish incapacity.",
+        "Use communication the principal and notary can actually understand.",
+        "Section 8's directed signer is someone other than the notarial officer."
+      ]
+    },
+    "digital": {
+      "summary": "Build electronic and remote capability on an active Rhode Island commission. Use approved technology and the required identity, record, certificate and retention safeguards for each session.",
+      "sections": [
+        {
+          "heading": "Authorization and presence mode",
+          "body": "The SOS requires a current RI commission, approved solution-provider services, electronic signature and stamp samples and the information update, with Department confirmation before digital notarization begins. The update has no state filing fee, while providers charge for services. Complete provider training. In-person electronic notarization retains shared physical presence with digital records and signatures. RON uses secure simultaneous audiovisual communication, and the notary must be physically in Rhode Island. An ordinary Zoom or FaceTime call does not establish an approved procedure."
+        },
+        {
+          "heading": "Remote identity, record integrity and retention",
+          "body": "Section 42-30.1-12.1 recognizes personal knowledge, a qualifying credible witness or at least two identity-proofing types. Confirm that the notary and signer refer to the same record, create an audiovisual recording and retain it for at least ten years under the statutory default. The remote certificate must indicate use of communication technology. A signer outside the United States triggers the statutory U.S.-connection and foreign-permission safeguards. The Standards and guide have broader outside-RI wording and legacy paper procedures, so uncertain edge cases require clarification. Official basis checked November 14, 2026, sections 12.1-14 and the SOS digital pages."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — traveling with a subscription",
+        "body": "An approved RI remote notary visits Connecticut and receives an urgent request from a Rhode Island customer. The customer, record and vendor account are ready, but the notary's actual location is outside RI. The notary cannot perform that RI remote act from Connecticut. The parties arrange a properly located authorized notary or reschedule after the notary returns."
+      },
+      "keyFacts": [
+        "Wait for Department confirmation before digital acts.",
+        "The remote notary must be physically in Rhode Island.",
+        "The statutory default for audiovisual recordings is at least ten years."
+      ]
+    }
+  },
+  "TX": {
+    "education": {
+      "summary": "Use the 2026 SOS education pathway for initial and renewal applications, distinguishing its course, assessment and application steps.",
+      "sections": [
+        {
+          "heading": "Complete the right official course",
+          "body": "The adopted rules apply to appointment and reappointment applications submitted on or after January 1, 2026. Initial applicants complete the SOS education requirement before applying, and returning notaries complete continuing education before applying for reappointment. Traditional and online subject matter are addressed separately. Government Code §406.023 reserves the required hours to a course established and offered by the Secretary of State. This site supplies independent Practice Questions and Course Review. Its study activity does not supply the statutory education hours or an official completion credential."
+        },
+        {
+          "heading": "Track the three time measures",
+          "body": "The course cannot exceed two hours under §§87.8 and 87.9. The SOS portal guides give thirty minutes for the assessment, require the videos to be completed, and warn that failing to select final Submit produces a zero score and forfeits the attempt. The adopted passing minimum is seventy percent. Each taking costs a separate nonrefundable twenty dollars. Take the course by the ninetieth day after SOS receives the fee, with no more than three completions in three months. The public official assessment item count was not verified. Source check November 14, 2026, 1 TAC §§87.5,87.8,87.9 and the official portal guides. Adopted §§87.13 and 87.14 require completion proof within the one year preceding application submission, separate from the ninety-day fee window. Required course-fee payment proof is also part of the adopted application conditions."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A renewal applicant reads an old voluntary-training page, pays for a private review course and prepares to file. Her November 2026 reappointment uses the continuing education rule. She first finds her existing portal profile, pays for and completes the SOS continuing education, and submits its assessment properly. Her private review can help her understand duties, while only the SOS course fulfills required hours. The thirty-minute assessment timer must be considered separately from the ninety-day course-payment window."
+      },
+      "keyFacts": [
+        "Applications from January 1, 2026 use the adopted education rules.",
+        "The adopted minimum is seventy percent correct.",
+        "Each official course taking has a separate twenty-dollar nonrefundable fee.",
+        "The public assessment question count remains unverified.",
+        "Course-completion proof must fall within the one year preceding application submission."
+      ]
+    },
+    "appointment": {
+      "summary": "Follow the individual commission from eligibility and bond through qualification, renewal, address changes and eventual custody of records.",
+      "sections": [
+        {
+          "heading": "Qualify before undertaking duties",
+          "body": "Government Code §§406.004–406.010 establish the ordinary pathway. The applicant must be at least eighteen, reside in Texas and satisfy the eligibility rules concerning convictions. Submit the prescribed application and officer statement, satisfy education, provide the ordinary ten-thousand-dollar surety bond and pay applicable filing fees. The statutory filing components total twenty-one dollars for an ordinary bonded appointment. Course charges, bond premiums and portal transaction charges are separate. The bond has a specific state-officer or employee exception, and the SOS provides a separate state-employee process. Published §87.12 provides a narrow residency exception for qualified escrow officers in New Mexico, Oklahoma, Arkansas or Louisiana who satisfy its conditions."
+        },
+        {
+          "heading": "Manage the term and changes",
+          "body": "An ordinary commission expires four years after qualification and has statewide Texas jurisdiction. Take the official oath before another authorized person before performing duties. A reappointment application may be made no earlier than ninety days before expiration and uses current continuing education. A filing does not prolong an expired term. Notify the SOS of address changes by the tenth day, and recognize that removing residence from Texas vacates the office. Resignation, removal and death trigger the residence-county clerk record-transfer provision. Source check November 14, 2026, Government Code §§406.002–406.022."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A notary plans to move permanently to New Mexico halfway through a term and assumes the printed expiration allows two more years of work. Section 406.020 makes leaving Texas residence a vacancy event. The officer should follow the resulting custody and reporting requirements instead of relying on the date printed on the old seal. If later seeking a new Texas appointment, qualification must be established through the applicable current process."
+      },
+      "keyFacts": [
+        "Ordinary appointment requires Texas residency and age eighteen.",
+        "The ordinary bond amount is ten thousand dollars.",
+        "The oath cannot be executed before oneself.",
+        "Address-change notice is due by the tenth day after the change."
+      ]
+    },
+    "appearance": {
+      "summary": "Establish lawful appearance and the actual identity basis before completing a certificate, using the current 2025 identity amendments.",
+      "sections": [
+        {
+          "heading": "Physical and online appearance",
+          "body": "Government Code §406.0091 defines traditional appearance as physical presence allowing the officer and person to see, hear, communicate and provide identification to each other. An absent signer cannot be replaced by a courier, a receptionist or an informal telephone confirmation. Online appearance uses interactive two-way audio and video meeting the online standards, with the required online authority and procedures. Knowing absent-person notarization has a statutory criminal provision and can also be good cause for licensing action. Its real-property condition carries an enhanced classification."
+        },
+        {
+          "heading": "Current acknowledgment identity routes",
+          "body": "Civil Practice and Remedies Code §121.005 permits personal knowledge or listed satisfactory evidence. The ordinary documentary route requires a current federal or state government document bearing photograph and signature. A credible witness gives an oath and may be personally known or establish identity through the current qualifying federal or state document alternative. HB4202 changed that witness provision effective June 20, 2025. A current foreign passport is expressly listed for a deed or other instrument relating to residential real estate. Apply that transaction boundary carefully. Source check November 14, 2026, §§121.005 and 406.0091."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "An unknown homeowner appears for an acknowledgment without a card. A witness who is also unknown to the notary presents current qualifying state identification with photograph and signature and is willing to give the required credible-witness oath. The current statute provides a route for identifying that witness. The notary must evaluate all conditions and obtain the oath, rather than reject solely because an older guide said every witness must already be personally known."
+      },
+      "keyFacts": [
+        "Traditional appearance is contemporaneous physical interaction.",
+        "Documentary identity requires the listed issuer and currentness elements.",
+        "The current credible-witness provision has an identification alternative.",
+        "The foreign-passport provision expressly concerns residential real estate."
+      ]
+    },
+    "acknowledgments": {
+      "summary": "Connect the executing person, representative capacity, identity method and completed certificate to the acknowledgment that actually occurred.",
+      "sections": [
+        {
+          "heading": "Obtain acknowledgment of execution",
+          "body": "Section 121.004 requires the executing person to appear and state that the instrument was executed for its expressed purposes and consideration. Identity verification under §121.005 supports that act. A preexisting signature does not excuse the personal acknowledgment, and a successful identification does not by itself supply it. The officer then makes, signs and seals the certificate. The certificate records the statutory procedure and actual facts. It does not give a nonlawyer notary authority to advise whether a transaction provides desirable legal protection."
+        },
+        {
+          "heading": "Representatives and form boundaries",
+          "body": "Section 121.006 addresses execution by attorneys-in-fact, partnership representatives, corporate officers or agents, fiduciaries and LLC representatives. Identify the actual appearing individual and stated capacity. Forms may be adapted to circumstances, and the authorized short-form exception concerns the identity-method wording requirement while preserving identity verification itself. The acknowledgment form framework also indicates the lawful appearance method. Corporate employment alone is addressed separately from the officer-shareholder conditions in §121.002. Source check November 14, 2026, Civil Practice and Remedies Code §§121.002–121.008."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "An LLC manager brings a signed agreement and appears with adequate identity evidence. The manager acknowledges executing the instrument in the stated capacity as the LLC act. The notary completes the appropriate representative certificate reflecting this manager and the actual appearance. Naming every absent member as present would misdescribe the event. The notary also avoids assuring the manager that the document creates a particular legal result."
+      },
+      "keyFacts": [
+        "The executing person must acknowledge execution.",
+        "Identity and acknowledgment are separate procedural requirements.",
+        "The officer makes, signs and seals the certificate.",
+        "Representative wording follows the appearing person and actual stated capacity."
+      ]
+    },
+    "oaths": {
+      "summary": "Administer the solemn act described in the certificate and use the statutory safeguards for physical inability to sign and for remote oaths.",
+      "sections": [
+        {
+          "heading": "Perform the solemn commitment",
+          "body": "Government Code §406.016 authorizes administering oaths and the official SOS material explains affirmations and jurat forms. An affiant must actually make the appropriate oath or affirmation. Watching a signature silently does not perform that step. Match the certificate to the event, including its actual date and participants. The oath concerns the affiant solemnly adopting the statements and does not make the notary an independent investigator of every fact. Qualification oaths also may be affirmed under §406.010(d)."
+        },
+        {
+          "heading": "Accessible and online procedures",
+          "body": "Under §406.0165, a notary may sign an individual name when physical impairment prevents signing or making a mark, the individual directs the act and a disinterested witness is present. Identify the witness under the incorporated §121.005 standard and add the required or substantially similar notation below the signature. Convenience alone does not satisfy the definition. Separately, §406.1107 requires identification, audio-video recording and retention for a lawful online oath or affirmation. Source check November 14, 2026, Government Code §§406.010,406.016,406.0165,406.1107 and SOS definitions."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A person whose impairment prevents signing or making a mark directs the notary to sign their name. A witness who has an interest in the affected property is proposed. Section 406.0165 requires a witness with no legal or equitable interest in that property, so the proposed witness does not meet that safeguard. Arrange a qualifying witness and complete the identification and notation requirements before relying on this procedure."
+      },
+      "keyFacts": [
+        "An oath or affirmation requires the actual solemn act.",
+        "The assisted-signature procedure requires the individual direction.",
+        "The assisted-signature witness must be disinterested and properly identified.",
+        "A lawful online oath still requires its recording and retention."
+      ]
+    },
+    "records": {
+      "summary": "Build records that preserve the statutory transaction details, protect sensitive identifiers and survive the current retention period.",
+      "sections": [
+        {
+          "heading": "Collect the listed transaction information",
+          "body": "Government Code §406.014 lists instrument and notarization dates separately, the signer name and mailing address, the actual identity or introduction method, and applicable witness, grantee and land details. A brief instrument description is included. Capture the facts of each instrument rather than keeping only daily totals. A no-fee act remains subject to the ordinary record obligation unless a specific statutory exception applies. The statute permits electronic storage, and book entries are public information. Any requester who pays all required fees may request a certified copy of an official-act entry."
+        },
+        {
+          "heading": "Sensitive data and duration",
+          "body": "The published §87.50 rule prohibits governmental identification numbers, other identifying numbers and biometrics in the notary record book while preserving mailing-address numbers. It excepts the required online recording. Section 406.014(f) allows recording the presented identification expiration date. Current §406.014(g), added by SB693 effective September 1, 2025, requires keeping its subsection (a) records until the tenth anniversary of notarization. The separate online electronic-record rule states at least five years under §406.108(c). Apply each applicable duty without assuming one cancels another. Source check November 14, 2026."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A notary record application offers fields for a full driver license number, thumbprint, credential expiration and mailing address. The officer configures the ordinary book to omit the prohibited number and biometric fields while retaining required address and identity-method information and any permitted expiration date. When renewing the commission, the officer archives the old entries so their ten-year retention continues. Changing software does not authorize deleting them."
+      },
+      "keyFacts": [
+        "Record instrument date and notarization date distinctly.",
+        "Ordinary book entries are public information.",
+        "The ordinary record book excludes prohibited identification numbers and biometrics.",
+        "Current subsection (a) records are retained until the tenth anniversary of notarization."
+      ]
+    },
+    "seals": {
+      "summary": "Use a compliant seal and complete certificates that accurately identify the officer, term, act and method of appearance.",
+      "sections": [
+        {
+          "heading": "Physical design and official use",
+          "body": "Government Code §406.013 requires the Texas notary wording around a five-point star, the notary name, identifying number and expiration. A circular seal may be at most two inches in diameter, or the rectangular form at most one inch wide by two and one-half inches long. The border is serrated or milled. Stamped impressions use indelible ink and must reproduce required elements legibly by photographic methods. The statute also restricts supplying seal copies and attaching a seal except to authenticate the actual official act."
+        },
+        {
+          "heading": "Certificate and electronic authentication",
+          "body": "For an acknowledgment the officer makes, signs and seals the certificate under §121.004. The notary signs official instruments in the commissioned name under §406.016(b). The current commission expiration belongs on the seal, including after renewal. An electronic certificate has the elements in §406.101(4), and §406.110(d) requires an online notation and indication of tangible or electronic signature. Electronic attachment also must support independent verification and evident subsequent changes under §406.109(d). Source check November 14, 2026, the cited Government Code and Chapter 121 provisions."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A renewed notary receives a stamp that retains the former expiration and leaves out the identifying number. The name alone does not satisfy §406.013. The officer obtains a compliant seal with the current commission details and checks that an actual impression reproduces clearly. An otherwise correct acknowledgment certificate also needs the officer signature, so the stamp cannot substitute for signing the certificate."
+      },
+      "keyFacts": [
+        "The seal includes the SOS identifying number and expiration.",
+        "The statute specifies dimensions and a serrated or milled border.",
+        "Use the seal to authenticate the actual official act.",
+        "Online certificates indicate online method and signature form."
+      ]
+    },
+    "fees": {
+      "summary": "Identify the authorized service and counting unit before calculating the customer fee, keeping qualification charges in their own budget.",
+      "sections": [
+        {
+          "heading": "Use the statutory fee category",
+          "body": "For signatures covered by one acknowledgment certificate, section 406.024(a)(5) provides ten dollars for the first signature and one dollar for each additional signature, including certificate and seal. The SOS Online Notary Educational Information FAQ 9 distinguishes separate certificates, which each have their own fee calculation. It supplies ten-dollar categories for oaths or affirmations, certain certificates and other listed acts. Copies in the notary office are one dollar per page, while taking depositions uses one dollar per hundred words and swearing the deposition witness has its separate category. Protest services also have specific amounts. The official-act charge may not exceed the authorized amount."
+        },
+        {
+          "heading": "Supplements, state payments and currentness",
+          "body": "Section 406.111 permits up to twenty-five dollars for performing an online notarization in addition to authorized §406.024 fees. It is not a per-minute call rate. The ordinary application filing components under §406.007 total twenty-one dollars, and the education course fee under §87.5 is twenty dollars per taking. Those are qualification payments rather than customer act fees. Section 406.024(c) provides for SOS inflation adjustments once every five years, so consult the current official schedule when quoting a real service. Source check November 14, 2026."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A notary acknowledges three signatures on one deed in one acknowledgment certificate using the ordinary schedule. The first signature permits ten dollars and the two additional signatures permit one dollar each, giving a twelve-dollar acknowledgment maximum. A separate ten-dollar seal charge would duplicate an included component. If a lawful online notarization is also performed, consider the separate §406.111 supplement under its own conditions."
+      },
+      "keyFacts": [
+        "The first acknowledged signature has a ten-dollar category.",
+        "For one acknowledgment certificate, additional signatures on the instrument are one dollar each.",
+        "The online supplement is up to twenty-five dollars.",
+        "Course and application payments are separate from customer act fees."
+      ]
+    },
+    "ethics": {
+      "summary": "Apply the public office within its granted authority, including copy limits, legal-advice boundaries, advertising rules and enforcement provisions.",
+      "sections": [
+        {
+          "heading": "Authority and prohibited representation",
+          "body": "Section 406.016 permits certification of copies of documents not recordable in public records. A public-record custodian is the appropriate source for its official certified record. A notary cannot issue identification cards. A notary without Texas legal licensure cannot give or accept fees for legal advice. Section 406.017 separately regulates implying attorney status, specified compensated representation and efforts to obtain government relief. Its exception for translation and typing does not confer a general law license or immigration-representation role."
+        },
+        {
+          "heading": "Communicate and maintain duties accurately",
+          "body": "Nonlawyer notarial advertising using notario or notario publico is specifically restricted. Other-language advertising requires the conspicuous notice in English and the advertisement language, including permitted fees and the prescribed nonattorney message. Broadcast language may be modified while retaining substantially the same message. The SOS may take licensing action for good cause including false application statements, absent-person acts and failure to maintain records, with the procedural protections in §406.009. Source check November 14, 2026, Government Code §§406.009,406.016–406.018."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A bilingual office offers translation, typing and notarization. A customer asks the notary to select immigration claims and represent the customer for an additional fee. Ordinary translation and typing have an express exception in §406.017(a-1), but that does not supply authority for the requested legal representation. The office also reviews its advertisement for the required bilingual notice and avoids the separately prohibited notario advertising phrase."
+      },
+      "keyFacts": [
+        "Notarial authority does not include issuing identification cards.",
+        "Copy certification has a nonrecordable-document boundary.",
+        "Other-language advertisements have specific notice requirements.",
+        "Record failures are an express listed good-cause ground."
+      ]
+    },
+    "online": {
+      "summary": "Follow the separate online authority and technology pathway while preserving secure appearance, identity, document and record safeguards.",
+      "sections": [
+        {
+          "heading": "Authority, identity and security",
+          "body": "The SOS operational Getting Started instructions require a current Texas traditional commission before the online application path and direct traditional renewal before online renewal. Current rules require applicable online SOS education. Obtain the compliant digital certificate and electronic seal, with the published instructions describing X.509 and PKI. The online notary must be physically in Texas under 1 TAC 87.41(b) and use the required two-way audio-video. The direct-credential branch under section 406.110(b)(2) combines remote credential presentation, credential analysis and identity proofing. Rule 87.41(d)(2) also recognizes an oath from a credible witness who personally knows the principal and is personally known to the online notary or identified under paragraph (3). Keep the electronic record, signature and seal under exclusive control and meet validity and tamper-evidence requirements. The published online application fee is fifty dollars plus current portal payment charges."
+        },
+        {
+          "heading": "Records and tangible instruments",
+          "body": "Section 406.108 lists online date/time, act and document description, principal information, identity evidence, recording and any fee. Maintain a protected backup and at least the provision stated retention, alongside other applicable duties. Tangible online acts require reasonable confirmation of the same document under §406.1103. Its specified acknowledgment procedure records signing and declaration, requires sending by day three and receipt by day ten, followed by the prescribed certificate. Other procedures satisfying subsection (a) remain possible under subsection (e). Source check November 14, 2026, Government Code §§406.108–406.1107."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "An online notary receives a wet-ink document that differs from the version displayed in the recorded session. A matching page count does not establish the same document under §406.1103(a). The notary must resolve the discrepancy through a lawful procedure before certification. The specified statutory path also has its declaration, recorded signing, sending and receipt deadlines, so ordinary shipping plus a video call is insufficient by itself."
+      },
+      "keyFacts": [
+        "Online authority ends with the traditional commission under SOS guidance.",
+        "The nonpersonal-knowledge method combines three identity components.",
+        "Electronic credentials remain under exclusive control.",
+        "Tangible online acts have same-document safeguards."
+      ]
+    }
   }
 };

@@ -13,10 +13,12 @@ export function ProAccessNote({
   plan,
   planExpiresAt,
   compact = false,
+  purchaseEnabled = true,
 }: {
   plan?: string | null;
   planExpiresAt?: string | null;
   compact?: boolean;
+  purchaseEnabled?: boolean;
 }) {
   if (plan !== "pro" || !planExpiresAt) return null;
   const label = formatProUntil(planExpiresAt);
@@ -25,7 +27,7 @@ export function ProAccessNote({
     return (
       <span>
         Pro · Active until {label}
-        {days > 0 && days <= 14 ? (
+        {purchaseEnabled && days > 0 && days <= 14 ? (
           <>
             {" "}
             ·{" "}
@@ -40,7 +42,7 @@ export function ProAccessNote({
       <p>
         <strong>Pro Access</strong> · Active until {label}
       </p>
-      {days > 0 && days <= 14 ? (
+      {purchaseEnabled && days > 0 && days <= 14 ? (
         <p className="notice">
           Need more time?{" "}
           <Link href={paths.pricing}>Add another 60 days.</Link>

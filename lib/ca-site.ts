@@ -1,4 +1,4 @@
-import { ctPaths, isConnecticutPath } from "./ct-site";
+import { ctPaths, isConnecticutPath } from "./ct-site.ts";
 import { ncPaths, isNorthCarolinaPath } from "./nc-site.ts";
 import { inPaths, isIndianaPath } from "./in-site.ts";
 import { nyPaths, isNewYorkPath } from "./ny-site.ts";
@@ -7,8 +7,8 @@ import { laPaths, isLouisianaPath } from "./la-site.ts";
 import { hiPaths, isHawaiiPath } from "./hi-site.ts";
 import { paths } from "./paths.ts";
 
-/** Live states on arizonanotaryprep.com. Texas stays on its own app. */
-export const LIVE_STATES = ["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY"] as const;
+/** Supported states on arizonanotaryprep.com. */
+export const LIVE_STATES = ["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY", "RI", "TX"] as const;
 export type LiveState = (typeof LIVE_STATES)[number];
 
 export const caPaths = {
@@ -64,7 +64,7 @@ export function isCaliforniaPath(pathname: string) {
   return pathname === "/california" || pathname.startsWith("/california/");
 }
 
-import { freeStateCatalog, freeStatePaths } from "./free-state-catalog";
+import { freeStateCatalog, freeStatePaths } from "./free-state-catalog.ts";
 
 const SWITCH_FEATURES = ["practice", "questions", "study", "studyCards", "mistakes", "daily", "resources", "examGuide", "passingScore", "laws", "become", "pricing", "home"] as const;
 

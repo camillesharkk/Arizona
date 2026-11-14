@@ -15196,5 +15196,1879 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         }
       ]
     }
+  ],
+  "RI": [
+    {
+      "slug": "acknowledgment-or-jurat-at-the-counter",
+      "keyword": "Rhode Island acknowledgment vs jurat",
+      "intent": "Choose and perform the requested signature procedure",
+      "title": "Rhode Island Acknowledgments, Jurats and the Signature Already on the Page",
+      "description": "Understand how a previously signed record, an oath and observed signing change a Rhode Island notary's procedure.",
+      "h1": "The signature is already there. What act is required?",
+      "kicker": "Notarial acts",
+      "lede": "The presence of a signature does not tell an RI notary which ceremony to perform. Start with the requested act and the certificate, then apply its requirements to the person who appears.",
+      "sections": [
+        {
+          "heading": "Acknowledge an existing execution",
+          "body": "An acknowledgment can address a signature placed on the record before the appointment. Section 42-30.1-4(a) requires the notary to determine the appearing individual's identity and that the signature is theirs. The official manual also describes the person's acknowledgment of competent and voluntary execution. The certificate records today's acknowledgment event. It should not falsely imply that the notary watched last week's signing."
+        },
+        {
+          "heading": "Administer the jurat's actual vow",
+          "body": "A jurat adds requirements the mere existence of ink cannot satisfy. Standards section 2(g) includes signing before the notary and taking an oath or affirmation vouching for truthfulness or accuracy. A statement printed above a signature line does not administer that vow. A signer may affirm on personal honor instead of using religious language. The Standards give the affirmation legal equivalence to the oath."
+        },
+        {
+          "heading": "Witness the signing when that is the requested act",
+          "body": "Signature witnessing concerns an identified person signing in the notary's presence and does not inherently require a truthfulness oath. It therefore differs both from acknowledging a prior signature and from a jurat. If the customer has a completed signature but requests a witnessed-signing certificate, the notary must arrange a procedure that truthfully satisfies the requested act rather than describe an unseen earlier event as witnessed."
+        },
+        {
+          "heading": "Match the certificate to what occurred",
+          "body": "Suppose a customer brings a pre-signed sworn statement and asks the notary to skip the oath because the office is closing. A notary cannot complete a jurat based only on identity and a stamp. The required signing and vow must occur. Replacing the jurat with an acknowledgment solely to shorten the appointment would change the requested act. Resolve which act the receiving party requires and then complete the corresponding truthful certificate."
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-4",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-4.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Standards of Conduct, effective September 22, 2022",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Rhode Island Notary Public Manual, revised July 2024",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can an acknowledgment involve a signature made earlier?",
+          "a": "Yes, if the signer appears, is properly identified and makes the required acknowledgment of that signature."
+        },
+        {
+          "q": "Can an affirmation support a jurat?",
+          "a": "Yes. The Standards recognize an affirmation as legally equivalent to an oath."
+        }
+      ],
+      "id": "ri-acknowledgment-or-jurat-at-the-counter",
+      "state": "RI",
+      "path": "/rhode-island/guides/acknowledgment-or-jurat-at-the-counter/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/rhode-island/study-guide/",
+          "label": "Rhode Island Study Guide"
+        },
+        {
+          "href": "/rhode-island/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "expired-identification-and-remaining-doubts",
+      "keyword": "Rhode Island expired notary identification",
+      "intent": "Apply statutory identity categories to imperfect evidence",
+      "title": "Rhode Island Expired ID and the Notary's Remaining Identity Questions",
+      "description": "Apply the three-year statutory ID window while evaluating mismatches, credible witnesses and additional evidence.",
+      "h1": "An ID can be within the window and still leave a question",
+      "kicker": "Identity",
+      "lede": "Rhode Island's current identity statute permits specified expired credentials within a limited window. The notary still needs reasonable certainty about the person who appears.",
+      "sections": [
+        {
+          "heading": "Use the current statutory categories",
+          "body": "Section 42-30.1-6(b)(1)(i) lists a passport, driver's license or government-issued nondriver ID that is current or expired no more than three years before the act. The date is measured against performance of the notarial act. A four-year-expired passport falls outside that listed window. A two-year-expired driver's license is within the timing category, subject to the other necessary identity determinations."
+        },
+        {
+          "heading": "Read the second category precisely",
+          "body": "Other government identification under section 6(b)(1)(ii) must fit the same expiration window, contain a signature or photograph and be satisfactory to the officer. The manual uses some narrower wording about photographs and signatures. For these statutory distinctions, read the legislature's text directly. A privately issued gym or employee card does not become government identification merely by carrying an attractive photograph."
+        },
+        {
+          "heading": "Respond to a mismatch",
+          "body": "A card's acceptable expiration date does not settle a photograph mismatch, apparent alteration or uncertainty about who is presenting it. Section 6(c) authorizes additional information or credentials necessary to assure identity. Pause and evaluate that evidence. Charging more, writing a detailed journal entry or obtaining the customer's consent does not turn unresolved identity evidence into a satisfactory determination."
+        },
+        {
+          "heading": "Use personal knowledge or a witness appropriately",
+          "body": "Personal knowledge comes from sufficient dealings, not simply recognizing a face from television. A credible witness verifies identity on oath or affirmation and must be known to the notary or identified through the specified credentials. The Standards also describe the witness as honest, reliable and impartial. Record the identity route actually used when keeping a journal, and retain the separate appearance and willingness requirements."
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-6",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-6.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Standards of Conduct, effective September 22, 2022",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does Rhode Island reject every expired driver's license?",
+          "a": "No. Section 6 permits the listed credential if current or expired no more than three years, subject to satisfactory identification."
+        },
+        {
+          "q": "May the notary request additional evidence?",
+          "a": "Yes. Section 6(c) authorizes additional information or identification needed to assure identity."
+        }
+      ],
+      "id": "ri-expired-identification-and-remaining-doubts",
+      "state": "RI",
+      "path": "/rhode-island/guides/expired-identification-and-remaining-doubts/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/rhode-island/study-guide/",
+          "label": "Rhode Island Study Guide"
+        },
+        {
+          "href": "/rhode-island/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "quote-notary-fees-before-the-act",
+      "keyword": "Rhode Island notary fee disclosure",
+      "intent": "Set and communicate lawful notarial fees",
+      "title": "Quoting Rhode Island Notary Fees Before the Appointment Is Complete",
+      "description": "Understand the $25 notarial fee ceiling, prior disclosure and the distinction between state filing and vendor charges.",
+      "h1": "Give the fee information before performing the act",
+      "kicker": "Fees",
+      "lede": "A lawful amount and timely disclosure are separate parts of Rhode Island's fee rule. Even a modest charge must be disclosed before the notarial act.",
+      "sections": [
+        {
+          "heading": "Start with the service being charged",
+          "body": "Section 42-30.1-20.1(a) permits a notarial fee up to $25 per document or notarization. Subsection (b) applies the same ceiling to a remote act. The statutory wording does not require every notary to charge the maximum. A notary may charge less or provide a free act. Avoid inventing a per-page formula or an unlimited fee simply because a customer has consented to pay."
+        },
+        {
+          "heading": "Disclose the amount beforehand",
+          "body": "The statute requires all fees to be disclosed to the person using the service before performance. A customer who hears the price only after the completed certificate has been handed over did not receive that prior disclosure. A workplace's internal price list can help staff quote consistently, but a secret list does not itself communicate the amount to the person being served."
+        },
+        {
+          "heading": "Keep different charges understandable",
+          "body": "The ordinary $80 commission application fee is paid in the appointment process and is distinct from a customer's notarial-act fee. The SOS remote-authority information update carries no state filing fee, while solution providers can charge for subscriptions. A notary preparing a service quote should identify the actual charge and the applicable authority instead of combining unrelated amounts into an unexplained claim about a state-required customer fee."
+        },
+        {
+          "heading": "Apply the rule to an office interaction",
+          "body": "A customer arrives for a single ordinary notarization. The employee quotes $10 before the procedure, then the notary screens identity, willingness and the required act. That quote is within the statutory ceiling and timely. A $40 notarial fee for that same single document/notarization would exceed the ceiling even if the customer agreed. A $10 amount first revealed after completion would still miss the timing requirement."
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-20.1",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-20.1.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Apply for a New Commission",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.ri.gov/Divisions/NotaryPublic/ApplyForNewCommission",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Apply to Become an Electronic or Remote Online Notary",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.ri.gov/Divisions/NotaryPublic/BecomeRemoteNotary",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must an RI notary charge exactly $25?",
+          "a": "No. The statute permits a fee up to that ceiling."
+        },
+        {
+          "q": "Does remote notarization have a separate unlimited fee?",
+          "a": "No. Section 20.1(b) also imposes the $25 ceiling and prior disclosure for remote acts."
+        }
+      ],
+      "id": "ri-quote-notary-fees-before-the-act",
+      "state": "RI",
+      "path": "/rhode-island/guides/quote-notary-fees-before-the-act/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/rhode-island/study-guide/",
+          "label": "Rhode Island Study Guide"
+        },
+        {
+          "href": "/rhode-island/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "employer-paid-stamp-and-personal-control",
+      "keyword": "Rhode Island employer notary stamp ownership",
+      "intent": "Maintain personal control of workplace notary tools",
+      "title": "Who Controls an Employer-Paid Rhode Island Notary Stamp?",
+      "description": "Review personal stamp ownership, coworker use, compliant design and immediate loss reporting in an office setting.",
+      "h1": "Employer payment does not transfer the notarial tool",
+      "kicker": "Workplace practice",
+      "lede": "An office may pay for its employee's commission and supplies. The individual notary still controls the stamp and is responsible for the act it authenticates.",
+      "sections": [
+        {
+          "heading": "The commission remains personal",
+          "body": "The manual explains that the notary owns the commission, stamp and journal regardless of employer payment. Standards section 3(d) makes the stamp the notary's exclusive property and prohibits use by another person. A receptionist cannot borrow it to complete an absent employee's appointment. The office should arrange another commissioned notary who will perform the entire required procedure under their own authority."
+        },
+        {
+          "heading": "Check the tool before using it",
+          "body": "The ordinary stamp must be circular or rectangular with an edge border, the exact commissioned name and the words Notary Public and Rhode Island. The SOS calls for an inked stamp. Notary ID and expiration date may be included on the stamp, but certificate completion has separate requirements. If the stamp contains an outdated expiration after renewal, the renewal page directs the notary to order a new stamp."
+        },
+        {
+          "heading": "Protect a usable impression",
+          "body": "Section 42-30.1-13 requires copying capability together with the record. A dry embossed impression that disappears when scanned can cause a problem. The manual describes using an inked seal highlighter with an embosser. The official impression must remain intelligible, and the tool must remain controlled by its commissioned owner. An unlocked communal drawer makes unauthorized use easier and does not change the exclusive-use rule."
+        },
+        {
+          "heading": "Handle loss and departure promptly",
+          "body": "Standards section 5 calls for immediate written Department notice when a stamp is lost, stolen, damaged or otherwise unworkable, and notice when it is recovered or replaced. A report to the retailer alone does not reach the commissioning agency. When employment ends, the notary should retain the personal tools rather than surrender them for a replacement employee's use. End-of-commission disposition is governed separately by section 7."
+        },
+        {
+          "heading": "Rhode Island Notary Public Manual, revised July 2024",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Standards of Conduct, effective September 22, 2022",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-13",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-13.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Renew Your Existing Commission",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.ri.gov/Divisions/NotaryPublic/RenewExistingCommission",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can an employer keep the stamp because it paid the invoice?",
+          "a": "The manual states that ownership and control remain with the individual notary."
+        },
+        {
+          "q": "Who receives notice of a stolen stamp?",
+          "a": "The Standards call for immediate written notice to the Rhode Island Department of State."
+        }
+      ],
+      "id": "ri-employer-paid-stamp-and-personal-control",
+      "state": "RI",
+      "path": "/rhode-island/guides/employer-paid-stamp-and-personal-control/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/rhode-island/study-guide/",
+          "label": "Rhode Island Study Guide"
+        },
+        {
+          "href": "/rhode-island/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "copy-request-official-record-or-private-document",
+      "keyword": "Rhode Island copy certification vital records",
+      "intent": "Evaluate which certified-copy service is appropriate",
+      "title": "Rhode Island Copy Requests, Vital Records and the Official Custodian",
+      "description": "Screen a copy-certification request for official-record exclusions and verify an eligible reproduction accurately.",
+      "h1": "Classify the original before making a certified copy",
+      "kicker": "Copy certification",
+      "lede": "Two papers in the same customer's folder may require different certified-copy routes. Record type and the source of official copies matter before the notary reaches for the copier.",
+      "sections": [
+        {
+          "heading": "Identify records with official sources",
+          "body": "Standards sections 2(c) and 4(a)(1) restrict notarial copy certification of vital records and specified public or publicly recordable records available from official certified-copy sources. A birth, marriage or death certificate belongs in that official-record inquiry. The customer holding the original does not change its character. Direct the request to the proper custodian instead of promising that a private stamp will substitute for the official certification."
+        },
+        {
+          "heading": "Verify every relevant part of an eligible original",
+          "body": "For an eligible private record, determine that the reproduction is full, true and accurate under section 42-30.1-4(d). Compare pages, relevant reverse sides and attachments. A scanner can clip signatures, omit a schedule or rearrange pages while keeping a convincing file name. The notary must perform the applicable copying, supervision or comparison and make the determination, rather than simply repeat the customer's unsupported assurance."
+        },
+        {
+          "heading": "Handle an electronic source",
+          "body": "Section 42-30.1-3(b) expressly authorizes certification of an accurate tangible copy of an electronic record. This is useful when a customer needs a paper reproduction, but printing is only the mechanical step. The officer still checks accuracy. A paper copy containing an altered paragraph cannot be truthfully certified as the accurate electronic-to-paper reproduction the statute describes."
+        },
+        {
+          "heading": "Ask what the recipient needs",
+          "body": "A copy certificate establishes the eligible reproduction's accuracy. It does not guarantee the author's factual assertions, the agreement's legal enforceability or acceptance by a foreign authority. An apostille or certification authenticating a public official's signature is a different service handled by the Department of State for RI public officials. Clarify the requested service so a customer is directed to the office that can actually supply it."
+        },
+        {
+          "heading": "Standards of Conduct, effective September 22, 2022",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-4",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-4.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-3",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-3.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Rhode Island Notary Public Manual, revised July 2024",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May a customer waive the birth-certificate restriction?",
+          "a": "Customer consent does not expand the notary's copy-certification authority."
+        },
+        {
+          "q": "Can an accurate paper copy of an electronic record be certified?",
+          "a": "Section 3(b) expressly recognizes that authority, subject to actual accuracy and other applicable limits."
+        }
+      ],
+      "id": "ri-copy-request-official-record-or-private-document",
+      "state": "RI",
+      "path": "/rhode-island/guides/copy-request-official-record-or-private-document/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/rhode-island/study-guide/",
+          "label": "Rhode Island Study Guide"
+        },
+        {
+          "href": "/rhode-island/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "language-and-reading-access-at-notarization",
+      "keyword": "Rhode Island notary interpreter deaf blind signer",
+      "intent": "Provide accessible communication within notarial scope",
+      "title": "Reading, Translation and Written Communication for Rhode Island Signers",
+      "description": "Use official guidance to support blind, deaf, illiterate and non-English-speaking signers while preserving personal participation.",
+      "h1": "Give the principal a way to understand and participate",
+      "kicker": "Accessible service",
+      "lede": "Rhode Island's manual offers practical communication methods for several signing circumstances. Accessibility and the ordinary notarial safeguards operate together.",
+      "sections": [
+        {
+          "heading": "Read when the principal needs reading access",
+          "body": "For a blind or illiterate signer, the manual advises reading the document before the act and documenting that assistance as described. A signer may ask for part of the text to be read again. The nonlawyer notary can reread without using the commission to advise which legal choice the signer should make. Reading the text does not establish a law license or turn the notary into the customer's legal representative."
+        },
+        {
+          "heading": "Communicate with a deaf signer",
+          "body": "When notary and signer are not competent in sign language, the manual recommends written communication and a note in the journal describing the method. Use that communication to address the requested act and the principal's participation. A companion's presence does not automatically authorize the companion to answer or sign in place of the principal. Continue to identify the actual signer and assess willingness and capacity."
+        },
+        {
+          "heading": "Use language assistance transparently",
+          "body": "The manual allows a shared language between signer and notary or use of an interpreter. An oral translation can be sufficient. The guidance strongly suggests administering an interpreter oath or affirmation about accuracy and noting the translator in the certificate. The notary must be able to read and write the certificate's language even where the underlying document is in another language."
+        },
+        {
+          "heading": "Assess the individual circumstances",
+          "body": "Standards section 4(b) prohibits refusal solely on listed grounds such as advanced age, national origin, health or disability. Section 42-30.1-7 allows refusal where the officer is unsatisfied about capacity or knowingly and voluntarily made signing. These standards require attention to the individual. Neither a disability stereotype nor an unexplained nod resolves the principal's comprehension. Use effective communication to evaluate the actual act."
+        },
+        {
+          "heading": "Rhode Island Notary Public Manual, revised July 2024",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Standards of Conduct, effective September 22, 2022",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-7",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-7.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does the manual always require a written translation?",
+          "a": "No. It states that an oral translation can be sufficient."
+        },
+        {
+          "q": "Does blindness itself establish incapacity?",
+          "a": "No. Provide the described reading access and assess the person's actual capacity and willingness."
+        }
+      ],
+      "id": "ri-language-and-reading-access-at-notarization",
+      "state": "RI",
+      "path": "/rhode-island/guides/language-and-reading-access-at-notarization/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/rhode-island/study-guide/",
+          "label": "Rhode Island Study Guide"
+        },
+        {
+          "href": "/rhode-island/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "family-and-financial-conflicts",
+      "keyword": "Rhode Island notary family financial interest",
+      "intent": "Screen and understand conflicts under the Standards",
+      "title": "Rhode Island Family and Financial Conflicts Before Stamping",
+      "description": "Evaluate listed relationships, personal transaction interests and narrow exceptions without treating consent as a universal waiver.",
+      "h1": "Screen the notary's role as well as the signer's identity",
+      "kicker": "Professional conduct",
+      "lede": "A perfectly identified customer can still present a conflict for a particular notary. Rhode Island's Standards address personal interests and close relationships before the mechanics of certification.",
+      "sections": [
+        {
+          "heading": "Look for a direct transaction interest",
+          "body": "Section 4(a) restricts acting as a party or named person and addresses financial interests in the subject matter or direct consideration beyond the allowed notarial fees. A seller receiving sale proceeds has a different stake from simply charging the ordinary notarial fee. Reducing the fee to zero does not remove proceeds, property interests or another personal benefit from the transaction."
+        },
+        {
+          "heading": "Check the listed relationships",
+          "body": "The Standards list spouse, domestic partner, parent, guardian, child and sibling relationships, including specified in-law, step and half relatives. A different surname does not erase a sibling relationship. The family restriction is not written as a rule that applies only when a fee is charged. When the ordinary restriction applies, use an impartial notary who can perform the requested act without the relationship conflict."
+        },
+        {
+          "heading": "Read exceptions as written",
+          "body": "The named-person restriction has a notice-recipient-only exception. The Standards also contain specified RI-attorney-related fiduciary and fee exceptions and a narrow provision involving relatives witnessing documents prepared by an RI attorney notary. Those details matter. Being a professional in an unrelated field or using an attorney's stationery does not automatically fit them. Apply the actual conditions before relying on an exception."
+        },
+        {
+          "heading": "Preserve the rest of the procedure",
+          "body": "An exception to a conflict restriction does not create an exception to identification, willingness, the required oath or truthful certificate facts. For example, a notary listed solely to receive notices still needs the principal's proper appearance and acknowledgment. A workplace supervisor's approval does not make a false date true. Keep the conflict inquiry and the act's required formalities in the same complete workflow."
+        },
+        {
+          "heading": "Standards of Conduct, effective September 22, 2022",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does waiving the notarial fee remove a financial interest in sale proceeds?",
+          "a": "No. The separate stake in the transaction remains relevant under the Standards."
+        },
+        {
+          "q": "Do different surnames remove a sibling conflict?",
+          "a": "No. The provision addresses the actual relationship."
+        }
+      ],
+      "id": "ri-family-and-financial-conflicts",
+      "state": "RI",
+      "path": "/rhode-island/guides/family-and-financial-conflicts/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/rhode-island/study-guide/",
+          "label": "Rhode Island Study Guide"
+        },
+        {
+          "href": "/rhode-island/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "remote-recording-custody-and-document-integrity",
+      "keyword": "Rhode Island remote notary recording retention",
+      "intent": "Understand remote evidence and record-integrity obligations",
+      "title": "Rhode Island RON Recordings, Same-Record Checks and Long-Term Custody",
+      "description": "Plan for the remote recording, ten-year default retention and the certificate's link to the executed record.",
+      "h1": "Plan the evidence before starting the remote session",
+      "kicker": "Remote notarization",
+      "lede": "A completed remote act leaves more than a signed file. Rhode Island law requires an audiovisual record and ties the certificate to the actual record on which the signer acted.",
+      "sections": [
+        {
+          "heading": "Confirm authority and physical location",
+          "body": "The SOS requires a current RI commission, approved technology, electronic signature and stamp samples and Department confirmation before digital acts. The remote notary must be physically in Rhode Island. A paid vendor account does not independently authorize the procedure, and a personal video meeting is not the approved-provider route. Complete the chosen provider's training before conducting sessions."
+        },
+        {
+          "heading": "Keep signer and record aligned",
+          "body": "Section 42-30.1-12.1(b)(2) requires reasonable ability to confirm that the record before the notary is the same one on which the remote person made a statement or executed a signature. A screen-share showing a similar draft does not resolve a mismatch. Use the authorized system's process to establish the actual record, and stop if the necessary confirmation cannot be made."
+        },
+        {
+          "heading": "Arrange the recording's custody",
+          "body": "The notary or someone acting on the notary's behalf must create an audiovisual recording of performance. Section 12.1(e) permits retention through the responsible person or a designated repository and sets a default minimum of ten years unless a different period is required by rule. Changing subscriptions, employers or providers does not turn a ten-year obligation into a one-year obligation. Preserve access through those transitions."
+        },
+        {
+          "heading": "Complete and associate the certificate",
+          "body": "The remote certificate must indicate use of communication technology. Section 12.2 prohibits signing before the act has occurred and requires a certificate that is connected to the tangible record or logically associated with the electronic record. A journal entry and a video recording serve different functions and neither replaces a truthful certificate. Plan these components as parts of one complete remote procedure."
+        },
+        {
+          "heading": "Apply to Become an Electronic or Remote Online Notary",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.ri.gov/Divisions/NotaryPublic/BecomeRemoteNotary",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Electronic and Remote Online Notarization",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.ri.gov/Divisions/NotaryPublic/RemoteNotary",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-12.1",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-12.1.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-12.2",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-12.2.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "What is the default remote-recording retention period?",
+          "a": "At least ten years after creation unless a different period is required by applicable rule."
+        },
+        {
+          "q": "Does a digital journal replace the audiovisual recording?",
+          "a": "No. The recording is a separate statutory requirement for the remote act."
+        }
+      ],
+      "id": "ri-remote-recording-custody-and-document-integrity",
+      "state": "RI",
+      "path": "/rhode-island/guides/remote-recording-custody-and-document-integrity/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/rhode-island/study-guide/",
+          "label": "Rhode Island Study Guide"
+        },
+        {
+          "href": "/rhode-island/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "advertising-notarial-services-within-authority",
+      "keyword": "Rhode Island notary advertising disclaimer notario",
+      "intent": "Advertise within the statutory authority and disclosure rules",
+      "title": "Advertising Rhode Island Notarial Services Without Overstating Authority",
+      "description": "Understand the nonattorney disclaimer, multilingual advertising and the limits on notario and immigration-service representations.",
+      "h1": "Describe the service the commission actually authorizes",
+      "kicker": "Advertising",
+      "lede": "A notary's public description of their services is part of professional compliance. Rhode Island law addresses both misleading claims and specific nonattorney disclosures.",
+      "sections": [
+        {
+          "heading": "Avoid promising legal powers through the commission",
+          "body": "Section 42-30.1-18(a) states that the commission does not authorize legal drafting, legal advice, immigration consulting or immigration-related representation. A course certificate or years of stamping experience does not add those powers to the commission. Avoid suggesting that an ordinary acknowledgment includes a legal review of the transaction or guarantees approval by a court or immigration agency."
+        },
+        {
+          "heading": "Use the nonattorney disclosure",
+          "body": "Section 18(d) requires an RI notary who is not an attorney licensed in the state and advertises notarial services to include the statutory or authorized alternative statement prominently. Its substance identifies the lack of an RI attorney license and authority to draft legal records, advise on legal matters including immigration or charge for those activities. The statute gives the exact wording and should be consulted when preparing the advertisement."
+        },
+        {
+          "heading": "Apply the language and media rules",
+          "body": "The disclaimer must appear in each language used in the advertisement or representation. A bilingual web page therefore needs the required disclosure in both languages. The size-related alternative in section 18(d) concerns the specified nonbroadcast, nonprint and noninternet form that cannot fit the statement. It permits prominent display or provision at the place of performance before the act, rather than a universal omission for small advertisements."
+        },
+        {
+          "heading": "Check titles and claims",
+          "body": "Section 18(c) prohibits the terms notario or notario publico for a notary who is not an RI-licensed attorney. Translating the title does not expand the office into a civil-law legal profession. Section 18(b) also prohibits false or deceptive advertising. Before publishing a service description, check the titles, promised services, disclaimer language and any claimed guarantee against the actual authority conferred by law."
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-18",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-18.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can a nonlawyer use notario publico as a marketing title?",
+          "a": "Section 18(c) prohibits that term for a notary who is not an RI-licensed attorney."
+        },
+        {
+          "q": "Does an English disclaimer cover every language in an advertisement?",
+          "a": "The statute requires the disclosure in each language used."
+        }
+      ],
+      "id": "ri-advertising-notarial-services-within-authority",
+      "state": "RI",
+      "path": "/rhode-island/guides/advertising-notarial-services-within-authority/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/rhode-island/study-guide/",
+          "label": "Rhode Island Study Guide"
+        },
+        {
+          "href": "/rhode-island/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "renewal-gap-and-commission-record-continuity",
+      "keyword": "Rhode Island notary renewal expired 30 days",
+      "intent": "Manage renewal timing, authority and personal records",
+      "title": "Rhode Island Renewal Gaps, the 30-Day Holdover and Permanent Notary IDs",
+      "description": "Distinguish a permanent notary ID from a limited commission term and plan accurate renewal records and tools.",
+      "h1": "A permanent ID does not make the commission permanent",
+      "kicker": "Commission maintenance",
+      "lede": "Rhode Island keeps a notary's identification number through renewals and expired commissions. Authority still depends on the appointment, term and limited statutory holdover.",
+      "sections": [
+        {
+          "heading": "Preserve the existing ID",
+          "body": "The SOS renewal page states that the notary ID is permanent and never changes. Use it on a renewal even after the commission has expired. The number identifies the person's commission history, while the commission certificate supplies its operative dates. A completed renewal submitted before expiration preserves the month and day while changing the year. An incomplete submission can be returned and can affect that date continuity."
+        },
+        {
+          "heading": "Apply the actual expiration rule",
+          "body": "Section 42-30.1-15(g) allows an appointed notary who is not reappointed to continue officiating for 30 days after expiration. The renewal page repeats the allowance and says to use the current commission's expiration date in the certificate. The provision does not create an unlimited extension while an application is pending. Once that period ends, await renewed authority before performing another act."
+        },
+        {
+          "heading": "Keep the renewal file complete",
+          "body": "The renewal route again requires original form signatures and an oath before a Rhode Island notary, followed by physical submission and the ordinary $80 fee. The Department recommends reviewing the law, Standards and manual, attending training and aiming for 80% on the assessment. A missing page or an unsigned oath can delay processing. A purchase or training result is not the Department's reappointment."
+        },
+        {
+          "heading": "Review tools and historical records",
+          "body": "The renewal page directs a notary to replace a stamp that is noncompliant or carries outdated information. A stamp displaying the previous expiration should be updated. Retain historical records according to the applicable duties and recommendations. The Standards recommend seven-year retention of an elected traditional journal after end-of-commission events, while section 12.1 separately imposes the default ten-year remote-recording period. Each record serves its own purpose."
+        },
+        {
+          "heading": "Renew Your Existing Commission",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.ri.gov/Divisions/NotaryPublic/RenewExistingCommission",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-15",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-15.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Standards of Conduct, effective September 22, 2022",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "R.I. Gen. Laws 42-30.1-12.1",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-12.1.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does a renewal receive a new notary ID?",
+          "a": "The SOS says the original notary ID is permanent and should be reused."
+        },
+        {
+          "q": "May a notary act 45 days after expiration merely because renewal is pending?",
+          "a": "The statutory holdover is 30 days. A pending application does not extend it beyond that period."
+        }
+      ],
+      "id": "ri-renewal-gap-and-commission-record-continuity",
+      "state": "RI",
+      "path": "/rhode-island/guides/renewal-gap-and-commission-record-continuity/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/rhode-island/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/rhode-island/study-guide/",
+          "label": "Rhode Island Study Guide"
+        },
+        {
+          "href": "/rhode-island/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    }
+  ],
+  "TX": [
+    {
+      "slug": "2026-education-course-review",
+      "keyword": "Texas notary education 2026",
+      "intent": "Understand the official education sequence",
+      "title": "Texas Notary Education in 2026",
+      "description": "Plan the SOS course, assessment and application using the adopted 2026 rules.",
+      "h1": "Texas Notary Education in 2026",
+      "kicker": "Texas Notary Course Review",
+      "lede": "Prepare for the official SOS course with accurate dates, passing requirements and portal steps.",
+      "sections": [
+        {
+          "heading": "Start with the application date",
+          "body": "The education implementation applies to Texas appointment and reappointment applications submitted on or after January 1, 2026. A statement that training is voluntary may describe an earlier process. Initial applicants complete education before applying, and returning notaries complete continuing education before applying for reappointment. Check which authority is being requested because traditional and online subject matter have their applicable courses."
+        },
+        {
+          "heading": "Separate the course from the timer",
+          "body": "The adopted rules allow a required course of no more than two hours. The official portal guides describe a thirty-minute assessment. A third period concerns payment, because the course must be taken by the ninetieth day after SOS receives its fee. Each period measures a different step. Plan a suitable uninterrupted assessment period after completing the required videos."
+        },
+        {
+          "heading": "Use the adopted standard",
+          "body": "The final rules require at least seventy percent correct. Earlier proposal text used a different figure, so review the adopted publication. The fee is twenty dollars for each course taking and is nonrefundable, with no more than three completions in three months. The public official item count was not verified during this review, so this preparation service leaves it unspecified. Completion proof must also fall within the one year preceding application submission under the adopted application rules."
+        },
+        {
+          "heading": "Finish in the official system",
+          "body": "Government Code §406.023 reserves required education hours to the course established and offered by the SOS. Private practice helps learners explain the rules and review mistakes, while official fulfillment happens through the SOS pathway. Previous notaries should find their portal profile first. The guide warns that the final assessment must be submitted and describes the completion confirmation email."
+        },
+        {
+          "heading": "Texas SOS adopted education rules effective January 1, 2026",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/texreg/archive/December262025/Adopted%20Rules/1.ADMINISTRATION.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "SOS traditional application and education portal guide",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.tx.us/statdoc/guides/TraditionalNotaryApplication.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas Government Code Chapter 406",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does a private practice pass fulfill Texas education?",
+          "a": "Required hours must be completed through the course established and offered by the Secretary of State."
+        },
+        {
+          "q": "Is the assessment the same length as the whole course?",
+          "a": "The public guide gives thirty minutes for the assessment, while the rules cap the required course at two hours."
+        }
+      ],
+      "id": "tx-2026-education-course-review",
+      "state": "TX",
+      "path": "/texas/guides/2026-education-course-review/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/texas/study-guide/",
+          "label": "Texas Study Guide"
+        },
+        {
+          "href": "/texas/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "first-commission-application",
+      "keyword": "Texas first notary application",
+      "intent": "Plan initial qualification",
+      "title": "Applying for a First Texas Notary Commission",
+      "description": "Follow eligibility, SOS education, bond, application and oath through the first commission.",
+      "h1": "Applying for a First Texas Notary Commission",
+      "kicker": "Texas Notary Course Review",
+      "lede": "Organize the documents and official steps before undertaking notarial work.",
+      "sections": [
+        {
+          "heading": "Establish ordinary eligibility",
+          "body": "Texas ordinarily requires the individual to reside in Texas, be at least eighteen and meet the conviction-related eligibility rules. The SOS conducts its qualification review. Read the actual questions and disposition requirements rather than treating an employer address or supply order as eligibility. The officer statement and prescribed application are separate required parts of qualification."
+        },
+        {
+          "heading": "Complete education before filing",
+          "body": "For a current application, complete the appropriate SOS education requirement before applying. The state entry page then directs traditional applicants to obtain proof of a surety bond from a Texas-licensed agency and submit through SOSPortal. Keep course payments, bond premiums and filing payments distinct in the budget. The ordinary statutory filing components total twenty-one dollars."
+        },
+        {
+          "heading": "Understand the bond and oath",
+          "body": "The ordinary bond amount is ten thousand dollars under §406.010. It is conditioned on faithful performance and has the statutory claim framework. Before undertaking duties, the officer also takes the official oath or affirmation before another authorized person. The applicant cannot execute their own oath. A state-employee bond exception uses its separate statutory and operational pathway."
+        },
+        {
+          "heading": "Review authority after approval",
+          "body": "After approval, follow the official instructions to download the commission and review its dates and identifying information. An ordinary term runs four years after qualification and carries statewide Texas jurisdiction. Obtain a seal that matches the commissioned name, identifying number and expiration, and establish the required record system. A course completion or application receipt alone does not complete every qualification step."
+        },
+        {
+          "heading": "Texas Government Code Chapter 406",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS notary application entry",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.tx.us/statdoc/notary-public.shtml",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "SOS traditional application and education portal guide",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.tx.us/statdoc/guides/TraditionalNotaryApplication.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "What is the ordinary bond amount?",
+          "a": "Government Code §406.010(a) specifies ten thousand dollars."
+        },
+        {
+          "q": "Can I take my own oath?",
+          "a": "Section 406.010(d) requires another authorized person and expressly prohibits executing your own oath of office."
+        }
+      ],
+      "id": "tx-first-commission-application",
+      "state": "TX",
+      "path": "/texas/guides/first-commission-application/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/texas/study-guide/",
+          "label": "Texas Study Guide"
+        },
+        {
+          "href": "/texas/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "renewal-and-changing-details",
+      "keyword": "Texas notary renewal education",
+      "intent": "Maintain current authority",
+      "title": "Texas Notary Renewal and Commission Changes",
+      "description": "Manage continuing education, the renewal window, address changes and online renewal order.",
+      "h1": "Texas Notary Renewal and Commission Changes",
+      "kicker": "Texas Notary Course Review",
+      "lede": "Track the dates and conditions that affect a current commission.",
+      "sections": [
+        {
+          "heading": "Open the renewal process at the right time",
+          "body": "Section 406.011 permits a reappointment application no earlier than ninety days before the current term expires. Current continuing education is completed before applying under §87.9. A returning applicant should find the existing SOSPortal profile before education. Keep the actual commission expiration visible while planning the course and application so the work can be organized around the legal term."
+        },
+        {
+          "heading": "Handle a lapse accurately",
+          "body": "A pending application does not itself create an extension. If reappointment has not occurred by expiration, §406.011(b) describes a new four-year term measured from later qualification. Certificates and records should match the authority actually held on the day of an act. The printed expiration on a new order or a payment receipt cannot be used to invent authority during a gap."
+        },
+        {
+          "heading": "Distinguish two kinds of move",
+          "body": "An address change triggers notice to the SOS by the tenth day after the change under §406.019. Permanently removing residence from Texas has a different consequence, because §406.020 vacates the office. A continuing Texas employer does not supply an exception in that ordinary statutory rule. Vacancy also requires attention to the custody of office record books and public papers."
+        },
+        {
+          "heading": "Renew online authority in sequence",
+          "body": "The SOS Getting Started page states that online authority expires with the traditional commission. Its reminder directs renewal of traditional authority and receipt of the traditional certificate before online renewal. Applicable online continuing education and technology requirements remain part of that pathway. Check current credential validity as well as commission dates because a live software subscription alone does not establish authority."
+        },
+        {
+          "heading": "Texas Government Code Chapter 406",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS adopted education rules effective January 1, 2026",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/texreg/archive/December262025/Adopted%20Rules/1.ADMINISTRATION.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS Getting Started as an Online Notary",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.tx.us/statdoc/gettingstarted.shtml",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "When may I apply for reappointment?",
+          "a": "The statutory window begins ninety days before the current term expires."
+        },
+        {
+          "q": "How quickly must an address change be reported?",
+          "a": "Notify the Secretary of State by the tenth day after the change under §406.019."
+        }
+      ],
+      "id": "tx-renewal-and-changing-details",
+      "state": "TX",
+      "path": "/texas/guides/renewal-and-changing-details/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/texas/study-guide/",
+          "label": "Texas Study Guide"
+        },
+        {
+          "href": "/texas/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "appearance-and-identity",
+      "keyword": "Texas notary identification rules",
+      "intent": "Evaluate appearance and identity evidence",
+      "title": "Texas Appearance and Identity Checks",
+      "description": "Apply current physical appearance, documentary identity and credible-witness rules.",
+      "h1": "Texas Appearance and Identity Checks",
+      "kicker": "Texas Notary Course Review",
+      "lede": "Build a lawful identity basis before certifying a Texas acknowledgment.",
+      "sections": [
+        {
+          "heading": "Begin with the person in front of the officer",
+          "body": "Current §406.0091 distinguishes traditional physical appearance from compliant online appearance. Traditional interaction must allow the notary and signer to see, hear, communicate and provide identification. A document delivered by an assistant does not establish the absent signer's appearance. Determine the lawful method before comparing credentials or preparing certificate language."
+        },
+        {
+          "heading": "Read every documentary element",
+          "body": "For acknowledgments, §121.005 permits personal knowledge or listed satisfactory evidence. The ordinary document route requires current federal or state government issuance and the person's photograph and signature. A private membership card can have a clear photograph while lacking the required issuer. An expired government card can have the right issuer while lacking currentness. Assess all listed elements together."
+        },
+        {
+          "heading": "Use the current witness provision",
+          "body": "The credible-witness route calls for the witness's oath. The witness may be personally known or may establish identity through the qualifying current federal or state document alternative. That current text reflects HB4202 effective June 20, 2025. A reference stating every credible witness must already be personally known omits the amended alternative. The notary still must evaluate the witness and obtain the required oath."
+        },
+        {
+          "heading": "Respect the passport boundary",
+          "body": "The current statute expressly accepts a current foreign passport for a deed or other instrument relating to a residential real estate transaction. Read the transaction limitation before extending that route to another request. Document the identity method that actually occurred and complete any applicable certificate notation. Identity evidence and the executing person's acknowledgment remain separate procedural matters."
+        },
+        {
+          "heading": "Texas Civil Practice and Remedies Code Chapter 121",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/CP/htm/CP.121.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas Government Code Chapter 406",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must every credible witness be personally known now?",
+          "a": "Current §121.005(a)(1) also permits the stated qualifying government-identification alternative."
+        },
+        {
+          "q": "Can the short form eliminate identification?",
+          "a": "The short-form wording exception does not remove the substantive identity duty in §121.005(a)."
+        }
+      ],
+      "id": "tx-appearance-and-identity",
+      "state": "TX",
+      "path": "/texas/guides/appearance-and-identity/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/texas/study-guide/",
+          "label": "Texas Study Guide"
+        },
+        {
+          "href": "/texas/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "acknowledgment-and-jurat",
+      "keyword": "Texas acknowledgment versus jurat",
+      "intent": "Choose and perform the requested act",
+      "title": "Texas Acknowledgments, Oaths and Jurats",
+      "description": "Understand the procedure described by the certificate and the actual acts required.",
+      "h1": "Texas Acknowledgments, Oaths and Jurats",
+      "kicker": "Texas Notary Course Review",
+      "lede": "Connect certificate language to what the signer and officer actually do.",
+      "sections": [
+        {
+          "heading": "Identify the requested procedure",
+          "body": "An acknowledgment centers on the executing person's acknowledgment of execution for the purposes and consideration expressed in the instrument. An oath-based act centers on the affiant's actual solemn oath or affirmation. Read the certificate and authorized instructions to understand the requested procedure. A nonlawyer notary must keep explanations within the office and avoid choosing legal protections for the customer."
+        },
+        {
+          "heading": "Complete an acknowledgment",
+          "body": "Under §121.004 the executing person appears and gives the required acknowledgment. Section 121.005 addresses identity. The officer makes, signs and seals the certificate. A document already bearing a signature still needs the personal acknowledgment, while a successful identity check alone does not perform that statement. The certificate should match the actual person, date, capacity and lawful appearance method."
+        },
+        {
+          "heading": "Administer the solemn promise",
+          "body": "The SOS educational material explains jurats and affirmations and supplies sample forms. For a sworn act, actually administer the oath or affirmation. Silent observation and a seal do not create the affiant's solemn commitment. Where multiple people are certified as having sworn, ensure each participated in the act described. The notary certifies the procedure and does not independently audit every factual claim in the affidavit."
+        },
+        {
+          "heading": "Keep representative facts precise",
+          "body": "Chapter 121 addresses representative acknowledgments for attorneys-in-fact, business representatives, fiduciaries and LLC representatives. The individual acting in the stated capacity appears and acknowledges execution. Do not list an absent principal or every business member as present. The statute permits appropriate form adaptation, while essential facts and duties continue. A seal cannot replace an officer signature required on the certificate."
+        },
+        {
+          "heading": "Texas Civil Practice and Remedies Code Chapter 121",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/CP/htm/CP.121.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas Government Code Chapter 406",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS public notary educational information",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.tx.us/statdoc/edinfo.shtml",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does identifying a signer finish an acknowledgment?",
+          "a": "The executing person must also make the acknowledgment required by §121.004."
+        },
+        {
+          "q": "Can an affirmation be used?",
+          "a": "The official materials recognize affirmation as a solemn alternative and the qualification statute expressly permits it."
+        }
+      ],
+      "id": "tx-acknowledgment-and-jurat",
+      "state": "TX",
+      "path": "/texas/guides/acknowledgment-and-jurat/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/texas/study-guide/",
+          "label": "Texas Study Guide"
+        },
+        {
+          "href": "/texas/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "accessible-signing",
+      "keyword": "Texas notary disability signature",
+      "intent": "Apply the assisted-signature safeguards",
+      "title": "Accessible Signing Under Texas Section 406.0165",
+      "description": "Follow direction, witness, identity and notation requirements for physical inability to sign.",
+      "h1": "Accessible Signing Under Texas Section 406.0165",
+      "kicker": "Texas Notary Course Review",
+      "lede": "Use the statutory procedure when an individual cannot physically sign or make a mark.",
+      "sections": [
+        {
+          "heading": "Identify the statutory condition",
+          "body": "Section 406.0165 defines disability for this procedure as physical impairment impeding the ability to sign or make a mark. The notary should establish the actual facts before using the special authority. A person who can sign but prefers convenience does not meet that definition merely by requesting a shortcut. The statute concerns a particular signing procedure and leaves other legal questions to their governing law."
+        },
+        {
+          "heading": "Obtain the individuals direction",
+          "body": "The individual whose name will be signed must direct the notary to do so. A relatives general request cannot simply replace that direction. The procedure also requires a witness present who has no legal or equitable interest in real or personal property that is the subject of or affected by the instrument. An interested beneficiary may therefore fail the witness condition even when trusted by the signer."
+        },
+        {
+          "heading": "Identify the witness and annotate",
+          "body": "The witness is identified in the same manner as an acknowledging person under §121.005. Beneath the signature, add the statement prescribed in §406.0165(b), or substantially similar wording, identifying the disinterested witness and statutory procedure. The seal does not substitute for that separate annotation. Continue to complete the actual requested notarial act and certificate under their applicable requirements."
+        },
+        {
+          "heading": "Preserve the procedure accurately",
+          "body": "Subsection (c) states the effect of a signature made under the section as the individual's signature. Preserve accurate transaction records and describe the method actually used. Do not silently present the signature as ordinary handwriting by a person who could sign. A careful explanation of the process helps the recipient understand the annotation and lets the officer identify any missing safeguard before proceeding."
+        },
+        {
+          "heading": "Texas Government Code Chapter 406",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas Civil Practice and Remedies Code Chapter 121",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/CP/htm/CP.121.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May a family member direct the notary instead of the individual?",
+          "a": "The section requires direction by the individual whose name is signed."
+        },
+        {
+          "q": "Is a witness always acceptable because they are related?",
+          "a": "The witness must meet the no-interest condition and identification requirements. Relationship alone does not resolve those conditions."
+        }
+      ],
+      "id": "tx-accessible-signing",
+      "state": "TX",
+      "path": "/texas/guides/accessible-signing/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/texas/study-guide/",
+          "label": "Texas Study Guide"
+        },
+        {
+          "href": "/texas/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "record-books-and-retention",
+      "keyword": "Texas notary journal retention",
+      "intent": "Keep lawful transaction records",
+      "title": "Texas Record Books and the Ten-Year Rule",
+      "description": "Capture required details, omit prohibited identifiers and preserve records through current retention.",
+      "h1": "Texas Record Books and the Ten-Year Rule",
+      "kicker": "Texas Notary Course Review",
+      "lede": "Design a record system around the current statute and the public status of entries.",
+      "sections": [
+        {
+          "heading": "Keep the transactions distinct",
+          "body": "Section 406.014 lists the date of the instrument and the date of notarization separately. It also includes the signer name and mailing address, actual identity or introducer details, and instrument description. Applicable grantee, proof-witness and land information must be addressed. Daily totals and a vague appointment label cannot reconstruct these transaction-specific details. No-fee acts remain within the ordinary rule unless a specific exception applies."
+        },
+        {
+          "heading": "Use only lawful personal-information fields",
+          "body": "The published §87.50 rule prohibits government identification numbers, other identifying numbers and biometric identifiers in the notary record book. It preserves mailing-address numbers and excepts the required online audio-visual recording. Section 406.014(f) allows recording the expiration date of presented identification. Review software defaults because a vendor form asking for fingerprints or a full license number does not establish authority to collect them in the book."
+        },
+        {
+          "heading": "Measure retention from the act",
+          "body": "Current §406.014(g) requires retention of its subsection (a) records until the tenth anniversary of notarization. It was added by SB693 effective September 1, 2025. Commission expiration and renewal do not supply a deletion date. Online electronic records have the separate at-least-five-year provision in §406.108(c), and other applicable record duties continue. Preserve records through software migrations and changes in workplace."
+        },
+        {
+          "heading": "Plan access and custody",
+          "body": "Entries are public information, and §406.014(c) requires certified copies of official-act entries for any requester on payment of all fees. Public status reinforces the importance of omitting prohibited sensitive fields. Upon vacancy due to resignation, removal or death, §406.022 provides for the residence-county clerk to obtain record books and public papers. Plan that custody step before assuming the records can be discarded."
+        },
+        {
+          "heading": "Texas Government Code Chapter 406",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS published Chapter 87 rules",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/statdoc/1-87.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does renewing the commission restart record retention?",
+          "a": "The current ordinary retention period runs from each notarization, so renewal does not authorize deletion."
+        },
+        {
+          "q": "May I use electronic storage?",
+          "a": "Section 406.014(e) permits records on a computer or other storage device while content and retention duties continue."
+        }
+      ],
+      "id": "tx-record-books-and-retention",
+      "state": "TX",
+      "path": "/texas/guides/record-books-and-retention/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/texas/study-guide/",
+          "label": "Texas Study Guide"
+        },
+        {
+          "href": "/texas/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "seal-and-certificate-check",
+      "keyword": "Texas notary seal requirements",
+      "intent": "Prepare compliant authentication",
+      "title": "Checking a Texas Seal and Certificate",
+      "description": "Review seal content, dimensions, impressions and certificate facts before use.",
+      "h1": "Checking a Texas Seal and Certificate",
+      "kicker": "Texas Notary Course Review",
+      "lede": "Check both the purchased tool and the actual completed certificate.",
+      "sections": [
+        {
+          "heading": "Match the commission information",
+          "body": "Section 406.013 requires the words Notary Public, State of Texas around a five-point star, the officer name, identifying number and expiration. Compare the proof against the actual commission before accepting a new seal. The identifying number is the SOS notary number. A driver's license number is a different identifier. Renewal requires accurate current term information even if the old stamp still makes a clear impression."
+        },
+        {
+          "heading": "Check form and reproduction",
+          "body": "The circular form cannot exceed two inches in diameter. The rectangular form cannot exceed one inch in width and two and one-half inches in length. The border is serrated or milled. For stamped impressions, use indelible ink and ensure that the required elements reproduce legibly by photographic methods. Examine an actual impression because price and vendor reputation do not establish the readability of a particular act."
+        },
+        {
+          "heading": "Authenticate a real act",
+          "body": "The statute restricts providing copies of the seal and affixing it except to authenticate an official act. A customer requesting blank stamped stationery has not created a notarial act. For acknowledgments the officer makes, signs and seals the certificate under §121.004. The official instrument is signed in the commissioned name. A clear stamp cannot fill a missing officer signature or an acknowledgment that never occurred."
+        },
+        {
+          "heading": "Add the online facts when applicable",
+          "body": "Electronic certificates include the statutory authentication and act information. Section 406.110(d) calls for an online notation and indication whether the signature was tangible or electronic. Attachment to an electronic document must support independent verification and make later changes evident. A platform logo or pasted image does not by itself establish those features. Use the actual lawful procedure to determine the certificate facts."
+        },
+        {
+          "heading": "Texas Government Code Chapter 406",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas Civil Practice and Remedies Code Chapter 121",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/CP/htm/CP.121.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is the notary identifying number optional on the seal?",
+          "a": "Section 406.013(a) expressly includes it."
+        },
+        {
+          "q": "Can the seal replace the officer signature on an acknowledgment?",
+          "a": "Section 121.004(b) requires both signature and seal."
+        }
+      ],
+      "id": "tx-seal-and-certificate-check",
+      "state": "TX",
+      "path": "/texas/guides/seal-and-certificate-check/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/texas/study-guide/",
+          "label": "Texas Study Guide"
+        },
+        {
+          "href": "/texas/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "fee-calculation",
+      "keyword": "Texas notary fees",
+      "intent": "Calculate the authorized service charge",
+      "title": "Calculating Texas Notarial Fees",
+      "description": "Count signatures, pages and authorized online supplements under the statutory categories.",
+      "h1": "Calculating Texas Notarial Fees",
+      "kicker": "Texas Notary Course Review",
+      "lede": "Begin with the service actually performed and its stated unit.",
+      "sections": [
+        {
+          "heading": "Count acknowledgment signatures correctly",
+          "body": "For signatures covered by one acknowledgment certificate, the stated schedule in section 406.024(a)(5) allows ten dollars for the first signature and one dollar for each additional signature. Certificate and seal are included. Three signatures on a single deed covered by one certificate therefore total twelve dollars in this category. The SOS Online Notary Educational Information FAQ 9 distinguishes separate notarial certificates, each with its own fee calculation. Establish that arrangement before quoting, and avoid adding a duplicate seal fee to an included certificate."
+        },
+        {
+          "heading": "Use the other units precisely",
+          "body": "An oath or affirmation with certificate and seal has a ten-dollar category. Copies of records or papers in the notary office have a one-dollar-per-page category. Taking a deposition is listed at one dollar per hundred words, with a separate category for swearing the deposition witness and connected business. Protest services and residual categories also have their own provisions. The category should describe the act actually completed."
+        },
+        {
+          "heading": "Identify lawful online service",
+          "body": "Section 406.111 permits up to twenty-five dollars for performing an online notarization in addition to authorized §406.024 charges. It is a service supplement rather than a per-minute video rate. The basic single-signature acknowledgment category and maximum online supplement together show thirty-five dollars. Determine whether the transaction actually used lawful online authority and procedure before treating that supplement as applicable."
+        },
+        {
+          "heading": "Keep state expenses separate",
+          "body": "The twenty-dollar education payment and ordinary twenty-one-dollar filing components concern qualification. The bond face amount is ten thousand dollars and differs from its premium. None of those numbers is a universal customer fee. Section 406.024(b) caps official-act charges and subsection (c) provides periodic SOS inflation adjustments. Verify the current official schedule when quoting a real charge and identify the category clearly."
+        },
+        {
+          "heading": "Texas Government Code Chapter 406",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS adopted education rules effective January 1, 2026",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/texreg/archive/December262025/Adopted%20Rules/1.ADMINISTRATION.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS online notary educational information",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/statdoc/online-np-educational.shtml",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "What does the first acknowledgment signature include?",
+          "a": "The stated ten-dollar category includes the certificate and seal."
+        },
+        {
+          "q": "Is the online supplement charged by the minute?",
+          "a": "Section 406.111 permits up to twenty-five dollars for performing an online notarization."
+        }
+      ],
+      "id": "tx-fee-calculation",
+      "state": "TX",
+      "path": "/texas/guides/fee-calculation/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/texas/study-guide/",
+          "label": "Texas Study Guide"
+        },
+        {
+          "href": "/texas/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    },
+    {
+      "slug": "online-authority-and-paper-documents",
+      "keyword": "Texas online notary requirements",
+      "intent": "Understand the remote and tangible pathways",
+      "title": "Texas Online Authority and Tangible Documents",
+      "description": "Connect commission, education, identity, recording and same-document safeguards.",
+      "h1": "Texas Online Authority and Tangible Documents",
+      "kicker": "Texas Notary Course Review",
+      "lede": "Prepare for online work as a separate authorized process with its own technology and evidence.",
+      "sections": [
+        {
+          "heading": "Establish the authority first",
+          "body": "The SOS Getting Started instructions require a current Texas traditional commission for the operational online application path. Current education rules address online subject matter and renewal. The application instructions require a compliant third-party digital certificate and electronic seal, with X.509 and PKI described in the official materials. Online authority ends on the same date as the traditional commission, and traditional renewal is completed first. The published application fee is fifty dollars plus current portal payment charges."
+        },
+        {
+          "heading": "Combine appearance and identity",
+          "body": "The online notary must be physically in Texas under 1 TAC 87.41(b) and use compliant interactive two-way audio and video. When selecting the direct-credential branch in Government Code section 406.110(b)(2), combine remote credential presentation, credential analysis and identity proofing. Rule 87.41(d)(2) also permits an oath from a qualifying credible witness who personally knows the principal and is personally known to the online notary or identified through paragraph (3). Protect communication from unauthorized interception and identify the online act and tangible or electronic signature in the certificate."
+        },
+        {
+          "heading": "Preserve control and records",
+          "body": "Keep the electronic record, signature and seal secure under exclusive control. The signature device must remain current and unrevoked, and electronic attachment must allow independent verification and show later changes. The record includes date/time, act and document details, principal information, identity evidence, recording and fee if any. Maintain a protected backup and the applicable retention, and give the statutory immediate notifications for compromised tools."
+        },
+        {
+          "heading": "Handle tangible documents deliberately",
+          "body": "Section 406.1103 requires reasonable confirmation that the document before the notary is the one on which the principal acted. Its specified acknowledgment path records signing and a declaration, requires the principal to send by day three and the notary to receive by day ten, then uses the stated certificate. Subsection (e) preserves another procedure meeting the same-document requirement. A casual video call and a later unexplained envelope do not establish those safeguards."
+        },
+        {
+          "heading": "Texas Government Code Chapter 406",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS Getting Started as an Online Notary",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.tx.us/statdoc/gettingstarted.shtml",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS adopted education rules effective January 1, 2026",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/texreg/archive/December262025/Adopted%20Rules/1.ADMINISTRATION.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "SOS online application and education portal guide",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.tx.us/statdoc/guides/OnlineNotaryApplication.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS published Chapter 87 rules",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/statdoc/1-87.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must a tangible online document match the session document?",
+          "a": "Section 406.1103(a) requires reasonable confirmation of that identity."
+        },
+        {
+          "q": "Can an assistant use my electronic notary signature?",
+          "a": "Section 406.109(b) requires exclusive control and prohibits another person using the official electronic record, signature or seal."
+        }
+      ],
+      "id": "tx-online-authority-and-paper-documents",
+      "state": "TX",
+      "path": "/texas/guides/online-authority-and-paper-documents/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/texas/practice/?mode=quick",
+        "label": "Start Free Practice",
+        "placement": "end",
+        "targetMode": "quick"
+      },
+      "related": [
+        {
+          "href": "/texas/study-guide/",
+          "label": "Texas Study Guide"
+        },
+        {
+          "href": "/texas/study-cards/",
+          "label": "Study Cards"
+        }
+      ]
+    }
   ]
 };

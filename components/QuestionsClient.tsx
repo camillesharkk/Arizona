@@ -326,9 +326,9 @@ export function QuestionsClient({
             This topic has {topicQuestions.length} practice questions and no free questions. Quick 10 still uses the free
             pool, and topics with free questions can be practiced without Pro.
           </p>
-          <Link className="btn btn-primary" href={sitePaths.pricing}>
+          {pack?.purchaseEnabled !== false ? <Link className="btn btn-primary" href={sitePaths.pricing}>
             Unlock Pro
-          </Link>
+          </Link> : null}
           <Link className="btn btn-ghost" href={`${sitePaths.practice}?mode=quick`} style={{ marginLeft: 8 }}>
             Free Quick 10
           </Link>

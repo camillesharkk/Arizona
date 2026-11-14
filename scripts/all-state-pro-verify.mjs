@@ -8,7 +8,7 @@ store = load("lib/store/memory-store.ts").createMemoryStore();
 const rights = load("lib/entitlements.ts");
 const account = load("lib/account-pro.ts");
 const stateRights = load("lib/state-pro.ts");
-const states = ["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"];
+const { LIVE_STATES: states } = load("lib/ca-site.ts");
 const now = new Date();
 const active = {
   id: "active", userId: "isolated", state: "ALL", productCode: "az_exam_pro_60d",
@@ -47,4 +47,4 @@ for (const source of ["CT", "NC", "IN"]) {
 }
 assert.equal(Math.round((Date.parse(grants[2].expiresAt) - Date.parse(grants[0].startsAt)) / 86400000), 180);
 for (const state of states) assert.equal(await rights.hasStatePro(user.id, state), true);
-console.log("Nine-state global Pro, legacy grants, inactive boundaries, one shared product, renewal stacking and retry idempotency passed");
+console.log(`${states.length}-state global Pro, legacy grants, inactive boundaries, one shared product, renewal stacking and retry idempotency passed`);

@@ -13,6 +13,7 @@ const load = testLoader({
 });
 store = load('lib/store/memory-store.ts').createMemoryStore();
 const { fullStateSummary } = load('data/full-state-summary.ts');
+const { freeStateFeatures } = load('lib/free-state-catalog.ts');
 const codes = process.env.FULL_STATE_VERIFY_CODES?.split(',') || Object.keys(fullStateSummary);
 assert.ok(codes.length, 'Reviewed full state content is available');
 const bankRoute = load('app/api/state/questions/route.ts');
@@ -80,6 +81,30 @@ for (const code of codes) {
     questions: shuffle(pool, seed).slice(0, 40).map((question, index) => ({ questionId: question.question_id, questionVersion: question.version,
       selected: index < 4 ? ['A', 'B', 'C', 'D'].find(letter => letter !== question.correct_option) : question.correct_option, attemptId: randomUUID() })),
   });
+  if (freeStateFeatures[code]?.fullPractice === false) {
+    for (const user of [freeUser, proUser, expiredUser]) {
+      session = { id: user.id };
+      const before = JSON.stringify({
+        stats: await store.listStats(user.id),
+        exams: await store.listExams(user.id),
+        plan: await store.getStudyPlan(user.id, code),
+      });
+      const results = await Promise.all([postProgress(full(free, 42)), postProgress(full(bank, 91))]);
+      for (const result of results) {
+        assert.equal(result.status, 403, `${code} full practice remains closed for every plan`);
+        assert.equal((await result.json()).code, 'practice_unavailable');
+      }
+      assert.equal(JSON.stringify({
+        stats: await store.listStats(user.id),
+        exams: await store.listExams(user.id),
+        plan: await store.getStudyPlan(user.id, code),
+      }), before, `${code} rejected full submissions preserve learning state`);
+      assert.equal((await packFullExamCounts(user.id))[code], 0);
+      assert.equal((await (await authMe.GET()).json()).user.packFullExamCount[code], 0, `${code} closed full practice consumes no account trial`);
+    }
+    console.log(`${code} handlers passed guest/free/Pro/expired banks, paid authorization, Tutor, Daily Study and closed full-practice gates with no trial or learning writes`);
+    continue;
+  }
   session = { id: freeUser.id };
   assert.equal((await postProgress(full(bank, 28))).status, 400, `${code} free rejects premium draw`);
   const sitting = full(free, 42);
@@ -112,5 +137,7 @@ for (const code of codes) {
   assert.equal((await postProgress(invalidState)).status, 400, `${code} cross-state injection rejected`);
   console.log(`${code} actual handlers passed guest/free/Pro/expired banks, paid authorization, Tutor, Daily Study, full grading, concurrent retry, trial limit and state isolation`);
 }
-assert.ok(usage.some(args => args[1] === 'full_exam_extra'));
-console.log(`${codes.length} full states passed with the shared ALL-state product`);
+if (codes.some(code => freeStateFeatures[code]?.fullPractice !== false)) {
+  assert.ok(usage.some(args => args[1] === 'full_exam_extra'));
+}
+console.log(`${codes.length} complete learning states passed with the shared ALL-state product and accepted full-practice capabilities`);

@@ -18,7 +18,7 @@ try {
     const context = await browser.newContext({ viewport: { width, height: 900 }, extraHTTPHeaders: headers });
     await context.addInitScript(() => sessionStorage.setItem('az_ops_acceptance', '1'));
     const page = await context.newPage();
-    for (const [code] of freeStateCatalog) {
+    for (const [code] of freeStateCatalog.filter(([code]) => !process.env.VERIFY_STATES || process.env.VERIFY_STATES.split(',').includes(code))) {
       const pack = packFor(code);
       await page.goto(base + pack.paths.study, { waitUntil: 'domcontentloaded' });
       const mark = page.getByRole('button', { name: 'Mark chapter read', exact: true });

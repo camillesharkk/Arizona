@@ -72,9 +72,10 @@ const page = await context.newPage();
         let tutorProvider = null;
         const accessible = await (await browserRequest(page, `${base}/api/state/questions/?state=${code}`)).json();
         assert.equal(accessible.questions.length, kind === 'pro' ? 203 : 60);
-        for (const href of [pack.paths.home, pack.paths.study, pack.paths.studyCards, pack.paths.pricing, pack.paths.questions, pack.paths.daily, pack.paths.mistakes, pack.paths.resources]) {
+        for (const href of [...new Set([pack.paths.home, pack.paths.study, pack.paths.studyCards, ...(pack.purchaseEnabled === false ? [] : [pack.paths.pricing]), pack.paths.questions, pack.paths.daily, pack.paths.mistakes, pack.paths.resources])]) {
           const response = await page.goto(base + href, { waitUntil: 'domcontentloaded' });
           assert.equal(response.status(), 200, `${code} ${href}`);
+          if (kind === 'guest' && href === pack.paths.daily) await page.waitForURL(url => url.pathname === '/login/');
           if (href === pack.paths.questions) await page.getByText(new RegExp(`Question \\d+ of ${accessible.questions.length}`)).first().waitFor();
           assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `${code} ${href} overflow`);
         }
@@ -97,6 +98,29 @@ const page = await context.newPage();
           await page.getByRole('menuitem', { name: new RegExp(`${pack.name} \\\(${code}\\)`) }).click();
           await page.waitForURL(url => url.pathname === pack.paths.practice);
         } else await page.goto(base + pack.paths.practice);
+        if (!pack.fullReady) {
+          assert.equal(await page.getByRole('heading', { name: 'Comprehensive Practice', exact: true }).count(), 0);
+          assert.equal(await page.locator('main a[href*="/pricing/"]').count(), 0);
+          const quick = page.locator('.card').filter({ has: page.getByRole('heading', { name: 'Quick 10', exact: true }) });
+          await quick.getByRole('button', { name: 'Start', exact: true }).click();
+          await page.locator('.q-option').first().waitFor();
+          const ids = await finish(page, bank, { count: 10, wrongCount: 4, full: false });
+          const attempt = new URL(page.url()).searchParams.get('attempt');
+          await page.reload();
+          await page.locator('.result-summary').waitFor();
+          assert.match(await page.locator('.result-summary').innerText(), /6 of 10 correct/);
+          if (kind !== 'guest') {
+            const saved = await (await browserRequest(page, base + '/api/progress/')).json();
+            assert.equal(saved.exams.filter(exam => exam.id === attempt && exam.mode === `${code.toLowerCase()}-quick`).length, 1);
+            assert.equal(saved.exams.find(exam => exam.id === attempt).correctCount, 6);
+            assert.ok(ids.every(id => saved.stats.some(stat => stat.questionId === id && stat.state === code)));
+          }
+          await page.screenshot({ path: `${evidence}/${code}-${kind}-${width}.png` });
+          results.push({ code, width, kind, routes: 7, cards: true, bank: accessible.questions.length, quick: 10, score: '6/10', refresh: true, full: false, purchase: false });
+          fs.writeFileSync(`${evidence}/result.json`, JSON.stringify({ base, results, errors }, null, 2));
+          console.log(JSON.stringify(results.at(-1)));
+          continue;
+        }
         const full = page.locator('.card').filter({ has: page.getByRole('heading', { name: 'Comprehensive Practice', exact: true }) });
         const start = full.getByRole('button', { name: 'Start', exact: true });
         const account = await (await browserRequest(page, base + '/api/auth/me/')).json();

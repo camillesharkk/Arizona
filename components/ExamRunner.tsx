@@ -531,7 +531,7 @@ export function ExamRunner({
         <div className="card">
           <p className="form-error" role="alert">Could not load this practice set.{(stateCode === "IN" || (isFreeState(stateCode) && bootMessage.startsWith("Pro access"))) && bootMessage ? ` ${bootMessage}` : ""}</p>
           <button className="btn btn-primary" type="button" onClick={() => setBootTry((n) => n + 1)}>Retry</button>
-          {isFreeState(stateCode) && bootMessage.startsWith("Pro access") ? <Link className="btn btn-ghost" href={site.pricing}>Open Pro access</Link> : null}
+          {isFreeState(stateCode) && pack?.purchaseEnabled !== false && bootMessage.startsWith("Pro access") ? <Link className="btn btn-ghost" href={site.pricing}>Open Pro access</Link> : null}
         </div>
       );
     }
@@ -1236,9 +1236,9 @@ export function QuestionBlock({
       {locked ? (
         <div className="explain">
           <strong>Pro question</strong>
-          <p>This item is in the full question bank. Unlock Pro to turn weak topics into passing scores.</p>
-          <Link className="btn btn-primary" href={q.state === "CT" ? "/connecticut/practice/?mode=quick" : paths.pricing} data-upgrade-source="locked_question">
-            {q.state === "CT" ? "Start Free Quick 10" : "Unlock Pro"}
+          <p>{packFor(q.state)?.purchaseEnabled === false ? 'Continue reviewing with the free question pool and official sources.' : 'This item is in the full question bank. Unlock Pro to turn weak topics into passing scores.'}</p>
+          <Link className="btn btn-primary" href={packFor(q.state)?.purchaseEnabled === false ? `${packFor(q.state)!.paths.practice}?mode=quick` : q.state === "CT" ? "/connecticut/practice/?mode=quick" : paths.pricing} data-upgrade-source="locked_question">
+            {packFor(q.state)?.purchaseEnabled === false ? "Start Free Practice" : q.state === "CT" ? "Start Free Quick 10" : "Unlock Pro"}
           </Link>
         </div>
       ) : null}

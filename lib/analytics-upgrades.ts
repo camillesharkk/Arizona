@@ -1,4 +1,4 @@
-import { rememberUpgradeSource, trackAnalyticsEvent } from "./analytics.ts";
+import { isPricingPath, rememberUpgradeSource, trackAnalyticsEvent } from "./analytics.ts";
 
 /** Observe actual visibility, including links rendered after quiz results load. */
 export function observeUpgradeLinks(root: Document = document) {
@@ -9,7 +9,7 @@ export function observeUpgradeLinks(root: Document = document) {
   const isUpgrade = (link: HTMLAnchorElement) => {
     try {
       const url = new URL(link.href, window.location.href);
-      return url.origin === window.location.origin && url.pathname.replace(/\/$/, "") === "/pricing";
+      return url.origin === window.location.origin && isPricingPath(url.pathname);
     } catch { return false; }
   };
   const observer = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver((entries) => {

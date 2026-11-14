@@ -11,7 +11,7 @@ import { recordQuestionAnswers } from "@/lib/progress";
 
 const schema = z.object({
   accountId: z.string().min(1),
-  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY"]),
+  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY", "RI", "TX"]),
   examId: z.string().uuid(),
   finishedAt: z.string().datetime(),
   timeZone: z.string().max(80).optional(),

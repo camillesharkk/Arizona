@@ -47,7 +47,7 @@ async function finishQuick(page, pack) {
   await page.getByRole('button', { name: 'See results', exact: true }).click();
   await page.locator('.result-summary').waitFor({ timeout: 90000 });
   assert.match(await page.locator('.result-summary').innerText(), /7 of 10 correct/);
-  if (pack.freeLaunch) assert.equal(await page.locator('.result-summary a').filter({ hasText: /View Pro|Full Practice/ }).count(), 0);
+  if (pack.freeLaunch || pack.purchaseEnabled === false) assert.equal(await page.locator('.result-summary a').filter({ hasText: /View Pro|Full Practice|60-Day Pro/ }).count(), 0);
   else assert.equal(await page.locator('.result-summary a').filter({ hasText: '60-Day Pro' }).count(), 1);
   assert.equal(await page.locator('.result-summary a').filter({ hasText: freeStateContent[pack.code].officialNext.label }).count(), 1);
   await page.getByRole('button', { name: 'Show explanation', exact: true }).first().click();

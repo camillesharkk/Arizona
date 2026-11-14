@@ -21,7 +21,7 @@ export type GuideChapter = {
   afterSource?: ReactNode;
 };
 
-export function StudyGuide({ stateCode, title, lede, introduction, chapters, sitePaths, fullExamLabel }: {
+export function StudyGuide({ stateCode, title, lede, introduction, chapters, sitePaths, fullExamLabel, fullPracticeEnabled = true, purchaseEnabled = true }: {
   stateCode: StateCode;
   title: string;
   lede: string;
@@ -29,6 +29,8 @@ export function StudyGuide({ stateCode, title, lede, introduction, chapters, sit
   chapters: GuideChapter[];
   sitePaths: { practice: string; study: string; studyCards: string; mistakes: string; pricing: string };
   fullExamLabel: string;
+  fullPracticeEnabled?: boolean;
+  purchaseEnabled?: boolean;
 }) {
   return (
     <StudyProgressProvider key={stateCode}><main className="wrap hero">
@@ -36,7 +38,7 @@ export function StudyGuide({ stateCode, title, lede, introduction, chapters, sit
       <h1>{title}</h1>
       <p className="lede">{lede}</p>
       {introduction}
-      <PrepCtas studyCards guide={false} pro={false} sitePaths={sitePaths} fullExamLabel={fullExamLabel} />
+      <PrepCtas studyCards guide={false} pro={false} fullPractice={fullPracticeEnabled} sitePaths={sitePaths} fullExamLabel={fullExamLabel} />
       <p className="notice" style={{ marginTop: 0 }}>
         <WrongAnswersLink href={sitePaths.mistakes} stateCode={stateCode} />
       </p>
@@ -45,7 +47,7 @@ export function StudyGuide({ stateCode, title, lede, introduction, chapters, sit
           <h2>Chapters</h2>
           {chapters.map((chapter) => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.title}</a>)}
         </nav>
-        <Readiness stateCode={stateCode} guideChapters={chapters.map(({ id, title }) => ({ id, title }))} />
+        <Readiness stateCode={stateCode} guideChapters={chapters.map(({ id, title }) => ({ id, title }))} fullPracticeEnabled={fullPracticeEnabled} />
       </div>
       {chapters.map((chapter) => (
         <article key={chapter.id} id={chapter.id} className="card" style={{ marginTop: 18 }}>
@@ -77,8 +79,8 @@ export function StudyGuide({ stateCode, title, lede, introduction, chapters, sit
       ))}
       <section className="study-pro" aria-labelledby="study-pro-heading">
         <h2 id="study-pro-heading">Put what you’ve learned into practice</h2>
-        <p>Use Pro to practice more questions on the topics in this guide and prepare with full practice exams.</p>
-        <p><Link href={sitePaths.pricing}>Explore Pro</Link></p>
+        {purchaseEnabled ? <><p>Use Pro to practice more questions on the topics in this guide and prepare with full practice exams.</p>
+        <p><Link href={sitePaths.pricing}>Explore Pro</Link></p></> : <p><Link href={`${sitePaths.practice}?mode=quick`}>Start Free Practice</Link></p>}
       </section>
     </main></StudyProgressProvider>
   );

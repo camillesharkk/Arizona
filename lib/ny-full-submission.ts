@@ -71,6 +71,7 @@ export async function savePackFullSubmission(store: Store, userId: string, input
         return { ok: true, duplicate: true, exam: existing, fullExamCount: savedFullCount, proUsage: savedDocument?.checks?.[input.examId]?.proUsage };
       }
     }
+    if (pack && !pack.fullReady) throw new Error("practice_unavailable");
     const now = new Date();
     const entitlements = await transaction.listEntitlements(userId);
     const pro = state === "IN" ? Boolean(indianaEntitlement(entitlements, now)) : state === "CT" ? ctProCovers(entitlements, now) : stateProCovers(entitlements, state, now);

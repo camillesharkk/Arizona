@@ -10,8 +10,8 @@ export function PrepStudyGuide({code}:{code:PrepCode}) {
  const questions=pack.questions();
  return <StudyGuide stateCode={code} title={`${pack.name} Notary Study Guide`}
  lede={`Learn ${pack.name} rules, compare their limits, and apply them to practical situations. Mark chapters as you read and revisit missed topics.`}
- introduction={<><p>Read the <Link href={pack.paths.resources}>official resources</Link> alongside the <Link href={pack.paths.laws}>applicable laws</Link>. Follow the <Link href={pack.paths.become}>first-application checklist</Link> and <Link href={pack.paths.examGuide}>exam guide</Link> for the official next steps.</p><p>{pack.fullDetail}</p>{pack.practiceNotice && <p className="notice">{pack.practiceNotice.body}</p>}</>}
- sitePaths={pack.paths} fullExamLabel={pack.fullTitle}
+ introduction={<><p>Read the <Link href={pack.paths.resources}>official resources</Link> alongside the <Link href={pack.paths.laws}>applicable laws</Link>. Follow the <Link href={pack.paths.become}>first-application checklist</Link> and <Link href={pack.paths.examGuide}>{pack.fullReady ? 'exam guide' : 'requirements guide'}</Link> for the official next steps.</p><p>{pack.fullDetail}</p>{pack.practiceNotice && <p className="notice">{pack.practiceNotice.body}</p>}</>}
+ sitePaths={pack.paths} fullExamLabel={pack.fullTitle} fullPracticeEnabled={pack.fullReady} purchaseEnabled={pack.purchaseEnabled !== false}
  chapters={pack.topics.map(topic=>{
   const cards=pack.cards.filter(card=>card.study===topic.id);
   if(!cards.length)throw new Error(`Missing chapter cards: ${code}/${topic.id}`);

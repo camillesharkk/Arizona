@@ -14,7 +14,7 @@ import { CloudMistakes } from '@/components/CloudMistakes';
 import { DailyStudyClient } from '@/components/DailyStudyClient';
 import { FreeStateGuide, FreeStateSources } from '@/components/FreeStatePages';
 import { freeStateContent } from '@/data/free-state-content';
-import { freeStateCatalog, freeStateForSlug, freeStatePaths, releasedFreeStates } from '@/lib/free-state-catalog';
+import { freeStateCatalog, freeStateFeatures, freeStateForSlug, freeStatePaths, releasedFreeStates } from '@/lib/free-state-catalog';
 import { productionStateBlocked } from '@/lib/state-release';
 import { pageMeta } from '@/lib/seo';
 import Link from 'next/link';
@@ -22,7 +22,7 @@ import Link from 'next/link';
 const sections = ['practice', 'study-guide', 'become-a-notary', 'exam-guide', 'resources', 'laws', 'wrong-answers', 'daily-study', 'questions', 'study-cards', 'pricing', 'passing-score'];
 export const dynamicParams = false;
 export function generateStaticParams() {
-  return freeStateCatalog.flatMap(([, , stateSlug]) => sections.map(section => ({ stateSlug, section })));
+  return freeStateCatalog.flatMap(([code, , stateSlug]) => sections.filter(section => section !== 'pricing' || freeStateFeatures[code]?.purchase !== false).map(section => ({ stateSlug, section })));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ stateSlug: string; section: string }> }) {
@@ -48,6 +48,7 @@ export default async function Page({ params, searchParams }: {
   const counts = pack.counts();
   const full = !pack.freeLaunch;
   if (['questions', 'study-cards', 'pricing'].includes(section) && !full) notFound();
+  if (section === 'pricing' && pack.purchaseEnabled === false) notFound();
   if (section === 'study-guide' && full) return <PrepStudyGuide code={code} />;
   if (section === 'pricing') return <main className="wrap hero"><h1>{state[1]} Notary Pro</h1>
     <div className="card"><p>{counts.free} of {counts.published} questions are free. Pro opens the complete bank, repeated Comprehensive Practice and the shared Pro Tutor allowance for 60 days across every available state.</p>
@@ -70,7 +71,7 @@ export default async function Page({ params, searchParams }: {
   if (section === 'practice') return <main className="wrap hero"><h1>{state[1]} Notary Practice</h1>
     <p>Quick 10 gives ten free original questions with explanations and official sources.</p>
     {full ? <><p>{counts.published} published questions · {counts.free} free · {counts.pro} Pro</p><p>{pack.fullDetail}</p>
-      <div className="tool-row"><Link className="chip" href={site.study}>Study Guide</Link><Link className="chip" href={site.studyCards}>Study Cards</Link><Link className="chip" href={site.pricing}>60-Day Pro</Link></div></> : null}
+      <div className="tool-row"><Link className="chip" href={site.study}>Study Guide</Link><Link className="chip" href={site.studyCards}>Study Cards</Link>{pack.purchaseEnabled !== false ? <Link className="chip" href={site.pricing}>60-Day Pro</Link> : null}</div></> : null}
     <Suspense fallback={<p role="status">Loading practice…</p>}><PracticeLaunch key={code} stateCode={code} /></Suspense>
   </main>;
   if (section === 'wrong-answers') {

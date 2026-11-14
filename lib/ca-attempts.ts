@@ -1,10 +1,11 @@
+import type { StateCode } from './types.ts';
 import { isFreeState } from "./free-state-catalog";
 import type { Letter } from "./sitting.ts";
 import { applyMistakeImport, applyReviewImport, type ReviewTopic, type TopicMiss } from "./ca-next.ts";
 import { loadProgress, saveProgress } from "./storage.ts";
 import { currentQuestionVersion } from './question-revisions.ts';
 
-export type TopicPracticeState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN" | "AR" | "CO" | "IL" | "ME" | "MD" | "MO" | "MT" | "NE" | "NV" | "NJ" | "NM" | "OH" | "OR" | "UT" | "VT" | "WI" | "WY";
+export type TopicPracticeState = StateCode;
 
 export type CaQuickAttempt = {
   id: string;
@@ -88,12 +89,12 @@ export function hasPendingCaAttempts(state: TopicPracticeState) {
 export function readCaAttempt(owner: string, id: string, state: TopicPracticeState = "CA") {
   if (!id) return null;
   const item = listCaAttempts(owner, state).find((item) => item.id === id);
-  if (['NY','PA','LA','CT','NC','IN','AR','CO','IL','ME','MD','MO','MT','NE','NV','NJ','NM','OH','OR','UT','VT','WI','WY'].includes(state) && item?.questionIds.some(id => (item.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
+  if (['NY','PA','LA','CT','NC','IN','AR','CO','IL','ME','MD','MO','MT','NE','NV','NJ','NM','OH','OR','UT','VT','WI','WY','RI','TX'].includes(state) && item?.questionIds.some(id => (item.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
   return item || null;
 }
 
 export function latestCaQuick(owner: string, state: TopicPracticeState = "CA") {
-  return listCaAttempts(owner, state).find(item => item.mode === "quick" && (!['NY','PA','LA','CT','NC','IN','AR','CO','IL','ME','MD','MO','MT','NE','NV','NJ','NM','OH','OR','UT','VT','WI','WY'].includes(state) || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id)))) || null;
+  return listCaAttempts(owner, state).find(item => item.mode === "quick" && (!['NY','PA','LA','CT','NC','IN','AR','CO','IL','ME','MD','MO','MT','NE','NV','NJ','NM','OH','OR','UT','VT','WI','WY','RI','TX'].includes(state) || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id)))) || null;
 }
 
 export function saveCaQuickAttempt(row: CaQuickAttempt) {

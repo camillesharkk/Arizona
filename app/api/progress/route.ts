@@ -25,7 +25,7 @@ const answerSchema = z.object({
   selected: z.enum(["A", "B", "C", "D"]),
   attemptId: z.string().min(8).max(80).optional(),
   review: z.boolean().optional(),
-  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY"]).optional(),
+  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY", "RI", "TX"]).optional(),
   timeZone: z.string().max(80).optional(),
 });
 
@@ -55,6 +55,7 @@ export async function POST(req: Request) {
       return NextResponse.json(result);
     } catch (error) {
       const code = error instanceof Error ? error.message : "";
+      if (code === "practice_unavailable") return NextResponse.json({ error: "Choose Quick 10 or topic practice for this state", code }, { status: 403 });
       if (code === "pro_required") return NextResponse.json({ error: "Indiana Pro required" }, { status: 402 });
       if (code === "full_trial_used") return NextResponse.json({ error: "The free full practice for this state is already used" }, { status: 402 });
       if (code === "question_updated") return NextResponse.json({ error: "Question updated; reload before answering", code }, { status: 409 });
@@ -71,7 +72,7 @@ export async function POST(req: Request) {
         correctCount: z.number(),
         total: z.number(),
         examId: z.string().uuid().optional(),
-        state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY"]).optional(),
+        state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY", "RI", "TX"]).optional(),
         wrongIds: z.array(z.string().max(80)).max(80).optional(),
         skipped: z.number().int().min(0).max(80).optional(),
         timeZone: z.string().max(80).optional(),

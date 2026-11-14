@@ -289,7 +289,7 @@ export function DashboardClient() {
       {state === "IN" && data?.indianaPro && data.indianaProExpiresAt ? <p className="notice">All-state Pro · Active until {new Date(data.indianaProExpiresAt).toLocaleDateString("en-US")}</p> : null}
       {showAsPro && (
         <div className="card">
-          {state === "NC" ? <p>North Carolina Pro{data?.ncPlanExpiresAt ? ` · Active until ${formatProUntil(data.ncPlanExpiresAt)}` : ""}</p> : <ProAccessNote plan="pro" planExpiresAt={user.planExpiresAt} />}
+          {state === "NC" ? <p>North Carolina Pro{data?.ncPlanExpiresAt ? ` · Active until ${formatProUntil(data.ncPlanExpiresAt)}` : ""}</p> : <ProAccessNote plan="pro" planExpiresAt={user.planExpiresAt} purchaseEnabled={packFor(state)?.purchaseEnabled !== false} />}
         </div>
       )}
       <div className="card">

@@ -1,4 +1,6 @@
 import { paths } from "./paths.ts";
+import { parseStateCookie, pathState, resolveState, STATE_COOKIE } from "./site-state.ts";
+import { stateByCode } from "./states.ts";
 
 export const GA_MEASUREMENT_ID_ENV = "NEXT_PUBLIC_GA_MEASUREMENT_ID";
 export const GA_SCRIPT_ORIGIN = "https://www.googletagmanager.com/gtag/js";
@@ -143,7 +145,19 @@ export function viewEventForPath(pathname: string): "landing_view" | "practice_v
   if (path === paths.home || path === "/") return "landing_view";
   if (path === paths.practice || path === paths.practiceFree) return "practice_view";
   if (path === paths.register) return "register_view";
+  const state = stateByCode(pathState(path) || "");
+  if (state) {
+    if (path === (state.homePath || `/${state.slug}/`)) return "landing_view";
+    if (path === `/${state.slug}/practice/`) return "practice_view";
+  }
   return null;
+}
+
+export function isPricingPath(pathname: string) {
+  const path = pathname.replace(/\/$/, "");
+  if (path === paths.pricing.replace(/\/$/, "")) return true;
+  const state = stateByCode(pathState(path) || "");
+  return Boolean(state && path === `/${state.slug}/pricing`);
 }
 
 export function sanitizeEventParams(params?: Record<string, unknown>) {
@@ -235,8 +249,19 @@ export function applyOpsAcceptance(params: Record<string, string | number | bool
 }
 
 export function applyCommonParams(params?: Record<string, string | number | boolean>) {
+  let state = ANALYTICS_STATE;
+  if (typeof window !== "undefined") {
+    let saved: ReturnType<typeof parseStateCookie> = null;
+    try {
+      const cookie = document.cookie.split(";")
+        .map(value => value.trim())
+        .find(value => value.startsWith(`${STATE_COOKIE}=`));
+      saved = parseStateCookie(cookie?.slice(STATE_COOKIE.length + 1));
+    } catch { /* cookies are optional */ }
+    state = resolveState(window.location.pathname, saved) || ANALYTICS_STATE;
+  }
   const out: Record<string, string | number | boolean> = {
-    state: ANALYTICS_STATE,
+    state,
     site: ANALYTICS_SITE,
   };
   if (typeof window !== "undefined" && window.location?.pathname) {

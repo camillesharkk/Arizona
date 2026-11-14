@@ -2062,5 +2062,320 @@ export const fullStateSources: Record<string, Source> = {
     "url": "https://sos.wyo.gov/Forms/NotariesPublic/Notary-Name-Change-Form.pdf",
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
+  },
+  "ri-law-3": {
+    "source_id": "ri-law-3",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-3",
+    "reference": "R.I. Gen. Laws 42-30.1-3",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-3.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-4": {
+    "source_id": "ri-law-4",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-4",
+    "reference": "R.I. Gen. Laws 42-30.1-4",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-4.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-5": {
+    "source_id": "ri-law-5",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-5",
+    "reference": "R.I. Gen. Laws 42-30.1-5",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-5.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-6": {
+    "source_id": "ri-law-6",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-6",
+    "reference": "R.I. Gen. Laws 42-30.1-6",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-6.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-7": {
+    "source_id": "ri-law-7",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-7",
+    "reference": "R.I. Gen. Laws 42-30.1-7",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-7.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-8": {
+    "source_id": "ri-law-8",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-8",
+    "reference": "R.I. Gen. Laws 42-30.1-8",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-8.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-12.1": {
+    "source_id": "ri-law-12.1",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-12.1",
+    "reference": "R.I. Gen. Laws 42-30.1-12.1",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-12.1.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-12.2": {
+    "source_id": "ri-law-12.2",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-12.2",
+    "reference": "R.I. Gen. Laws 42-30.1-12.2",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-12.2.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-13": {
+    "source_id": "ri-law-13",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-13",
+    "reference": "R.I. Gen. Laws 42-30.1-13",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-13.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-14": {
+    "source_id": "ri-law-14",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-14",
+    "reference": "R.I. Gen. Laws 42-30.1-14",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-14.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-15": {
+    "source_id": "ri-law-15",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-15",
+    "reference": "R.I. Gen. Laws 42-30.1-15",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-15.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-16": {
+    "source_id": "ri-law-16",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-16",
+    "reference": "R.I. Gen. Laws 42-30.1-16",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-16.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-18": {
+    "source_id": "ri-law-18",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-18",
+    "reference": "R.I. Gen. Laws 42-30.1-18",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-18.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-19": {
+    "source_id": "ri-law-19",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-19",
+    "reference": "R.I. Gen. Laws 42-30.1-19",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-19.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-law-20.1": {
+    "source_id": "ri-law-20.1",
+    "source_type": "SOS",
+    "title": "R.I. Gen. Laws 42-30.1-20.1",
+    "reference": "R.I. Gen. Laws 42-30.1-20.1",
+    "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-20.1.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-sos-apply": {
+    "source_id": "ri-sos-apply",
+    "source_type": "SOS",
+    "title": "Apply for a New Commission",
+    "reference": "Steps 1-6",
+    "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/ApplyForNewCommission",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-sos-renew": {
+    "source_id": "ri-sos-renew",
+    "source_type": "SOS",
+    "title": "Renew Your Existing Commission",
+    "reference": "Steps 1-5 and Did you know",
+    "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/RenewExistingCommission",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-manual": {
+    "source_id": "ri-manual",
+    "source_type": "SOS",
+    "title": "Rhode Island Notary Public Manual, revised July 2024",
+    "reference": "Printed pages 3-21",
+    "url": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-standards": {
+    "source_id": "ri-standards",
+    "source_type": "SOS",
+    "title": "Standards of Conduct, effective September 22, 2022",
+    "reference": "Sections 1-8",
+    "url": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-application": {
+    "source_id": "ri-application",
+    "source_type": "SOS",
+    "title": "Notary Application/Renewal Form, April 2025",
+    "reference": "Instructions and applicant/oath pages",
+    "url": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Application-Renewal-Form.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-sos-resources": {
+    "source_id": "ri-sos-resources",
+    "source_type": "SOS",
+    "title": "Notary Educational Resources",
+    "reference": "Self-guided training and knowledge assessment",
+    "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/EducationalResources",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-sos-remote": {
+    "source_id": "ri-sos-remote",
+    "source_type": "SOS",
+    "title": "Apply to Become an Electronic or Remote Online Notary",
+    "reference": "Steps 1-5",
+    "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/BecomeRemoteNotary",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-sos-digital": {
+    "source_id": "ri-sos-digital",
+    "source_type": "SOS",
+    "title": "Electronic and Remote Online Notarization",
+    "reference": "Comparison of electronic notarization and RON",
+    "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/RemoteNotary",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ri-remote-guide": {
+    "source_id": "ri-remote-guide",
+    "source_type": "SOS",
+    "title": "Remote Online Notarization Performance Guide",
+    "reference": "Before you begin and performance steps",
+    "url": "https://docs.sos.ri.gov/documents/businessservices/remote-notary-guide.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-gov": {
+    "source_id": "tx-gov",
+    "source_type": "SOS",
+    "title": "Texas Government Code Chapter 406",
+    "reference": "Chapter 406, current codified text",
+    "url": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-cprc": {
+    "source_id": "tx-cprc",
+    "source_type": "SOS",
+    "title": "Texas Civil Practice and Remedies Code Chapter 121",
+    "reference": "Chapter 121, including HB4202 effective June 20, 2025",
+    "url": "https://tcss.legis.texas.gov/resources/CP/htm/CP.121.htm",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-2026": {
+    "source_id": "tx-2026",
+    "source_type": "SOS",
+    "title": "Texas SOS adopted education rules effective January 1, 2026",
+    "reference": "1 TAC §§87.5,87.8,87.9,87.13,87.14,87.20; December 26, 2025 Texas Register",
+    "url": "https://www.sos.texas.gov/texreg/archive/December262025/Adopted%20Rules/1.ADMINISTRATION.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-traditional": {
+    "source_id": "tx-traditional",
+    "source_type": "SOS",
+    "title": "SOS traditional application and education portal guide",
+    "reference": "Complete the Traditional Notary Education Course; revised December 16, 2025",
+    "url": "https://www.sos.state.tx.us/statdoc/guides/TraditionalNotaryApplication.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-online-guide": {
+    "source_id": "tx-online-guide",
+    "source_type": "SOS",
+    "title": "SOS online application and education portal guide",
+    "reference": "Complete the Online Notary Education Course; revised December 16, 2025",
+    "url": "https://www.sos.state.tx.us/statdoc/guides/OnlineNotaryApplication.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-entry": {
+    "source_id": "tx-entry",
+    "source_type": "SOS",
+    "title": "Texas SOS notary application entry",
+    "reference": "Traditional, online and state employee application instructions",
+    "url": "https://www.sos.state.tx.us/statdoc/notary-public.shtml",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-start": {
+    "source_id": "tx-start",
+    "source_type": "SOS",
+    "title": "Texas SOS Getting Started as an Online Notary",
+    "reference": "Current commission, digital certificate, electronic seal and renewal order",
+    "url": "https://www.sos.state.tx.us/statdoc/gettingstarted.shtml",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-education": {
+    "source_id": "tx-education",
+    "source_type": "SOS",
+    "title": "Texas SOS public notary educational information",
+    "reference": "Definitions, prohibited acts and sample certificates",
+    "url": "https://www.sos.state.tx.us/statdoc/edinfo.shtml",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-online-education": {
+    "source_id": "tx-online-education",
+    "source_type": "SOS",
+    "title": "Texas SOS online notary educational information",
+    "reference": "Online identity, records and certificate samples",
+    "url": "https://www.sos.texas.gov/statdoc/online-np-educational.shtml",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-rules": {
+    "source_id": "tx-rules",
+    "source_type": "SOS",
+    "title": "Texas SOS published Chapter 87 rules",
+    "reference": "1 TAC 87.41(b),(d), online location and identity alternatives; 87.50, record-book personal information; use 2026 adopted rules for education",
+    "url": "https://www.sos.texas.gov/statdoc/1-87.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "tx-faq": {
+    "source_id": "tx-faq",
+    "source_type": "SOS",
+    "title": "Texas SOS notary FAQ",
+    "reference": "Traditional and online notary questions",
+    "url": "https://www.sos.texas.gov/statdoc/faqs2300.shtml",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
   }
 };

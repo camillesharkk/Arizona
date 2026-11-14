@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { test, beforeEach, afterEach } from "node:test";
 import * as analytics from "../lib/analytics.ts";
 import { reconcilePurchases } from "./analytics-reconcile.ts";
+import { testLoader } from "./pack-test-utils.mjs";
 
 const originalEnv = { ...process.env };
 function storage() {
@@ -104,6 +105,94 @@ test("distinct upgrade placements are not deduplicated as the same event", () =>
   analytics.trackAnalyticsEvent("upgrade_view", { entry_point: "header" });
   analytics.trackAnalyticsEvent("upgrade_view", { entry_point: "exam_results" });
   assert.equal(events("upgrade_view").length, 2);
+});
+
+test("public state page views and practice entries retain their state", () => {
+  for (const [code, slug] of [["RI", "rhode-island"], ["TX", "texas"], ["CA", "california"]]) {
+    window.location.href = `https://arizonanotaryprep.com/${slug}/`;
+    analytics.trackPageView(window.location.pathname);
+    assert.equal(events("page_view").at(-1)?.state, code);
+    assert.equal(analytics.viewEventForPath(window.location.pathname), "landing_view");
+    assert.equal(analytics.viewEventForPath(`/${slug}/practice/?mode=quick`), "practice_view");
+    assert.equal(analytics.viewEventForPath(`/${slug}/resources/`), null);
+  }
+});
+
+test("shared pages retain the saved state and direct state paths win", () => {
+  Object.defineProperty(globalThis, "document", { configurable: true, value: { cookie: "np_state=TX" } });
+  try {
+    window.location.href = "https://arizonanotaryprep.com/login/";
+    analytics.trackAnalyticsEvent("register_view");
+    assert.equal(events("register_view")[0].state, "TX");
+    window.location.href = "https://arizonanotaryprep.com/rhode-island/practice/";
+    analytics.trackAnalyticsEvent("practice_view");
+    assert.equal(events("practice_view")[0].state, "RI");
+    document.cookie = "np_state=invalid";
+    window.location.href = "https://arizonanotaryprep.com/account/";
+    analytics.trackAnalyticsEvent("account_view");
+    assert.equal(events("account_view")[0].state, "AZ");
+  } finally {
+    Reflect.deleteProperty(globalThis, "document");
+  }
+});
+
+test("state-aware product views send once per destination through both transports", () => {
+  const ga: Record<string, unknown>[] = [];
+  const posthog: Record<string, unknown>[] = [];
+  const transport = {
+    ga: (_name: string, params: Record<string, unknown>) => { ga.push(params); },
+    posthog: (_name: string, params: Record<string, unknown>) => { posthog.push(params); },
+  };
+  for (const slug of ["rhode-island", "texas"]) {
+    window.location.href = `https://arizonanotaryprep.com/${slug}/practice/`;
+    analytics.dispatchAnalyticsEvent("practice_view", undefined, transport);
+    analytics.dispatchAnalyticsEvent("practice_view", undefined, transport);
+  }
+  assert.deepEqual(ga.map(event => event.state), ["RI", "TX"]);
+  assert.deepEqual(posthog.map(event => event.state), ["RI", "TX"]);
+});
+
+test("pricing recognition covers supported state routes and excludes unrelated routes", () => {
+  for (const route of ["/pricing", "/pricing/", "/rhode-island/pricing/", "/texas/pricing", "/california/pricing/"]) {
+    assert.equal(analytics.isPricingPath(route), true, route);
+  }
+  for (const route of ["/not-a-state/pricing/", "/texas/pricing/details/", "/texas/practice/"]) {
+    assert.equal(analytics.isPricingPath(route), false, route);
+  }
+});
+
+test("explicit event attribution wins and cookie failures preserve path attribution", () => {
+  Object.defineProperty(globalThis, "document", {
+    configurable: true,
+    get() { throw new Error("cookies denied"); },
+  });
+  try {
+    window.location.href = "https://arizonanotaryprep.com/texas/practice/";
+    analytics.trackAnalyticsEvent("practice_view");
+    analytics.trackAnalyticsEvent("exam_start", { state: "CT" });
+    assert.equal(events("practice_view")[0].state, "TX");
+    assert.equal(events("exam_start")[0].state, "CT");
+  } finally {
+    Reflect.deleteProperty(globalThis, "document");
+  }
+});
+
+test("pricing component emits once per route across repeated effects and state navigation", () => {
+  let pathname = "/rhode-island/pricing/";
+  const sent = { current: null as unknown };
+  const captured: string[] = [];
+  const load = testLoader({
+    react: { useRef: () => sent, useEffect: (effect: () => void) => effect() },
+    "next/navigation": { usePathname: () => pathname },
+    "@/lib/analytics": { trackAnalyticsEvent: (name: string) => captured.push(name) },
+  });
+  const { PricingAnalytics } = load("components/PricingAnalytics.tsx");
+  PricingAnalytics();
+  PricingAnalytics();
+  pathname = "/texas/pricing/";
+  PricingAnalytics();
+  PricingAnalytics();
+  assert.deepEqual(captured, ["pricing_view", "pricing_view"]);
 });
 
 test("a failed return can recover only its pending transaction, never an older paid order", () => {

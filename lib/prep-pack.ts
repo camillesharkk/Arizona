@@ -16,7 +16,7 @@ import { ctExam } from "@/lib/ct-site";
 import { shuffle } from "@/lib/answer-sequence";
 import type { Question, StateCode } from "@/lib/types";
 
-import { freeStateCatalog, isFreeState, type FreeStateCode } from "./free-state-catalog";
+import { freeStateCatalog, freeStateFeatures, isFreeState, type FreeStateCode } from "./free-state-catalog";
 import { freeStateContent } from "@/data/free-state-content";
 import { freeStateQuestions } from "@/data/free-state-questions";
 
@@ -76,18 +76,20 @@ const nyCounts = nyQuestionCounts();
 const freePacks = Object.fromEntries(freeStateCatalog.map(([code]) => {
   const summary = fullStateSummary[code];
   const ready = Boolean(summary?.ready);
+  const features = freeStateFeatures[code];
+  const fullReady = ready && features?.fullPractice !== false;
   const questions = () => fullStatePublicQuestions[code] || freeStateQuestions(code);
   return [code, {
     ...prepNavigation[code], freeLaunch: !ready,
     topics: freeStateContent[code]?.topics || [], questions,
     counts: () => summary || { published: questions().length, free: questions().length, pro: 0 },
-    fullCount: ready ? 40 : 0, fullMinutes: null, fullTitle: "Comprehensive Practice",
-    fullDetail: ready ? "40 original questions drawn from your accessible state question pool, with no time limit. The score describes this site's practice session. Follow the official application guide for state assessment requirements." : "",
+    fullCount: fullReady ? 40 : 0, fullMinutes: null, fullTitle: "Comprehensive Practice",
+    fullDetail: fullReady ? "40 original questions drawn from your accessible state question pool, with no time limit. The score describes this site's practice session. Follow the official application guide for state assessment requirements." : "Quick 10 and topic practice use original scenarios with explanations and official references. Follow the official application and training steps for your commission.",
     anonKey: `${code.toLowerCase()}-anon-full-started`,
     pickQuick: (seed: number) => quickFrom(questions(), seed),
-    pickFull: (seed: number) => ready ? { questions: shuffle(questions(), seed).slice(0, 40), unscoredIds: [] } : null,
-    fullReady: ready, quickReady: questions().length >= 10,
-    cards: fullStateCards[code] || [], purchaseEnabled: ready,
+    pickFull: (seed: number) => fullReady ? { questions: shuffle(questions(), seed).slice(0, 40), unscoredIds: [] } : null,
+    fullReady, quickReady: questions().length >= 10,
+    cards: fullStateCards[code] || [], purchaseEnabled: ready && features?.purchase !== false,
     handbookUrl: freeStateContent[code]?.sources.find(source => /manual|handbook/i.test(source.title))?.url,
   } satisfies PrepPack];
 })) as unknown as Record<FreeStateCode, PrepPack>;

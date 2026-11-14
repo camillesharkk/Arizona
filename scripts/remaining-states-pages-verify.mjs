@@ -8,25 +8,27 @@ const base = process.env.STATE17_BASE || 'http://127.0.0.1:3482';
 const load = testLoader();
 const { fullStateSummary } = load('data/full-state-summary.ts');
 const { fullStateArticles } = load('data/full-state-articles.ts');
-const { freeStateCatalog, freeStatePaths } = load('lib/free-state-catalog.ts');
+const { freeStateCatalog, freeStatePaths, freeStateFeatures } = load('lib/free-state-catalog.ts');
+const states = freeStateCatalog.filter(([code]) => !process.env.VERIFY_STATES || process.env.VERIFY_STATES.split(',').includes(code));
 const { chromium } = await import(pathToFileURL(path.resolve('.tools/browser/node_modules/playwright/index.mjs')));
 const browser = await chromium.launch({ channel: 'msedge', headless: true });
-const context = await browser.newContext();
+const headers = process.env.STATE17_HEADER_FILE ? JSON.parse(fs.readFileSync(process.env.STATE17_HEADER_FILE, 'utf8')) : {};
+const context = await browser.newContext({ extraHTTPHeaders: headers });
 await context.addInitScript(() => sessionStorage.setItem('az_ops_acceptance', '1'));
 const page = await context.newPage();
 const rows = [];
 try {
   const directory = await page.goto(base + '/');
   assert.equal(directory.status(), 200);
-  for (const [code, , slug] of freeStateCatalog) assert.ok(await page.locator(`a[href="/${slug}/"]`).count() > 0, `${code} directory entry`);
+  for (const [code, , slug] of states) assert.ok(await page.locator(`a[href="/${slug}/"]`).count() > 0, `${code} directory entry`);
   const xml = await page.goto(base + '/sitemap.xml');
   assert.equal(xml.status(), 200);
   const sitemap = await xml.text();
   assert.equal(sitemap.includes('/preview/'), false);
-  for (const [code, name, slug] of freeStateCatalog) {
+  for (const [code, name, slug] of states) {
     const site = freeStatePaths(slug);
     const routes = [site.home, site.practice, site.study, site.become, site.resources, site.examGuide, site.laws,
-      ...(fullStateSummary[code]?.ready ? [site.questions, site.studyCards, site.pricing, ...(fullStateArticles[code] || []).map(article => article.path)] : [])];
+      ...(fullStateSummary[code]?.ready ? [site.questions, site.studyCards, ...(freeStateFeatures[code]?.purchase === false ? [] : [site.pricing]), ...(fullStateArticles[code] || []).map(article => article.path)] : [])];
     for (const route of routes) {
       assert.ok(sitemap.includes(`https://arizonanotaryprep.com${route}`), `${code} sitemap ${route}`);
       const response = await page.goto(base + route);

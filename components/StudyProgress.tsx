@@ -78,9 +78,10 @@ export function ChapterProgress({ id, stateCode = "AZ" }: { id: string; stateCod
   );
 }
 
-export function Readiness({ stateCode = "AZ", guideChapters = chapters }: {
+export function Readiness({ stateCode = "AZ", guideChapters = chapters, fullPracticeEnabled = true }: {
   stateCode?: StateCode;
   guideChapters?: readonly { id: string; title: string }[];
+  fullPracticeEnabled?: boolean;
 }) {
   const [reads, setReads] = useState(0);
   const [nextTitle, setNextTitle] = useState<string | null>(guideChapters[0]?.title ?? null);
@@ -99,11 +100,11 @@ export function Readiness({ stateCode = "AZ", guideChapters = chapters }: {
 
   return (
     <div className="card">
-      <h3>Exam checklist</h3>
+      <h3>{fullPracticeEnabled ? 'Exam checklist' : 'Study checklist'}</h3>
       <p>
         {reads} / {guideChapters.length} chapters marked read.
       </p>
-      {nextTitle ? <p>Next: {nextTitle}</p> : <p>All chapters marked. Take a full exam.</p>}
+      {nextTitle ? <p>Next: {nextTitle}</p> : <p>{fullPracticeEnabled ? 'All chapters marked. Take a full exam.' : 'All chapters marked. Review with Quick 10 or topic practice.'}</p>}
     </div>
   );
 }

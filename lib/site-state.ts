@@ -1,12 +1,12 @@
-import { isCaliforniaPath } from "@/lib/ca-site";
-import { isHawaiiPath } from "@/lib/hi-site";
-import { isComingSoonPath } from "@/lib/states";
-import type { StateCode } from "@/lib/types";
+import { isCaliforniaPath } from "./ca-site.ts";
+import { isHawaiiPath } from "./hi-site.ts";
+import { isComingSoonPath } from "./states.ts";
+import type { StateCode } from "./types.ts";
 
 export const STATE_COOKIE = "np_state";
 export type LiveCode = StateCode;
 
-import { freeStateCatalog } from "./free-state-catalog";
+import { freeStateCatalog } from "./free-state-catalog.ts";
 
 const sharedPaths = ["/login", "/register", "/forgot-password", "/reset-password", "/verify-email", "/account", "/dashboard", "/contact", "/legal"];
 
@@ -29,7 +29,7 @@ export function pathState(pathname: string): LiveCode | null {
   return "AZ";
 }
 
-const CODES = new Set<LiveCode>(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY"]);
+const CODES = new Set<LiveCode>(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", ...freeStateCatalog.map(([code]) => code)]);
 
 export function parseStateCookie(value: string | undefined | null): LiveCode | null {
   return value && CODES.has(value as LiveCode) ? (value as LiveCode) : null;

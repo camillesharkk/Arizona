@@ -1,4 +1,5 @@
 import { LIVE_STATES } from "@/lib/ca-site";
+import { freeStateFeatures, isFreeState } from "@/lib/free-state-catalog";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession, setSessionCookie } from "@/lib/session";
@@ -25,6 +26,9 @@ export async function POST(req: Request) {
   const raw = await req.json().catch(() => null);
   const body = postSchema.safeParse(raw);
   if (!body.success) return NextResponse.json({ error: "quote_required" }, { status: 400 });
+  if (isFreeState(body.data.sourceState) && freeStateFeatures[body.data.sourceState]?.purchase === false) {
+    return NextResponse.json({ error: "State purchasing awaits checkout validation" }, { status: 403 });
+  }
   const repo = await getCommerceRepo();
   const quote = await repo.getQuote(body.data.quoteId);
   if (!quote || quote.userId !== session.id) return NextResponse.json({ error: "quote_not_found" }, { status: 404 });

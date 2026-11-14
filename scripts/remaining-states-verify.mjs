@@ -8,6 +8,7 @@ const { switchStateHref } = load('lib/ca-site.ts');
 const { freeStateContent } = load('data/free-state-content.ts');
 const { sources } = load('data/sources.ts');
 const { fullStateSummary } = load('data/full-state-summary.ts');
+const { freeStateFeatures } = load('lib/free-state-catalog.ts');
 const codes = (process.env.VERIFY_STATES || 'AR,CO,IL,ME,MD,MO,MT,NE,NV,NJ,NM,OH,OR,UT,VT,WI,WY').split(',');
 for (const code of codes) {
   const pack = packFor(code);
@@ -19,8 +20,8 @@ for (const code of codes) {
   assert.equal(pathState(pack.paths.practice), code);
   assert.equal(switchStateHref('/california/practice/', code), pack.paths.practice);
   assert.equal(switchStateHref(pack.paths.practice, 'CA'), '/california/practice/');
-  assert.equal(pack.fullReady, Boolean(fullStateSummary[code]?.ready));
-  assert.equal(pack.purchaseEnabled, Boolean(fullStateSummary[code]?.ready));
+  assert.equal(pack.fullReady, Boolean(fullStateSummary[code]?.ready) && freeStateFeatures[code]?.fullPractice !== false);
+  assert.equal(pack.purchaseEnabled, Boolean(fullStateSummary[code]?.ready) && freeStateFeatures[code]?.purchase !== false);
   const content = freeStateContent[code];
   assert.ok(content.sources.length > 0);
   assert.ok(pack.topics.length >= 3);

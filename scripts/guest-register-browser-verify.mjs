@@ -8,14 +8,16 @@ import { testLoader } from './pack-test-utils.mjs';
 const base = process.env.REGISTER_TEST_BASE || 'http://localhost:3483';
 if (!/^http:\/\/(127\.0\.0\.1|localhost):/.test(base)) throw new Error('Mock-email registration uses isolated localhost only');
 const load = testLoader();
+const { freeStateCatalog, isFreeState } = load('lib/free-state-catalog.ts');
+const { packFor } = load('lib/prep-pack.ts');
 const { chromium } = await import(pathToFileURL(path.resolve('.tools/browser/node_modules/playwright/index.mjs')));
 const browser = await chromium.launch({ channel: 'msedge', headless: true });
 const results = [];
 let activePage;
 try {
   for (const width of (process.env.REGISTER_WIDTHS || '1440,390').split(',').map(Number)) for (const code of (process.env.REGISTER_STATES || 'AR,CA').split(',')) {
-    const slug = code === 'AR' ? 'arkansas' : 'california';
-    const bank = code === 'AR' ? load('data/free-state-questions.ts').freeStateQuestions('AR') : load('data/ca-questions.ts').publishedCaQuestions();
+    const slug = isFreeState(code) ? freeStateCatalog.find(([state]) => state === code)[2] : 'california';
+    const bank = isFreeState(code) ? packFor(code).questions() : load('data/ca-questions.ts').publishedCaQuestions();
     const context = await browser.newContext({ viewport: { width, height: 900 } });
     const page = await context.newPage();
     activePage = page;
@@ -61,14 +63,22 @@ try {
     const registration = page.waitForResponse(response => new URL(response.url()).pathname === '/api/auth/register/' && response.request().method() === 'POST');
     await page.getByRole('button', { name: 'Create Free Account', exact: true }).click();
     const result = await (await registration).json();
-    assert.equal(result.mockedEmail, true);
-    assert.ok(result.verifyToken);
+    assert.equal(result.ok, true);
+    let verifyToken = result.verifyToken;
+    if (!verifyToken && process.env.REGISTER_DATA_DIR) {
+      const dataDirectory = path.resolve(process.env.REGISTER_DATA_DIR);
+      assert.ok(dataDirectory.startsWith(path.resolve('.tools') + path.sep), 'Verification tokens stay in isolated test data');
+      const data = JSON.parse(fs.readFileSync(path.join(dataDirectory, 'store.json'), 'utf8'));
+      const user = data.users.find(user => user.email === email);
+      verifyToken = data.tokens.find(token => token.userId === user.id && token.type === 'verify')?.token;
+    }
+    assert.ok(verifyToken);
     await page.waitForURL(url => url.pathname === '/verify-email/');
     assert.ok((await page.getByRole('link', { name: 'Back to registration', exact: true }).getAttribute('href')).includes('next='));
     // Email links normally open another tab in the same browser.
     const verified = await context.newPage();
     activePage = verified;
-    await verified.goto(`${base}/verify-email/?token=${encodeURIComponent(result.verifyToken)}`);
+    await verified.goto(`${base}/verify-email/?token=${encodeURIComponent(verifyToken)}`);
     await verified.waitForURL(url => url.pathname === `/${slug}/wrong-answers/`);
     const verifiedAccount = await (await context.request.get(base + '/api/auth/me/')).json();
     assert.ok(verifiedAccount.user, `Verification session missing ${JSON.stringify((await context.cookies()).map(cookie => cookie.name))}`);
@@ -82,7 +92,7 @@ try {
     const repeat = await (await context.request.get(base + '/api/progress/')).json();
     assert.equal(repeat.exams.filter(exam => exam.id === sittingId).length, 1);
     assert.equal(repeat.stats.filter(stat => stat.state === code).reduce((sum, stat) => sum + stat.rightCount + stat.wrongCount, 0), 10);
-    results.push({ code, width, guestQuick: 10, registered: true, mockEmailVerifiedInNewTab: true, sameSitting: true, score: 0, duplicateExams: 0 });
+    results.push({ code, width, guestQuick: 10, registered: true, isolatedEmailVerifiedInNewTab: true, sameSitting: true, score: 0, duplicateExams: 0 });
     console.log(JSON.stringify(results.at(-1)));
     await context.close();
   }

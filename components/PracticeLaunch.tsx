@@ -193,10 +193,10 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   }, [authReady, authError, pendingStart]);
 
   useEffect(() => {
-    if (!authReady || !gateReady || mode !== "full" || isPro || signedIn || anonFullThisVisit.current) return;
+    if (pack?.fullReady === false || !authReady || !gateReady || mode !== "full" || isPro || signedIn || anonFullThisVisit.current) return;
     if (anonFullUsed) return;
     consumeAnonFull();
-  }, [authReady, gateReady, mode, isPro, signedIn, anonFullUsed]);
+  }, [authReady, gateReady, mode, isPro, signedIn, anonFullUsed, pack?.fullReady]);
 
   if (authError) {
     return (
@@ -214,7 +214,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   if (mode === "pick") {
     return (
       <>
-      {stateCode === "NC" ? (
+      {stateCode === "NC" || (pack && !pack.fullReady && !pack.freeLaunch) ? (
         <section className="card" style={{ marginBottom: 18 }}>
           <h2>Topic Practice</h2>
           <p>Choose a rule to review using questions available to your account.</p>
@@ -228,7 +228,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         </section>
       ) : null}
       <div className="grid grid-3">
-        {(pack?.freeLaunch ? ["quick"] as const : stateCode === "IN" ? ["quick", "full"] as const : ["quick", "full", "weak"] as const).map((id) => {
+        {(pack?.freeLaunch ? ["quick"] as const : stateCode === "IN" ? ["quick", "full"] as const : ["quick", "full", "weak"] as const).filter(id => id !== 'full' || !pack || pack.fullReady).map((id) => {
           const copy = {
             quick: ["Quick 10", "10 questions. The result shows after each answer."],
             full: pack
@@ -272,7 +272,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
     );
   }
 
-  if (mode === "full" && pack?.freeLaunch) {
+  if (mode === "full" && pack && !pack.fullReady) {
     return <div className="card"><p>Choose a free practice below.</p><button className="btn btn-primary" onClick={() => enter("quick")}>Start Free Quick 10</button></div>;
   }
 

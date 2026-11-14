@@ -475,7 +475,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         const q = questionPool.find((x) => x.question_id === s.questionId);
         if (!q) return isFreeState(stateCode) && !pack?.freeLaunch ? <article className="card" key={s.questionId} style={{ marginTop: 12 }}>
           <h3>Pro question · {s.questionId}</h3><p>Your progress for this question is saved. Pro opens its question and explanation.</p>
-          <p>{s.wrongCount} missed · {s.rightCount} correct</p><Link className="btn btn-primary" href={site.pricing}>Open Pro access</Link>
+          <p>{s.wrongCount} missed · {s.rightCount} correct</p>{pack?.purchaseEnabled !== false ? <Link className="btn btn-primary" href={site.pricing}>Open Pro access</Link> : <Link href={`${site.practice}?mode=quick`}>Start Free Practice</Link>}
         </article> : null;
         return (
           <article className="card" key={s.questionId} style={{ marginTop: 12 }}>

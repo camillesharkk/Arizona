@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { comingSoonPath, prepStates, stateBySlug, stateLabel } from "@/lib/states";
 import { FreeStateHome } from '@/components/FreeStatePages';
-import { freeStateForSlug, releasedFreeStates } from '@/lib/free-state-catalog';
+import { freeStateFeatures, freeStateForSlug, releasedFreeStates } from '@/lib/free-state-catalog';
 import { freeStateContent } from '@/data/free-state-content';
 import { productionStateBlocked } from '@/lib/state-release';
 import { pageMeta } from '@/lib/seo';
@@ -18,7 +18,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ stateSlug: string }> }): Promise<Metadata> {
   const state = stateBySlug((await params).stateSlug);
   const free = state && freeStateForSlug(state.slug);
-  if (free && freeStateContent[free[0]]) return pageMeta({ title: fullStateSummary[free[0]]?.ready ? `${free[1]} Notary Prep — Practice, Study Guide and Pro` : `${free[1]} Notary Prep — Free Practice and Application Guide`, description: freeStateContent[free[0]]!.summary, path: `/${free[2]}/`, index: releasedFreeStates.includes(free[0]) && process.env.VERCEL_ENV !== 'preview' });
+  if (free && freeStateContent[free[0]]) return pageMeta({ title: fullStateSummary[free[0]]?.ready && freeStateFeatures[free[0]]?.purchase !== false ? `${free[1]} Notary Prep — Practice, Study Guide and Pro` : `${free[1]} Notary Prep — Free Practice and Application Guide`, description: freeStateContent[free[0]]!.summary, path: `/${free[2]}/`, index: releasedFreeStates.includes(free[0]) && process.env.VERCEL_ENV !== 'preview' });
   if (!state || state.status !== "comingSoon") return {};
   return {
     title: { absolute: `${stateLabel(state)} Notary Prep` },

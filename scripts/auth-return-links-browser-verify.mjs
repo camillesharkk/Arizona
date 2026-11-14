@@ -9,7 +9,7 @@ const { chromium } = await import(pathToFileURL(path.resolve('.tools/browser/nod
 const browser = await chromium.launch({ channel: 'msedge', headless: true });
 const results = [];
 try {
-  for (const width of [1440, 390]) for (const slug of ['arkansas', 'colorado', 'california']) {
+  for (const width of [1440, 390]) for (const slug of (process.env.AUTH_RETURN_SLUGS || 'arkansas,colorado,california').split(',')) {
     const context = await browser.newContext({ viewport: { width, height: 900 }, extraHTTPHeaders: headers });
     const page = await context.newPage();
     const next = `/${slug}/wrong-answers/?attempt=link-acceptance`;

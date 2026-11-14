@@ -27,7 +27,7 @@ export type Source = {
   version?: string;
 };
 
-export type StateCode = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN" | "AR" | "CO" | "IL" | "ME" | "MD" | "MO" | "MT" | "NE" | "NV" | "NJ" | "NM" | "OH" | "OR" | "UT" | "VT" | "WI" | "WY";
+export type StateCode = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN" | "AR" | "CO" | "IL" | "ME" | "MD" | "MO" | "MT" | "NE" | "NV" | "NJ" | "NM" | "OH" | "OR" | "UT" | "VT" | "WI" | "WY" | "RI" | "TX";
 export type ExamArea =
   | "administration"
   | "acts"

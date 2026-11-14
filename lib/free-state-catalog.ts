@@ -12,10 +12,16 @@ export const freeStateCatalog = [
   ['OR', 'Oregon', 'oregon'], ['UT', 'Utah', 'utah'],
   ['VT', 'Vermont', 'vermont'], ['WI', 'Wisconsin', 'wisconsin'],
   ['WY', 'Wyoming', 'wyoming'],
+  ['RI', 'Rhode Island', 'rhode-island'], ['TX', 'Texas', 'texas'],
 ] as const;
 
 export type FreeStateCode = typeof freeStateCatalog[number][0];
-export const releasedFreeStates: readonly FreeStateCode[] = freeStateCatalog.map(([code]) => code);
+export const releasedFreeStates: readonly FreeStateCode[] = freeStateCatalog.filter(([code]) => code !== 'RI' && code !== 'TX').map(([code]) => code);
+
+export const freeStateFeatures: Partial<Record<FreeStateCode, { fullPractice: boolean; purchase: boolean; practiceLabel: string }>> = {
+  RI: { fullPractice: false, purchase: false, practiceLabel: 'Start Free Practice' },
+  TX: { fullPractice: false, purchase: false, practiceLabel: 'Start Free Practice' },
+};
 
 export function isFreeState(state: unknown): state is FreeStateCode {
   return freeStateCatalog.some(([code]) => code === state);
@@ -31,7 +37,7 @@ export function freeStatePaths(slug: string): PrepPaths {
     study, become: `${home}become-a-notary/`, resources: `${home}resources/`,
     examGuide: `${home}exam-guide/`, laws: `${home}laws/`,
     questions: ready ? `${home}questions/` : `${home}practice/`, studyCards: ready ? `${home}study-cards/` : study, daily: `${home}daily-study/`,
-    passingScore: `${home}exam-guide/`, pricing: ready ? `${home}pricing/` : home, login: '/login/',
+    passingScore: `${home}exam-guide/`, pricing: ready && (!code || freeStateFeatures[code]?.purchase !== false) ? `${home}pricing/` : home, login: '/login/',
   };
 }
 
@@ -56,5 +62,7 @@ export const freeStateGroups: Record<FreeStateCode, ExamGroup> = {
   "UT": "formalExam",
   "VT": "onlineApplicationOrTraining",
   "WI": "onlineApplicationOrTraining",
-  "WY": "onlineApplicationOrTraining"
+  "WY": "onlineApplicationOrTraining",
+  "RI": "recommendedAssessment",
+  "TX": "courseQuiz"
 };
