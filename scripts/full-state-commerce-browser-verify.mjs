@@ -22,6 +22,8 @@ try {
     await context.addInitScript(() => sessionStorage.setItem('az_ops_acceptance', '1'));
     const page = await context.newPage();
     page.setDefaultTimeout(45000);
+    let receiveCheckout;
+    await context.exposeBinding('captureAcceptanceCheckout', (_source, record) => receiveCheckout?.(record));
     for (const code of codes) {
       const pack = packFor(code);
       await page.goto(base + pack.paths.pricing);
@@ -48,13 +50,30 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false);
       let checkoutCreated = null;
       if (process.env.CREATE_UNPAID_CHECKOUT === '1' && width === 1440) {
-        const [response] = await Promise.all([
-          page.waitForResponse(response => new URL(response.url()).pathname === '/api/billing/checkout/' && response.request().method() === 'POST', { timeout: 90000 }),
+        // Read the real response before the checkout component navigates away.
+        await page.evaluate(() => {
+          const original = window.fetch;
+          window.fetch = async (...args) => {
+            const response = await original(...args);
+            if (new URL(String(args[0]), location.href).pathname === '/api/billing/checkout/' && args[1]?.method === 'POST') {
+              await window.captureAcceptanceCheckout({ status: response.status,
+                request: JSON.parse(String(args[1].body)), data: await response.clone().json() });
+            }
+            return response;
+          };
+        });
+        const captured = new Promise((resolve, reject) => {
+          const timer = setTimeout(() => reject(new Error(`${code} checkout response timed out`)), 90000);
+          timer.unref();
+          receiveCheckout = record => { clearTimeout(timer); resolve(record); };
+        });
+        const [record] = await Promise.all([
+          captured,
           cta.click(),
         ]);
-        assert.equal(response.status(), 200, `${code} checkout`);
-        const request = response.request().postDataJSON();
-        const checkout = await response.json();
+        assert.equal(record.status, 200, `${code} checkout`);
+        const request = record.request;
+        const checkout = record.data;
         assert.equal(request.sourceState, code);
         assert.equal(checkout.provider, 'paddle');
         assert.ok(checkout.transactionId && checkout.finalPriceCents > 0);

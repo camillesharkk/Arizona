@@ -73,7 +73,7 @@ const page = await context.newPage();
         const accessible = await (await browserRequest(page, `${base}/api/state/questions/?state=${code}`)).json();
         assert.equal(accessible.questions.length, kind === 'pro' ? 203 : 60);
         for (const href of [pack.paths.home, pack.paths.study, pack.paths.studyCards, pack.paths.pricing, pack.paths.questions, pack.paths.daily, pack.paths.mistakes, pack.paths.resources]) {
-          const response = await page.goto(base + href, { waitUntil: 'networkidle' });
+          const response = await page.goto(base + href, { waitUntil: 'domcontentloaded' });
           assert.equal(response.status(), 200, `${code} ${href}`);
           if (href === pack.paths.questions) await page.getByText(new RegExp(`Question \\d+ of ${accessible.questions.length}`)).first().waitFor();
           assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `${code} ${href} overflow`);
@@ -197,6 +197,13 @@ const page = await context.newPage();
         fs.writeFileSync(`${evidence}/result.json`, JSON.stringify({ base, results, errors }, null, 2));
         console.log(JSON.stringify(results.at(-1)));
       }
+    } catch (error) {
+      if (!page.isClosed()) {
+        await page.screenshot({ path: `${evidence}/failure.png` }).catch(() => {});
+        const body = await page.locator('body').innerText({ timeout: 5000 }).catch(() => 'Page unavailable');
+        fs.writeFileSync(`${evidence}/failure-page.json`, JSON.stringify({ url: page.url(), body }, null, 2));
+      }
+      throw error;
     } finally {
       if (kind !== 'guest') await browserRequest(page, base + '/api/auth/logout/', { data: {} }).catch(() => {});
       await context.close();
