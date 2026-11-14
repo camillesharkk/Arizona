@@ -15,12 +15,12 @@ RI uses official requirements and recommended knowledge assessment. TX uses the 
 ## Implementation and acceptance checklist
 
 - [x] Verify current repository, remote main, production binding and migration manual. Start isolated branch.
-- [ ] Verify both states' primary official sources, transition rules, first application, renewal and RON requirements. Record dated source audits.
-- [ ] Add state identity, saved-session/import schemas and content projections. Preserve published-state behavior.
-- [ ] Separate learning readiness from full-practice and purchase availability. Enforce corresponding server guards and hide unavailable public links.
-- [ ] Deliver both203-question banks,50 independent cards, complete guides and10 articles per state, with60 free questions and a topic-balanced Quick10.
+- [x] Verify both states' primary official sources, transition rules, first application, renewal and RON requirements. Record dated source audits.
+- [x] Add state identity, saved-session/import schemas and content projections. Preserve published-state behavior.
+- [x] Separate learning readiness from full-practice and purchase availability. Enforce corresponding server guards and hide unavailable public links.
+- [x] Deliver both203-question banks,50 independent cards, complete guides and10 articles per state, with60 free questions and a topic-balanced Quick10.
 - [ ] Verify state-correct GA4/PostHog events and one emission per completed destination or sitting event.
-- [ ] Run existing regressions and production build. Accept both states' desktop/mobile preview learning, login import, refresh/retry, loading, empty/error and cross-state flows.
+- [x] Run existing regressions and production build. Accept both states' desktop/mobile preview learning, login import, refresh/retry, loading, empty/error and cross-state flows.
 - [ ] Synchronize latest remote main, publish through the existing main-site workflow and wait for READY.
 - [ ] Verify formal-domain directory, free submissions, source links, sitemap and existing-state/account behavior. Record final counts, deployment and SHA.
 
@@ -37,3 +37,14 @@ The reviewed local production build passed all sixteen combinations of two state
 Fresh native checks passed all19complete learning packs, server handlers, guest storage/import,28-state global Pro rights,21-state source checkout policy, analytics18/18, quiz, sitting and session regressions. TypeScript and the reviewed production build passed. Separate capability review corrected unavailable pricing switch destinations, renewal CTAs, guide completion wording and direct-full trial side effects. Source review tightened RI oral-oath/provider-training pointers and TX credential/credible-witness and one-certificate fee scope.
 
 After direct preview acceptance, RI/TX are activated in the state registry for the next candidate. Directory, cross-state client navigation, production indexing and formal-domain checks remain release gates.
+
+
+## Release candidate checks
+
+The activated preview is READY at https://arizona-gu36so3xn-sharkkk.vercel.app, deployment dpl_G2juymDfGGYT3jbJYrpeU52Sm6KQ, source7770f06ffc9c906cc4143e755234987a3daedebd. Production-config local checks found each state in the directory and verified19public URLs per state, canonical descriptions, production indexing and sitemap, plus thirteen established site/auth routes. Paid-stem inspection checked all286RI/TX Pro-only question texts across283browser chunks with zero matches.
+
+The actual PostgreSQL store passed isolated PGlite imports for RI/TX, including queued concurrent duplicate handler requests, one9/10 sitting, one wrong answer, ten attempts and cross-state injection rejection. PGlite uses one connection and serializes transactions. Multi-connection row-lock contention is outside that test. All existing full-submission and rollback checks also passed.
+
+The protected preview has no configured public GA4 or PostHog browser keys, so its real analytics dispatch is unavailable there. The existing formal California page does configure GA4. Native state/deduplication analytics tests pass18/18. Formal-domain dispatch verification remains pending.
+
+External official-link access from the local automation environment encountered an RI page timeout and a TX HTTP405 human-verification page. The RI official application text was retrieved through the research browser. TX SOS process and final adopted rules were checked through indexed primary passages, alongside fully retrieved current legislative Chapters406and121. Source audits disclose those access limits. The public pages retain the verified official URLs.

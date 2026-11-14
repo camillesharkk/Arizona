@@ -15,6 +15,8 @@ import { types as postgresTypes } from '../node_modules/postgres/src/types.js';
 const native = createRequire(import.meta.url);
 const cache = new Map();
 let queryCount = 0;
+let session = null;
+process.env.VERCEL_ENV = 'preview';
 const db = new PGlite();
 function load(file) {
   file = path.resolve(file);
@@ -26,13 +28,14 @@ function load(file) {
   const require = name => {
     if (name === 'server-only') return {};
     if (name === '@/lib/store') return { getStore: async () => load('lib/store/pg-store.ts').pgStore };
+    if (name === '@/lib/session') return { getSession: async () => session };
     if (name === 'postgres') return () => sql;
     if (name.startsWith('@/')) return load(name.slice(2));
     if (name.startsWith('.')) return load(path.resolve(path.dirname(file), name));
     return native(name);
   };
   const js = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
-  vm.runInNewContext(js, { module, exports: module.exports, require, process, console, Date, Math, structuredClone });
+  vm.runInNewContext(js, { module, exports: module.exports, require, process, console, Date, Math, Error, structuredClone });
   return module.exports;
 }
 function sql(strings, ...values) {
@@ -61,7 +64,14 @@ function sql(strings, ...values) {
   };
   return fragment;
 }
-sql.begin = async callback => {
+let transactionQueue = Promise.resolve();
+sql.begin = callback => {
+  // PGlite has one connection. Queue transactions while callers submit concurrently.
+  const pending = transactionQueue.then(() => runTransaction(callback));
+  transactionQueue = pending.catch(() => undefined);
+  return pending;
+};
+async function runTransaction(callback) {
   queryCount += 1;
   await db.exec('begin');
   try {
@@ -74,13 +84,14 @@ sql.begin = async callback => {
     await db.exec('rollback');
     throw error;
   }
-};
+}
 try {
   for (const file of fs.readdirSync('db/migrations').filter(file => file.endsWith('.sql')).sort()) await db.exec(fs.readFileSync('db/migrations/' + file, 'utf8'));
   await db.exec('create table schema_migrations(id text primary key)');
   for (const file of fs.readdirSync('db/migrations').filter(file => file.endsWith('.sql'))) await db.query('insert into schema_migrations values ($1)', [file.slice(0, -4)]);
   const { savePackFullSubmission } = load('lib/ny-full-submission.ts');
   const { packFor } = load('lib/prep-pack.ts');
+  const { freeStateFeatures } = load('lib/free-state-catalog.ts');
   const store = load('lib/store/pg-store.ts').pgStore;
   const unbatched = Object.create(store);
   unbatched.learningTransaction = (id, action) => store.learningTransaction(id, transaction => {
@@ -93,6 +104,29 @@ try {
     const user = await store.createUser({ email: `performance-${state}@example.invalid`, passwordHash: 'isolated', name: null });
     const seed = state === 'PA' ? 12361 : 12345;
     const draw = packFor(state).pickFull(seed);
+    if (freeStateFeatures[state]?.fullPractice === false) {
+      assert.equal(draw, null, `${state} full practice stays closed`);
+      session = { id: user.id };
+      const progressRoute = load('app/api/progress/route.ts');
+      const submission = {
+        kind: 'pack-full', state, seed, examId: randomUUID(),
+        questions: packFor(state).pickQuick(seed).map(question => ({
+          questionId: question.question_id, questionVersion: question.version, selected: question.correct_option,
+        })),
+      };
+      const response = await progressRoute.POST(new Request('http://localhost/api/progress/', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(submission),
+      }));
+      assert.equal(response.status, 403, `${state} PostgreSQL full handler denies closed practice`);
+      assert.equal((await response.json()).code, 'practice_unavailable');
+      assert.equal((await store.listStats(user.id)).length, 0);
+      assert.equal((await store.listExams(user.id)).length, 0);
+      assert.equal(await store.getStudyPlan(user.id, state), null);
+      assert.equal((await store.getUserById(user.id)).lastStudyAt, null);
+      assert.equal((await db.query('select count(*)::int as n from answer_attempts where user_id=$1', [user.id])).rows[0].n, 0);
+      results.push({ state, fullPractice: 'closed', handlerStatus: response.status, learningWrites: 0 });
+      continue;
+    }
     assert.ok(draw, `${state} full draw unavailable, prior measurements ${JSON.stringify(results)}`);
     const chosen = state === 'NY' ? packFor(state).questions().slice(0, 40) : draw.questions;
     const revisedQuestion = state === 'NY' ? packFor(state).questions().find(question => question.version > 1) : null;
@@ -227,6 +261,51 @@ try {
     assert.equal(JSON.stringify(await store.listStats(user.id)),snapshot,'Roll back all answers after a late failure');
   }
   console.log('All configured PostgreSQL guest imports use at most 10 SQL statements for 10 answers, preserve retry counts and roll back late failures');
+  const sharedUser = await store.createUser({ email: 'ri-tx-concurrent@example.invalid', passwordHash: 'isolated', name: null });
+  session = { id: sharedUser.id };
+  const guestImport = load('app/api/progress/import/route.ts');
+  const importResults = [];
+  for (const state of ['RI', 'TX']) {
+    const questions = packFor(state).pickQuick(42);
+    const input = {
+      accountId: sharedUser.id, state, examId: randomUUID(), finishedAt: new Date().toISOString(),
+      questions: questions.map((question, index) => ({
+        questionId: question.question_id, questionVersion: question.version,
+        selected: index === 0 ? ['A', 'B', 'C', 'D'].find(letter => letter !== question.correct_option) : question.correct_option,
+        attemptId: randomUUID(),
+      })),
+    };
+    const request = body => new Request('http://localhost/api/progress/import/', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    });
+    const previousStateStats = JSON.stringify((await store.listStats(sharedUser.id)).filter(stat => stat.state !== state));
+    queryCount = 0;
+    const started = performance.now();
+    const responses = await Promise.all([guestImport.POST(request(input)), guestImport.POST(request(input))]);
+    const statements = queryCount;
+    assert.ok(responses.every(response => response.status === 200), `${state} concurrent Quick 10 imports succeed`);
+    const saved = await Promise.all(responses.map(response => response.json()));
+    assert.equal(saved.filter(result => result.duplicate).length, 1, `${state} concurrent retries create one sitting`);
+    assert.ok(saved.every(result => result.exam.correctCount === 9 && result.exam.total === 10));
+    const stats = await store.listStats(sharedUser.id);
+    const currentStats = stats.filter(stat => stat.state === state);
+    assert.equal(currentStats.length, 10);
+    assert.ok(currentStats.every(stat => stat.rightCount + stat.wrongCount === 1));
+    assert.equal(currentStats.filter(stat => stat.wrongCount === 1).length, 1);
+    assert.equal(JSON.stringify(stats.filter(stat => stat.state !== state)), previousStateStats, `${state} import preserves other-state progress`);
+    assert.equal((await store.listExams(sharedUser.id)).filter(exam => exam.id === input.examId).length, 1);
+    assert.equal((await db.query('select count(*)::int as n from answer_attempts where user_id=$1 and question_id like $2', [sharedUser.id, `${state.toLowerCase()}-%`])).rows[0].n, 10);
+    assert.equal((await store.getStudyPlan(sharedUser.id, state)).document.checks[input.examId].wrongIds.length, 1);
+    importResults.push({ state, answers: 10, statements, concurrentRequests: 2, sittings: 1, elapsedMs: Number((performance.now() - started).toFixed(1)) });
+    const invalid = { ...input, examId: randomUUID(), state: state === 'RI' ? 'TX' : 'RI' };
+    const snapshot = JSON.stringify(await store.listStats(sharedUser.id));
+    assert.equal((await guestImport.POST(request(invalid))).status, 400, `${state} import rejects cross-state questions`);
+    assert.equal(JSON.stringify(await store.listStats(sharedUser.id)), snapshot);
+  }
+  assert.equal((await store.listExams(sharedUser.id)).length, 2);
+  assert.equal((await store.listStats(sharedUser.id)).length, 20);
+  console.log('RI/TX PostgreSQL Quick 10 handler imports preserve scores, wrong answers, state isolation and one sitting across concurrent retries');
+  console.log(JSON.stringify({ environment: 'isolated single-connection PGlite, concurrent callers with serialized transactions', importResults }, null, 2));
   console.log(JSON.stringify({ environment: 'isolated PGlite, warm schema, no simulated network latency', results }, null, 2));
 } finally {
   await db.close();
