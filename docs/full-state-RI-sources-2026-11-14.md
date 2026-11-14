@@ -80,3 +80,7 @@ These files contain original educational questions and prose. The primary source
 ## Assessment entry
 
 The Department-linked entry opened on November 14, 2026 was https://www.classmarker.com/online-test/start/user-info/?quiz=nb465e8ce4b0d3f1 . This is an official outgoing link hosted by the assessment provider. It is an entry point, and no official assessment questions were copied.
+
+## Independent content review corrections
+
+The integrated bank corrects ri-071 to cite the manual's traditional in-person standalone oral-oath discussion on printed page 8 and expressly preserves remote certificate requirements. Question ri-190 cites the remote performance guide's provider-training instruction in Before you begin, item 4. A second reviewer checked these source pointers independently.

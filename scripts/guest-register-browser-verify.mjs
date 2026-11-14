@@ -60,9 +60,14 @@ try {
       const inputs = [...document.querySelectorAll('input[type="password"]')];
       return inputs.length === 2 && inputs[0].value === inputs[1].value;
     }), true);
-    const registration = page.waitForResponse(response => new URL(response.url()).pathname === '/api/auth/register/' && response.request().method() === 'POST');
+    let result;
+    await page.route('**/api/auth/register/', async route => {
+      const response = await route.fetch();
+      result = await response.json();
+      await route.fulfill({ response });
+    });
     await page.getByRole('button', { name: 'Create Free Account', exact: true }).click();
-    const result = await (await registration).json();
+    await page.waitForURL(url => url.pathname === '/verify-email/');
     assert.equal(result.ok, true);
     let verifyToken = result.verifyToken;
     if (!verifyToken && process.env.REGISTER_DATA_DIR) {
@@ -73,7 +78,6 @@ try {
       verifyToken = data.tokens.find(token => token.userId === user.id && token.type === 'verify')?.token;
     }
     assert.ok(verifyToken);
-    await page.waitForURL(url => url.pathname === '/verify-email/');
     assert.ok((await page.getByRole('link', { name: 'Back to registration', exact: true }).getAttribute('href')).includes('next='));
     // Email links normally open another tab in the same browser.
     const verified = await context.newPage();
@@ -98,6 +102,15 @@ try {
   }
   fs.writeFileSync('.tools/state17-register-browser.json', JSON.stringify(results, null, 2));
 } catch (error) {
-  if (activePage) await activePage.screenshot({ path: '.tools/state17-register-failure.png' }).catch(() => {});
+  if (activePage) {
+    await activePage.screenshot({ path: '.tools/state17-register-failure.png' }).catch(() => {});
+    const diagnostic = await activePage.evaluate(async () => ({
+      path: location.pathname,
+      signedIn: Boolean((await (await fetch('/api/auth/me/', { cache: 'no-store' })).json()).user),
+      attemptKeys: Object.keys(localStorage).filter(key => key.endsWith('-notary-attempts')),
+      body: document.querySelector('main')?.innerText,
+    })).catch(() => ({}));
+    fs.writeFileSync('.tools/state17-register-failure.json', JSON.stringify(diagnostic, null, 2));
+  }
   throw error;
 } finally { await browser.close(); }

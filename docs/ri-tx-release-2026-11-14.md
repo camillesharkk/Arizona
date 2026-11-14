@@ -27,3 +27,13 @@ RI uses official requirements and recommended knowledge assessment. TX uses the 
 ## Verification commands
 
 Use targeted RI/TX tests alongside the existing state integration, guest storage/import, analytics, quiz, session, study, guide, mistakes, payment and PostgreSQL regression suites. Keep preview and production evidence separate. Use existing test environment and designated main-site test accounts. Raw credentials stay in existing environment configuration and ignored local test inputs.
+
+## Candidate verification evidence
+
+The first protected Vercel preview is READY at `https://arizona-cjtnbeb2t-sharkkk.vercel.app`, deployment `dpl_F21dwzYTgFDre8j8Co6EpHaRiGp4`, source `e13592644bbc591ede081a120e434313e14c7716`. Both states passed desktop1440 and phone390 Quick10, single Start,7/10 result, explanations, state official link, real main-site test-account login return, original wrong answers and idempotent result/notebook refresh.
+
+The reviewed local production build passed all sixteen combinations of two states, two widths and guest/free/activePro/expiredPro. It verified seven learning routes, independent cards and topic navigation,60or203 authorized bank questions,6/10 saved Quick10 and refresh. Both states passed mocked local-email registration and new-tab verification with0/10 retained and one imported sitting, at both widths. Loading/empty/failure/retry notebook and Daily Study checks, all-chapter completion and closed-mode browser-trial preservation passed at both widths. These mail checks use isolated local data and a local simulated delivery response.
+
+Fresh native checks passed all19complete learning packs, server handlers, guest storage/import,28-state global Pro rights,21-state source checkout policy, analytics18/18, quiz, sitting and session regressions. TypeScript and the reviewed production build passed. Separate capability review corrected unavailable pricing switch destinations, renewal CTAs, guide completion wording and direct-full trial side effects. Source review tightened RI oral-oath/provider-training pointers and TX credential/credible-witness and one-certificate fee scope.
+
+After direct preview acceptance, RI/TX are activated in the state registry for the next candidate. Directory, cross-state client navigation, production indexing and formal-domain checks remain release gates.

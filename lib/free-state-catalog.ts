@@ -16,7 +16,7 @@ export const freeStateCatalog = [
 ] as const;
 
 export type FreeStateCode = typeof freeStateCatalog[number][0];
-export const releasedFreeStates: readonly FreeStateCode[] = freeStateCatalog.filter(([code]) => code !== 'RI' && code !== 'TX').map(([code]) => code);
+export const releasedFreeStates: readonly FreeStateCode[] = freeStateCatalog.map(([code]) => code);
 
 export const freeStateFeatures: Partial<Record<FreeStateCode, { fullPractice: boolean; purchase: boolean; practiceLabel: string }>> = {
   RI: { fullPractice: false, purchase: false, practiceLabel: 'Start Free Practice' },

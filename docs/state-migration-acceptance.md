@@ -77,3 +77,19 @@ Daily Study loads the same authorized state bank as the question bank and runner
 After a free or expired account submits its first Comprehensive Practice, verify `/api/auth/me/` returns the current state's full count. Refresh the Practice entry and click Start once. The used-trial gate links to that state's Pro page. `full-state-account-browser-verify.mjs` verifies all seventeen account counts, concurrent retry grading, paid-question authorization and normal-entry gates. Reuse `packFullExamCounts` with the already loaded exam rows so the account read adds no database query.
 
 New-state practice and review completion use the existing sixty-second Quick-save allowance. A controlled twenty-five-second successful history response reproduced an early failure under the previous twenty-second deadline. Run `full-state-save-delay-browser-verify.mjs` on isolated localhost to require the delayed 4/4 result, unchanged original 36/40 score and an idempotent history retry. Original-state non-Quick deadlines retain their existing configuration.
+
+## RI and TX capability-specific release acceptance
+
+RI and TX use the complete shared learning architecture with 203 original questions, 60 free and 143 covered by existing main-site Pro, 50 independent cards, ten chapters and ten articles each. Their current process audits are `full-state-RI-sources-2026-11-14.md` and `full-state-TX-sources-2026-11-14.md`.
+
+Use `freeStateFeatures` to keep complete-learning readiness independent of accepted full-practice and purchase capabilities. RI uses the recommended knowledge assessment. TX uses the SOS course assessment. Both expose Quick 10 and topical practice. Their independent full-exam capability and state-specific purchasing are closed. The shared global Pro entitlement continues to authorize their full question banks.
+
+- Hide closed modes and purchase links on home, guides, articles, account menus, results and notebooks. State switching from a pricing page must land on a usable state page.
+- A direct closed full URL offers Quick 10 and preserves its anonymous trial flag. The full-submission endpoint rejects a new closed full before any entitlement or learning write. A previously committed full receipt can still replay its original result.
+- A disabled state checkout rejects before commerce access. Exclude unavailable pricing routes from sitemap. Next.js can stream a not-found page with HTTP 200, so also inspect the rendered not-found heading and noindex metadata.
+- Finish Quick 10 as a guest, follow Wrong Answers, sign in, and retain the exact sitting, score and original misses. Refresh and repeat the return without adding answer counts or a second exam. Repeat on desktop and phone widths for each state.
+- Verify registration and email-link returns in an isolated mail fixture. Keep the test origin consistent throughout the redirect. Localhost and 127.0.0.1 have distinct cookies and browser storage.
+- Run `ri-tx-surface-browser-verify.mjs` for notebook loading, empty, failure and retry, Daily Study loading/failure/retry, guide completion and unavailable-mode boundaries. Run `remaining-states-browser-verify.mjs` with `VERIFY_STATES=RI,TX`, and after activation set `STATE17_SWITCH=1` for real client state navigation.
+- Shared analytics resolve the current path before the saved state cookie. Verify one product-view event per destination and one sitting event per action in GA4 and PostHog, using the existing internal-acceptance marker for QA traffic.
+
+Both state releases reuse the existing production schema. A state addition alone needs no production migration.
