@@ -3406,7 +3406,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
     "processKind": "Approved course",
     "summary": "Nevada requires its traditional-notary course and course examination before appointment.",
     "training": "Complete the state’s traditional Commission Course. NRS 240.018 calls for at least three instructional hours plus an examination. The official LMS requires separate enrollment and completion of the course and exam.",
-    "assessment": "Pass the Commission Exam and save completion evidence. The SOS’s indexed official notary page states an 80% minimum. Question count and exam duration were not confirmed. The LMS states that training, examinations and payment must be completed within 90 days for validity.",
+    "assessment": "Pass the Commission Exam and save completion evidence. The official LMS states that training, examinations and payment must be completed within 90 days for validity. The question count, exam duration and numerical passing threshold were not confirmed in the official pages opened.",
     "steps": [
       "Check eligibility and complete the Commission Course and Commission Exam.",
       "Obtain the $10,000 bond and take the oath.",
@@ -3445,19 +3445,12 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
         "url": "https://www.leg.state.nv.us/NAC/NAC-240.html",
         "reference": "NAC 240.270 — course-completion certificate validity",
         "checkedAt": "2026-11-14"
-      },
-      {
-        "id": "nv-sos",
-        "title": "Nevada SOS — Notary",
-        "url": "https://nvsos.gov/index.aspx?page=165",
-        "reference": "Official indexed text — traditional and electronic training, 80% threshold",
-        "checkedAt": "2026-11-14"
       }
     ],
     "specs": {
       "questions": null,
       "minutes": null,
-      "passing": "80%",
+      "passing": null,
       "credential": "Commission Exam completion notification or certificate"
     },
     "difference": "The Nevada LMS treats course and examination as separate enrollments and requires an existing traditional commission before electronic training.",

@@ -6,6 +6,7 @@ import { paths } from "@/lib/paths";
 import { invalidateAccountRead } from "@/lib/client-account";
 import { PasswordField } from "@/components/PasswordField";
 import { LoadingNote } from "@/components/QuizChrome";
+import { AUTH_RETURN_COOKIE, safeAuthReturn } from '@/lib/auth-return';
 
 const VERIFY_EMAIL_KEY = "az_verify_email";
 
@@ -30,8 +31,19 @@ export function AuthForm({
   const [registerBlock, setRegisterBlock] = useState<"email-failed" | "unverified-exists" | null>(null);
   const [needVerify, setNeedVerify] = useState(false);
   const [ready, setReady] = useState(false);
+  const [returnTo, setReturnTo] = useState<string | null>(null);
 
   useEffect(() => { setReady(true); }, []);
+
+  useEffect(() => {
+    const next = safeAuthReturn(new URLSearchParams(window.location.search).get('next'));
+    setReturnTo(next);
+    if (typeof document !== 'undefined' && (mode === 'login' || mode === 'register')) {
+      document.cookie = next
+        ? `${AUTH_RETURN_COOKIE}=${encodeURIComponent(next)}; Path=/; Max-Age=86400; SameSite=Lax${window.location.protocol === 'https:' ? '; Secure' : ''}`
+        : `${AUTH_RETURN_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`;
+    }
+  }, []);
 
   useEffect(() => {
     if (mode !== "register") return;
@@ -159,9 +171,9 @@ export function AuthForm({
     }
     if (mode === "login") {
       invalidateAccountRead();
-      const next = new URLSearchParams(window.location.search).get("next");
-      const safe = next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/\\");
-      window.location.href = safe ? next : paths.dashboard;
+      const next = safeAuthReturn(new URLSearchParams(window.location.search).get('next'));
+      if (typeof document !== 'undefined') document.cookie = `${AUTH_RETURN_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`;
+      window.location.href = next || paths.dashboard;
       return;
     }
     setBusy(false);
@@ -169,7 +181,7 @@ export function AuthForm({
       const { trackAnalyticsEvent } = await import("@/lib/analytics");
       trackAnalyticsEvent("sign_up", { plan: "free" });
       if (typeof window !== "undefined") sessionStorage.setItem(VERIFY_EMAIL_KEY, email.trim().toLowerCase());
-      window.location.href = `${paths.verify}?sent=1`;
+      window.location.href = `${paths.verify}?sent=1${returnTo ? `&next=${encodeURIComponent(returnTo)}` : ''}`;
       return;
     }
     if (mode === "reset") setInfo("Password updated. You can sign in.");
@@ -284,13 +296,13 @@ export function AuthForm({
       <p className="notice">
         {mode === "login" && (
           <>
-            <Link href={paths.register}>Create account</Link> · <Link href={paths.forgot}>Forgot password</Link>
+            <Link href={returnTo ? `${paths.register}?next=${encodeURIComponent(returnTo)}` : paths.register}>Create account</Link> · <Link href={paths.forgot}>Forgot password</Link>
           </>
         )}
-        {mode === "register" && !hideCreate && <Link href={paths.login}>Already have an account?</Link>}
+        {mode === "register" && !hideCreate && <Link href={returnTo ? `${paths.login}?next=${encodeURIComponent(returnTo)}` : paths.login}>Already have an account?</Link>}
         {mode === "register" && (registerBlock === "unverified-exists" || error === "Email already registered") && (
           <>
-            <Link href={paths.login}>Go to sign in</Link>
+            <Link href={returnTo ? `${paths.login}?next=${encodeURIComponent(returnTo)}` : paths.login}>Go to sign in</Link>
           </>
         )}
       </p>

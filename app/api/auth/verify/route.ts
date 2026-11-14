@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getStore } from "@/lib/store";
 import { issueUserSession } from "@/lib/devices/http";
+import { cookies } from 'next/headers';
+import { AUTH_RETURN_COOKIE, safeAuthReturn } from '@/lib/auth-return';
 
 export async function GET(req: Request) {
   const token = new URL(req.url).searchParams.get("token");
@@ -18,6 +20,14 @@ export async function GET(req: Request) {
     emailVerifiedAt: current.emailVerifiedAt || at,
   });
   const login = new URL("/login/?verified=1", req.url);
+  let returnTo: string | null = null;
+  try {
+    const stored = (await cookies()).get(AUTH_RETURN_COOKIE)?.value || '';
+    returnTo = safeAuthReturn(decodeURIComponent(stored));
+  } catch {
+    // Ignore a malformed return cookie.
+  }
+  if (returnTo) login.searchParams.set('next', returnTo);
   try {
     const issued = await issueUserSession(
       {
@@ -30,7 +40,11 @@ export async function GET(req: Request) {
       },
       { req }
     );
-    if (issued.ok) return NextResponse.redirect(new URL("/dashboard/", req.url));
+    if (issued.ok) {
+      const response = NextResponse.redirect(new URL(returnTo || '/dashboard/', req.url));
+      response.cookies.delete(AUTH_RETURN_COOKIE);
+      return response;
+    }
   } catch {
     /* fall through to sign-in */
   }

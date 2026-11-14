@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { paths } from "@/lib/paths";
+import { safeAuthReturn } from '@/lib/auth-return';
 
 const VERIFY_EMAIL_KEY = "az_verify_email";
 
@@ -24,6 +25,7 @@ function Inner() {
   const [busy, setBusy] = useState(false);
   const sent = params.get("sent") === "1";
   const token = params.get("token");
+  const returnTo = safeAuthReturn(params.get('next'));
 
   useEffect(() => {
     if (token) {
@@ -83,7 +85,7 @@ function Inner() {
         <button className="btn btn-primary" type="button" disabled={busy} onClick={resend}>
           {busy ? "Sending…" : "Resend verification email"}
         </button>
-        <Link className="btn btn-ghost" href={paths.register}>
+        <Link className="btn btn-ghost" href={returnTo ? `${paths.register}?next=${encodeURIComponent(returnTo)}` : paths.register}>
           Back to registration
         </Link>
       </div>

@@ -317,7 +317,7 @@ Checked 2026-11-14. Original practice scenarios were authored for this site.
 
 Complete the state’s traditional Commission Course. NRS 240.018 calls for at least three instructional hours plus an examination. The official LMS requires separate enrollment and completion of the course and exam.
 
-Pass the Commission Exam and save completion evidence. The SOS’s indexed official notary page states an 80% minimum. Question count and exam duration were not confirmed. The LMS states that training, examinations and payment must be completed within 90 days for validity.
+Pass the Commission Exam and save completion evidence. The official LMS states that training, examinations and payment must be completed within 90 days for validity. The question count, exam duration and numerical passing threshold were not confirmed in the official pages opened.
 
 - Check eligibility and complete the Commission Course and Commission Exam.
 - Obtain the $10,000 bond and take the oath.
@@ -593,3 +593,7 @@ The JSON parses successfully. It contains ten unique questions, four options and
 ## Illinois question review correction
 
 The independent review identified the attorney/law-firm journal ownership exception in Rule 176.900(f). Question il-007 now explicitly concerns a retail employer and a journal containing acts outside attorney/law-firm employment. Its explanation distinguishes the exception and cites the 2025 adopted rule.
+
+## Nevada specification follow-up
+
+The SOS main notary page remained inaccessible in full. Its indexed search passage was excluded as numerical-specification evidence. Nevada’s passing field is null, and its public sources and questions use the opened official LMS, NRS and NAC pages. No Nevada question depends on the unconfirmed passing number.

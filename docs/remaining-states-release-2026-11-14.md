@@ -9,8 +9,8 @@
 - [x] Integrate all seventeen reviewed free banks with at least ten questions each, a home, application/study guide, wrong answers, sources and official next steps.
 - [x] Hide unready modes and purchasing through pack feature configuration. Preserve existing-state Pro and learning behavior.
 - [x] Verify existing regressions, state isolation, guest sign-in/retry, one-click Start, loading/empty/error UI, mobile and desktop, SEO and production build.
-- [ ] Validate every state in preview, then open only accepted states, synchronize latest main and publish through its existing Vercel connection.
-- [ ] Check production deployment SHA/status/alias, all seventeen directory entries and full Quick 10 submissions, sitemap and existing-state paths. Record exact remaining gaps.
+- [x] Validate every state in preview, then open only accepted states, synchronize latest main and publish through its existing Vercel connection.
+- [x] Check production deployment SHA/status/alias, all seventeen directory entries and full Quick 10 submissions, sitemap and existing-state paths. Record exact remaining gaps.
 
 ## Release scope
 
@@ -33,3 +33,21 @@ The source registry covers 170 original questions, ten per state, with answer fe
 Regression commands passed for questions, quiz, sittings, auth, commerce, Paddle and AI, plus guest import/storage, account reads, dashboard sync, NY entry/progress, guide parity, legacy/guest full restoration, shared state integration, Indiana handlers/results/Pro usage, user-lock races and PostgreSQL batching/rollback. The original three-state recommendation expectations are retained as explicit fixtures while live activation is checked against the expanded catalog. Existing full-practice acceptance excludes unready free launches and uses Indiana's dedicated signed-sitting suites for Indiana.
 
 Independent final code review found no remaining P1/P2 in the reviewed changes. Production acceptance follows the ordinary main push and is recorded below after formal-domain checks finish.
+
+## Initial formal-domain release
+
+Code commit `7b37c21e33a61aef46522dba5236737a6151e558` was ordinarily pushed from the isolated release branch to the freshly synchronized main. Deployment `dpl_7dtVpH1MPTv2apwbFzSYmnhkrmKa` was verified READY with the matching SHA and `arizonanotaryprep.com` alias at 2026-11-14T07:08:55Z.
+
+Formal-domain acceptance checked all seventeen directory entries, 119 public state pages, current canonical/robots tags, sitemap entries, thirteen existing public paths and private preview isolation. All 34 browser cases passed across the seventeen states at 1440px and 390px. Every case completed Quick 10 with 7/10, result refresh, its official next step, one-click state switching and guest sign-in import. Server answer totals stayed stable after refresh and each sitting had one history row. Browser runtime errors were zero. The retained result is `.tools/state17-production-code/result.json`.
+
+The sampled production runtime-error/fatal and HTTP5xx queries both returned zero records for the ten-minute windows ending at 2026-11-14T07:22:25Z and 07:22:27Z, with no excluded intervals. Evidence is `.tools/all-state-production-log-summary.json`.
+
+## Registration and source-specification follow-up
+
+The shared baseline lost next when moving from sign-in to registration and always returned a successful email verification to Dashboard. A failing real-handler regression reproduced that behavior. The follow-up keeps the validated local state/sitting path in the existing auth flow, carries it across email tabs using a one-day SameSite cookie, retains it on session-issuance fallback and preserves the default dashboard when no return was supplied. Ordinary login/register entries clear abandoned return cookies. Existing verification tokens, password handling, device sessions and account ownership checks remain in their original paths.
+
+Four isolated real-browser cases passed for AR/CA at 1440px/390px. Each guest completed ten questions, registered with the real form, opened its simulated email verification in a second tab, returned to the same notebook sitting and retained 0/10 and ten wrong answers after refresh without duplicate history or counts. The suite also verifies abandoned-return cleanup. Six additional browser cases check login/register/verification links and default-path cleanup across AR/CO/CA and both widths. Actual email delivery is outside these simulated-mail checks.
+
+The server auth-return regression, auth initialization and auth/account suite passed. Independent follow-up review found no remaining P1/P2. The final source check removes Nevada's numerical passing threshold because the full official page could not be opened. Its course/exam process and ten questions use the retrieved official LMS and legislative sources. The public numerical specification stays null.
+
+The combined follow-up's optimized production configuration build passed. Final preview `https://arizona-dz0ye9k1f-sharkkk.vercel.app`, deployment `dpl_3u5jCFcyC8oyXyMLJRMBNR74Y2CH`, was verified READY. Six real-preview auth-link cases and Nevada's two complete Quick 10 cases passed after it was ready. Evidence is `.tools/state17-final-patch-preview-auth-links.json`, `.tools/state17-final-patch-preview/result.json`, `.tools/state17-register-browser.json` and `.tools/state17-final-build.log`.
