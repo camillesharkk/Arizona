@@ -93,3 +93,5 @@ Use `freeStateFeatures` to keep complete-learning readiness independent of accep
 - Shared analytics resolve the current path before the saved state cookie. Verify one product-view event per destination and one sitting event per action in GA4 and PostHog, using the existing internal-acceptance marker for QA traffic.
 
 Both state releases reuse the existing production schema. A state addition alone needs no production migration.
+
+RI/TX purchase acceptance uses the existing account-wide 60-day product. The current sandbox API credential returned authenticated 403 on November 14, 2026. Repair the existing test configuration and rerun provider checkout/callback acceptance before activating these purchase entries. The added signed webhook contract uses a mocked Transactions API, real SDK signature verification and actual in-memory entitlement grants. Treat its successful 60-day ALL and duplicate-callback checks as isolated contract evidence.
