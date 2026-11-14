@@ -14,6 +14,7 @@ import { publishedHiQuestions } from "@/data/hi-questions";
 import { hiStudyLabel } from "@/lib/hi-topics";
 import { syncCaAttempts } from "@/lib/ca-sync";
 import { paths } from "@/lib/paths";
+import { isFreeState } from "@/lib/free-state-catalog";
 import { packFor } from "@/lib/prep-pack";
 import type { Question, StateCode } from "@/lib/types";
 
@@ -51,7 +52,7 @@ type View = {
 export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }) {
   const pack = packFor(stateCode);
   const site = pack ? pack.paths : stateCode === "HI" ? hiPaths : stateCode === "CA" ? caPaths : paths;
-  const [indianaQuestions, setIndianaQuestions] = useState<Question[] | null>(null);
+  const [authorizedQuestions, setAuthorizedQuestions] = useState<Question[] | null>(null);
   const [view, setView] = useState<View | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -91,7 +92,14 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         return;
       }
       if (stateCode !== "AZ" && data.state !== stateCode) throw new Error("state");
-      if (stateCode === "IN") { const response = await fetch("/api/indiana/questions/", { cache: "no-store" }); if (!response.ok) throw new Error("questions"); const bank = await response.json(); if (id !== loadId.current) return; setIndianaQuestions(bank.questions); }
+      if (stateCode === "IN" || isFreeState(stateCode)) {
+        const url = stateCode === "IN" ? "/api/indiana/questions/" : `/api/state/questions/?state=${stateCode}`;
+        const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(30000) });
+        if (!response.ok) throw new Error("questions");
+        const bank = await response.json();
+        if (id !== loadId.current) return;
+        setAuthorizedQuestions(bank.questions);
+      }
       setView(data);
     } catch {
       if (id === loadId.current) setLoadError(true);
@@ -153,7 +161,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
   const reviewCards = view.reviewCards.filter((card) => pending("review-card").has(`card:${card.id}`));
   const practiceCard = practiceCards[Math.min(practiceIndex, Math.max(practiceCards.length - 1, 0))];
   const reviewCard = reviewCards[Math.min(reviewIndex, Math.max(reviewCards.length - 1, 0))];
-  const bank = stateCode === "IN" && indianaQuestions ? indianaQuestions : pack ? pack.questions() : stateCode === "HI" ? publishedHiQuestions() : stateCode === "CA" ? publishedCaQuestions() : publishedQuestions();
+  const bank = authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : stateCode === "HI" ? publishedHiQuestions() : stateCode === "CA" ? publishedCaQuestions() : publishedQuestions();
   const practiceQuestions = bank.filter((question) => pending("new-question").has(`question:${question.question_id}`));
   const reviewQuestions = bank.filter((question) => pending("review-question").has(`question:${question.question_id}`));
   const entitlement = view.entitlementExpiresAt ? view.entitlementExpiresAt.slice(0, 10) : null;
@@ -238,12 +246,12 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         </section>
         {practiceQuestions.length ? (
           <div className="daily-practice-quiz">
-            <ExamRunner mode="practice" practice isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN") && view?.freeOnly === false} preset={practiceQuestions} onRecorded={load} sittingMode={stateCode === "CT" ? `daily-practice-${view?.today}` : "daily-practice"} stateCode={stateCode} />
+            <ExamRunner mode="practice" practice isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view?.freeOnly === false} preset={practiceQuestions} onRecorded={load} sittingMode={stateCode === "CT" || isFreeState(stateCode) ? `daily-practice-${view?.today}` : "daily-practice"} stateCode={stateCode} />
           </div>
         ) : null}
         {reviewQuestions.length ? (
           <div className="daily-review-quiz">
-            <ExamRunner mode="weak" practice review isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN") && view?.freeOnly === false} preset={reviewQuestions} onRecorded={load} sittingMode={stateCode === "CT" ? `daily-review-${view?.today}` : "daily-review"} stateCode={stateCode} />
+            <ExamRunner mode="weak" practice review isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view?.freeOnly === false} preset={reviewQuestions} onRecorded={load} sittingMode={stateCode === "CT" || isFreeState(stateCode) ? `daily-review-${view?.today}` : "daily-review"} stateCode={stateCode} />
           </div>
         ) : null}
       </div>

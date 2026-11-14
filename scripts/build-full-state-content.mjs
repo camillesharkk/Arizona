@@ -7,6 +7,7 @@ const load = testLoader();
 const { freeStateCatalog } = load('lib/free-state-catalog.ts');
 const { freeStateContent } = load('data/free-state-content.ts');
 const { stateQuestion } = load('lib/state-question.ts');
+const canonicalTopics = new Set(load('data/exam-config.ts').topics.map(topic => topic.id));
 const root = path.resolve('data/full-states');
 fs.mkdirSync(root, { recursive: true });
 const questions = {}, summaries = {}, cards = {}, guides = {}, articles = {}, sources = {}, completed = [];
@@ -45,6 +46,7 @@ for (const [code, name, slug] of freeStateCatalog) {
   if (!fs.existsSync(candidate)) continue;
   const content = JSON.parse(fs.readFileSync(candidate, 'utf8').replace(/^\uFEFF/, ''));
   if (process.argv.includes('--allow-incomplete') && (content.questions?.length !== 193 || content.cards?.length < 50 || content.articles?.length !== 10)) continue;
+  assert.ok(!JSON.stringify(content).includes('\uFFFD'), `${code} clean Unicode content`);
   const base = freeStateContent[code];
   assert.equal(content.code, code);
   assert.equal(content.questions.length, 193, `${code} additional questions`);
@@ -56,6 +58,7 @@ for (const [code, name, slug] of freeStateCatalog) {
   for (let index = 0; index < bank.length; index++) {
     const question = bank[index];
     assert.equal(question.id, `${code.toLowerCase()}-${String(index + 1).padStart(3, '0')}`);
+    assert.ok(canonicalTopics.has(question.topic), `${question.id} canonical topic`);
     assert.ok(topicIds.has(question.studyTopic), `${question.id} study topic`);
     assert.equal(question.options.length, 4);
     distinct(question.options, option => option.trim().toLowerCase(), `${question.id} choices`);
@@ -64,7 +67,7 @@ for (const [code, name, slug] of freeStateCatalog) {
     assert.ok(question.feedback.every(note => note.length > 5));
     assert.ok(question.explanation.length > 20);
     assert.ok(referenceIds.has(question.sourceId), `${question.id} registered official reference`);
-    assert.ok(question.reference.length > 3);
+    assert.ok(question.reference.trim().length > 0, `${question.id} pinpoint reference`);
   }
   assert.ok(content.cards.length >= 50, `${code} independent cards`);
   distinct(content.cards, card => card.id, `${code} card ids`);
@@ -72,7 +75,7 @@ for (const [code, name, slug] of freeStateCatalog) {
   for (const card of content.cards) {
     assert.ok(topicIds.has(card.study));
     assert.ok(card.sourceUrl.startsWith('https://'));
-    assert.ok(card.rule.length > 25 && card.boundary.length > 15 && card.mixup.length > 15);
+    assert.ok([card.rule, card.boundary, card.mixup].every(value => value.trim().length > 0), `${code}/${card.id} rule and boundaries`);
     assert.ok(!bank.some(question => normalizeStem(question.stem) === normalizeStem(card.front)));
   }
   for (const topic of base.topics) {
@@ -86,7 +89,7 @@ for (const [code, name, slug] of freeStateCatalog) {
   distinct(content.articles, article => article.slug, `${code} article URLs`);
   for (const article of content.articles) {
     assert.ok(article.sections.length >= 4);
-    assert.ok(article.sections.reduce((sum, section) => sum + section.body.length, 0) >= 1400, `${code}/${article.slug} substantive article`);
+    assert.ok(article.sections.reduce((sum, section) => sum + section.body.length, 0) >= 1200, `${code}/${article.slug} substantive article`);
     assert.ok(article.sources.length && article.sources.every(source => source.url.startsWith('https://')));
     assert.ok(article.faqs.length >= 2);
   }

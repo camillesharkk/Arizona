@@ -56,6 +56,969 @@ export const fullStateSources: Record<string, Source> = {
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
   },
+  "co-rules": {
+    "source_id": "co-rules",
+    "source_type": "SOS",
+    "title": "Colorado Notary Program Rules, 8 CCR 1505-11",
+    "reference": "Rules 1.9 and 2.1",
+    "url": "https://www.sos.state.co.us/pubs/rule_making/CurrentRules/8CCR1505-11Notary.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "co-apply": {
+    "source_id": "co-apply",
+    "source_type": "SOS",
+    "title": "Colorado applying and renewing FAQs",
+    "reference": "Q1–Q8",
+    "url": "https://www.coloradosos.gov/pubs/notary/FAQ/apply.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "co-training": {
+    "source_id": "co-training",
+    "source_type": "SOS",
+    "title": "Colorado Notary Public Training",
+    "reference": "State eLearning and approved vendors",
+    "url": "https://www.coloradosos.gov/pubs/notary/notaryTraining.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "co-duties": {
+    "source_id": "co-duties",
+    "source_type": "SOS",
+    "title": "Colorado powers and duties FAQs",
+    "reference": "Q3–Q7",
+    "url": "https://www.coloradosos.gov/pubs/notary/FAQ/duties.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "co-seals": {
+    "source_id": "co-seals",
+    "source_type": "SOS",
+    "title": "Colorado official stamps and journals FAQs",
+    "reference": "Q4 and Q7–Q8",
+    "url": "https://www.coloradosos.gov/pubs/notary/FAQ/seals.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "co-fees": {
+    "source_id": "co-fees",
+    "source_type": "SOS",
+    "title": "Colorado fees FAQs",
+    "reference": "Q1–Q4",
+    "url": "https://www.coloradosos.gov/pubs/notary/FAQ/fees.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "co-remote": {
+    "source_id": "co-remote",
+    "source_type": "SOS",
+    "title": "Colorado remote notarization FAQs",
+    "reference": "Q1–Q7",
+    "url": "https://www.coloradosos.gov/pubs/notary/FAQ/remote.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "co-interpreters": {
+    "source_id": "co-interpreters",
+    "source_type": "SOS",
+    "title": "Colorado Secretary of State interpreter FAQs",
+    "reference": "Q1–Q10, qualifications, interests, appearance and records",
+    "url": "https://www.coloradosos.gov/pubs/notary/FAQ/interpreters.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "co-mistakes": {
+    "source_id": "co-mistakes",
+    "source_type": "SOS",
+    "title": "Colorado Secretary of State common mistakes FAQs",
+    "reference": "Certificate accuracy and official identity",
+    "url": "https://www.coloradosos.gov/pubs/notary/FAQ/commonMistakes.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "co-admonishments": {
+    "source_id": "co-admonishments",
+    "source_type": "SOS",
+    "title": "Colorado Secretary of State admonishment FAQs",
+    "reference": "Correction and review after warnings",
+    "url": "https://www.coloradosos.gov/pubs/notary/FAQ/admonishments.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "il-rules": {
+    "source_id": "il-rules",
+    "source_type": "SOS",
+    "title": "Illinois Register, June 16, 2023, adopted Part 176 rules",
+    "reference": "14 Ill. Adm. Code Part 176, adopted at 47 Ill. Reg. 8640, effective June 5, 2023, especially §§176.110,176.130,176.205–176.235,176.300–176.350,176.500–176.610,176.700–176.960",
+    "url": "https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "il-2025": {
+    "source_id": "il-2025",
+    "source_type": "SOS",
+    "title": "Illinois Register, January 10, 2025, adopted notary amendments",
+    "reference": "14 Ill. Adm. Code Part 176 amendments, 49 Ill. Reg. 584, effective January 1, 2025, especially §§176.205(e),176.900(f)–(h), printed pp.594,607–609",
+    "url": "https://www.ilsos.gov/content/dam/departments/index/register/volume49/register_volume49_2.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "il-apply": {
+    "source_id": "il-apply",
+    "source_type": "SOS",
+    "title": "Illinois online notary application instructions",
+    "reference": "Resident/nonresident filing, certificates and renewal",
+    "url": "https://www.ilsos.gov/departments/index/notary/online-notary.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "il-services": {
+    "source_id": "il-services",
+    "source_type": "SOS",
+    "title": "Illinois Secretary of State notary services",
+    "reference": "Bond, activation and expiration",
+    "url": "https://www.ilsos.gov/departments/index/notary.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "il-handbook": {
+    "source_id": "il-handbook",
+    "source_type": "SOS",
+    "title": "Illinois Notary Public Handbook",
+    "reference": "5 ILCS 312, §§3-107, 6-102, 6-104 and FAQ",
+    "url": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-exam": {
+    "source_id": "me-exam",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1923",
+    "reference": "Examination and course of study",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1923.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-commission": {
+    "source_id": "me-commission",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1922",
+    "reference": "Qualifications, oath and seven-year term",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1922.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-apply": {
+    "source_id": "me-apply",
+    "source_type": "SOS",
+    "title": "Maine Secretary of State application and renewal instructions",
+    "reference": "New applications and renewal documents",
+    "url": "https://mobile.maine.gov/sos/corporations-commissions/commissions/apply-renew-a-notary",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-renew": {
+    "source_id": "me-renew",
+    "source_type": "SOS",
+    "title": "Maine Secretary of State notary resources",
+    "reference": "Renewal examination and eligibility window",
+    "url": "https://mobile.maine.gov/sos/corporations-commissions/commissions/notaries-public-and-dedimus-justice/notary-public-resources",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-faq": {
+    "source_id": "me-faq",
+    "source_type": "SOS",
+    "title": "Maine Secretary of State notary FAQs",
+    "reference": "Questions 5–6, 13–19, 23–24",
+    "url": "https://www.maine.gov/sos/cec/notary/faqnp.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-conflicts": {
+    "source_id": "me-conflicts",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1904",
+    "reference": "Conflicts, corporate acts and petition circulators",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1904.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-id": {
+    "source_id": "me-id",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1907",
+    "reference": "Identity evidence",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1907.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-acts": {
+    "source_id": "me-acts",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1905",
+    "reference": "Requirements for acts",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1905.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-journal": {
+    "source_id": "me-journal",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1920",
+    "reference": "Journal scope and retention",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1920.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-course": {
+    "source_id": "me-course",
+    "source_type": "SOS",
+    "title": "Maine Secretary of State Notary Public Course of Study",
+    "reference": "Official 40-page course, especially slides 9–18 and 20–38",
+    "url": "https://mobile.maine.gov/sos/sites/maine.gov.sos/files/content/assets/courseofstudy.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-remote": {
+    "source_id": "me-remote",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1915",
+    "reference": "Remote identity, tangible records, recording and excluded acts",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1915.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-certificate": {
+    "source_id": "me-certificate",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1916",
+    "reference": "Certificate content, execution and attachment",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1916.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-stamp": {
+    "source_id": "me-stamp",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1918",
+    "reference": "Official stamp information and reproducibility",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1918.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-device": {
+    "source_id": "me-device",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1919",
+    "reference": "Stamp security, loss and disabling",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1919.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-refusal": {
+    "source_id": "me-refusal",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1908",
+    "reference": "Capacity, voluntariness and refusal",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1908.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-directed": {
+    "source_id": "me-directed",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1909",
+    "reference": "Directed signature on physical inability",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1909.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-officers": {
+    "source_id": "me-officers",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1910",
+    "reference": "Notarial officers authorized in Maine",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1910.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-prohibited": {
+    "source_id": "me-prohibited",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1926",
+    "reference": "Legal-practice limits, advertising and original records",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1926.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-technology": {
+    "source_id": "me-technology",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title 4 §1921",
+    "reference": "Technology selection, state approval and recording tangible copies",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1921.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "me-validity": {
+    "source_id": "me-validity",
+    "source_type": "SOS",
+    "title": "Maine Revised Statutes, Title4 §1927",
+    "reference": "Validity limits, unauthorized officers and petition rejection",
+    "url": "https://legislature.maine.gov/statutes/4/title4sec1927.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-eligibility": {
+    "source_id": "md-eligibility",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-102",
+    "reference": "Initial course/exam and renewal course",
+    "url": "https://mgaleg.maryland.gov/2026RS/Statute_Web/gsg/18-102.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-new": {
+    "source_id": "md-new",
+    "source_type": "SOS",
+    "title": "Maryland Secretary of State new-applicant instructions",
+    "reference": "Course, certificates and application",
+    "url": "https://sos.maryland.gov/Notary/Pages/NewApplicant.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-renew": {
+    "source_id": "md-renew",
+    "source_type": "SOS",
+    "title": "Maryland Secretary of State renewal instructions",
+    "reference": "Course certificate and Circuit Court oath",
+    "url": "https://sos.maryland.gov/Notary/Pages/RenewalApplicant.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-providers": {
+    "source_id": "md-providers",
+    "source_type": "SOS",
+    "title": "Authorized course and examination providers",
+    "reference": "Authorized Maryland-specific courses",
+    "url": "https://sos.maryland.gov/Documents/NotaryCourseofStudyandExaminationProviders.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-faq": {
+    "source_id": "md-faq",
+    "source_type": "SOS",
+    "title": "Maryland Secretary of State notary FAQs",
+    "reference": "Application, oath, county and stamping-device guidance",
+    "url": "https://sos.maryland.gov/notary/pages/faq.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-conflicts": {
+    "source_id": "md-conflicts",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-203",
+    "reference": "Conflict of interest",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-203&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-id": {
+    "source_id": "md-id",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-206",
+    "reference": "Evidence of identity",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-206&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-journal": {
+    "source_id": "md-journal",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-219",
+    "reference": "Journal and retention",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-219&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-fees": {
+    "source_id": "md-fees",
+    "source_type": "SOS",
+    "title": "Maryland Secretary of State Notary Division",
+    "reference": "Fee limits effective January 22, 2024",
+    "url": "https://sos.maryland.gov/Notary/Pages/default.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-remote": {
+    "source_id": "md-remote",
+    "source_type": "SOS",
+    "title": "Maryland Secretary of State remote-notary instructions",
+    "reference": "Online notification and authorization",
+    "url": "https://sos.maryland.gov/Notary/Pages/RemoteNotaryInfo.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-acts": {
+    "source_id": "md-acts",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-204",
+    "reference": "Act requirements and printing electronic records",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-204&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-certificate": {
+    "source_id": "md-certificate",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-215",
+    "reference": "Certificate content, timing and association",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-215&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-stamp": {
+    "source_id": "md-stamp",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-217",
+    "reference": "Official stamp content",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-217&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-refusal": {
+    "source_id": "md-refusal",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-207",
+    "reference": "Capacity and voluntary execution",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-207&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-directed": {
+    "source_id": "md-directed",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-208",
+    "reference": "Directed signatures and concurrent appearance",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-208&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-remote-law": {
+    "source_id": "md-remote-law",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-214",
+    "reference": "Remote procedures and records",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-214&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-electronic": {
+    "source_id": "md-electronic",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-220",
+    "reference": "Technology choice and tangible copy recording",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-220&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-validity": {
+    "source_id": "md-validity",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-221",
+    "reference": "Validity and unauthorized acts",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-221&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-reg-02": {
+    "source_id": "md-reg-02",
+    "source_type": "SOS",
+    "title": "COMAR 01.02.08.02 Charges and Fees",
+    "reference": "Regulation .02",
+    "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.02",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-reg-04": {
+    "source_id": "md-reg-04",
+    "source_type": "SOS",
+    "title": "COMAR 01.02.08.04 Remote Vendor Qualifications",
+    "reference": "Regulation .04",
+    "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.04",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-reg-05": {
+    "source_id": "md-reg-05",
+    "source_type": "SOS",
+    "title": "COMAR 01.02.08.05 Remote Vendor Responsibilities",
+    "reference": "Regulation .05",
+    "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.05",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-reg-07": {
+    "source_id": "md-reg-07",
+    "source_type": "SOS",
+    "title": "COMAR 01.02.08.07 Remote Notary Obligations",
+    "reference": "Regulation .07",
+    "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.07",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-reg-08": {
+    "source_id": "md-reg-08",
+    "source_type": "SOS",
+    "title": "COMAR 01.02.08.08 Notary Responsibilities",
+    "reference": "Regulation .08",
+    "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.08",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-reg-09": {
+    "source_id": "md-reg-09",
+    "source_type": "SOS",
+    "title": "COMAR 01.02.08.09 Commission Information Changes",
+    "reference": "Regulation .09",
+    "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.09",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-reg-10": {
+    "source_id": "md-reg-10",
+    "source_type": "SOS",
+    "title": "COMAR 01.02.08.10 Electronic Mail",
+    "reference": "Regulation .10",
+    "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.10",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-reg-11": {
+    "source_id": "md-reg-11",
+    "source_type": "SOS",
+    "title": "COMAR 01.02.08.11 Enforcement",
+    "reference": "Regulation .11",
+    "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.11",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-reg-15": {
+    "source_id": "md-reg-15",
+    "source_type": "SOS",
+    "title": "COMAR 01.02.08.15 Course Provider Responsibilities",
+    "reference": "Regulation .15",
+    "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.15",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-reg-16": {
+    "source_id": "md-reg-16",
+    "source_type": "SOS",
+    "title": "COMAR 01.02.08.16 Course and Examination Standards",
+    "reference": "Regulation .16",
+    "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.16",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-term": {
+    "source_id": "md-term",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-103",
+    "reference": "Appointment, four-year term and court qualification",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-103&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-device": {
+    "source_id": "md-device",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-218",
+    "reference": "Stamping-device security and disabling",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-218&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-definitions": {
+    "source_id": "md-definitions",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-201",
+    "reference": "Notarial act definitions",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-201&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-appearance": {
+    "source_id": "md-appearance",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-205",
+    "reference": "Personal appearance",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-205&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-forms": {
+    "source_id": "md-forms",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-216",
+    "reference": "Short-form certificates",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-216&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-discipline": {
+    "source_id": "md-discipline",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-104",
+    "reference": "Grounds and process for commission discipline",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-104&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "md-officers": {
+    "source_id": "md-officers",
+    "source_type": "SOS",
+    "title": "Maryland State Government §18-209",
+    "reference": "Authorized officers and judicial fee limitation",
+    "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-209&enactments=false",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-start": {
+    "source_id": "mo-start",
+    "source_type": "SOS",
+    "title": "Missouri Secretary of State, How to Become a Notary",
+    "reference": "Six commissioning steps",
+    "url": "https://s1.sos.mo.gov/business/notary/newnotary",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-exam": {
+    "source_id": "mo-exam",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.630",
+    "reference": "Examination and application requirements",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.630",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-written": {
+    "source_id": "mo-written",
+    "source_type": "SOS",
+    "title": "Secretary of State Written Notary Training Course, Form Comm. 59",
+    "reference": "January 2025 written alternative",
+    "url": "https://www.sos.mo.gov/CMSImages/Business/Notary/WrittenNotaryTrainingCourse_Comm59.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-faq": {
+    "source_id": "mo-faq",
+    "source_type": "SOS",
+    "title": "Missouri Secretary of State notary FAQs",
+    "reference": "Qualification, bond, journal and reappointment",
+    "url": "https://s1.sos.mo.gov/business/notary/notary_faq",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-renew": {
+    "source_id": "mo-renew",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.625",
+    "reference": "Current/former notaries comply anew",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.625",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-eligibility": {
+    "source_id": "mo-eligibility",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.605",
+    "reference": "Qualifications and nonresident applicants",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.605",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-acts": {
+    "source_id": "mo-acts",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.645",
+    "reference": "Principal requirements, conflicts and signature by mark",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.645",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-fees": {
+    "source_id": "mo-fees",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.685",
+    "reference": "Ordinary fees, travel and absentee ballots",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.685",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-exam": {
+    "source_id": "mo-remote-exam",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1125",
+    "reference": "Additional RON course and examination",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1125",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-location": {
+    "source_id": "mo-remote-location",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1155",
+    "reference": "Remote notary physically in Missouri",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1155",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-electronic": {
+    "source_id": "mo-electronic",
+    "source_type": "SOS",
+    "title": "Missouri Secretary of State electronic notary instructions",
+    "reference": "Registration, training and approved software",
+    "url": "https://s1.sos.mo.gov/Business/Notary/ElectronicNotaryInfo",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-definitions": {
+    "source_id": "mo-definitions",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.600",
+    "reference": "Identity,act definitions and copy eligibility",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.600",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-qualify": {
+    "source_id": "mo-qualify",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.620",
+    "reference": "County oath,bond return and commissioned status",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.620",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-inspection": {
+    "source_id": "mo-inspection",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.710",
+    "reference": "Journal inspection and copies",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.710",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-journal-security": {
+    "source_id": "mo-journal-security",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.715",
+    "reference": "Journal security,loss and disposition",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.715",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-seal": {
+    "source_id": "mo-seal",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.725",
+    "reference": "Seal security and disposal",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.725",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-refusal": {
+    "source_id": "mo-refusal",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.650",
+    "reference": "Refusal,impartial service and scheduling",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.650",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-prohibited": {
+    "source_id": "mo-prohibited",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.660",
+    "reference": "False,incomplete and detached certificates",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.660",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-exit": {
+    "source_id": "mo-exit",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.795",
+    "reference": "Cessation and pending recommission record disposition",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.795",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-death": {
+    "source_id": "mo-death",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.800",
+    "reference": "Personal representative duties",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.800",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-registration": {
+    "source_id": "mo-remote-registration",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1130",
+    "reference": "Remote registration and truthfulness",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1130",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-id": {
+    "source_id": "mo-remote-id",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1145",
+    "reference": "Remote identity evidence",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1145",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-principal": {
+    "source_id": "mo-remote-principal",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1150",
+    "reference": "Remote principal conditions",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1150",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-fee": {
+    "source_id": "mo-remote-fee",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1160",
+    "reference": "Separate agreed remote transaction fee",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1160",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-certificate": {
+    "source_id": "mo-remote-certificate",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1165",
+    "reference": "Remote certificate and seal requirements",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1165",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-forms": {
+    "source_id": "mo-remote-forms",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1175",
+    "reference": "Remote jurat and acknowledgment forms",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1175",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-signature": {
+    "source_id": "mo-remote-signature",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1170",
+    "reference": "Registered signature/seal and employer limits",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1170",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-journals": {
+    "source_id": "mo-remote-journals",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1180",
+    "reference": "Electronic and bound journals",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1180",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-journal-security": {
+    "source_id": "mo-remote-journal-security",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1190",
+    "reference": "Electronic-journal authentication,backup and retention",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1190",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-recording": {
+    "source_id": "mo-remote-recording",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1195",
+    "reference": "Recording retention and custodians",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1195",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-security": {
+    "source_id": "mo-remote-security",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1200",
+    "reference": "Exclusive electronic control and tamper evidence",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1200",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-electronic-fees": {
+    "source_id": "mo-electronic-fees",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.960",
+    "reference": "Electronic fees and schedule",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.960",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-remote-journal-fields": {
+    "source_id": "mo-remote-journal-fields",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.1185",
+    "reference": "Remote electronic-journal fields and prohibited numbers",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1185",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-certificate": {
+    "source_id": "mo-certificate",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.740",
+    "reference": "Required certificate facts and language",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.740",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-paper-correction": {
+    "source_id": "mo-paper-correction",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.745",
+    "reference": "Attachment placement and certificate corrections",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.745",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-prepaid": {
+    "source_id": "mo-prepaid",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.690",
+    "reference": "Advance payment and specified nonrefundability",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.690",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "mo-employer-fees": {
+    "source_id": "mo-employer-fees",
+    "source_type": "SOS",
+    "title": "Missouri Revised Statutes §486.695",
+    "reference": "Employee fee rules",
+    "url": "https://revisor.mo.gov/main/OneSection.aspx?section=486.695",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
   "mt-mca-603": {
     "source_id": "mt-mca-603",
     "source_type": "SOS",
@@ -200,6 +1163,573 @@ export const fullStateSources: Record<string, Source> = {
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
   },
+  "ne-stat-64-101": {
+    "source_id": "ne-stat-64-101",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-101",
+    "reference": "Neb. Rev. Stat. 64-101",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-101",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-101.01": {
+    "source_id": "ne-stat-64-101.01",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-101.01",
+    "reference": "Neb. Rev. Stat. 64-101.01",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-101.01",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-102": {
+    "source_id": "ne-stat-64-102",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-102",
+    "reference": "Neb. Rev. Stat. 64-102",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-102",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-104": {
+    "source_id": "ne-stat-64-104",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-104",
+    "reference": "Neb. Rev. Stat. 64-104",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-104",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-105": {
+    "source_id": "ne-stat-64-105",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-105",
+    "reference": "Neb. Rev. Stat. 64-105",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-105.01": {
+    "source_id": "ne-stat-64-105.01",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-105.01",
+    "reference": "Neb. Rev. Stat. 64-105.01",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105.01",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-105.02": {
+    "source_id": "ne-stat-64-105.02",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-105.02",
+    "reference": "Neb. Rev. Stat. 64-105.02",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105.02",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-105.03": {
+    "source_id": "ne-stat-64-105.03",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-105.03",
+    "reference": "Neb. Rev. Stat. 64-105.03",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105.03",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-105.04": {
+    "source_id": "ne-stat-64-105.04",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-105.04",
+    "reference": "Neb. Rev. Stat. 64-105.04",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105.04",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-107": {
+    "source_id": "ne-stat-64-107",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-107",
+    "reference": "Neb. Rev. Stat. 64-107",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-107",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-107.01": {
+    "source_id": "ne-stat-64-107.01",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-107.01",
+    "reference": "Neb. Rev. Stat. 64-107.01",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-107.01",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-112": {
+    "source_id": "ne-stat-64-112",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-112",
+    "reference": "Neb. Rev. Stat. 64-112",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-112",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-113": {
+    "source_id": "ne-stat-64-113",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-113",
+    "reference": "Neb. Rev. Stat. 64-113",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-113",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-114": {
+    "source_id": "ne-stat-64-114",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-114",
+    "reference": "Neb. Rev. Stat. 64-114",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-114",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-118": {
+    "source_id": "ne-stat-64-118",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-118",
+    "reference": "Neb. Rev. Stat. 64-118",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-118",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-203": {
+    "source_id": "ne-stat-64-203",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-203",
+    "reference": "Neb. Rev. Stat. 64-203",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-203",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-204": {
+    "source_id": "ne-stat-64-204",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-204",
+    "reference": "Neb. Rev. Stat. 64-204",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-204",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-205": {
+    "source_id": "ne-stat-64-205",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-205",
+    "reference": "Neb. Rev. Stat. 64-205",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-205",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-206": {
+    "source_id": "ne-stat-64-206",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-206",
+    "reference": "Neb. Rev. Stat. 64-206",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-206",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-210": {
+    "source_id": "ne-stat-64-210",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-210",
+    "reference": "Neb. Rev. Stat. 64-210",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-210",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-303": {
+    "source_id": "ne-stat-64-303",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-303",
+    "reference": "Neb. Rev. Stat. 64-303",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-303",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-304": {
+    "source_id": "ne-stat-64-304",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-304",
+    "reference": "Neb. Rev. Stat. 64-304",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-304",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-305": {
+    "source_id": "ne-stat-64-305",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-305",
+    "reference": "Neb. Rev. Stat. 64-305",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-305",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-308": {
+    "source_id": "ne-stat-64-308",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-308",
+    "reference": "Neb. Rev. Stat. 64-308",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-308",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-309": {
+    "source_id": "ne-stat-64-309",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-309",
+    "reference": "Neb. Rev. Stat. 64-309",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-309",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-403": {
+    "source_id": "ne-stat-64-403",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-403",
+    "reference": "Neb. Rev. Stat. 64-403",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-403",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-404": {
+    "source_id": "ne-stat-64-404",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-404",
+    "reference": "Neb. Rev. Stat. 64-404",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-404",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-406": {
+    "source_id": "ne-stat-64-406",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-406",
+    "reference": "Neb. Rev. Stat. 64-406",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-406",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-408": {
+    "source_id": "ne-stat-64-408",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-408",
+    "reference": "Neb. Rev. Stat. 64-408",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-408",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-409": {
+    "source_id": "ne-stat-64-409",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-409",
+    "reference": "Neb. Rev. Stat. 64-409",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-409",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-410": {
+    "source_id": "ne-stat-64-410",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-410",
+    "reference": "Neb. Rev. Stat. 64-410",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-410",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-411": {
+    "source_id": "ne-stat-64-411",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-411",
+    "reference": "Neb. Rev. Stat. 64-411",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-411",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-412": {
+    "source_id": "ne-stat-64-412",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-412",
+    "reference": "Neb. Rev. Stat. 64-412",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-412",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-413": {
+    "source_id": "ne-stat-64-413",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-413",
+    "reference": "Neb. Rev. Stat. 64-413",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-413",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-414": {
+    "source_id": "ne-stat-64-414",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-414",
+    "reference": "Neb. Rev. Stat. 64-414",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-414",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-418": {
+    "source_id": "ne-stat-64-418",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-418",
+    "reference": "Neb. Rev. Stat. 64-418",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-418",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-33-133": {
+    "source_id": "ne-stat-33-133",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 33-133",
+    "reference": "Neb. Rev. Stat. 33-133",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=33-133",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-update": {
+    "source_id": "ne-update",
+    "source_type": "SOS",
+    "title": "Nebraska SOS — Steps to Update your Notary Public Record",
+    "reference": "Name/signature, residency, copies, resignation and provider amendments",
+    "url": "https://sos.nebraska.gov/sites/default/files/doc/business-services/Notary/StepstoUpdateyourNotaryPublicRecord.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-402": {
+    "source_id": "ne-stat-64-402",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-402",
+    "reference": "Neb. Rev. Stat. 64-402",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-402",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-307": {
+    "source_id": "ne-stat-64-307",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-307",
+    "reference": "Neb. Rev. Stat. 64-307",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-307",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-315": {
+    "source_id": "ne-stat-64-315",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-315",
+    "reference": "Neb. Rev. Stat. 64-315",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-315",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ne-stat-64-417": {
+    "source_id": "ne-stat-64-417",
+    "source_type": "SOS",
+    "title": "Nebraska Legislature — 64-417",
+    "reference": "Neb. Rev. Stat. 64-417",
+    "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-417",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "nv-nrs-expanded": {
+    "source_id": "nv-nrs-expanded",
+    "source_type": "SOS",
+    "title": "Nevada Legislature — NRS Chapter 240, expanded substantive provisions",
+    "reference": "NRS 240.001–240.206, individual pin citations in content",
+    "url": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "nv-nac-expanded": {
+    "source_id": "nv-nac-expanded",
+    "source_type": "SOS",
+    "title": "Nevada Legislature — NAC Chapter 240, practice and electronic rules",
+    "reference": "NAC 240.200–240.730, individual pin citations in content",
+    "url": "https://www.leg.state.nv.us/NAC/NAC-240.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "nj-law-2021": {
+    "source_id": "nj-law-2021",
+    "source_type": "SOS",
+    "title": "New Jersey Legislature — P.L. 2021, c.179, corrected copy",
+    "reference": "New Jersey Law on Notarial Acts, sections individually pinned in content",
+    "url": "https://pub.njleg.gov/bills/2020/PL21/179_.PDF",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "nm-nmac3": {
+    "source_id": "nm-nmac3",
+    "source_type": "SOS",
+    "title": "New Mexico Commission of Public Records — 12.9.3 NMAC, Notarial Procedures",
+    "reference": "12.9.3 NMAC, amended June 16, 2023",
+    "url": "https://www.srca.nm.gov/parts/title12/12.009.0003.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "nm-nmac4": {
+    "source_id": "nm-nmac4",
+    "source_type": "SOS",
+    "title": "New Mexico Commission of Public Records — 12.9.4 NMAC, Remote Online Notarization Standards",
+    "reference": "12.9.4 NMAC, individual provisions pinned in content",
+    "url": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "nm-law2023": {
+    "source_id": "nm-law2023",
+    "source_type": "SOS",
+    "title": "New Mexico Legislature — 2023 SB246 final enacted text, Chapter 110",
+    "reference": "RULONA amendments, statutory sections pinned individually",
+    "url": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "nm-law2021": {
+    "source_id": "nm-law2021",
+    "source_type": "SOS",
+    "title": "New Mexico Legislature — 2021 SB12 final enacted RULONA text, Chapter 21",
+    "reference": "Original provisions read alongside 2023 amendments and current NMAC",
+    "url": "https://www.nmlegis.gov/Sessions/21%20Regular/final/SB0012.PDF",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "nm-ethics": {
+    "source_id": "nm-ethics",
+    "source_type": "SOS",
+    "title": "New Mexico State Ethics Commission — Notaries and RULONA",
+    "reference": "Adverse action authority and complaint route",
+    "url": "https://www.sec.nm.gov/notaries-rulona/",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-process": {
+    "source_id": "oh-process",
+    "source_type": "SOS",
+    "title": "Ohio SOS — Application Process",
+    "reference": "Initial application and additional RON requirements",
+    "url": "https://www.ohiosos.gov/notary/become-a-notary-in-ohio/application-process",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-education": {
+    "source_id": "oh-education",
+    "source_type": "SOS",
+    "title": "Ohio SOS — Education and Testing",
+    "reference": "Filing-type table and authorized providers",
+    "url": "https://www.ohiosos.gov/notary/become-a-notary-in-ohio/education-and-testing",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-qualifications": {
+    "source_id": "oh-qualifications",
+    "source_type": "SOS",
+    "title": "Ohio Revised Code — Chapter 147",
+    "reference": "147.01 — qualifications, exceptions, electronic filing and oath",
+    "url": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-prohibited": {
+    "source_id": "oh-prohibited",
+    "source_type": "SOS",
+    "title": "Ohio Revised Code — 147.141",
+    "reference": "Prohibited acts, effective April 3, 2025",
+    "url": "https://codes.ohio.gov/ohio-revised-code/section-147.141",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-ack": {
+    "source_id": "oh-ack",
+    "source_type": "SOS",
+    "title": "Ohio Revised Code — 147.53",
+    "reference": "Taking an acknowledgment, effective April 3, 2025",
+    "url": "https://codes.ohio.gov/ohio-revised-code/section-147.53",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-fees": {
+    "source_id": "oh-fees",
+    "source_type": "SOS",
+    "title": "Ohio Revised Code — 147.08",
+    "reference": "Current ordinary, online, travel and technology fee rules",
+    "url": "https://codes.ohio.gov/ohio-revised-code/section-147.08",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-term": {
+    "source_id": "oh-term",
+    "source_type": "SOS",
+    "title": "Ohio Revised Code — 147.03",
+    "reference": "Ordinary and attorney term rules",
+    "url": "https://codes.ohio.gov/ohio-revised-code/section-147.03",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-course-rules": {
+    "source_id": "oh-course-rules",
+    "source_type": "SOS",
+    "title": "Ohio Administrative Code — 111:6-1-02",
+    "reference": "Authorized course and testing requirements",
+    "url": "https://codes.ohio.gov/ohio-administrative-code/rule-111:6-1-02",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-code": {
+    "source_id": "oh-code",
+    "source_type": "SOS",
+    "title": "Ohio Revised Code Chapter 147, current consolidated text",
+    "reference": "Current chapter including April 3, 2025 amendments",
+    "url": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-rules": {
+    "source_id": "oh-rules",
+    "source_type": "SOS",
+    "title": "Ohio Administrative Code Chapter 111:6-1",
+    "reference": "Rules 01-06, including June 10, 2025 updates",
+    "url": "https://codes.ohio.gov/ohio-administrative-code/chapter-111:6-1",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-course-fees": {
+    "source_id": "oh-course-fees",
+    "source_type": "SOS",
+    "title": "Ohio Administrative Code Rule 111:6-1-03",
+    "reference": "Ordinary and online initial/renewal learning, fees and retakes",
+    "url": "https://codes.ohio.gov/ohio-administrative-code/chapter-111:6-1",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-ronrules": {
+    "source_id": "oh-ronrules",
+    "source_type": "SOS",
+    "title": "Ohio Administrative Code Rule 111:6-1-05",
+    "reference": "Current complete rule in chapter view, including June 10, 2025 identity and session rules",
+    "url": "https://codes.ohio.gov/ohio-administrative-code/chapter-111:6-1",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "oh-electronic": {
+    "source_id": "oh-electronic",
+    "source_type": "SOS",
+    "title": "Ohio Revised Code Section 147.591",
+    "reference": "Electronic documents and authenticator certificates",
+    "url": "https://codes.ohio.gov/ohio-revised-code/section-147.591",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
   "or-guide": {
     "source_id": "or-guide",
     "source_type": "SOS",
@@ -242,6 +1772,294 @@ export const fullStateSources: Record<string, Source> = {
     "title": "OAR 160-100-0855",
     "reference": "General Technology Requirements, subsections (1)–(7)",
     "url": "https://secure.sos.state.or.us/oard/viewSingleRule.action?ruleVrsnRsn=276573",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ut-code": {
+    "source_id": "ut-code",
+    "source_type": "SOS",
+    "title": "Utah Code, Title 46 Chapter 1",
+    "reference": "Current official consolidated chapter, including 2026 Chapter 56 journal and interference changes",
+    "url": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ut-process": {
+    "source_id": "ut-process",
+    "source_type": "SOS",
+    "title": "Utah Lieutenant Governor, Process and Qualifications",
+    "reference": "Qualifications; examination and payment; background review; bond; oath; upload; supplies",
+    "url": "https://notary.utah.gov/qualifications-and-process/",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ut-journal-2026": {
+    "source_id": "ut-journal-2026",
+    "source_type": "SOS",
+    "title": "Utah Lieutenant Governor, 2026 Notary Journal Supplement",
+    "reference": "Both pages, May 6, 2026 transition and required entries",
+    "url": "https://notary.utah.gov/wp-content/uploads/Notary-Journal-5-6.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ut-remote-process": {
+    "source_id": "ut-remote-process",
+    "source_type": "SOS",
+    "title": "Utah Lieutenant Governor, RON Application Process",
+    "reference": "Prerequisite, vendor, bond, seal sample, separate application and final confirmation",
+    "url": "https://notary.utah.gov/remote-online-notary-ron-application-process/",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "ut-faq": {
+    "source_id": "ut-faq",
+    "source_type": "SOS",
+    "title": "Utah Lieutenant Governor, FAQs",
+    "reference": "Fees; act distinctions; background review; updated journal guidance",
+    "url": "https://notary.utah.gov/faqs/",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-application": {
+    "source_id": "vt-application",
+    "source_type": "SOS",
+    "title": "Notary Public Application Instructions, February 2026",
+    "reference": "Apply by Registration",
+    "url": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_application_instructions.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-exam": {
+    "source_id": "vt-exam",
+    "source_type": "SOS",
+    "title": "Notaries Public Jurisprudence Examination #1, May 2026",
+    "reference": "Directions and Information; answer sheet",
+    "url": "https://outside.vermont.gov/dept/sos/office_professional_regulation/exams/notary_public_state_jurisprudence_exam.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-rules": {
+    "source_id": "vt-rules",
+    "source_type": "SOS",
+    "title": "Administrative Rules for Notaries Public, effective February 26, 2025",
+    "reference": "Parts 4-3, 4-4, 4-7 through 4-9, 6, 9-1",
+    "url": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-renewal": {
+    "source_id": "vt-renewal",
+    "source_type": "SOS",
+    "title": "Notary Renewal Instructions, February 2026",
+    "reference": "Steps to renew",
+    "url": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_renewal_instructions.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-5341": {
+    "source_id": "vt-5341",
+    "source_type": "SOS",
+    "title": "26 V.S.A. § 5341 — Commission and qualifications",
+    "reference": "Subsections (b)–(e)",
+    "url": "https://legislature.vermont.gov/statutes/section/26/103/05341",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-5364": {
+    "source_id": "vt-5364",
+    "source_type": "SOS",
+    "title": "26 V.S.A. § 5364 — Personal appearance",
+    "reference": "Subsection (a)",
+    "url": "https://legislature.vermont.gov/statutes/section/26/103/05364",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-5365": {
+    "source_id": "vt-5365",
+    "source_type": "SOS",
+    "title": "26 V.S.A. § 5365 — Identification",
+    "reference": "Subsection (b)",
+    "url": "https://legislature.vermont.gov/statutes/section/26/103/05365",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-5367": {
+    "source_id": "vt-5367",
+    "source_type": "SOS",
+    "title": "26 V.S.A. § 5367 — Certificate of notarial act",
+    "reference": "Subsections (a)–(b)",
+    "url": "https://legislature.vermont.gov/statutes/section/26/103/05367",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-5372": {
+    "source_id": "vt-5372",
+    "source_type": "SOS",
+    "title": "26 V.S.A. § 5372 — Authority to refuse",
+    "reference": "Subsection (a)",
+    "url": "https://legislature.vermont.gov/statutes/section/26/103/05372",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-5379": {
+    "source_id": "vt-5379",
+    "source_type": "SOS",
+    "title": "26 V.S.A. § 5379 — Remotely located individual",
+    "reference": "Subsections (a), (b), (k)",
+    "url": "https://legislature.vermont.gov/statutes/section/26/103/05379",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "vt-code": {
+    "source_id": "vt-code",
+    "source_type": "SOS",
+    "title": "Vermont Legislature, Title 26 Chapter 103 full text",
+    "reference": "Current served consolidated chapter, including 2026 session actions",
+    "url": "https://legislature.vermont.gov/statutes/fullchapter/26/103",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wi-file": {
+    "source_id": "wi-file",
+    "source_type": "SOS",
+    "title": "DFI Notary File Online",
+    "reference": "4-year Notary; Permanent Notary; November 16, 2026 system notice",
+    "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wi-intro": {
+    "source_id": "wi-intro",
+    "source_type": "SOS",
+    "title": "DFI Notary Public Tutorial — Introduction",
+    "reference": "Required examination, optional tutorial readings and renewals",
+    "url": "https://apps.dfi.wi.gov/apps/notarytutorialexam/Introduction.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wi-exam": {
+    "source_id": "wi-exam",
+    "source_type": "SOS",
+    "title": "DFI Final Exam Instruction Page",
+    "reference": "Instructions 1–5",
+    "url": "https://apps.dfi.wi.gov/apps/notarytutorialexam/FinalExamInstructions.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wi-ch1": {
+    "source_id": "wi-ch1",
+    "source_type": "SOS",
+    "title": "DFI Tutorial Chapter 1 — General Information",
+    "reference": "Four-year commissions; Attorneys; Bonding; Notary Seal; When and Where",
+    "url": "https://apps.dfi.wi.gov/apps/NotaryTutorialExam/Chapter1.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wi-ch5": {
+    "source_id": "wi-ch5",
+    "source_type": "SOS",
+    "title": "DFI Tutorial Chapter 5 — Maintenance",
+    "reference": "Changes; Lost or Stolen Notary Seal or Stamp",
+    "url": "https://apps.dfi.wi.gov/apps/notarytutorialexam/Chapter5.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wi-handbook": {
+    "source_id": "wi-handbook",
+    "source_type": "SOS",
+    "title": "Wisconsin Notary Public Handbook, revised September 2024",
+    "reference": "Notarial Acts, pp. 10–15",
+    "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wi-ron": {
+    "source_id": "wi-ron",
+    "source_type": "SOS",
+    "title": "DFI Guidance for Seeking Remote Online Notarial Services",
+    "reference": "State-approved communication technology and trained, authorized notaries",
+    "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/OnlineNotarialServicesGuidance.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wi-remote-guide": {
+    "source_id": "wi-remote-guide",
+    "source_type": "SOS",
+    "title": "Wisconsin DFI, Guidance for Notaries Seeking to Perform Notarial Acts for Remotely Located Individuals",
+    "reference": "March 22, 2024 served edition, all fourteen pages, Parts 1-3",
+    "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wi-authentication": {
+    "source_id": "wi-authentication",
+    "source_type": "SOS",
+    "title": "Wisconsin DFI Tutorial Chapter 6, Authentications and Apostilles",
+    "reference": "Authentications and Apostilles",
+    "url": "https://apps.dfi.wi.gov/apps/notarytutorialexam/Chapter6.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wy-home": {
+    "source_id": "wy-home",
+    "source_type": "SOS",
+    "title": "Wyoming Secretary of State — Notary Public",
+    "reference": "Official forms and approved education/examination alternatives",
+    "url": "https://sos.wyo.gov/Services/Notaries.aspx",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wy-application": {
+    "source_id": "wy-application",
+    "source_type": "SOS",
+    "title": "Notary Public Commission Application/Renewal, revised January 2026",
+    "reference": "Instructions; Parts III–IV",
+    "url": "https://sos.wyo.gov/Forms/NotariesPublic/WYNotaryApp.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wy-education": {
+    "source_id": "wy-education",
+    "source_type": "SOS",
+    "title": "Wyoming Notary Education Presentation",
+    "reference": "Notarial acts; Commission process; Education & Exam",
+    "url": "https://sos.wyo.gov/Services/Docs/Notary-Education-Presentation_effective-07.01.2021.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wy-code": {
+    "source_id": "wy-code",
+    "source_type": "SOS",
+    "title": "Wyoming Statutes Title 32 — Notaries Public",
+    "reference": "32-3-104; 32-3-118; 32-3-120 through 32-3-121; 32-3-126",
+    "url": "https://wyoleg.gov/statutes/compress/title32.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wy-rules": {
+    "source_id": "wy-rules",
+    "source_type": "SOS",
+    "title": "Wyoming Notary Rules, Chapter 6",
+    "reference": "Sections 2–5; effective December 2, 2021 to Current",
+    "url": "https://sos.wyo.gov/Services/Docs/Notary-Rules_current.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wy-stamp": {
+    "source_id": "wy-stamp",
+    "source_type": "SOS",
+    "title": "Notary Public Stamp/Seal Requirements",
+    "reference": "New stamp at renewal; prescribed contents",
+    "url": "https://sos.wyo.gov/Services/Docs/Stamp-Requirements-and-Sample.pdf",
+    "last_verified_at": "2026-11-14",
+    "last_checked_at": "2026-11-14"
+  },
+  "wy-name-change": {
+    "source_id": "wy-name-change",
+    "source_type": "SOS",
+    "title": "Wyoming Secretary of State, Name Change Form, January 2026",
+    "reference": "Instructions and official-signature field",
+    "url": "https://sos.wyo.gov/Forms/NotariesPublic/Notary-Name-Change-Form.pdf",
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
   }

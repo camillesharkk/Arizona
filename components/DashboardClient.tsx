@@ -12,6 +12,7 @@ import { LoadingNote } from "@/components/QuizChrome";
 import { useResolvedState, useSavedState } from "@/components/SavedState";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { caPaths } from "@/lib/ca-site";
+import { isFreeState } from '@/lib/free-state-catalog';
 import { packFor } from "@/lib/prep-pack";
 import { examState } from "@/lib/ca-daily-shape";
 import { hiPaths } from "@/lib/hi-site";
@@ -189,6 +190,12 @@ export function DashboardClient() {
   const activating = checkoutPhase === "activating" || checkoutPhase === "timeout";
   const isAzPro = Boolean(proForState(data, state ?? "AZ") || (state === "AZ" && data?.user?.plan === "pro") || checkoutPhase === "activated");
 
+  useEffect(() => {
+    if (!loaded || !data?.user || !isAzPro || !isFreeState(state) || packFor(state)?.freeLaunch) return;
+    void fetch('/api/billing/pro-usage/', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ featureCode: 'advanced_analytics', state }) }).catch(() => undefined);
+  }, [loaded, data?.user?.id, isAzPro, state]);
+
   if (!loaded || checkoutPhase === "boot") {
     return (
       <div className="loading-stage">
@@ -247,16 +254,17 @@ export function DashboardClient() {
   const answered = stats.reduce((n, s) => n + s.rightCount + s.wrongCount, 0);
   const right = stats.reduce((n, s) => n + s.rightCount, 0);
   const acc = answered ? Math.round((right / answered) * 100) : 0;
+  const fullState = isFreeState(state) && !packFor(state)?.freeLaunch;
   const byTopic = new Map<string, { r: number; w: number }>();
   stats.forEach((s) => {
-    const key = state === "IN" ? s.chapter || s.topic : s.topic;
+    const key = state === "IN" || fullState ? s.chapter || s.topic : s.topic;
     const cur = byTopic.get(key) || { r: 0, w: 0 };
     cur.r += s.rightCount;
     cur.w += s.wrongCount;
     byTopic.set(key, cur);
   });
   const ready = readinessScore(stats, exams);
-  const showAsPro = (state === "AZ" || state === "NY" || state === "NC" || state === "CT") && isAzPro;
+  const showAsPro = (state === "AZ" || state === "NY" || state === "NC" || state === "CT" || fullState) && isAzPro;
   const hideFreePlan = activating && !showAsPro;
   const weakPlan = [...byTopic.entries()]
     .map(([id, v]) => ({ id, acc: v.r + v.w ? Math.round((v.r / (v.r + v.w)) * 100) : 100, missed: v.w }))
@@ -275,7 +283,7 @@ export function DashboardClient() {
       <div className="grid grid-4 stats-mobile">
         <div className="stat"><b>{answered}</b><span>Answers</span></div>
         <div className="stat"><b>{acc}%</b><span>Accuracy</span></div>
-        <div className="stat"><b>{user.streakDays}</b><span>{state === "IN" ? "Account streak" : "Day streak"}</span></div>
+        <div className="stat"><b>{user.streakDays}</b><span>{state === "IN" || fullState ? "Account streak" : "Day streak"}</span></div>
         <div className="stat"><b>{planLabel}</b><span>Plan</span></div>
       </div>
       {state === "IN" && data?.indianaPro && data.indianaProExpiresAt ? <p className="notice">All-state Pro · Active until {new Date(data.indianaProExpiresAt).toLocaleDateString("en-US")}</p> : null}
@@ -285,7 +293,7 @@ export function DashboardClient() {
         </div>
       )}
       <div className="card">
-        <h2>{state === "IN" ? "Indiana practice history" : `Exam readiness ${showAsPro ? `${ready}%` : ""}`}</h2>
+        <h2>{state === "IN" ? "Indiana practice history" : `${fullState ? "Practice readiness" : "Exam readiness"} ${showAsPro ? `${ready}%` : ""}`}</h2>
         <p>Best score {bestScore ?? "—"}% · Tests taken {exams.length} · Last study {lastStudy?.slice(0, 10) || "—"}</p>
         {state === "AZ" && !showAsPro && !hideFreePlan && (
           <p>Free practice uses the free question pool. Pro adds the rest of the bank, the full study-card deck, more full exams, and the exam readiness score.</p>

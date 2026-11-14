@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       if (!question) return NextResponse.json({ error: "Not found" }, { status: 404 });
       if (question.state === "IN" && !await canAccessQuestion(session.id, question)) return NextResponse.json({ error: "Indiana Pro required" }, { status: 402 });
       const stat = await store.getStat(session.id, body.data.questionId);
-      if (question.state === "CT" && !stat && !await canAccessQuestion(session.id, question)) {
+      if ((question.state === "CT" || isFreeState(question.state)) && !stat && !await canAccessQuestion(session.id, question)) {
         return NextResponse.json({ error: "Pro required" }, { status: 402 });
       }
       const planState = question.state;
@@ -101,5 +101,5 @@ export async function GET(req: Request) {
 
 function toClientStat(s: QuestionStat) {
   const { userId: _owner, ...rest } = s;
-  return rest;
+  return isFreeState(s.state) ? { ...rest, chapter: questionById(s.questionId)?.study_topic || s.chapter } : rest;
 }

@@ -148,13 +148,16 @@ export function QuestionsClient({
       const question = byId.get(id);
       return question ? [question] : [];
     });
-    return kept.length ? kept : pool;
+    const keptIds = new Set(kept.map(question => question.question_id));
+    return [...kept, ...pool.filter(question => !keptIds.has(question.question_id))];
   }, [pool, order]);
 
   useEffect(() => {
-    if (!authReady || loadedKey !== modeKey || order) return;
-    if (pool.length) setOrder(pool.map((item) => item.question_id));
-  }, [authReady, loadedKey, modeKey, order, pool]);
+    if (!authReady || loadedKey !== modeKey || !pool.length) return;
+    const next = orderedPool.map(question => question.question_id);
+    if (order?.length === next.length && order.every((id, index) => id === next[index])) return;
+    setOrder(next);
+  }, [authReady, loadedKey, modeKey, order, pool, orderedPool]);
 
   useEffect(() => {
     if (!authReady || loadedKey !== modeKey || seed == null || !order?.length) return;

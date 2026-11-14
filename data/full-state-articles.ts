@@ -835,6 +835,4806 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       ]
     }
   ],
+  "CO": [
+    {
+      "slug": "colorado-interpreted-closing-conflicts",
+      "keyword": "Colorado notary interpreter requirements",
+      "intent": "Screen interpreter participation and interests",
+      "title": "Qualifying interpreters at Colorado closings",
+      "description": "Apply interpreter presence, qualification, conflict and recording requirements to an actual closing.",
+      "h1": "Qualifying interpreters at Colorado closings",
+      "kicker": "Communication",
+      "lede": "A Boulder customer needs interpretation during a closing. The customer's real-estate agent offers to interpret, but the agent is named in the record and will receive the transaction commission.",
+      "sections": [
+        {
+          "heading": "Separate language skill from eligibility",
+          "body": "The Colorado interpreter FAQ does not treat language ability as the entire qualification. A named or transaction-benefiting real-estate agent has the stated disqualifying interest. Before starting the act, arrange an interpreter who meets the applicable conditions. The agent's familiarity with the customer cannot remove the transaction role."
+        },
+        {
+          "heading": "Choose the correct presence method",
+          "body": "The interpreter must be a human being. For paper and in-person electronic acts, the FAQ requires the interpreter in the room with the notary and signer. For RON, the interpreter appears through audio-video technology on the approved provider platform. A telephone-only substitute or translation application does not satisfy those stated arrangements."
+        },
+        {
+          "heading": "Check specialized credentials and interests",
+          "body": "The FAQ distinguishes ordinary language interpreters from services for deaf, hard-of-hearing and deafblind participants, for whom the specified accepted credentials apply. It also addresses specified family-related interests. Evaluate the interpreter's actual relationship and role instead of assuming that a friend or relative is automatically a suitable independent communication channel."
+        },
+        {
+          "heading": "Preserve participation details",
+          "body": "The journal identifies the interpreter's full name, address and credential or certification number if any. In-person certificate identification is recommended, while remote certificate identification is required as specified. At the Boulder closing, these records should reflect the qualifying interpreter who actually participated and the actual authorized appearance method."
+        },
+        {
+          "heading": "Colorado Secretary of State interpreter FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/interpreters.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Colorado Notary Program Rules, 8 CCR 1505-11",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.co.us/pubs/rule_making/CurrentRules/8CCR1505-11Notary.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must interpreters apply to the Secretary of State?",
+          "a": "The FAQ says no general interpreter application is required."
+        },
+        {
+          "q": "Can an app replace the interpreter?",
+          "a": "The FAQ requires a human interpreter through the stated presence method."
+        }
+      ],
+      "id": "co-colorado-interpreted-closing-conflicts",
+      "state": "CO",
+      "path": "/colorado/guides/colorado-interpreted-closing-conflicts/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/colorado/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/colorado/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/colorado/study-guide/",
+          "label": "Colorado Study Guide"
+        },
+        {
+          "href": "/colorado/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/colorado/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "colorado-employer-record-journal-exception",
+      "keyword": "Colorado journal employer exception",
+      "intent": "Evaluate the complete-information record exception",
+      "title": "Does an office file replace a Colorado notary journal?",
+      "description": "Test employer-retained records against the full journal-information requirement.",
+      "h1": "Does an office file replace a Colorado notary journal?",
+      "kicker": "Workplace records",
+      "lede": "A Colorado credit union retains signed document scans and assumes its employee needs no notary journal. The scans contain names and signatures but omit identity methods, addresses and fees.",
+      "sections": [
+        {
+          "heading": "Test the entire exception",
+          "body": "The official stamps-and-journals FAQ recognizes an exception when the original, copy or electronic record contains every required journal element and the firm or employer keeps it. The word every matters. An ordinary office scan does not qualify simply because it proves a document exists or shows a signature."
+        },
+        {
+          "heading": "Compare the missing fields",
+          "body": "The required information includes the act's date and time, act and record description, participant names and addresses, signatures, identity basis and fee. Add interpreter and remote-provider information where applicable. The credit union's document scans should be compared against this full list before relying on the exception."
+        },
+        {
+          "heading": "Preserve separate signer records",
+          "body": "The FAQ permits multiple simultaneous signers on one certificate but calls for separate journal entries for each signer. That rule makes participant-level records important. The person who pays the charge does not replace the other appearing signers. A combined office appointment label may fail to show the required information about each act."
+        },
+        {
+          "heading": "Distinguish later custody",
+          "body": "The employer-record exception concerns how current acts are documented. Leaving a completed journal with an employer is a separate disposition route with notice and continuing duties. At the credit union, an incomplete scan practice should be corrected by maintaining compliant records. It should not be justified by a future agreement to store old books."
+        },
+        {
+          "heading": "Colorado official stamps and journals FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/seals.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Colorado Notary Program Rules, 8 CCR 1505-11",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.co.us/pubs/rule_making/CurrentRules/8CCR1505-11Notary.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does any retained photocopy qualify?",
+          "a": "The retained record must contain all required journal information."
+        },
+        {
+          "q": "Is the completed-journal employer route the same exception?",
+          "a": "It is a separate custody and disposition arrangement with its own requirements."
+        }
+      ],
+      "id": "co-colorado-employer-record-journal-exception",
+      "state": "CO",
+      "path": "/colorado/guides/colorado-employer-record-journal-exception/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/colorado/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/colorado/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/colorado/study-guide/",
+          "label": "Colorado Study Guide"
+        },
+        {
+          "href": "/colorado/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/colorado/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "colorado-completed-journal-custody",
+      "keyword": "Colorado completed notary journal storage",
+      "intent": "Plan lawful completed-journal custody and notification",
+      "title": "After a Colorado journal is full",
+      "description": "Choose personal retention, State Archives or qualifying employer custody and complete the required notice.",
+      "h1": "After a Colorado journal is full",
+      "kicker": "Retention",
+      "lede": "A Colorado law office employee finishes a notarial journal while preparing to leave the firm. The final page does not end the record's legal life.",
+      "sections": [
+        {
+          "heading": "Choose an allowed destination",
+          "body": "The stamps-and-journals FAQ describes personal retention for ten years from the last entry, submission to State Archives or the permitted employer arrangement. The state must be notified of the selected route. Use the official completed-journal form and preserve the details needed to locate the record later."
+        },
+        {
+          "heading": "Complete employer notice",
+          "body": "If the notary leaves the journal with the firm under the authorized route, Rule 4.1 calls for electronic state submission within thirty days and a copy to the firm at submission. The employer agrees to the continuing retention or archive route. An informal desk handover does not document these obligations."
+        },
+        {
+          "heading": "Recognize the custodian's duties",
+          "body": "Rule 4.2 requires the employer custodian to secure the journal and comply with the specified transaction-copy, state-audit, peace-officer and loss-notification duties. The employer can retain indefinitely or transmit to State Archives with the required notice under Rule 4.3. Custody does not make the record an unrestricted marketing database."
+        },
+        {
+          "heading": "Handle unauthorized retention separately",
+          "body": "The FAQ says an employer retaining the journal without permission may be reported as a loss or theft. It gives a thirty-day discovery-based notification period for a missing journal or stamp and an official report-loss account action. The departing employee should distinguish this problem from a properly documented voluntary custody arrangement."
+        },
+        {
+          "heading": "Colorado official stamps and journals FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/seals.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Colorado Notary Program Rules, 8 CCR 1505-11",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.co.us/pubs/rule_making/CurrentRules/8CCR1505-11Notary.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "When does personal retention start?",
+          "a": "The FAQ measures ten years from the last journal entry."
+        },
+        {
+          "q": "Does authorized employer custody remove security duties?",
+          "a": "Rule 4.2 assigns the custodian continuing protection and access responsibilities."
+        }
+      ],
+      "id": "co-colorado-completed-journal-custody",
+      "state": "CO",
+      "path": "/colorado/guides/colorado-completed-journal-custody/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/colorado/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/colorado/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/colorado/study-guide/",
+          "label": "Colorado Study Guide"
+        },
+        {
+          "href": "/colorado/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/colorado/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "colorado-notarial-fee-documentation",
+      "keyword": "Colorado notary fee disclosure invoice",
+      "intent": "Apply caps and document actual charged services",
+      "title": "A clear Colorado notarial invoice",
+      "description": "Separate the act cap, associated charges, advance disclosure and written documentation.",
+      "h1": "A clear Colorado notarial invoice",
+      "kicker": "Charges",
+      "lede": "A Colorado mobile contractor schedules a paper closing online, performs the appointment in person and bills a notarial amount plus travel. Online booking does not determine the notarial method.",
+      "sections": [
+        {
+          "heading": "Choose the act category",
+          "body": "The current official fee FAQ lists $15 per ordinary document and $25 for electronic or remote notarization. Required identity evidence, applicable oath or affirmation and signature/certificate/stamp completion are included in the ordinary act. Separate labels for these components cannot make the same ordinary service escape its cap."
+        },
+        {
+          "heading": "Explain actual charges first",
+          "body": "Additional services such as travel, mileage or copying must receive the stated separate itemization and advance information. Rule 2.4 permits verbal or written information before the act, followed by the required written listing. The mobile contractor should explain the actual proposed amounts while the customer can decide about the service."
+        },
+        {
+          "heading": "Document the signer-facing transaction",
+          "body": "The FAQ defines the customer as the signer. A receipt, itemized invoice, closing statement, transaction summary or another accepted record can identify the applicable charges. A contractor documents the contractor's own fee rather than guessing what a closing company ultimately charged. A required document should be delivered within the stated timing."
+        },
+        {
+          "heading": "Apply exceptions to the actual role",
+          "body": "The defined title-company employee exception does not automatically include an independent contractor serving that company. Entirely free services have different documentation treatment, while a zero notarial charge with a charged associated service can still need a record. Read the applicable FAQ conditions before using an exception for the mobile invoice."
+        },
+        {
+          "heading": "Colorado fees FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/fees.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Colorado Notary Program Rules, 8 CCR 1505-11",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.co.us/pubs/rule_making/CurrentRules/8CCR1505-11Notary.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does online booking permit the remote fee cap?",
+          "a": "The category follows the actual notarization method, not appointment scheduling."
+        },
+        {
+          "q": "Is a verbal quote always enough?",
+          "a": "Nonexempt charged services also need the required written documentation."
+        }
+      ],
+      "id": "co-colorado-notarial-fee-documentation",
+      "state": "CO",
+      "path": "/colorado/guides/colorado-notarial-fee-documentation/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/colorado/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/colorado/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/colorado/study-guide/",
+          "label": "Colorado Study Guide"
+        },
+        {
+          "href": "/colorado/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/colorado/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "colorado-certificate-date-and-corrections",
+      "keyword": "Colorado notary certificate correction date",
+      "intent": "Complete actual dates and apply the proper correction roles",
+      "title": "Correct the Colorado certificate you actually performed",
+      "description": "Keep act date, signer fields and certificate corrections truthful.",
+      "h1": "Correct the Colorado certificate you actually performed",
+      "kicker": "Certificate accuracy",
+      "lede": "A Colorado package contains yesterday's drafting date, an unused certificate date and a mistake in the customer's street address. The notary must distinguish the document from the official certificate.",
+      "sections": [
+        {
+          "heading": "Use the real act date",
+          "body": "The powers FAQ prohibits pre- and post-dating a certificate without exceptions. Drafting, shipping and notarial dates can differ. When the signer appears today, the actual completed act is dated today. A recipient's deadline cannot turn yesterday into the true date of an event that occurred now."
+        },
+        {
+          "heading": "Identify the correct participant",
+          "body": "The common-mistakes page warns against inserting the notary's name where the certificate identifies the appearing customer. Read each field's role. The notary's official name and signature have their own places. The certificate also needs the actual venue, act type, stamp, title and exact commission expiration information."
+        },
+        {
+          "heading": "Separate correction authority",
+          "body": "Only the signer changes the underlying document. Only the notary corrects the notarial certificate. The FAQ describes lining through the error in ink, adding the correction above or beside it and initialing and dating the correction. This preserves a visible record instead of silently erasing the original information."
+        },
+        {
+          "heading": "Resolve the packet's two issues",
+          "body": "The signer handles the address error in the document using the proper document process. The notary fills the actual certificate date and corrects any certificate error through the stated method. A journal signature cannot substitute for a document signing that the certificate claims occurred. Every statement should describe the actual completed procedure."
+        },
+        {
+          "heading": "Colorado powers and duties FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/duties.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Colorado Secretary of State common mistakes FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/commonMistakes.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can a courier choose a backdated certificate?",
+          "a": "The FAQ requires the actual notarial date and states no pre- or post-dating exception."
+        },
+        {
+          "q": "Who may correct the certificate?",
+          "a": "The notary makes the certificate correction. The signer controls changes to the document."
+        }
+      ],
+      "id": "co-colorado-certificate-date-and-corrections",
+      "state": "CO",
+      "path": "/colorado/guides/colorado-certificate-date-and-corrections/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/colorado/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/colorado/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/colorado/study-guide/",
+          "label": "Colorado Study Guide"
+        },
+        {
+          "href": "/colorado/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/colorado/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "colorado-earlier-signatures-and-fax-copies",
+      "keyword": "Colorado acknowledgment faxed signature",
+      "intent": "Distinguish acknowledgment from witnessing on earlier signatures",
+      "title": "Acknowledge an earlier signature in Colorado",
+      "description": "Apply the acknowledgment procedure without falsely claiming to witness past signing.",
+      "h1": "Acknowledge an earlier signature in Colorado",
+      "kicker": "Act selection",
+      "lede": "A Colorado customer has only a faxed copy of an agreement signed earlier. The customer appears personally and wants the signature acknowledged for the recipient.",
+      "sections": [
+        {
+          "heading": "Identify what acknowledgment establishes",
+          "body": "The powers FAQ describes acknowledgment through the identified signer's appearance and confirmation that the signature is theirs. The signature need not have been made before the notary. This flexibility concerns the act's execution history. It does not eliminate today's identification, appearance, journal or certificate requirements."
+        },
+        {
+          "heading": "Avoid a false witnessing statement",
+          "body": "Signature witnessing describes watching the signer sign. A certificate saying signed before me should not be used to claim that the notary observed an earlier event elsewhere. An acknowledgment can truthfully describe the present acknowledgment of that signature. Match the certificate to the actual permitted act instead of selecting the most convenient label."
+        },
+        {
+          "heading": "Apply the fax-copy guidance",
+          "body": "The FAQ expressly permits the original signer to acknowledge a photocopied or faxed signature when the stated conditions are met. The copy's presence alone is insufficient. The person responsible for the original signature participates and acknowledges it. A courier who merely delivers the fax does not become that signer."
+        },
+        {
+          "heading": "Record today's event",
+          "body": "At the appointment, establish the actual signer's identity and participation, take the acknowledgment and use today's act date and actual Colorado venue. The journal can identify the faxed record and procedure. The certificate does not guarantee the agreement's contents or claim witnessing of its original signing."
+        },
+        {
+          "heading": "Colorado powers and duties FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/duties.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Colorado Secretary of State common mistakes FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/commonMistakes.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must every acknowledgment signature be made before the notary?",
+          "a": "The FAQ permits acknowledgment of an earlier signature."
+        },
+        {
+          "q": "Does the fax itself supply the appearance?",
+          "a": "The original signer still appears and makes the required acknowledgment."
+        }
+      ],
+      "id": "co-colorado-earlier-signatures-and-fax-copies",
+      "state": "CO",
+      "path": "/colorado/guides/colorado-earlier-signatures-and-fax-copies/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/colorado/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/colorado/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/colorado/study-guide/",
+          "label": "Colorado Study Guide"
+        },
+        {
+          "href": "/colorado/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/colorado/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "colorado-copy-certification-custodian-rules",
+      "keyword": "Colorado notary certify copy vital records",
+      "intent": "Distinguish Colorado custodian records from other-state or federal records",
+      "title": "Which records can a Colorado notary copy-certify?",
+      "description": "Apply the official record-custodian exclusion and the separate other-jurisdiction guidance.",
+      "h1": "Which records can a Colorado notary copy-certify?",
+      "kicker": "Record copies",
+      "lede": "A Colorado desk receives a local birth certificate, an out-of-state marriage record and a federal record bearing a copying restriction. Their government origin does not produce one uniform answer.",
+      "sections": [
+        {
+          "heading": "Check the Colorado custodian exclusion",
+          "body": "The powers FAQ excludes certification of copies obtainable from Colorado's clerk and recorder, Secretary of State, State Archives or vital-records office. A Colorado birth or marriage record should be screened through that custodian rule. A private customer's consent does not grant the notary authority that the exclusion removes."
+        },
+        {
+          "heading": "Read the other-state distinction",
+          "body": "The FAQ separately permits copies of other-state vital records, including the listed birth, death, marriage and divorce examples. Do not import the Colorado-custodian exclusion into a blanket prohibition for every other jurisdiction's record. Identify the original record and apply the exact condition governing that source."
+        },
+        {
+          "heading": "Observe a face-of-record prohibition",
+          "body": "Permission for federal or other-state copies is conditioned on the record not stating on its face that copying is illegal. The federal record's restriction therefore matters independently of customer urgency or the cost of obtaining another copy. A high-quality scanner cannot resolve a legal copying restriction."
+        },
+        {
+          "heading": "Keep the act within its actual scope",
+          "body": "For the three desk requests, direct the local record to its official custodian, evaluate the out-of-state record under the permitted route and respect the federal record's restriction. Complete only an authorized accurate-copy act with the required certificate and journal record. A copy certificate should not become an unrelated legal opinion."
+        },
+        {
+          "heading": "Colorado powers and duties FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/duties.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Are all out-of-state vital records treated like Colorado records?",
+          "a": "The FAQ expressly distinguishes other-state vital-record copies."
+        },
+        {
+          "q": "Can customer consent remove a printed copying prohibition?",
+          "a": "The published permission depends on absence of that face-of-record restriction."
+        }
+      ],
+      "id": "co-colorado-copy-certification-custodian-rules",
+      "state": "CO",
+      "path": "/colorado/guides/colorado-copy-certification-custodian-rules/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/colorado/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/colorado/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/colorado/study-guide/",
+          "label": "Colorado Study Guide"
+        },
+        {
+          "href": "/colorado/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/colorado/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "colorado-ron-overseas-signer",
+      "keyword": "Colorado remote notary outside United States",
+      "intent": "Apply geography, nexus and prohibition conditions to foreign signers",
+      "title": "A Colorado RON appointment with an overseas signer",
+      "description": "Check both the notary's physical location and the foreign signer's record conditions.",
+      "h1": "A Colorado RON appointment with an overseas signer",
+      "kicker": "Remote geography",
+      "lede": "A property owner temporarily abroad requests a remote act involving a US property transaction. The commissioned notary is considering taking the appointment while traveling outside Colorado.",
+      "sections": [
+        {
+          "heading": "Locate the officer first",
+          "body": "The remote FAQ requires the Colorado notary to remain physically within Colorado. An office address, active subscription or Colorado customer does not substitute for actual location. The traveling notary must satisfy that territory condition before considering the overseas signer's separate eligibility. Geography applies to the official actor as well as the customer."
+        },
+        {
+          "heading": "Establish the specified US connection",
+          "body": "For a signer outside the US, the electronic record must relate to the listed US matter, US property or substantially connected US transaction. Identify that connection from the actual request. The property owner's US transaction may supply it, but a completely unrelated foreign matter cannot be assumed eligible under the same wording."
+        },
+        {
+          "heading": "Check the second foreign condition",
+          "body": "The notary must not actually know that the act is prohibited where the signer is physically located. The US connection and no-actual-known-prohibition condition are cumulative. A customer's promise to waive another jurisdiction's restriction does not change what the notary actually knows. Resolve the stated conditions before conducting the session."
+        },
+        {
+          "heading": "Complete every remote safeguard",
+          "body": "Once geography and subject conditions fit, the approved notary still follows the live provider, identification, recording-consent, certificate and electronic-journal process. The US property connection does not authorize a prerecorded act or remove ten-year recording retention. Document the actual provider and method, with all required participant statements."
+        },
+        {
+          "heading": "Colorado remote notarization FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/remote.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Colorado Notary Program Rules, 8 CCR 1505-11",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.co.us/pubs/rule_making/CurrentRules/8CCR1505-11Notary.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the notary conduct Colorado RON while physically abroad?",
+          "a": "The FAQ requires the notary to be physically in Colorado."
+        },
+        {
+          "q": "Does US property automatically resolve every overseas condition?",
+          "a": "The separate actual-known-prohibition condition and all ordinary RON safeguards remain applicable."
+        }
+      ],
+      "id": "co-colorado-ron-overseas-signer",
+      "state": "CO",
+      "path": "/colorado/guides/colorado-ron-overseas-signer/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/colorado/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/colorado/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/colorado/study-guide/",
+          "label": "Colorado Study Guide"
+        },
+        {
+          "href": "/colorado/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/colorado/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "colorado-ron-consent-recording-evidence",
+      "keyword": "Colorado RON recording consent retention",
+      "intent": "Plan disclosure, express consent and complete remote evidence",
+      "title": "Record a Colorado remote act with informed participation",
+      "description": "Obtain express recording/storage consent and preserve the complete live act.",
+      "h1": "Record a Colorado remote act with informed participation",
+      "kicker": "Remote evidence",
+      "lede": "A Colorado remote signer agrees to video but asks that the provider stop recording during identity checks. The notary needs a complete authorized procedure rather than selected excerpts.",
+      "sections": [
+        {
+          "heading": "Explain recording before obtaining consent",
+          "body": "The remote FAQ requires telling the signer that the notarization will be recorded and explaining where and for how long the recording will be stored. Obtain express verbal agreement to both recording and storage. Silence or a provider's general advertisement does not supply the stated participant consent."
+        },
+        {
+          "heading": "Record the full live interaction",
+          "body": "The FAQ requires real-time sight-and-sound communication and recording of the entire interaction. A previously filmed signing video cannot be notarized as the current live act. Stopping the recording for a required part of the procedure would leave the evidence incomplete. A screenshot of the final seal cannot replace the record."
+        },
+        {
+          "heading": "Include the identity explanations",
+          "body": "The recorded content includes the notary, time, records, signer and applicable witness information. Personal knowledge needs an explanation of how and for how long the signer is known. A credible witness supplies the stated knowledge explanation. Credential-based identity follows the complete remote presentation, analysis and additional-method route."
+        },
+        {
+          "heading": "Preserve both evidence streams",
+          "body": "The recording is securely stored for ten years. The remote journal separately identifies the provider and uses the compliant electronic format unless the statutory exception applies. If the signer refuses the recording arrangement, the FAQ says the remote act cannot proceed. Explain an appropriate lawful service route instead of silently omitting evidence."
+        },
+        {
+          "heading": "Colorado remote notarization FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/remote.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Colorado official stamps and journals FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/seals.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the signer opt out of recording while continuing RON?",
+          "a": "The FAQ says the notary cannot perform the remote act if the signer refuses recording."
+        },
+        {
+          "q": "Does a video archive replace the electronic journal?",
+          "a": "The FAQ addresses the recording and compliant journal as separate requirements."
+        }
+      ],
+      "id": "co-colorado-ron-consent-recording-evidence",
+      "state": "CO",
+      "path": "/colorado/guides/colorado-ron-consent-recording-evidence/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/colorado/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/colorado/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/colorado/study-guide/",
+          "label": "Colorado Study Guide"
+        },
+        {
+          "href": "/colorado/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/colorado/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "colorado-electronic-dan-and-remote-approval",
+      "keyword": "Colorado DAN electronic notary RON",
+      "intent": "Distinguish in-person electronic authentication from remote capability",
+      "title": "Electronic documents and remote appearance in Colorado",
+      "description": "Understand DAN controls, electronic approval and the separate remote-notary process.",
+      "h1": "Electronic documents and remote appearance in Colorado",
+      "kicker": "Technology methods",
+      "lede": "A Colorado office adopts electronic signatures for in-room appointments and then wants customers to connect remotely. The electronic record format and the remote appearance method require different checks.",
+      "sections": [
+        {
+          "heading": "Approve the in-person electronic capability",
+          "body": "Rule 2.2 requires the notice of intent and state approval before electronic notarization. It describes the electronic signature information and Document Authentication Numbers used with that method. An applicant may file intent early but cannot act before commissioning and approval. Privately invented numbers are not the authorized authentication process."
+        },
+        {
+          "heading": "Control each authentication number",
+          "body": "The rule requires a different DAN for each electronic notarization and reasonable measures against another person's access or use. It also requires verifying that the signer adopted the electronic signature to function as their signature. A shared employee file of reusable numbers would undermine the individual official control described by the rule."
+        },
+        {
+          "heading": "Add the separate remote route",
+          "body": "Moving the signer out of the room introduces the remote qualification, provider and live-communication requirements. An active ordinary commission, separate remote training/exam evidence and state approval precede remote work. At least one approved provider stays on record. Buying a video application does not complete that authorization."
+        },
+        {
+          "heading": "Protect transaction information",
+          "body": "Rule 5.4 prohibits the listed additional-business and marketing use of RON personal information by the notary, relevant employer/business and provider affiliates. The rule says consent cannot waive that prohibition. The office's technology plan therefore must address identity, authentication, appearance, evidence storage and data use as separate responsibilities."
+        },
+        {
+          "heading": "Colorado Notary Program Rules, 8 CCR 1505-11",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.state.co.us/pubs/rule_making/CurrentRules/8CCR1505-11Notary.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Colorado remote notarization FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.coloradosos.gov/pubs/notary/FAQ/remote.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can one DAN be reused for all electronic acts?",
+          "a": "Rule 2.2.2 requires a different DAN for each electronic notarization."
+        },
+        {
+          "q": "Does a remote customer's consent permit marketing use of transaction data?",
+          "a": "Rule 5.4 says the stated marketing prohibition cannot be waived by consent."
+        }
+      ],
+      "id": "co-colorado-electronic-dan-and-remote-approval",
+      "state": "CO",
+      "path": "/colorado/guides/colorado-electronic-dan-and-remote-approval/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/colorado/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/colorado/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/colorado/study-guide/",
+          "label": "Colorado Study Guide"
+        },
+        {
+          "href": "/colorado/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/colorado/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "IL": [
+    {
+      "slug": "law-firm-journal-exception",
+      "keyword": "Illinois law firm notary journal exception",
+      "intent": "Understand the employment journal exception",
+      "title": "Illinois Law-Firm Journals and Retained Document Copies",
+      "description": "Apply the law-firm journal exception to office work, outside acts, ownership and privileged records.",
+      "h1": "Using Illinois's Law-Firm Journal Exception",
+      "kicker": "Employment records",
+      "lede": "A legal office's document files can change the journal analysis for its employed notary. The specific rule has conditions that should be checked transaction by transaction.",
+      "sections": [
+        {
+          "heading": "Start with the actual employment act",
+          "body": "Rule 176.900(f) addresses a notary employed by an attorney or law firm and notarizations performed during that employment. It requires the attorney or firm to maintain copies of the notarized documents. Consider a litigation assistant notarizing a client's retained-copy affidavit during assigned office work. Those facts support the specific exception. Merely working in the same building as a lawyer would not establish the required employment relationship or copy retention."
+        },
+        {
+          "heading": "Keep outside appointments in view",
+          "body": "The assistant later notarizes a neighbor's unrelated private document at home. The firm's client files do not preserve that instrument, and the act is outside the described employment. The general contemporaneous journal requirement therefore needs its own analysis. The notary should identify whether each transaction actually satisfies the exception before omitting an entry, even when the same stamp and commission are used for both office and private service."
+        },
+        {
+          "heading": "Apply the specific ownership provision",
+          "body": "The rule expressly assigns journals of notarizations performed solely within the course of employment with an attorney or firm to that employing attorney or firm. That specific provision matters alongside the Act's ordinary employer-custody rules. A journal containing only qualifying office acts presents a different set of stated facts from a mixed personal-and-business journal. The word solely should be preserved when explaining the rule or arranging record custody."
+        },
+        {
+          "heading": "Preserve privilege during inspection",
+          "body": "The law-firm provision also says an attorney or firm need not violate attorney-client privilege by allowing or authorizing inspection of notarizations recorded in a journal. A request for records should therefore be assessed under both the journal provisions and the applicable privilege protection. The exception does not authorize a notary to sell client information or release every office file. Illinois separately restricts third-party use of journal contents and associated notarial records."
+        },
+        {
+          "heading": "Illinois Register, January 10, 2025, adopted notary amendments",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/content/dam/departments/index/register/volume49/register_volume49_2.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Illinois Notary Public Handbook",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does every act by a law-office employee qualify?",
+          "a": "The specific exception concerns employment notarizations for which the employing attorney or firm maintains document copies."
+        },
+        {
+          "q": "Who owns a journal solely of those employment acts?",
+          "a": "Rule 176.900(f) makes it the property of the employing attorney or law firm."
+        }
+      ],
+      "id": "il-law-firm-journal-exception",
+      "state": "IL",
+      "path": "/illinois/guides/law-firm-journal-exception/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/illinois/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/illinois/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/illinois/study-guide/",
+          "label": "Illinois Study Guide"
+        },
+        {
+          "href": "/illinois/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/illinois/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "candidate-petition-journal-exemption",
+      "keyword": "Illinois candidate nominating petition notary journal",
+      "intent": "Apply the election-document journal exception",
+      "title": "Illinois Candidate Papers and the Journal Exemption",
+      "description": "Identify the listed candidate nomination documents and preserve the other notarial steps.",
+      "h1": "Journaling Candidate Nomination Documents in Illinois",
+      "kicker": "Election documents",
+      "lede": "The candidate-document exception is defined by the document and its filing purpose. A candidate's unrelated paperwork still needs ordinary analysis.",
+      "sections": [
+        {
+          "heading": "Identify the document on the list",
+          "body": "Rule 176.900(g) and Act §3-107(f) identify nominating petitions, petitions of candidacy, petitions for nomination, nominating papers and nomination papers associated with a candidate for public office. Suppose a campaign volunteer brings a qualifying nomination petition for filing on the candidate's behalf. The notary should identify the instrument accurately before relying on this exception. The exemption is tied to the specified electoral documents and candidate filing relationship."
+        },
+        {
+          "heading": "Preserve the actual notarization",
+          "body": "The provision concerns keeping or recording the act in a journal. The signer still participates in the notarial act, and the notary still establishes identity and performs the ceremony the certificate describes. A petition affidavit requiring verification calls for the oath or affirmation and the required signing procedure. The journal exception supplies no authority to certify an absent person's statement, skip identification or sign blank certificates for later campaign use."
+        },
+        {
+          "heading": "Read the historical protection accurately",
+          "body": "Rule 176.900(h) states that the listed exemption applies to acts performed before, on or after the amendment's effective date. It also says the specified failure to keep or record such an act does not affect the act's validity and is not an Act violation. This addresses a particular journal omission. A reviewer should preserve that scope when discussing an older nomination paper instead of treating every missing historical journal entry as automatically fatal."
+        },
+        {
+          "heading": "Screen unrelated candidate business",
+          "body": "The same candidate might ask the notary to acknowledge a private equipment lease for the candidate's business. A commercial lease does not become a listed nomination paper because the signer is running for office or because the appointment occurs during campaign season. The notary returns to the ordinary journal analysis for that transaction. Maintaining this document-specific distinction prevents the election exception from swallowing record duties for a candidate's everyday commercial affairs."
+        },
+        {
+          "heading": "Illinois Register, January 10, 2025, adopted notary amendments",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/content/dam/departments/index/register/volume49/register_volume49_2.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Illinois Notary Public Handbook",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does candidate status exempt every notarization?",
+          "a": "No. The journal exception identifies particular candidate nomination documents."
+        },
+        {
+          "q": "Does the exception remove the oath for a petition affidavit?",
+          "a": "The journal exception does not remove the requirements of the actual notarial act."
+        }
+      ],
+      "id": "il-candidate-petition-journal-exemption",
+      "state": "IL",
+      "path": "/illinois/guides/candidate-petition-journal-exemption/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/illinois/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/illinois/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/illinois/study-guide/",
+          "label": "Illinois Study Guide"
+        },
+        {
+          "href": "/illinois/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/illinois/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "journal-privacy-and-requested-copies",
+      "keyword": "Illinois notary journal prohibited information",
+      "intent": "Protect journal privacy and handle requests",
+      "title": "Illinois Journal Privacy from Entry to Disclosure",
+      "description": "Record required transaction facts, avoid prohibited identifiers and limit requested copies.",
+      "h1": "Protecting an Illinois Notary Journal's Information",
+      "kicker": "Privacy and access",
+      "lede": "A useful journal records the act without accumulating prohibited identity data. Illinois controls both what goes into the record and how information leaves it.",
+      "sections": [
+        {
+          "heading": "Capture the required transaction",
+          "body": "Rule 176.910 requires the principal's name, relied-on credible witnesses, any directed signer, document title or description, date, method, fee and physical locations of notary and principal. For entry purposes, address means city and state only. Consider an office that buys a generic multistate journal. Its template should be evaluated against these Illinois requirements before use, because a printed box does not make every requested data item lawful or necessary."
+        },
+        {
+          "heading": "Leave prohibited identifiers out",
+          "body": "The same rule excludes government-assigned identification numbers, other numbers identifying the principal, biometric identifiers and specified linked personal information. It also excludes the principal's and witnesses' electronic signatures from the journal. An employee who believes that a driver's-license number and fingerprint would make the record stronger must respect these limits. The signed electronic instrument and the journal are separate records with different content requirements."
+        },
+        {
+          "heading": "Redact an accidental entry before access",
+          "body": "If prohibited information is inadvertently recorded, Rule 176.910(d) requires redaction before public access or copies are provided. The correction should serve the privacy duty while preserving the integrity of the transaction history. Electronic-journal rules recognize required privacy redaction while otherwise protecting content and sequence against alteration or deletion. A request for a copy should trigger a review of the information actually disclosed, including any sensitive data entered by mistake."
+        },
+        {
+          "heading": "Use the limited disclosure mechanism",
+          "body": "Act §6-104(o) restricts commercial sale and third-party availability of journal contents, recordings and associated records outside the specified lawful circumstances. It permits a transaction-specific line-item copy upon a written request identifying parties, document type and month and year, after personal identifying information is redacted. A marketing company's request for every client entry is a different proposal. The statutory line-item mechanism does not authorize release of the entire unredacted journal."
+        },
+        {
+          "heading": "Illinois Register, June 16, 2023, adopted Part 176 rules",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Illinois Notary Public Handbook",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May a notary record a driver's-license number because a template asks for it?",
+          "a": "Rule 176.910(c) prohibits the government identification number in the journal."
+        },
+        {
+          "q": "May a qualifying requester automatically receive the whole journal?",
+          "a": "The stated request procedure concerns a redacted copy of the requested transaction line item."
+        }
+      ],
+      "id": "il-journal-privacy-and-requested-copies",
+      "state": "IL",
+      "path": "/illinois/guides/journal-privacy-and-requested-copies/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/illinois/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/illinois/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/illinois/study-guide/",
+          "label": "Illinois Study Guide"
+        },
+        {
+          "href": "/illinois/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/illinois/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "directed-signatures-and-accessible-acknowledgments",
+      "keyword": "Illinois notary physically unable to sign",
+      "intent": "Apply person-specific execution procedures",
+      "title": "Directed Signatures and Accessible Illinois Acknowledgments",
+      "description": "Work through physical inability, blind signers and language comprehension under Illinois rules.",
+      "h1": "Adapting the Illinois Ceremony to the Signer",
+      "kicker": "Signer participation",
+      "lede": "A person's physical or communication needs change the preparation for an appointment. The principal's lawful participation and the notary's accurate certificate remain central.",
+      "sections": [
+        {
+          "heading": "Establish direction and both participants",
+          "body": "Rule 176.610 addresses a person physically unable to sign who directs someone other than the notary to sign the person's name. Both the principal and directed signer appear and are identified under the applicable identity provisions at signing. Imagine a client with a hand injury who brings a caregiver. The notary must establish the client's direction and identify both people. The caregiver arriving alone with the client's license would leave the principal's required appearance unsatisfied."
+        },
+        {
+          "heading": "Document who affixed the signature",
+          "body": "The rule requires the prescribed or substantially similar statement near the signature identifying the individual who signed and the person at whose direction it was affixed. This communicates the execution procedure to someone later reading the document. The helper's occupational title by itself would not describe who directed the signature. The journal rule also calls for the name of another person who signed for the principal where the act is subject to journal recording."
+        },
+        {
+          "heading": "Read the instrument before a blind person's acknowledgment",
+          "body": "Act §6-104(e) specifically requires reading the instrument to a blind person before taking that person's acknowledgment. This statutory step should be included in appointment planning so that the notary has time to perform it. The acknowledgment still requires the appearing person's identity and declaration of execution. A preprinted waiver or a companion's reassurance does not replace the reading specified by the Illinois Act for this acknowledgment."
+        },
+        {
+          "heading": "Address understanding before acknowledgment",
+          "body": "Under §6-104(f), a person who does not speak or understand English must receive translation of the instrument's nature and effect into a language the person understands before acknowledgment. This is distinct from deciding which identity credential qualifies. A consular credential may support identity when it meets the statutory requirements, but the credential itself does not demonstrate understanding of the instrument's nature and effect. Evaluate both requirements on the facts presented."
+        },
+        {
+          "heading": "Illinois Register, June 16, 2023, adopted Part 176 rules",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Illinois Notary Public Handbook",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the notary be the directed signer under Rule 176.610?",
+          "a": "The rule describes a directed person other than the notary."
+        },
+        {
+          "q": "Does a caregiver's appearance replace the principal's appearance?",
+          "a": "Both the principal and the directed signer must appear and be identified under the rule."
+        }
+      ],
+      "id": "il-directed-signatures-and-accessible-acknowledgments",
+      "state": "IL",
+      "path": "/illinois/guides/directed-signatures-and-accessible-acknowledgments/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/illinois/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/illinois/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/illinois/study-guide/",
+          "label": "Illinois Study Guide"
+        },
+        {
+          "href": "/illinois/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/illinois/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "acknowledgment-verification-witnessing",
+      "keyword": "Illinois acknowledgment versus verification",
+      "intent": "Distinguish notarial ceremonies in a mixed packet",
+      "title": "Three Illinois Ceremonies in One Appointment",
+      "description": "Distinguish prior-signature acknowledgment, sworn verification and signature witnessing.",
+      "h1": "Choosing the Ceremony Described by the Certificate",
+      "kicker": "Notarial acts",
+      "lede": "A packet may contain several certificate types. Perform and document each required event accurately instead of using one routine for every page.",
+      "sections": [
+        {
+          "heading": "Acknowledge an earlier signature",
+          "body": "An apartment manager brings a lease already signed by a tenant who is now present. The acknowledgment practice note permits the identified signer to acknowledge the existing signature as their own. The signer declares execution for the purpose stated in the instrument. The prior signature does not eliminate appearance, identification or the declaration. The notary's certificate records today's acknowledgment rather than falsely stating that the earlier signing was personally witnessed."
+        },
+        {
+          "heading": "Administer the sworn truth declaration",
+          "body": "The tenant also brings an unsigned affidavit requesting verification upon oath or affirmation. The handbook's verification practice note requires the person to appear and sign before the notary, with the notary administering the oath or affirmation. A printed statement saying the document was sworn does not perform that ceremony by itself. A signer who prefers a solemn affirmation may use that authorized alternative, with the actual truth declaration occurring before completion."
+        },
+        {
+          "heading": "Observe signature witnessing",
+          "body": "A third page requests signature witnessing without an oath. Its practice note requires the identified person to appear and sign before the notary. An already signed page cannot be treated as though its signing was observed merely because the customer acknowledges it informally. The requested certificate describes an actual witnessed event. If the necessary event has not occurred, the notary must avoid signing a certificate that states otherwise."
+        },
+        {
+          "heading": "Match the certificate and representative facts",
+          "body": "A corporate officer in the same appointment may acknowledge on behalf of an entity. The representative definition includes proper authority and execution as the represented entity's act. The representative form records the capacity and represented party. Every certificate must carry its actual act date, jurisdiction, official signature and seal. Accurate matching of ceremony, person and capacity prevents a stack of papers from turning distinct declarations into a single undocumented assumption."
+        },
+        {
+          "heading": "Illinois Notary Public Handbook",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can an acknowledgment concern a signature made earlier?",
+          "a": "Yes, the signer must appear, be identified and acknowledge the signature under the handbook procedure."
+        },
+        {
+          "q": "Does signature witnessing automatically require an oath?",
+          "a": "The handbook states that an oath is not necessary for that form, while signing before the notary is required."
+        }
+      ],
+      "id": "il-acknowledgment-verification-witnessing",
+      "state": "IL",
+      "path": "/illinois/guides/acknowledgment-verification-witnessing/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/illinois/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/illinois/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/illinois/study-guide/",
+          "label": "Illinois Study Guide"
+        },
+        {
+          "href": "/illinois/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/illinois/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "paper-certificate-integrity",
+      "keyword": "Illinois notary separate certificate attachment",
+      "intent": "Protect paper certificate integrity",
+      "title": "Keeping an Illinois Paper Certificate Connected and Readable",
+      "description": "Use permanent attachment, truthful venue and date, legible signatures and a compliant seal.",
+      "h1": "Paper Certificate Integrity in Illinois",
+      "kicker": "Certificates and seals",
+      "lede": "A separate certificate can travel farther than the appointment itself. Its physical connection and readable official details help preserve what the notary actually did.",
+      "sections": [
+        {
+          "heading": "Use a permanent connection",
+          "body": "Rule 176.600(c) requires a paper certificate to be permanently and securely attached to its document in a tamper-evident manner. Staples are among the listed methods. Tape, paper clips and binder clips are expressly excluded. Consider a closing office that wants every certificate loosely clipped for later packet assembly. The notary should arrange a compliant permanent connection to the specific instrument whose act is being certified, preserving the relationship between record and certificate."
+        },
+        {
+          "heading": "State the actual act facts",
+          "body": "Section 6-103 requires a signed and dated certificate identifying the jurisdiction where the act is performed. A document prepared in Chicago can be notarized elsewhere in Illinois, with the actual act location supplying the venue. The contract's drafting date does not automatically become the notarial date. These fields describe the notary's event. They should be completed from the appointment facts rather than copied mechanically from a cover letter or the instrument's opening paragraph."
+        },
+        {
+          "heading": "Make the official signature recognizable",
+          "body": "The notary uses the commissioned name or initials required by §6-104(a). Rule 176.600(d) adds a readability safeguard when the notary's preferred handwritten signature is not legible or recognizable. In that case, the notary also prints the name legibly immediately adjacent to the signature. The printed name supports the official handwritten execution. It does not authorize another employee to sign for the notary or replace the required signature with an unrelated business title."
+        },
+        {
+          "heading": "Check the seal as information",
+          "body": "The ordinary official seal uses the statutory rectangular format and required wording, including the commissioned name and expiration date. The border may not exceed one inch in height by two and one-half inches in length. Section 6-103(c) requires a clear, legible black-ink impression capable of photographic reproduction. A beautiful impression with the wrong commission information still needs correction, and an employer's stamp-design preference does not change the legal specifications."
+        },
+        {
+          "heading": "Illinois Register, June 16, 2023, adopted Part 176 rules",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Illinois Notary Public Handbook",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can a binder clip permanently attach a separate certificate?",
+          "a": "Rule 176.600(c) expressly excludes binder clips."
+        },
+        {
+          "q": "What accompanies an illegible preferred signature?",
+          "a": "The rule requires the notary's legibly printed name immediately adjacent to the signature."
+        }
+      ],
+      "id": "il-paper-certificate-integrity",
+      "state": "IL",
+      "path": "/illinois/guides/paper-certificate-integrity/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/illinois/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/illinois/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/illinois/study-guide/",
+          "label": "Illinois Study Guide"
+        },
+        {
+          "href": "/illinois/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/illinois/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "non-english-advertising-disclosures",
+      "keyword": "Illinois notary Spanish advertising notice",
+      "intent": "Apply covered advertising and acknowledgment duties",
+      "title": "Illinois Non-English Advertising and Customer Disclosures",
+      "description": "Understand notices, fee posting, signed acknowledgments and record retention for covered advertising.",
+      "h1": "Disclosures for Covered Illinois Notary Advertising",
+      "kicker": "Public-facing services",
+      "lede": "Advertising in another language can create several connected disclosure duties. The Act's conditions and exceptions should be checked before publishing and before service.",
+      "sections": [
+        {
+          "heading": "Describe the actual professional role",
+          "body": "Section 3-103 addresses covered notaries who are not attorneys or accredited immigration representatives and advertise in a language other than English. It requires a conspicuous notice in English and the advertising language describing the lack of Illinois attorney status and the limits on legal drafting and advice. Imagine a notary publishing a Spanish-language service page. The description must reflect actual qualifications and must avoid the prohibited literal title translation that implies lawyer-like authority, including the statute's example of notario."
+        },
+        {
+          "heading": "Connect the advertisement to the fee posting",
+          "body": "For covered notaries, §3-103(b) requires the lawful fee schedule to be prominently posted at the recorded place of business in English and the language used to solicit services. It also addresses the disavowal of legal representation. A receptionist's oral price quote does not itself supply this posted schedule. The notary should ensure that the public-facing information at the business matches the language and services actually advertised and preserves the required disclosures."
+        },
+        {
+          "heading": "Obtain the signed customer acknowledgment",
+          "body": "Section 3-103(c-5) generally requires the covered notary to provide the stated written nonattorney acknowledgment in English and the advertising language before rendering services. The recipient signs it before service and receives a copy when service is rendered. The statute includes an exception for the specified Election Code-related documents. This customer acknowledgment is a separate disclosure record. It should not be confused with the legal act of acknowledging a document signature."
+        },
+        {
+          "heading": "Retain disclosures and itemize charges",
+          "body": "The signed customer acknowledgments remain through the notary's present commission and for two years afterward. Separately, §3-104(e) requires itemized receipts and fee records, with notarial fees shown apart from other assessed charges. An office can therefore have several different records associated with one appointment, each serving its own statutory purpose. A generic receipt does not replace the signed disclosure, and the disclosure does not authorize legal advice beyond independently held qualifications."
+        },
+        {
+          "heading": "Illinois Notary Public Handbook",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is the signed nonattorney acknowledgment the same as a notarization certificate?",
+          "a": "No. It is the separate customer disclosure record required for the covered advertising circumstances."
+        },
+        {
+          "q": "How long are signed covered acknowledgments retained?",
+          "a": "Through the present commission and for two years afterward under §3-103(c-5)."
+        }
+      ],
+      "id": "il-non-english-advertising-disclosures",
+      "state": "IL",
+      "path": "/illinois/guides/non-english-advertising-disclosures/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/illinois/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/illinois/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/illinois/study-guide/",
+          "label": "Illinois Study Guide"
+        },
+        {
+          "href": "/illinois/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/illinois/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "remote-paper-transmission-workflow",
+      "keyword": "Illinois remote paper notarization next day",
+      "intent": "Follow the remote paper transmission chain",
+      "title": "The Illinois Remote Paper Document Chain",
+      "description": "Track the live ceremony, interrupted sessions, complete transmission and timely notary return.",
+      "h1": "Following a Remote Paper Instrument from Camera to Return",
+      "kicker": "Remote paper acts",
+      "lede": "Illinois's paper remote procedure combines a live ceremony with a document-transmission chain. Both parts need to be completed under their own rules.",
+      "sections": [
+        {
+          "heading": "Establish the authorized live procedure",
+          "body": "Section 6-102.5 and Rules 176.700 through 176.730 govern the remote paper route. The notary confirms identity using the authorized means and the communication permits real-time seeing and speaking with adequate clarity. The procedure must connect the record presented for the act with the record on which the principal signs or makes a statement. An ordinary recorded clip or voice-only call does not supply the described live audio-video procedure."
+        },
+        {
+          "heading": "Restart after a broken link",
+          "body": "Rule 176.720 requires restarting from the beginning, including identity confirmation, when a participant exits the session, the audio-video link breaks or the process is compromised. Consider a signer whose connection fails just as the signature is being made. Continuing from a frozen image and later text message would bypass the restart rule. Once a compliant session is available, the notary repeats the required process instead of assuming that the earlier partial observation completed the act."
+        },
+        {
+          "heading": "Receive the whole signed document",
+          "body": "The signer must send a legible copy of the entire signed document directly to the notary by overnight mail, fax or electronic means no later than the day after signing. This rule concerns both timing and completeness. A signature-page photograph sent two days later misses more than one part of the statutory chain. Planning the transmission method before the appointment helps the principal send the actual complete instrument that corresponds to the live session."
+        },
+        {
+          "heading": "Return and describe the completed act",
+          "body": "The notary signs the transmitted copy as witness and returns it through a permitted means within 24 hours after receipt. Section 6-102.5(c)(3) separately addresses an original received with the witnessed copy within 30 days and its permitted execution treatment. Rule 176.730 requires the remote certificate's audio-video statement. The certificate therefore records the actual remote method while the document chain preserves the connection between the observed signing and returned notarial record."
+        },
+        {
+          "heading": "Illinois Register, June 16, 2023, adopted Part 176 rules",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Illinois Notary Public Handbook",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is sending only the signature page enough?",
+          "a": "The statute requires a legible copy of the entire signed document."
+        },
+        {
+          "q": "When must the notary return the transmitted copy?",
+          "a": "Within 24 hours after receipt, following the required signing step."
+        }
+      ],
+      "id": "il-remote-paper-transmission-workflow",
+      "state": "IL",
+      "path": "/illinois/guides/remote-paper-transmission-workflow/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/illinois/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/illinois/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/illinois/study-guide/",
+          "label": "Illinois Study Guide"
+        },
+        {
+          "href": "/illinois/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/illinois/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "electronic-kba-identity-process",
+      "keyword": "Illinois electronic notary KBA identity proofing",
+      "intent": "Understand electronic identity safeguards",
+      "title": "Illinois Electronic Identity Checks Beyond a Video Image",
+      "description": "Study credential analysis, real-time comparison and dynamic KBA without confusing commissioning exam rules.",
+      "h1": "Electronic Identity Verification for an Illinois Remote Principal",
+      "kicker": "Electronic identity",
+      "lede": "The commissioning final and the principal's dynamic identity assessment serve different purposes. Their numbers and participants should be kept distinct.",
+      "sections": [
+        {
+          "heading": "Build the documentary identity chain",
+          "body": "For the statutory electronic route where personal knowledge is not used, §6A-103(b)(2) combines remote presentation of a government credential, front-and-back credential analysis and dynamic knowledge-based authentication. Rule 176.835 describes third-party analysis and the notary's real-time visual comparison of credential and principal. A successful automated result is a component of the procedure. The notary still needs to see whether the appearing person and credential are consistent."
+        },
+        {
+          "heading": "Apply the dynamic quiz requirements",
+          "body": "Rule 176.835(c) requires at least five questions derived from the principal's personal history or identity, at least five answer choices per question, at least 80% correct and completion within two minutes. These are identity-proofing metrics for the remote principal. They differ from the certified commissioning final's 50 questions and 85% passing score. A learner should identify which assessment is being discussed before applying any numerical specification."
+        },
+        {
+          "heading": "Respect the retake boundaries",
+          "body": "After the first failed dynamic quiz, the principal may take one retest within 24 hours. At least 40% of the earlier questions must be replaced. After the second failure, the principal may not retry with the same electronic notary within 24 hours of that failure. A vendor screen offering unlimited immediate tries would need correction to comply with these limits. Paying another service charge does not waive the statutory and regulatory identity procedure."
+        },
+        {
+          "heading": "Preserve independent answers and workflow integrity",
+          "body": "The notary must not be able to see or record the KBA questions or answers. Coaching a principal through displayed answers would undermine this required separation of access. Rule 176.825(c) also requires restarting identity verification if the individual exits the workflow before completing it. A compliant system therefore needs both protected assessment information and a process that recognizes interrupted verification instead of silently resuming at an unverified final step."
+        },
+        {
+          "heading": "Illinois Register, June 16, 2023, adopted Part 176 rules",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Illinois Notary Public Handbook",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May the notary read the KBA questions to help the principal?",
+          "a": "Rule 176.835(c)(8) requires that the notary not be able to see or record the questions or answers."
+        },
+        {
+          "q": "Is 85% the dynamic KBA passing score?",
+          "a": "The dynamic KBA rule requires at least 80%. The 85% figure belongs to the commissioning final."
+        }
+      ],
+      "id": "il-electronic-kba-identity-process",
+      "state": "IL",
+      "path": "/illinois/guides/electronic-kba-identity-process/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/illinois/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/illinois/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/illinois/study-guide/",
+          "label": "Illinois Study Guide"
+        },
+        {
+          "href": "/illinois/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/illinois/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "electronic-record-and-seal-lifecycle",
+      "keyword": "Illinois electronic notary recording retention seal security",
+      "intent": "Preserve electronic records and respond to compromise",
+      "title": "Illinois Electronic Records After the Session Ends",
+      "description": "Maintain recordings, protect exclusive seal access and respond to compromised credentials.",
+      "h1": "Preserving the Illinois Electronic Notarial Record",
+      "kicker": "Electronic security",
+      "lede": "The electronic appointment creates records and security duties that continue after the video closes. An unfinished act can still leave a recording that must be retained.",
+      "sections": [
+        {
+          "heading": "Make the record verifiable",
+          "body": "The electronic signature and seal must be attached or logically associated with the electronic certificate in a manner capable of independent verification and rendering later modification evident. A simple editable image does not establish these safeguards. The electronic certificate also identifies the act's jurisdiction and the audio-video method where used. The notary must be physically within Illinois, with the actual Illinois jurisdiction of the notary's location supplying the venue."
+        },
+        {
+          "heading": "Explain and retain the recording",
+          "body": "Before the electronic audio-video act, the notary informs participating persons that it will be recorded. The recording is additional to the journal entry. Under §6A-104(d), it remains for at least seven years regardless of whether the act was completed. Suppose the principal withdraws before the electronic seal is affixed. That noncompletion does not by itself permit immediate deletion of the recording already created under the statutory procedure."
+        },
+        {
+          "heading": "Protect exclusive access",
+          "body": "The electronic signature and seal remain under the notary's exclusive control. Another employee cannot use them to cover an appointment, even if experienced with the platform. Rule 176.815 requires protected authentication, and the Act restricts disclosure of access information. Secure journal backups and protections against unauthorized access also continue beyond the live session. Employer ownership of a computer does not turn the notary's seal credential into a shared office login."
+        },
+        {
+          "heading": "Respond to a compromised seal",
+          "body": "Section 3-101(d)(2) requires notice to appropriate law enforcement, the technology vendor and the Secretary no later than the next business day after theft, compromise or vandalism of the electronic signature or seal. Section 3-101(c) requires stopping electronic acts when the device or technology is ineffective or insecure until the specified replacement and notice steps are completed. A suspected exposure should therefore be handled as a security event with the actual statutory recipients and timing."
+        },
+        {
+          "heading": "Illinois Register, June 16, 2023, adopted Part 176 rules",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Illinois Notary Public Handbook",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can an unfinished electronic act's recording be deleted immediately?",
+          "a": "Section 6A-104(d) requires at least seven years of retention regardless of completion."
+        },
+        {
+          "q": "Who must receive notice of a compromised electronic seal?",
+          "a": "Appropriate law enforcement, the technology vendor and the Secretary, no later than the next business day."
+        }
+      ],
+      "id": "il-electronic-record-and-seal-lifecycle",
+      "state": "IL",
+      "path": "/illinois/guides/electronic-record-and-seal-lifecycle/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/illinois/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/illinois/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/illinois/study-guide/",
+          "label": "Illinois Study Guide"
+        },
+        {
+          "href": "/illinois/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/illinois/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "ME": [
+    {
+      "slug": "family-interests-in-the-record",
+      "keyword": "Maine notary family conflict record beneficiary",
+      "intent": "Screen the signer and the record",
+      "title": "Maine Family Conflicts Beyond the Appearing Signer",
+      "description": "Apply Maine's relationship and record-interest rules to everyday office transactions.",
+      "h1": "Screening Family Interests in Maine Notarizations",
+      "kicker": "Conflict analysis",
+      "lede": "The person at the desk is only one part of Maine's conflict review. The record's parties and direct beneficiaries can independently prevent the act.",
+      "sections": [
+        {
+          "heading": "Check the person receiving the act",
+          "body": "Section 1904(3)(A) prohibits acts for the listed relatives, including a spouse, domestic partner, parent, sibling, child, in-law and step or half relative. Imagine an office assistant whose half sibling asks for an acknowledgment of an unrelated business document. The absence of a financial benefit to the notary does not erase the listed relationship. Charging no fee also does not change who receives the act. The officer should arrange for a different authorized notarial officer."
+        },
+        {
+          "heading": "Read the parties and beneficiaries",
+          "body": "A second customer is unrelated to the notary but presents a record granting the notary's child a direct beneficial interest. Section 1904(3)(B) independently addresses the officer's and listed relatives' party status or direct beneficial interests. The child need not be physically present for that conflict to matter. The transaction should therefore be screened from its contents and participants instead of relying only on the surname or relationship of the person requesting service."
+        },
+        {
+          "heading": "Preserve the corporate provision's boundaries",
+          "body": "Section 1904(4) allows specified acts by an officer associated with a bank or corporation. It also expressly preserves restrictions when that officer is a party individually or as the corporation's representative. A bank employee's routine acknowledgment of another person's instrument presents different facts from acknowledging an instrument to which the employee is a party. Corporate employment should be evaluated under the actual provision while the officer continues checking all other act requirements."
+        },
+        {
+          "heading": "Use the statute's consequence language",
+          "body": "Section 1904(6) describes acts violating the specified family, corporate or petition-conflict provisions as voidable. That term should be used accurately when explaining the rule. It does not give the notary permission to proceed merely because a later challenge may be needed. The practical task is to identify and avoid the disqualifying conflict before the certificate is executed. A customer's waiver or an employer's deadline does not remove the statutory prohibition."
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1904",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1904.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does an unrelated signer eliminate every family conflict?",
+          "a": "No. A listed relative's party status or direct beneficial interest in the record is independently relevant."
+        },
+        {
+          "q": "Are half relatives included?",
+          "a": "Section 1904(3)(A) expressly includes step and half relatives."
+        }
+      ],
+      "id": "me-family-interests-in-the-record",
+      "state": "ME",
+      "path": "/maine/guides/family-interests-in-the-record/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maine/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maine/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maine/study-guide/",
+          "label": "Maine Study Guide"
+        },
+        {
+          "href": "/maine/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maine/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "initiative-circulator-and-remote-restrictions",
+      "keyword": "Maine notary initiative petition circulator oath",
+      "intent": "Separate campaign conflicts from remote exclusions",
+      "title": "Two Separate Screens for Maine Petition Oaths",
+      "description": "Distinguish promotion conflicts from the election-specific remote prohibitions.",
+      "h1": "Maine Petition Oaths Need Two Different Checks",
+      "kicker": "Petition work",
+      "lede": "A circulator's request can raise both a conflict question and a remote-eligibility question. Satisfying one screen does not settle the other.",
+      "sections": [
+        {
+          "heading": "Identify the measure and additional services",
+          "body": "Section 1904(5) bars the officer from administering an initiative or people's-veto circulator oath or affirmation when the officer also provides nonnotarial services to initiate or promote that same effort. Suppose a campaign organizer drafts promotional material and then offers to notarize the effort's circulator affidavits. The officer's additional campaign services are central to this prohibition. Calling the declaration an affirmation does not avoid a provision covering both forms."
+        },
+        {
+          "heading": "Check the separate remote exclusions",
+          "body": "Section 1915(16) separately excludes the listed candidate, candidate-petition circulator, initiative-application and initiative/people's-veto circulator acts from remote performance. An officer with no promotional role can therefore still lack remote authority for a listed petition oath. Approved technology, personal knowledge of the signer and physical presence of the officer in Maine do not remove an express act-specific exclusion from the remote statute."
+        },
+        {
+          "heading": "Perform the lawful in-person ceremony",
+          "body": "When a listed oath uses its lawful in-person procedure, the officer still identifies the person and actually administers the oath or affirmation required for the statement. The official course identifies omitting that verbal declaration as a common error. A preprinted statement that a person swore before the officer does not perform the ceremony itself. Certificate facts must follow what occurred, and a signature already on a verification is handled under the course's signing-again instruction."
+        },
+        {
+          "heading": "Preserve the review limits",
+          "body": "Maine's validity provision preserves the Secretary's ability to reject candidate, initiative or referendum petitions for improper notarization. It also does not validate acts by someone lacking authority. These limitations make accurate screening consequential even where a general validity provision may protect some acts from other technical defects. The officer should apply the actual conflict, appearance and election-specific requirements before certifying a circulator's statement."
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1904",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1904.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1915",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1915.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Secretary of State Notary Public Course of Study",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mobile.maine.gov/sos/sites/maine.gov.sos/files/content/assets/courseofstudy.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title4 §1927",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1927.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does no promotional role automatically permit a remote circulator oath?",
+          "a": "No. Section 1915(16) separately excludes the listed election acts remotely."
+        },
+        {
+          "q": "Can affirmation wording avoid the promotion conflict?",
+          "a": "Section 1904(5) covers both oath and affirmation."
+        }
+      ],
+      "id": "me-initiative-circulator-and-remote-restrictions",
+      "state": "ME",
+      "path": "/maine/guides/initiative-circulator-and-remote-restrictions/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maine/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maine/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maine/study-guide/",
+          "label": "Maine Study Guide"
+        },
+        {
+          "href": "/maine/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maine/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "remote-tangible-declaration-method",
+      "keyword": "Maine remote notarization tangible record declaration",
+      "intent": "Follow the statutory absent-paper-record method",
+      "title": "Connecting a Maine Remote Tangible Record",
+      "description": "Track the declaration, four-day transmission and certificate steps for the statutory method.",
+      "h1": "Following Maine's Remote Tangible Declaration Procedure",
+      "kicker": "Remote records",
+      "lede": "A paper instrument outside the officer's physical presence needs a reliable same-record procedure. Section 1915(5) supplies one carefully defined method.",
+      "sections": [
+        {
+          "heading": "Record the principal's execution",
+          "body": "Under the subsection 5 method, the remotely located individual signs both the record and a declaration during the audiovisual recording. The declaration is part of or securely attached to the record and identifies the connection between the instrument and the remote act. Consider a principal signing a private business instrument at home while the approved officer remains in Maine. The procedure should record the required execution of both components rather than only a final signature-page image."
+        },
+        {
+          "heading": "Send both components on time",
+          "body": "The principal sends the record and declaration to the officer no later than four days after the act. This deadline belongs to the specified declaration procedure and should not be confused with another state's paper-remote transmission rules. Sending the declaration alone does not provide the entire record-declaration package. The officer's reasonable same-record confirmation remains a statutory requirement, so completeness matters alongside the timing of the shipment."
+        },
+        {
+          "heading": "Complete the certificate after receipt",
+          "body": "After receiving the record and declaration, the officer executes the certificate containing the prescribed or substantially similar statement about witnessing the individual sign by communication technology. Subsection 6 treats a compliant act as contemporaneous and effective on the date the principal signed the declaration. This is a specific statutory sequence. A certificate issued before the officer has the required received papers would bypass the described receipt step."
+        },
+        {
+          "heading": "Keep this method within its statutory scope",
+          "body": "Subsection 7 preserves another procedure that satisfies subsection 3(B)'s same-record requirement. The declaration method therefore should not be described as the only conceivable procedure. Any alternative still needs to satisfy the applicable law and approval standards. The officer also needs identity evidence, an audiovisual recording, the required journal and technology notation, and must check the excluded remote acts before using any remote paper workflow."
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1915",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1915.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1920",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1920.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "When are the record and declaration sent under this method?",
+          "a": "No later than four days after the notarial act."
+        },
+        {
+          "q": "Which date makes a compliant subsection 5 act effective?",
+          "a": "Subsection 6 identifies the date the principal signed the required declaration."
+        }
+      ],
+      "id": "me-remote-tangible-declaration-method",
+      "state": "ME",
+      "path": "/maine/guides/remote-tangible-declaration-method/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maine/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maine/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maine/study-guide/",
+          "label": "Maine Study Guide"
+        },
+        {
+          "href": "/maine/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maine/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "credible-witness-and-directed-signature",
+      "keyword": "Maine notary credible witness directed signature",
+      "intent": "Keep identity and signing assistance distinct",
+      "title": "Identity Witnesses and Directed Signers in Maine",
+      "description": "Understand how a sworn identity witness differs from a person signing at a disabled principal's direction.",
+      "h1": "Two Different Helping Roles at a Maine Appointment",
+      "kicker": "Signer assistance",
+      "lede": "A companion may help establish identity or may affix a directed signature. Each role needs its own statutory foundation.",
+      "sections": [
+        {
+          "heading": "Establish the credible witness's function",
+          "body": "Section 1907(2)(B) permits identity verification on oath or affirmation by a credible witness who personally appears. The witness is known to the officer or identified through the listed passport, driver's-license or government nondriver-card route. A friendly introduction does not itself provide that solemn verification. The companion must actually vouch for the individual's identity under the procedure, while the officer remains responsible for being satisfied of identity."
+        },
+        {
+          "heading": "Use additional assurance when needed",
+          "body": "Personal knowledge under section 1907(1) comes from dealings sufficient to give reasonable certainty of identity. A witness's relationship to the principal does not automatically become the officer's personal knowledge. Section 1907(3) permits requiring additional information or credentials necessary to assure identity. If the available evidence leaves the officer uncertain, the officer should resolve that uncertainty through a lawful method before completing the requested act."
+        },
+        {
+          "heading": "Document a directed third-person signature",
+          "body": "Section 1909 addresses a person physically unable to sign due to disability. The principal may direct an individual other than the notarial officer to sign the principal's name. The officer inserts the statutory or similar statement identifying who affixed the signature and at whose direction. This is an execution procedure, not a substitute for identifying the principal or performing the actual acknowledgment, verification or other requested notarial act."
+        },
+        {
+          "heading": "Assess participation separately from credentials",
+          "body": "A credential or witness can support identity while leaving a capacity or coercion concern unresolved. Section 1908 permits refusal when the officer is not satisfied that the individual has competence or capacity or that the signature is knowingly and voluntarily made. A companion's insistence cannot settle that judgment. The appointment should preserve the principal's own lawful participation, with a certificate accurately recording the act and any required directed-signature statement."
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1907",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1907.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1909",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1909.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1908",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1908.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must a credible witness always be personally known to the officer?",
+          "a": "Maine also permits identification of the appearing witness through the specified credentials."
+        },
+        {
+          "q": "Can the notarial officer be the directed signer under section 1909?",
+          "a": "The statute specifies an individual other than the notarial officer."
+        }
+      ],
+      "id": "me-credible-witness-and-directed-signature",
+      "state": "ME",
+      "path": "/maine/guides/credible-witness-and-directed-signature/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maine/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maine/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maine/study-guide/",
+          "label": "Maine Study Guide"
+        },
+        {
+          "href": "/maine/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maine/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "private-copy-versus-official-record",
+      "keyword": "Maine notary copy certification public vital records",
+      "intent": "Screen copy eligibility before accuracy",
+      "title": "Maine Copy Certification Starts with the Record",
+      "description": "Distinguish eligible private sources from public, vital and facially restricted records.",
+      "h1": "Screening a Maine Copy-Certification Request",
+      "kicker": "Copy records",
+      "lede": "A perfect photocopy can still be outside the authority described in Maine's official course. Identify the source category before certifying its reproduction.",
+      "sections": [
+        {
+          "heading": "Check the source category",
+          "body": "The official course excludes certified or attested notarial copies of public records and vital records. It also identifies publicly recorded documents available as certified copies from an official source and records stating on their face that copying is illegal. A customer bringing a birth certificate needs the authorized vital-record source. The notary's accurate copier and willingness to waive a fee do not change the source's legal category."
+        },
+        {
+          "heading": "Verify the eligible original and custodian",
+          "body": "For an eligible private record, the course starts with identifying the custodian if not personally known and observing that the presented source is an original. The officer may make or witness the photocopy, and the course also provides a carefully compared-copy certificate. A claim that a copy was compared with the original must be based on the original actually presented. The certificate should describe the procedure the officer performed."
+        },
+        {
+          "heading": "Review the complete reproduction",
+          "body": "Section 1905(4) requires a full, true and accurate transcription or reproduction. A six-page private agreement missing its exhibit, a cropped handwritten term or an unreadable scanned paragraph cannot support the statement that the complete record was accurately reproduced. The officer should inspect the whole scope covered by the certificate. A matching title or signature page alone does not establish that every part of a multipage source was copied."
+        },
+        {
+          "heading": "State the limited conclusion truthfully",
+          "body": "The official course explains that copy certification does not guarantee the original's authenticity, contents or effects. It also distinguishes this act from taking an oath or acknowledgment. The officer completes the appropriate certificate and securely attaches it to the photocopy, with the course describing a staple that leaves evidence of removal. Accurate wording and attachment preserve the limited reproduction determination without promising legal outcomes beyond the act."
+        },
+        {
+          "heading": "Maine Secretary of State Notary Public Course of Study",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mobile.maine.gov/sos/sites/maine.gov.sos/files/content/assets/courseofstudy.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1905",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1905.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can a notary certify a vital-record copy because it is exact?",
+          "a": "The official course excludes notarial certified copies of vital records."
+        },
+        {
+          "q": "Does copy certification prove the original's statements are true?",
+          "a": "The course limits the act to copy accuracy and does not guarantee contents or effects."
+        }
+      ],
+      "id": "me-private-copy-versus-official-record",
+      "state": "ME",
+      "path": "/maine/guides/private-copy-versus-official-record/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maine/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maine/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maine/study-guide/",
+          "label": "Maine Study Guide"
+        },
+        {
+          "href": "/maine/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maine/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "electronic-record-paper-copy-recording",
+      "keyword": "Maine electronic record tangible copy register deeds",
+      "intent": "Understand accurate printouts and recording",
+      "title": "From an Electronic Maine Record to a Tangible Copy",
+      "description": "Study accurate-copy certification and the register of deeds' conditioned acceptance provision.",
+      "h1": "Paper Copies of Electronic Maine Records",
+      "kicker": "Electronic records",
+      "lede": "Maine expressly addresses accurate tangible copies of electronic records. The officer's certification and the recording office's acceptance have different roles.",
+      "sections": [
+        {
+          "heading": "Use the express accurate-copy authority",
+          "body": "Section 1904(2) permits a notarial officer to certify that a tangible copy of an electronic record accurately copies that record. Suppose a business needs a paper reproduction of a completed electronic instrument. The officer compares the actual electronic source with the tangible output and determines accuracy. A printout missing a table or signature-related page cannot be treated as an accurate copy merely because its opening title matches."
+        },
+        {
+          "heading": "Preserve the notarial certificate",
+          "body": "Section 1916(6) requires the certificate to be part of or securely attached to a tangible record and properly affixed or logically associated with an electronic record. The certificate itself includes the required officer identity, date, jurisdiction and other applicable fields. The paper reproduction and its certificate should therefore preserve their connection. A detached statement available for attachment to any later printout would not establish the specific record being certified."
+        },
+        {
+          "heading": "Read may-accept precisely",
+          "body": "Section 1921(3) allows a register of deeds to accept a tangible copy of an electronic record containing a notarial certificate as meeting an original-record requirement when the executing officer certifies the copy's accuracy. The statute uses may and supplies conditions. It should not be rewritten as unconditional mandatory acceptance of every printout. A recording-office decision also does not turn the copy certificate into a guarantee of ownership or the transaction's substantive validity."
+        },
+        {
+          "heading": "Keep authority certification separate",
+          "body": "If the record will be used abroad, the course describes apostille or authentication as a Secretary-issued certification of the notary's or public officer's authority. That is distinct from certifying the printout's accuracy. The notary's own seal does not issue an apostille, and neither process is a general promise that the underlying business terms will be enforced. The requester should identify the actual required record and authority certifications for the intended use."
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1904",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1904.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1921",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1921.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1916",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1916.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Secretary of State Notary Public Course of Study",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mobile.maine.gov/sos/sites/maine.gov.sos/files/content/assets/courseofstudy.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does section 1921 require every register to accept every printout?",
+          "a": "It says a register may accept the stated qualifying accurately certified tangible copy."
+        },
+        {
+          "q": "Does a copy certificate issue an apostille?",
+          "a": "No. The official course describes apostilles as Secretary-issued authority certifications."
+        }
+      ],
+      "id": "me-electronic-record-paper-copy-recording",
+      "state": "ME",
+      "path": "/maine/guides/electronic-record-paper-copy-recording/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maine/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maine/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maine/study-guide/",
+          "label": "Maine Study Guide"
+        },
+        {
+          "href": "/maine/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maine/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "journal-retirement-and-repository",
+      "keyword": "Maine notary journal retirement retention",
+      "intent": "Preserve records after leaving office",
+      "title": "A Maine Journal's Life After Retirement",
+      "description": "Track the last-entry retention date, location notice and permitted repository transfer.",
+      "h1": "Retaining Maine Journals After Office Ends",
+      "kicker": "Record continuity",
+      "lede": "Leaving the office does not end the journal's statutory life. The final recorded act supplies a separate retention anchor.",
+      "sections": [
+        {
+          "heading": "Find the actual last act",
+          "body": "Section 1920 requires ten years of retention after the performance of the last act chronicled in the journal. Imagine a volume opened twelve years ago and used until this spring. Its oldest entry does not make the whole volume ready for disposal. The notary identifies the final act date and preserves the volume through the statutory period. Buying a new book or ending employment does not replace that date."
+        },
+        {
+          "heading": "Keep format and content usable",
+          "body": "A tangible journal is a permanent bound register with numbered pages, and an electronic journal is permanent and tamper-evident under applicable rules. Required entries are made contemporaneously and preserve the specified transaction and identification details. Retention should preserve the actual journal that records those acts. A stack of retyped summaries or a silently editable replacement file should not be assumed to provide the same statutory record."
+        },
+        {
+          "heading": "Report location or use the authorized transfer",
+          "body": "On resignation, revocation or suspension, subsection 5 calls for retention under the normal period and notice to the Secretary of the journal's location. Subsection 6 permits transmission to the Secretary or a repository approved by the Secretary instead. An inexpensive storage company is not automatically an approved repository. The former officer should identify the statutory recipient or maintain the journal and supply the required location information."
+        },
+        {
+          "heading": "Plan for loss and the responsible possessor",
+          "body": "Loss or theft triggers prompt notice to the Secretary on discovery. After death or adjudication of incompetency, the representative, guardian or other knowing possessor must transmit the journal to the Secretary or an approved repository. The course also states that the journal belongs to the notary even if an employer paid. These provisions support continuity beyond payroll status, office moves and the original officer's ability to handle the volume personally."
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1920",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1920.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Secretary of State Notary Public Course of Study",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mobile.maine.gov/sos/sites/maine.gov.sos/files/content/assets/courseofstudy.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does retirement start a new shorter retention period?",
+          "a": "The statutory anchor remains ten years after the last act chronicled."
+        },
+        {
+          "q": "May any storage company serve as the statutory alternative repository?",
+          "a": "Section 1920(6) specifies a repository approved by the Secretary."
+        }
+      ],
+      "id": "me-journal-retirement-and-repository",
+      "state": "ME",
+      "path": "/maine/guides/journal-retirement-and-repository/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maine/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maine/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maine/study-guide/",
+          "label": "Maine Study Guide"
+        },
+        {
+          "href": "/maine/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maine/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "fees-advertising-and-original-access",
+      "keyword": "Maine notary fee written disclosure advertising",
+      "intent": "Manage the customer-facing service terms",
+      "title": "Maine Service Fees, Advertising and Original Records",
+      "description": "Connect advance fee agreement with truthful advertising and protection of customer originals.",
+      "h1": "Customer-Facing Duties for a Maine Notary",
+      "kicker": "Service practices",
+      "lede": "The appointment begins before the certificate is signed. Fee agreement and advertising set expectations about the service the commission actually authorizes.",
+      "sections": [
+        {
+          "heading": "Agree to the fee before the act",
+          "body": "The official course states that Maine does not statutorily set ordinary notarial service fees. It requires any proposed notarial fee to be disclosed in writing and agreed to by the individual before the act. A business that first reveals the charge after notarization has missed that advance process. Written disclosure alone also leaves a step incomplete when the individual has not agreed before service."
+        },
+        {
+          "heading": "Advertise the actual limited role",
+          "body": "Section 1926 says the commission does not authorize legal drafting, legal advice or practice, immigration expertise or representation, or compensation for those listed activities. Nonattorney notaries must avoid the restricted notario titles and false or deceptive advertising. An advertisement claiming the state guarantees the notary's legal advice would therefore misdescribe the role. A customer's willingness to pay does not expand the authority granted by the commission."
+        },
+        {
+          "heading": "Supply the required limitation statement",
+          "body": "The covered nonattorney service advertisement includes the statutory or authorized limitation statement prominently in each language used. The statute reaches the stated oral and recorded representations, including broadcast, print and internet media. Its limited size fallback applies under the specified circumstances and requires prominent display or provision at the place before the act. An English-only advertisement should not be assumed exempt from the general Maine notice requirement."
+        },
+        {
+          "heading": "Protect the customer's original",
+          "body": "Except as otherwise allowed by law, section 1926(5) prohibits withholding access to or possession of the original record provided for service. A fee dispute does not itself give the commission an automatic lien over the customer's document. The journal and any lawful service records serve their own purposes. The original remains subject to the statutory access protection, which should be respected even when the office is trying to collect an agreed charge."
+        },
+        {
+          "heading": "Maine Secretary of State Notary Public Course of Study",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mobile.maine.gov/sos/sites/maine.gov.sos/files/content/assets/courseofstudy.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1926",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1926.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the notary disclose the charge only after service?",
+          "a": "The course requires written disclosure and the individual's agreement before the act."
+        },
+        {
+          "q": "Does a notary commission generally authorize keeping an original to collect a fee?",
+          "a": "Section 1926(5) generally prohibits withholding the provided original except as otherwise allowed by law."
+        }
+      ],
+      "id": "me-fees-advertising-and-original-access",
+      "state": "ME",
+      "path": "/maine/guides/fees-advertising-and-original-access/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maine/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maine/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maine/study-guide/",
+          "label": "Maine Study Guide"
+        },
+        {
+          "href": "/maine/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maine/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "certificate-facts-and-paper-stamp",
+      "keyword": "Maine notarial certificate stamp optional paper",
+      "intent": "Keep certificate duties distinct from stamp guidance",
+      "title": "Maine Paper Certificates Need More Than a Stamp",
+      "description": "Read the mandatory certificate fields alongside optional ordinary-paper stamp guidance.",
+      "h1": "A Complete Maine Paper Certificate",
+      "kicker": "Certificate accuracy",
+      "lede": "Optional stamp use for ordinary in-person paper work does not make the certificate optional. Each required field describes the act and officer.",
+      "sections": [
+        {
+          "heading": "Complete the mandatory certificate",
+          "body": "Section 1916 requires contemporaneous certificate execution, the officer's signature and date, jurisdiction, office title and legibly printed or typed name. A notary public also includes commission expiration and signs in the manner on file with the Secretary. A stamp-only mark on a document does not supply all these requirements. The officer should identify the act being certified and complete the statutory information from the actual appointment facts."
+        },
+        {
+          "heading": "Use the actual act date and jurisdiction",
+          "body": "A contract can be drafted in Portland and acknowledged in another Maine county on a later day. The certificate describes the performed notarial act, so the preparation location and contract date do not automatically fill its venue and date. The statute also bars affixing or associating the officer's signature before the act has been performed. A customer's deadline does not authorize advance certification of a promised future appearance."
+        },
+        {
+          "heading": "Connect the certificate to the specific record",
+          "body": "For a tangible record, the certificate must be part of or securely attached to the record. For an electronic record, it is affixed or logically associated under the applicable standards. If a document has no certificate, the FAQ says the signer chooses which act to request, with examples or recipient consultation available. The officer should avoid silently selecting a convenient legal act or issuing a loose certificate that can be reused on unrelated records."
+        },
+        {
+          "heading": "Apply the stamp guidance to the right category",
+          "body": "The official course and FAQ make stamp use optional for ordinary in-person paper acts while strongly suggesting it unless prohibited. They require stamps for electronic and remote acts. A kept official stamp contains the specified commissioned name, Maine jurisdiction and expiration information and is reproducible with the record. The stamp's presence does not prove that appearance, identity or the verbal ceremony actually occurred, and it does not replace the officer's certificate."
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1916",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1916.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1918",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1918.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Secretary of State notary FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.maine.gov/sos/cec/notary/faqnp.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Secretary of State Notary Public Course of Study",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mobile.maine.gov/sos/sites/maine.gov.sos/files/content/assets/courseofstudy.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is the certificate optional when the paper stamp is optional?",
+          "a": "No. Every notarial act must be evidenced by the required certificate."
+        },
+        {
+          "q": "Who chooses the act when a document lacks a certificate?",
+          "a": "The FAQ assigns that decision to the signer, with examples or recipient guidance available."
+        }
+      ],
+      "id": "me-certificate-facts-and-paper-stamp",
+      "state": "ME",
+      "path": "/maine/guides/certificate-facts-and-paper-stamp/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maine/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maine/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maine/study-guide/",
+          "label": "Maine Study Guide"
+        },
+        {
+          "href": "/maine/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maine/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "electronic-format-versus-remote-presence",
+      "keyword": "Maine electronic notarization versus remote appearance",
+      "intent": "Classify format and location correctly",
+      "title": "Electronic Records and Remote Presence in Maine",
+      "description": "Separate in-person electronic work from the approved remote communication procedure.",
+      "h1": "Two Dimensions of a Maine Electronic Appointment",
+      "kicker": "Technology and presence",
+      "lede": "An electronic signature describes format. A remotely located signer describes physical separation. Maine's official guidance addresses both.",
+      "sections": [
+        {
+          "heading": "Classify the appointment before selecting tools",
+          "body": "The FAQ describes in-person electronic notarization using an electronic record and signature while the signer is physically with the officer. It describes remote notarization using an approved technology provider for simultaneous sight-and-sound communication with a distant signer. A keypad used at the officer's desk does not itself make the transaction remote. A distant person's paper instrument can still create remote duties, including the journal and stamp requirements in the official guidance."
+        },
+        {
+          "heading": "Finish the approval process first",
+          "body": "Before electronic or remote service, the officer submits the notice and receives Secretary approval. The FAQ identifies approved technology, provider training and approved-user certification, the officer's law/rule reading certification and signature/stamp example. It says no additional Secretary test is required for this approval, while provider technology training is required. A regular commission and personal familiarity with video apps do not complete that approval process."
+        },
+        {
+          "heading": "Locate the officer and identify the principal",
+          "body": "For remote acts, the officer is physically in Maine and uses the authorized identity alternatives. An abroad principal also needs the statutory United States connection and no foreign prohibition of the signing or statement. The officer reasonably confirms the same record and creates the audiovisual recording. Technology cannot relocate an officer physically outside Maine, and a principal's Maine address does not cure the officer's actual out-of-state position."
+        },
+        {
+          "heading": "Maintain the continuing technology duties",
+          "body": "Section 1921 permits selection of qualifying tamper-evident technologies and says another person cannot require a technology the officer has not selected. The FAQ requires provider-change notice within ten business days. The officer should therefore keep the state record aligned with the actual selected system and training. The remaining record, certificate and excluded-act rules continue to apply after the initial approval, including the election-specific remote prohibitions."
+        },
+        {
+          "heading": "Maine Secretary of State notary FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.maine.gov/sos/cec/notary/faqnp.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1915",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1915.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maine Revised Statutes, Title 4 §1921",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.maine.gov/statutes/4/title4sec1921.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does an electronic signature automatically mean the signer is remote?",
+          "a": "No. The FAQ describes an in-person electronic procedure as well as remote notarization."
+        },
+        {
+          "q": "Can an approved Maine officer perform the remote act while physically elsewhere?",
+          "a": "The remote statute requires the officer to be located in Maine."
+        }
+      ],
+      "id": "me-electronic-format-versus-remote-presence",
+      "state": "ME",
+      "path": "/maine/guides/electronic-format-versus-remote-presence/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maine/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maine/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maine/study-guide/",
+          "label": "Maine Study Guide"
+        },
+        {
+          "href": "/maine/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maine/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "MD": [
+    {
+      "slug": "provider-exam-and-retest-standards",
+      "keyword": "Maryland notary examination minimum questions passing",
+      "intent": "Understand provider assessment standards",
+      "title": "Maryland Provider Finals and Retest Standards",
+      "description": "Read the verified minimum count, passing threshold, question bank and retest provisions.",
+      "h1": "Reading Maryland's Provider Examination Standards",
+      "kicker": "Certified assessment",
+      "lede": "Maryland regulates the provider's examination design. Minimum counts and separate certificates matter when judging whether an advertised assessment meets the rules.",
+      "sections": [
+        {
+          "heading": "Read minimum as minimum",
+          "body": "COMAR 01.02.08.16 F requires an examination containing at least twenty multiple-choice questions. It does not establish a universal exact twenty-question count. Each question has four answers and one correct choice. Consider a provider advertising a final shorter than twenty questions. The minimum-count rule is directly relevant. A provider administering more questions is evaluated under the full standards rather than rejected solely for exceeding the minimum."
+        },
+        {
+          "heading": "Distinguish the bank from the administered final",
+          "body": "Regulation.16 E requires a robust bank of at least fifty different questions so repeat applicants do not receive a statistically sufficient number of previously attempted items. This bank is distinct from the number presented in an individual session. A learner should therefore identify whether a figure concerns stored items or the actual examination. The regulation also calls for comparable difficulty and coverage of handbook laws, regulations, ethics and procedures."
+        },
+        {
+          "heading": "Separate completion from passing",
+          "body": "Regulation.15 requires a course-completion certificate and a passing certificate for an examination score of at least eighty percent. The new-applicant instructions require electronic copies of both records. A first applicant who has only attended the course has not yet supplied the separate examination result. Renewal follows the course requirement in section 18-102 and the dedicated renewal page, with the inconsistent broad FAQ paragraph disclosed as a source discrepancy."
+        },
+        {
+          "heading": "Use the retest and scoring provisions",
+          "body": "A course completer who scores below eighty percent qualifies for an opportunity to retest under regulation.15 E. Regulation.16 I requires immediate scoring at the conclusion of the session. The opened provisions do not establish a uniform examination clock, and this learning pack does not invent one. An applicant should use the authorized provider's current instructions for delivery arrangements while checking that the regulatory result and certificate requirements are met."
+        },
+        {
+          "heading": "COMAR 01.02.08.15 Course Provider Responsibilities",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.15",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "COMAR 01.02.08.16 Course and Examination Standards",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.16",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland Secretary of State new-applicant instructions",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.maryland.gov/Notary/Pages/NewApplicant.aspx",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-102",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/2026RS/Statute_Web/gsg/18-102.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is every Maryland final exactly twenty questions?",
+          "a": "The regulation requires at least twenty questions."
+        },
+        {
+          "q": "What passing threshold is verified?",
+          "a": "COMAR requires at least eighty percent correct for the Certificate of Passing."
+        }
+      ],
+      "id": "md-provider-exam-and-retest-standards",
+      "state": "MD",
+      "path": "/maryland/guides/provider-exam-and-retest-standards/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maryland/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maryland/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maryland/study-guide/",
+          "label": "Maryland Study Guide"
+        },
+        {
+          "href": "/maryland/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maryland/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "credential-number-in-the-journal",
+      "keyword": "Maryland notary journal identification number",
+      "intent": "Apply the Maryland credential-number duty",
+      "title": "Maryland's Credential Number Belongs in the Journal",
+      "description": "Connect statutory identification descriptions with COMAR's additional number requirement.",
+      "h1": "Recording Maryland Identification Evidence Accurately",
+      "kicker": "Journal evidence",
+      "lede": "The statutory journal field list and the general responsibilities regulation work together. Read both before configuring a journal template.",
+      "sections": [
+        {
+          "heading": "Begin with the statutory fields",
+          "body": "Section 18-219(c) requires a contemporaneous entry including the identity basis. When satisfactory evidence is used, the notary briefly describes the method and credential, including its issuance and expiration dates. The entry also identifies the individual, record, act, date/time, fee and appearance mode. A template that captures only a client's initials and a generic checked-ID mark would omit several of these required facts."
+        },
+        {
+          "heading": "Apply the regulation's express addition",
+          "body": "COMAR 01.02.08.08 C requires the identification number associated with a credential used under the cited ordinary and remote identity provisions. This supplies the legal basis for the number field also listed in the official FAQ. A notary who has worked in another state should check Maryland's actual rule before disabling that field. The legal question is the requirement governing the Maryland act and the credential actually used."
+        },
+        {
+          "heading": "Record the actual method",
+          "body": "Personal knowledge has a separate statutory journal statement. The notary should not invent a credential inspection when the identity basis was genuine personal knowledge. Conversely, an actual credential-based method requires the applicable credential details and number. For remote witness or documentary methods, the regulation's cited provisions must be considered. Accurate method selection makes the journal a usable account of what supported this individual's identity at this act."
+        },
+        {
+          "heading": "Preserve the whole transaction record",
+          "body": "The journal also indicates whether appearance was physical or through communication technology. Remote recordings are additional records with their own retention rules. A recording does not make the journal's identity fields optional, and an elaborate journal does not remove the separate remote recording duty. The notary preserves these records through the statutory format and retention requirements, with an accurate contemporaneous entry for the actual performed act."
+        },
+        {
+          "heading": "Maryland State Government §18-219",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-219&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "COMAR 01.02.08.08 Notary Responsibilities",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.08",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland Secretary of State notary FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.maryland.gov/notary/pages/faq.aspx",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does Maryland COMAR require the associated credential number?",
+          "a": "Yes. Regulation.08 C requires it for credentials used under the cited identity provisions."
+        },
+        {
+          "q": "Does a remote recording replace the journal entry?",
+          "a": "The journal and audiovisual recording are separate required records."
+        }
+      ],
+      "id": "md-credential-number-in-the-journal",
+      "state": "MD",
+      "path": "/maryland/guides/credential-number-in-the-journal/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maryland/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maryland/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maryland/study-guide/",
+          "label": "Maryland Study Guide"
+        },
+        {
+          "href": "/maryland/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maryland/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "spouse-interest-and-family-guidance",
+      "keyword": "Maryland notary spouse beneficial interest family",
+      "intent": "Separate mandatory conflicts and official recommendations",
+      "title": "Maryland Spouse Interests and Broader Family Guidance",
+      "description": "Apply the record-based statutory conflict and preserve the FAQ's recommendation status.",
+      "h1": "Reviewing Family-Related Maryland Requests",
+      "kicker": "Conflicts",
+      "lede": "A record can create a prohibited spouse interest even when an unrelated person appears. The FAQ also gives broader family guidance with a different stated status.",
+      "sections": [
+        {
+          "heading": "Screen record parties",
+          "body": "Section 18-203(b) bars the notarial act if the notary or spouse is a party to the record. Imagine an unrelated seller bringing an instrument that names the notary's spouse as a transaction party. The seller's identity and lack of family relationship do not remove that record fact. The officer should examine the statutory involvement before taking the act, with another authorized officer handling a disqualified transaction."
+        },
+        {
+          "heading": "Examine direct beneficial interests",
+          "body": "The same subsection independently addresses the notary's or spouse's direct beneficial interest. An officer need not be named as a party for a direct personal benefit to matter. A complete journal, lawful fee or correct seal does not waive the conflict. The record-interest review therefore belongs alongside the identity and ceremony checks, with the officer avoiding an act that the statute prohibits before executing its certificate."
+        },
+        {
+          "heading": "Preserve the broader recommendation",
+          "body": "The FAQ recommends refraining for immediate family and for matters involving the officer personally, even where the stated legal duty may not require refusal. That advice should remain visible without being rewritten as a categorical statutory ban on every sibling or parent act. The learner should identify both the mandatory notary/spouse party-or-direct-interest rule and the broader official recommendation when assessing a proposed family appointment."
+        },
+        {
+          "heading": "Use the consequence and validity rules precisely",
+          "body": "Section 18-203 describes a violating act as voidable. Section 18-221's general validity provision expressly preserves that conflict rule and other-law challenges to the underlying record or transaction. These provisions should not be used as permission to take a prohibited act. They describe legal consequences and retained remedies. Employer pressure and a customer's waiver do not expand the officer's authority over a conflicted record."
+        },
+        {
+          "heading": "Maryland State Government §18-203",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-203&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland Secretary of State notary FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.maryland.gov/notary/pages/faq.aspx",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-221",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-221&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can an unrelated signer still present a spouse conflict?",
+          "a": "Yes. The spouse's party status or direct beneficial interest in the record independently matters."
+        },
+        {
+          "q": "Is the FAQ's immediate-family advice a blanket statutory prohibition?",
+          "a": "The FAQ presents broader refraining guidance as a recommendation beyond the stated statutory duty."
+        }
+      ],
+      "id": "md-spouse-interest-and-family-guidance",
+      "state": "MD",
+      "path": "/maryland/guides/spouse-interest-and-family-guidance/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maryland/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maryland/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maryland/study-guide/",
+          "label": "Maryland Study Guide"
+        },
+        {
+          "href": "/maryland/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maryland/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "concurrent-directed-signature",
+      "keyword": "Maryland physically unable sign concurrent appearance",
+      "intent": "Support a directed third-person signature",
+      "title": "Concurrent Appearance for Maryland Directed Signatures",
+      "description": "Apply section 18-208 while preserving identity, voluntary direction and certificate accuracy.",
+      "h1": "A Maryland Appointment with a Directed Signer",
+      "kicker": "Accessible execution",
+      "lede": "Physical inability to write can be addressed through the statutory directed-signature procedure. The principal remains an active participant in the appointment.",
+      "sections": [
+        {
+          "heading": "Establish the principal's direction",
+          "body": "Section 18-208 applies when the individual is physically unable to sign a record. The individual appears and directs another individual other than the notarial officer to sign the individual's name. Consider a principal with a hand injury accompanied by an assistant. The direction comes from the principal. The officer should not treat the assistant's convenience or an employer's instruction as a substitute for the principal's participation."
+        },
+        {
+          "heading": "Require concurrent appearance",
+          "body": "The statute requires the directed signer to appear concurrently with the principal before the officer. An assistant arriving alone with a letter and a copy of the principal's identification leaves that stated method incomplete. Appearance and identification should be handled under the applicable act provisions. A person's physical inability to affix a signature does not eliminate the need for the principal's lawful appearance and the required determinations."
+        },
+        {
+          "heading": "Insert the execution statement",
+          "body": "Section 18-208(b) requires the prescribed or similar words identifying who affixed the signature and at whose direction. The statement explains the actual execution method on the record. It is separate from selecting and performing the requested acknowledgment, verification or other act. A certificate or notation should not falsely suggest the officer personally signed the principal's name, which the directed-signer provision expressly excludes."
+        },
+        {
+          "heading": "Assess knowing and voluntary participation",
+          "body": "Section 18-207 permits refusal when the officer is not satisfied of competence/capacity or knowing voluntary signing, unless otherwise prohibited by law. A principal can have an identified assistant while still appearing coerced or unable to understand the execution. The officer's role is to make the required judgments about the actual participant and ceremony. Complete the certificate only after the lawful act and preserve the required journal information."
+        },
+        {
+          "heading": "Maryland State Government §18-208",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-208&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-205",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-205&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-207",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-207&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-215",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-215&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May the notarial officer act as the directed signer?",
+          "a": "Section 18-208 specifies another individual other than the notarial officer."
+        },
+        {
+          "q": "Can the assistant appear without the principal?",
+          "a": "The statutory method requires concurrent appearance with the principal."
+        }
+      ],
+      "id": "md-concurrent-directed-signature",
+      "state": "MD",
+      "path": "/maryland/guides/concurrent-directed-signature/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maryland/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maryland/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maryland/study-guide/",
+          "label": "Maryland Study Guide"
+        },
+        {
+          "href": "/maryland/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maryland/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "classifying-notarial-copy-and-travel-fees",
+      "keyword": "Maryland notary additional copy travel fee",
+      "intent": "Classify regulated service charges",
+      "title": "Maryland Copy and Travel Charges Need Classification",
+      "description": "Distinguish ordinary, remote, additional-copy, reproduction, certification and travel fees.",
+      "h1": "Applying Maryland's Different Fee Categories",
+      "kicker": "Service charges",
+      "lede": "Several lawful services can occur around one appointment. The actual service and the regulation's conditions determine the applicable fee treatment.",
+      "sections": [
+        {
+          "heading": "Identify the original act category",
+          "body": "COMAR 01.02.08.02 A permits no more than eight dollars for an original ordinary act or thirty dollars for a remote act. These are maxima, the notary may charge within the lawful limit. Calling the same excessive notarial charge a convenience fee does not change what service was performed. The journal records the actual fee, and recording an excessive charge does not itself make that charge lawful."
+        },
+        {
+          "heading": "Apply the additional-copy conditions",
+          "body": "Regulation.02 B addresses multiple copies of the same record signed at the same time by the same person or persons. It permits eight dollars per signature on the original or first copy and four dollars per signature on additional copies. A client returning the next week with another copy does not automatically meet the same-time condition. The notary should identify the complete stated transaction facts before using this special fee treatment."
+        },
+        {
+          "heading": "Distinguish reproduction and certification",
+          "body": "Regulation.02 C limits a requested reproduction of a notarized record or journal entry to two dollars per furnished copy. Regulation.02 E permits six dollars for certifying a copy of a record in the journal. A plain photocopy and a certified journal-record copy are different services. The requester and notary should identify what is actually being supplied so the office does not treat every copying request as a new remote act."
+        },
+        {
+          "heading": "Calculate travel under its own rule",
+          "body": "Regulation.02 D permits mileage reimbursement at the prevailing IRS business-travel rate and a travel fee not exceeding five dollars. The five-dollar limit is a separate travel component rather than a per-mile rate. Because the regulation references a prevailing external rate, the applicable current figure should be verified for the actual trip. A historical notebook entry or vendor's marketing suggestion should not silently become the incorporated rate."
+        },
+        {
+          "heading": "COMAR 01.02.08.02 Charges and Fees",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.02",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "COMAR 01.02.08.11 Enforcement",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.11",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-219",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-219&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "When does the four-dollar additional-copy rate apply?",
+          "a": "The same record's copies must be signed at the same time by the same person or persons under the regulation."
+        },
+        {
+          "q": "Is five dollars the mileage rate?",
+          "a": "It is the separate travel-fee ceiling. Mileage uses the prevailing IRS business-travel rate."
+        }
+      ],
+      "id": "md-classifying-notarial-copy-and-travel-fees",
+      "state": "MD",
+      "path": "/maryland/guides/classifying-notarial-copy-and-travel-fees/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maryland/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maryland/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maryland/study-guide/",
+          "label": "Maryland Study Guide"
+        },
+        {
+          "href": "/maryland/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maryland/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "personal-stamp-custody-and-exit",
+      "keyword": "Maryland notary stamp employer custody expiration",
+      "intent": "Protect the device across employment changes",
+      "title": "The Maryland Stamp Remains a Personal Responsibility",
+      "description": "Follow personal control, loss notice and statutory disabling duties.",
+      "h1": "Managing a Maryland Stamping Device through Office Changes",
+      "kicker": "Official devices",
+      "lede": "Employer purchase does not make an individual notary's stamping device a shared office tool. Security duties continue during storage and at the end of authority.",
+      "sections": [
+        {
+          "heading": "Keep personal control despite reimbursement",
+          "body": "Section 18-218 makes each notary responsible for device security and prohibits allowing another person to use it for an act. The FAQ adds that the official stamp belongs to the notary alone even if the employer bought it. A receptionist therefore cannot cover a notary's lunch break with that person's stamp. The employer's expenditure and trust in the receptionist do not transfer the commissioned individual's public authority."
+        },
+        {
+          "heading": "Preserve the correct official identity",
+          "body": "Section 18-217 requires the notary's name and office with appropriate county information and reproducibility with the record. For a nonresident, the qualification county is specified. The commission expiration can be in the stamp or certificate under subsection(b). These are official details rather than decorative branding. A company logo or unrelated county does not replace the individual officer's required identification."
+        },
+        {
+          "heading": "Report loss promptly",
+          "body": "Loss or theft triggers prompt notice to the Secretary upon discovery. The FAQ describes information for the email notice, including the commissioned name, address, county and date of loss or theft, and permits police-report information where available. The duty does not depend on proof that someone already forged a record. The notary should treat discovery of the missing device as the event requiring state notice."
+        },
+        {
+          "heading": "Render the device unusable at the required events",
+          "body": "The statute requires disabling after resignation, revocation, commission expiration or expiration of the device's stated date. The listed methods must make the device unusable. After death or adjudicated incompetency, the responsible representative, guardian or knowing possessor has the disabling duty. An unlocked drawer or usable sale to a coworker does not achieve the specified result merely because the former officer no longer intends to use the stamp."
+        },
+        {
+          "heading": "Maryland State Government §18-218",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-218&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-217",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-217&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland Secretary of State notary FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.maryland.gov/notary/pages/faq.aspx",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does employer payment allow another employee to use the stamp?",
+          "a": "No. The notary retains personal responsibility and may not allow another individual's use for an act."
+        },
+        {
+          "q": "When is loss reported?",
+          "a": "Promptly after discovering the device was lost or stolen."
+        }
+      ],
+      "id": "md-personal-stamp-custody-and-exit",
+      "state": "MD",
+      "path": "/maryland/guides/personal-stamp-custody-and-exit/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maryland/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maryland/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maryland/study-guide/",
+          "label": "Maryland Study Guide"
+        },
+        {
+          "href": "/maryland/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maryland/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "printing-electronic-records-for-recording",
+      "keyword": "Maryland tangible copy electronic record printing",
+      "intent": "Apply electronic printout safeguards",
+      "title": "Maryland Paper Copies of Electronic Records",
+      "description": "Review tamper evidence, supervised printing, detected errors and recording conditions.",
+      "h1": "Certifying a Tangible Maryland Electronic-Record Copy",
+      "kicker": "Electronic records",
+      "lede": "An accurate paper copy of an electronic instrument has a specific statutory procedure. The officer's supervision and integrity determinations are part of the act.",
+      "sections": [
+        {
+          "heading": "Check the electronic source's integrity",
+          "body": "Section 18-204(e) requires the officer to reasonably determine whether the electronic record is in a tamper-evident format. This is more than confirming that a file opens on a screen. Suppose a requester supplies an electronic instrument intended for a paper recording submission. The officer examines the actual source under the statutory condition before treating its printout as an accurate tangible copy."
+        },
+        {
+          "heading": "Control the printing process",
+          "body": "The same provision requires personally printing or supervising printing onto paper or another tangible medium. A customer-supplied printout and a statement that it is correct do not automatically establish that the officer performed this required step. The officer also determines the reproduction is full, true and accurate. Missing pages, tables or other substantive content should be resolved before executing a certificate describing an accurate copy."
+        },
+        {
+          "heading": "Stop on a detected change or error",
+          "body": "The statute prohibits making the certification if the officer detects a change or error in an electronic signature or other information in the electronic record. A matching title or the customer's assurance cannot remove that condition. The officer should avoid signing a certificate that misstates the integrity assessment or the printing procedure. The actual performed steps and detected facts govern what can truthfully be certified."
+        },
+        {
+          "heading": "Read the recording provision with its conditions",
+          "body": "Section 18-220(c) provides a clerk-of-circuit-court acceptance rule for a qualifying tangible copy containing a sufficient certificate and the executing officer's accurate-copy certification. It excludes plats recorded under the cited real-property title. Subsection(d) also identifies conditions for the certificate's prima-facie evidentiary effect. The provision should be applied to its stated record and certificate facts instead of assumed to cover every electronic printout unconditionally."
+        },
+        {
+          "heading": "Maryland State Government §18-204",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-204&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-220",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-220&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-216",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-216&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-215",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-215&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must the officer supervise or perform printing?",
+          "a": "Section 18-204(e)(1)(ii) expressly requires personally printing or supervising it."
+        },
+        {
+          "q": "Can a detected electronic-signature error be ignored?",
+          "a": "The statute prohibits the certification when the stated change or error is detected."
+        }
+      ],
+      "id": "md-printing-electronic-records-for-recording",
+      "state": "MD",
+      "path": "/maryland/guides/printing-electronic-records-for-recording/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maryland/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maryland/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maryland/study-guide/",
+          "label": "Maryland Study Guide"
+        },
+        {
+          "href": "/maryland/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maryland/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "remote-tangible-three-day-method",
+      "keyword": "Maryland remote tangible declaration three days",
+      "intent": "Follow the Maryland tangible declaration sequence",
+      "title": "Maryland's Three-Day Tangible Declaration Method",
+      "description": "Track recorded signing, secure declaration, transmission and certificate execution.",
+      "h1": "Following a Maryland Remote Tangible Record",
+      "kicker": "Remote paper procedure",
+      "lede": "Section 18-214 supplies a defined declaration method for a tangible record outside the notary's physical presence. Its sequence preserves the connection between the live act and the received papers.",
+      "sections": [
+        {
+          "heading": "Record both signatures under the method",
+          "body": "Under subsection(c), the principal signs the tangible record and a declaration during the audiovisual recording. The declaration is part of or securely attached to the record and carries the statutory same-record assurance in substantially the provided form. A notary should plan the record-declaration package before the session so the recording captures both required signing events and the papers remain connected afterward."
+        },
+        {
+          "heading": "Send the complete package within three days",
+          "body": "The principal sends the tangible record and declaration no later than three days after the notarial act. The deadline belongs to Maryland's specified method and is not established by a courier's preferred schedule. Sending only the final signature page would leave the stated record-and-declaration procedure incomplete. Completeness and timing both support the notary's reasonable confirmation that the received instrument is the record involved in the live session."
+        },
+        {
+          "heading": "Execute the certificate after receipt",
+          "body": "After receiving the tangible record and declaration, the notary executes the required certificate with the prescribed or similar statement about witnessing the individual sign by communication technology. Subsection(e) makes a compliant act effective on the declaration-signing date. This is a specific statutory sequence. The later receipt of papers should not be used to invent unrelated certificate facts or omit the required remote-method statement."
+        },
+        {
+          "heading": "Keep the other remote duties in place",
+          "body": "Subsection(f) preserves other procedures satisfying the same-record requirement. Whichever lawful method is used, the notary remains physically in Maryland, establishes identity, records the performance and keeps the required records. The certificate indicates the remote individual and communication technology. An alternative document method does not eliminate the journal, ten-year recording retention or the applicable notification and authorization process."
+        },
+        {
+          "heading": "Maryland State Government §18-214",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-214&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "COMAR 01.02.08.07 Remote Notary Obligations",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.07",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-219",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-219&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "When are both papers transmitted under this method?",
+          "a": "No later than three days after the act."
+        },
+        {
+          "q": "Does subsection(c) prohibit all other record-confirmation procedures?",
+          "a": "Subsection(f) preserves another procedure satisfying the statutory same-record requirement."
+        }
+      ],
+      "id": "md-remote-tangible-three-day-method",
+      "state": "MD",
+      "path": "/maryland/guides/remote-tangible-three-day-method/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maryland/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maryland/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maryland/study-guide/",
+          "label": "Maryland Study Guide"
+        },
+        {
+          "href": "/maryland/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maryland/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "remote-room-and-participant-record",
+      "keyword": "Maryland remote notary all persons physical location",
+      "intent": "Capture the required remote surroundings",
+      "title": "The Maryland Remote Session Includes the Room",
+      "description": "Apply the entire-location and participant-role requirements alongside identity and recording duties.",
+      "h1": "Recording the Remote Location and Participants",
+      "kicker": "Remote session control",
+      "lede": "A clear view of the principal's face is only part of Maryland's remote procedure. COMAR also addresses the physical setting and the other people present.",
+      "sections": [
+        {
+          "heading": "Use technology that captures the required setting",
+          "body": "COMAR 01.02.08.07 A(4) requires technology capable of making an audiovisual record of the entire physical location of the act and all physically present persons. Imagine a principal framed tightly on camera while companions remain outside view. The notary should establish the required technology-supported location record. A pen closeup or silent still image does not provide the broader audiovisual setting described by the regulation."
+        },
+        {
+          "heading": "Identify each person's role",
+          "body": "SubsectionA(5) requires all persons physically with the remote individual to identify themselves and their role in the transaction. The rule is not limited to employees or people who will sign the instrument. Understanding who is present supports an accurate account of the session and the notary's own judgment about the principal's participation. A companion should not remain an unidentified off-camera participant merely because the principal has already shown identification."
+        },
+        {
+          "heading": "Apply identity and voluntary-execution rules separately",
+          "body": "The remote identity statute permits personal knowledge, a qualifying credible witness or the documentary combination of presentation, analysis and proofing. Those methods identify the principal. Section 18-207 separately permits refusal when the officer is unsatisfied of capacity or knowing voluntary signing, subject to other law. An identified principal can still be pressured by a companion. Recording the setting does not remove the officer's responsibility for the actual lawful ceremony."
+        },
+        {
+          "heading": "Retain the performance and state the method",
+          "body": "The notary creates and retains the audiovisual record for at least ten years under COMAR.07. The journal separately records the act, identity evidence, fee and remote appearance mode. The certificate states that a remotely located individual and communication technology were involved. These records preserve different aspects of the appointment. A successful video connection does not by itself establish completion of every required identity, record and certificate step."
+        },
+        {
+          "heading": "COMAR 01.02.08.07 Remote Notary Obligations",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.07",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-214",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-214&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-207",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-207&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-219",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-219&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Who identifies themselves during the remote appointment?",
+          "a": "All persons physically present with the remote individual identify themselves and their roles."
+        },
+        {
+          "q": "Does the audiovisual recording replace the journal?",
+          "a": "The journal remains a separate statutory record of the act."
+        }
+      ],
+      "id": "md-remote-room-and-participant-record",
+      "state": "MD",
+      "path": "/maryland/guides/remote-room-and-participant-record/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maryland/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maryland/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maryland/study-guide/",
+          "label": "Maryland Study Guide"
+        },
+        {
+          "href": "/maryland/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maryland/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "journal-successor-and-approved-storage",
+      "keyword": "Maryland notary journal repository successor retention",
+      "intent": "Preserve journal and recording continuity",
+      "title": "Maryland Records after Resignation or Death",
+      "description": "Review last-act retention, approved storage and separate recording-successor notice.",
+      "h1": "Continuity for Maryland Notarial Records",
+      "kicker": "Record retention",
+      "lede": "The journal and remote recordings can outlast the officer's commission. Their succession and retention provisions should be planned as distinct obligations.",
+      "sections": [
+        {
+          "heading": "Use the last act in the journal",
+          "body": "Section 18-219(a) requires ten years of journal retention after the last act chronicled. A book opened many years ago but used recently remains subject to that later anchor. Retirement, an office move or purchase of a replacement volume does not change it. The journal must preserve the required contemporaneous entries in its compliant tangible or electronic format rather than being replaced by a monthly revenue summary."
+        },
+        {
+          "heading": "Report location after specified cessation",
+          "body": "On resignation, revocation or suspension, subsection(e) requires retention and notice to the Secretary of the journal's location, subject to the approved alternatives. A current or former notary can transmit it to a repository approved by the Secretary or store it through another manner approved in regulations. The statute does not make any cheap storage company automatically qualified. The actual approval supporting the alternative should be established."
+        },
+        {
+          "heading": "Identify the responsible successor",
+          "body": "After death or adjudicated incompetency, the personal representative, guardian or another knowing possessor follows the journal disposition provisions in subsection(g). The person holding the volume should not treat it as ordinary disposable office stationery. The official record continues to serve the acts it chronicles. The statutory recipient or approved storage route preserves continuity when the original officer can no longer maintain the journal personally."
+        },
+        {
+          "heading": "Handle remote recordings under their own provision",
+          "body": "Section 18-214(j) separately addresses recording retention and a guardian, conservator, agent or personal representative who assumes authority over those recordings. That successor notifies the Secretary within thirty days and follows maintenance/storage requirements. The recording period is at least ten years under the statute and COMAR. A journal transfer does not silently satisfy the distinct successor notice for remote recordings, and storage should preserve the actual audiovisual performance record."
+        },
+        {
+          "heading": "Maryland State Government §18-219",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-219&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Maryland State Government §18-214",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-214&enactments=false",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "COMAR 01.02.08.07 Remote Notary Obligations",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.07",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does the journal's purchase date control retention?",
+          "a": "The statute uses ten years after the last act chronicled."
+        },
+        {
+          "q": "What notice applies when a successor assumes remote-recording authority?",
+          "a": "Section 18-214(j)(2) requires notice to the Secretary within thirty days."
+        }
+      ],
+      "id": "md-journal-successor-and-approved-storage",
+      "state": "MD",
+      "path": "/maryland/guides/journal-successor-and-approved-storage/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/maryland/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/maryland/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/maryland/study-guide/",
+          "label": "Maryland Study Guide"
+        },
+        {
+          "href": "/maryland/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/maryland/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "MO": [
+    {
+      "slug": "signature-by-mark-witnesses",
+      "keyword": "Missouri notary signature by mark witnesses",
+      "intent": "Apply the statutory mark procedure",
+      "title": "Missouri Signatures by Mark Need Two Disinterested Witnesses",
+      "description": "Follow mark affixation, witness signatures, notation and the actual notarial act.",
+      "h1": "A Missouri Appointment Involving a Signature by Mark",
+      "kicker": "Execution safeguards",
+      "lede": "A mark has a specific Missouri procedure. The witnesses and explanatory wording preserve how the principal executed the record.",
+      "sections": [
+        {
+          "heading": "Bring the required participants together",
+          "body": "Section 486.645.2 permits certification of a principal's mark when it is affixed in the presence of the notary and two witnesses disinterested in the document. Consider a principal unable to use a conventional written signature who presents a private agreement. The notary first checks the principal's appearance, identity, understanding and free will, and the proposed witnesses' disinterest. A transaction beneficiary should not be treated as disinterested merely because everyone knows each other."
+        },
+        {
+          "heading": "Have the witnesses sign beside the mark",
+          "body": "Both witnesses sign their own names beside the mark. Their observation alone does not complete the statutory execution pattern. This creates a visible record of who observed the principal affix the mark at the ceremony. A witness leaving a telephone number in the journal or promising to sign later would not satisfy the required signatures beside the mark on the instrument."
+        },
+        {
+          "heading": "Insert the below-mark statement",
+          "body": "The notary writes the statutory or required statement below the mark identifying the principal and the two witnesses with their names and addresses. The statement also identifies the notary's participation under section 486.645. It describes the actual method of execution. A fee receipt or generic phrase saying witnessed would omit the details that the statute requires for this particular signing procedure."
+        },
+        {
+          "heading": "Perform the actual notarial act",
+          "body": "The statute then calls for notarizing the mark through acknowledgment, jurat or signature witnessing. Those acts retain their own elements. A jurat includes the actual oath or affirmation, and the certificate must truthfully describe the ceremony. The mark procedure does not by itself select the act, guarantee the agreement's contents or remove the journal duty. Complete the corresponding certificate and contemporaneous record of the lawful act."
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.645",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.645",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.600",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.600",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Secretary of State notary FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://s1.sos.mo.gov/business/notary/notary_faq",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "How many mark witnesses are required?",
+          "a": "Two witnesses disinterested in the document observe affixation with the notary."
+        },
+        {
+          "q": "Do the witnesses sign the record?",
+          "a": "Both sign their own names beside the mark."
+        }
+      ],
+      "id": "mo-signature-by-mark-witnesses",
+      "state": "MO",
+      "path": "/missouri/guides/signature-by-mark-witnesses/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/missouri/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/missouri/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/missouri/study-guide/",
+          "label": "Missouri Study Guide"
+        },
+        {
+          "href": "/missouri/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/missouri/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ordinary-credible-witness-routes",
+      "keyword": "Missouri credible witness one two identification",
+      "intent": "Apply the ordinary identity-witness alternatives",
+      "title": "One Known Witness or Two Identified Witnesses in Missouri",
+      "description": "Study the sworn identity routes and disinterest requirements.",
+      "h1": "Missouri's Ordinary Credible-Witness Arrangements",
+      "kicker": "Identity evidence",
+      "lede": "The statutory witness route is a structured method of identifying a principal. A friendly introduction alone does not complete it.",
+      "sections": [
+        {
+          "heading": "Establish what the witness actually knows",
+          "body": "Section 486.600 defines a credible witness as honest, reliable and impartial, personally knowing the individual and taking an oath or affirmation to vouch for identity. The witness should therefore be able to provide the actual identity assurance required. A person who merely met the principal in the waiting room cannot create that personal knowledge through confidence or a job title."
+        },
+        {
+          "heading": "Use the single-known-witness route",
+          "body": "Under the ordinary satisfactory-evidence definition, one disinterested credible witness can be used when the witness is personally known to the notary and personally knows the principal. The notary's relationship to the witness and the witness's relationship to the principal are both relevant. An unsworn text or a casual introduction from an employer omits the required solemn declaration and should not be recorded as if the statutory witness procedure occurred."
+        },
+        {
+          "heading": "Apply the two-identified-witness alternative",
+          "body": "The same provision offers a route with two disinterested witnesses who each personally know the principal and show the notary qualifying documentary identification. This differs from assuming any one unknown companion will suffice. The ordinary credential definition specifies a current federal, state or tribal document in an understood language with the required features and its passport exception. The notary applies that actual credential standard to the witnesses."
+        },
+        {
+          "heading": "Preserve the method in the journal",
+          "body": "The official FAQ's ordinary journal fields include witness handwritten signature, name and address, and the relied-on identification description when the witness is not personally known. The record should reflect the actual method used and the actual people present. It should not invent an ID inspection or label a transaction beneficiary disinterested. The officer still checks the principal's understanding, free will and direct shared-language communication."
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.600",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.600",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.645",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.645",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Secretary of State notary FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://s1.sos.mo.gov/business/notary/notary_faq",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can one unknown unsworn companion identify the principal under these ordinary routes?",
+          "a": "That arrangement does not satisfy either the stated one-known or two-identified sworn-witness route."
+        },
+        {
+          "q": "May an interested witness qualify?",
+          "a": "The statutory ordinary witness routes require disinterest in the document or transaction."
+        }
+      ],
+      "id": "mo-ordinary-credible-witness-routes",
+      "state": "MO",
+      "path": "/missouri/guides/ordinary-credible-witness-routes/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/missouri/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/missouri/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/missouri/study-guide/",
+          "label": "Missouri Study Guide"
+        },
+        {
+          "href": "/missouri/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/missouri/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "signing-agent-noncontingent-fee",
+      "keyword": "Missouri notary signing agent noncontingent fee",
+      "intent": "Evaluate the signing-agent exception",
+      "title": "Missouri Signing-Agent Fees and the Contingency Condition",
+      "description": "Read the limited exception alongside transaction conflicts and statutory notarial fees.",
+      "h1": "Evaluating a Missouri Signing-Agent Payment",
+      "kicker": "Financial interests",
+      "lede": "Missouri expressly addresses a separate signing-agent fee. Its payment condition matters before the notary relies on the exception.",
+      "sections": [
+        {
+          "heading": "Start with the ordinary financial conflict",
+          "body": "Section 486.645.3 disqualifies a notary who receives direct or indirect consideration exceeding the specified notarial fees as a result of the transaction. The provision includes commissions, advantages, rights, interests, cash and property. A label such as service bonus does not by itself establish that an offered payment fits a lawful exception. The notary should identify what triggers the payment and what the notary stands to receive."
+        },
+        {
+          "heading": "Read the noncontingent exception literally",
+          "body": "Subsection 4 permits a nonnotarial fee for signing-agent services if payment is not contingent upon signing, initialing or notarizing any document. Imagine an agent whose separate service payment is due even when the principal declines execution. Those payment facts address the statutory condition. A bonus payable only after the borrower signs and notarization succeeds presents a contingency that does not fit the exception's stated terms."
+        },
+        {
+          "heading": "Keep the other conflicts in place",
+          "body": "The exception is directed to the identified financial-benefit subdivision. It does not remove the separate party/named-in-document disqualification or the listed family relationships. It also does not remove principal identity, understanding, free will or shared-language communication. A signing agent should therefore review the actual instrument and participants rather than treating an acceptable noncontingent fee arrangement as general permission for every transaction."
+        },
+        {
+          "heading": "Describe the charges accurately",
+          "body": "Ordinary notarial acknowledgment, jurat and witnessing rates remain governed by section 486.685. Travel has its own advance agreement and separate nonmandated explanation. Remote transaction charges have a separate statutory provision when applicable. The notary should identify the actual service supporting each charge and preserve the fee record. A general technology or closing label should not obscure the regulated act or the condition of the signing-agent exception."
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.645",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.645",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.685",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.685",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.1160",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1160",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does every signing-agent fee automatically qualify?",
+          "a": "The statutory exception requires payment independent of signing, initialing or notarizing."
+        },
+        {
+          "q": "Does the exception remove family conflicts?",
+          "a": "It does not remove the statute's separate relationship and party restrictions."
+        }
+      ],
+      "id": "mo-signing-agent-noncontingent-fee",
+      "state": "MO",
+      "path": "/missouri/guides/signing-agent-noncontingent-fee/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/missouri/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/missouri/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/missouri/study-guide/",
+          "label": "Missouri Study Guide"
+        },
+        {
+          "href": "/missouri/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/missouri/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "paper-certificate-correction-return",
+      "keyword": "Missouri notary certificate correction original document",
+      "intent": "Correct the officer's certificate under statute",
+      "title": "Correcting a Missouri Paper Certificate",
+      "description": "Use the original papers, written evidence, ink execution and journal notation.",
+      "h1": "A Documented Missouri Certificate Correction",
+      "kicker": "Certificate integrity",
+      "lede": "A correction should preserve what actually happened at the original act. Section 486.745 provides conditions for correcting the notary's own error or omission.",
+      "sections": [
+        {
+          "heading": "Obtain the original papers",
+          "body": "The original certificate and document return to the notary before correction under subsection 2. Consider a client emailing a photograph of a certificate with an apparent county error. The image may alert the notary, but it does not satisfy the statutory original-return condition. The officer obtains the actual papers rather than sending a newly signed loose certificate for someone else to attach outside the notary's presence."
+        },
+        {
+          "heading": "Verify the actual error",
+          "body": "The notary verifies the mistake by the pertinent journal entry, the document itself or other determinative written evidence. The customer's desired new wording is not automatically proof of the historical act. For example, the venue should reflect where the notary was located during the ceremony, not a county selected later for convenience. The evidence should support the precise factual correction the officer intends to make."
+        },
+        {
+          "heading": "Execute the permitted correction",
+          "body": "The officer legibly corrects the certificate and initials and dates the change in ink, or replaces the original certificate with a correct one. This preserves a record of the officer's action. An anonymous erasure or an unexplained altered date would omit the statutory trace. The certificate also continues to require the official signature/seal, actual date, venue and facts for its particular act under section 486.740."
+        },
+        {
+          "heading": "Append the journal history",
+          "body": "The notary appends the correction's nature and date to the pertinent journal entry. That step connects the later repair to the original act. The correction rule does not authorize inventing an appearance or ceremony that never occurred. Separate paper certificates also retain their evidence-of-detachment attachment and placement requirements. A careful correction preserves both the truthful certificate and the transaction's documented history."
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.745",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.745",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.740",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.740",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.660",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.660",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is an emailed photograph the original-return requirement?",
+          "a": "The statute requires the original certificate and document to return."
+        },
+        {
+          "q": "What is added to the journal?",
+          "a": "A notation of the nature and date of the correction is appended to the pertinent entry."
+        }
+      ],
+      "id": "mo-paper-certificate-correction-return",
+      "state": "MO",
+      "path": "/missouri/guides/paper-certificate-correction-return/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/missouri/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/missouri/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/missouri/study-guide/",
+          "label": "Missouri Study Guide"
+        },
+        {
+          "href": "/missouri/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/missouri/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "employee-fees-and-personal-tools",
+      "keyword": "Missouri employee notary fees employer seal",
+      "intent": "Apply employer fee and custody rules separately",
+      "title": "Missouri Employee Fees and Personal Notary Tools",
+      "description": "Distinguish work-time fee policies, private sharing restrictions and personal device custody.",
+      "h1": "A Missouri Notary at an Employer's Desk",
+      "kicker": "Employment practices",
+      "lede": "The employer may support commissioning and set a lawful work-time fee policy. Missouri separately protects personal notarial tools and defines government-agency fee treatment.",
+      "sections": [
+        {
+          "heading": "Identify the work-time charging policy",
+          "body": "Section 486.695 permits an employer to prohibit an employee-notary from charging for acts on the employer's time. The policy must respect the stated nondiscrimination requirement. An office can therefore arrange free lawful service during working hours without treating the statutory maximum as a compulsory charge. The employee still performs the actual identity, ceremony, certificate and journal duties for those free acts."
+        },
+        {
+          "heading": "Apply the private-employer fee limit",
+          "body": "The statute says a private employer shall not require the employee to surrender or share fees charged for notarial acts. This is a specific rule about collected fees. It should not be collapsed into the employer's separate ability to prohibit work-time charging. A private manager's demand for a percentage of every notarial charge must be considered under the surrender/share prohibition rather than assumed valid because the manager paid for supplies."
+        },
+        {
+          "heading": "Read the governmental provision",
+          "body": "A government employer that absorbed the employee's becoming/operating costs requires fees for employer-time acts either waived or surrendered as agency revenue. This statutory government treatment differs in its stated conditions and result. The employee should identify the actual employer category and cost arrangement before deciding who receives a collected fee. The ordinary notarial ceilings and specific election fee prohibition continue to apply."
+        },
+        {
+          "heading": "Keep tools under the officer's control",
+          "body": "Section 486.725 makes the seal the notary's exclusive property and forbids another person's use or employer surrender at termination. Section 486.715 protects the journal with its own custody and disposition rules. Paying for the application or seal does not let a receptionist perform the officer's acts during an absence. A fee policy concerns charges;it does not transfer the commissioned individual's identity or official device."
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.695",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.695",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.725",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.725",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.715",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.715",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.685",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.685",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can an employer prohibit charges for employer-time acts?",
+          "a": "Yes, subject to the stated nondiscrimination condition."
+        },
+        {
+          "q": "May a private employer require a share of charged notarial fees?",
+          "a": "Section 486.695.2 prohibits that requirement."
+        }
+      ],
+      "id": "mo-employee-fees-and-personal-tools",
+      "state": "MO",
+      "path": "/missouri/guides/employee-fees-and-personal-tools/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/missouri/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/missouri/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/missouri/study-guide/",
+          "label": "Missouri Study Guide"
+        },
+        {
+          "href": "/missouri/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/missouri/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "journal-cessation-and-recommission",
+      "keyword": "Missouri notary journal expiration surrender three months",
+      "intent": "Coordinate retention and statutory disposition",
+      "title": "Missouri Journals at Expiration, Resignation and Death",
+      "description": "Read ten-year preservation with the specific delivery deadlines and pending-recommission exception.",
+      "h1": "Following Missouri's End-of-Office Record Rules",
+      "kicker": "Record continuity",
+      "lede": "A journal's preservation period and the officer's duty to deliver it on cessation operate together. Missouri gives a limited exception for a qualified pending reappointment.",
+      "sections": [
+        {
+          "heading": "Preserve the record's integrity",
+          "body": "The ordinary journal is a chronological permanently bound volume with numbered pages. The FAQ states at least ten years from its final entry. Section 486.715 requires safeguarding the journal and other notarial records and limits surrender/destruction to lawful authority. An employer's convenience or the volume's purchase age does not authorize removing pages or discarding the record of recently completed acts."
+        },
+        {
+          "heading": "Follow ordinary cessation delivery",
+          "body": "Section 486.715.4 directs delivery to the Secretary under the cessation or death provisions. Section 486.795 ordinarily requires record disposition within thirty days after the effective resignation, revocation or expiration. A notary should therefore preserve the journal while following the actual surrender route. The ten-year concept should not be used to postpone a specific statutory delivery deadline that applies to the officer's situation."
+        },
+        {
+          "heading": "Check the limited expiration exception",
+          "body": "Subsection 2 addresses an expired notary who intends to apply again and whose previous commission or application was not revoked or denied by the Secretary. The officer has until three months after expiration unless recommissioned within that period. This exception concerns journal and record disposition. It does not permit the person to keep performing acts under an expired commission while waiting for the new term."
+        },
+        {
+          "heading": "Apply the death-specific responsibilities",
+          "body": "Section 486.800 requires the personal representative to notify the Secretary in writing, forward seals as soon as reasonably practicable and forward the journal and records within thirty days. These specific forwarding instructions should remain visible alongside general seal-misuse prevention rules. The representative should preserve receipt evidence through the statutory delivery method. Official records and usable official tools require deliberate legal disposition rather than ordinary office cleanout treatment."
+        },
+        {
+          "heading": "Missouri Secretary of State notary FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://s1.sos.mo.gov/business/notary/notary_faq",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.715",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.715",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.795",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.795",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.800",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.800",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does ten-year retention eliminate a thirty-day delivery duty?",
+          "a": "The specific cessation delivery provision remains applicable."
+        },
+        {
+          "q": "Does the three-month exception extend practice authority?",
+          "a": "It concerns record disposition for the stated pending-recommission case."
+        }
+      ],
+      "id": "mo-journal-cessation-and-recommission",
+      "state": "MO",
+      "path": "/missouri/guides/journal-cessation-and-recommission/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/missouri/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/missouri/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/missouri/study-guide/",
+          "label": "Missouri Study Guide"
+        },
+        {
+          "href": "/missouri/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/missouri/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "remote-two-journals-and-recording",
+      "keyword": "Missouri remote notary electronic bound journals",
+      "intent": "Preserve the three remote records",
+      "title": "Missouri RON Uses Electronic and Bound Journals",
+      "description": "Keep the electronic entry, bound chronicle and audiovisual performance record under their own rules.",
+      "h1": "The Records Created by a Missouri Remote Act",
+      "kicker": "Remote records",
+      "lede": "Missouri expressly requires more than one type of remote record. The journal system and audiovisual record preserve different parts of the completed act.",
+      "sections": [
+        {
+          "heading": "Maintain both statutory journals",
+          "body": "Section 486.1180 requires the registered remote notary to keep an electronic journal and also record remote acts in the permanently bound journal. Only one active bound journal is maintained at a time. A platform offering a convenient digital history does not remove the additional bound-record requirement. The officer should plan how each actual remote act is entered in both required records rather than assuming the vendor's dashboard is the whole statutory chronicle."
+        },
+        {
+          "heading": "Complete the electronic fields",
+          "body": "Section 486.1185 lists the date/time, act and document descriptions, principal electronic signature and identity/address, requester details, identity evidence, fee and location information. It also adds the specified program/software and signature-issuing/registering authority information. The electronic journal must not contain Social Security or credit-card numbers. A payment-card field in a generic platform template cannot override that prohibition."
+        },
+        {
+          "heading": "Protect the entered history",
+          "body": "Section 486.1190 requires two-factor access, protection against alteration/deletion of stored content or sequence under the stated retention exception, and duplicate-record backup. It also requires state read-only authorization and access instructions with updates. These safeguards preserve an actual transaction history. A silently editable note file or a single unprotected computer copy should not be assumed to meet the electronic-journal requirements."
+        },
+        {
+          "heading": "Retain the performance recording",
+          "body": "Section 486.1195 separately requires audio and video recording of the act and at least ten years of retention after the transaction or proceeding. The electronic entry has its own ten-year-from-entry rule, and the bound volume uses its final-entry anchor. A proper recording does not replace the two journals. Each record should remain available through its applicable period and any lawful custody arrangement."
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.1180",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1180",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.1185",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1185",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.1190",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1190",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.1195",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1195",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the platform journal replace the bound record?",
+          "a": "Section 486.1180 requires the electronic journal and the bound-journal record."
+        },
+        {
+          "q": "Is the recording a substitute for either journal?",
+          "a": "The audiovisual recording is a separate statutory requirement."
+        }
+      ],
+      "id": "mo-remote-two-journals-and-recording",
+      "state": "MO",
+      "path": "/missouri/guides/remote-two-journals-and-recording/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/missouri/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/missouri/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/missouri/study-guide/",
+          "label": "Missouri Study Guide"
+        },
+        {
+          "href": "/missouri/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/missouri/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "remote-credentials-employer-custodian",
+      "keyword": "Missouri remote notary employer custodian electronic seal",
+      "intent": "Separate seal control and record custody",
+      "title": "Missouri Remote Seal Control and Record Custodians",
+      "description": "Protect production credentials while using a lawful recording/electronic-journal custodian.",
+      "h1": "Electronic Control during a Missouri Employment Change",
+      "kicker": "Remote security",
+      "lede": "An employer can have a specific record-custodian role without receiving authority to use the officer's registered signature or seal.",
+      "sections": [
+        {
+          "heading": "Keep registered production under sole control",
+          "body": "Sections 486.1170 and 486.1200 require the officer's exclusive control of the registered electronic signature and seal production means. Another person cannot use them for the officer's acts. A shared office password or a supervisor's demand to cover appointments defeats that personal control. Employer funding does not transfer the commissioned identity, even when the business owns the computer used for a session."
+        },
+        {
+          "heading": "Preserve independent verification and tamper evidence",
+          "body": "The registered signature and seal are associated with the certificate so later alteration of the certificate or underlying electronic record prominently shows evidence. The act must also be capable of independent verification. A decorative editable image cannot establish these characteristics by appearance alone. The notary should use the conforming registered technology and complete the actual certificate for the performed act."
+        },
+        {
+          "heading": "Handle departure of exclusive devices",
+          "body": "Section 486.1170.4 bars an employer from retaining software, coding, certificates, tokens or programs intended exclusively to produce the notary's registered signature/seal after employment ends. This is a specific production-means protection. Ordinary business records and a lawful custody designation should be analyzed separately. The employer cannot justify continued use of the notary's token merely by pointing to a subscription invoice it paid."
+        },
+        {
+          "heading": "Use the specific custodian arrangement",
+          "body": "Section 486.1195 allows the employer to be designated custodian of recording and electronic journal through a record signed by both employer and notary, or permits a qualifying repository. The custodian must comply with retention and disclosure requirements. That arrangement concerns preservation of the records. It does not authorize the custodian to perform new notarizations or control the registered seal. The written designation and continuing statutory duties should be identified accurately."
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.1170",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1170",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.1200",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1200",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.1195",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1195",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does employer custody of recordings authorize seal use?",
+          "a": "The specific record-custodian arrangement does not transfer registered signature/seal production authority."
+        },
+        {
+          "q": "What supports employer custodian designation?",
+          "a": "Section 486.1195 requires a record signed by the employer and remote notary."
+        }
+      ],
+      "id": "mo-remote-credentials-employer-custodian",
+      "state": "MO",
+      "path": "/missouri/guides/remote-credentials-employer-custodian/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/missouri/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/missouri/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/missouri/study-guide/",
+          "label": "Missouri Study Guide"
+        },
+        {
+          "href": "/missouri/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/missouri/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "copy-record-category-and-metadata",
+      "keyword": "Missouri notary copy certification vital recorded metadata",
+      "intent": "Screen copy authority and completeness",
+      "title": "Missouri Copy Certification Includes a Source Screen",
+      "description": "Apply the excluded record categories and complete image/text/metadata comparison.",
+      "h1": "Evaluating a Missouri Copy Request",
+      "kicker": "Copy certification",
+      "lede": "The copy act begins with an eligible source and a complete comparison. A clear photograph of one page does not establish every statutory element.",
+      "sections": [
+        {
+          "heading": "Identify the excluded source categories",
+          "body": "Section 486.600's copy-certification definition excludes vital records, public records and recorded documents. The official FAQ directs Missouri birth-certificate copies to Vital Records. A requester cannot make a recorded deed eligible simply by removing the recording label from a photocopy. The officer first identifies the actual source category before deciding whether the defined copy-certification act is available."
+        },
+        {
+          "heading": "Compare the actual records",
+          "body": "For an eligible source, the notary compares the paper or electronic document with the second record presented, located or copied by the notary. The definition requires an identical, exact and complete reproduction of the source image or text and applicable metadata. A matching title page is insufficient for a multipage record. Missing attachments, cropped handwritten provisions or omitted relevant electronic information must be resolved before the officer certifies completeness."
+        },
+        {
+          "heading": "Use a truthful certificate and record",
+          "body": "The certificate states the actual date, venue and facts attested and carries the official signature/seal. A separate paper certificate follows the statutory attachment and placement rules. The journal records the requester of fact's printed name/address with the transaction and identity information required for the act. The notary should not certify that a comparison occurred when only another person's assurance was supplied."
+        },
+        {
+          "heading": "Apply the copy fee unit",
+          "body": "Section 486.685 gives the certified-copy schedule as one dollar per page with a three-dollar minimum total, subject to the statute's permission to reduce or waive fees. This page-based unit differs from the per-signature ordinary acknowledgment, jurat and witnessing rates. Identifying the actual eligible copy act supports both an accurate certificate and a lawful charge. Paying a larger amount does not expand the source categories the statute excludes."
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.600",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.600",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Secretary of State notary FAQs",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://s1.sos.mo.gov/business/notary/notary_faq",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.740",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.740",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.745",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.745",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.685",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.685",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can a Missouri notary copy-certify a recorded public document under this definition?",
+          "a": "The statutory copy definition excludes vital, public and recorded documents."
+        },
+        {
+          "q": "What does the completeness comparison include?",
+          "a": "Image or text and applicable metadata must be identical, exact and complete."
+        }
+      ],
+      "id": "mo-copy-record-category-and-metadata",
+      "state": "MO",
+      "path": "/missouri/guides/copy-record-category-and-metadata/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/missouri/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/missouri/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/missouri/study-guide/",
+          "label": "Missouri Study Guide"
+        },
+        {
+          "href": "/missouri/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/missouri/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "travel-fee-schedule-and-remote-charge",
+      "keyword": "Missouri notary travel transaction fee schedule",
+      "intent": "Disclose separate charge categories",
+      "title": "Missouri Travel and Remote Transaction Charges",
+      "description": "Use advance agreements, accurate descriptions and visible statutory fee schedules.",
+      "h1": "Explaining Missouri Notarial Charges before Service",
+      "kicker": "Fee disclosure",
+      "lede": "The notarial act, travel and remote transaction can have different fee rules. Accurate advance explanations help the requester understand the actual service.",
+      "sections": [
+        {
+          "heading": "Start with the statutory act rates",
+          "body": "Section 486.685 caps ordinary acknowledgment, jurat and witnessing at five dollars per signature, and section 486.960 provides the electronic rates. The statute permits reduction or waiver. The fee-charging notary displays or presents the required English-language schedule with no portion below twelve-point type. A maximum is permission within a ceiling, not a rule that every customer must pay the full amount."
+        },
+        {
+          "heading": "Agree before travel begins",
+          "body": "An ordinary travel fee is agreed before travel, and the notary explains that it is separate from the notarial fee and neither specified nor mandated by law. Revealing the charge only after arriving would miss the advance agreement. Describing it as a mandatory state charge would also misstate the legal character. The requester should understand the actual proposed travel service before deciding to incur it."
+        },
+        {
+          "heading": "Read prepaid nonrefundability within its conditions",
+          "body": "Section 486.690 permits payment before an act and gives specific nonrefundability circumstances. A compliant prepaid travel fee can be nonrefundable when the notary has traveled but the act cannot be completed because of the stated prohibition or unlawful-transaction grounds. That rule should not be generalized into a claim that every failed appointment makes every payment nonrefundable. The actual reason, travel agreement and statutory conditions matter."
+        },
+        {
+          "heading": "Explain the remote transaction charge",
+          "body": "Section 486.1160 separately permits a remote online transaction fee when the principal and notary agree before the act and the officer explains that it is separate from the statutory notarial fee and not mandated by law. A combined unexplained technology total obscures that required explanation. The ordinary electronic fee schedule remains relevant, and a private vendor invoice does not itself set the notary's public fee authority."
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.685",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.685",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.690",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.690",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.960",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.960",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Missouri Revised Statutes §486.1160",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://revisor.mo.gov/main/OneSection.aspx?section=486.1160",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "When is an ordinary travel fee agreed?",
+          "a": "Before the travel, and with the required explanation of its separate nonmandated character."
+        },
+        {
+          "q": "Can a remote transaction fee be added without advance agreement?",
+          "a": "Section 486.1160 requires agreement before the act and the stated separate-fee explanation."
+        }
+      ],
+      "id": "mo-travel-fee-schedule-and-remote-charge",
+      "state": "MO",
+      "path": "/missouri/guides/travel-fee-schedule-and-remote-charge/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/missouri/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/missouri/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/missouri/study-guide/",
+          "label": "Missouri Study Guide"
+        },
+        {
+          "href": "/missouri/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/missouri/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
   "MT": [
     {
       "slug": "representative-signatures-and-capacity",
@@ -1797,6 +6597,4486 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       ]
     }
   ],
+  "NE": [
+    {
+      "slug": "missing-wording-and-professional-boundaries",
+      "keyword": "missing notarial wording and nebraska professional boundaries",
+      "intent": "Apply Nebraska notary law to a specific work scenario",
+      "title": "Missing Notarial Wording and Nebraska Professional Boundaries",
+      "description": "Handle missing certificate wording, client questions and non-English advertising under Nebraska's specific nonattorney rules.",
+      "h1": "Missing Notarial Wording and Nebraska Professional Boundaries",
+      "kicker": "Nebraska practice",
+      "lede": "A blank certificate area can turn a simple appointment into a request for legal advice. Nebraska law separates the officer's notarial work from the client's choice of transaction and certificate.",
+      "sections": [
+        {
+          "heading": "Identify the requested decision",
+          "body": "A customer brings an agreement to an Omaha shipping office and says to add whatever notarization will make it binding. The employee is a nonattorney notary with no relevant professional qualification. Section 64-105.03(2) prohibits that officer from determining the type of notarial act or certificate when wording is missing or not indicated. The customer's broad request does not identify the service to be performed."
+        },
+        {
+          "heading": "Keep document assistance within authority",
+          "body": "The same section restricts a nonattorney's assistance in drafting, completing, selecting or understanding a document or transaction requiring notarization. It preserves a specific provision for a person duly qualified, trained or experienced in the relevant industry or professional field. An ordinary commission alone supplies no such field-specific qualification. The officer should assess the actual role before agreeing to write terms or explain legal effects."
+        },
+        {
+          "heading": "Obtain appropriate direction",
+          "body": "The customer can obtain appropriate certificate direction from the document recipient or a qualified adviser. Once the requested act is identified, the notary still evaluates the lawful act and personal eligibility. Section 64-105.01 separately disqualifies an officer who does not understand the acknowledgment or certificate. A recipient's instruction therefore cannot resolve the officer's inability to understand the wording being certified."
+        },
+        {
+          "heading": "Describe the business accurately",
+          "body": "A nonattorney advertising in another language must prominently state in that same language the required lack of attorney status and legal-advice authority. Section 64-105.03 also prohibits notario publico and equivalent non-English titles on the specified business materials. A disclaimer and a title prohibition are distinct requirements. Advertising an office as a place to obtain immigration strategy would also claim authority the commission does not provide."
+        },
+        {
+          "heading": "Nebraska Legislature — 64-105.03",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105.03",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-105.01",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105.01",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the notary choose an acknowledgment because it is familiar?",
+          "a": "Under the stated nonattorney facts, the officer may not determine the missing act or certificate for the customer."
+        },
+        {
+          "q": "Does professional experience permit advice on every document?",
+          "a": "The preserved provision concerns matters within the person's qualified industry or professional field."
+        }
+      ],
+      "id": "ne-missing-wording-and-professional-boundaries",
+      "state": "NE",
+      "path": "/nebraska/guides/missing-wording-and-professional-boundaries/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nebraska/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nebraska/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nebraska/study-guide/",
+          "label": "Nebraska Study Guide"
+        },
+        {
+          "href": "/nebraska/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nebraska/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "screening-family-and-transaction-interests",
+      "keyword": "screening family and transaction interests in nebraska",
+      "intent": "Apply Nebraska notary law to a specific work scenario",
+      "title": "Screening Family and Transaction Interests in Nebraska",
+      "description": "Apply Nebraska's extended-family, named-party and financial-interest rules before accepting an ordinary assignment.",
+      "h1": "Screening Family and Transaction Interests in Nebraska",
+      "kicker": "Nebraska practice",
+      "lede": "A personal relationship and a financial interest can each affect an appointment. Nebraska provides separate grounds, so an officer must evaluate more than whether a fee will be charged.",
+      "sections": [
+        {
+          "heading": "Map the actual relationship",
+          "body": "A Lincoln notary is asked to notarize a stepchild's employment agreement. The signer says the document concerns an outside employer and the notary has nothing to gain. Section 64-105.01(1) covers a spouse, ancestor, descendant or sibling and expressly includes in-law, step and half relatives. The subject of the agreement does not change that family connection. The absence of a transaction profit leaves this independent restriction in place."
+        },
+        {
+          "heading": "Read the party names too",
+          "body": "In another transaction, the notary is listed as a buyer and is asked to notarize only the seller. Section 64-105.01(2) identifies being individually named as a party as a ground of disqualification. The question extends beyond whether the officer is notarizing a personal signature. A complete signature from the seller and satisfactory identification do not eliminate the officer's own party status."
+        },
+        {
+          "heading": "Distinguish the ordinary fee",
+          "body": "The financial or beneficial-interest provision excepts receipt of the ordinary notarial fee. A lawful service fee therefore has different significance from a percentage of a loan or sale proceeds. The section also cross-references specified duties in sections 64-211 through 64-215. An employment-related request should be examined against the actual applicable provision, including its conditions, before claiming an exception."
+        },
+        {
+          "heading": "Arrange an eligible officer",
+          "body": "When a restriction applies, a customer waiver, unpaid appointment or second witness does not remove it. Another eligible officer can assess the requested act and identity evidence independently. Keeping a careful journal can document a lawful transaction, but documentation does not grant authority to a disqualified officer. This screening belongs before signing and sealing the certificate, while the office can still arrange another appointment."
+        },
+        {
+          "heading": "Nebraska Legislature — 64-105.01",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105.01",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Are half siblings included?",
+          "a": "Yes. The statute expressly includes half relatives in the listed relationship categories."
+        },
+        {
+          "q": "Does an ordinary notarial fee itself create the stated financial conflict?",
+          "a": "The provision expressly excepts the ordinary fee, while other interests and named-party status require separate review."
+        }
+      ],
+      "id": "ne-screening-family-and-transaction-interests",
+      "state": "NE",
+      "path": "/nebraska/guides/screening-family-and-transaction-interests/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nebraska/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nebraska/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nebraska/study-guide/",
+          "label": "Nebraska Study Guide"
+        },
+        {
+          "href": "/nebraska/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nebraska/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "marks-and-notary-directed-signatures",
+      "keyword": "marks and notary-directed signatures in nebraska",
+      "intent": "Apply Nebraska notary law to a specific work scenario",
+      "title": "Marks and Notary-Directed Signatures in Nebraska",
+      "description": "Apply the separate Nebraska procedures for signing by mark and for a notary signing at a physically unable principal's direction.",
+      "h1": "Marks and Notary-Directed Signatures in Nebraska",
+      "kicker": "Nebraska practice",
+      "lede": "A physical signing difficulty requires a suitable execution procedure. Nebraska section 64-105.02 provides two distinct procedures with witnessed evidence and a completed notarial act.",
+      "sections": [
+        {
+          "heading": "Start with what the principal can do",
+          "body": "A hospital patient understands a proposed document but cannot form a conventional written signature. If the person can make a mark, subsection (1) addresses that route. The mark must be affixed in the notary's presence and in the presence of two witnesses unaffected by the document. A hospital employee who benefits under the instrument should not be assumed unaffected simply because the employee is available nearby."
+        },
+        {
+          "heading": "Complete the mark evidence",
+          "body": "Both witnesses sign their own names beside the mark. The officer adds the prescribed explanation identifying the signer by mark and the witnesses, including their names and addresses. The officer then notarizes the signature by mark through an acknowledgment, jurat or signature witnessing. These steps identify the physical execution and the notarial act. A stamp applied to a mark without the required evidence leaves the statutory procedure incomplete."
+        },
+        {
+          "heading": "Use the different physical-inability route",
+          "body": "If the person is physically unable to sign or make a mark, subsection (2) permits the notary to sign that person's name at that person's direction. The direction and signing occur with the required two unaffected witnesses present, and the person remains present when the notary signs. This provision expressly gives the notary a signing role in the stated circumstances. It should be applied through its Nebraska wording."
+        },
+        {
+          "heading": "Document and notarize the directed signature",
+          "body": "The two witnesses sign beside the resulting signature, and the officer adds the separate explanation naming and giving the addresses of the person and witnesses. The signature then receives one of the specified notarial acts. A relative's preference to have the paper signed supplies no substitute for the person's required direction. Convenience alone also does not establish the physical inability described by subsection (2)."
+        },
+        {
+          "heading": "Nebraska Legislature — 64-105.02",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105.02",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does a mark eliminate the need for notarization?",
+          "a": "No. The statute still requires acknowledgment, jurat or signature witnessing after the specified mark procedure."
+        },
+        {
+          "q": "Can a relative direct the notary when the principal gives no direction?",
+          "a": "The directed-notary-signature provision requires the physically unable person's own direction."
+        }
+      ],
+      "id": "ne-marks-and-notary-directed-signatures",
+      "state": "NE",
+      "path": "/nebraska/guides/marks-and-notary-directed-signatures/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nebraska/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nebraska/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nebraska/study-guide/",
+          "label": "Nebraska Study Guide"
+        },
+        {
+          "href": "/nebraska/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nebraska/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "online-recordings-without-document-images",
+      "keyword": "nebraska online recordings without document images",
+      "intent": "Apply Nebraska notary law to a specific work scenario",
+      "title": "Nebraska Online Recordings Without Document Images",
+      "description": "Design the mandatory online transaction record, audiovisual recording and protected backup around Nebraska section 64-409.",
+      "h1": "Nebraska Online Recordings Without Document Images",
+      "kicker": "Nebraska practice",
+      "lede": "An online session creates several types of evidence. Nebraska's mandatory electronic record law specifies what must be captured and expressly limits what the conference recording may contain.",
+      "sections": [
+        {
+          "heading": "Configure the recording deliberately",
+          "body": "An office adding online services tests a platform that records the entire screen, including every notarized page. Section 64-409(1)(f) requires a recording of the video and audio conference and says it shall not contain images of the documents notarized. The office must evaluate that setting before using it for a live client. A general desire to retain more material does not override this express content boundary."
+        },
+        {
+          "heading": "Keep the transaction entry too",
+          "body": "The secure record also contains the date and time, act type, document or proceeding description, printed name and address of each principal and prescribed identity evidence. Credible witnesses have their own name, address and applicable identification-document details. The fee, if any, is another required entry. A video file alone may omit these structured items. The office should inspect an actual completed transaction record against each statutory field."
+        },
+        {
+          "heading": "Protect the backup independently",
+          "body": "Subsection (2) requires reasonable steps for integrity, security and authenticity, a backup of the secure electronic record and protection of both record and backup from unauthorized use. A second copy in a publicly editable folder does not satisfy the underlying protection concern. Section 64-410 also places the electronic record and backup under the officer's exclusive control. Employees should not be allowed to use the officer's official records as shared credentials."
+        },
+        {
+          "heading": "Plan retention beyond a subscription",
+          "body": "The record and backup remain for at least ten years after the transaction or proceeding. Section 64-409 restricts surrender and destruction except through a required court order or authorized rules. If a vendor subscription ends, the legal retention duty remains. A service transition should therefore account for continuing protected access and preservation. Ending billing is a business event with consequences to plan for under the record law."
+        },
+        {
+          "heading": "Nebraska Legislature — 64-409",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-409",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-410",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-410",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is the ordinary optional-journal FAQ enough for online work?",
+          "a": "No. Section 64-409 imposes mandatory records and backup duties for online acts."
+        },
+        {
+          "q": "Does commission expiration end retention?",
+          "a": "The statute measures the minimum period from the transaction or proceeding and requires at least ten years."
+        }
+      ],
+      "id": "ne-online-recordings-without-document-images",
+      "state": "NE",
+      "path": "/nebraska/guides/online-recordings-without-document-images/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nebraska/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nebraska/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nebraska/study-guide/",
+          "label": "Nebraska Study Guide"
+        },
+        {
+          "href": "/nebraska/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nebraska/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "online-appearance-instrument-exceptions",
+      "keyword": "nebraska online appearance and instrument exceptions",
+      "intent": "Apply Nebraska notary law to a specific work scenario",
+      "title": "Nebraska Online Appearance and Instrument Exceptions",
+      "description": "Evaluate Nebraska's testamentary and UCC boundaries before using the Online Act to satisfy an appearance requirement.",
+      "h1": "Nebraska Online Appearance and Instrument Exceptions",
+      "kicker": "Nebraska practice",
+      "lede": "Approved technology and successful identity checks do not answer every instrument-specific legal question. Nebraska section 64-418 preserves boundaries for the Act's treatment of personal appearance.",
+      "sections": [
+        {
+          "heading": "Read the source of the requirement",
+          "body": "A client asks a registered online notary to handle a testamentary document and says every notarization may now be remote. Section 64-418(2) ordinarily addresses legal requirements to appear before or be physically present with a notary. Its stated exceptions include laws governing creation and execution of wills, codicils and testamentary trusts. The officer should identify the actual governing requirement before treating remote appearance as legally sufficient."
+        },
+        {
+          "heading": "Keep the UCC distinction precise",
+          "body": "The provision also excepts the Uniform Commercial Code other than articles 2 and 2A. That wording draws a particular article-based boundary. An assertion that every UCC matter is excluded would overlook the carve-out for those two articles. An assertion that every UCC matter is automatically satisfied would overlook the broader exception. Identify the applicable article and retain the remaining legal conditions."
+        },
+        {
+          "heading": "Preserve the general-law duties",
+          "body": "Subsection (1) applies the listed general notary provisions and Uniform Recognition of Acknowledgments Act unless they conflict with the Online Act. Online registration therefore does not dissolve ordinary relationship, interest or professional-boundary rules. A successful remote identity process answers an identity question. It does not independently establish that the officer is free of a named-party conflict or qualified to give transaction advice."
+        },
+        {
+          "heading": "Evaluate the whole proposed service",
+          "body": "Section 64-408 lists online acknowledgments, jurats, verifications or proofs and oaths or affirmations. Section 64-411 supplies online identity, technology security and certificate requirements. These provisions work alongside the instrument boundary in section 64-418. If the client cannot identify the act and applicable execution requirements, obtain appropriate direction before representing that a proposed online session will satisfy them."
+        },
+        {
+          "heading": "Nebraska Legislature — 64-418",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-418",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-408",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-408",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-411",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-411",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does the exception declare every remote testamentary act valid?",
+          "a": "No. The appearance-satisfaction provision expressly excepts the listed testamentary laws."
+        },
+        {
+          "q": "Are UCC articles 2 and 2A treated the same as all other UCC articles here?",
+          "a": "The statutory UCC exception expressly carves out articles 2 and 2A."
+        }
+      ],
+      "id": "ne-online-appearance-instrument-exceptions",
+      "state": "NE",
+      "path": "/nebraska/guides/online-appearance-instrument-exceptions/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nebraska/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nebraska/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nebraska/study-guide/",
+          "label": "Nebraska Study Guide"
+        },
+        {
+          "href": "/nebraska/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nebraska/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "choosing-a-sufficient-identity-route",
+      "keyword": "choosing a sufficient nebraska identity route",
+      "intent": "Apply Nebraska notary law to a specific work scenario",
+      "title": "Choosing a Sufficient Nebraska Identity Route",
+      "description": "Compare ordinary documentary, personal-knowledge and credible-witness evidence without blending their distinct conditions.",
+      "h1": "Choosing a Sufficient Nebraska Identity Route",
+      "kicker": "Nebraska practice",
+      "lede": "An unfamiliar principal may have several ways to establish identity. Nebraska section 64-105 describes routes with specific elements that should be matched to the facts presented.",
+      "sections": [
+        {
+          "heading": "Inspect the credential elements",
+          "body": "A stranger at a Kearney appointment produces a current government card. Government issuance alone does not establish the statutory documentary route. The card must bear the facial image, signature and physical description listed in subsection (2)(a)(i). A properly stamped passport has the stated physical-description exception. An expired ordinary credential does not fit the current-document requirement merely because its photograph remains recognizable."
+        },
+        {
+          "heading": "Test the familiarity honestly",
+          "body": "Personal knowledge is familiarity arising from interactions over time sufficient to dispel reasonable uncertainty. A brief introduction or recognition of a business name can leave material uncertainty about the person present. The officer should not label that uncertainty personal knowledge to avoid finding adequate evidence. A longtime interaction history, assessed against the statutory definition, differs from relying on the customer's claim to be well known."
+        },
+        {
+          "heading": "Keep witness connections separate",
+          "body": "For the ordinary one-witness route, the unaffected credible witness personally knows the principal and is personally known to the notary. The two-witness alternative requires each unaffected witness to personally know the principal and show the described documentary identification. Both routes use oaths or affirmations. A second witness who knows only the first witness cannot borrow that person's knowledge of the principal."
+        },
+        {
+          "heading": "Recheck the remote path",
+          "body": "Online identity uses section 64-411. Its documentary option combines remote credential presentation, credential analysis and identity proofing. Its credible witness must be physically with either the officer or principal and satisfy the stated identification conditions. An office offering both services should identify which legal route it is using before collecting evidence. Mixing half of an ordinary route with half of an online route does not establish either complete statutory process."
+        },
+        {
+          "heading": "Nebraska Legislature — 64-105",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-411",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-411",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can a company badge alone satisfy the listed government-document route?",
+          "a": "That route requires the stated current government credential and its required features."
+        },
+        {
+          "q": "Must each of two ordinary witnesses know the principal?",
+          "a": "Yes. Each must personally know the principal, be unaffected and provide the required identification."
+        }
+      ],
+      "id": "ne-choosing-a-sufficient-identity-route",
+      "state": "NE",
+      "path": "/nebraska/guides/choosing-a-sufficient-identity-route/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nebraska/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nebraska/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nebraska/study-guide/",
+          "label": "Nebraska Study Guide"
+        },
+        {
+          "href": "/nebraska/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nebraska/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "representative-acknowledgments-and-capacity",
+      "keyword": "representative acknowledgments and capacity in nebraska",
+      "intent": "Apply Nebraska notary law to a specific work scenario",
+      "title": "Representative Acknowledgments and Capacity in Nebraska",
+      "description": "Describe an agent's Nebraska acknowledgment accurately while preserving the distinction between identity and proof of office.",
+      "h1": "Representative Acknowledgments and Capacity in Nebraska",
+      "kicker": "Nebraska practice",
+      "lede": "Representative signatures change the declaration and certificate details. They also create a practical question about whose appearance and identity the notary is certifying.",
+      "sections": [
+        {
+          "heading": "Identify the person who appears",
+          "body": "A trustee visits a Norfolk office to acknowledge a transaction for a trust. Section 64-203 requires certification of the acknowledging person's appearance, execution acknowledgment and identity. The representative role does not erase the need to identify the actual person at the appointment. The certificate should not describe an absent beneficiary or principal as personally appearing when the trustee is the person before the officer."
+        },
+        {
+          "heading": "Understand the representative declaration",
+          "body": "Section 64-205 describes several representative categories. A corporate officer acknowledges the position or title, proper authority and execution on behalf of the corporation. The partnership and LLC provisions address authorized execution as the entity's act. An attorney in fact acknowledges proper-authority execution as the principal's act. The definition identifies the declaration being made, including the purposes stated in the instrument."
+        },
+        {
+          "heading": "Apply the SOS capacity guidance",
+          "body": "FAQ 7 asks whether, in addition to proof of personal identity, the officer must demand proof of the claimed official capacity, such as corporate president or trustee. The SOS answer is that separate proof of official capacity is not required. That guidance should be read with the identity and acknowledgment requirements, so it does not become a claim that identity can be omitted. The officer must also understand the certificate being used."
+        },
+        {
+          "heading": "Use an accurate form",
+          "body": "Section 64-206 provides separate short forms for individuals, corporations, partnerships, LLCs, attorneys in fact and specified other representatives. The authorization of those forms preserves use of other forms. Select the service through appropriate direction and complete the representative details accurately. The acknowledgment does not appoint the notary as entity counsel or guarantee that the commercial transaction will perform as promised."
+        },
+        {
+          "heading": "Nebraska Legislature — 64-203",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-203",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-205",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-205",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-206",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-206",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska SOS — Notary Frequently Asked Questions",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.nebraska.gov/notary-frequently-asked-questions",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must a trustee always bring separate proof of capacity for the notary?",
+          "a": "The SOS FAQ says proof of official capacity is not required in addition to personal identity."
+        },
+        {
+          "q": "Whose appearance should the agent form describe?",
+          "a": "The person actually acknowledging, with the representative role and represented principal or entity accurately identified."
+        }
+      ],
+      "id": "ne-representative-acknowledgments-and-capacity",
+      "state": "NE",
+      "path": "/nebraska/guides/representative-acknowledgments-and-capacity/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nebraska/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nebraska/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nebraska/study-guide/",
+          "label": "Nebraska Study Guide"
+        },
+        {
+          "href": "/nebraska/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nebraska/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "leaving-an-employer-and-replacing-supplies",
+      "keyword": "leaving a nebraska employer and replacing notarial supplies",
+      "intent": "Apply Nebraska notary law to a specific work scenario",
+      "title": "Leaving a Nebraska Employer and Replacing Notarial Supplies",
+      "description": "Use the Nebraska SOS replacement process when a former employer retains the seal or commission certificate.",
+      "h1": "Leaving a Nebraska Employer and Replacing Notarial Supplies",
+      "kicker": "Nebraska practice",
+      "lede": "An employer may have paid the original commissioning costs. A departure still requires attention to the notary's existing state record and the supplies used to authenticate later acts.",
+      "sections": [
+        {
+          "heading": "Check whether the commission remains current",
+          "body": "A notary leaves a private employer that keeps the stamp and certificate it purchased. FAQ 12 addresses that circumstance and says recommissioning is unnecessary. The notary can obtain a replacement commission certificate and purchase a new seal. The employee should first identify the existing current record. Starting an unrelated new commissioning process simply because the office retained the supplies overlooks the specified replacement route."
+        },
+        {
+          "heading": "Obtain the official copy",
+          "body": "The FAQ lists a ten-dollar replacement-copy fee and points to the notary portal. The update instructions describe access through My Records for recent online filings and a Request Certificate amendment for the other described situations. The available route depends on the person's existing portal record. A former employer's photocopy or a vendor receipt does not independently amend the official commissioned name or term."
+        },
+        {
+          "heading": "Recreate compliant authentication",
+          "body": "The new ordinary stamp must satisfy section 64-210 using the name as commissioned and the correct expiration, along with the state and general-office wording. The seal authenticates this particular officer's acts. Borrowing the replacement employee's stamp would identify a different commissioned officer. The SOS advises placing a legible impression near the notary signature without covering record text or existing signatures."
+        },
+        {
+          "heading": "Handle online access separately",
+          "body": "An officer who also provides online services must preserve exclusive control of the electronic signature, seal, records and backups under section 64-410. Another employee cannot continue appointments using the departing person's credentials. The update instructions provide a specific resignation route, and resigning the general commission simultaneously resigns special registrations. A job departure and a voluntary state resignation are different facts to identify accurately."
+        },
+        {
+          "heading": "Nebraska SOS — Notary Frequently Asked Questions",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.nebraska.gov/notary-frequently-asked-questions",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska SOS — Steps to Update your Notary Public Record",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.nebraska.gov/sites/default/files/doc/business-services/Notary/StepstoUpdateyourNotaryPublicRecord.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-210",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-210",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-410",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-410",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does employer retention force another examination and initial commission?",
+          "a": "FAQ 12 says the notary need not be recommissioned solely for that situation and provides a replacement route."
+        },
+        {
+          "q": "Can a coworker's stamp serve as the replacement?",
+          "a": "The official stamp must identify the officer who actually performs the act using that officer's commissioned details."
+        }
+      ],
+      "id": "ne-leaving-an-employer-and-replacing-supplies",
+      "state": "NE",
+      "path": "/nebraska/guides/leaving-an-employer-and-replacing-supplies/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nebraska/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nebraska/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nebraska/study-guide/",
+          "label": "Nebraska Study Guide"
+        },
+        {
+          "href": "/nebraska/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nebraska/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "legal-name-changes-and-consistent-commission-records",
+      "keyword": "nebraska legal name changes and consistent commission records",
+      "intent": "Apply Nebraska notary law to a specific work scenario",
+      "title": "Nebraska Legal Name Changes and Consistent Commission Records",
+      "description": "Compare the original-name option with a formal Nebraska name or signature amendment and its supporting bond.",
+      "h1": "Nebraska Legal Name Changes and Consistent Commission Records",
+      "kicker": "Nebraska practice",
+      "lede": "A legal name change does not automatically make every existing notarial supply unusable. Nebraska law offers an original-name continuation option and the SOS provides an amendment route.",
+      "sections": [
+        {
+          "heading": "Identify the statutory option",
+          "body": "After marriage, a notary's new personal identification name differs from the commissioned name. Section 64-114 permits the officer to continue acting with the original commission, seal and name until expiration or termination. The bond continues in effect when that commissioned name is used. This option depends on keeping the original commissioned identity consistent in official work throughout the remaining term."
+        },
+        {
+          "heading": "Choose a formal amendment deliberately",
+          "body": "A notary who wants the state record changed before expiration follows the SOS update instructions. For name or signature changes, those instructions require a new fifteen-thousand-dollar bond with the intended official name, home address and consistent execution. The applicant signs the principal portion and completes the oath before another notary. The change is processed through the Notary Public Change of Public Record filing."
+        },
+        {
+          "heading": "Wait for the approved record details",
+          "body": "The update instructions direct download of the new commission certificate after approval of the name or signature change, followed by ordering the matching ink stamp. A homemade device displaying a different name before the state amendment is approved does not follow that sequence. The old-name continuation option also does not authorize arbitrary mixing of names on the certificate, official signature and seal."
+        },
+        {
+          "heading": "Distinguish other updates",
+          "body": "The same instructions allow residency and bilingual-status updates without purchasing a new bond. A residence move also has a forty-five-day statutory SOS notice deadline under section 64-105.04, with commissioned name, expiration and new address information. Treat the actual change accurately so the officer follows the right filing and assurance requirements. An address update is not automatically a name or signature amendment."
+        },
+        {
+          "heading": "Nebraska Legislature — 64-114",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-114",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska SOS — Steps to Update your Notary Public Record",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.nebraska.gov/sites/default/files/doc/business-services/Notary/StepstoUpdateyourNotaryPublicRecord.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-105.04",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-105.04",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must a legally renamed notary immediately abandon the original commissioned name?",
+          "a": "Section 64-114 allows continued use of the original commission, seal and name until expiration or termination."
+        },
+        {
+          "q": "Do the update instructions require a new bond for a signature change?",
+          "a": "Yes. They group name and signature changes together for the new-bond requirement."
+        }
+      ],
+      "id": "ne-legal-name-changes-and-consistent-commission-records",
+      "state": "NE",
+      "path": "/nebraska/guides/legal-name-changes-and-consistent-commission-records/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nebraska/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nebraska/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nebraska/study-guide/",
+          "label": "Nebraska Study Guide"
+        },
+        {
+          "href": "/nebraska/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nebraska/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ending-online-registration-and-preserving-records",
+      "keyword": "ending nebraska online registration and preserving records",
+      "intent": "Apply Nebraska notary law to a specific work scenario",
+      "title": "Ending Nebraska Online Registration and Preserving Records",
+      "description": "Separate disposal of signature-enabling materials from Nebraska's continuing mandatory record-retention duties.",
+      "h1": "Ending Nebraska Online Registration and Preserving Records",
+      "kicker": "Nebraska practice",
+      "lede": "Online authority can end while records must remain. Nebraska addresses enabling credentials and retained transaction evidence through different statutory provisions.",
+      "sections": [
+        {
+          "heading": "Disable the means of affixation",
+          "body": "Section 64-413 generally requires erasing, deleting or destroying the listed materials that enable the official electronic signature and online seal when registration expires, is resigned, canceled or revoked, or the officer dies. The responsible notary or authorized representative also certifies compliance to the SOS. Transferring an active credential to a replacement employee does not meet that process."
+        },
+        {
+          "heading": "Read the narrow exception",
+          "body": "Subsection (2) provides an exception for a former registrant who is reregistered within three months using the same electronic signature, if the previous registration was not revoked, canceled or denied. The exception concerns the destruction requirement. It does not establish authority to perform acts during a gap when registration is expired. A former registrant must evaluate every condition before relying on that provision."
+        },
+        {
+          "heading": "Preserve transaction evidence",
+          "body": "Section 64-409 requires the secure electronic record and backup to remain at least ten years after each transaction or proceeding. It restricts surrender or destruction through its court-order and authorized-rule language. Disabling a signature-creation password therefore should not be confused with deleting the transaction archive. A service-exit plan must address continued lawful custody, security and access for the required retention period."
+        },
+        {
+          "heading": "Use the right state filing",
+          "body": "The SOS update instructions distinguish resignation of the ordinary commission from resignation of an online or in-person electronic registration. General resignation simultaneously resigns the additional registrations. The officer should use the filing matching the decision actually made and retain compliance evidence. Section 64-410 also requires immediate reports for the stated loss, unauthorized use, theft or vandalism events, even when a service transition is underway."
+        },
+        {
+          "heading": "Nebraska Legislature — 64-413",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-413",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-409",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-409",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska SOS — Steps to Update your Notary Public Record",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.nebraska.gov/sites/default/files/doc/business-services/Notary/StepstoUpdateyourNotaryPublicRecord.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Nebraska Legislature — 64-410",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-410",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does the three-month exception permit acts during expired registration?",
+          "a": "It addresses the destruction duty under its stated reregistration conditions and supplies no gap-period authority."
+        },
+        {
+          "q": "Should the ten-year transaction archive be deleted with the enabling password?",
+          "a": "The secure record and backup have a separate minimum retention duty under section 64-409."
+        }
+      ],
+      "id": "ne-ending-online-registration-and-preserving-records",
+      "state": "NE",
+      "path": "/nebraska/guides/ending-online-registration-and-preserving-records/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nebraska/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nebraska/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nebraska/study-guide/",
+          "label": "Nebraska Study Guide"
+        },
+        {
+          "href": "/nebraska/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nebraska/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "NV": [
+    {
+      "slug": "ordinary-travel-quotes-and-journal-evidence",
+      "keyword": "nevada ordinary travel quotes and journal evidence",
+      "intent": "Resolve a specific Nevada notarial work scenario",
+      "title": "Nevada Ordinary Travel Quotes and Journal Evidence",
+      "description": "Apply Nevada's request, disclosure, rate-band and journal requirements to a mobile ordinary appointment.",
+      "h1": "Nevada Ordinary Travel Quotes and Journal Evidence",
+      "kicker": "Nevada practice",
+      "lede": "A travel charge has its own prerequisites and evidence. A lawful acknowledgment fee does not answer every question about the trip.",
+      "sections": [
+        {
+          "heading": "Obtain a real travel request",
+          "body": "A customer asks a Carson City notary to visit a care facility. NRS 240.100(3) permits an additional ordinary travel charge when the requester asks for travel, receives the explanation that the amount is additional and not required by law, and agrees in advance on the hourly rate. Arriving first and announcing an unexpected charge afterward does not follow that sequence."
+        },
+        {
+          "heading": "Apply the applicable hourly band",
+          "body": "The statute caps requested travel between 6 a.m. and 7 p.m. at fifteen dollars per hour and between 7 p.m. and 6 a.m. at thirty dollars per hour. It permits a two-hour minimum and requires pro rata charging after the first two hours. Keep the travel quote distinct from the fee for each actual notarial service so that one amount does not conceal an excessive component."
+        },
+        {
+          "heading": "Address a canceled trip",
+          "body": "Subsection (4) addresses a requester who cancels after the notary begins traveling, or an act that cannot be performed because of the actions of the requester or another necessary participant. It preserves the compliant agreed additional travel amount in those circumstances. The provision should be applied to the trip and actual facts. It does not create permission to invent unrelated penalties or describe an unperformed act as completed."
+        },
+        {
+          "heading": "Make the required evidence",
+          "body": "For each additional travel fee charged, subsection (5) requires the fee amount and the dates and times travel began and ended in the journal. The ordinary act entry also has its own fields under NRS 240.120. An office can therefore reconstruct both the notarial service and the travel basis from actual recorded details. A single total receipt does not supply every statutory journal item."
+        },
+        {
+          "heading": "NRS 240.100(3)–(5)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "NRS 240.120",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the officer choose any hourly rate by agreement?",
+          "a": "The advance agreement remains subject to the statutory time-band ceilings."
+        },
+        {
+          "q": "Does cancellation after departure always erase the agreed travel fee?",
+          "a": "Subsection (4) preserves the compliant agreed amount in the stated cancellation circumstance."
+        }
+      ],
+      "id": "nv-ordinary-travel-quotes-and-journal-evidence",
+      "state": "NV",
+      "path": "/nevada/guides/ordinary-travel-quotes-and-journal-evidence/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nevada/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nevada/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nevada/study-guide/",
+          "label": "Nevada Study Guide"
+        },
+        {
+          "href": "/nevada/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nevada/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "coworker-journal-signature-exception",
+      "keyword": "nevada coworker journal signature exceptions",
+      "intent": "Resolve a specific Nevada notarial work scenario",
+      "title": "Nevada Coworker Journal Signature Exceptions",
+      "description": "Evaluate every condition of Nevada's limited journal-signature exception without omitting the rest of the entry.",
+      "h1": "Nevada Coworker Journal Signature Exceptions",
+      "kicker": "Nevada practice",
+      "lede": "A familiar coworker can still require a complete ordinary journal entry. Nevada's exception concerns one field under cumulative conditions.",
+      "sections": [
+        {
+          "heading": "Identify the actual request",
+          "body": "An office notary frequently handles a colleague's routine business records. The colleague asks to skip signing the journal to save time. NRS 240.120(3) requires a prior act for that person within the previous six months, personal knowledge of identity, and the specified employer or coworker relationship with an ordinary-course business transaction. Friendship alone does not establish that whole combination."
+        },
+        {
+          "heading": "Keep the exception limited",
+          "body": "When all the conditions apply, the notary need not require the person's journal signature. The exception does not eliminate the entry or its other required details. The date, document title, fees if any, oath indication and certificate type still identify the service. Subsection (4) specifies known personally as the identity-evidence description when the signature exception is used."
+        },
+        {
+          "heading": "Do not confuse grouping with omission",
+          "body": "Subsection (2) separately allows one entry for more than one act when the same person and time and one-document or similar-document conditions apply. That grouping option has a different purpose from the signature exception. An office should identify which provision supports each decision. Combining several unrelated clients into one daily total does not follow the same-person and same-time conditions."
+        },
+        {
+          "heading": "Preserve a usable journal",
+          "body": "The ordinary journal is bound with preprinted page numbers and kept securely between entries. It is open to public inspection, and the officer supplies the specified certified entry copy on request and fee payment. A careful entry should therefore explain the actual work even when a permitted signature omission or grouping option is used. Familiarity does not make transaction evidence unnecessary."
+        },
+        {
+          "heading": "NRS 240.120(1)–(8)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "NAC 240.330",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NAC/NAC-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can any personally known returning customer omit the signature?",
+          "a": "The statutory exception also requires the recent prior act and specified business relationship conditions."
+        },
+        {
+          "q": "Does a combined entry eliminate the journal's other fields?",
+          "a": "The option permits documenting multiple qualifying acts together while preserving the required transaction information."
+        }
+      ],
+      "id": "nv-coworker-journal-signature-exception",
+      "state": "NV",
+      "path": "/nevada/guides/coworker-journal-signature-exception/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nevada/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nevada/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nevada/study-guide/",
+          "label": "Nevada Study Guide"
+        },
+        {
+          "href": "/nevada/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nevada/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "broken-remote-sessions-and-retained-evidence",
+      "keyword": "broken nevada remote sessions and retained evidence",
+      "intent": "Resolve a specific Nevada notarial work scenario",
+      "title": "Broken Nevada Remote Sessions and Retained Evidence",
+      "description": "Restart remote performance and preserve recordings when Nevada's session requirements are interrupted.",
+      "h1": "Broken Nevada Remote Sessions and Retained Evidence",
+      "kicker": "Nevada practice",
+      "lede": "A brief reconnection can create a legal restart obligation. The recording's retention also survives failure to complete the act.",
+      "sections": [
+        {
+          "heading": "Recognize the restart event",
+          "body": "During a Nevada remote appointment, the principal exits to find another attachment. NAC 240.680 requires starting performance from the beginning when the principal or officer exits, when the audiovisual link breaks, or when the specified quality compromise prevents completion. The restart includes confirming identity again. An unchanged username or open document tab does not remove that stated requirement."
+        },
+        {
+          "heading": "Reestablish the subject document",
+          "body": "After reconnecting, the officer applies the required identity process and identifies the electronic document as the one on which the principal executed the signature under NAC 240.678. Two similarly named files can contain different terms or attachments. The officer should establish the actual record involved in the restarted act before making a certificate that describes a completed service."
+        },
+        {
+          "heading": "Keep participants informed",
+          "body": "NRS 240.1995 requires the officer to inform all participants before the audiovisual act that it will be electronically recorded. Personal-knowledge and credible-witness routes also have specified recorded explanations. The session evidence should reflect the method actually used. A customer who is paying does not become the only person entitled to the advance recording notice."
+        },
+        {
+          "heading": "Retain unsuccessful-session evidence",
+          "body": "The same statute requires recordings to be kept for at least seven years regardless of whether the act was completed. NAC 240.682 protects recordings and disclosed identifying information from unauthorized access. NAC 240.710 keeps the recording outside the electronic journal itself. A canceled appointment therefore calls for protected record handling alongside an accurate description of what occurred."
+        },
+        {
+          "heading": "NAC 240.678, 240.680, 240.682, 240.710",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NAC/NAC-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "NRS 240.1995",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the officer resume only at the stamp after a broken link?",
+          "a": "The rule requires restarting performance, including identity confirmation."
+        },
+        {
+          "q": "May an incomplete act's recording be deleted immediately?",
+          "a": "The statute expressly requires at least seven years of recording retention even without completion."
+        }
+      ],
+      "id": "nv-broken-remote-sessions-and-retained-evidence",
+      "state": "NV",
+      "path": "/nevada/guides/broken-remote-sessions-and-retained-evidence/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nevada/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nevada/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nevada/study-guide/",
+          "label": "Nevada Study Guide"
+        },
+        {
+          "href": "/nevada/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nevada/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "adjoining-state-work-and-annual-evidence",
+      "keyword": "nevada adjoining-state work and annual evidence",
+      "intent": "Resolve a specific Nevada notarial work scenario",
+      "title": "Nevada Adjoining-State Work and Annual Evidence",
+      "description": "Track the Nevada work connection, additional affidavits and annual evidence for an adjoining-state appointee.",
+      "h1": "Nevada Adjoining-State Work and Annual Evidence",
+      "kicker": "Nevada practice",
+      "lede": "A qualifying Nevada job supports the adjoining-state route. The connection continues to matter after the initial packet is approved.",
+      "sections": [
+        {
+          "heading": "Establish the work connection",
+          "body": "A California resident works regularly at a Nevada facility operated by an employer registered to do business in the state. NRS 240.015 permits the specified adjoining-state route. The alternative concerns a Nevada place of business registered under the state business-license law and applicable local requirements. Occasional Nevada customers alone should not be assumed to establish either statutory connection."
+        },
+        {
+          "heading": "Assemble the supporting packet",
+          "body": "NRS 240.030(2) calls for the stated residence and work-address affidavit. Self-employed applicants supply the specified state and local business licenses. An employed applicant supplies employer license copies and an employer affidavit describing regular work at the Nevada office, business or facility. The bond and oath are filed in the Nevada county of that qualifying business or employment, with the required county certification."
+        },
+        {
+          "heading": "Calendar the annual evidence",
+          "body": "NRS 240.031 requires the adjoining-state notary to submit the stated business-license copies and subsection 240.030(2) information annually within thirty days before the appointment anniversary. This is a recurring obligation during the term. It is distinct from the four-year appointment renewal and from a private employer's internal license calendar. Identify the appointment anniversary when planning the submission."
+        },
+        {
+          "heading": "Respond to a work change",
+          "body": "If the qualifying business or regular employment connection ceases, NRS 240.015 permits suspension and provides a conditional reinstatement route before term expiration. NRS 240.036 also addresses timely amendment of a nonresident's business or employment information. The officer should report actual changes through the stated procedures. A continuing vendor subscription does not establish the lost Nevada work qualification."
+        },
+        {
+          "heading": "NRS 240.015, 240.030(2), 240.031, 240.036",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does a Nevada appointment authorize acts while the officer is in California?",
+          "a": "NRS 240.020 does not confer another state's acting authority."
+        },
+        {
+          "q": "Is the annual license evidence the same as four-year renewal?",
+          "a": "It is a separate annual obligation tied to the appointment anniversary."
+        }
+      ],
+      "id": "nv-adjoining-state-work-and-annual-evidence",
+      "state": "NV",
+      "path": "/nevada/guides/adjoining-state-work-and-annual-evidence/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nevada/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nevada/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nevada/study-guide/",
+          "label": "Nevada Study Guide"
+        },
+        {
+          "href": "/nevada/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nevada/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "lost-damaged-and-amended-stamps",
+      "keyword": "lost, damaged and amended nevada stamps",
+      "intent": "Resolve a specific Nevada notarial work scenario",
+      "title": "Lost, Damaged and Amended Nevada Stamps",
+      "description": "Distinguish Nevada's different stamp events and the required appointment evidence for replacement.",
+      "h1": "Lost, Damaged and Amended Nevada Stamps",
+      "kicker": "Nevada practice",
+      "lede": "A missing device, an inoperable device and amended appointment information have different statutory triggers. Each requires attention to the actual appointment record.",
+      "sections": [
+        {
+          "heading": "Classify a lost device",
+          "body": "NRS 240.045 requires a request for an amended appointment certificate within ten days after a stamp is lost, on the prescribed form with the ten-dollar fee. The officer obtains a replacement under the amendment procedure. A simple reorder using an old vendor receipt does not account for the required state request. The loss date therefore matters when planning the response."
+        },
+        {
+          "heading": "Handle physical damage promptly",
+          "body": "If the stamp is destroyed, broken, damaged or otherwise inoperable, subsection (2) requires immediate SOS notification and a new stamp. This event has its own wording and timing. Continuing to apply unreadable impressions does not satisfy NRS 240.040's legibility requirement. The officer should distinguish an authentic but unusable device from a current working replacement."
+        },
+        {
+          "heading": "Use the amended details",
+          "body": "After an amended appointment certificate, NRS 240.036(5) directs destruction of the former stamp, a replacement containing the amended information and notice to the bond surety. The stamp's name, expiration and appointment number identify the commissioned authority. Leaving obsolete information on a device while the state record changes can defeat the purpose of the amendment process."
+        },
+        {
+          "heading": "Give the supplier valid evidence",
+          "body": "NRS 240.045(3) prevents manufacture without presentation of the original or amended appointment certificate or a certified copy. The new device must still produce the prescribed indelible reproducible and legible rectangular impression, with nonresident wording where applicable. Secure custody under NRS 240.040 and NAC 240.300 continues when the device is not in use. A coworker's stamp cannot substitute for the officer's replacement."
+        },
+        {
+          "heading": "NRS 240.036, 240.040, 240.045",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "NAC 240.300",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NAC/NAC-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does the ten-day lost-stamp period also describe broken-stamp notice?",
+          "a": "The broken or inoperable-stamp subsection instead requires immediate notification."
+        },
+        {
+          "q": "Can a supplier rely solely on a business card?",
+          "a": "The statute requires the specified appointment-certificate evidence before manufacture."
+        }
+      ],
+      "id": "nv-lost-damaged-and-amended-stamps",
+      "state": "NV",
+      "path": "/nevada/guides/lost-damaged-and-amended-stamps/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nevada/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nevada/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nevada/study-guide/",
+          "label": "Nevada Study Guide"
+        },
+        {
+          "href": "/nevada/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nevada/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "directed-signatures-for-physical-inability",
+      "keyword": "nevada directed signatures for physical inability",
+      "intent": "Resolve a specific Nevada notarial work scenario",
+      "title": "Nevada Directed Signatures for Physical Inability",
+      "description": "Apply Nevada's other-person signing accommodation while preserving appearance and accurate certificate wording.",
+      "h1": "Nevada Directed Signatures for Physical Inability",
+      "kicker": "Nevada practice",
+      "lede": "Physical inability to write can be accommodated under Nevada's specific procedure. The notarial officer remains distinct from the person directed to sign.",
+      "sections": [
+        {
+          "heading": "Identify the trigger and direction",
+          "body": "A care-facility resident understands the transaction but cannot physically sign the presented document. NRS 240.1655(8) permits that person to direct another person to sign the resident's name. The provision addresses physical inability and a directed execution. A family member's desire to finish quickly does not alone supply the principal's direction or establish the statutory trigger."
+        },
+        {
+          "heading": "Keep the officer out of the helper role",
+          "body": "The statute expressly requires someone other than the notarial officer to act as the directed signer. An officer familiar with a different state's procedure should check this Nevada text before offering to write the principal's name personally. The helper physically executes the directed signature, while the notary evaluates and certifies the lawful act using the required identity and certificate procedures."
+        },
+        {
+          "heading": "Bring both participants before the officer",
+          "body": "NAC 240.340 requires both the physically unable person and directed helper to appear before the notary when the document is signed. Sending the helper later with a completed page does not follow that stated appearance condition. The regulation also supplies a sufficient acknowledgment form for the described situation. Accurate completion should describe who appeared and the directed execution that actually occurred."
+        },
+        {
+          "heading": "Add the explanatory notation",
+          "body": "Section 240.1655(8) requires wording identifying the helper who affixed the signature and the person who directed it, or similar wording. The explanation provides context for a name written by another person. The officer still evaluates prohibited family or interest relationships and the truth of the certificate. This accommodation does not waive an independent statutory disqualification."
+        },
+        {
+          "heading": "NRS 240.1655(8), 240.065",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "NAC 240.340",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NAC/NAC-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May the Nevada notary be the directed helper?",
+          "a": "This provision requires a person other than the notarial officer."
+        },
+        {
+          "q": "Can only the helper attend after signing at home?",
+          "a": "The regulation requires both principal and helper before the officer when signing occurs."
+        }
+      ],
+      "id": "nv-directed-signatures-for-physical-inability",
+      "state": "NV",
+      "path": "/nevada/guides/directed-signatures-for-physical-inability/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nevada/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nevada/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nevada/study-guide/",
+          "label": "Nevada Study Guide"
+        },
+        {
+          "href": "/nevada/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nevada/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "blank-information-and-additional-signer-lines",
+      "keyword": "nevada blank information and additional signer lines",
+      "intent": "Resolve a specific Nevada notarial work scenario",
+      "title": "Nevada Blank Information and Additional Signer Lines",
+      "description": "Apply Nevada's completeness rule and its limited treatment of an additional signature line outside the current act.",
+      "h1": "Nevada Blank Information and Additional Signer Lines",
+      "kicker": "Nevada practice",
+      "lede": "An unused information space and an absent additional signature do not always have the same treatment. Nevada's regulation describes the distinction.",
+      "sections": [
+        {
+          "heading": "Resolve the information fields",
+          "body": "NRS 240.075 prohibits the described notarial act on an incomplete document requiring signer information. NAC 240.310 provides ways the signer can satisfy completeness by supplying information, marking a space not applicable or lining it through. An officer should inspect which spaces are unresolved and ask the principal to address them through the allowed process. Inventing the customer's missing terms does not follow that rule."
+        },
+        {
+          "heading": "Evaluate an additional signature line",
+          "body": "Subsection (2) addresses a blank line designated for an additional signer when the remainder of the document satisfies subsection (1) and it is clear the current notarization does not apply to that blank line. A seller's acknowledgment can therefore raise a different question from an entirely blank payment clause. The officer should identify the scope of the present certificate accurately."
+        },
+        {
+          "heading": "Complete a real certificate",
+          "body": "The same chapter prohibits stamping a record without a notarial certificate and performing an act on a document containing only a signature. Removing every printed term to leave a signed blank sheet is therefore no solution. The certificate must evidence the actual act under NRS 240.1655, including the relevant name, location, official signature, date and stamped statement."
+        },
+        {
+          "heading": "Keep evidence faithful",
+          "body": "The journal is entered when the act is performed and describes the document, identity route, oath indication and certificate type with the other required fields. If the act cannot lawfully proceed, a stamp should not be supplied merely to satisfy a recipient's demand. The distinction between an excluded additional-signer line and unresolved transaction information should be evaluated from the actual record presented."
+        },
+        {
+          "heading": "NAC 240.310",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NAC/NAC-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "NRS 240.075, 240.120, 240.1655",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must every blank additional-signer line always be removed?",
+          "a": "The rule permits the specified situation when the current notarization clearly excludes that line and the rest is complete."
+        },
+        {
+          "q": "Does a certificate permit knowingly false document certification?",
+          "a": "NRS 240.075 independently prohibits certifying an instrument containing a statement the officer knows is false."
+        }
+      ],
+      "id": "nv-blank-information-and-additional-signer-lines",
+      "state": "NV",
+      "path": "/nevada/guides/blank-information-and-additional-signer-lines/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nevada/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nevada/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nevada/study-guide/",
+          "label": "Nevada Study Guide"
+        },
+        {
+          "href": "/nevada/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nevada/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "overseas-principals-and-nevada-location",
+      "keyword": "overseas principals and nevada remote location",
+      "intent": "Resolve a specific Nevada notarial work scenario",
+      "title": "Overseas Principals and Nevada Remote Location",
+      "description": "Evaluate the principal's confirmed United States connection and the officer's actual Nevada location.",
+      "h1": "Overseas Principals and Nevada Remote Location",
+      "kicker": "Nevada practice",
+      "lede": "Remote service can involve several places at once. Nevada assigns different significance to the officer's location, the principal's location and the document's connection.",
+      "sections": [
+        {
+          "heading": "Locate the officer physically",
+          "body": "A Nevada electronic notary is asked to assist an overseas signer while the officer is traveling. NRS 240.1993(2) requires the officer to be physically in Nevada at the time, regardless of the principal's location. A Nevada home office, mailing address or server does not establish where the traveling person is actually sitting during the proposed session."
+        },
+        {
+          "heading": "Check the foreign prohibition condition",
+          "body": "For a principal outside the United States, subsection (1)(c) requires that the notary have no actual knowledge of prohibition in the jurisdiction where the person is physically located. That condition operates with the required document connection. A client's willingness to proceed does not make actual knowledge disappear. Record the true participant locations when evaluating whether the proposed route fits."
+        },
+        {
+          "heading": "Obtain the principal's connection confirmation",
+          "body": "The person electronically signing must confirm that the act and document concern the specified United States court, government or other entity matter, United States property, or a substantially United States-connected transaction. A Nevada property agreement provides a concrete property connection to examine. A domestic cloud account alone does not establish those substantive categories."
+        },
+        {
+          "heading": "Perform the complete session",
+          "body": "The normal identity, audiovisual, recording, electronic certificate and journal duties continue. NRS 240.1991 requires simultaneous interaction and real-time transmission, while NRS 240.1995 governs recording and recorded identity explanations. A permitted location combination is one component of lawful service. It does not substitute for the full identity process, a correct subject document or tamper-evident completion."
+        },
+        {
+          "heading": "NRS 240.1991, 240.1993, 240.1995, 240.1997",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the officer complete the act from another state using a Nevada account?",
+          "a": "The statute requires the officer's physical presence in Nevada."
+        },
+        {
+          "q": "Is any document on a United States server sufficiently connected?",
+          "a": "The statute identifies substantive matter, property or transaction connections confirmed by the principal."
+        }
+      ],
+      "id": "nv-overseas-principals-and-nevada-location",
+      "state": "NV",
+      "path": "/nevada/guides/overseas-principals-and-nevada-location/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nevada/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nevada/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nevada/study-guide/",
+          "label": "Nevada Study Guide"
+        },
+        {
+          "href": "/nevada/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nevada/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "employer-property-fees-and-official-credentials",
+      "keyword": "nevada employer property, fees and official credentials",
+      "intent": "Resolve a specific Nevada notarial work scenario",
+      "title": "Nevada Employer Property, Fees and Official Credentials",
+      "description": "Apply Nevada's ownership, fee-scope and personal credential controls when workplace demands affect notarial service.",
+      "h1": "Nevada Employer Property, Fees and Official Credentials",
+      "kicker": "Nevada practice",
+      "lede": "A workplace can fund the appointment and organize appointments. Nevada still assigns specific property and official duties to the commissioned person.",
+      "sections": [
+        {
+          "heading": "Separate funding from ownership",
+          "body": "An employer purchases the stamp and journal and later claims the items when the notary leaves. NRS 240.143 expressly treats the stamp, journal and appointment certificate as the notary's personal property. Withholding them is unlawful regardless of who provided the purchase money. The employer's accounting treatment does not amend this statutory allocation of the items."
+        },
+        {
+          "heading": "Check the scope of fee control",
+          "body": "NRS 240.100(6) permits an employer to prohibit fees for acts performed within employment scope. It also forbids requiring surrender of all or part of fees earned outside that scope. A weekend private appointment and an assigned office appointment can therefore raise different scope questions. Identify the actual work rather than assuming the original supply purchase transfers every future service fee."
+        },
+        {
+          "heading": "Preserve the actual officer's control",
+          "body": "NRS 240.075 bars another person's use of the stamp or signing the notary's name in a notarial capacity. The electronic signature and seal likewise remain protected under NRS 240.202. A trained assistant can help arrange an appointment, but the staff relationship does not authorize use of the officer's official credentials to complete acts while the officer is absent."
+        },
+        {
+          "heading": "Recognize employer consequences",
+          "body": "NRS 240.150 addresses employer exposure when the notary's misconduct occurs within employment scope and the employer consents. The employer also has duties under the non-English advertising provision. A workplace instruction is therefore no reason to suppress a required notice or use a misleading professional title. The commissioned officer and employer should each follow their applicable legal responsibilities."
+        },
+        {
+          "heading": "NRS 240.143, 240.100(6), 240.075, 240.150(2), 240.202, 240.085",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May the employer retain the journal because it bought the book?",
+          "a": "The statutory personal-property and no-withholding rule applies regardless of funding."
+        },
+        {
+          "q": "May the employer demand fees from outside-scope work?",
+          "a": "Section 240.100(6) forbids compelling surrender of those outside-scope fees."
+        }
+      ],
+      "id": "nv-employer-property-fees-and-official-credentials",
+      "state": "NV",
+      "path": "/nevada/guides/employer-property-fees-and-official-credentials/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nevada/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nevada/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nevada/study-guide/",
+          "label": "Nevada Study Guide"
+        },
+        {
+          "href": "/nevada/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nevada/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "remote-identity-privacy-and-separate-records",
+      "keyword": "nevada remote identity privacy and separate records",
+      "intent": "Resolve a specific Nevada notarial work scenario",
+      "title": "Nevada Remote Identity Privacy and Separate Records",
+      "description": "Keep principal KBA metrics, protected identity information, journal entries and recordings in their correct Nevada roles.",
+      "h1": "Nevada Remote Identity Privacy and Separate Records",
+      "kicker": "Nevada practice",
+      "lede": "A remote identity check can produce sensitive evidence. Nevada's rules prescribe both the process and the handling of the resulting records.",
+      "sections": [
+        {
+          "heading": "Use the whole identity route",
+          "body": "The documentary remote route combines a government credential with photo and signature, credential analysis and the required dynamic KBA or authorized proofing process. NAC 240.670 prevents further completion using a credential when validity or the person's feature match cannot be established. A clear-looking credential alone does not automatically supply every component of that route."
+        },
+        {
+          "heading": "Keep KBA metrics attached to identity",
+          "body": "NAC 240.697 requires five principal questions with at least five possible answers each, eighty percent correct within two minutes and the specified limited retries with replacement questions. It also requires confidentiality of the questions and answers. These metrics govern principal identity assessment. They do not establish a passing percentage, question count or duration for the notary's Commission Exam."
+        },
+        {
+          "heading": "Limit the electronic journal",
+          "body": "NAC 240.710 excludes personally identifying information unless legally required in the journal, and excludes the remote recording itself. The journal still contains its statutory transaction fields and notes remote use under NRS 240.201. A platform should therefore preserve separate protected evidence stores. Adding every possible identifier to a public-facing entry is not a substitute for the prescribed content limits."
+        },
+        {
+          "heading": "Protect access and backups",
+          "body": "NAC 240.682 requires the officer and provider to protect recordings and disclosed identifying information against unauthorized access. NAC 240.708 requires secure journal backup and prevents post-entry deletion or alteration of content or sequence. Recording disclosure follows NAC 240.686's authorized categories. An ordinary journal inspection request does not automatically authorize release of all audiovisual and identity materials."
+        },
+        {
+          "heading": "NAC 240.670, 240.697, 240.710, 240.682, 240.708, 240.686",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NAC/NAC-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "NRS 240.201",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.leg.state.nv.us/NRS/NRS-240.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is the eighty-percent KBA rule the Commission Exam passing score?",
+          "a": "It is a principal identity-assessment specification and does not establish that exam threshold."
+        },
+        {
+          "q": "Should the remote recording be embedded in the electronic journal?",
+          "a": "NAC 240.710 expressly excludes the required recording from that journal."
+        }
+      ],
+      "id": "nv-remote-identity-privacy-and-separate-records",
+      "state": "NV",
+      "path": "/nevada/guides/remote-identity-privacy-and-separate-records/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/nevada/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/nevada/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/nevada/study-guide/",
+          "label": "Nevada Study Guide"
+        },
+        {
+          "href": "/nevada/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/nevada/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "NJ": [
+    {
+      "slug": "two-remote-tangible-record-workflows",
+      "keyword": "two new jersey remote tangible record workflows",
+      "intent": "Apply New Jersey notarial duties to a specific service scenario",
+      "title": "Two New Jersey Remote Tangible Record Workflows",
+      "description": "Distinguish the New Jersey officer-held acknowledgment route from the separate tangible-record-not-present procedure.",
+      "h1": "Two New Jersey Remote Tangible Record Workflows",
+      "kicker": "New Jersey practice",
+      "lede": "The physical location of the paper matters even when the participants meet by video. Chapter 8 describes different procedures for those facts.",
+      "sections": [
+        {
+          "heading": "Locate the actual record",
+          "body": "A client wants a remote acknowledgment of a paper record already delivered to a New Jersey officer. The current manual permits the officer to display that tangible record to the remote individual and have the individual identify it during the audiovisual session. This route should be evaluated using the actual held record. The officer should not assume a similarly named file proves that the paper being acknowledged is the same instrument."
+        },
+        {
+          "heading": "Use the different process when paper is elsewhere",
+          "body": "If the tangible record is not physically before the officer, the manual requires the principal to sign the record and the specified integrated or securely attached declaration during the session. The declaration connects the attached record with the identified notarial act and technology appearance. Merely showing an old signature while promising later delivery does not establish those signing and declaration steps."
+        },
+        {
+          "heading": "Preserve the signing and delivery evidence",
+          "body": "The officer records the individual signing the record and declaration. The principal sends those materials no later than three days after the act. After receiving them, the officer executes and stamps the certificate and includes the required explanation of witnessing the remote signing. The manual identifies effectiveness by the declaration-signing date, while receipt remains an important completion step."
+        },
+        {
+          "heading": "Keep the remaining conditions",
+          "body": "Both workflows still require the applicable secure communication, same-record, identity and certificate conditions. The certificate indicates communication-technology use, and the prescribed recording is retained. The manual also preserves special laws governing testamentary instruments while describing its limited tangible-record route. Choosing a paper workflow does not establish that every instrument-specific execution law has been satisfied."
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 8, tangible-record routes and certificate wording",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can a scan alone establish the entire record-not-present process?",
+          "a": "The manual requires the session signatures, declaration, sending, recording and post-receipt certificate steps."
+        },
+        {
+          "q": "When does the officer complete the latter certificate?",
+          "a": "After receiving the record and declaration as described by the manual."
+        }
+      ],
+      "id": "nj-two-remote-tangible-record-workflows",
+      "state": "NJ",
+      "path": "/new-jersey/guides/two-remote-tangible-record-workflows/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-jersey/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-jersey/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-jersey/study-guide/",
+          "label": "New Jersey Study Guide"
+        },
+        {
+          "href": "/new-jersey/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-jersey/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "journal-custody-after-employer-departure",
+      "keyword": "new jersey journal custody after employer departure",
+      "intent": "Apply New Jersey notarial duties to a specific service scenario",
+      "title": "New Jersey Journal Custody After Employer Departure",
+      "description": "Preserve personal ownership, journal integrity and retention when a New Jersey notary changes workplaces.",
+      "h1": "New Jersey Journal Custody After Employer Departure",
+      "kicker": "New Jersey practice",
+      "lede": "An employer may have bought the book and device. Chapter 6 still assigns notarial property and record duties to the commissioned person.",
+      "sections": [
+        {
+          "heading": "Identify the property owner",
+          "body": "A Trenton company paid the commissioning costs and purchased the journal and stamp. When the officer leaves, the manager calls both supplies ordinary company property. The manual expressly says the journal and stamping device belong to the notary even when the employer paid. That ownership provision should be considered before packing files, returning equipment or surrendering access to an electronic record system."
+        },
+        {
+          "heading": "Preserve a complete record",
+          "body": "The ordinary journal records all acts in one current journal across paper and electronic records. Its entry fields include actual act date and time, act type, each person's name and address, identity evidence and itemized fees. Moving employers does not justify erasing older clients or leaving gaps. An electronic format must remain permanent and tamper-evident, while the physical format has the specified binding and numbering."
+        },
+        {
+          "heading": "Use the right retention trigger",
+          "body": "The manual measures journal retention as ten years after the last act chronicled in that journal, with a Treasury secure-transmission instruction alternative. It also describes duties on resignation, revocation or suspension. A change of employer alone does not establish that the journal's period has ended. Identify the actual last entry and the continuing custody arrangement when the workplace transition is planned."
+        },
+        {
+          "heading": "Protect related credentials",
+          "body": "The stamping device remains secure, subject to the narrow physical-use assistance provision. Electronic signature and stamp access remain under the stated sole-control and disclosure conditions. An outgoing officer should not leave an assistant able to create acts in that officer's name merely to keep appointments moving. If a journal or device is lost or stolen, the separate timely Treasury reporting duties apply."
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 6, journal and device ownership",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 9, electronic credentials",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does an employer's receipt transfer the journal?",
+          "a": "The manual assigns ownership to the notary despite employer payment."
+        },
+        {
+          "q": "Does the oldest entry set the ten-year period?",
+          "a": "The manual uses the last notarial act chronicled in the journal."
+        }
+      ],
+      "id": "nj-journal-custody-after-employer-departure",
+      "state": "NJ",
+      "path": "/new-jersey/guides/journal-custody-after-employer-departure/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-jersey/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-jersey/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-jersey/study-guide/",
+          "label": "New Jersey Study Guide"
+        },
+        {
+          "href": "/new-jersey/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-jersey/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "regular-law-and-title-files-as-records",
+      "keyword": "regular law and title files as new jersey act records",
+      "intent": "Apply New Jersey notarial duties to a specific service scenario",
+      "title": "Regular Law and Title Files as New Jersey Act Records",
+      "description": "Apply the New Jersey regular-file alternative only to the listed professional and licensed-business categories.",
+      "h1": "Regular Law and Title Files as New Jersey Act Records",
+      "kicker": "New Jersey practice",
+      "lede": "An alternative records form still creates a recordkeeping duty. Chapter 6 identifies who may use regular law-practice or title-insurance business files.",
+      "sections": [
+        {
+          "heading": "Establish the actual category",
+          "body": "A notary works in an office complex shared with lawyers and a title-related business. Co-location alone does not establish the exception. The manual lists New Jersey-admitted attorneys, notaries employed by attorneys and specified employees or agents of a title insurer licensed to do business in the state. The actual professional, employment or agency relationship must support the chosen recordkeeping route."
+        },
+        {
+          "heading": "Keep records of the acts",
+          "body": "Eligible people may keep records in files regularly maintained for the law practice or insurer's business activities. A general folder containing no account of the notarial act does not explain how that permission was used. The provision changes where the evidence is maintained. It should not be described as eliminating all records merely because the notary works for a qualifying business."
+        },
+        {
+          "heading": "Preserve other act duties",
+          "body": "The officer still establishes the principal's identity, performs the actual requested act and completes its accurate certificate and stamp. The party/direct-benefit restriction remains relevant. A title-insurer agent's file permission does not establish that the agent can act on a record involving the officer's own prohibited interest. Qualification for one exception should be checked separately from other eligibility conditions."
+        },
+        {
+          "heading": "Plan remote evidence separately",
+          "body": "A qualifying office that also offers remote work applies Chapter 8's audiovisual recording and retention duties. Those records have a specified ten-year period and designated-repository option. The general regular-file alternative supplies no automatic waiver of that remote evidence. A business can therefore use the permitted file structure while separately arranging protected recording preservation for the service actually performed."
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 6, in-lieu record alternative",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapters 3, 7 and 8",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does any title-related company qualify?",
+          "a": "The manual specifies a title insurance company licensed under the listed New Jersey law."
+        },
+        {
+          "q": "Does the alternative remove remote recordings?",
+          "a": "It concerns journal-form records and does not waive Chapter 8 recording duties."
+        }
+      ],
+      "id": "nj-regular-law-and-title-files-as-records",
+      "state": "NJ",
+      "path": "/new-jersey/guides/regular-law-and-title-files-as-records/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-jersey/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-jersey/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-jersey/study-guide/",
+          "label": "New Jersey Study Guide"
+        },
+        {
+          "href": "/new-jersey/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-jersey/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "copy-accuracy-and-electronic-printouts",
+      "keyword": "new jersey copy accuracy and electronic printouts",
+      "intent": "Apply New Jersey notarial duties to a specific service scenario",
+      "title": "New Jersey Copy Accuracy and Electronic Printouts",
+      "description": "Connect a full source comparison to the certificate and the conditional recording rule for tangible electronic-record copies.",
+      "h1": "New Jersey Copy Accuracy and Electronic Printouts",
+      "kicker": "New Jersey practice",
+      "lede": "A copy certificate describes the relationship between records. It needs an actual accurate reproduction and a certificate connected to the right item.",
+      "sections": [
+        {
+          "heading": "Define the whole source",
+          "body": "A customer presents a private agreement with an incorporated schedule and a reproduction without that schedule. Chapter 7 requires a full, true and accurate transcription or reproduction of the record or item. The officer must decide what source the proposed certificate describes and whether the reproduction supports that description. A complete first page cannot establish completeness of the entire multi-part agreement."
+        },
+        {
+          "heading": "Certify reproduction rather than commercial merit",
+          "body": "The manual's determination concerns copy accuracy. A reproduction can faithfully contain a disputed promise or prediction without the officer guaranteeing its economic merit. The short form identifies the record in the named person's possession. The officer should not turn that statement into an assurance that every underlying contract claim is legally enforceable or that the customer's investment will succeed."
+        },
+        {
+          "heading": "Attach the actual certificate",
+          "body": "Chapter 6 requires performance before the officer signs the certificate, contemporaneous execution and the prescribed officer, date, jurisdiction and stamp information. A tangible certificate belongs within or attached to the actual record. For electronic association, Chapter 9 calls for accurate reliable tamper-evident linkage. Attaching the right words to another customer's similarly named file does not document this copy act."
+        },
+        {
+          "heading": "Evaluate electronic-to-paper recording",
+          "body": "N.J.S.A. 52:7-10.15(c) identifies a recording rule for a tangible copy of an electronic record containing the relevant certificate, when the executing officer certifies copy accuracy. It names the county clerk, deed-and-mortgage register and county surrogate. A bare printout and an officer's accuracy certification are different evidence. Apply the actual statutory conditions before describing the printout as satisfying an original-record requirement."
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapters 6, 7 and 9",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "N.J.S.A. 52:7-10.15(c)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://pub.njleg.gov/bills/2020/PL21/179_.PDF",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can a missing incorporated schedule matter?",
+          "a": "Yes. The officer must determine that the reproduction is full and accurate for the source being certified."
+        },
+        {
+          "q": "Does every printout automatically satisfy the stated original-record rule?",
+          "a": "The statute includes a specific officer certification of accuracy and other stated conditions."
+        }
+      ],
+      "id": "nj-copy-accuracy-and-electronic-printouts",
+      "state": "NJ",
+      "path": "/new-jersey/guides/copy-accuracy-and-electronic-printouts/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-jersey/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-jersey/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-jersey/study-guide/",
+          "label": "New Jersey Study Guide"
+        },
+        {
+          "href": "/new-jersey/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-jersey/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "electronic-signature-control-and-vendor-access",
+      "keyword": "new jersey electronic signature control and vendor access",
+      "intent": "Apply New Jersey notarial duties to a specific service scenario",
+      "title": "New Jersey Electronic Signature Control and Vendor Access",
+      "description": "Apply New Jersey reliability and limited-disclosure requirements when a platform or staff member requests access.",
+      "h1": "New Jersey Electronic Signature Control and Vendor Access",
+      "kicker": "New Jersey practice",
+      "lede": "A visible seal image is one part of electronic service. Chapter 9 also regulates how the officer's signature, stamp and associated record remain reliable.",
+      "sections": [
+        {
+          "heading": "Assess the four reliability features",
+          "body": "A platform offers one generic signature credential to everyone in an office. The manual requires the signature and stamp to be unique to the officer, capable of independent verification, under sole control and attached or logically associated in a tamper-evident manner. A common company picture does not establish those individual reliability features. Review the actual authentication and document process rather than its decorative appearance."
+        },
+        {
+          "heading": "Protect the associated record",
+          "body": "Tamper-evident means later changes provide evidence. Logical association connects, cross-references or otherwise links the certificate and record accurately and reliably in that manner. A generic shortcut into a folder containing several customers' files may not identify the intended record. The completed certificate, officer signature and official stamp must relate to the actual notarized record through the required linkage."
+        },
+        {
+          "heading": "Use disclosure categories carefully",
+          "body": "The manual generally prohibits disclosure of access information used to affix the signature and stamp, while describing requests by law enforcement, courts and, with reasonable precautions, document preparation and transmission vendors. That qualified vendor situation does not authorize publication of passwords to every employee or customer. The officer should identify the actual requesting role and apply the specified precautions."
+        },
+        {
+          "heading": "Complete after performance",
+          "body": "The manual directs the officer to perform the act, then complete the electronic certificate with the required signature and stamp elements and associate them with the record. Pre-signing blank certificates for future appointments reverses that order. A provider's convenience or automated billing flow cannot establish performance of a notarial act that has not yet occurred."
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 9, reliability and access",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 6, certificate sequence",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does a large realistic seal image prove reliability?",
+          "a": "The manual also requires uniqueness, verification, control and tamper-evident association."
+        },
+        {
+          "q": "Can a vendor request justify sharing with all staff?",
+          "a": "The manual describes a qualified vendor category with reasonable precautions, not unrestricted distribution."
+        }
+      ],
+      "id": "nj-electronic-signature-control-and-vendor-access",
+      "state": "NJ",
+      "path": "/new-jersey/guides/electronic-signature-control-and-vendor-access/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-jersey/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-jersey/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-jersey/study-guide/",
+          "label": "New Jersey Study Guide"
+        },
+        {
+          "href": "/new-jersey/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-jersey/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "spouse-and-civil-union-partner-interests",
+      "keyword": "new jersey spouse and civil union partner interests",
+      "intent": "Apply New Jersey notarial duties to a specific service scenario",
+      "title": "New Jersey Spouse and Civil Union Partner Interests",
+      "description": "Screen a proposed New Jersey record for the officer's party status and direct benefits before performing the act.",
+      "h1": "New Jersey Spouse and Civil Union Partner Interests",
+      "kicker": "New Jersey practice",
+      "lede": "A record can create a conflict even when the signer is properly identified. Chapter 3 addresses parties and direct beneficial interests independently.",
+      "sections": [
+        {
+          "heading": "Read the record relationship",
+          "body": "A notary is individually a buyer on an agreement and is asked to acknowledge the seller. The manual prohibits an officer's act with respect to a record to which the officer is a party. The question therefore reaches beyond whether the officer is notarizing a personal signature. Handling only someone else's signature does not remove the officer's own contractual participation."
+        },
+        {
+          "heading": "Include the specified partner interests",
+          "body": "The same provision includes the officer's spouse and civil union partner, whether as a party or through a direct beneficial interest. An unpaid appointment can still involve that prohibited benefit. The officer should evaluate the actual record and relationships rather than assuming every assignment with no notarial fee is independent. The manual states that an act violating the provision is voidable."
+        },
+        {
+          "heading": "Keep identity and authority separate",
+          "body": "A credential can establish who appeared and support the signature connection under Chapter 7. It cannot remove the officer's direct interest in the record. An attorney exam instruction or a regular-file records alternative likewise addresses a different issue. Each relevant condition must be met before the officer signs a certificate describing a completed eligible act."
+        },
+        {
+          "heading": "Arrange another eligible assessment",
+          "body": "A customer waiver, urgency or generous payment does not amend the stated prohibition. Another eligible officer can assess the requested act independently and apply the proper identity and certificate requirements. The original officer should avoid describing notarization as a guarantee of the underlying deal. The validity and remedy provisions separately preserve challenges to transactions and do not turn a personal conflict into unrestricted authority."
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 3, prohibitions",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 7, identity",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "N.J.S.A. 52:7-10.19",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://pub.njleg.gov/bills/2020/PL21/179_.PDF",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the officer notarize only the other party to avoid being a party?",
+          "a": "The manual's restriction concerns the record to which the officer is a party."
+        },
+        {
+          "q": "Does a fee waiver remove a partner's direct benefit?",
+          "a": "The party/direct-benefit condition is separate from whether a notarial fee is charged."
+        }
+      ],
+      "id": "nj-spouse-and-civil-union-partner-interests",
+      "state": "NJ",
+      "path": "/new-jersey/guides/spouse-and-civil-union-partner-interests/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-jersey/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-jersey/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-jersey/study-guide/",
+          "label": "New Jersey Study Guide"
+        },
+        {
+          "href": "/new-jersey/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-jersey/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "representative-declarations-and-accurate-forms",
+      "keyword": "new jersey representative declarations and accurate forms",
+      "intent": "Apply New Jersey notarial duties to a specific service scenario",
+      "title": "New Jersey Representative Declarations and Accurate Forms",
+      "description": "Describe the appearing representative, authority category and represented party in a New Jersey acknowledgment.",
+      "h1": "New Jersey Representative Declarations and Accurate Forms",
+      "kicker": "New Jersey practice",
+      "lede": "An agent's acknowledgment involves the actual person appearing and the capacity declared. The certificate should preserve both facts accurately.",
+      "sections": [
+        {
+          "heading": "Identify the appearing person",
+          "body": "A trustee visits a New Jersey officer to acknowledge a record for a trust. Chapter 7 calls for determining the identity claimed by the person appearing and the connection to the signature. The absent beneficiaries should not be listed as the people who appeared merely because the transaction affects them. The officer identifies the actual participant through the applicable evidence route."
+        },
+        {
+          "heading": "Understand the declaration",
+          "body": "Chapter 2 defines representative acknowledgment as the individual's declaration of proper authority and execution as the act of the identified represented person or entity. Representative capacity includes the listed business, public, fiduciary and agency roles. The requested act should be understood before its certificate is completed. A representative label does not itself appoint the notary as the principal's legal adviser."
+        },
+        {
+          "heading": "Complete the matching form",
+          "body": "The representative short form in Chapter 6 identifies the acknowledging person, the type of authority and the party on whose behalf execution occurred. The certificate also carries the actual act date, jurisdiction, officer signature and official stamp information. Copying a form from another transaction without checking these fields can misdescribe the person or represented entity involved in the current appointment."
+        },
+        {
+          "heading": "Preserve professional boundaries",
+          "body": "The manual regulates nonattorney claims of legal authority and unauthorized advice. If an officer is asked to guarantee the agent's contract or provide an immigration strategy, that is a different request from performing the acknowledgment. Party and direct-benefit restrictions and any appropriate refusal concern remain applicable. The certificate describes the actual act rather than guaranteeing every consequence of the represented transaction."
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapters 2, 6 and 7",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapters 3 and 5",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Should an absent principal be described as the person who appeared?",
+          "a": "The certificate must accurately identify the actual appearing representative and role."
+        },
+        {
+          "q": "What does the representative form add?",
+          "a": "It identifies the authority type and the represented party for the record's execution."
+        }
+      ],
+      "id": "nj-representative-declarations-and-accurate-forms",
+      "state": "NJ",
+      "path": "/new-jersey/guides/representative-declarations-and-accurate-forms/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-jersey/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-jersey/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-jersey/study-guide/",
+          "label": "New Jersey Study Guide"
+        },
+        {
+          "href": "/new-jersey/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-jersey/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "physical-signing-help-and-stamp-assistance",
+      "keyword": "new jersey physical signing help and stamp assistance",
+      "intent": "Apply New Jersey notarial duties to a specific service scenario",
+      "title": "New Jersey Physical Signing Help and Stamp Assistance",
+      "description": "Distinguish the principal's directed-signature accommodation from the notary's narrow device-use assistance exception.",
+      "h1": "New Jersey Physical Signing Help and Stamp Assistance",
+      "kicker": "New Jersey practice",
+      "lede": "Two physical difficulties can arise at one appointment. The manual gives different rules for a principal unable to sign and an officer unable to operate a device.",
+      "sections": [
+        {
+          "heading": "Identify whose action needs help",
+          "body": "A principal cannot physically write a name on a record. Chapter 6 permits the principal to direct another individual to sign the principal's name. That helper must be someone other than the notarial officer. The procedure addresses a real physical inability and direction from the principal, while the officer remains responsible for the actual notarial act."
+        },
+        {
+          "heading": "Explain the directed execution",
+          "body": "The officer inserts the prescribed wording naming the person who affixed the signature and the individual who directed it, or words of similar import. The explanation connects the written name with the action actually performed. It should not describe the principal as personally writing when a helper did so. Other identity and lawful-act conditions remain separate matters to evaluate."
+        },
+        {
+          "heading": "Recognize the different stamp exception",
+          "body": "The device-security rule generally bars another person's use to perform an act. It includes a narrow exception at the specific instruction of a notary who cannot physically use the stamping device. That assistance concerns physical operation of the officer's device. It does not give an assistant an independent commission or permission to conduct appointments whenever the officer is absent."
+        },
+        {
+          "heading": "Keep the evidence accurate",
+          "body": "A combined appointment might involve a directed helper for the principal and separate device-operation assistance for the officer. Each action needs its own factual basis under the manual. The officer still performs and documents the act and protects the personal device. Describing the exceptions precisely prevents one accommodation from being treated as a broad transfer of signature or official authority."
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 6, individuals unable to sign",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 6, stamping device security",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the notarial officer be the principal's directed signer?",
+          "a": "The manual requires another individual for that principal-signing accommodation."
+        },
+        {
+          "q": "Can an assistant use the physical-device exception for independent appointments?",
+          "a": "The exception concerns specific instruction when the notary cannot physically use the device."
+        }
+      ],
+      "id": "nj-physical-signing-help-and-stamp-assistance",
+      "state": "NJ",
+      "path": "/new-jersey/guides/physical-signing-help-and-stamp-assistance/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-jersey/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-jersey/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-jersey/study-guide/",
+          "label": "New Jersey Study Guide"
+        },
+        {
+          "href": "/new-jersey/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-jersey/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "new-jersey-overseas-remote-requests",
+      "keyword": "new jersey overseas remote requests",
+      "intent": "Apply New Jersey notarial duties to a specific service scenario",
+      "title": "New Jersey Overseas Remote Requests",
+      "description": "Apply New Jersey's officer-location, United States-connection and foreign-prohibition conditions to an overseas principal.",
+      "h1": "New Jersey Overseas Remote Requests",
+      "kicker": "New Jersey practice",
+      "lede": "An international appointment requires more than connecting a camera. Chapter 8 gives the officer and record distinct geographic conditions.",
+      "sections": [
+        {
+          "heading": "Establish the officer's location",
+          "body": "A New Jersey officer working temporarily from another state receives an overseas request. The manual authorizes the stated remote service for an officer located in New Jersey. A New Jersey commission, mailing address or vendor account does not establish the person's physical location during the session. The officer first evaluates where the proposed act would actually be performed."
+        },
+        {
+          "heading": "Check the record connection",
+          "body": "For a principal outside the United States, the manual requires the specified United States public-official, court, government or other entity matter, or United States property or substantially connected transaction. A record concerning New Jersey property provides a substantive fact to examine. Storing an unrelated document on an American server alone does not establish those listed matter or property categories."
+        },
+        {
+          "heading": "Apply the foreign-law condition",
+          "body": "The manual also requires that making the statement or signing the record not be prohibited by the foreign state where the principal is located. That condition appears with the record connection and should be treated independently. A client who requests silence about location or offers to waive the requirement has not changed the facts or the applicable condition."
+        },
+        {
+          "heading": "Perform the complete act",
+          "body": "The secure live session, same-record confirmation, manual identity workflow, accurate certificate and audiovisual recording remain required. The certificate indicates communication-technology use, and recordings receive the stated ten-year retention. A permissible international connection does not replace those operational duties. If tangible paper is involved, evaluate which Chapter 8 tangible-record procedure fits its actual location."
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 8, location and overseas conditions",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 8, identification, tangible records and retention",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does the officer's New Jersey address permit remote work from another state?",
+          "a": "The manual's authorization requires the officer to be located in New Jersey."
+        },
+        {
+          "q": "Does an American server establish the required record nexus?",
+          "a": "The manual specifies substantive matter, property or transaction connections."
+        }
+      ],
+      "id": "nj-new-jersey-overseas-remote-requests",
+      "state": "NJ",
+      "path": "/new-jersey/guides/new-jersey-overseas-remote-requests/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-jersey/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-jersey/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-jersey/study-guide/",
+          "label": "New Jersey Study Guide"
+        },
+        {
+          "href": "/new-jersey/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-jersey/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "nonattorney-advertising-and-legal-impressions",
+      "keyword": "new jersey nonattorney advertising and legal impressions",
+      "intent": "Apply New Jersey notarial duties to a specific service scenario",
+      "title": "New Jersey Nonattorney Advertising and Legal Impressions",
+      "description": "Keep New Jersey notarial advertising within the manual's language, disclaimer and professional-authority boundaries.",
+      "h1": "New Jersey Nonattorney Advertising and Legal Impressions",
+      "kicker": "New Jersey practice",
+      "lede": "Advertising can create an inaccurate impression before any appointment occurs. Chapters 3 and 5 address that professional boundary directly.",
+      "sections": [
+        {
+          "heading": "Read the any-language requirement",
+          "body": "A nonattorney advertises English-language notary service and assumes only translated advertisements need a notice. The manual requires the stated professional-limit notice with service advertising in any language. When the advertisement is in another language, the statement or translation appears in that language. A commission number or attractive seal image does not communicate the same professional limitation."
+        },
+        {
+          "heading": "Avoid equivalent legal titles",
+          "body": "The manual prohibits a nonattorney from using lawyer, attorney-at-law or equivalent terms in English or any other language that imply legal licensure. A misleading translated title therefore cannot be justified simply because the exact English words are absent. The officer should evaluate the impression created by the whole communication and the status actually held."
+        },
+        {
+          "heading": "Keep services within authority",
+          "body": "Chapter 5 includes nonattorney legal advice, immigration consulting or expertise claims, unauthorized attorney duties and false impressions of legal-practice authority among commission-action grounds. A successful notary test establishes no general license to advise on these subjects. A customer who wants strategy about rights or immigration consequences is asking for a different professional service."
+        },
+        {
+          "heading": "Preserve the actual notarial role",
+          "body": "The officer can describe the notarial services actually available while following the applicable identity, certificate and records duties. The manual's attorney instruction and regular-file alternative have their own specific contexts. Neither makes every notary an attorney. Accurate advertising should therefore align the service offered with the actual personal qualifications and avoid implying state approval of legal advice or guaranteed transaction outcomes."
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 3, advertising and titles",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "New Jersey 2026 Notary Public Manual — Chapter 5, professional and misleading-conduct grounds",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does an English advertisement avoid the notice rule?",
+          "a": "The manual uses an any-language notice requirement."
+        },
+        {
+          "q": "Does passing the notary exam authorize immigration advice?",
+          "a": "The commission does not grant the professional authority described by those claims."
+        }
+      ],
+      "id": "nj-nonattorney-advertising-and-legal-impressions",
+      "state": "NJ",
+      "path": "/new-jersey/guides/nonattorney-advertising-and-legal-impressions/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-jersey/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-jersey/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-jersey/study-guide/",
+          "label": "New Jersey Study Guide"
+        },
+        {
+          "href": "/new-jersey/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-jersey/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "NM": [
+    {
+      "slug": "acknowledgment-verification-and-witnessing",
+      "keyword": "New Mexico acknowledgment vs jurat",
+      "intent": "Learn how New Mexico rules apply to a concrete notarial workflow",
+      "title": "Choosing the Act in a New Mexico Signing",
+      "description": "Distinguish execution declarations, sworn truth, and signature witnessing in a New Mexico transaction.",
+      "h1": "Choosing the Act in a New Mexico Signing",
+      "kicker": "New Mexico notarial practice",
+      "lede": "A signature line and a stamp box do not tell the whole story. Identify the requested act before deciding which declarations and signing steps are necessary.",
+      "sections": [
+        {
+          "heading": "Execution has its own declaration",
+          "body": "At a Las Cruces business closing, a representative brings a previously signed authorization. An acknowledgment requires identifying the individual and obtaining the declaration that execution served the record's stated purpose. For representative execution, the declaration also addresses proper authority and execution as the represented person's act. The officer's certificate records that acknowledgment. It does not establish that every factual assertion in the authorization is true."
+        },
+        {
+          "heading": "A verification requires sworn truth",
+          "body": "A different customer brings a factual statement requiring verification on oath or affirmation. The officer must obtain the principal's declaration of truth and the signature in the officer's presence. A signature placed on the document at home does not fulfill that present-signing requirement. Arrange the required signing and declaration before completing the verification certificate. A customer who declines to make the truth declaration has left an essential part of the requested act incomplete."
+        },
+        {
+          "heading": "Witnessing and directed signatures",
+          "body": "Signature witnessing also requires identifying the person and witnessing the signature. It does not acquire a sworn-truth declaration merely because the signature appears beside an official stamp. If a principal is physically unable to sign, the statute permits a directed signature by someone other than the officer. The officer includes the required notation identifying the directed signer and the principal. Physical assistance therefore requires its own lawful procedure."
+        },
+        {
+          "heading": "Complete the actual event",
+          "body": "Use the actual act date and the certificate appropriate to what occurred. For an ordinary tangible transaction, the principal appears physically before the officer. The principal's requested result does not permit backdating an acknowledgment or recording an oath that was never administered. If the record is incomplete or the principal has not decided what act is required, resolve the missing instructions within the officer's lawful role before completing the certificate."
+        },
+        {
+          "heading": "2023 enacted RULONA amendments, Sections4 and8",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "SOS Handbook, Notarial Acts",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can an acknowledgment prove a statement's truth?",
+          "a": "An acknowledgment records the execution declaration. A verification on oath or affirmation requires a declaration of truth."
+        },
+        {
+          "q": "May the officer be the directed signer?",
+          "a": "No. The directed signer must be someone other than the notarial officer."
+        }
+      ],
+      "id": "nm-acknowledgment-verification-and-witnessing",
+      "state": "NM",
+      "path": "/new-mexico/guides/acknowledgment-verification-and-witnessing/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-mexico/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-mexico/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-mexico/study-guide/",
+          "label": "New Mexico Study Guide"
+        },
+        {
+          "href": "/new-mexico/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-mexico/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "identification-and-credible-witnesses",
+      "keyword": "New Mexico expired identification notary",
+      "intent": "Learn how New Mexico rules apply to a concrete notarial workflow",
+      "title": "Identity Decisions Beyond a Familiar Signature",
+      "description": "Apply New Mexico's one-year expired-ID boundary and credible-witness requirements.",
+      "h1": "Identity Decisions Beyond a Familiar Signature",
+      "kicker": "New Mexico notarial practice",
+      "lede": "A recognizable signature may raise confidence without satisfying the legal identification process. Work through the applicable identity route for the actual appearance.",
+      "sections": [
+        {
+          "heading": "Read the credential rule carefully",
+          "body": "A Santa Fe customer produces a driver's license that expired fourteen months ago. New Mexico's statutory listed-credential allowance extends only to credentials current or expired no more than one year before the act. A different state's longer allowance does not govern this transaction. Review the credential category as well as the expiration date. Other government identification must meet the statutory signature-or-photograph and satisfactory-identification conditions."
+        },
+        {
+          "heading": "Personal knowledge has substance",
+          "body": "Personal knowledge arises from dealings sufficient to provide reasonable certainty about identity. An email address, account profile, or signature that resembles an old document does not by itself establish those dealings. If personal knowledge does not exist, evaluate the appropriate satisfactory-evidence route. The statute also permits requiring additional information or credentials when necessary to assure identity. A complete certificate starts with a supportable identification decision."
+        },
+        {
+          "heading": "Use the credible-witness conditions",
+          "body": "A credible witness does more than introduce the principal. The statute requires the witness to be unrelated and unaffected by the transaction, personally known to the officer, and identified by the prescribed credential, with identity verified through an oath or affirmation. Check each requirement before treating the witness as satisfactory evidence. A willing stranger or an interested participant does not become qualified solely by offering a confident statement."
+        },
+        {
+          "heading": "Remote identity adds technology rules",
+          "body": "For a remote appearance, the rules address credential analysis, knowledge-based authentication, and real-time visual comparison when the prescribed proofing route applies. A remote credible witness may appear through technology if all three participants can communicate simultaneously and the witness route otherwise satisfies the statute. Authentication of an electronic signature alone does not replace the principal's audiovisual appearance or the required identity determination."
+        },
+        {
+          "heading": "2021 enacted RULONA, Section6",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nmlegis.gov/Sessions/21%20Regular/final/SB0012.PDF",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "12.9.4.10-.11 NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is a credential expired two years acceptable under the listed-ID window?",
+          "a": "No. The New Mexico statutory window is no more than one year."
+        },
+        {
+          "q": "Can the officer identify a remote signer solely from an electronic-signature check?",
+          "a": "No. The rule expressly rejects that substitute for compliant identification and audiovisual appearance."
+        }
+      ],
+      "id": "nm-identification-and-credible-witnesses",
+      "state": "NM",
+      "path": "/new-mexico/guides/identification-and-credible-witnesses/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-mexico/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-mexico/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-mexico/study-guide/",
+          "label": "New Mexico Study Guide"
+        },
+        {
+          "href": "/new-mexico/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-mexico/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "workplace-custody-and-impartiality",
+      "keyword": "New Mexico employer notary journal stamp",
+      "intent": "Learn how New Mexico rules apply to a concrete notarial workflow",
+      "title": "Working as a Notary Inside a New Mexico Business",
+      "description": "Manage employer requests, journal custody, fee ceilings, and personal conflicts.",
+      "h1": "Working as a Notary Inside a New Mexico Business",
+      "kicker": "New Mexico notarial practice",
+      "lede": "An employer may organize appointments and purchase supplies while the officer remains responsible for the acts and official tools.",
+      "sections": [
+        {
+          "heading": "Separate scheduling from judgment",
+          "body": "An Albuquerque office manager can arrange the signing room, but the officer still determines whether the required appearance, identity, declaration, and certificate conditions are met. A supervisor's instruction to finish an incomplete record does not remove the handbook's prohibition. If knowing and voluntary action or capacity is doubtful, assess the circumstances under the refusal provisions. The statute also prohibits discriminatory performance or refusal."
+        },
+        {
+          "heading": "Check direct personal interests",
+          "body": "The conflict rule addresses a record to which the officer, the officer's spouse, or domestic partner is a party or in which one has a direct beneficial interest. An employer's urgency does not remove that restriction. Identify the actual parties and benefits before proceeding. Where the personal conflict exists, arrange a different qualified officer rather than treating a manager's approval as a cure. The statute makes an act in violation voidable."
+        },
+        {
+          "heading": "Keep custody after employment ends",
+          "body": "The journal remains under the officer's secure control. Statutory permission for a former employer to receive clearly marked copies of relevant entries does not give the employer the original journal. When an employee leaves, plan lawful retention or transfer and document the custody location. The required ten-year retention period continues after the officer changes jobs or stops working as a notary."
+        },
+        {
+          "heading": "Protect credentials and fee limits",
+          "body": "A RON employer must not allow another worker to use the officer's electronic signature or stamp. Keep those credentials under the officer's sole control and access. Employers also remain subject to the applicable maximum notarial fees. For travel compensation, agree in advance and disclose that the charge is separate and is not mandated by law. A company's internal invoice policy does not override those requirements."
+        },
+        {
+          "heading": "2023 enacted RULONA, Sections3,7,18 and28",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "12.9.4.13(C) NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "SOS Handbook, Prohibited Acts and Fees",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May the employer keep the original journal because it bought the book?",
+          "a": "The officer keeps the required custody or makes an authorized transfer. Permitted employer copies must be clearly marked."
+        },
+        {
+          "q": "May a coworker use the officer's RON login?",
+          "a": "No. The signature and official stamp remain under the officer's sole control and access."
+        }
+      ],
+      "id": "nm-workplace-custody-and-impartiality",
+      "state": "NM",
+      "path": "/new-mexico/guides/workplace-custody-and-impartiality/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-mexico/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-mexico/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-mexico/study-guide/",
+          "label": "New Mexico Study Guide"
+        },
+        {
+          "href": "/new-mexico/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-mexico/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "copy-certification-and-electronic-printouts",
+      "keyword": "New Mexico copy certification electronic record",
+      "intent": "Learn how New Mexico rules apply to a concrete notarial workflow",
+      "title": "Comparing Copies and Electronic Printouts",
+      "description": "Evaluate eligible originals, comparison methods, certificate language, and the ordinary copy-fee formula.",
+      "h1": "Comparing Copies and Electronic Printouts",
+      "kicker": "New Mexico notarial practice",
+      "lede": "Copy certification is an accuracy determination made through the authorized procedure. Start with the kind of original and the officer's ability to compare it.",
+      "sections": [
+        {
+          "heading": "Identify the source record",
+          "body": "At a Rio Rancho appointment, a customer asks for certified copies of a private letter and a birth certificate. The handbook's copy-certification instruction excludes vital records, public records, and publicly recordable documents. The birth certificate belongs with the appropriate official custodian. The private letter can be evaluated under the ordinary procedure if the officer has the original and can make the required accuracy determination."
+        },
+        {
+          "heading": "Compare the complete reproduction",
+          "body": "The administrative rule permits making or supervising the copy or reviewing the original and copy. Check completeness across all pages, attachments, and relevant content. A customer's assurance that the document was scanned correctly does not make the officer's comparison unnecessary. The certificate should accurately describe the original and reproduction. The handbook separately prohibits certifying or authenticating a photograph, so an image's presence does not create a general photographic-authentication power."
+        },
+        {
+          "heading": "Electronic records can produce certified tangible copies",
+          "body": "Current statute authorizes certifying that a tangible copy is an accurate copy of an electronic record. The remote rule treats the properly certified tangible copy as an original record and requires the applicable short-form copy certificate. A platform's print command does not itself provide that certificate or the officer's accuracy determination. Verify the electronic source and complete the applicable certification before describing the paper's status."
+        },
+        {
+          "heading": "Apply the copy fee formula",
+          "body": "The ordinary copy-certification provision uses fifty cents per page with a minimum total charge of five dollars. A small eligible copy therefore does not require charging only a fraction of a dollar, while a larger copy uses the page formula. Do not convert that provision into five dollars for every page. Other notarial acts and any separately agreed travel charge have their own rules, so make the invoice describe what was actually performed."
+        },
+        {
+          "heading": "12.9.3.12(E) NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0003.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "2023 enacted RULONA, Section3",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "12.9.4.16(B) NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "SOS Handbook, Copy Certifications and Fees",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can a customer waive the vital-record restriction?",
+          "a": "Customer permission does not expand the handbook's copy-certification scope."
+        },
+        {
+          "q": "Does every printout from a RON platform count as a certified original?",
+          "a": "The remote rule requires a certified tangible copy and the appropriate copy certificate."
+        }
+      ],
+      "id": "nm-copy-certification-and-electronic-printouts",
+      "state": "NM",
+      "path": "/new-mexico/guides/copy-certification-and-electronic-printouts/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-mexico/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-mexico/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-mexico/study-guide/",
+          "label": "New Mexico Study Guide"
+        },
+        {
+          "href": "/new-mexico/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-mexico/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "contemporaneous-journals-and-electronic-recovery",
+      "keyword": "New Mexico notary journal entries",
+      "intent": "Learn how New Mexico rules apply to a concrete notarial workflow",
+      "title": "Building a Journal That Survives Daily Work",
+      "description": "Record contemporaneous acts, control mixed paper and electronic journals, and prepare recoverable electronic storage.",
+      "h1": "Building a Journal That Survives Daily Work",
+      "kicker": "New Mexico notarial practice",
+      "lede": "A journal becomes reliable through the way entries are created and protected throughout daily practice.",
+      "sections": [
+        {
+          "heading": "Record the event when it occurs",
+          "body": "A busy Farmington officer should make each journal entry contemporaneously and sequentially. The statutory fields include the date and time, description of the record and act, the full names and addresses of the individuals, identification information or the personal-knowledge statement, and the fee if any. An end-of-week reconstruction from memory risks omissions in both chronology and substance. Completing the certificate does not complete the separate journal duty."
+        },
+        {
+          "heading": "Choose lawful formats for the work",
+          "body": "A tangible journal must be durable, bound, and numbered. An electronic journal must be permanent and tamper-evident. The amended statute permits a paper journal for tangible records and an electronic journal for electronic records. That permission does not remove chronological recording and required entry details. Determine where each type of act will be recorded before offering a mix of traditional and electronic services."
+        },
+        {
+          "heading": "Plan recovery and production",
+          "body": "The administrative rule requires an electronic journal to be recoverable after hardware or software failure. It must also support the required PDF production and transfer capabilities. A convenient editable file without tamper evidence, recovery, or appropriate export support does not establish compliance. Ask a provider how those functions operate and preserve a workable recovery arrangement before a device failure makes the journal unavailable."
+        },
+        {
+          "heading": "Add the remote provider detail",
+          "body": "A RON journal includes the name of the remote system provider used for each act in addition to the statutory fields. That entry is separate from saving the audiovisual recording. Keep the journal secure under the officer's control and preserve permitted employer copies as clearly marked copies. Retention continues for ten years after the last recorded act, so everyday format decisions also affect long-term access."
+        },
+        {
+          "heading": "2023 enacted RULONA, Section18",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "12.9.3.15 NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0003.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "12.9.4.15 NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the officer keep paper for tangible acts and electronic entries for electronic acts?",
+          "a": "The amended statute permits those respective formats, subject to the journal requirements."
+        },
+        {
+          "q": "Does a recording replace the RON journal entry?",
+          "a": "No. The journal requires its own entry, including the provider name."
+        }
+      ],
+      "id": "nm-contemporaneous-journals-and-electronic-recovery",
+      "state": "NM",
+      "path": "/new-mexico/guides/contemporaneous-journals-and-electronic-recovery/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-mexico/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-mexico/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-mexico/study-guide/",
+          "label": "New Mexico Study Guide"
+        },
+        {
+          "href": "/new-mexico/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-mexico/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "loss-resignation-and-record-disposition",
+      "keyword": "New Mexico lost journal resignation",
+      "intent": "Apply New Mexico duties to an operational scenario",
+      "title": "Handling Loss and the End of a Notary Practice",
+      "description": "Address missing journals and devices, continuing retention, and lawful disposition after cessation or death.",
+      "h1": "Handling Loss and the End of a Notary Practice",
+      "kicker": "New Mexico notarial practice",
+      "lede": "The last appointment and the last day of a commission do not end every recordkeeping responsibility.",
+      "sections": [
+        {
+          "heading": "Recognize unavailable records promptly",
+          "body": "A notary discovers a missing journal after a move. The statute and current journal rule require prompt SOS notice on the prescribed form when a journal is lost or stolen. Prompt notice also applies to a lost or stolen stamping device. A planned purchase or an ongoing search does not eliminate the reporting duty. Review the current SOS reporting process as soon as the loss or theft is discovered."
+        },
+        {
+          "heading": "Use recovery without postponing responsibility",
+          "body": "An electronic journal may become inaccessible even when the laptop remains in the officer's possession. The electronic-journal rule requires recovery capability after hardware or software failure. Activate that arrangement and secure remaining files and credentials while resolving the failure. If the journal has been lost or stolen, follow the prompt-notice requirement as well. A broken device on the desk does not supply accessible entries or the required recovery capability."
+        },
+        {
+          "heading": "Close the practice deliberately",
+          "body": "After resignation or suspension, the amended journal statute requires continued retention and information about the journal's location. Keep the journal for the required period or use an authorized transfer. A transfer to the state records officer requires SOS notice within thirty days on the prescribed form. Stamping-device cessation rules also require rendering the device unusable in the applicable circumstances, including expiration or revocation."
+        },
+        {
+          "heading": "Plan for death or incapacity",
+          "body": "A personal representative, guardian, or other person knowingly possessing the journal has statutory disposition duties after death or adjudicated incompetence. Use the authorized recipient route rather than discarding the journal with ordinary office papers. RON recordings have their own rule permitting retention, repository transfer, or delivery to SOS in an accessible open format. Written custody instructions should distinguish journals, stamping devices, and recordings."
+        },
+        {
+          "heading": "2023 enacted RULONA, Sections17-18",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "12.9.3.15 NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0003.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "12.9.4.14(B) NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does an expired commission end journal retention?",
+          "a": "No. The retention and authorized-disposition duties continue."
+        },
+        {
+          "q": "Is owning the failed storage device enough?",
+          "a": "No. Electronic journal recovery and availability requirements concern the records themselves."
+        }
+      ],
+      "id": "nm-loss-resignation-and-record-disposition",
+      "state": "NM",
+      "path": "/new-mexico/guides/loss-resignation-and-record-disposition/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-mexico/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-mexico/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-mexico/study-guide/",
+          "label": "New Mexico Study Guide"
+        },
+        {
+          "href": "/new-mexico/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-mexico/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ron-identity-proofing-and-kba",
+      "keyword": "New Mexico RON knowledge based authentication",
+      "intent": "Apply New Mexico duties to an operational scenario",
+      "title": "Understanding the Remote Identity-Proofing Sequence",
+      "description": "Connect credential analysis, KBA standards, visual comparison, and the credible-witness route.",
+      "h1": "Understanding the Remote Identity-Proofing Sequence",
+      "kicker": "New Mexico notarial practice",
+      "lede": "A remote account and an electronic signature do not complete the identification decision. New Mexico prescribes identity checks within the audiovisual appearance.",
+      "sections": [
+        {
+          "heading": "Start with the applicable route",
+          "body": "The remote officer verifies identity at the start of the online session. Where the officer does not personally know the individual and uses the prescribed proofing route, the rule requires two different types of identity proofing. Credential analysis, successful knowledge-based authentication, and live visual comparison work together. Familiarity with the person's signature or an electronic-signature verification process alone does not satisfy the remote identification rule."
+        },
+        {
+          "heading": "Analyze the actual credential",
+          "body": "Credential analysis uses automated processes and appropriate technologies to test authenticity, including visual, physical, or cryptographic security features. It also uses issuing or authoritative source information as available and consistent with sound commercial practices. The system must permit a real-time comparison of the credential information and photograph with the individual appearing. A provider that merely reads a printed name has omitted important parts of the analysis."
+        },
+        {
+          "heading": "Apply KBA specifications precisely",
+          "body": "The knowledge-based quiz has at least five questions and at least five choices per question. At least eighty percent must be answered correctly within two minutes. Following two failed attempts, no retake is allowed within twenty-four hours. A retake replaces at least forty percent of the prior questions. The officer must not be able to see or record the questions or answers. These are principal-identification specifications, separate from the notary licensing examination."
+        },
+        {
+          "heading": "Preserve the witness and refusal boundaries",
+          "body": "The rule also recognizes the statutory credible-witness route, including its personal-knowledge and satisfactory-evidence conditions. A remotely located credible witness must be able to communicate simultaneously with the officer and principal. If the officer ultimately cannot verify identity in compliance with the rules, the officer must refuse completion. A signed customer waiver cannot replace the missing identification."
+        },
+        {
+          "heading": "12.9.4.10-.11 NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "SOS Handbook, Remote Online Notarization",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the officer coach the principal through KBA?",
+          "a": "No. The officer must not be able to see or record the KBA questions or answers."
+        },
+        {
+          "q": "Is the two-minute KBA limit the licensing-exam time?",
+          "a": "The rule's two-minute limit applies to the principal's identity quiz. It does not establish the licensing examination duration."
+        }
+      ],
+      "id": "nm-ron-identity-proofing-and-kba",
+      "state": "NM",
+      "path": "/new-mexico/guides/ron-identity-proofing-and-kba/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-mexico/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-mexico/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-mexico/study-guide/",
+          "label": "New Mexico Study Guide"
+        },
+        {
+          "href": "/new-mexico/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-mexico/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ron-interruptions-security-and-coercion",
+      "keyword": "New Mexico remote notarization restart",
+      "intent": "Apply New Mexico duties to an operational scenario",
+      "title": "Managing a Remote Session When Conditions Change",
+      "description": "Respond to interrupted feeds, insecure communication, coercion concerns, and failed electronic attachment.",
+      "h1": "Managing a Remote Session When Conditions Change",
+      "kicker": "New Mexico notarial practice",
+      "lede": "A RON session remains conditional on compliant communication and execution until the act is complete.",
+      "sections": [
+        {
+          "heading": "Observe the person and surroundings",
+          "body": "During a session from a New Mexico office, the officer notices a principal looking repeatedly toward someone outside the camera frame. The rule permits observing signs of nervousness, fear, hesitation, or discomfort and the behavior of others in the room. The officer can request a private conversation and ask directly about free will. Reasonable grounds to believe coercion or undue influence is present support refusing the act."
+        },
+        {
+          "heading": "Restart after a broken process",
+          "body": "The technology must provide synchronous audiovisual feeds with sufficient clarity for the officer and principal to see and speak with each other. If either participant exits before completion, the audiovisual feed is interrupted, or quality becomes compromised, the officer stops and restarts from the beginning. A few earlier minutes of clear communication do not permit skipping the restart after a disqualifying interruption."
+        },
+        {
+          "heading": "Require accessible and secure communication",
+          "body": "Communication technology includes accessibility accommodations for individuals with vision, hearing, or speech impairments. It also needs reasonable security against unauthorized access to the live feeds, identity-proofing methods, and electronic record. If the officer becomes aware that the communication technology is insecure, the officer must refuse completion. Customer consent to an exposed session does not remove the prescribed security duty."
+        },
+        {
+          "heading": "Finish only with valid attachment",
+          "body": "The principal's signature must be attachable to the electronic record. The officer must also be able to attach the electronic stamp through technology that makes later modification evident. Failure of either capability requires refusal to complete the act. When all requirements are met, complete the electronic certificate with the required communication-technology disclosure. A large stamp image cannot compensate for failed tamper-evident attachment."
+        },
+        {
+          "heading": "12.9.4.10, .12 and .16 NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the officer resume at the final stamp step after an early exit?",
+          "a": "The rule requires restarting the RON process from the beginning."
+        },
+        {
+          "q": "Must the officer complete an insecure session if the customer prepaid?",
+          "a": "No. Awareness of insecure communication requires refusing completion."
+        }
+      ],
+      "id": "nm-ron-interruptions-security-and-coercion",
+      "state": "NM",
+      "path": "/new-mexico/guides/ron-interruptions-security-and-coercion/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-mexico/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-mexico/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-mexico/study-guide/",
+          "label": "New Mexico Study Guide"
+        },
+        {
+          "href": "/new-mexico/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-mexico/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ron-providers-certificates-and-recording-contracts",
+      "keyword": "New Mexico RON provider recording contract",
+      "intent": "Apply New Mexico duties to an operational scenario",
+      "title": "Evaluating a Remote Platform Through Its Duties",
+      "description": "Check active approval, digital credentials, provider notices, and long-term recording arrangements.",
+      "h1": "Evaluating a Remote Platform Through Its Duties",
+      "kicker": "New Mexico notarial practice",
+      "lede": "A platform's marketing page cannot answer every compliance question. Review the officer's per-act duties and the provider's operating requirements.",
+      "sections": [
+        {
+          "heading": "Verify approval for every act",
+          "body": "A New Mexico remote officer verifies that the system provider has active SOS status before using the system for each remote notarization. Initial approval at enrollment does not settle every later session. Notify SOS on the prescribed form when adopting a new provider. Provider approval also does not imply state endorsement of premium products. Claims that SOS endorses, recommends, or mandates a provider's services are a listed ground for termination of provider approval."
+        },
+        {
+          "heading": "Protect the officer's digital identity",
+          "body": "The selected technology must provide independently verifiable, tamper-evident attachment and a valid third-party PKI digital certificate compliant with X.509 or higher. The officer may not act with an expired, revoked, invalid, or unauthenticatable certificate. The electronic signature and official stamp remain under the officer's sole control and access. An employer cannot authorize coworkers to use the officer's credentials during a shift change."
+        },
+        {
+          "heading": "Examine the recording arrangement",
+          "body": "Recordings must be protected against unauthorized access, stored in an open file format, and exclude images of the record being notarized. The statute supplies the recording-retention period, while the repository rule addresses storage and exit arrangements. A written repository contract must support continued compliance after termination and the specified control, access to copies, or secure return of recordings. Ask how export and custody work before canceling an account."
+        },
+        {
+          "heading": "Understand provider changes and complaints",
+          "body": "A provider must seek approval and notify its New Mexico officers at least thirty days before substantial system changes or feature enhancements. Information changes and security breaches have their own notification duties. A complaint to SOS identifies a specific RULONA or rule violation. Active status can be terminated for listed failures, including certain breaches, prohibited endorsement claims, and failure to cooperate with an investigation within the required period."
+        },
+        {
+          "heading": "12.9.4.12-.14 and .17 NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "2023 enacted RULONA, Section5",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does state approval mean SOS recommends a premium package?",
+          "a": "No. Representing SOS endorsement or mandated use is itself a termination ground."
+        },
+        {
+          "q": "Can canceling the platform end recording retention?",
+          "a": "No. The repository arrangement must support the continuing retention requirements."
+        }
+      ],
+      "id": "nm-ron-providers-certificates-and-recording-contracts",
+      "state": "NM",
+      "path": "/new-mexico/guides/ron-providers-certificates-and-recording-contracts/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-mexico/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-mexico/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-mexico/study-guide/",
+          "label": "New Mexico Study Guide"
+        },
+        {
+          "href": "/new-mexico/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-mexico/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "automatic-officers-role-and-stamp-boundaries",
+      "keyword": "New Mexico automatic notarial officer",
+      "intent": "Apply New Mexico duties to an operational scenario",
+      "title": "Using Automatic Notarial Authority in the Correct Role",
+      "description": "Distinguish automatic officers, role-specific stamps, official duties, and separate remote authorization.",
+      "h1": "Using Automatic Notarial Authority in the Correct Role",
+      "kicker": "New Mexico notarial practice",
+      "lede": "New Mexico recognizes specified notarial officers through their public or professional role. That route still carries concrete preparation and performance duties.",
+      "sections": [
+        {
+          "heading": "Identify the authority actually used",
+          "body": "The amended statute recognizes specified judicial officers, SOS or designated full-time staff within official duties, county clerks and deputies within official duties, and New Mexico licensed attorneys. The exact role determines the applicable authority and stamp identifiers. A county employee should establish whether the requested act falls within the employee's qualifying office and duties rather than treating every government position as automatic notarial authority."
+        },
+        {
+          "heading": "Complete the current preparation duties",
+          "body": "Automatic notarial officers must complete the required learning and register their official stamp before performing acts. Historical implementation periods in the 2023 amendments do not create a continuing exemption in 2026. The automatic route does not require the ordinary commissioning application fee described for commissioned notaries. Separate authority may be relevant when a qualifying nonattorney official wants to perform acts outside official duties."
+        },
+        {
+          "heading": "Order the role-specific stamp",
+          "body": "The automatic officer uses the required Notarial Officer and State of New Mexico wording and the current official-seal requirements. Attorney stamps include the state bar identifier. Judicial stamps identify the judicial district or area served. County-clerk stamps use the applicable county identifier. Use the current enacted distinction when reviewing a design, because a generalized web checklist can obscure the difference between judicial and county-clerk roles."
+        },
+        {
+          "heading": "Apply separately for remote work",
+          "body": "Automatic authority for traditional acts does not itself authorize RON. A noncommissioned notarial officer who wants remote authority follows the SOS authorization application procedure and, after approval, complies with the remote rules and applicable statutes. The officer still needs a compliant system, electronic-stamp submission, required learning, secure credentials, and compliant record preservation. The role supplies the source of ordinary authority without removing the remote safeguards."
+        },
+        {
+          "heading": "2023 enacted RULONA, Sections9 and16",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "12.9.3.10, .14 and .16 NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0003.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "12.9.4.18 NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "SOS Handbook, Automatic Notarial Officers",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does a New Mexico law license itself authorize immediate RON?",
+          "a": "An attorney seeking RON must follow the separate authorization procedure."
+        },
+        {
+          "q": "Does the old implementation grace period excuse a new officer in 2026?",
+          "a": "No. The historical transition does not remove the current training and stamp requirements."
+        }
+      ],
+      "id": "nm-automatic-officers-role-and-stamp-boundaries",
+      "state": "NM",
+      "path": "/new-mexico/guides/automatic-officers-role-and-stamp-boundaries/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/new-mexico/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/new-mexico/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/new-mexico/study-guide/",
+          "label": "New Mexico Study Guide"
+        },
+        {
+          "href": "/new-mexico/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/new-mexico/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "OH": [
+    {
+      "slug": "ohio-holder-statements-and-authenticator-certificates",
+      "keyword": "Ohio copy statements require the right person making the assertion",
+      "intent": "Resolve Ohio notarial workplace situations",
+      "title": "Ohio copy statements require the right person making the assertion",
+      "description": "Distinguish a holder statement, a journal copy and the printed-electronic-record route.",
+      "h1": "Ohio copy statements require the right person making the assertion",
+      "kicker": "Ohio practice",
+      "lede": "A request for a certified copy can describe several legally different Ohio procedures.",
+      "sections": [
+        {
+          "heading": "Start with ordinary authority",
+          "body": "A Columbus customer asks the notary to certify a private photocopy as true to its original. Section 147.141 prohibits the ordinary notary from directly certifying either original status or a true copy. Comparing pages carefully does not by itself confer that notarial power. The request must be examined before adding a certificate that makes the notary the person asserting copy accuracy."
+        },
+        {
+          "heading": "Identify a holder statement",
+          "body": "The same section preserves notarizing the signature of the document holder on a written statement that the copy is true. The holder makes that assertion. The notary completes the actual requested lawful signature act, including oath and present signing if a jurat is requested. The resulting notarization does not silently convert the holder's statement into the notary's own direct guarantee."
+        },
+        {
+          "heading": "Read the specific exceptions",
+          "body": "An online notary may certify copies from their own electronic journal under section 147.65, subject to the access conditions. That exception concerns a particular notarial record. Section 147.591 separately provides an attached authenticator certificate for the stated printed-electronic-document acceptance route. Each provision has a defined role rather than creating universal ordinary copy authority."
+        },
+        {
+          "heading": "Use the authenticator's proper format",
+          "body": "In the printed-electronic route, the authenticator supplies the reproduction warranty and the notary administers its sworn execution. The authenticator certificate may not be signed or notarized with electronic signature or seal, including RON. A record that began electronically therefore can have a paper-execution condition at this specific later certification stage."
+        },
+        {
+          "heading": "Ohio R.C. 147.141(A)(5), (B); 147.65(G)(2); 147.591",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does the holder's statement make the notary the copy certifier?",
+          "a": "No. The holder supplies that assertion and the notary performs the signature act."
+        },
+        {
+          "q": "Can the authenticator certificate use RON?",
+          "a": "Section 147.591(C) prohibits electronic signing or notarization of that certificate."
+        }
+      ],
+      "id": "oh-ohio-holder-statements-and-authenticator-certificates",
+      "state": "OH",
+      "path": "/ohio/guides/ohio-holder-statements-and-authenticator-certificates/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/ohio/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/ohio/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/ohio/study-guide/",
+          "label": "Ohio Study Guide"
+        },
+        {
+          "href": "/ohio/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/ohio/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ohio-completed-certificate-and-correct-type",
+      "keyword": "Ohio's wrong-act certificate remedy differs from editing a completed original",
+      "intent": "Resolve Ohio notarial workplace situations",
+      "title": "Ohio's wrong-act certificate remedy differs from editing a completed original",
+      "description": "Read the correct-certificate duty alongside the alteration prohibition.",
+      "h1": "Ohio's wrong-act certificate remedy differs from editing a completed original",
+      "kicker": "Ohio practice",
+      "lede": "An Ohio certificate must describe the actual acknowledgment or sworn procedure that occurred.",
+      "sections": [
+        {
+          "heading": "Examine the actual act",
+          "body": "At a Dayton appointment, the signer takes the required affirmation and signs in the notary's presence, but the notary supplies an acknowledgment certificate. The written evidence does not match the performed sworn procedure. Ohio expressly prohibits using acknowledgment evidence where an oath or affirmation was administered and a jurat where it was not."
+        },
+        {
+          "heading": "Provide the stated remedy",
+          "body": "Section 147.542 requires a correct certificate at no charge when the certificate incorrectly indicates the type of notarization performed. This duty addresses the evidence the signer receives. It is important to establish which act actually occurred before preparing the correct evidence, because a replacement cannot truthfully claim an oath that was never administered."
+        },
+        {
+          "heading": "Respect the completed-original restriction",
+          "body": "The prohibited-acts section separately bars amending or altering a notarial certificate after completion and altering a written instrument after anyone signed it. A request to cross out wording on the completed original must therefore be distinguished from the statutory duty to supply a correct certificate. A paid correction charge cannot create authority to ignore those limits."
+        },
+        {
+          "heading": "Keep procedure advice in its scope",
+          "body": "The nonattorney may explain how acknowledgment and jurat procedures differ but does not advise which best fits the customer's legal situation. If the original event itself lacked a required element, an accurate account of the facts remains essential. The certificate is evidence of an act and cannot manufacture an unperformed truth pledge or missing appearance."
+        },
+        {
+          "heading": "Ohio R.C. 147.542(B), (D), (G); 147.141(A)(11)-(12)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is the correct certificate charged to the signer?",
+          "a": "The statute requires it at no charge for a wrong-type certificate."
+        },
+        {
+          "q": "Can a certificate create an oath that never occurred?",
+          "a": "No. It must accurately evidence the actual lawful act."
+        }
+      ],
+      "id": "oh-ohio-completed-certificate-and-correct-type",
+      "state": "OH",
+      "path": "/ohio/guides/ohio-completed-certificate-and-correct-type/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/ohio/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/ohio/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/ohio/study-guide/",
+          "label": "Ohio Study Guide"
+        },
+        {
+          "href": "/ohio/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/ohio/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ohio-attorney-ordinary-authority-and-online-location",
+      "keyword": "Ohio attorney authority has a separate online residence test",
+      "intent": "Resolve Ohio notarial workplace situations",
+      "title": "Ohio attorney authority has a separate online residence test",
+      "description": "Track ordinary eligibility, continuing term and five-year online authorization independently.",
+      "h1": "Ohio attorney authority has a separate online residence test",
+      "kicker": "Ohio practice",
+      "lede": "A nonresident attorney can meet one ordinary exception while failing a separate RON condition.",
+      "sections": [
+        {
+          "heading": "Identify the ordinary connection",
+          "body": "An attorney lives in Kentucky, is admitted by the Ohio Supreme Court and has a primary practice in Ohio. The ordinary statute contains a specific alternative to Ohio legal residency for that attorney connection. The person still obtains the notary commission and meets the applicable conditions. Bar admission alone is not the electronic state application or office oath."
+        },
+        {
+          "heading": "Apply the actual attorney exceptions",
+          "body": "For first commissioning after September 20, 2019, ordinary education remains required while the ordinary test is exempted. The application criminal-record-check exemption is also specified. These provisions do not remove every professional responsibility. A disqualifying offense during the term can still trigger the stated reporting and revocation provisions, including for an attorney."
+        },
+        {
+          "heading": "Reassess online eligibility",
+          "body": "The online statute requires the online notary to be an Ohio resident and physically within Ohio when performing the act. The ordinary nonresident-attorney connection does not replace those RON conditions. A vendor account, Ohio client or Ohio office mailing address does not establish where the notary actually lives and performs the online session."
+        },
+        {
+          "heading": "Track the online expiration",
+          "body": "Ordinary attorney authority continues while its stated Ohio connection, good standing and no-revocation conditions hold. Attorney online authorization nevertheless ends at the earlier of five years or the ordinary authority ending. The current online renewal table also calls for its separate approved hour. Continuing ordinary status should not be used as a reason to ignore the online expiration date."
+        },
+        {
+          "heading": "Ohio R.C. 147.01(B); 147.03; 147.05(D); 147.63(D)(4); 147.64(B)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does ordinary nonresident attorney eligibility establish RON residency?",
+          "a": "No. Online authority has its separate Ohio-resident condition."
+        },
+        {
+          "q": "Does attorney online authorization continue indefinitely?",
+          "a": "It has the separate statutory five-year-or-earlier ending rule."
+        }
+      ],
+      "id": "oh-ohio-attorney-ordinary-authority-and-online-location",
+      "state": "OH",
+      "path": "/ohio/guides/ohio-attorney-ordinary-authority-and-online-location/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/ohio/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/ohio/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/ohio/study-guide/",
+          "label": "Ohio Study Guide"
+        },
+        {
+          "href": "/ohio/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/ohio/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ohio-group-signatures-and-online-fee-caps",
+      "keyword": "Ohio fees follow acts and sessions instead of a signature multiplier",
+      "intent": "Resolve Ohio notarial workplace situations",
+      "title": "Ohio fees follow acts and sessions instead of a signature multiplier",
+      "description": "Apply the current basic ceilings and the separate additional-charge rules.",
+      "h1": "Ohio fees follow acts and sessions instead of a signature multiplier",
+      "kicker": "Ohio practice",
+      "lede": "A group signing and a failed identity attempt can raise different fee questions in the same appointment.",
+      "sections": [
+        {
+          "heading": "Choose the correct basic category",
+          "body": "An Akron online session includes several principals signing a record. Ohio's current statute permits up to thirty dollars for an online notarization and five dollars for an act that is not online. The notary cannot add the ordinary basic fee to the online basic fee for the same act. The proper category follows the actual notarial method used."
+        },
+        {
+          "heading": "Avoid the signature multiplier",
+          "body": "The statutory basic fees are not calculated per signature. Counting visible autographs on a document therefore does not by itself establish a lawful multiplied bill. Separate the actual acts from the number of signatures and apply the statutory structure, instead of importing a per-signature pricing rule from another state or a private provider's sales materials."
+        },
+        {
+          "heading": "Apply the technology session unit",
+          "body": "The technology fee is up to ten dollars total for an online session and may apply even when the act is not completed, such as an identity-process failure. Several questions or repeated attempts within one session do not create a new cap for every attempt. The permission to charge despite failure also does not permit reporting a false identity pass."
+        },
+        {
+          "heading": "Address any travel independently",
+          "body": "A reasonable travel fee must be agreed by the principal and notary before the act. It remains a separate condition from the basic and technology charges. Education provider fees and state application fees belong to becoming or remaining a notary, and should not be confused with the customer-service fee categories prescribed for this appointment."
+        },
+        {
+          "heading": "Ohio R.C. 147.08; 147.141(A)(18)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the five-dollar basic fee be added to the online basic fee?",
+          "a": "The statute prohibits stacking those basic categories."
+        },
+        {
+          "q": "Is ten dollars the technology cap for each KBA question?",
+          "a": "No. It is the total technology cap per online session."
+        }
+      ],
+      "id": "oh-ohio-group-signatures-and-online-fee-caps",
+      "state": "OH",
+      "path": "/ohio/guides/ohio-group-signatures-and-online-fee-caps/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/ohio/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/ohio/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/ohio/study-guide/",
+          "label": "Ohio Study Guide"
+        },
+        {
+          "href": "/ohio/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/ohio/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ohio-disconnected-online-session-and-restart",
+      "keyword": "A broken Ohio online connection restarts incomplete work",
+      "intent": "Resolve Ohio notarial workplace situations",
+      "title": "A broken Ohio online connection restarts incomplete work",
+      "description": "Use the current rule's restart and refusal conditions through the whole session.",
+      "h1": "A broken Ohio online connection restarts incomplete work",
+      "kicker": "Ohio practice",
+      "lede": "A previous identity result does not allow an online act to continue through a compromised connection.",
+      "sections": [
+        {
+          "heading": "Identify the interruption",
+          "body": "A Cleveland principal passes the identity process but loses the audio-video link before the act is finished. Rule 111:6-1-05 addresses a participant exiting, a broken link or quality degradation that the notary believes compromises completion. These events are considered before assuming that a saved screen can substitute for the lawful live interaction."
+        },
+        {
+          "heading": "Restart the stated components",
+          "body": "The rule requires restarting identity authentication and any incomplete online acts from the beginning. It does not say that collecting a second fee permits skipping the restarted procedure. The notary uses the renewed live session to complete the actual lawful appearance, identity and act rather than treating a prior result as proof that every later requirement is satisfied."
+        },
+        {
+          "heading": "Check the refusal grounds",
+          "body": "The notary refuses when identity or transmission security cannot be verified, the principal's signature cannot attach to the electronic document or the technology cannot make the act tamper-evident. A customer waiver cannot add a missing technical capability. The notary evaluates whether the actual system can support completion before executing the certificate."
+        },
+        {
+          "heading": "Preserve the completed session evidence",
+          "body": "The electronic journal and required recording describe the actual online procedure. Statutory safeguards include tamper-evident authenticated records, backups and protection from unauthorized access. A final seal screenshot cannot replace the communication on which identity was established or the accurate account of how the completed notarization occurred after the interruption."
+        },
+        {
+          "heading": "Ohio O.A.C. 111:6-1-05(B)(6), (C)-(D); R.C. 147.65",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Ohio Administrative Code Chapter 111:6-1",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-administrative-code/chapter-111:6-1",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does reconnecting permit automatic continuation from the last screen?",
+          "a": "The rule requires restarting identity authentication and incomplete acts."
+        },
+        {
+          "q": "May a customer waive an insecure connection?",
+          "a": "The mandatory refusal condition still applies."
+        }
+      ],
+      "id": "oh-ohio-disconnected-online-session-and-restart",
+      "state": "OH",
+      "path": "/ohio/guides/ohio-disconnected-online-session-and-restart/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/ohio/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/ohio/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/ohio/study-guide/",
+          "label": "Ohio Study Guide"
+        },
+        {
+          "href": "/ohio/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/ohio/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ohio-attorney-journal-access-and-privilege",
+      "keyword": "Ohio online journal access has specific-entry and attorney safeguards",
+      "intent": "Resolve Ohio notarial workplace situations",
+      "title": "Ohio online journal access has specific-entry and attorney safeguards",
+      "description": "Assess the request scope before releasing any part of the archive.",
+      "h1": "Ohio online journal access has specific-entry and attorney safeguards",
+      "kicker": "Ohio practice",
+      "lede": "A lawful journal request concerns identified entries and does not automatically transfer control of the journal.",
+      "sections": [
+        {
+          "heading": "Require the specific request",
+          "body": "A person asks a nonattorney Ohio online notary for an entry. The ordinary route requires a signed tangible or electronic request identifying month, year, record type and principal. The notary retains possession and control and shows or copies only the specified entries. One request should not become a chance to browse unrelated customers' transactions."
+        },
+        {
+          "heading": "Record the access event",
+          "body": "The statute requires a separate new journal entry explaining the request circumstances and any related copy certification. It also permits the online notary to certify copies made from that journal, despite the ordinary direct-copy restriction. These provisions work together with the limited-entry access conditions instead of opening the archive without records of the release."
+        },
+        {
+          "heading": "Apply the attorney rule",
+          "body": "An attorney authorized for online acts permits the stated ordinary access only to a principal in the transaction or someone acting on a principal's behalf, and can deny based on attorney-client privilege. The special deposited-attorney-journal provision likewise limits the eligible requester. The requester's interest in a document does not itself establish the necessary principal relationship."
+        },
+        {
+          "heading": "Keep official process distinct",
+          "body": "The chapter provides official-investigation and court or state access routes, with the attorney privilege-objection qualification. A reasonable explainable belief of criminal or inappropriate purpose also supports the specified ordinary access denial. Identify which route actually applies before treating a customer request, an official investigation and a privilege claim as the same procedural event."
+        },
+        {
+          "heading": "Ohio R.C. 147.65(G)-(H)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May a qualifying requester take the whole journal home?",
+          "a": "No. The notary retains control and provides only specified entries."
+        },
+        {
+          "q": "Can a stranger automatically inspect an attorney-notary's entries?",
+          "a": "The special rule requires the principal relationship and preserves privilege."
+        }
+      ],
+      "id": "oh-ohio-attorney-journal-access-and-privilege",
+      "state": "OH",
+      "path": "/ohio/guides/ohio-attorney-journal-access-and-privilege/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/ohio/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/ohio/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/ohio/study-guide/",
+          "label": "Ohio Study Guide"
+        },
+        {
+          "href": "/ohio/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/ohio/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ohio-online-renewal-journal-transfer",
+      "keyword": "Ohio online renewal begins a new electronic journal",
+      "intent": "Resolve Ohio notarial workplace situations",
+      "title": "Ohio online renewal begins a new electronic journal",
+      "description": "Plan the archive transfer and receiving retention duties before authority ends.",
+      "h1": "Ohio online renewal begins a new electronic journal",
+      "kicker": "Ohio practice",
+      "lede": "A continuing vendor subscription does not decide the statutory journal lifecycle.",
+      "sections": [
+        {
+          "heading": "Track the authorization date",
+          "body": "An Ohio online notary approaches renewal while the provider dashboard still allows entries. The statute ties journal responsibilities to legal authorization, with separate attorney and nonattorney authorization clocks. Check the actual state authorization date instead of treating account availability as evidence that the notary's authority and journal period have automatically continued."
+        },
+        {
+          "heading": "Start the new record period",
+          "body": "On effective renewal, section 147.65 requires a new electronic journal. The earlier record does not disappear because a fresh journal is opened. Its required transfer and preservation are handled through the statutory structure. The notary distinguishes beginning new entries under renewed authority from keeping access to records created under the preceding authorization."
+        },
+        {
+          "heading": "Use an approved destination",
+          "body": "On the stated expiration transfer, transmit the electronic journal to the Secretary or an approved repository and inform the Secretary of the repository location when applicable. The receiving Secretary or repository has the ten-year retention duty identified in the subsection. An ordinary employer demand for the archive is different from the approved agreed repository arrangement allowed by law."
+        },
+        {
+          "heading": "Provide usable access and continuity",
+          "body": "The related security section addresses access instructions and transfer after resignation, revocation, expiration without renewal, death or adjudicated incompetence. A person holding the instructions supplies them as required. Closing an account should therefore account for accessible lawful preservation, instead of treating cancellation as permission to delete all recordings and journal entries."
+        },
+        {
+          "heading": "Ohio R.C. 147.63(D); 147.65(E)-(F); 147.66(E)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is the same journal simply continued after effective online renewal?",
+          "a": "The statute directs beginning a new electronic journal."
+        },
+        {
+          "q": "Does any employer automatically qualify to retain the archive?",
+          "a": "The statute distinguishes ordinary retention from an approved agreed repository arrangement."
+        }
+      ],
+      "id": "oh-ohio-online-renewal-journal-transfer",
+      "state": "OH",
+      "path": "/ohio/guides/ohio-online-renewal-journal-transfer/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/ohio/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/ohio/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/ohio/study-guide/",
+          "label": "Ohio Study Guide"
+        },
+        {
+          "href": "/ohio/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/ohio/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ohio-kba-retries-with-two-time-restrictions",
+      "keyword": "Ohio identity quiz retries have an allowance and a later restriction",
+      "intent": "Resolve Ohio notarial workplace situations",
+      "title": "Ohio identity quiz retries have an allowance and a later restriction",
+      "description": "Read both timing paragraphs before scheduling another attempt.",
+      "h1": "Ohio identity quiz retries have an allowance and a later restriction",
+      "kicker": "Ohio practice",
+      "lede": "The current rule's KBA specifications govern a principal's identity assessment separately from the notary's licensing exam.",
+      "sections": [
+        {
+          "heading": "Use the actual assessment specification",
+          "body": "For the prescribed dynamic KBA route, Ohio requires at least five personal-history or identity questions with at least five choices per question. At least eighty percent are correct within two minutes. A five-question quiz therefore needs four correct answers. These numbers should not be presented as the ordinary statewide commissioning exam specification."
+        },
+        {
+          "heading": "Apply the retry allowance",
+          "body": "The rule states that after a first failure the individual may retake twice within forty-eight hours. A retake replaces at least forty percent of the prior questions, which means at least two on a five-question quiz. This is a structured identity assessment, so repeating the same unchanged question set does not meet the stated replacement condition."
+        },
+        {
+          "heading": "Apply the second-failure restriction too",
+          "body": "Another paragraph bars retry with the same notary or the same proofing third person within twenty-four hours after the second failed attempt. The overall allowance does not delete this more specific timing restriction. Switching only the notary while immediately using the same service does not avoid the service-related condition in that paragraph."
+        },
+        {
+          "heading": "Keep answers separate from the notary",
+          "body": "The notary must not see or record the questions or answers. The provider also has credential-analysis, image-capture and result-output obligations separate from the quiz. Passing KBA alone cannot replace the remaining identity components, live communication or the actual notarial act. A failed process can have its own lawful technology-fee treatment without changing the recorded identity outcome."
+        },
+        {
+          "heading": "Ohio O.A.C. 111:6-1-05(B)(1), (4)-(5); R.C. 147.08(D)(2)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Ohio Administrative Code Chapter 111:6-1",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-administrative-code/chapter-111:6-1",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can changing only the notary always permit immediate retry after a second failure?",
+          "a": "No. The same proofing-service restriction also applies."
+        },
+        {
+          "q": "May the notary save the quiz answers to coach the signer?",
+          "a": "The rule prohibits seeing or recording the questions or answers."
+        }
+      ],
+      "id": "oh-ohio-kba-retries-with-two-time-restrictions",
+      "state": "OH",
+      "path": "/ohio/guides/ohio-kba-retries-with-two-time-restrictions/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/ohio/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/ohio/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/ohio/study-guide/",
+          "label": "Ohio Study Guide"
+        },
+        {
+          "href": "/ohio/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/ohio/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ohio-in-person-electronic-and-online-methods",
+      "keyword": "An Ohio electronic document can be notarized in the same room",
+      "intent": "Resolve Ohio notarial workplace situations",
+      "title": "An Ohio electronic document can be notarized in the same room",
+      "description": "Distinguish electronic execution from an online appearance and the authenticator exception.",
+      "h1": "An Ohio electronic document can be notarized in the same room",
+      "kicker": "Ohio practice",
+      "lede": "A tablet or electronic seal does not by itself establish that an Ohio notarization is remote.",
+      "sections": [
+        {
+          "heading": "Identify the participants' actual location",
+          "body": "A Columbus signer and ordinary commissioned notary share the same room and execute an electronic record. Section 147.591 permits electronic signatures and seals for this physical-presence route. It is distinct from the online method in which the principal appears through live two-way audiovisual technology and the notary has separate online authorization."
+        },
+        {
+          "heading": "Describe the actual method",
+          "body": "The certificate includes the appropriate indication of physical-presence electronic performance or online appearance. The rule provides corresponding statement forms. A certificate should not say that a signer appeared online merely because the record is digital. Likewise, physical-presence wording cannot be used to describe someone who participated only through a remote link."
+        },
+        {
+          "heading": "Secure electronic execution",
+          "body": "The electronic seal and signature follow the applicable statutory security provisions. The electronic attachment permits independent verification and makes later document changes evident. The same-room route does not turn a freely pasted logo into a secure notarial signature or authorize a coworker to use the notary's personal electronic credentials."
+        },
+        {
+          "heading": "Recognize the special later paper route",
+          "body": "For the particular printed-electronic-document recording procedure, the authenticator certificate has its own condition: it cannot be electronically signed or notarized, including through an online system. The source record's electronic status therefore does not determine every later certificate's execution method. Check the specific stage and statutory role being requested."
+        },
+        {
+          "heading": "Ohio R.C. 147.591; 147.542(F)(7); 147.66; O.A.C. 111:6-1-04",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Ohio Administrative Code Chapter 111:6-1",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-administrative-code/chapter-111:6-1",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does every electronic document require remote appearance?",
+          "a": "No. Section 147.591 permits the physical-presence electronic route."
+        },
+        {
+          "q": "Can the special authenticator certificate always be electronic too?",
+          "a": "Its specific subsection prohibits electronic signing and notarization."
+        }
+      ],
+      "id": "oh-ohio-in-person-electronic-and-online-methods",
+      "state": "OH",
+      "path": "/ohio/guides/ohio-in-person-electronic-and-online-methods/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/ohio/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/ohio/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/ohio/study-guide/",
+          "label": "Ohio Study Guide"
+        },
+        {
+          "href": "/ohio/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/ohio/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "ohio-representative-acknowledgment-and-validity-opinions",
+      "keyword": "Ohio representative acknowledgment leaves legal-validity opinions separate",
+      "intent": "Resolve Ohio notarial workplace situations",
+      "title": "Ohio representative acknowledgment leaves legal-validity opinions separate",
+      "description": "Identify the agent or officer while staying within the nonattorney notarial role.",
+      "h1": "Ohio representative acknowledgment leaves legal-validity opinions separate",
+      "kicker": "Ohio practice",
+      "lede": "Acknowledging a representative execution does not automatically include a legal opinion on the source of authority.",
+      "sections": [
+        {
+          "heading": "Identify the human representative",
+          "body": "A Cincinnati attorney-in-fact appears to acknowledge a record for a principal. The notary knows or obtains satisfactory evidence that the appearing person is the individual named in the instrument or certificate. An impressive title does not establish the human identity, and the principal's absence does not mean the notary identifies only the represented person's name on paper."
+        },
+        {
+          "heading": "Record the correct capacity",
+          "body": "The representative acknowledges proper authority and execution as the represented person's act for the stated purpose. The statutory short form distinguishes the attorney-in-fact and principal. Corporate, LLC, partnership and other roles have their respective forms and meanings. Accurate role wording describes the execution instead of treating every representative as signing personally for themselves."
+        },
+        {
+          "heading": "Avoid the prohibited validity determination",
+          "body": "Section 147.141 restricts a nonattorney notary from determining legal validity of a power of attorney or another representative-capacity document. The representative's acknowledgment of authority and the notary's legal opinion about the document are different acts. The commission does not confer an Ohio law license to decide that issue for the customer."
+        },
+        {
+          "heading": "Screen the notary's own position",
+          "body": "The chapter separately defines conflicts through direct interests beyond authorized fees and named-party roles. A notary who is individually named as trustee or a transaction party does not eliminate that conflict by using an otherwise accurate representative certificate for someone else. Examine the officer's own position before performing the ceremony and certifying the completed event."
+        },
+        {
+          "heading": "Ohio R.C. 147.53; 147.55; 147.141(A)(17), (C)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://codes.ohio.gov/ohio-revised-code/chapter-147",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does attorney-in-fact mean the agent is an Ohio lawyer?",
+          "a": "No. It describes the representative role in the transaction."
+        },
+        {
+          "q": "Does the acknowledgment guarantee legal validity of the power?",
+          "a": "The nonattorney notary does not acquire that legal-opinion authority through acknowledgment."
+        }
+      ],
+      "id": "oh-ohio-representative-acknowledgment-and-validity-opinions",
+      "state": "OH",
+      "path": "/ohio/guides/ohio-representative-acknowledgment-and-validity-opinions/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/ohio/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/ohio/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/ohio/study-guide/",
+          "label": "Ohio Study Guide"
+        },
+        {
+          "href": "/ohio/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/ohio/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
   "OR": [
     {
       "slug": "oregon-earlier-signature-present-acknowledgment",
@@ -2614,6 +11894,3304 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "href": "/oregon/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "UT": [
+    {
+      "slug": "utah-renewal-and-the-2026-journal-transition",
+      "keyword": "A Utah renewal can change the journal workflow",
+      "intent": "Resolve Utah workplace notarization situations",
+      "title": "A Utah renewal can change the journal workflow",
+      "description": "Follow the commission-date transition through a practical office renewal.",
+      "h1": "A Utah renewal can change the journal workflow",
+      "kicker": "Utah practice",
+      "lede": "A renewal in 2026 can bring a physical-journal duty that did not apply during the prior ordinary commission.",
+      "sections": [
+        {
+          "heading": "Read the issuance date",
+          "body": "A Salt Lake City notary has an ordinary commission issued in 2023 and renews it in September 2026. The operative event for the new journal cohort is receipt of a commission on or after May 6, 2026. The state supplement specifically includes renewed commissions, so the date the person first became a notary does not permanently fix the applicable ordinary journal treatment."
+        },
+        {
+          "heading": "Assign a medium to each act",
+          "body": "Under the renewed commission, the required physical journal serves nonremote notarizations. The code calls for a bound, chronological journal and recording at completion of the act. If the same person also holds remote certification, remote acts go in the secure electronic journal with their audiovisual recording. A vendor account does not convert an office appointment into a remote act."
+        },
+        {
+          "heading": "Carry the full entry forward",
+          "body": "The new entry captures the date and time, act type, document description, applicable identity evidence, oath indication when relevant, signer information and fee. The identification-card route includes the last four digits with the type, issuer, issuance and expiration dates. A habit of writing only a customer name and the phrase ID checked leaves important required fields absent."
+        },
+        {
+          "heading": "Preserve the record after retirement",
+          "body": "The ten-year retention period runs from the last recorded notarial act, including when the individual is no longer a notary. At the end of the statutory period, the destruction requirements apply. Keeping a commission calendar beside the journal procedures helps an office identify the transition while maintaining the distinct retention clock for records already created."
+        },
+        {
+          "heading": "Utah Code 46-1-13; 46-1-14.1",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does renewing after May 6, 2026 count?",
+          "a": "Yes. The official supplement expressly includes renewals after that date."
+        },
+        {
+          "q": "Can retirement shorten the retention period?",
+          "a": "No. The statutory ten-year period continues after the person ceases acting as a notary."
+        }
+      ],
+      "id": "ut-utah-renewal-and-the-2026-journal-transition",
+      "state": "UT",
+      "path": "/utah/guides/utah-renewal-and-the-2026-journal-transition/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/utah/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/utah/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/utah/study-guide/",
+          "label": "Utah Study Guide"
+        },
+        {
+          "href": "/utah/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/utah/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "utah-credible-individuals-and-remote-identity",
+      "keyword": "Using a credible individual in Utah",
+      "intent": "Resolve Utah workplace notarization situations",
+      "title": "Using a credible individual in Utah",
+      "description": "Distinguish the known-witness and unknown-witness routes before an appointment.",
+      "h1": "Using a credible individual in Utah",
+      "kicker": "Utah practice",
+      "lede": "The current code provides more than one credible-individual route, each with its own evidence conditions.",
+      "sections": [
+        {
+          "heading": "Start with the relationship",
+          "body": "At a Logan office, a customer arrives without a qualifying identification document and brings a neighbor. The notary first determines whether the relevant statutory credible-individual route can actually be completed. A friendly introduction by itself does not establish personal knowledge of either person, and the witness must know the principal under the applicable route."
+        },
+        {
+          "heading": "Use the known-witness route accurately",
+          "body": "One route involves a credible individual personally known to the notary who personally knows the principal and supplies the required sworn verification. Personal knowledge has a demanding statutory definition based on interactions sufficient to eliminate every reasonable doubt. The notary should assess the actual relationship and administer the required oath rather than rely on the witness merely saying that everything is fine."
+        },
+        {
+          "heading": "Recognize the current additional route",
+          "body": "The current chapter separately permits a credible individual whom the notary does not personally know when the individual knows the principal, presents the qualifying identification and supplies the prescribed oath. A notary applying an older habit of requiring personal knowledge of every witness would overlook this distinct route. Its conditions must still be satisfied together before using it."
+        },
+        {
+          "heading": "Apply the remote additions and record",
+          "body": "For the applicable remote route, the unknown credible individual also undergoes secondary authentication. The new-cohort journal specifies the oath indication, signature, witness name and address, with the relevant identification details for the unknown-witness route. Completing one identity component does not administer the principal's jurat oath or replace the other requirements of the requested act."
+        },
+        {
+          "heading": "Utah Code 46-1-2(22), (25)-(26); 46-1-14.1(2)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must every credible individual be personally known to the notary?",
+          "a": "The current code includes a separate route for an unknown credible individual with the specified identification and oath conditions."
+        },
+        {
+          "q": "Does a witness introduction itself complete identity verification?",
+          "a": "No. Complete the actual statutory relationship, evidence and oath requirements."
+        }
+      ],
+      "id": "ut-utah-credible-individuals-and-remote-identity",
+      "state": "UT",
+      "path": "/utah/guides/utah-credible-individuals-and-remote-identity/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/utah/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/utah/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/utah/study-guide/",
+          "label": "Utah Study Guide"
+        },
+        {
+          "href": "/utah/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/utah/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "utah-journal-requests-with-protected-identity-data",
+      "keyword": "Responding to a Utah journal-entry request",
+      "intent": "Resolve Utah workplace notarization situations",
+      "title": "Responding to a Utah journal-entry request",
+      "description": "Keep the requested entry accessible while applying the statutory release boundaries.",
+      "h1": "Responding to a Utah journal-entry request",
+      "kicker": "Utah practice",
+      "lede": "An ordinary inspection request concerns a specified act and requires its own journal entry.",
+      "sections": [
+        {
+          "heading": "Identify the request precisely",
+          "body": "An individual asks a Provo notary for a copy of an entry relating to a property transaction. During normal business hours, the ordinary request route requires that the notary know the requester personally or verify identity by satisfactory evidence. The requester also specifies the act type, document, month and year, and principal so the request can be tied to an actual entry."
+        },
+        {
+          "heading": "Create the access record",
+          "body": "The requester signs a separate journal entry containing the name and address, identification method, requested notarial record, inspection or request date and reason. The notary then exposes only the specified entry. Opening a bound book to a page with other customers' details requires care so that fulfilling one request does not become an opportunity to browse unrelated transactions."
+        },
+        {
+          "heading": "Separate official requests",
+          "body": "A law-enforcement request relating to an investigation, subpoena or court order follows the code's official-request provisions. Compliance is limited to the investigation's scope or the extent expressly stated in the subpoena or order. The chapter also permits refusal of an ordinary request when the notary has a reasonable, articulable belief of criminal or other harmful intent."
+        },
+        {
+          "heading": "Protect the especially sensitive portion",
+          "body": "A remote recording may contain biometrics or an identification image. Releasing that portion requires the subject's written consent, an order from a court with jurisdiction, or a request by the lieutenant governor or designee. Ordinary access eligibility does not eliminate this additional restriction. Journals and remote recordings also have their expressly stated treatment outside the Government Records Access and Management Act."
+        },
+        {
+          "heading": "Utah Code 46-1-15(4)-(8)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May an ordinary requester browse the whole journal?",
+          "a": "The ordinary route limits access to the specific entry requested."
+        },
+        {
+          "q": "Does a general inspection request automatically release an ID image?",
+          "a": "No. The code supplies additional grounds for release of that protected portion."
+        }
+      ],
+      "id": "ut-utah-journal-requests-with-protected-identity-data",
+      "state": "UT",
+      "path": "/utah/guides/utah-journal-requests-with-protected-identity-data/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/utah/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/utah/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/utah/study-guide/",
+          "label": "Utah Study Guide"
+        },
+        {
+          "href": "/utah/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/utah/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "utah-title-agency-journal-exception",
+      "keyword": "The Utah title-agency employment exception",
+      "intent": "Resolve Utah workplace notarization situations",
+      "title": "The Utah title-agency employment exception",
+      "description": "Apply the work-related journal exception to its stated employment context.",
+      "h1": "The Utah title-agency employment exception",
+      "kicker": "Utah practice",
+      "lede": "The code gives particular treatment to acts performed within specified legal and title employment.",
+      "sections": [
+        {
+          "heading": "Locate the employment condition",
+          "body": "A notary employed by a Utah title agency completes notarizations as part of closing work. The journal provision has a specific exception for acts within the course and scope of employment by an attorney, law firm or title agency. This calls for identifying the actual employer and work context before treating an act as covered by that exception."
+        },
+        {
+          "heading": "Keep personal appointments distinct",
+          "body": "The same employee later helps a neighbor with an unrelated private document outside the title-agency work. Being employed by a title agency does not automatically put every personal appointment inside the course and scope of that employment. The notary applies the journal rules that govern the personal act, including the commission-date transition and any applicable remote duties."
+        },
+        {
+          "heading": "Read the records treatment",
+          "body": "For acts within the stated employment setting, the statute addresses ownership and disclosure of the associated records and preserves the relevant attorney privilege. Those provisions should be read together with the exception. The general rule preventing an employer from demanding surrender at termination cannot be applied without considering the separate statutory treatment of these particular employment records."
+        },
+        {
+          "heading": "Continue the other notarial duties",
+          "body": "A journal exception does not eliminate identity, appearance, certificate, impartiality or seal requirements. A title producer facing a possible conflict must separately examine the narrow provisions of the conflict section and the individual role in the transaction. An office can keep its work classification and certificate procedure clear without assuming that one exception resolves every notarial requirement."
+        },
+        {
+          "heading": "Utah Code 46-1-13(4); 46-1-15(3); 46-1-7",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does any commercial employer qualify?",
+          "a": "The provision identifies attorney, law-firm and title-agency employment, subject to its work-related conditions."
+        },
+        {
+          "q": "Does the exception waive identity checks?",
+          "a": "No. Identity and the other requirements of the act still apply."
+        }
+      ],
+      "id": "ut-utah-title-agency-journal-exception",
+      "state": "UT",
+      "path": "/utah/guides/utah-title-agency-journal-exception/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/utah/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/utah/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/utah/study-guide/",
+          "label": "Utah Study Guide"
+        },
+        {
+          "href": "/utah/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/utah/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "utah-lost-seals-and-unlawful-interference",
+      "keyword": "Reporting a Utah seal or recording incident",
+      "intent": "Resolve Utah workplace notarization situations",
+      "title": "Reporting a Utah seal or recording incident",
+      "description": "Distinguish an interference discovery from accidental loss while preparing the required notice.",
+      "h1": "Reporting a Utah seal or recording incident",
+      "kicker": "Utah practice",
+      "lede": "The 2026 chapter addresses both unlawful interference and discovery of lost, damaged or destroyed notarial items.",
+      "sections": [
+        {
+          "heading": "Identify the affected item",
+          "body": "An employee notices that a Utah notary's seal has disappeared and an unauthorized journal change has been made. The current chapter lists signatures, certificates, seals, notarial equipment, journals and remote recordings among the protected items. Knowing unauthorized use, access, concealment or alteration can fall within unlawful interference, so the response should account for the actual facts discovered."
+        },
+        {
+          "heading": "Send the interference notices",
+          "body": "When discovering unlawful interference affecting the notary or items under the notary's custody or control, the notary immediately notifies law enforcement with jurisdiction and provides written notice to the lieutenant governor. Telling a supervisor can help office coordination, but that internal conversation does not supply either of the recipients specified by the statute."
+        },
+        {
+          "heading": "Report accidental loss too",
+          "body": "A fire destroys a seal without evidence of unauthorized conduct. The separate discovery provision still requires immediate written notice to the lieutenant governor when a listed item is lost, damaged or destroyed. The notary does not need to wait for proof of a forged document before making this notice. A replacement stamp order is a different task and does not fulfill the state notice duty."
+        },
+        {
+          "heading": "Include useful statutory details",
+          "body": "The written notice identifies the notary, address and commission number and describes the discovery and relevant facts. For an affected journal or recording, include the covered time period. An interference notice includes information enabling the office to identify and obtain the police report. Use the published office email, certified mail or another delivery method supplying a receipt as the statute permits."
+        },
+        {
+          "heading": "Utah Code 46-1-16(10)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does accidental destruction require notice?",
+          "a": "Yes. The separate loss, damage or destruction provision requires immediate written notice to the lieutenant governor."
+        },
+        {
+          "q": "Is notifying an employer sufficient after interference?",
+          "a": "No. The statute specifies law enforcement with jurisdiction and written notice to the lieutenant governor."
+        }
+      ],
+      "id": "ut-utah-lost-seals-and-unlawful-interference",
+      "state": "UT",
+      "path": "/utah/guides/utah-lost-seals-and-unlawful-interference/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/utah/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/utah/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/utah/study-guide/",
+          "label": "Utah Study Guide"
+        },
+        {
+          "href": "/utah/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/utah/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "utah-copy-certification-public-record-boundary",
+      "keyword": "Screening a Utah copy-certification request",
+      "intent": "Resolve Utah workplace notarization situations",
+      "title": "Screening a Utah copy-certification request",
+      "description": "Resolve the source-record boundary before comparing the pages.",
+      "h1": "Screening a Utah copy-certification request",
+      "kicker": "Utah practice",
+      "lede": "A clear photocopy and an eligible source record are separate conditions in Utah copy certification.",
+      "sections": [
+        {
+          "heading": "Examine what the source is",
+          "body": "A customer brings a recorded deed to an Ogden notary and asks for a certified photocopy for private use. The Utah definition excludes public records and publicly recorded documents. The purpose of the proposed copy does not alter that source status, so an exact comparison alone cannot make this record eligible for the statutory copy-certification act."
+        },
+        {
+          "heading": "Compare an eligible reproduction",
+          "body": "Another customer brings an eligible privately held course certificate. The notary compares the proposed photocopy with the source, checking that the material is accurate, exact and unaltered. If the source contains an additional page or legible information missing from the reproduction, the notary resolves that deficiency before making the prescribed certification."
+        },
+        {
+          "heading": "Describe the narrow determination",
+          "body": "The copy certificate identifies or describes the document compared and addresses the reproduction. It does not establish that the course had regulatory approval or that the claims printed in the source are true. A receiving organization can have its own requirements, and the notary should keep the certificate limited to the comparison actually performed under Utah law."
+        },
+        {
+          "heading": "Avoid substituting another act silently",
+          "body": "A customer may ask whether signing a statement about the copy would be a different option. Explain the procedural differences neutrally and keep any requested act and certificate truthful. An acknowledgment on a cover letter establishes the signer's acknowledgment, and cannot be described as the notary's comparison of the attached copy unless that separate eligible act was actually performed."
+        },
+        {
+          "heading": "Utah Code 46-1-2(4); 46-1-6.5(4); 46-1-9",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does private use make a recorded document eligible?",
+          "a": "No. The source-record exclusion still applies."
+        },
+        {
+          "q": "Does copy certification prove the source's factual claims?",
+          "a": "It certifies the reproduction under the statutory procedure, rather than the underlying assertions."
+        }
+      ],
+      "id": "ut-utah-copy-certification-public-record-boundary",
+      "state": "UT",
+      "path": "/utah/guides/utah-copy-certification-public-record-boundary/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/utah/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/utah/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/utah/study-guide/",
+          "label": "Utah Study Guide"
+        },
+        {
+          "href": "/utah/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/utah/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "utah-paper-plats-and-electronic-certificates",
+      "keyword": "Utah plat certificates and the seal exception",
+      "intent": "Resolve Utah workplace notarization situations",
+      "title": "Utah plat certificates and the seal exception",
+      "description": "Use the map-or-plat provision only with its specified facts and information.",
+      "h1": "Utah plat certificates and the seal exception",
+      "kicker": "Utah practice",
+      "lede": "A particular paper plat certificate has a limited completion rule that requires exact adjacent commission details.",
+      "sections": [
+        {
+          "heading": "Identify the applicable certificate",
+          "body": "A surveyor presents an in-person subdivision plat certificate with little room for a stamp. The chapter contains a special rule for annexation, subdivision or other maps or plats. Start by identifying that actual record and certificate instead of treating an inconvenient blank space on any document as a reason to omit a required seal imprint."
+        },
+        {
+          "heading": "Supply every substitute detail",
+          "body": "The notary signs the certificate in permanent ink. Below or immediately adjacent to that signature appear the name and commission number exactly as shown on the commission, the statutory statement that the person is a notary public commissioned in Utah, and the commission expiration date. Those particular details are the condition for the stated no-imprint treatment."
+        },
+        {
+          "heading": "Keep the underlying act complete",
+          "body": "The plat provision addresses certificate completion without the seal imprint under its conditions. It does not replace the appearing person's identity verification, the actual acknowledgment or other requested act, the accurate certificate date, or an applicable journal entry. The notary should still assess conflicts arising from any individual property interest in the transaction."
+        },
+        {
+          "heading": "Check the remote exclusion",
+          "body": "The provision expressly excludes a certificate completed as part of remote notarization. A remote notary therefore cannot rely on the paper plat rule to omit the electronic seal. The remote signature and seal must satisfy their applicable attachment and alteration-evidence requirements even when the electronic record depicts a map, survey or subdivision boundary."
+        },
+        {
+          "heading": "Utah Code 46-1-16(7); 46-1-16(3)(c); 46-1-7",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does a cramped ordinary contract receive this exception?",
+          "a": "The provision concerns the specified map-or-plat certificates with all stated conditions."
+        },
+        {
+          "q": "Can a RON plat certificate use the same no-imprint rule?",
+          "a": "No. The provision expressly excludes remote certificates."
+        }
+      ],
+      "id": "ut-utah-paper-plats-and-electronic-certificates",
+      "state": "UT",
+      "path": "/utah/guides/utah-paper-plats-and-electronic-certificates/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/utah/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/utah/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/utah/study-guide/",
+          "label": "Utah Study Guide"
+        },
+        {
+          "href": "/utah/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/utah/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "utah-remote-vendor-custody-and-control",
+      "keyword": "Controlling Utah remote seals and records",
+      "intent": "Resolve Utah workplace notarization situations",
+      "title": "Controlling Utah remote seals and records",
+      "description": "Examine a vendor arrangement through the separate seal and journal provisions.",
+      "h1": "Controlling Utah remote seals and records",
+      "kicker": "Utah practice",
+      "lede": "A Utah vendor may supply technology while the code imposes particular limits on access and use.",
+      "sections": [
+        {
+          "heading": "Review seal guardianship",
+          "body": "A certified remote notary uses a vendor that stores the electronic seal. The code permits a supplying person to act as guardian under statutory restrictions. The guardian secures access to the named remote notary and guardian, and prevents another person from using that seal to perform notarizations. A support employee does not acquire the notary's authority through possession of the technology."
+        },
+        {
+          "heading": "Distinguish permitted technical purposes",
+          "body": "The guardian provisions allow narrow access or use related solely to completing the named notary's notarization, obtaining, storing or protecting the seal, or complying with a court order. These purposes are different from a provider performing a new act under the notary's name. A service contract should reflect the particular legal restrictions that apply to the vendor's role."
+        },
+        {
+          "heading": "Read electronic-journal custody separately",
+          "body": "The remote journal and recordings have their own custodian framework. A designated custodian agreement must cover statutory safety, security, retention and destruction. The repository access exceptions are restricted to the specified completion, retention and court-order purposes. The notary also maintains and protects the required backups, preserving secure and authentic records of completed remote acts."
+        },
+        {
+          "heading": "Plan for the term ending",
+          "body": "At expiration, resignation or revocation, destroy the listed credentials that enable use of the electronic signature or seal and provide the required ten-day written certification to the lieutenant governor. Records follow the separate journal-retention rules. Closing an account must therefore address both disabling future notarizations and preserving the records whose statutory retention period continues."
+        },
+        {
+          "heading": "Utah Code 46-1-16(2)(d), (9); 46-1-15(2); 46-1-13",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May a vendor employee notarize with the named notary's seal?",
+          "a": "Only the named remote notary may use that seal to perform notarizations."
+        },
+        {
+          "q": "Does credential destruction permit deleting retained journals?",
+          "a": "No. The separate journal-retention duties continue."
+        }
+      ],
+      "id": "ut-utah-remote-vendor-custody-and-control",
+      "state": "UT",
+      "path": "/utah/guides/utah-remote-vendor-custody-and-control/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/utah/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/utah/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/utah/study-guide/",
+          "label": "Utah Study Guide"
+        },
+        {
+          "href": "/utah/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/utah/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "utah-nonenglish-advertising-and-legal-advice",
+      "keyword": "Utah notarial advertising in another language",
+      "intent": "Resolve Utah workplace notarization situations",
+      "title": "Utah notarial advertising in another language",
+      "description": "Apply the notice, translation and professional-role limits to a local advertisement.",
+      "h1": "Utah notarial advertising in another language",
+      "kicker": "Utah practice",
+      "lede": "A bilingual service advertisement must convey the notary's permitted role accurately.",
+      "sections": [
+        {
+          "heading": "Identify the advertisement",
+          "body": "A Utah notary who is not an attorney prepares a Spanish-language advertisement offering appointments. The chapter requires a conspicuous notice in English and in the advertisement's language concerning the notary's nonattorney status and inability to provide legal advice, with the applicable fees. The particular medium also matters because the code addresses substantially communicating the message in radio and television advertising."
+        },
+        {
+          "heading": "Avoid a misleading translation",
+          "body": "The statute prohibits a literal translation of notary public into a term that implies the person is an attorney. The notary should examine the meaning the term conveys to the intended audience. A fluent translation that suggests broader professional authority would create the problem the provision addresses even if the English title looks familiar to the advertiser."
+        },
+        {
+          "heading": "Keep the appointment within the role",
+          "body": "At a resulting appointment, a customer asks which immigration form will obtain a benefit. The nonattorney notary cannot supply legal advice, including immigration advice. Describing the available notarial procedures does not grant authority to select a customer's legal strategy. The chapter also contains a separate fee restriction concerning completion of immigration forms, subject to its licensed-attorney exception."
+        },
+        {
+          "heading": "Separate official office from promotion",
+          "body": "The code also restricts use of the official title or seal to promote a product, service, contest or offering. Review a proposed campaign with that broader rule in view, along with the specific advertising notice. A lawful appointment ultimately still requires appropriate identity, appearance, act procedure and a truthful certificate, regardless of the language used in the advertisement."
+        },
+        {
+          "heading": "Utah Code 46-1-10; 46-1-11; 46-1-12(4)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can a nonattorney notary advise on an immigration legal strategy?",
+          "a": "The chapter prohibits nonattorney legal advice, including immigration advice."
+        },
+        {
+          "q": "Is an English-only notice sufficient for a non-English advertisement?",
+          "a": "The stated notice requirement calls for English and the language used in the advertisement."
+        }
+      ],
+      "id": "ut-utah-nonenglish-advertising-and-legal-advice",
+      "state": "UT",
+      "path": "/utah/guides/utah-nonenglish-advertising-and-legal-advice/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/utah/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/utah/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/utah/study-guide/",
+          "label": "Utah Study Guide"
+        },
+        {
+          "href": "/utah/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/utah/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "utah-notarial-fees-and-separate-travel-charges",
+      "keyword": "Explaining Utah fees at a mobile appointment",
+      "intent": "Resolve Utah workplace notarization situations",
+      "title": "Explaining Utah fees at a mobile appointment",
+      "description": "Distinguish the authorized fee units from an agreed mileage charge.",
+      "h1": "Explaining Utah fees at a mobile appointment",
+      "kicker": "Utah practice",
+      "lede": "Utah sets different fee units for different acts and conditions a separate travel charge.",
+      "sections": [
+        {
+          "heading": "Identify the acts and fee units",
+          "body": "A mobile customer requests an acknowledgment of two signatures and an eligible copy certification of several pages. The ordinary statutory ceilings use per-signature units for acknowledgments and per-page units for copy certification. A separate oath without a signature has its own per-person unit. Counting documents alone can therefore fail to match the authorized fee categories."
+        },
+        {
+          "heading": "Discuss mileage before the trip",
+          "body": "The code permits a travel charge within the applicable approved federal mileage-rate limit. The notary explains that this is separate from the notarial fee and that the law neither specifies nor mandates the travel charge, then obtains advance agreement. Announcing a previously undisclosed travel charge after the appointment does not follow that agreed-travel structure."
+        },
+        {
+          "heading": "Make the fee schedule available",
+          "body": "The chapter requires an English-language schedule of authorized fees and permits an additional schedule in another language. A clear schedule helps the notary identify what service is being charged and apply the correct unit. A customer's willingness to pay a premium does not enlarge a statutory ceiling for the notarial act itself."
+        },
+        {
+          "heading": "Check the remote provision separately",
+          "body": "A certified remote notary uses the separate remote per-item ceiling when that provision applies. Remote identity checks, required recording and secure journal storage remain obligations of the process. Distinguish those remote rules from an in-person mobile trip and its separately explained mileage charge so the appointment description, fee calculation and certificate reflect the actual service."
+        },
+        {
+          "heading": "Utah Code 46-1-12",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is the travel charge mandatory?",
+          "a": "The code requires explaining that the travel charge is separate and neither specified nor mandated by law."
+        },
+        {
+          "q": "Are ordinary copy-certification fees counted per signature?",
+          "a": "The ordinary copy-certification ceiling is per page."
+        }
+      ],
+      "id": "ut-utah-notarial-fees-and-separate-travel-charges",
+      "state": "UT",
+      "path": "/utah/guides/utah-notarial-fees-and-separate-travel-charges/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/utah/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/utah/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/utah/study-guide/",
+          "label": "Utah Study Guide"
+        },
+        {
+          "href": "/utah/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/utah/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "VT": [
+    {
+      "slug": "vermont-optional-stamp-complete-certificate",
+      "keyword": "Completing a Vermont certificate without a physical stamp",
+      "intent": "Resolve Vermont notarial workplace situations",
+      "title": "Completing a Vermont certificate without a physical stamp",
+      "description": "Keep the information requirements visible when a stamp is optional.",
+      "h1": "Completing a Vermont certificate without a physical stamp",
+      "kicker": "Vermont practice",
+      "lede": "Vermont permits several ways to supply certificate information, and a chosen stamp carries its own design requirements.",
+      "sections": [
+        {
+          "heading": "Begin with the certificate",
+          "body": "A Montpelier notary is asked to complete an ordinary paper acknowledgment while the stamp is locked at another office. The rules allow the certificate information to be printed or typed. The notary still performs the acknowledgment, identifies the individual and supplies an accurate connected certificate. The option concerns how information is supplied and leaves the actual act requirements in place."
+        },
+        {
+          "heading": "Supply the notary details",
+          "body": "Without a physical stamp, clearly print or type the name, commission number and expiration date along with the other certificate information. The signature is made in the manner on file, after the act, with the actual date and jurisdiction. A customer's request for just a signature on an otherwise unexplained page does not establish a certificate describing what occurred."
+        },
+        {
+          "heading": "Review a chosen stamp",
+          "body": "A physical official stamp may be an ink stamp or embosser and must be copyable with the record. Its minimum contents include the oath-name, Vermont, Notary Public and commission number. The Vermont State Seal cannot appear in the physical official stamp. Any additional required certificate information missing from the stamp is separately printed or typed."
+        },
+        {
+          "heading": "Deal with changed dates",
+          "body": "If a chosen stamp includes an expiration date that has expired, the rule allows replacement with an updated date or no date, or discontinuing physical stamping. The current expiration still belongs in the certificate. A stamp without a printed expiration can therefore remain useful only when the notary separately supplies accurate information and holds current authority."
+        },
+        {
+          "heading": "Vermont Rules 5-2(f) and 5-3; 26 V.S.A. 5367",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Vermont Title 26 Chapter 103",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.vermont.gov/statutes/fullchapter/26/103",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is a physical stamp always required?",
+          "a": "No. The rules permit clear printing or typing of required information."
+        },
+        {
+          "q": "Can the stamp include the Vermont State Seal?",
+          "a": "The physical official stamp may not include it."
+        }
+      ],
+      "id": "vt-vermont-optional-stamp-complete-certificate",
+      "state": "VT",
+      "path": "/vermont/guides/vermont-optional-stamp-complete-certificate/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/vermont/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/vermont/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/vermont/study-guide/",
+          "label": "Vermont Study Guide"
+        },
+        {
+          "href": "/vermont/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/vermont/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "vermont-printing-electronic-record-copies",
+      "keyword": "Vermont copy certification starts with an electronic source",
+      "intent": "Resolve Vermont notarial workplace situations",
+      "title": "Vermont copy certification starts with an electronic source",
+      "description": "Follow the particular electronic-to-tangible copy authority.",
+      "h1": "Vermont copy certification starts with an electronic source",
+      "kicker": "Vermont practice",
+      "lede": "The source format determines whether Vermont's specified copy-certification procedure applies.",
+      "sections": [
+        {
+          "heading": "Screen the proposed source",
+          "body": "A Burlington customer brings a paper letter and wants a paper photocopy certified. The administrative rules limit Vermont-commissioned notaries to certifying a tangible copy of an electronic record. Calling the letter private or promising to use the copy only locally does not change that format. The notary identifies the actual requested act before describing any certification."
+        },
+        {
+          "heading": "Assess the electronic record",
+          "body": "A second customer provides an electronic record for a tangible reproduction. The notary reasonably determines whether the electronic record is in a tamper-evident format. A PDF filename alone does not supply that determination. This assessment connects the reproduction to the actual electronic source rather than relying only on the appearance of paper already brought by the customer."
+        },
+        {
+          "heading": "Control the printing process",
+          "body": "The notary personally prints or supervises printing onto paper or another tangible medium. If the notary detects a change or error in an electronic signature or other source information, the rule prohibits making the certification. Completing a certificate that describes an accurate source comparison requires resolving these conditions before signing the certification."
+        },
+        {
+          "heading": "Understand the resulting use",
+          "body": "The chapter permits a recorder to accept the properly certified tangible copy of an electronic record containing a notarial certificate as satisfying the stated original-record condition. This addresses the particular recording requirement. The accurate-copy certification does not determine the legal merits of the underlying transaction or guarantee that every receiving organization will accept every record."
+        },
+        {
+          "heading": "Vermont Rules 5-1(b) and 5-2(d); 26 V.S.A. 5371(b)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Vermont Title 26 Chapter 103",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.vermont.gov/statutes/fullchapter/26/103",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can an ordinary paper-to-paper photocopy use this authority?",
+          "a": "The rule limits this authority to tangible copies of electronic records."
+        },
+        {
+          "q": "May the notary ignore a detected electronic-signature error?",
+          "a": "No. The rule prohibits certification after detecting a change or error in the stated source information."
+        }
+      ],
+      "id": "vt-vermont-printing-electronic-record-copies",
+      "state": "VT",
+      "path": "/vermont/guides/vermont-printing-electronic-record-copies/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/vermont/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/vermont/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/vermont/study-guide/",
+          "label": "Vermont Study Guide"
+        },
+        {
+          "href": "/vermont/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/vermont/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "vermont-remote-paper-record-and-declaration",
+      "keyword": "A Vermont remote signing with paper still needs record confirmation",
+      "intent": "Resolve Vermont notarial workplace situations",
+      "title": "A Vermont remote signing with paper still needs record confirmation",
+      "description": "Follow the statutory declaration procedure through receipt and certification.",
+      "h1": "A Vermont remote signing with paper still needs record confirmation",
+      "kicker": "Vermont practice",
+      "lede": "Remote location and tangible media can coexist under Vermont's endorsed procedures.",
+      "sections": [
+        {
+          "heading": "Identify the paper situation",
+          "body": "A Vermont endorsed notary is in Rutland while a customer has the paper record elsewhere. The remote rules allow acts on tangible records, but the notary must reasonably confirm that the record before the notary is the same one on which the individual signs or makes a statement. The statute gives a particular declaration procedure for a record not physically with the notary."
+        },
+        {
+          "heading": "Record both signatures",
+          "body": "During the audiovisual recording, the individual signs the record and the declaration incorporated into or securely attached to it. The declaration identifies the notary and the communication-technology appearance date and states the required same-record assertion under penalty of perjury. The notary records execution of both the record and declaration as the procedure specifies."
+        },
+        {
+          "heading": "Send and receive the materials",
+          "body": "The individual sends the record and declaration to the notary no later than three days after the act. After receiving them, the notary executes the certificate with the stated description of witnessing the named person sign by communication technology on the relevant date. This specific statutory sequence addresses the relationship between the recorded event and later physical receipt."
+        },
+        {
+          "heading": "Apply the limited effective-date rule",
+          "body": "A compliant act under this procedure is effective on the date the remote individual signed the declaration. The statute also preserves other methods satisfying record confirmation. Neither point eliminates endorsement, identity, communication or retention requirements. The notary should distinguish this procedure from the different case in which the paper is already before the notary and is displayed to and identified by the remote signer."
+        },
+        {
+          "heading": "Vermont 26 V.S.A. 5379(c)-(f); Rule 8-2(c)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Vermont Title 26 Chapter 103",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.vermont.gov/statutes/fullchapter/26/103",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "When is the certificate completed under this procedure?",
+          "a": "After receipt of the signed record and declaration."
+        },
+        {
+          "q": "Does this procedure prohibit every alternative?",
+          "a": "No. The statute preserves another procedure that satisfies the record-confirmation requirement."
+        }
+      ],
+      "id": "vt-vermont-remote-paper-record-and-declaration",
+      "state": "VT",
+      "path": "/vermont/guides/vermont-remote-paper-record-and-declaration/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/vermont/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/vermont/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/vermont/study-guide/",
+          "label": "Vermont Study Guide"
+        },
+        {
+          "href": "/vermont/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/vermont/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "vermont-kba-retries-and-hidden-questions",
+      "keyword": "Handling a failed Vermont remote identity quiz",
+      "intent": "Resolve Vermont notarial workplace situations",
+      "title": "Handling a failed Vermont remote identity quiz",
+      "description": "Keep the signer's identity assessment separate from commissioning study.",
+      "h1": "Handling a failed Vermont remote identity quiz",
+      "kicker": "Vermont practice",
+      "lede": "The dynamic KBA route has numerical success and retry limits in Vermont's current rules.",
+      "sections": [
+        {
+          "heading": "Choose the actual identity route",
+          "body": "An endorsed Vermont notary has neither personal knowledge of a remote customer nor a usable credible-witness route. The technological route uses credential analysis and dynamic knowledge-based authentication together. The KBA questions concern the individual's identity or personal history using public or private sources. They are separate from the examination a person takes to obtain an ordinary commission."
+        },
+        {
+          "heading": "Apply the success conditions",
+          "body": "The identity quiz has at least five questions, with at least five possible choices per question. At least eighty percent must be correct, and every question is answered within two minutes. For a five-question assessment, four correct answers reach eighty percent. A simple majority of three does not meet that standard even when the customer appears comfortable with the questions."
+        },
+        {
+          "heading": "Control the retry sequence",
+          "body": "After the first failure, the individual may retake once within twenty-four hours. The retake replaces at least forty percent of the previous questions, meaning at least two when there are five. A second failure prevents retry with the same online notary within twenty-four hours of that second failure. Repeated immediate attempts do not follow the rule."
+        },
+        {
+          "heading": "Keep the notary out of the answers",
+          "body": "The notary must not be able to see or record the KBA questions or answers. Coaching through a failed assessment would undermine this access restriction. The provider should support the prescribed private assessment and report the necessary outcome without exposing the protected content. Passing this identity component still leaves the requested notarial act, certificate and recording to be completed."
+        },
+        {
+          "heading": "Vermont Rules 8-2(b) and 8-6",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the notary save answers to help a returning signer?",
+          "a": "No. The notary must not be able to see or record the questions or answers."
+        },
+        {
+          "q": "Is one correct answer enough on a five-item quiz?",
+          "a": "No. At least four of five are needed for the eighty-percent threshold."
+        }
+      ],
+      "id": "vt-vermont-kba-retries-and-hidden-questions",
+      "state": "VT",
+      "path": "/vermont/guides/vermont-kba-retries-and-hidden-questions/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/vermont/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/vermont/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/vermont/study-guide/",
+          "label": "Vermont Study Guide"
+        },
+        {
+          "href": "/vermont/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/vermont/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "vermont-foreign-remote-signer-location",
+      "keyword": "A foreign-located signer needs more than a Vermont video link",
+      "intent": "Resolve Vermont notarial workplace situations",
+      "title": "A foreign-located signer needs more than a Vermont video link",
+      "description": "Assess actual locations and the statutory United States connection.",
+      "h1": "A foreign-located signer needs more than a Vermont video link",
+      "kicker": "Vermont practice",
+      "lede": "Vermont's remote rules distinguish the notary's location from an overseas signer's location.",
+      "sections": [
+        {
+          "heading": "Fix the notary location first",
+          "body": "A Vermont notary with the endorsement receives an overseas appointment request while traveling in New York. The rules require the notary to be physically in Vermont. An endorsed account, a Vermont phone number or the vendor's local address does not place the notary inside the state. The notary schedules the act for a time when the location condition can actually be met."
+        },
+        {
+          "heading": "Assess the foreign restriction",
+          "body": "When the remote individual is outside the United States, the act must not be prohibited in the jurisdiction where that individual is physically located. The signer's citizenship and preferred mailing address do not substitute for the actual location inquiry. Customer consent alone does not resolve a prohibition that is part of the Vermont foreign-location condition."
+        },
+        {
+          "heading": "Identify a permitted connection",
+          "body": "The record must have a listed United States connection. The rules describe a matter before a U.S.-jurisdiction entity, property within U.S. territorial jurisdiction or a substantially U.S.-connected transaction. An entirely foreign record without a listed connection cannot be treated as qualifying solely because the notary is available on a Vermont technology platform."
+        },
+        {
+          "heading": "Continue the full remote process",
+          "body": "After location and record conditions are addressed, apply the identity route, same-record confirmation, communication, certificate and simultaneous-recording requirements. The definition of outside the United States expressly accounts for Puerto Rico, the U.S. Virgin Islands and other U.S. jurisdictions. Review that statutory definition before assuming every location beyond the fifty states is foreign for this purpose."
+        },
+        {
+          "heading": "Vermont 26 V.S.A. 5304(15), 5379(b)(5); Rule 8-4",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Vermont Title 26 Chapter 103",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.vermont.gov/statutes/fullchapter/26/103",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May the notary conduct the act while outside Vermont?",
+          "a": "The rules require the notary to be physically in Vermont."
+        },
+        {
+          "q": "Does a U.S. mailing address alone settle the overseas conditions?",
+          "a": "No. The actual signer location and the listed record connection must be addressed."
+        }
+      ],
+      "id": "vt-vermont-foreign-remote-signer-location",
+      "state": "VT",
+      "path": "/vermont/guides/vermont-foreign-remote-signer-location/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/vermont/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/vermont/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/vermont/study-guide/",
+          "label": "Vermont Study Guide"
+        },
+        {
+          "href": "/vermont/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/vermont/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "vermont-directed-signatures-and-physical-inability",
+      "keyword": "Using a directed signature for a physically unable Vermont signer",
+      "intent": "Resolve Vermont notarial workplace situations",
+      "title": "Using a directed signature for a physically unable Vermont signer",
+      "description": "Keep the individual's direction and the helper's role visible in the certificate.",
+      "h1": "Using a directed signature for a physically unable Vermont signer",
+      "kicker": "Vermont practice",
+      "lede": "Vermont provides a procedure when an individual is physically unable to sign a record.",
+      "sections": [
+        {
+          "heading": "Identify the actual difficulty",
+          "body": "At a Brattleboro appointment, an individual is physically unable to sign but can direct another person to do so. The statute permits someone other than the notary to sign the individual's name at that direction. The notary does not become the helper under this authority. The individual remains the person whose requested act and identity must be considered."
+        },
+        {
+          "heading": "Use the individual's direction",
+          "body": "The procedure rests on the physically unable person directing the other individual. A companion's desire to complete a document does not establish that direction. The notary still considers whether the relevant act can be completed and may refuse when not satisfied about competence, capacity or knowing voluntary execution, with the applicable other-law qualification on refusal."
+        },
+        {
+          "heading": "Describe the signature accurately",
+          "body": "The certificate includes the statement identifying the person who affixed the signature and the person at whose direction it was affixed, or words of similar import. This records who physically supplied the signature and the direction behind it. Omitting the helper or describing the notary as the signer would misstate the procedure actually followed."
+        },
+        {
+          "heading": "Distinguish remote distance",
+          "body": "The tangible-record rule expressly prevents using this representative-signature procedure merely because the individual is remotely located. A person who is able to sign but is across a border has a different issue from physical inability. A remote appointment needs its own endorsement and procedures, so distance should not be relabeled as disability to bypass the applicable process."
+        },
+        {
+          "heading": "Vermont 26 V.S.A. 5366, 5372; Rule 5-2(e)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Vermont Title 26 Chapter 103",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.vermont.gov/statutes/fullchapter/26/103",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May the notary be the directed signer under this provision?",
+          "a": "No. The statute specifies someone other than the notary."
+        },
+        {
+          "q": "Does remote distance alone permit the helper procedure?",
+          "a": "No. The rule expressly distinguishes inability caused merely by remote location."
+        }
+      ],
+      "id": "vt-vermont-directed-signatures-and-physical-inability",
+      "state": "VT",
+      "path": "/vermont/guides/vermont-directed-signatures-and-physical-inability/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/vermont/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/vermont/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/vermont/study-guide/",
+          "label": "Vermont Study Guide"
+        },
+        {
+          "href": "/vermont/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/vermont/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "vermont-spouse-interests-and-voidable-acts",
+      "keyword": "Screening a spouse's interest before a Vermont notarization",
+      "intent": "Resolve Vermont notarial workplace situations",
+      "title": "Screening a spouse's interest before a Vermont notarization",
+      "description": "Check the party and benefit questions even when the notary is unnamed.",
+      "h1": "Screening a spouse's interest before a Vermont notarization",
+      "kicker": "Vermont practice",
+      "lede": "Vermont's conflict provision addresses both the notary and the notary's spouse.",
+      "sections": [
+        {
+          "heading": "Check who is a party",
+          "body": "A Vermont notary receives a record in which the spouse is a transaction party while the notary is absent from the page. The statute prohibits the act when either the notary or spouse is a party. Looking only for the notary's own printed name would miss the expressly included spouse condition. The notary resolves that conflict before undertaking the act."
+        },
+        {
+          "heading": "Check the beneficial interest",
+          "body": "The provision also addresses a direct beneficial interest of either person. A record can therefore present a prohibited conflict even without naming the notary as a party. The inquiry concerns the actual relationship to the record. A fee waiver or an electronic document format does not change the statutory interest condition."
+        },
+        {
+          "heading": "Understand the stated effect",
+          "body": "The subsection states that an act violating this conflict rule is voidable. That consequence belongs to the legal treatment of the particular prohibited act and should not be converted into a claim that all related conduct is excused. The chapter's general provisions on validity also preserve other remedies and challenges to the underlying record or transaction."
+        },
+        {
+          "heading": "Keep the certificate truthful",
+          "body": "A different independent notary can assess and perform a lawful requested act when available. The original notary should avoid attempting to cure the conflict by leaving the spouse's role out of a journal or certificate. Certificate completeness and truthful description cannot remove an actual prohibited interest, and a customer's preference cannot amend the statutory disqualification."
+        },
+        {
+          "heading": "Vermont 26 V.S.A. 5362(b), 5373(c)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.vermont.gov/statutes/fullchapter/26/103",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does the rule cover a spouse who is a party?",
+          "a": "Yes. The spouse is expressly included."
+        },
+        {
+          "q": "Does no fee automatically remove a direct beneficial interest?",
+          "a": "No. The conflict provision does not turn on whether the notarial fee is waived."
+        }
+      ],
+      "id": "vt-vermont-spouse-interests-and-voidable-acts",
+      "state": "VT",
+      "path": "/vermont/guides/vermont-spouse-interests-and-voidable-acts/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/vermont/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/vermont/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/vermont/study-guide/",
+          "label": "Vermont Study Guide"
+        },
+        {
+          "href": "/vermont/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/vermont/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "vermont-correcting-recorded-acknowledgments",
+      "keyword": "Correcting the evidence of a Vermont recorded acknowledgment",
+      "intent": "Resolve Vermont notarial workplace situations",
+      "title": "Correcting the evidence of a Vermont recorded acknowledgment",
+      "description": "Use the formal corrective writing described in the chapter.",
+      "h1": "Correcting the evidence of a Vermont recorded acknowledgment",
+      "kicker": "Vermont practice",
+      "lede": "A recorded acknowledgment defect has a particular correction procedure for its original notary.",
+      "sections": [
+        {
+          "heading": "Identify the original event",
+          "body": "A land-record document contains defective written evidence of an acknowledgment performed by a Vermont notary. The statute allows that original notary to cure the stated defect through a corrective writing. Begin by identifying the act and officer who actually performed it. This procedure does not create authority for a person who lacked authority at the time of a purported act."
+        },
+        {
+          "heading": "Use a different notary",
+          "body": "The original notary executes the corrective writing under oath before a different notary public. This separates the person describing the correction from the officer administering the oath and evidencing that new event. The original officer does not administer the oath to themselves or ask a recipient to silently change the earlier public-record certificate."
+        },
+        {
+          "heading": "Record the corrective document",
+          "body": "Upon recording, the corrective document corrects the deficiency and ratifies the original written evidence of acknowledgment as of the date the acknowledgment was originally taken. The statutory relation-back effect belongs to the completed procedure. A draft correction left in an office file has not reached the recording step described in that provision."
+        },
+        {
+          "heading": "Read the other validity rules narrowly",
+          "body": "An inaccurate or expired expiration date does not invalidate an acknowledgment if active commission status on the act date can be established. Other subsections preserve recordability and remedies in their stated circumstances. These provisions concern legal effects of defects and do not authorize intentional inaccurate certificates or validate an act by an unqualified person without notarial authority."
+        },
+        {
+          "heading": "Vermont 26 V.S.A. 5373(b)-(f)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.vermont.gov/statutes/fullchapter/26/103",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Who executes the corrective writing?",
+          "a": "The notary who performed the original act, under oath before a different notary."
+        },
+        {
+          "q": "Does the saving section validate an unauthorized person's act?",
+          "a": "No. The statute expressly preserves that limit."
+        }
+      ],
+      "id": "vt-vermont-correcting-recorded-acknowledgments",
+      "state": "VT",
+      "path": "/vermont/guides/vermont-correcting-recorded-acknowledgments/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/vermont/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/vermont/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/vermont/study-guide/",
+          "label": "Vermont Study Guide"
+        },
+        {
+          "href": "/vermont/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/vermont/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "vermont-continuing-education-evidence-and-audits",
+      "keyword": "Documenting Vermont continuing education for an audit",
+      "intent": "Resolve Vermont notarial workplace situations",
+      "title": "Documenting Vermont continuing education for an audit",
+      "description": "Track the learning itself and the period for which it is claimed.",
+      "h1": "Documenting Vermont continuing education for an audit",
+      "kicker": "Vermont practice",
+      "lede": "A course title alone does not establish that a Vermont renewal requirement was fulfilled.",
+      "sections": [
+        {
+          "heading": "Use the current credit structure",
+          "body": "A Vermont notary renews ordinary authority and the remote and electronic endorsement. Current Rule 9-1 and the February 2026 instructions use one approved ordinary hour unless exempt and one additional relevant endorsement hour. The current examination packet still contains an older ordinary-hours item, so the actual renewal rules and current operational instructions control this study content."
+        },
+        {
+          "heading": "Count actual learning time",
+          "body": "A course hour means sixty minutes. Formats can be live or recorded, synchronous or asynchronous, and in person or remote, while both audio and visual content are required. Only time spent as a learner counts. A lunch, break or business meeting included in the provider's schedule cannot be used to increase a short course to the required learning duration."
+        },
+        {
+          "heading": "Preserve useful completion evidence",
+          "body": "The renewal documentation includes the course name and date, evidence of attendance and the credit hours awarded. Course approval follows the listed-organization route or the director's approval process as applicable. Other providers must not advertise approval before obtaining it. A non-preapproved course may be reviewed with the renewal, which makes the substantive documentation particularly important."
+        },
+        {
+          "heading": "Respond within the audit process",
+          "body": "The office audits randomly selected notaries and all with conditioned commissions, and may audit specified other groups. It may seek additional records and a detailed account of claimed credits. When an allowed corrective-action plan is used, courses under that plan count only for the audited commission period. The notary should therefore identify the actual cycle rather than counting the same remedial course for future renewals."
+        },
+        {
+          "heading": "Vermont Rules 9-1 through 9-5; February 2026 renewal instructions",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Vermont February 2026 Renewal Instructions",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_renewal_instructions.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can lunch count toward the hour?",
+          "a": "No. The rule counts actual learner time and excludes lunch, breaks and business meetings."
+        },
+        {
+          "q": "Do corrective-plan courses automatically count for the next cycle?",
+          "a": "No. They count only for the commission period being audited."
+        }
+      ],
+      "id": "vt-vermont-continuing-education-evidence-and-audits",
+      "state": "VT",
+      "path": "/vermont/guides/vermont-continuing-education-evidence-and-audits/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/vermont/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/vermont/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/vermont/study-guide/",
+          "label": "Vermont Study Guide"
+        },
+        {
+          "href": "/vermont/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/vermont/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "vermont-digital-certificate-expiration-and-record-retention",
+      "keyword": "Ending Vermont electronic access while retaining remote records",
+      "intent": "Resolve Vermont notarial workplace situations",
+      "title": "Ending Vermont electronic access while retaining remote records",
+      "description": "Plan the distinct credential and recording duties through the end of authority.",
+      "h1": "Ending Vermont electronic access while retaining remote records",
+      "kicker": "Vermont practice",
+      "lede": "Electronic signing capability and records from completed remote acts have separate lifecycle requirements.",
+      "sections": [
+        {
+          "heading": "Check the live credential",
+          "body": "A Vermont endorsed notary notices that a third-party digital certificate has expired while the commission remains active. The rules bar an electronic act using a certificate that is expired, revoked, invalid or incapable of authentication. An ordinary commission establishes a different condition from the technical credential used to affix a tamper-evident signature to the record."
+        },
+        {
+          "heading": "Protect personal execution control",
+          "body": "The notary uses the same unique electronic signature and optional stamp, submits their required copies to the office and retains sole control and access. An employer must not permit another person to use them. The rule recognizes particular qualified disclosure circumstances while retaining control of passwords, tokens, PINs and other security aspects. A shared branch signing account would defeat the individual restrictions."
+        },
+        {
+          "heading": "Disable future acts when authority ends",
+          "body": "Resignation, revocation or expiration of the commission or endorsement triggers destruction and disabling of the electronic signature and optional stamp, including enabling coding, certificates, software and passwords. The purpose is to prevent another person's use. Theft of the electronic signature, electronic stamp or digital certificate requires immediate notice to the office under its separate rule."
+        },
+        {
+          "heading": "Continue the records duty",
+          "body": "Completed remote acts have audiovisual recordings retained at least seven years from the act under the current rule. The statute allows a different rule-established period from its default and recognizes specified representatives or repositories for continued retention. Disabling future signing credentials should therefore be planned alongside secure retained-record access, instead of treating account closure as permission to erase the recording archive."
+        },
+        {
+          "heading": "Vermont Rules 7-3, 7-4 and 8-2(f); 26 V.S.A. 5379(k)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Vermont Title 26 Chapter 103",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://legislature.vermont.gov/statutes/fullchapter/26/103",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can an active commission revive an expired digital certificate?",
+          "a": "No. The digital-certificate validity conditions apply separately."
+        },
+        {
+          "q": "Does disabling signatures end recording retention?",
+          "a": "No. The separate recording-retention obligation continues."
+        }
+      ],
+      "id": "vt-vermont-digital-certificate-expiration-and-record-retention",
+      "state": "VT",
+      "path": "/vermont/guides/vermont-digital-certificate-expiration-and-record-retention/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/vermont/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/vermont/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/vermont/study-guide/",
+          "label": "Vermont Study Guide"
+        },
+        {
+          "href": "/vermont/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/vermont/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "WI": [
+    {
+      "slug": "wisconsin-name-change-and-filed-stamp",
+      "keyword": "A Wisconsin name change during an existing term",
+      "intent": "Resolve Wisconsin notarial workplace situations",
+      "title": "A Wisconsin name change during an existing term",
+      "description": "Keep prior-name continuation distinct from using a new filed device.",
+      "h1": "A Wisconsin name change during an existing term",
+      "kicker": "Wisconsin practice",
+      "lede": "A legal name change creates choices and filing duties that must remain consistent with the official signature.",
+      "sections": [
+        {
+          "heading": "Identify the current filed name",
+          "body": "A Madison notary changes their legal last name while holding an unexpired four-year commission. The tutorial permits continued use of the previous name for the remainder of that commission if the signature exactly matches the filed seal or stamp. This specific continuation option is relevant to the existing term and should be read before mixing old and new execution names."
+        },
+        {
+          "heading": "File before new-name use",
+          "body": "If the notary chooses to use the new name and device, the tutorial directs completing the required Address/Name/Seal Change process before using them. A new stamp order and an employer personnel update do not supply the agency filing. The execution samples identify the notarial usage that is actually being placed in the official record."
+        },
+        {
+          "heading": "Keep the signature consistent",
+          "body": "While using the prior filed device, the notary does not add a different new name in parentheses or a hyphenated form that no longer matches it. The tutorial expressly rejects that approach. A customer may recognize both names, but recognition does not change the official signature-device matching requirement for notarizations."
+        },
+        {
+          "heading": "Prepare the next term correctly",
+          "body": "When the notary later applies for another commission, the application uses the current legal last name. The handbook distinguishes this future application from the limited continuation during an existing term. Check the device sample and intended execution name together so that renewal preparation does not carry an outdated naming choice into the new application."
+        },
+        {
+          "heading": "Wisconsin DFI Handbook pp.18-19; Tutorial Chapter 5",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "DFI Tutorial Chapter 5, Maintenance",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://apps.dfi.wi.gov/apps/notarytutorialexam/Chapter5.aspx",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "May the previous filed name continue during the existing term?",
+          "a": "The tutorial permits that with exact signature-device matching."
+        },
+        {
+          "q": "Can a new different name simply be added in parentheses?",
+          "a": "The tutorial says a different added name does not satisfy its matching rule."
+        }
+      ],
+      "id": "wi-wisconsin-name-change-and-filed-stamp",
+      "state": "WI",
+      "path": "/wisconsin/guides/wisconsin-name-change-and-filed-stamp/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wisconsin/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wisconsin/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wisconsin/study-guide/",
+          "label": "Wisconsin Study Guide"
+        },
+        {
+          "href": "/wisconsin/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wisconsin/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wisconsin-lost-stamp-and-replacement-clearance",
+      "keyword": "A Wisconsin missing stamp needs more than a replacement order",
+      "intent": "Resolve Wisconsin notarial workplace situations",
+      "title": "A Wisconsin missing stamp needs more than a replacement order",
+      "description": "Follow immediate notice, distinguishable replacement and DFI confirmation.",
+      "h1": "A Wisconsin missing stamp needs more than a replacement order",
+      "kicker": "Wisconsin practice",
+      "lede": "The replacement workflow helps distinguish a new official device from one whose security was lost.",
+      "sections": [
+        {
+          "heading": "Respond to discovery",
+          "body": "A Milwaukee notary returns from a mobile appointment and discovers the stamp is missing. The tutorial directs immediate written notice to DFI. It does not make proof of a forged act a condition for reporting loss or theft. An internal note to a manager or a purchase order sent to a supplier addresses different tasks and does not notify the commission office."
+        },
+        {
+          "heading": "Order a distinct device",
+          "body": "The replacement is to have a different appearance from the former device. It still contains the required wording and name, so a different appearance is not permission to omit Wisconsin, Notary Public or the filed personal identity. The design distinction helps separate the replacement device from the lost or stolen one in the official usage record."
+        },
+        {
+          "heading": "Complete the prior-use process",
+          "body": "After receipt, complete the required change filing and submit the sample before using the replacement. The current tutorial says use follows confirmation from DFI, while the handbook likewise directs waiting for notification that the new device may be used. Delivery of a well-made replacement therefore does not complete every step of the replacement procedure."
+        },
+        {
+          "heading": "Resolve later developments",
+          "body": "If the former stamp later turns up, do not assume that the discovery itself updates the loss and replacement information on file. The published process ties authorized usage to the filed devices and agency notice. Clarify the status with DFI before treating both devices as available, while keeping the personal execution name and required samples consistent."
+        },
+        {
+          "heading": "Wisconsin DFI Handbook p.19; Tutorial Chapter 5",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "DFI Tutorial Chapter 5, Maintenance",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://apps.dfi.wi.gov/apps/notarytutorialexam/Chapter5.aspx",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is a supplier order the required written notice?",
+          "a": "No. The notice is directed to DFI."
+        },
+        {
+          "q": "Can the replacement be used immediately on delivery?",
+          "a": "Complete the required filing and receive DFI confirmation before use."
+        }
+      ],
+      "id": "wi-wisconsin-lost-stamp-and-replacement-clearance",
+      "state": "WI",
+      "path": "/wisconsin/guides/wisconsin-lost-stamp-and-replacement-clearance/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wisconsin/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wisconsin/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wisconsin/study-guide/",
+          "label": "Wisconsin Study Guide"
+        },
+        {
+          "href": "/wisconsin/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wisconsin/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wisconsin-bond-eo-and-personal-responsibility",
+      "keyword": "Wisconsin bond coverage and optional E&O serve different roles",
+      "intent": "Resolve Wisconsin notarial workplace situations",
+      "title": "Wisconsin bond coverage and optional E&O serve different roles",
+      "description": "Understand the ordinary bond without treating its amount as a liability ceiling.",
+      "h1": "Wisconsin bond coverage and optional E&O serve different roles",
+      "kicker": "Wisconsin practice",
+      "lede": "The handbook describes a public-protection surety bond and separate optional coverage for the notary.",
+      "sections": [
+        {
+          "heading": "Recognize the required product",
+          "body": "An employer offers its branch employee a general blanket bond and says it should cover notarial work. The Wisconsin handbook requires a separate specific five-hundred-dollar notary surety bond for the four-year route. Employment coverage does not replace that product merely because it may refer to honesty or employee conduct in broader business operations."
+        },
+        {
+          "heading": "Check the provider and term",
+          "body": "The bond comes from an insurance or surety company qualified to write the required Wisconsin coverage. The ordinary bond runs with the full commission term, and the handbook states that a filed bond cannot be cancelled during it. DFI does not provide bonding or recommend a seller, so the applicant obtains the coverage through a qualified source."
+        },
+        {
+          "heading": "Understand the protection limit",
+          "body": "The bond protects a harmed party for covered misconduct or neglect within the amount of the surety obligation. The handbook explains that damages beyond five hundred dollars can be the notary's personal responsibility. The coverage amount therefore does not provide a universal ceiling on consequences arising from an improper notarization."
+        },
+        {
+          "heading": "Treat optional insurance separately",
+          "body": "An Errors and Omissions policy is optional and may help with covered legal fees and damages if the notary is sued. The handbook says it is different from the bond and is kept in personal records instead of filed with the commission materials. Neither product removes the identity, ceremony, certificate or impartiality duties that apply to the actual act."
+        },
+        {
+          "heading": "Wisconsin DFI Handbook pp.5-6 and 19",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does an employment blanket bond replace the notary bond?",
+          "a": "The handbook requires a separate specific bond."
+        },
+        {
+          "q": "Does five hundred dollars cap all personal responsibility?",
+          "a": "No. The handbook states that excess damages can remain the notary's responsibility."
+        }
+      ],
+      "id": "wi-wisconsin-bond-eo-and-personal-responsibility",
+      "state": "WI",
+      "path": "/wisconsin/guides/wisconsin-bond-eo-and-personal-responsibility/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wisconsin/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wisconsin/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wisconsin/study-guide/",
+          "label": "Wisconsin Study Guide"
+        },
+        {
+          "href": "/wisconsin/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wisconsin/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wisconsin-earlier-signature-and-present-pledge",
+      "keyword": "An earlier Wisconsin signature can lead to different ceremonies",
+      "intent": "Resolve Wisconsin notarial workplace situations",
+      "title": "An earlier Wisconsin signature can lead to different ceremonies",
+      "description": "Distinguish acknowledgment from a statement that must be signed and sworn in real time.",
+      "h1": "An earlier Wisconsin signature can lead to different ceremonies",
+      "kicker": "Wisconsin practice",
+      "lede": "A document already bearing a signature does not determine which act occurred at the current appointment.",
+      "sections": [
+        {
+          "heading": "Read the requested certificate",
+          "body": "A Green Bay customer brings a previously signed agreement and an affidavit. The agreement requests acknowledgment, while the affidavit says subscribed and sworn before the notary. The handbook requires the proper ceremony and written certificate for the actual requested act. Treating the printed words as interchangeable can result in certifying a procedure that was never performed."
+        },
+        {
+          "heading": "Acknowledge earlier execution",
+          "body": "For the agreement, the signer appears lawfully and confirms the earlier signature was made knowingly and voluntarily for the intended purpose. The handbook permits this earlier-signature acknowledgment. The certificate uses the current acknowledgment date and venue and does not falsely state that the notary observed yesterday's original signing."
+        },
+        {
+          "heading": "Complete the sworn procedure",
+          "body": "For the affidavit, the handbook requires a specific truth pledge by oath or affirmation and real-time observation of signing. When it was already signed, the handbook directs the person to sign again above or below the previous signature in the notary's presence. The affirmation option accommodates a person who does not wish to use religious swearing."
+        },
+        {
+          "heading": "Describe each event accurately",
+          "body": "After the act, complete the appropriate certificate with the proper particulars, signature, expiration information and official impression. A jurat records the sworn or affirmed procedure. An acknowledgment records the different declaration about execution. The customer's payment and the notary's opinion of the document cannot replace either required ceremony."
+        },
+        {
+          "heading": "Wisconsin DFI Handbook pp.10-17",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can acknowledgment concern yesterday's signature?",
+          "a": "Yes, with the present appearance and acknowledgment procedure."
+        },
+        {
+          "q": "Does silent observation administer a truth oath?",
+          "a": "No. The signer must actually make the required oath or affirmation."
+        }
+      ],
+      "id": "wi-wisconsin-earlier-signature-and-present-pledge",
+      "state": "WI",
+      "path": "/wisconsin/guides/wisconsin-earlier-signature-and-present-pledge/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wisconsin/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wisconsin/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wisconsin/study-guide/",
+          "label": "Wisconsin Study Guide"
+        },
+        {
+          "href": "/wisconsin/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wisconsin/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wisconsin-representative-signing-and-interests",
+      "keyword": "Wisconsin representative execution still needs an interest screen",
+      "intent": "Resolve Wisconsin notarial workplace situations",
+      "title": "Wisconsin representative execution still needs an interest screen",
+      "description": "Identify the human signer, represented party and separate conflict conditions.",
+      "h1": "Wisconsin representative execution still needs an interest screen",
+      "kicker": "Wisconsin practice",
+      "lede": "An officer or executor signs in a defined role, and the notary keeps that role distinct from personal benefit.",
+      "sections": [
+        {
+          "heading": "Identify the actual representative",
+          "body": "A company president appears in Racine to execute a record for the corporation. The notary identifies the individual and completes the ceremony appropriate to the requested act. The handbook describes asking whether the person is signing for the corporation and has been duly authorized to do so. A company logo does not identify the human participant."
+        },
+        {
+          "heading": "Show the role in the certificate",
+          "body": "The representative certificate identifies the individual, role and represented entity or estate. The handbook examples illustrate corporate officers and estate representatives. This accurately describes in what capacity the person acted. It does not guarantee the entity's ability to pay its obligations or make the notary responsible for predicting the transaction's financial outcome."
+        },
+        {
+          "heading": "Check the separate interest issue",
+          "body": "The handbook prohibits acts where the notary, spouse or domestic partner is a party or has the stated direct beneficial interest. Representative language does not automatically remove an actual benefit. A notary whose related person signs for an entity should therefore examine the conflict conditions separately instead of assuming a business title resolves every impartiality issue."
+        },
+        {
+          "heading": "Keep advice within authority",
+          "body": "A nonattorney commission does not authorize preparing deeds, contracts, wills or other legal papers for the customer. The notary can describe the available notarial procedure without selecting the customer's legal strategy. When the requested role or certificate needs legal clarification, the customer obtains appropriate instructions before the notary certifies the actual event."
+        },
+        {
+          "heading": "Wisconsin DFI Handbook pp.9 and 17-18",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Should the certificate show representative capacity?",
+          "a": "Yes. The handbook directs appropriate role wording."
+        },
+        {
+          "q": "Does a corporate title automatically remove a spouse's direct benefit?",
+          "a": "No. The actual party and interest conditions are assessed separately."
+        }
+      ],
+      "id": "wi-wisconsin-representative-signing-and-interests",
+      "state": "WI",
+      "path": "/wisconsin/guides/wisconsin-representative-signing-and-interests/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wisconsin/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wisconsin/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wisconsin/study-guide/",
+          "label": "Wisconsin Study Guide"
+        },
+        {
+          "href": "/wisconsin/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wisconsin/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wisconsin-vital-record-photocopies",
+      "keyword": "A Wisconsin vital-record request belongs with its custodian",
+      "intent": "Resolve Wisconsin notarial workplace situations",
+      "title": "A Wisconsin vital-record request belongs with its custodian",
+      "description": "Recognize the record category before choosing a notarial certificate.",
+      "h1": "A Wisconsin vital-record request belongs with its custodian",
+      "kicker": "Wisconsin practice",
+      "lede": "A private purpose and a customer-provided photocopy do not remove the handbook's vital-record boundary.",
+      "sections": [
+        {
+          "heading": "Recognize the listed records",
+          "body": "A customer presents a birth certificate and a photocopy at a Wisconsin office. The handbook treats birth, death, divorce, annulment and marriage certificates as vital records for its stated restriction. The notary identifies the source category before deciding whether a proposed certificate could truthfully and lawfully be attached to the material."
+        },
+        {
+          "heading": "Read the copying restriction",
+          "body": "The handbook expressly addresses both certified and uncertified copies and directs notaries never to notarize vital-record photocopies brought by a person. Ownership of the certificate or a request to charge no fee does not change the category. Making an official-looking substitute also raises the concern the handbook describes about material appearing to be a vital record or copy."
+        },
+        {
+          "heading": "Use the appropriate custodian",
+          "body": "The handbook directs customers to a state or county vital-record office or comparable government custodian for the appropriate copy. That custodian role differs from the ordinary notary's impartial witness role. A supplier's stamp or a nicely formatted private certificate cannot turn the notary into the official repository issuing the record."
+        },
+        {
+          "heading": "Do not let labels hide the source",
+          "body": "A customer may call the request a sworn copy statement or attach a new title page. The notary still recognizes that the proposed work concerns the vital-record photocopy described in the handbook. Explain the boundary and the custodian route while avoiding legal advice about which substitute will satisfy a particular proceeding or foreign recipient."
+        },
+        {
+          "heading": "Wisconsin DFI Handbook p.9",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does the handbook limit the warning to certified copies?",
+          "a": "It expressly discusses certified and uncertified vital-record copies."
+        },
+        {
+          "q": "Where does it direct customers for appropriate copies?",
+          "a": "The official state, county or comparable vital-record custodian."
+        }
+      ],
+      "id": "wi-wisconsin-vital-record-photocopies",
+      "state": "WI",
+      "path": "/wisconsin/guides/wisconsin-vital-record-photocopies/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wisconsin/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wisconsin/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wisconsin/study-guide/",
+          "label": "Wisconsin Study Guide"
+        },
+        {
+          "href": "/wisconsin/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wisconsin/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wisconsin-changing-ron-provider-and-archives",
+      "keyword": "A Wisconsin platform change must preserve earlier remote recordings",
+      "intent": "Resolve Wisconsin notarial workplace situations",
+      "title": "A Wisconsin platform change must preserve earlier remote recordings",
+      "description": "Plan training for the new system and continuing access to the old archive.",
+      "h1": "A Wisconsin platform change must preserve earlier remote recordings",
+      "kicker": "Wisconsin practice",
+      "lede": "Technology-provider approval does not guarantee identical storage services or automatic record migration.",
+      "sections": [
+        {
+          "heading": "Compare the service models",
+          "body": "A Wisconsin remote notary considers replacing a platform used for commercial closings. DFI's guide explains that approved providers vary in business model, eligibility and service offerings. Some preserve recordings for the full seven years, while others expect the notary to download and retain them. An approved badge does not answer every storage question in a particular contract."
+        },
+        {
+          "heading": "Preserve the existing recordings",
+          "body": "The guide requires audiovisual recordings of ordinary RON acts and at least seven years of retention. The notary remains ultimately responsible when a provider or repository stores them. Before closing the former account, determine how the earlier files remain available, how long they will be kept and how the notary can retrieve them after the business relationship ends."
+        },
+        {
+          "heading": "Train on the new provider",
+          "body": "Wisconsin permits changing providers and using multiple approved providers at the same time. Each provider used requires its own onboarding and training. Familiarity with the former interface does not establish competence on a new system's identity proofing, record confirmation and execution tools. The provider also supplies the authorization notification used for DFI's public database update."
+        },
+        {
+          "heading": "Keep confidentiality during transfer",
+          "body": "The guide imposes confidentiality on the notary and provider, with separate written consent or specified necessary legal-process grounds for disclosure. Moving an archive for lawful retention should be handled consistently with that requirement. Cancellation does not convert customer recordings into marketing material or authorize public release simply because the provider no longer hosts new appointments."
+        },
+        {
+          "heading": "Wisconsin DFI Remote guide 2A.6-2A.7 and 2B.3-2B.6",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does provider cancellation end retention?",
+          "a": "No. The required recording period continues."
+        },
+        {
+          "q": "Does training transfer automatically to every platform?",
+          "a": "Complete onboarding and training for each provider used."
+        }
+      ],
+      "id": "wi-wisconsin-changing-ron-provider-and-archives",
+      "state": "WI",
+      "path": "/wisconsin/guides/wisconsin-changing-ron-provider-and-archives/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wisconsin/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wisconsin/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wisconsin/study-guide/",
+          "label": "Wisconsin Study Guide"
+        },
+        {
+          "href": "/wisconsin/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wisconsin/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wisconsin-known-remote-signers-and-recording",
+      "keyword": "Knowing a Wisconsin remote signer does not remove every safeguard",
+      "intent": "Resolve Wisconsin notarial workplace situations",
+      "title": "Knowing a Wisconsin remote signer does not remove every safeguard",
+      "description": "Apply the personal-knowledge exception to its actual purpose.",
+      "h1": "Knowing a Wisconsin remote signer does not remove every safeguard",
+      "kicker": "Wisconsin practice",
+      "lede": "DFI's ordinary RON guidance distinguishes identity proofing from the other parts of the act.",
+      "sections": [
+        {
+          "heading": "Establish genuine personal knowledge",
+          "body": "A long-standing customer asks a Wisconsin notary to complete an ordinary remote acknowledgment. The guide allows an identity-proofing exception when dealings with the individual give reasonable certainty of claimed identity. The notary assesses actual familiarity. A familiar profile photograph or repeated email address alone should not be mistaken for the sufficient-dealings condition."
+        },
+        {
+          "heading": "Keep the live procedure intact",
+          "body": "The notary remains physically in Wisconsin and uses the approved technology and provider-specific training for ordinary RON. The method allows simultaneous communication and confirmation that the notary has the same record the person signed or addressed. A personal-knowledge identity route does not remove those separate communication and record safeguards."
+        },
+        {
+          "heading": "Capture and retain performance",
+          "body": "The guide requires audiovisual recording and at least seven years of retention for ordinary RON. The personal-knowledge exception concerns identity proofing, so it does not authorize omission of the recording. A saved copy of a customer's earlier email cannot show how the current acknowledgment and certificate procedure actually took place."
+        },
+        {
+          "heading": "Use the proper certificate",
+          "body": "The certificate identifies use of communication technology along with the proper act particulars. If the document instead belongs to the listed estate-planning category, the separate Part 3 procedure must be assessed. The guide's exceptions and alternative routes are each read in their own scope, preventing one satisfied condition from being treated as a waiver of the remaining procedure."
+        },
+        {
+          "heading": "Wisconsin DFI Remote guide 2A.2-2A.6 and 1.4",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does personal knowledge eliminate ordinary RON recording?",
+          "a": "No. Recording and retention remain separate requirements."
+        },
+        {
+          "q": "Does knowing the signer allow the notary to work from another state?",
+          "a": "No. The notary must still be physically in Wisconsin."
+        }
+      ],
+      "id": "wi-wisconsin-known-remote-signers-and-recording",
+      "state": "WI",
+      "path": "/wisconsin/guides/wisconsin-known-remote-signers-and-recording/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wisconsin/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wisconsin/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wisconsin/study-guide/",
+          "label": "Wisconsin Study Guide"
+        },
+        {
+          "href": "/wisconsin/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wisconsin/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wisconsin-estate-planning-remote-supervision",
+      "keyword": "Wisconsin remote estate planning uses a supervised signing process",
+      "intent": "Resolve Wisconsin notarial workplace situations",
+      "title": "Wisconsin remote estate planning uses a supervised signing process",
+      "description": "Recognize the special participants, locations and visible execution requirements.",
+      "h1": "Wisconsin remote estate planning uses a supervised signing process",
+      "kicker": "Wisconsin practice",
+      "lede": "The remote estate procedure differs materially from an ordinary approved-provider RON appointment.",
+      "sections": [
+        {
+          "heading": "Route the document",
+          "body": "A Wisconsin customer requests remote notarization of a health-care power of attorney. DFI's guide lists powers of attorney and other estate-planning categories within the special Part 3 treatment, with the particular limited real-estate financial-power exception identified elsewhere. The notary checks the actual category before assuming the ordinary RON provider process governs every video request."
+        },
+        {
+          "heading": "Arrange the required people",
+          "body": "A Wisconsin attorney in good standing supervises the signing and may also serve as notary when properly commissioned. The technology supports interactive real-time audiovisual participation, with the stated accessibility allowance. Unlike ordinary RON, this estate procedure does not require a provider approved through the Part 2C process, while the special safeguards still apply."
+        },
+        {
+          "heading": "Confirm the Wisconsin locations",
+          "body": "Both the notary and the remote individual are physically in Wisconsin during the signing and make the described attestations. A Wisconsin mailing address does not meet that condition while the signer is visiting another state. This additional signer-location limit is an important difference from ordinary RON's treatment of an out-of-state customer."
+        },
+        {
+          "heading": "Observe the required declarations",
+          "body": "The individual identifies others present, displays the estate document and confirms page count and signature page, declares age eighteen or older and voluntary execution, then signs so the notary and attorney can see it. The record indicates use of section 140.147. Follow the later document-handling and compliance-affidavit steps rather than treating the end of the call as the end of the entire procedure."
+        },
+        {
+          "heading": "Wisconsin DFI Remote guide 3.1-3.3",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Must the remote estate individual be in Wisconsin?",
+          "a": "Yes, the special procedure requires that physical location."
+        },
+        {
+          "q": "Must the supervising attorney always be a different person from the notary?",
+          "a": "No. The guide permits the qualified supervising attorney to serve as notary."
+        }
+      ],
+      "id": "wi-wisconsin-estate-planning-remote-supervision",
+      "state": "WI",
+      "path": "/wisconsin/guides/wisconsin-estate-planning-remote-supervision/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wisconsin/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wisconsin/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wisconsin/study-guide/",
+          "label": "Wisconsin Study Guide"
+        },
+        {
+          "href": "/wisconsin/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wisconsin/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wisconsin-estate-counterparts-and-compliance-affidavit",
+      "keyword": "After a Wisconsin remote estate signing, document handling continues",
+      "intent": "Resolve Wisconsin notarial workplace situations",
+      "title": "After a Wisconsin remote estate signing, document handling continues",
+      "description": "Follow the listed original-or-copy route and the attorney's compliance record.",
+      "h1": "After a Wisconsin remote estate signing, document handling continues",
+      "kicker": "Wisconsin practice",
+      "lede": "The special procedure includes post-communication steps that connect the signed original and notarized evidence.",
+      "sections": [
+        {
+          "heading": "Select a listed material route",
+          "body": "After the special Wisconsin estate communication, the guide permits notarizing an identical copy of the original unsigned record, a signed copy forwarded by the individual or attorney, or the original signed document forwarded by the supervising attorney. These are particular options in the special procedure. The notary checks which version arrived and how it corresponds to the record actually used in the signing."
+        },
+        {
+          "heading": "Return it to the attorney",
+          "body": "Send the notarized estate document to the supervising attorney, who retains the signed original and any notarized copy. The guide notes that the original and notarized copy together constitute a single document under the cited provisions. A software download alone does not identify where the original and relevant counterparts have gone or who is preserving them."
+        },
+        {
+          "heading": "Complete the sworn compliance record",
+          "body": "The supervising attorney completes the affidavit of compliance substantially in the statutory form described in the guide. It identifies the participants and addresses, actual Wisconsin signing locations, identity basis, other people present, declarations, observed signing and audiovisual technology. It also documents forwarding and counterpart compilation when relevant, along with the attorney's professional identification."
+        },
+        {
+          "heading": "Address other affidavit requirements",
+          "body": "Another estate-execution law may require an affidavit with additional information. The guide recognizes combining the required information into one affidavit where the statute permits. Combination is a way to include all necessary statements. It should not be treated as a reason to omit the separate facts needed to describe how the remote execution and notarial process complied with the governing requirements."
+        },
+        {
+          "heading": "Wisconsin DFI Remote guide 3.2-3.3",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Who retains the signed original and notarized copy in the described procedure?",
+          "a": "The supervising attorney."
+        },
+        {
+          "q": "Can a combined affidavit omit information required by another applicable provision?",
+          "a": "No. The permitted combination includes the information required by both provisions."
+        }
+      ],
+      "id": "wi-wisconsin-estate-counterparts-and-compliance-affidavit",
+      "state": "WI",
+      "path": "/wisconsin/guides/wisconsin-estate-counterparts-and-compliance-affidavit/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wisconsin/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wisconsin/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wisconsin/study-guide/",
+          "label": "Wisconsin Study Guide"
+        },
+        {
+          "href": "/wisconsin/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wisconsin/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    }
+  ],
+  "WY": [
+    {
+      "slug": "wyoming-remote-ink-acknowledgment-sequence",
+      "keyword": "Wyoming remote ink begins with a signed tangible record",
+      "intent": "Resolve Wyoming notarial workplace situations",
+      "title": "Wyoming remote ink begins with a signed tangible record",
+      "description": "Follow RIN from the paper signature to the recorded acknowledgment.",
+      "h1": "Wyoming remote ink begins with a signed tangible record",
+      "kicker": "Wyoming practice",
+      "lede": "Wyoming defines remote ink narrowly and gives it a specific order of events.",
+      "sections": [
+        {
+          "heading": "Identify the requested act",
+          "body": "A Jackson customer needs a paper agreement acknowledged while away from the notary. Wyoming's remote ink definition concerns an acknowledgment of a tangible record. This makes the requested act important before the parties choose a video method. A jurat or other sworn act cannot simply be relabeled RIN because the customer prefers paper and an ink signature."
+        },
+        {
+          "heading": "Receive the signed paper",
+          "body": "The principal signs and dates the tangible record and submits the ink-signed document to the officer. The officer then initiates the remote act and establishes satisfactory identity of the principal or witness. This sequence distinguishes the ink execution from the later acknowledgment. The record already bears a signature, but the acknowledgment has yet to occur."
+        },
+        {
+          "heading": "Complete the recorded procedure",
+          "body": "During the lawful remote communication, the principal acknowledges knowing and willing execution for the intended purpose. The officer takes reasonable steps to ensure the relevant participants view the same record. The entire communication is audiovisually recorded under the statute. Personal knowledge of the principal does not eliminate that separate recording requirement."
+        },
+        {
+          "heading": "Describe the actual event",
+          "body": "The certificate describes acknowledgment on the actual notarial date and identifies the remote method and technology name. The journal chronicles the act, and the recording is secured under the statute's control rules. Signing the paper earlier does not justify dating the acknowledgment as if it occurred then or claiming that a different sworn-signature procedure was completed."
+        },
+        {
+          "heading": "Wyoming Statutes 32-3-102(a)(xxviii); 32-3-111(m)-(n); 32-3-114(d); 32-3-118(a); Rule section 4",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://wyoleg.gov/statutes/compress/title32.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Wyoming Notary Rules, Chapter 6",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.wyo.gov/Services/Docs/Notary-Rules_current.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can RIN be used for every paper notarial act?",
+          "a": "No. Its statutory definition is limited to acknowledgment of a tangible record."
+        },
+        {
+          "q": "Does the earlier ink signature eliminate recording?",
+          "a": "No. The remote communication still must be audiovisually recorded."
+        }
+      ],
+      "id": "wy-wyoming-remote-ink-acknowledgment-sequence",
+      "state": "WY",
+      "path": "/wyoming/guides/wyoming-remote-ink-acknowledgment-sequence/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wyoming/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wyoming/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wyoming/study-guide/",
+          "label": "Wyoming Study Guide"
+        },
+        {
+          "href": "/wyoming/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wyoming/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wyoming-certificate-correction-and-authorization",
+      "keyword": "Correcting a Wyoming certificate with a documented trail",
+      "intent": "Resolve Wyoming notarial workplace situations",
+      "title": "Correcting a Wyoming certificate with a documented trail",
+      "description": "Separate evidence-supported text corrections from changes to a stamp image.",
+      "h1": "Correcting a Wyoming certificate with a documented trail",
+      "kicker": "Wyoming practice",
+      "lede": "The original officer retains control of later changes to a completed Wyoming certificate.",
+      "sections": [
+        {
+          "heading": "Begin with the transaction evidence",
+          "body": "A Laramie notary notices that a completed certificate omitted an event detail. The statute permits the performing officer to correct included or omitted information when the change can be evidenced by the transaction journal information where applicable. A recipient's preferred date or desired result is a request to examine, rather than proof that the original event occurred differently."
+        },
+        {
+          "heading": "Date and record the change",
+          "body": "The correction is dated and initialed by the officer with the corresponding journal notation where applicable. This preserves how the later certificate relates to the recorded act. Correcting an evidentiary omission is different from silently rewriting the underlying transaction. The notary keeps the change within the facts supported by the actual event and its records."
+        },
+        {
+          "heading": "Control delegated edits",
+          "body": "Only the officer who performed the notarization can make or authorize the correction. If a third party makes the authorized text change, permission is written. Copies of the authorization message and changed certificate are attached to the transaction journal record where applicable. Mere ownership of the document does not authorize the recipient to alter its notarial evidence unilaterally."
+        },
+        {
+          "heading": "Treat the stamp separately",
+          "body": "The statute does not permit changing or correcting the official impression by hand or by editing its electronic image. An incorrect stamp requires a corrected device. The section permits a subsequent proper impression when the original is missing, illegible or contains wrong information. Apply that particular process together with the required correction documentation."
+        },
+        {
+          "heading": "Wyoming Statutes 32-3-114(h)-(k); 32-3-116(a)(ii)(H)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://wyoleg.gov/statutes/compress/title32.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can any recipient make a certificate correction?",
+          "a": "Only the performing officer can make or authorize it, with the prescribed documentation."
+        },
+        {
+          "q": "Can a stamp number be repaired by handwriting on its impression?",
+          "a": "The statute requires a corrected compliant stamp instead of editing the impression."
+        }
+      ],
+      "id": "wy-wyoming-certificate-correction-and-authorization",
+      "state": "WY",
+      "path": "/wyoming/guides/wyoming-certificate-correction-and-authorization/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wyoming/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wyoming/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wyoming/study-guide/",
+          "label": "Wyoming Study Guide"
+        },
+        {
+          "href": "/wyoming/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wyoming/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wyoming-renewed-stamp-and-electronic-image",
+      "keyword": "A Wyoming renewed term needs a new official stamp",
+      "intent": "Resolve Wyoming notarial workplace situations",
+      "title": "A Wyoming renewed term needs a new official stamp",
+      "description": "Review both tangible and electronic execution details at renewal.",
+      "h1": "A Wyoming renewed term needs a new official stamp",
+      "kicker": "Wyoming practice",
+      "lede": "An unchanged name does not remove Wyoming's each-renewal stamp replacement requirement.",
+      "sections": [
+        {
+          "heading": "Use the new commission details",
+          "body": "A Casper notary renews after six years and plans to keep the former device because the name is unchanged. The statute requires a new stamp upon each renewed commission term. The official certificate supplies the identity and expiration information for the new device. The date printed in the old device is a substantive term detail, rather than decoration that can be ignored."
+        },
+        {
+          "heading": "Order the prescribed design",
+          "body": "The stamp is a bordered rectangle of approximately one inch by two and one-half inches in blue or black. Its text includes the commissioned name, Notary Public, State of Wyoming, identification number and the expiration wording and date. The State Seal, residence county and other unprescribed content are excluded. A supplier's familiar design still needs to match these actual requirements."
+        },
+        {
+          "heading": "Update electronic execution too",
+          "body": "An electronic official stamp uses the same prescribed format, color, content and approximate size as the tangible stamp and is copyable with the record. The new-term requirement therefore reaches an old electronic image as well as a physical ink device. A platform storing the former image should not be treated as proof that the image has current commission details."
+        },
+        {
+          "heading": "Disable unusable authority",
+          "body": "The stamping-device section requires disabling a device when the commission or device date expires, or upon resignation or revocation. The required information is not amended through handwriting or other added text. The notary follows the new-device requirement and security rules instead of writing a current date next to an obsolete official image."
+        },
+        {
+          "heading": "Wyoming Statutes 32-3-116(a)(ii); 32-3-117(a)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://wyoleg.gov/statutes/compress/title32.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does renewal replacement apply when the name is unchanged?",
+          "a": "Yes. Renewal itself triggers the new-stamp requirement."
+        },
+        {
+          "q": "Can an old electronic image keep the former expiration?",
+          "a": "The electronic stamp must meet the current term and prescribed-content requirements."
+        }
+      ],
+      "id": "wy-wyoming-renewed-stamp-and-electronic-image",
+      "state": "WY",
+      "path": "/wyoming/guides/wyoming-renewed-stamp-and-electronic-image/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wyoming/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wyoming/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wyoming/study-guide/",
+          "label": "Wyoming Study Guide"
+        },
+        {
+          "href": "/wyoming/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wyoming/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wyoming-employer-journal-original-and-copy",
+      "keyword": "A Wyoming employer's copy differs from the original journal",
+      "intent": "Resolve Wyoming notarial workplace situations",
+      "title": "A Wyoming employer's copy differs from the original journal",
+      "description": "Apply personal control and employment-scope copy retention together.",
+      "h1": "A Wyoming employer's copy differs from the original journal",
+      "kicker": "Wyoming practice",
+      "lede": "Paying for a journal does not remove Wyoming's rules about its use and surrender.",
+      "sections": [
+        {
+          "heading": "Keep the personal record secure",
+          "body": "A Cheyenne company buys journal books for its employee-notaries. Each notary still has the statutory responsibility to chronicle all acts and keep the journal and other notarial records securely under sole control. The statute does not let a second notarial officer use the same personal journal merely because the company paid the supply bill."
+        },
+        {
+          "heading": "Plan the employee's departure",
+          "body": "When employment ends, the notary does not surrender the original journal to the employer without approval from the Secretary of State. That requirement should be addressed before office equipment is returned. A manager's general demand for all purchased items is different from the state approval condition expressly governing the notarial journal."
+        },
+        {
+          "heading": "Provide the permitted copy",
+          "body": "The statute permits the employer to retain a copy of the journal concerning acts performed within the scope of employment. This provides a particular business-record route while preserving the separate rules for the original. It does not grant the employer unrestricted ownership of unrelated private appointments or permission for another officer to continue notarizing in that journal."
+        },
+        {
+          "heading": "Maintain lawful access and disposition",
+          "body": "Law-enforcement investigation, court process and state direction have their identified access routes. Surrender or destruction remains limited to the authorities stated in the statute. The education presentation recommends retaining the journal for the term, but that recommendation should not be converted into an automatic destruction authorization at expiration."
+        },
+        {
+          "heading": "Wyoming Statutes 32-3-118(d)-(h); Education slide 22",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://wyoleg.gov/statutes/compress/title32.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Wyoming Notary Education Presentation",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.wyo.gov/Services/Docs/Notary-Education-Presentation_effective-07.01.2021.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can the employer keep an employment-scope copy?",
+          "a": "Yes, as the statute provides."
+        },
+        {
+          "q": "Does paying for the journal permit taking the original without approval?",
+          "a": "No. Original surrender at termination requires the stated state approval."
+        }
+      ],
+      "id": "wy-wyoming-employer-journal-original-and-copy",
+      "state": "WY",
+      "path": "/wyoming/guides/wyoming-employer-journal-original-and-copy/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wyoming/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wyoming/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wyoming/study-guide/",
+          "label": "Wyoming Study Guide"
+        },
+        {
+          "href": "/wyoming/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wyoming/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wyoming-physical-inability-directed-signatures",
+      "keyword": "Wyoming provides two directed-signature procedures",
+      "intent": "Resolve Wyoming notarial workplace situations",
+      "title": "Wyoming provides two directed-signature procedures",
+      "description": "Use the correct unaffected witnesses and notation for the selected route.",
+      "h1": "Wyoming provides two directed-signature procedures",
+      "kicker": "Wyoming practice",
+      "lede": "The physically unable principal remains the person directing execution under Wyoming's accommodation provisions.",
+      "sections": [
+        {
+          "heading": "Determine who will affix the name",
+          "body": "At a Sheridan appointment, a principal is physically unable to sign a record. The statute permits a directed witness signature or a directed notarial-officer signature with different safeguards. The principal's direction is central to either route. A companion's eagerness to finish should not be confused with the principal choosing and directing the procedure."
+        },
+        {
+          "heading": "Use the one-witness route accurately",
+          "body": "In the presence of the officer and one witness unaffected by the record, the principal can direct that witness to sign the principal's name. The officer inserts the required statement identifying the signing witness and the principal whose direction was followed under or near the signature. The witness's lack of an interest is one of the actual statutory conditions."
+        },
+        {
+          "heading": "Add the safeguards for officer signing",
+          "body": "The principal may instead direct the notarial officer to sign in the presence of two witnesses unaffected by the record. The notation identifies the officer, the directing principal and the two witnesses. The number and roles differ from the witness-signing route, so one helpful observer does not satisfy the officer-signing requirements."
+        },
+        {
+          "heading": "Preserve identity and participation",
+          "body": "The officer identifies every witness through satisfactory evidence and the journal reflects the principal and all participating witnesses. The statute also allows signals or mechanical or electronic means to communicate when oral or written communication is unavailable. Accommodation changes how participation occurs while preserving the required identity, direction and record of the actual event."
+        },
+        {
+          "heading": "Wyoming Statutes 32-3-113",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://wyoleg.gov/statutes/compress/title32.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "How many unaffected witnesses accompany officer signing?",
+          "a": "Two under the statutory officer-signing route."
+        },
+        {
+          "q": "Does accommodation remove witness identity checks?",
+          "a": "No. The statute requires satisfactory identification and the stated journal participation record."
+        }
+      ],
+      "id": "wy-wyoming-physical-inability-directed-signatures",
+      "state": "WY",
+      "path": "/wyoming/guides/wyoming-physical-inability-directed-signatures/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wyoming/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wyoming/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wyoming/study-guide/",
+          "label": "Wyoming Study Guide"
+        },
+        {
+          "href": "/wyoming/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wyoming/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wyoming-official-record-copy-employment-exception",
+      "keyword": "Wyoming official-copy requests have a limited employment exception",
+      "intent": "Resolve Wyoming notarial workplace situations",
+      "title": "Wyoming official-copy requests have a limited employment exception",
+      "description": "Screen source status before making the accurate-copy determination.",
+      "h1": "Wyoming official-copy requests have a limited employment exception",
+      "kicker": "Wyoming practice",
+      "lede": "The statute distinguishes an independent notary from an officer employed by the entity issuing or holding an official record.",
+      "sections": [
+        {
+          "heading": "Identify the source record",
+          "body": "A customer asks an independent Wyoming notary to certify a school transcript copied from a government-held original. The prohibited-acts section expressly lists official records issued by public entities, including court records and school transcripts, alongside vital records. A private purpose does not change the public source or make every ordinary notary the record's custodian."
+        },
+        {
+          "heading": "Read the exception precisely",
+          "body": "The statute provides an exception when the officer is employed by the entity issuing or holding the original version. This is an actual employment condition. A customer saying that an office once emailed the record does not establish that the notary works for the issuing or holding entity. Check the true role before assuming that the exception applies."
+        },
+        {
+          "heading": "Still verify the reproduction",
+          "body": "A qualifying employment relationship addresses the official-record prohibition but does not establish that the proposed reproduction is full, true and accurate. The copy-certification section requires that determination. An omitted page, changed paragraph or unreadable section still prevents a truthful certification of a complete accurate reproduction even in the eligible employment setting."
+        },
+        {
+          "heading": "Describe the narrow conclusion",
+          "body": "The certificate identifies the copied record and issuing entity as required, with the proper act evidence and stamp. The accurate-copy finding concerns the reproduction. It does not mean the officer investigated the underlying transaction or guaranteed the truth of every source assertion. Wyoming separately restricts using the notarial role to attest the lawfulness or truthfulness of the underlying record or transaction."
+        },
+        {
+          "heading": "Wyoming Statutes 32-3-111(e); 32-3-114(a)(iii); 32-3-123(a)(iv), (vi)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://wyoleg.gov/statutes/compress/title32.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does Wyoming state an exception for official-copy certification?",
+          "a": "Yes, for the specified employment by the issuing or holding entity."
+        },
+        {
+          "q": "Does that exception waive copy accuracy?",
+          "a": "No. The reproduction still must be full, true and accurate."
+        }
+      ],
+      "id": "wy-wyoming-official-record-copy-employment-exception",
+      "state": "WY",
+      "path": "/wyoming/guides/wyoming-official-record-copy-employment-exception/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wyoming/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wyoming/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wyoming/study-guide/",
+          "label": "Wyoming Study Guide"
+        },
+        {
+          "href": "/wyoming/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wyoming/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wyoming-travel-cancellation-and-technology-refunds",
+      "keyword": "Wyoming refund treatment depends on who cancelled and why",
+      "intent": "Resolve Wyoming notarial workplace situations",
+      "title": "Wyoming refund treatment depends on who cancelled and why",
+      "description": "Keep compliant fee agreement separate from the later refund question.",
+      "h1": "Wyoming refund treatment depends on who cancelled and why",
+      "kicker": "Wyoming practice",
+      "lede": "Prepaid travel and technology charges do not have one universal outcome under Wyoming's statute and rule.",
+      "sections": [
+        {
+          "heading": "Agree before incurring the charge",
+          "body": "A Wyoming mobile notary discusses the travel charge before beginning the trip. The statute ties the rate to the standard IRS mileage rate and requires advance agreement and the separate nonmandated-charge explanation. Technology charges have their own total-fee agreement before the act. A refund provision does not authorize collecting an otherwise unagreed or noncompliant surcharge."
+        },
+        {
+          "heading": "Apply the principal-cancellation facts",
+          "body": "The travel rule permits retaining a compliant prepaid travel fee when the principal cancels with less than twenty-four hours notice. It also lists the statutory lawful-refusal grounds. These are defined situations. The notary considers what actually happened and does not treat the rule as permission to invent unlimited penalties after every scheduling problem."
+        },
+        {
+          "heading": "Apply the officer-cancellation rule",
+          "body": "When the officer cancels and does not complete the act, the rule requires refunding the travel fee. That differs from the listed short-notice principal case. A prepaid charge is therefore not automatically retained merely because money arrived before the appointment. The cancellation source and completion facts determine which stated treatment applies."
+        },
+        {
+          "heading": "Keep proofing failure in its category",
+          "body": "For a compliant prepaid technology fee, the statute permits nonrefund discretion when required KBA or identity proofing fails, whether for fraud or innocent reasons. A failed assessment is not automatically proof of fraud. The officer still reports the real identity outcome and refuses an act that cannot lawfully be completed, independently of the fee decision."
+        },
+        {
+          "heading": "Wyoming Statutes 32-3-126(b)-(d); Rule section 6",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://wyoleg.gov/statutes/compress/title32.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Wyoming Notary Rules, Chapter 6",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.wyo.gov/Services/Docs/Notary-Rules_current.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "What if the notary cancels without completing the act?",
+          "a": "The travel fee must be refunded under the rule."
+        },
+        {
+          "q": "Must proofing failure be fraudulent for the listed technology-fee discretion?",
+          "a": "No. The statute includes innocent failure as well."
+        }
+      ],
+      "id": "wy-wyoming-travel-cancellation-and-technology-refunds",
+      "state": "WY",
+      "path": "/wyoming/guides/wyoming-travel-cancellation-and-technology-refunds/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wyoming/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wyoming/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wyoming/study-guide/",
+          "label": "Wyoming Study Guide"
+        },
+        {
+          "href": "/wyoming/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wyoming/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wyoming-remote-overseas-principal-two-conditions",
+      "keyword": "A Wyoming overseas remote principal needs two conditions",
+      "intent": "Resolve Wyoming notarial workplace situations",
+      "title": "A Wyoming overseas remote principal needs two conditions",
+      "description": "Evaluate the foreign prohibition and the record's United States connection together.",
+      "h1": "A Wyoming overseas remote principal needs two conditions",
+      "kicker": "Wyoming practice",
+      "lede": "A U.S. connection does not remove the separate condition concerning the principal's actual foreign location.",
+      "sections": [
+        {
+          "heading": "Identify the actual locations",
+          "body": "A Wyoming notarial officer receives a remote request from an individual staying abroad. The record involves U.S. property, but the officer still examines the foreign-location conditions. Customer citizenship or a familiar U.S. mailing address does not replace the fact of where the principal is physically located during the proposed statement or signature."
+        },
+        {
+          "heading": "Check the local prohibition condition",
+          "body": "The statute requires that the act of making the statement or signing the record not be prohibited in the foreign state where the person is located. This is part of the Wyoming overseas route. A customer saying that remote notarization would be convenient does not resolve that legal condition, and private consent cannot be treated as a general waiver of it."
+        },
+        {
+          "heading": "Identify the listed nexus",
+          "body": "The record must pertain to a listed U.S. matter, U.S.-jurisdiction property or a substantially U.S.-connected transaction. The condition is about the actual record, rather than the platform's advertising address. Both this nexus and the no-prohibition condition are required. Satisfying one does not automatically satisfy or displace the other."
+        },
+        {
+          "heading": "Continue the particular remote process",
+          "body": "After the overseas conditions are addressed, use the lawful RON or RIN route, satisfactory identity, same-record steps, sufficient communication, full audiovisual record and appropriate certificate with the actual technology name. The statutory definition of outside the United States also accounts for Puerto Rico, the U.S. Virgin Islands and other U.S. jurisdictions, so it is read before classifying every non-state location as foreign."
+        },
+        {
+          "heading": "Wyoming Statutes 32-3-102(a)(xxiii); 32-3-111(j)-(n); 32-3-118(a); Rule section 4",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://wyoleg.gov/statutes/compress/title32.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Wyoming Notary Rules, Chapter 6",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://sos.wyo.gov/Services/Docs/Notary-Rules_current.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is U.S. property alone enough when local law prohibits the signing?",
+          "a": "No. The statute requires both conditions."
+        },
+        {
+          "q": "Does a U.S. mailing address establish the principal is physically in the United States?",
+          "a": "No. The actual location controls that inquiry."
+        }
+      ],
+      "id": "wy-wyoming-remote-overseas-principal-two-conditions",
+      "state": "WY",
+      "path": "/wyoming/guides/wyoming-remote-overseas-principal-two-conditions/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wyoming/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wyoming/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wyoming/study-guide/",
+          "label": "Wyoming Study Guide"
+        },
+        {
+          "href": "/wyoming/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wyoming/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wyoming-advertising-notarial-role-and-legal-advice",
+      "keyword": "Advertising a Wyoming notarial service within the authorized role",
+      "intent": "Resolve Wyoming notarial workplace situations",
+      "title": "Advertising a Wyoming notarial service within the authorized role",
+      "description": "Apply disclosure, restricted terminology and official-title limits together.",
+      "h1": "Advertising a Wyoming notarial service within the authorized role",
+      "kicker": "Wyoming practice",
+      "lede": "A required disclosure and the actual services offered are separate parts of compliant notarial advertising.",
+      "sections": [
+        {
+          "heading": "Describe the permitted role",
+          "body": "A Wyoming nonattorney prepares a multilingual online advertisement for appointments. The commission does not authorize drafting legal records, legal advice, immigration consultation or representation in the listed proceedings. It also does not authorize compensation for those activities. A service menu should therefore describe what the person is independently authorized to do rather than assume the commission grants a legal practice."
+        },
+        {
+          "heading": "Include the required statement",
+          "body": "The nonattorney advertisement or representation includes the prescribed or authorized statement prominently in each language used. The statute reaches oral representations and broadcast, print and internet formats. A separate limited size-based fallback applies to the described other formats, where the statement is displayed or provided at the place of performance before the act."
+        },
+        {
+          "heading": "Avoid restricted professional implications",
+          "body": "The statute restricts notario and notario publico for a person who is not licensed to practice law in Wyoming. The notice does not grant permission to use a separately prohibited term or perform an unauthorized service. Advertising also must not be false or deceptive, so a clear disclosure should correspond to the actual professional role conveyed to the customer."
+        },
+        {
+          "heading": "Keep the official title out of endorsements",
+          "body": "The official notarial title or stamp cannot be used to endorse, promote, denounce or oppose the listed offerings, including candidates. Adding a nonattorney disclosure does not remove that distinct restriction. The notary examines the proposed use of official office alongside the service-description and warning rules instead of assuming one compliance step resolves every provision."
+        },
+        {
+          "heading": "Wyoming Statutes 32-3-123(a)(ix), (b)-(e)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://wyoleg.gov/statutes/compress/title32.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does a disclaimer grant immigration-representation authority?",
+          "a": "No. The commission and disclaimer do not confer that professional authority."
+        },
+        {
+          "q": "Does the candidate-use restriction concern only paid advertisements?",
+          "a": "The stated official-title and stamp restriction is not limited to paid commercial promotion."
+        }
+      ],
+      "id": "wy-wyoming-advertising-notarial-role-and-legal-advice",
+      "state": "WY",
+      "path": "/wyoming/guides/wyoming-advertising-notarial-role-and-legal-advice/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wyoming/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wyoming/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wyoming/study-guide/",
+          "label": "Wyoming Study Guide"
+        },
+        {
+          "href": "/wyoming/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wyoming/pricing/",
+          "label": "60-Day Pro"
+        }
+      ]
+    },
+    {
+      "slug": "wyoming-bordering-state-authority-and-venue",
+      "keyword": "A Wyoming bordering-state appointment needs recognition checked",
+      "intent": "Resolve Wyoming notarial workplace situations",
+      "title": "A Wyoming bordering-state appointment needs recognition checked",
+      "description": "Separate conditional authority from the actual venue recorded.",
+      "h1": "A Wyoming bordering-state appointment needs recognition checked",
+      "kicker": "Wyoming practice",
+      "lede": "The chapter's bordering-state provision is conditional and does not automatically authorize every neighboring-state appointment.",
+      "sections": [
+        {
+          "heading": "Identify the physical appointment",
+          "body": "A Wyoming notary is asked to cross a state border for a signing. The commission authorizes acts within Wyoming and in a bordering state if that state recognizes the officer's authority there. This condition must be checked for the actual jurisdiction. The fact that a state touches Wyoming is the beginning of the inquiry rather than evidence that recognition has been established."
+        },
+        {
+          "heading": "Follow the stated Wyoming requirements",
+          "body": "When the bordering-state act is allowable, the statute directs the Wyoming notary to adhere to Wyoming laws and rules. The act still needs proper identity, knowing willing execution, certificate, stamp and applicable records. A customer cannot waive those requirements merely because an appointment takes place a few miles beyond the state line."
+        },
+        {
+          "heading": "Use the accurate venue",
+          "body": "Venue is the state and county where the officer is physically located when performing the act. Keeping a Wyoming home address does not move an out-of-state event back into the home county. The certificate should describe the actual authorized event instead of copying the issuing state's name as though commissioning and physical location were the same fact."
+        },
+        {
+          "heading": "Distinguish recognition of another officer",
+          "body": "A different section recognizes a lawful act performed by another state's authorized notary in that other state. That recognition gives effect to the act and does not issue a Wyoming commission to that officer. Likewise, an existing Wyoming commission does not by itself prove every neighboring jurisdiction has accepted its use within its own borders."
+        },
+        {
+          "heading": "Wyoming Statutes 32-3-104(b)-(c); 32-3-106",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://wyoleg.gov/statutes/compress/title32.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does every bordering state automatically qualify?",
+          "a": "The actual state's recognition of Wyoming authority must be established."
+        },
+        {
+          "q": "Does the Wyoming home county always appear as venue?",
+          "a": "Venue follows where the officer actually performs the act."
+        }
+      ],
+      "id": "wy-wyoming-bordering-state-authority-and-venue",
+      "state": "WY",
+      "path": "/wyoming/guides/wyoming-bordering-state-authority-and-venue/",
+      "checked": "2026-11-14",
+      "updated": "2026-11-14",
+      "ledeCta": {
+        "href": "/wyoming/practice/?mode=quick",
+        "label": "Start Free Quick 10",
+        "placement": "lede",
+        "targetMode": "quick"
+      },
+      "endCta": {
+        "href": "/wyoming/practice/?mode=full",
+        "label": "Start Comprehensive Practice",
+        "placement": "end",
+        "targetMode": "full"
+      },
+      "related": [
+        {
+          "href": "/wyoming/study-guide/",
+          "label": "Wyoming Study Guide"
+        },
+        {
+          "href": "/wyoming/study-cards/",
+          "label": "Study Cards"
+        },
+        {
+          "href": "/wyoming/pricing/",
           "label": "60-Day Pro"
         }
       ]

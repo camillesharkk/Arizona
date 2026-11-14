@@ -6,10 +6,13 @@ import { testLoader } from './pack-test-utils.mjs';
 
 const base = process.env.STATE17_BASE || 'http://127.0.0.1:3482';
 const load = testLoader();
+const { fullStateSummary } = load('data/full-state-summary.ts');
+const { fullStateArticles } = load('data/full-state-articles.ts');
 const { freeStateCatalog, freeStatePaths } = load('lib/free-state-catalog.ts');
 const { chromium } = await import(pathToFileURL(path.resolve('.tools/browser/node_modules/playwright/index.mjs')));
 const browser = await chromium.launch({ channel: 'msedge', headless: true });
 const context = await browser.newContext();
+await context.addInitScript(() => sessionStorage.setItem('az_ops_acceptance', '1'));
 const page = await context.newPage();
 const rows = [];
 try {
@@ -22,7 +25,9 @@ try {
   assert.equal(sitemap.includes('/preview/'), false);
   for (const [code, name, slug] of freeStateCatalog) {
     const site = freeStatePaths(slug);
-    for (const route of [site.home, site.practice, site.study, site.become, site.resources, site.examGuide, site.laws]) {
+    const routes = [site.home, site.practice, site.study, site.become, site.resources, site.examGuide, site.laws,
+      ...(fullStateSummary[code]?.ready ? [site.questions, site.studyCards, site.pricing, ...(fullStateArticles[code] || []).map(article => article.path)] : [])];
+    for (const route of routes) {
       assert.ok(sitemap.includes(`https://arizonanotaryprep.com${route}`), `${code} sitemap ${route}`);
       const response = await page.goto(base + route);
       assert.equal(response.status(), 200, route);
@@ -32,7 +37,7 @@ try {
       assert.equal(await page.locator('meta[name="robots"]').count(), 1);
       assert.equal((await page.locator('meta[name="robots"]').getAttribute('content')).includes('noindex'), false, route);
     }
-    rows.push({ code, directory: true, pages: 7, canonical: true, indexed: true, sitemap: true });
+    rows.push({ code, directory: true, pages: routes.length, canonical: true, indexed: true, sitemap: true });
     console.log(JSON.stringify(rows.at(-1)));
   }
   for (const route of ['/arizona-notary-exam/', '/arizona-notary-practice-test/', '/california/', '/hawaii/', '/new-york/', '/pennsylvania/', '/louisiana/', '/connecticut/', '/indiana/', '/north-carolina/', '/pricing/', '/login/', '/register/']) {

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { testLoader } from './pack-test-utils.mjs';
+import { browserRequest } from './browser-request.mjs';
 
 const base = process.env.STATE17_BASE || 'http://127.0.0.1:3481';
 const states = (process.env.VERIFY_STATES || 'AR,CO,IL,ME,MD,MO,MT,NE,NV,NJ,NM,OH,OR,UT,VT,WI,WY').split(',');
@@ -58,6 +59,7 @@ async function finishQuick(page, pack) {
 try {
   for (const width of widths) {
     const context = await browser.newContext({ viewport: { width, height: 900 }, extraHTTPHeaders: headers });
+    await context.addInitScript(() => sessionStorage.setItem('az_ops_acceptance', '1'));
     const page = await context.newPage();
     activePage = page;
     page.on('pageerror', error => errors.push({ width, message: error.message }));
@@ -103,21 +105,21 @@ try {
         await page.getByRole('heading', { name: /Wrong.answer notebook/i }).waitFor();
         await page.locator('.notice').filter({ hasText: /This practice ·/ }).waitFor({ timeout: 90000 });
         assert.match(await page.locator('.notice').filter({ hasText: /This practice ·/ }).innerText(), /7\/10/);
-        const progress = await (await context.request.get(base + '/api/progress/')).json();
+        const progress = await (await browserRequest(page, base + '/api/progress/')).json();
         const exam = progress.exams.find(exam => exam.id === sittingId && exam.mode === code.toLowerCase() + '-quick' && exam.total === 10 && exam.correctCount === 7);
         assert.ok(exam, `${code} guest sitting imported ${JSON.stringify({ sittingId, saved: progress.exams.find(exam => exam.id === sittingId) })}`);
         const before = progress.stats.filter(stat => ids.includes(stat.questionId)).reduce((sum, stat) => sum + stat.rightCount + stat.wrongCount, 0);
         await page.reload();
         await page.getByRole('heading', { name: /Wrong.answer notebook/i }).waitFor();
-        const after = await (await context.request.get(base + '/api/progress/')).json();
+        const after = await (await browserRequest(page, base + '/api/progress/')).json();
         assert.equal(after.exams.filter(item => item.id === exam.id).length, 1);
         assert.equal(after.stats.filter(stat => ids.includes(stat.questionId)).reduce((sum, stat) => sum + stat.rightCount + stat.wrongCount, 0), before);
-        const wrong = await (await context.request.get(base + '/api/mistakes/?state=' + code)).json();
+        const wrong = await (await browserRequest(page, base + '/api/mistakes/?state=' + code)).json();
         assert.equal(wrong.state, code);
         assert.equal(wrong.mistakes.every(stat => stat.state === code), true);
         assert.ok(wrong.mistakes.length >= 3);
         guestImport = true;
-        await context.request.post(base + '/api/auth/logout/');
+        await browserRequest(page, base + '/api/auth/logout/', { data: {} });
         await context.clearCookies();
       }
       await page.screenshot({ path: `${evidence}/${code}-${width}.png` });

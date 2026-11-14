@@ -14,9 +14,9 @@ Comprehensive Practice initially uses forty unique accessible questions with no 
 
 - [x] Inspect current workspace and freshly fetched production main, then create the isolated full-product branch.
 - [ ] Expand original state content in independent per-state files under data/full-states, preserving stable question IDs and official references. Use the FullStateLearning shape in lib/full-state-learning.ts.
-- [ ] Add content validation for unique scenarios, source references, topic coverage, 203 questions, 60/143 access, fifty independent cards, authored chapters and ten articles per state.
-- [ ] Replace the free-launch capability gates with complete shared routes and components. Add questions, study cards, pricing, article routes and source-correct internal links.
-- [ ] Connect authorized server bank reads, authoritative full-exam validation, account full counts, wrong answers, Daily Study and Tutor for all seventeen states.
+- [x] Add content validation for unique scenarios, source references, topic coverage, 203 questions, 60/143 access, fifty independent cards, authored chapters and ten articles per state.
+- [x] Replace the free-launch capability gates with complete shared routes and components. Add questions, study cards, pricing, article routes and source-correct internal links.
+- [x] Connect authorized server bank reads, authoritative full-exam validation, account full counts, wrong answers, Daily Study and Tutor for all seventeen states.
 - [ ] Reuse the shared Pro checkout and validate source-state attribution, quote idempotency, active/expired rights and existing webhook/account behavior.
 - [ ] Run structural, real-handler, file/PostgreSQL transaction and existing-state regressions. Build the production configuration.
 - [ ] Validate every state's complete product in preview across guest/free/active-Pro/expired identities and desktop/mobile viewports. Include guide read progress, cards, topic drills, full sitting, refresh, wrong answers, Tutor and checkout entry.

@@ -1,5 +1,6 @@
 "use client";
 
+import { mistakeReviewQuestions } from "@/lib/mistake-targets";
 import { clientStatePro } from '@/lib/state-pro';
 import { isFreeState } from '@/lib/free-state-catalog';
 
@@ -252,7 +253,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
     if (topic === "all") return true;
     const question = questionPool.find((item) => item.question_id === s.questionId);
     if (!topicPractice) return s.topic === topic;
-    return question?.study_topic === topic;
+    return question?.study_topic === topic || (isFreeState(stateCode) && s.chapter === topic);
   });
   const filtered = byTopic.filter((s) => {
     if (scopeIds && !scopeIds.includes(s.questionId)) return false;
@@ -296,12 +297,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
   }
 
   function begin() {
-    const byId = new Map(questionPool.map((question) => [question.question_id, question]));
-    const next = filtered.flatMap((stat) => {
-      const question = byId.get(stat.questionId);
-      return question && (stateCode !== "CT" || question.is_free || isPro) ? [question] : [];
-    });
-    setQueue(next);
+    setQueue(mistakeReviewQuestions(stateCode, questionPool, filtered, isPro));
   }
 
   async function importMistakes() {
@@ -368,7 +364,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         <button className="btn btn-ghost" type="button" onClick={() => { setQueue(null); load(); }}>
           Back
         </button>
-        <ExamRunner mode="weak" practice review preset={queue} isPro={stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode) ? isPro : topicPractice ? true : isPro} sittingMode={`review-${source}-${topic}${stateCode === "CT" ? `-${attemptId || "all"}` : ""}`} stateCode={stateCode} />
+        <ExamRunner mode="weak" practice review preset={queue} isPro={stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode) ? isPro : topicPractice ? true : isPro} sittingMode={`review-${source}-${topic}${stateCode === "CT" || (isFreeState(stateCode) && attemptId) ? `-${attemptId || "all"}` : ""}`} stateCode={stateCode} />
       </div>,
     );
   }
@@ -477,7 +473,10 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
       </p>
       {filtered.map((s) => {
         const q = questionPool.find((x) => x.question_id === s.questionId);
-        if (!q) return null;
+        if (!q) return isFreeState(stateCode) && !pack?.freeLaunch ? <article className="card" key={s.questionId} style={{ marginTop: 12 }}>
+          <h3>Pro question · {s.questionId}</h3><p>Your progress for this question is saved. Pro opens its question and explanation.</p>
+          <p>{s.wrongCount} missed · {s.rightCount} correct</p><Link className="btn btn-primary" href={site.pricing}>Open Pro access</Link>
+        </article> : null;
         return (
           <article className="card" key={s.questionId} style={{ marginTop: 12 }}>
             <span className="kicker">

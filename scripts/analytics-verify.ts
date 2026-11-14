@@ -323,7 +323,7 @@ else ok("分母为 0 时返回 N/A");
 
 function walk(dir: string, hit: string[]) {
   for (const name of readdirSync(dir)) {
-    if (name === "node_modules" || name === ".next" || name === ".worktrees") continue;
+    if (name === "node_modules" || name === ".next" || name === ".tools" || name === ".worktrees") continue;
     const full = path.join(dir, name);
     const st = statSync(full);
     if (st.isDirectory()) walk(full, hit);

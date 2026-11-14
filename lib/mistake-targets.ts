@@ -5,7 +5,8 @@ import { hiPaths } from "@/lib/hi-site";
 import { hiStudyTopics } from "@/lib/hi-topics";
 import { paths } from "@/lib/paths";
 import { packFor } from "@/lib/prep-pack";
-import type { StateCode } from "@/lib/types";
+import type { Question, StateCode } from "@/lib/types";
+import { isFreeState } from "@/lib/free-state-catalog";
 
 export type MistakeTarget = { href: string } | { reason: string; hidden?: boolean };
 
@@ -47,4 +48,14 @@ export function mistakeTargets(stateCode: StateCode, question: { topic: string; 
     study: { href: `${site.study}?chapter=${topic}#${topic}` },
     practice: { href: `${site.practice}?mode=practice&area=${topic}` },
   };
+}
+
+export function mistakeReviewQuestions(state: StateCode, pool: Question[], stats: { questionId: string }[], isPro: boolean) {
+  const byId = new Map(pool.map(question => [question.question_id, question]));
+  const questions = stats.flatMap(stat => {
+    const question = byId.get(stat.questionId);
+    const accessible = question && question.state === state && ((state !== 'CT' && !isFreeState(state)) || question.is_free || isPro);
+    return accessible ? [question] : [];
+  });
+  return isFreeState(state) ? questions.slice(0, 10) : questions;
 }

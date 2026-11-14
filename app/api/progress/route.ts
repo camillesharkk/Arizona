@@ -192,7 +192,7 @@ function toClientUser(user: UserRow, arizonaPro: boolean, planExpiresAt: string 
 
 function toClientStat(stat: QuestionStat) {
   const { userId: _owner, ...rest } = stat;
-  return rest;
+  return isFreeState(stat.state) ? { ...rest, chapter: questionById(stat.questionId)?.study_topic || stat.chapter } : rest;
 }
 
 function toClientExam(exam: ExamRow) {

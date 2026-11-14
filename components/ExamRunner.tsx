@@ -82,7 +82,7 @@ export function ExamRunner({
   focusArea?: string;
 }) {
   const baseModeKey = sittingMode || mode;
-  const modeKey = stateCode === "CT" && preset
+  const modeKey = (stateCode === "CT" || isFreeState(stateCode)) && preset
     ? `${baseModeKey}:${preset.map(question => question.question_id).join(",")}`
     : baseModeKey;
   const cloudSaved = useRef(false);
@@ -255,7 +255,7 @@ export function ExamRunner({
   }
 
   function persistSitting(patch: Partial<Sitting> = {}) {
-    if (viewOnly.current || (stateCode === "CT" && initializedScope.current !== modeKey)) return;
+    if (viewOnly.current || ((stateCode === "CT" || isFreeState(stateCode)) && initializedScope.current !== modeKey)) return;
     const sitting = currentSitting(patch);
     if (!sitting) return;
     try {
@@ -298,7 +298,7 @@ export function ExamRunner({
         let inBank: Question[] | undefined;
         if (stateCode === "IN" || isFreeState(stateCode)) {
           const bankUrl = stateCode === "IN" ? "/api/indiana/questions/" : `/api/state/questions/?state=${stateCode}`;
-          const response = await fetch(bankUrl, { signal: controller.signal, cache: "no-store" });
+          const response = await fetch(bankUrl, { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(30000)]), cache: "no-store" });
           if (!response.ok) throw new Error("questions");
           inBank = (await response.json()).questions;
           if (cancel) return;
@@ -516,12 +516,22 @@ export function ExamRunner({
     scrollUnderHeaderAfterLayout(idxChanged && !open ? headingRef.current : explain || headingRef.current);
   }, [idx, booted, done, q, explainOpen]);
 
+  if (done && restrictedResult && isFreeState(stateCode)) {
+    return <div className="grid"><div className="card result-summary">
+      <span className="kicker">Saved result</span><h2>{restrictedResult.correctIds.length} of {restrictedResult.questionIds.length} correct</h2>
+      <p>Your completed score and progress are saved. Pro opens the paid questions and explanations in this practice.</p>
+      <FreeStateResultNext code={stateCode} attemptId={restrictedResult.id} />
+    </div></div>;
+  }
+
+
   if (!booted) {
     if (bootError) {
       return (
         <div className="card">
-          <p className="form-error" role="alert">Could not load this practice set.{stateCode === "IN" && bootMessage ? ` ${bootMessage}` : ""}</p>
+          <p className="form-error" role="alert">Could not load this practice set.{(stateCode === "IN" || (isFreeState(stateCode) && bootMessage.startsWith("Pro access"))) && bootMessage ? ` ${bootMessage}` : ""}</p>
           <button className="btn btn-primary" type="button" onClick={() => setBootTry((n) => n + 1)}>Retry</button>
+          {isFreeState(stateCode) && bootMessage.startsWith("Pro access") ? <Link className="btn btn-ghost" href={site.pricing}>Open Pro access</Link> : null}
         </div>
       );
     }
@@ -751,13 +761,6 @@ export function ExamRunner({
     }
   }
 
-  if (done && restrictedResult && isFreeState(stateCode)) {
-    return <div className="grid"><div className="card result-summary">
-      <span className="kicker">Saved result</span><h2>{restrictedResult.correctIds.length} of {restrictedResult.questionIds.length} correct</h2>
-      <p>Your completed score and progress are saved. Pro opens the paid questions and explanations in this practice.</p>
-      <FreeStateResultNext code={stateCode} attemptId={restrictedResult.id} />
-    </div></div>;
-  }
 
   if (done) {
     const results = questions.map((item) => ({

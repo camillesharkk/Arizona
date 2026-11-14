@@ -17,7 +17,7 @@ export function savedReviewStat(
     questionId: question.question_id,
     topic: question.topic,
     bank: isFreeState(question.state) ? `${question.state.toLowerCase()}-notary-practice` : question.state === "CA" ? "california-notary-exam" : question.state === "HI" ? "hawaii-notary-exam" : question.state === "NY" ? "new-york-notary-exam" : question.state === "PA" ? "pennsylvania-notary-exam" : question.state === "NC" ? "north-carolina-notary-practice" : question.state === "IN" ? "indiana-notary-exam" : question.state === "CT" ? "connecticut-notary-exam" : question.state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam",
-    chapter: question.state === "IN" ? question.study_topic || question.topic : question.topic,
+    chapter: question.state === "IN" || isFreeState(question.state) ? question.study_topic || question.topic : question.topic,
     state: question.state,
     firstCorrect: null,
     lastCorrect: null,
@@ -41,6 +41,7 @@ export function savedReviewStat(
   if (input.save) {
     return {
       ...base,
+      chapter: isFreeState(question.state) ? question.study_topic || question.topic : base.chapter,
       userId: input.userId,
       savedForReview: true,
       nextReviewAt: base.nextReviewAt || scheduleReview(input.now, base.reviewStage || 0, timeZone),
@@ -50,6 +51,7 @@ export function savedReviewStat(
   const manualOnly = base.wrongCount <= 0;
   return {
     ...base,
+    chapter: isFreeState(question.state) ? question.study_topic || question.topic : base.chapter,
     userId: input.userId,
     savedForReview: false,
     nextReviewAt: manualOnly ? null : base.nextReviewAt,

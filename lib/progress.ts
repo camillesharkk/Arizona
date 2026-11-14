@@ -100,7 +100,7 @@ export async function recordQuestionAnswer(opts: {
     questionId: opts.questionId,
     topic: q.topic,
     bank: isFreeState(state) ? `${state.toLowerCase()}-notary-practice` : state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : state === "NY" ? "new-york-notary-exam" : state === "PA" ? "pennsylvania-notary-exam" : state === "NC" ? "north-carolina-notary-practice" : state === "IN" ? "indiana-notary-exam" : state === "CT" ? "connecticut-notary-exam" : state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam",
-    chapter: q.state === "IN" ? q.study_topic || q.topic : q.topic,
+    chapter: q.state === "IN" || isFreeState(q.state) ? q.study_topic || q.topic : q.topic,
     state,
     firstCorrect: prev?.firstCorrect ?? opts.correct,
     lastCorrect: opts.correct,

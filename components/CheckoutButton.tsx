@@ -1,6 +1,8 @@
 "use client";
 
 import type { StateCode } from "@/lib/types";
+import { isFreeState } from '@/lib/free-state-catalog';
+import { prepNavigation } from '@/lib/prep-navigation';
 
 import { fetchAccount } from "@/lib/client-account";
 
@@ -63,6 +65,9 @@ function formatRemaining(ms: number) {
 }
 
 export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_60d", sourceState }: { belowCta?: ReactNode; ctaLabel?: string; productCode?: "az_exam_pro_60d"; sourceState?: StateCode }) {
+  const returnPath = isFreeState(sourceState) ? prepNavigation[sourceState].paths.pricing : null;
+  const registerHref = returnPath ? `${paths.register}?next=${encodeURIComponent(returnPath)}` : paths.register;
+  const loginHref = returnPath ? `${paths.login}?next=${encodeURIComponent(returnPath)}` : paths.login;
   const [preview, setPreview] = useState<Preview | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [applyCredit, setApplyCredit] = useState(false);
@@ -334,7 +339,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
       )}
 
       {isGuest ? (
-        <Link className="btn btn-primary pricing-cta" href={paths.register}>
+        <Link className="btn btn-primary pricing-cta" href={registerHref}>
           {ctaLabel || "Create Free Account to Unlock Offer"}
         </Link>
       ) : (
@@ -358,14 +363,14 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
           {signedIn !== true && (
             <>
               {" "}
-              <Link href={paths.login}>Sign in</Link>
+              <Link href={loginHref}>Sign in</Link>
             </>
           )}
         </p>
       )}
       {isGuest && (
         <p className="notice">
-          <Link href={paths.register}>Create an account</Link> or <Link href={paths.login}>sign in</Link> to apply New
+          <Link href={registerHref}>Create an account</Link> or <Link href={loginHref}>sign in</Link> to apply New
           Member or Referral pricing.
         </p>
       )}

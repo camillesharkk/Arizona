@@ -70,7 +70,7 @@ export default async function Page({ params, searchParams }: {
   if (section === 'practice') return <main className="wrap hero"><h1>{state[1]} Notary Practice</h1>
     <p>Quick 10 gives ten free original questions with explanations and official sources.</p>
     {full ? <><p>{counts.published} published questions · {counts.free} free · {counts.pro} Pro</p><p>{pack.fullDetail}</p>
-      <div className="tool-row"><Link href={site.study}>Study Guide</Link><Link href={site.studyCards}>Study Cards</Link><Link href={site.pricing}>60-Day Pro</Link></div></> : null}
+      <div className="tool-row"><Link className="chip" href={site.study}>Study Guide</Link><Link className="chip" href={site.studyCards}>Study Cards</Link><Link className="chip" href={site.pricing}>60-Day Pro</Link></div></> : null}
     <Suspense fallback={<p role="status">Loading practice…</p>}><PracticeLaunch key={code} stateCode={code} /></Suspense>
   </main>;
   if (section === 'wrong-answers') {

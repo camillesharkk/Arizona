@@ -1,3 +1,4 @@
+import { LIVE_STATES } from "@/lib/ca-site";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession, setSessionCookie } from "@/lib/session";
@@ -15,7 +16,7 @@ import { getPaddleCheckoutConfig, isPaddleProvider, isPositiveCents } from "@/li
 
 const postSchema = z.object({
   quoteId: z.string().uuid(),
-  sourceState: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY"]).optional(),
+  sourceState: z.enum(LIVE_STATES).optional(),
 });
 
 export async function POST(req: Request) {

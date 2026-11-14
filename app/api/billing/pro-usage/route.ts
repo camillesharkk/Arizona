@@ -1,3 +1,4 @@
+import { LIVE_STATES } from "@/lib/ca-site";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
@@ -5,7 +6,7 @@ import { recordProUsage } from "@/lib/commerce/usage";
 import { productionStateBlocked } from "@/lib/state-release";
 
 const schema = z.object({
-  state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"]).optional(),
+  state: z.enum(LIVE_STATES).optional(),
   featureCode: z.enum([
     "pro_question",
     "full_exam_extra",

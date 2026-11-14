@@ -159,6 +159,776 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       ]
     }
   },
+  "CO": {
+    "commission": {
+      "summary": "Align Colorado eligibility, timely approved training, the state examination and complete online application evidence.",
+      "sections": [
+        {
+          "heading": "Qualify and document the application",
+          "body": "The applying FAQ requires the listed age, lawful-presence, Colorado-connection, English-literacy and character conditions. Residence or a Colorado place of employment or practice supplies the state connection. Rule 2.1 requires legal-name consistency, online filing, approved training and the Secretary's examination. The notarized affirmation, acceptable application ID and separate training and examination certificates support the filing. Application identification requirements serve a different purpose from identifying a customer for a notarial act."
+        },
+        {
+          "heading": "Keep time windows distinct",
+          "body": "New training and examination occur within ninety days before application. Renewal training and examination have their own ninety-day window. Rule 1.9 classifies certain expired commissions as new applicants for the rules, while the portal FAQ directs former Colorado notaries through the renewal filing route. A rejected application must be corrected and approved within ninety days of payment. State approval begins the four-year term, and required supplies must be ready before acts are performed."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — a returning office worker",
+        "body": "A former Colorado notary returns to administrative work after a lengthy lapse. The worker follows the portal's returning-notary renewal instructions and meets the applicable new-applicant training classification under Rule 1.9. Current training and exam certificates, the notarized affirmation and ID are prepared before filing. Possession of the old stamp does not restore the expired office."
+      },
+      "keyFacts": [
+        "Approved training and state examination are separate evidence.",
+        "The ordinary completion window is ninety days before filing.",
+        "A receipt is distinct from approval and active authority."
+      ]
+    },
+    "identification": {
+      "summary": "Choose the identity and communication route that matches the actual Colorado appointment, including qualifying witnesses and interpreters.",
+      "sections": [
+        {
+          "heading": "Ordinary evidence and witnesses",
+          "body": "The powers FAQ describes ordinary government ID that is current or expired one year or less and contains a photograph or signature. The credible-witness route requires a personally appearing witness who personally knows the signer and provides the sworn written verification. The notary either knows the witness or identifies the witness through sufficient ID. Record the actual identity method. Remote identification follows separate conditions and should not be assembled from whichever ordinary rules seem convenient."
+        },
+        {
+          "heading": "Communication and interpreter safeguards",
+          "body": "Rule 2.3 requires mutual understanding between signer and notary. The interpreter FAQ requires a human interpreter, in-room presence for paper and in-person electronic acts, and approved-platform audio-video presence for remote acts. Specialized deaf, hard-of-hearing and deafblind interpretation uses the stated accepted credentials. Review transaction and family interests and record required interpreter details. Identity evidence does not independently establish understanding or free participation."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — an interpreted appointment",
+        "body": "A customer brings a real-estate agent as interpreter for a record naming and benefiting that agent. The language skill does not remove the FAQ's interpreter-interest restriction. Arrange a qualifying human interpreter through the proper presence method, establish the customer's identity and voluntary participation, and record interpreter details before completing a truthful certificate."
+      },
+      "keyFacts": [
+        "Ordinary ID and RON identification have different conditions.",
+        "A credible witness personally knows the signer.",
+        "Interpreter presence, interests and credentials require separate checks."
+      ]
+    },
+    "acknowledgments": {
+      "summary": "Match Colorado certificate wording to the actual act, participation, document condition and officer's impartiality.",
+      "sections": [
+        {
+          "heading": "Distinguish the acts",
+          "body": "An acknowledgment permits the appearing identified signer to acknowledge an earlier signature. Signature witnessing requires the notary to watch execution. A verification requires the actual signing and oath or affirmation described by the certificate. A journal signature cannot supply a missing document signature. Read each certificate field to distinguish the notary from the appearing signer, and complete the required English certificate with the true venue and date."
+        },
+        {
+          "heading": "Screen the record and conflicts",
+          "body": "The powers FAQ prohibits pre- and post-dating and assigns document changes to the signer and certificate corrections to the notary. Resolve unfilled blanks using the stated signer-completion process. An undated document without a date blank can be distinguished in the journal. Screen self and specified-relative interests and the special copy-certification exclusions for Colorado public-custodian records. An admonishment identifies incorrect practice that should be reviewed and corrected, and repeated warnings may prompt investigation."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — a faxed earlier signature",
+        "body": "A Colorado customer appears with a fax bearing their earlier signature. The FAQ permits an acknowledgment of that signature under the appearance conditions. The notary identifies the customer, takes the actual acknowledgment and dates the certificate for today's act. The notary does not claim to have witnessed the earlier original signing."
+      },
+      "keyFacts": [
+        "Acknowledgment and witnessing have different execution requirements.",
+        "Certificate date and venue describe the actual act.",
+        "A party or qualifying relative interest can disqualify the notary."
+      ]
+    },
+    "journals": {
+      "summary": "Make complete contemporary Colorado records, apply the employer-record exception precisely and preserve completed journals through an allowed route.",
+      "sections": [
+        {
+          "heading": "Record the actual act and people",
+          "body": "The stamps-and-journals FAQ requires journal recording at the act, including date and time, act and document description, participant names and addresses, signatures, identity method and fee. Multiple signers receive separate entries even when a simultaneous appearance shares a certificate. Oral oaths are included. Interpreter and remote-provider information belong in applicable entries. The employer-record exception depends on the retained record containing every required element."
+        },
+        {
+          "heading": "Choose and report continuing custody",
+          "body": "Completed journals may follow personal ten-year retention, State Archives or the permitted employer-custody arrangement with required notice. Rule 4.1 requires the employer-disposition form within thirty days and a copy to the employer. Custody carries security, lawful-copy, state-audit, peace-officer and loss-notification responsibilities. The FAQ requires reporting a discovered journal or stamp loss within thirty days. Remote acts additionally use a compliant tamper-evident electronic journal unless the statutory exception applies."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — a firm retains records",
+        "body": "A Colorado firm keeps document copies but omits the witnesses' addresses and identity details. Those copies do not satisfy the complete-information exception. The notary maintains full entries. Later, if a completed journal is properly left with the employer, the notary files the disposition notice and provides its copy, and the employer assumes the stated custodial duties."
+      },
+      "keyFacts": [
+        "Journal timing is contemporaneous with the act.",
+        "Separate signer entries remain necessary.",
+        "Employer retention has specific content, notice and custody conditions."
+      ]
+    },
+    "seals-fees": {
+      "summary": "Use accurate Colorado equipment and apply current fee caps together with disclosure, documentation and role-specific exceptions.",
+      "sections": [
+        {
+          "heading": "Official stamp and signature",
+          "body": "Colorado requires a rectangular ink stamp with a rectangular border. The border may be plain or decorative and contains the exact commissioned name, required office and state wording, ID and expiration. No other information belongs inside. The FAQ specifies no particular stamp size or ink color but rejects embossers. Keep the certificate legible, use the official signature on record and render obsolete stamps unusable on renewal or resignation."
+        },
+        {
+          "heading": "Charge and disclose the actual service",
+          "body": "The current FAQ lists a $15 ordinary per-document maximum and $25 electronic or remote maximum. Required identity, applicable oath and official completion are included in the ordinary service. Additional service charges require the stated advance information and written itemization. Apply the narrow title-company employee exception to the correct role. Contractors document their own charges. Entirely free services and zero notarial prices with associated charges have distinct FAQ treatment."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — a mobile invoice",
+        "body": "A Colorado mobile notary quotes the ordinary notarial amount and a separately identified travel service before acting. The written record clearly identifies the notary's actual charges and is supplied to the signer. Scheduling through a website does not turn the paper act into an electronic act. The notary uses the ordinary cap and a current compliant stamp."
+      },
+      "keyFacts": [
+        "The official stamp is rectangular ink with required content only.",
+        "Current listed caps are $15 ordinary and $25 electronic/remote.",
+        "Advance charge information and written documentation are separate requirements."
+      ]
+    },
+    "electronic-ron": {
+      "summary": "Maintain Colorado's separate electronic and remote authorizations, approved technology, identity process and continuing evidence.",
+      "sections": [
+        {
+          "heading": "Approval and the actual method",
+          "body": "Rule 2.2 addresses in-person electronic approval and unique Document Authentication Numbers. Secure DANs against others' use and verify the signer's adoption of the electronic signature. RON follows separate active-status, training, examination and approval requirements under Rule 5.2.1. Use an approved provider and keep at least one on record. Remote renewal has its own timely training, exam and fee. A provider subscription does not supply public authorization."
+        },
+        {
+          "heading": "Remote participation and safeguards",
+          "body": "The notary remains physically in Colorado. A signer outside the US triggers the stated US-connection and no-actual-known-prohibition conditions. Screen electoral-process exclusions and special will restrictions. Obtain express recording/storage consent and record the entire live interaction for secure ten-year storage. Complete the required identity route and certificate, including interpreter details where applicable. Rule 5.4 prohibits the listed use of remote personal data for additional business or marketing, even with consent."
+        }
+      ],
+      "example": {
+        "heading": "Worked example — an overseas property owner",
+        "body": "A signer abroad wants a Colorado remote act involving US property. The approved notary remains in Colorado, checks the outside-US conditions, obtains express consent after recording/storage disclosure and conducts the full approved live identity and signing process. The certificate states audio-video use and the electronic journal identifies the provider. The property connection does not remove the other conditions."
+      },
+      "keyFacts": [
+        "RON requires separate state approval and approved providers.",
+        "The notary stays physically in Colorado.",
+        "Recording retention and electronic journal requirements are distinct."
+      ]
+    }
+  },
+  "IL": {
+    "commission": {
+      "summary": "Illinois ordinary first applicants complete certified education and the provider's final before applying. Keep education, filing and active authority distinct.",
+      "sections": [
+        {
+          "heading": "Complete the appropriate certified course",
+          "body": "The approved course contains at least 180 instructional minutes. Its final has 50 randomized questions from a bank of at least 100, with no more than half true-or-false and a passing score of at least 85%. Retests use different questions. Three failed finals constitute course failure. Apply within two years after passing. A traditional-only course may carry a disclosure that it does not satisfy electronic education."
+        },
+        {
+          "heading": "File and maintain effective authority",
+          "body": "Residents ordinarily apply online with the specified identification, certificate and bond records. Approved hardship cases may use paper, and qualifying nonresidents use the nonresident paper route. The ordinary bond is $5,000. Remote/electronic work requires the applicable additional coverage. Approval and the official seal precede acting. Resident terms generally last four years and qualifying nonresident terms one year."
+        },
+        {
+          "heading": "Read renewal exceptions and conflicting windows carefully",
+          "body": "The 2025 rule provides a documented education/exam exception for specified qualifying renewal applicants associated with the legal profession or courts. It is not a blanket first-applicant exception. Online instructions advertise renewal 90 days before expiration, while published Rule 176.350 says 60 days. Confirm the current filing opportunity through the official portal or office. A pending renewal does not extend expired authority."
+        }
+      ],
+      "example": {
+        "heading": "A paralegal's first commission",
+        "body": "A newly hired paralegal has never been commissioned. The law-office employment does not itself establish the renewal-only education exemption. The applicant completes a qualifying certified course and final, then files the resident application with the required documents and waits for approval before obtaining the official seal."
+      },
+      "keyFacts": [
+        "At least 180 instructional minutes describes the course, not a verified uniform examination clock.",
+        "The final has 50 randomized questions and requires at least 85%.",
+        "A qualifying renewal exemption requires the prescribed signed statement.",
+        "The official materials contain a disclosed 60/90-day renewal-window discrepancy.",
+        "Expiration ends authority without a grace period."
+      ]
+    },
+    "identification": {
+      "summary": "Illinois requires an authorized identity basis for the person appearing. Appearance, identification and comprehension each need attention.",
+      "sections": [
+        {
+          "heading": "Select a statutory identity method",
+          "body": "For an ordinary act, identity may be established through personal knowledge, the oath or affirmation of a credible witness personally known to the notary, or qualifying documentary identification. A document must be valid at the act, issued by a qualifying state agency, federal agency or consulate, and bear a facial photograph and the person's signature. A printed transaction name or unsworn introduction does not supply these methods."
+        },
+        {
+          "heading": "Adapt the lawful procedure to the person",
+          "body": "A principal physically unable to sign may direct a person other than the notary to sign under Rule 176.610. Both persons appear and are identified, and the required direction statement is placed near the signature. Before taking a blind person's acknowledgment, the notary reads the instrument. For a person who does not speak or understand English, the nature and effect must be translated into an understood language."
+        }
+      ],
+      "example": {
+        "heading": "A client accompanied by a caregiver",
+        "body": "A client cannot physically sign and directs a caregiver to sign. The notary identifies both appearing people under the applicable act's identity rules and records the direction statement near the signature. A caregiver arriving alone with the client's license would not satisfy the principal's required appearance."
+      },
+      "keyFacts": [
+        "Ordinary documentary ID requires both photograph and signature.",
+        "The ordinary credible-witness statutory route requires a personally known witness and an oath or affirmation.",
+        "Identity documents do not replace personal appearance.",
+        "Rule 176.610 requires both the principal and directed signer.",
+        "Illinois expressly permits refusal without further explanation."
+      ]
+    },
+    "jurats": {
+      "summary": "Match the actual ceremony to its certificate. Illinois distinguishes acknowledgment, verification upon oath or affirmation, and signature witnessing.",
+      "sections": [
+        {
+          "heading": "Perform the requested ceremony accurately",
+          "body": "For acknowledgment, the identified person appears and declares execution for the instrument's purpose. A prior signature may be acknowledged. A representative also declares proper authority and execution as the represented party's act. The verification practice note requires appearance, signing before the notary and an actual oath or affirmation of truth. Signature witnessing requires signing before the notary, with no oath necessary for that form."
+        },
+        {
+          "heading": "Complete and connect the certificate",
+          "body": "The certificate is signed and dated, identifies the act's jurisdiction and bears the official seal. Its facts describe the actual act. A separate paper certificate is permanently attached in a tamper-evident manner, such as staples. Tape, paper clips and binder clips are excluded. A preferred signature that is not legible or recognizable is accompanied by the legibly printed name immediately adjacent. The official stamp impression is clear, legible and black."
+        }
+      ],
+      "example": {
+        "heading": "Two documents at one appointment",
+        "body": "A tenant brings a previously signed lease for acknowledgment and an unsigned sworn statement for verification. The tenant may acknowledge the earlier lease signature. For the sworn statement, the notary administers the oath or affirmation and observes signing. Each certificate records its own actual ceremony and date."
+      },
+      "keyFacts": [
+        "Acknowledgment can concern a prior signature after required appearance and declaration.",
+        "Verification requires the actual oath or affirmation.",
+        "Signature witnessing requires the observed signing.",
+        "Use the actual act date and jurisdiction.",
+        "The ordinary notarial fee ceiling is $5 and the electronic act ceiling is $25."
+      ]
+    },
+    "journals": {
+      "summary": "Contemporaneous journal recording is the default. Illinois has specific law-firm and candidate nomination-document exceptions that must remain visible.",
+      "sections": [
+        {
+          "heading": "Identify the default and actual exception",
+          "body": "Record each nonexempt act at notarization. A notary employed by an attorney or law firm has the specific employment-act exception when the employer maintains copies. Journals solely of those employment notarizations belong to the employing attorney or firm, and the rule preserves attorney-client privilege. Specified candidate nomination documents also have a journal exemption. An unrelated commercial instrument does not qualify merely because its signer is a candidate."
+        },
+        {
+          "heading": "Preserve usable records without prohibited identifiers",
+          "body": "Entries identify the principal, relied-on witnesses and directed signer, document, date, method, fee and physical locations. Do not record prohibited identification numbers, biometrics or electronic signatures of principals and witnesses. Use compliant binding and preprinted numbering for tangible journals, secure recoverable electronic records where used, and ordinary exclusive notary custody. Tangible journals ordinarily remain for seven years after the final recorded act, with the stated governmental-employment retention exception."
+        }
+      ],
+      "example": {
+        "heading": "Law-office and private work",
+        "body": "A firm's employed notary notarizes a retained-copy client instrument during work and later performs a neighbor's private act. The first may fit the law-firm exception. The private act needs the normal journal entry. A journal solely of firm employment acts has the special ownership treatment, so the notary should not collapse both situations into a universal employer-custody rule."
+      },
+      "keyFacts": [
+        "The law-firm exception depends on employment acts and retained document copies.",
+        "Specified candidate nomination papers have the separate journal exemption.",
+        "Government ID numbers and biometric identifiers are prohibited journal entries.",
+        "Record no charge explicitly and itemize clerical charges separately.",
+        "Notify the Secretary within 10 business days after discovering a lost, stolen or compromised journal."
+      ]
+    },
+    "prohibited-acts": {
+      "summary": "The commission authorizes defined notarial acts. It does not remove conflicts, authorize blank certificates or grant general legal-practice authority.",
+      "sections": [
+        {
+          "heading": "Screen the transaction before signing",
+          "body": "Do not notarize your own signature, including a corporate signature. Do not acknowledge an instrument in which your name appears as a transaction party. Do not sign blank affidavits or acknowledgment certificates, act during suspension or revocation, or change a written instrument after anyone has signed it. A regular commission does not permit representing yourself as an electronic notary without that separate commission."
+        },
+        {
+          "heading": "Keep services, advertising and records within authority",
+          "body": "The Act restricts preparing legal instruments and explaining or certifying contents, while preserving its stated attorney-notary provisions. Covered non-English advertising requires the prescribed bilingual nonattorney notice, posting and signed acknowledgment procedures. Itemize charged services and keep records. Protect notarial records from unauthorized third-party disclosure or commercial sale. The limited redacted-line-item request procedure does not make the entire journal a marketing resource."
+        }
+      ],
+      "example": {
+        "heading": "A real-estate office request",
+        "body": "A supervisor asks the notary to edit a signed deed, sign several blank acknowledgments for the next week and lend the stamp during vacation. Each request crosses a separate Illinois limit. The notary preserves the instrument, refuses advance certification and keeps the seal secure while performing only properly presented lawful acts."
+      },
+      "keyFacts": [
+        "Self-notarization remains prohibited in corporate capacity.",
+        "Being named as a party bars acknowledgment of that instrument.",
+        "Do not sign blank certificates or alter signed instruments.",
+        "A private waiver does not expand legal-drafting authority.",
+        "Covered non-English advertising has specific notice and record duties."
+      ]
+    },
+    "electronic-ron": {
+      "summary": "Illinois remote paper acts and electronic acts follow distinct statutory routes. Electronic authority, identity technology and record retention must match the procedure.",
+      "sections": [
+        {
+          "heading": "Classify and authorize the act",
+          "body": "Remote paper work falls under §6-102.5 and related rules. Electronic notarization falls under Article VI-A and requires the electronic commission and approved system. The electronic notary is physically in Illinois and uses the actual Illinois jurisdiction as venue. Electronic principals abroad need the statutory United States filing, matter, property or transaction connection. Required audio-video communication is live and simultaneous."
+        },
+        {
+          "heading": "Secure identity and the electronic record",
+          "body": "For the electronic statutory documentary route, remote credential presentation is combined with credential analysis and dynamic KBA. KBA has at least five questions with five choices each, at least 80% correct and a two-minute limit, with restricted retakes. The notary cannot see or record the KBA questions or answers. Inform participants of recording and retain the electronic recording at least seven years even if the act is not completed. Keep electronic seal access exclusive and report compromise to the specified recipients by the next business day."
+        },
+        {
+          "heading": "Follow paper remote transmission rules",
+          "body": "For the paper remote procedure, the signer sends the entire legible signed document directly to the notary by no later than the next day. The notary signs and returns the transmitted copy within 24 hours after receipt. The certificate discloses audio-video use. Rule 176.720 requires restarting the act after the link breaks, a participant exits or the procedure is compromised."
+        }
+      ],
+      "example": {
+        "heading": "A remote session interrupted at signing",
+        "body": "During a paper remote act the video link disconnects. The notary restarts the procedure from the beginning, including identity, after a compliant connection is established. The signer then sends the entire signed instrument within the statutory next-day limit, and the notary performs the required return step and remote certificate statement."
+      },
+      "keyFacts": [
+        "An electronic commission and approved system are required for electronic acts.",
+        "The electronic notary must physically be in Illinois.",
+        "Electronic audio-video recordings remain at least seven years even after noncompletion.",
+        "KBA identity metrics differ from the commissioning examination.",
+        "A compromised electronic seal triggers next-business-day reporting."
+      ]
+    }
+  },
+  "ME": {
+    "commission": {
+      "summary": "Maine qualification combines statutory eligibility, the required examination, appointment and a Dedimus Justice oath. Renewal has its own online and original-document steps.",
+      "sections": [
+        {
+          "heading": "Establish eligibility and examination completion",
+          "body": "Applicants are at least 18, can read and write English and have Maine residence or a place of employment or practice in Maine. They must meet the statutory disqualification and examination requirements. Section 1923 requires the examination for an applicant without a current Maine commission and provides a course covering laws, rules, procedures and ethics. Current first-examination count, duration and percentage were not verified."
+        },
+        {
+          "heading": "Finish appointment and track renewal",
+          "body": "Use the most recent first-application form and deliver it with the required fee under the official instructions. After appointment, take the oath or authorized affirmation before a Dedimus Justice within 30 calendar days and return the qualification certificate within 45 calendar days. Terms last seven years. Renewal uses Total Notary Solution from 45 days before through 90 days after expiration, with the required examination, printing, Dedimus oath and original-document return."
+        },
+        {
+          "heading": "Keep the state record current",
+          "body": "Notify the Secretary within 30 calendar days of changes in submitted information, including the additional Change of Signature form for a name change. The official course places Maine acts within Maine and assigns the commission, stamp and journal to the notary even when an employer paid. Marriage officiating has been a separate office since July 1, 2023. An active notary commission alone does not establish that separate authority."
+        }
+      ],
+      "example": {
+        "heading": "Payment followed by qualification",
+        "body": "An applicant pays the fee and receives a Certificate of Qualification. The applicant schedules the Dedimus oath within the 30-day limit and returns the completed certificate within 45 days. Paying or obtaining a stamp does not eliminate these steps. The applicant waits until the required qualification and commission process is complete before serving customers."
+      },
+      "keyFacts": [
+        "Minimum age is 18 with a Maine residence/work/practice connection.",
+        "The commission term is seven years.",
+        "Track the 30-day oath and 45-day certificate-return deadlines separately.",
+        "Online renewal payment is followed by printed original-document and oath steps.",
+        "Current first-exam count, clock and passing percentage remain unverified."
+      ]
+    },
+    "identification": {
+      "summary": "Identify the actual appearing person, assess voluntary participation and perform the ceremony recorded in the certificate.",
+      "sections": [
+        {
+          "heading": "Use the Maine identity methods",
+          "body": "Personal knowledge comes from dealings sufficient to provide reasonable certainty. The statutory documentary categories include passports, driver's licenses, government nondriver cards and other satisfactory government identification containing signature or photograph. A credible witness personally appears and gives sworn or affirmed verification, with the witness known to the officer or identified through the listed credentials. Additional information may be required to assure identity."
+        },
+        {
+          "heading": "Match participation and ceremony",
+          "body": "The officer may refuse when not satisfied about competence/capacity or knowing voluntary signing, subject to other law. A physically disabled principal unable to sign may direct an individual other than the officer to sign, with the required notation. The official course permits acknowledgment of a prior signature after appearance and declaration. Verification and signature witnessing require signing before the officer, including signing again if already signed under those course procedures."
+        },
+        {
+          "heading": "Execute the truthful certificate",
+          "body": "Every act has a certificate with actual date, jurisdiction, officer title, official signature, legible name and the notary public's commission expiration. A notary signs in the manner on file with the Secretary. The act precedes signing the certificate, and the certificate is securely attached or properly associated with its record. If the record lacks a certificate, the signer chooses the act with examples or recipient guidance as needed."
+        }
+      ],
+      "example": {
+        "heading": "A hesitant signer and companion",
+        "body": "A customer presents a qualifying credential while a companion pressures the customer to sign. The credential supports identity, but it does not establish voluntary action. The notary separately evaluates knowing and voluntary signing and may refuse if unsatisfied. Any completed certificate must reflect the act actually performed."
+      },
+      "keyFacts": [
+        "The alternative government-ID category uses signature or photograph.",
+        "The witness method requires actual oath/affirmation verification.",
+        "An officer may ask for additional identity assurance.",
+        "Section 1909 excludes the officer as directed third-person signer.",
+        "A stamp alone does not replace the required certificate."
+      ]
+    },
+    "copy-certification": {
+      "summary": "Maine permits accurate-copy acts while excluding the public and vital records described in the official course. Accuracy and eligibility must both be established.",
+      "sections": [
+        {
+          "heading": "Screen the record and source",
+          "body": "The officer determines that a certified copy is full, true and accurate. The official course excludes public records, vital records and publicly recorded documents available as certified copies from an official source. It also excludes records stating on their face that copying is illegal. Identify the custodian if not personally known and inspect the eligible original before making, witnessing or carefully comparing the reproduction."
+        },
+        {
+          "heading": "Document the limited accuracy determination",
+          "body": "The copy certificate describes the actual reproduction method. It does not guarantee the original record's authenticity, contents or legal effects. Missing pages, cropped terms, unreadable passages and omitted reverse-side content prevent a statement that the full record was accurately reproduced. Complete and sign the certificate and securely attach it to the copy. The course describes stapling that would show removal."
+        },
+        {
+          "heading": "Handle electronic sources and foreign use distinctly",
+          "body": "Section 1904(2) permits certification of an accurate tangible copy of an electronic record. Section 1921(3) allows a register of deeds to accept a qualifying certified tangible copy under its stated original-record provision. Apostilles and authentications are separate Secretary-issued certifications of official authority described in the course. A notarial copy certificate does not itself issue an apostille."
+        }
+      ],
+      "example": {
+        "heading": "A private agreement with an omitted exhibit",
+        "body": "A custodian presents an eligible original private agreement and a copy missing the exhibit. The notary cannot certify that incomplete copy as full and accurate. After the complete reproduction is prepared and checked, the notary uses truthful certificate wording describing the actual method and securely attaches it."
+      },
+      "keyFacts": [
+        "Certify a full, true and accurate reproduction.",
+        "Public/vital-record exclusions remain even when the copy is accurate.",
+        "Do not certify a record with the stated facial copying prohibition.",
+        "Copy certification does not guarantee source authenticity or legal effects.",
+        "A Secretary-issued apostille is a separate authority certification."
+      ]
+    },
+    "journals": {
+      "summary": "Electronic and remote acts require journals. Traditional in-person paper journaling is permitted and strongly recommended, with format and retention duties once maintained.",
+      "sections": [
+        {
+          "heading": "Apply scope and format by the actual act",
+          "body": "Section 1920 requires journals for all electronic and remote notarizations. The statute allows one active journal for tangible-record acts and one or more for electronic-record acts. A tangible journal is a permanent bound register with numbered pages. An electronic journal is permanent and tamper-evident under applicable rules. A remote act on paper still falls within the remote journal requirement."
+        },
+        {
+          "heading": "Record the transaction as it occurs",
+          "body": "The contemporaneous entry includes date/time, record description and act type, full name/address, identity basis and fee if any. State when identity rests on personal knowledge. For satisfactory evidence, briefly describe the method and credential including issuance and expiration dates. A recording does not replace these journal duties, and a monthly reconstruction does not satisfy contemporaneous entry timing."
+        },
+        {
+          "heading": "Retain and dispose under the statute",
+          "body": "Retain the journal ten years after its last chronicled act. Promptly report loss or theft to the Secretary. On resignation, revocation or suspension, retain it and inform the Secretary of location, or use the permitted transfer to the Secretary or approved repository. Following death or adjudicated incompetency, the responsible representative, guardian or knowing possessor has the specified transmission duty."
+        }
+      ],
+      "example": {
+        "heading": "Retiring with a recently used volume",
+        "body": "A notary retires with a volume opened twelve years ago but last used this year. The last act controls the ten-year retention period. The notary reports the journal's location or uses the authorized transfer alternative, preserving the record independently of the end of employment."
+      },
+      "keyFacts": [
+        "All electronic and remote acts require a journal.",
+        "Tangible-record acts use one active journal at a time.",
+        "Record entries contemporaneously.",
+        "Retention runs ten years from the last act in the journal.",
+        "An approved repository can satisfy the statutory alternative disposition."
+      ]
+    },
+    "prohibited-acts": {
+      "summary": "Maine's conflict rules cover both the person served and the interests in the record. Advertising, service fees and original-document access have separate limits.",
+      "sections": [
+        {
+          "heading": "Screen family, corporate and petition relationships",
+          "body": "Do not act for the listed family members, including spouse/domestic partner, parent, sibling, child, in-law, step or half relatives. Also check whether the officer or a listed relative is a party or has a direct beneficial interest in the record. The corporate provision permits specified acts but preserves party restrictions. An officer providing nonnotarial promotion/initiation services for an initiative or people's veto cannot administer that measure's circulator oath or affirmation."
+        },
+        {
+          "heading": "Describe and charge only lawful services",
+          "body": "The commission does not authorize legal drafting/advice/practice, immigration expertise or representation, or compensation for those listed activities. Covered nonattorney advertising carries the required prominent limitation statement in each language, with the stated limited size fallback. False/deceptive advertising and the restricted notario titles are prohibited. The course requires written disclosure of a proposed notarial fee and the individual's agreement before the act."
+        },
+        {
+          "heading": "Protect original records and official tools",
+          "body": "Except as otherwise allowed by law, do not withhold the customer's original record. Keep the stamping device secure and prevent another person's use. Disable it on the statutory cessation/expiration events and promptly report loss or theft. The official course's advice against serving both as separate witness and notary in the same transaction is presented as the stated Attorney General general guideline."
+        }
+      ],
+      "example": {
+        "heading": "An unrelated signer with a family beneficiary",
+        "body": "An unrelated customer brings a record giving the notary's child a direct beneficial interest. The notary checks the record as well as the appearing person's relationship. Because the listed family interest triggers the statute, a different authorized officer must perform the act. A no-fee offer does not remove the conflict."
+      },
+      "keyFacts": [
+        "Check both the person served and parties/beneficiaries in the record.",
+        "The listed relatives include in-laws and step/half relatives.",
+        "Initiative promotion and remote-election exclusions are separate rules.",
+        "Fee disclosure and agreement occur before the act.",
+        "The commission does not authorize withholding originals as a general collection device."
+      ]
+    },
+    "electronic-ron": {
+      "summary": "Maine requires notice, approved technology, provider training and state approval for electronic or remote service. The remote statute adds location, identity, recording and document controls.",
+      "sections": [
+        {
+          "heading": "Complete the approval and identity process",
+          "body": "Submit the notice identifying approved technology, provider training/user certification, legal-reading certification and signature/stamp example, then receive Secretary approval before service. No additional Secretary test is required under the FAQ. Remote officers are physically in Maine. Use personal knowledge, a qualifying credible witness or at least two different types of identity proofing. Abroad principals also need the statutory United States connection and no local prohibition of the signing/statement."
+        },
+        {
+          "heading": "Preserve the same record and required recording",
+          "body": "The officer reasonably confirms the record is the same one signed or used for the statement and creates the audiovisual recording. The certificate indicates communication technology. The statute provides an at-least-ten-year recording default subject to authorized rules. It contains a specific tangible-record declaration method with signing during the recording, transmission within four days, certificate after receipt and the statutory declaration-date effectiveness."
+        },
+        {
+          "heading": "Recognize exclusions and continuing obligations",
+          "body": "The statute excludes the listed absentee-ballot, candidate, candidate-circulator and initiative/people's-veto acts remotely, and expressly prohibits remote marriage solemnization. Electronic and remote acts require the stamp and journal described by official guidance. Report provider changes within ten business days. The officer selects qualifying tamper-evident technology and cannot be compelled to use a system not selected."
+        }
+      ],
+      "example": {
+        "heading": "A circulator asks for a camera appointment",
+        "body": "A candidate-petition circulator requests the oath remotely. Even if the officer is in Maine, uses an approved provider and has no family or campaign conflict, the specific remote-election exclusion must be applied. A lawful in-person route is needed for the listed act."
+      },
+      "keyFacts": [
+        "Approval precedes electronic or remote work.",
+        "The officer remains physically in Maine.",
+        "The statute provides three remote identity alternatives.",
+        "The tangible declaration method has a four-day transmission requirement.",
+        "Election-specific remote exclusions require document-level screening."
+      ]
+    }
+  },
+  "MD": {
+    "commission": {
+      "summary": "Maryland first applicants complete authorized education and examination before online filing and court qualification. Renewal requires the course and a fresh court oath.",
+      "sections": [
+        {
+          "heading": "Complete the appropriate education",
+          "body": "Section 18-102 requires initial course completion and examination passing. Current COMAR requires at least 20 four-choice questions with one correct answer, at least 80% correct and a bank of at least 50 questions. A qualified course completer who fails receives a retest opportunity. Uniform exam timing was not verified. Renewal requires the course under the statute and dedicated renewal instructions, despite an inconsistent general FAQ eligibility paragraph."
+        },
+        {
+          "heading": "Apply and qualify in the proper place",
+          "body": "Residents use the home address and senatorial district of residence. Qualifying nonresidents have Maryland employment/practice and satisfy the home-state reciprocity condition. First applications include the completion and passing certificates, required ID/address evidence and three reference contacts. After approval, qualify before the appropriate circuit-court clerk within 30 days after notice and pay the prescribed fees to receive the commission. The term is four years."
+        },
+        {
+          "heading": "Maintain the commission record",
+          "body": "The ordinary renewal window is 60 days before through 30 days after expiration. Later applicants use the new-commission route. A new commission requires the court oath again. Report listed name, address, email, phone and county changes within 30 days and keep a current active personal email with the Secretary. The FAQ provides name-change options and explains that a replacement under a new name retains the current expiration."
+        }
+      ],
+      "example": {
+        "heading": "A first applicant's two certificates",
+        "body": "An applicant finishes the course and receives its completion certificate, then passes the examination and receives the passing certificate. Both are uploaded with the first application. The application-payment email is followed by review and the court-qualification instructions. The applicant completes those steps before using the commission."
+      },
+      "keyFacts": [
+        "Initial education includes course and examination. Renewal requires the course.",
+        "The examination has a minimum 20 questions and at least 80% passing.",
+        "Uniform examination timing remains unverified.",
+        "Court qualification is due within 30 days after notice.",
+        "Keep the required personal email and commission information current."
+      ]
+    },
+    "identification": {
+      "summary": "Maryland identity evidence supports identifying the actual appearing individual. Capacity, voluntary execution, the ceremony and the certificate remain separate requirements.",
+      "sections": [
+        {
+          "heading": "Establish the identity basis",
+          "body": "Personal knowledge rests on dealings sufficient to provide reasonable certainty. The statute lists passport, driver's license, consular identification and government nondriver card. The alternative government-ID category contains both signature and photograph and is satisfactory to the officer. An appearing credible witness verifies on oath or affirmation and is known or credential-identified under the listed methods. Additional information may be required to assure identity."
+        },
+        {
+          "heading": "Support lawful participation",
+          "body": "Section 18-208 permits a physically unable principal to direct another individual other than the officer who appears concurrently to sign. Insert the required or similar direction statement. Section 18-207 permits refusal when the officer is unsatisfied of competence/capacity or knowing voluntary signing, unless otherwise prohibited by law. An identity card does not settle whether a companion is coercing the principal."
+        },
+        {
+          "heading": "Connect the actual act and certificate",
+          "body": "Acknowledgment and verification require the identity and signature determinations specified in §18-204. Verification includes the actual oath/affirmation declaration. Representative acknowledgment includes proper authority and execution as the represented party's act. The certificate is contemporaneous, signed in the filed manner, dated and given the required jurisdiction, title and expiration. Securely attach a tangible certificate or logically associate an electronic one. The act precedes certificate execution."
+        }
+      ],
+      "example": {
+        "heading": "A concurrent helper",
+        "body": "A principal physically unable to sign appears with an assistant and directs that person to affix the name. The notary completes the lawful participation and identity checks, uses the required directed-signature statement and performs the requested act. An assistant arriving alone would leave the principal's concurrent appearance missing."
+      },
+      "keyFacts": [
+        "The alternative government-ID category requires signature and photograph.",
+        "Credible witnesses give actual oath/affirmation verification.",
+        "The officer can request additional identity assurance.",
+        "Directed signers appear concurrently with the principal.",
+        "The certificate describes the actual ceremony and act location."
+      ]
+    },
+    "journals": {
+      "summary": "Maryland journals chronicle all acts. Record them contemporaneously with the statute's fields and COMAR's credential-number requirement.",
+      "sections": [
+        {
+          "heading": "Record every act with the right information",
+          "body": "Journal free and paid, in-person, electronic and remote acts. Each entry contains date/time, record description and act type, individual's full name/address, identity basis, fee and physical/remote appearance mode. State personal knowledge when used. For satisfactory evidence, describe the method and credential with issuance/expiration dates. COMAR.08 C adds the associated identification number for credentials used under the cited ordinary and remote provisions."
+        },
+        {
+          "heading": "Use the statutory format and arrangement",
+          "body": "Maintain only one journal at a time for tangible-record acts and one or more for electronic-record acts. A tangible journal is a permanent bound register with numbered pages. An electronic journal is permanent and tamper-evident under applicable regulations. An audiovisual recording does not replace the journal. A monthly summary does not provide the required contemporaneous individual entries."
+        },
+        {
+          "heading": "Retain and locate records after office",
+          "body": "Retention runs ten years after the journal's last act. Promptly report loss or theft. On resignation, revocation or suspension, retain and inform the Secretary of location, subject to transfer to an approved repository or approved regulatory storage. The representative, guardian or knowing possessor follows the statutory disposition after death or incompetency. Actual approval of the storage route matters."
+        }
+      ],
+      "example": {
+        "heading": "A credential-based remote entry",
+        "body": "A notary identifies a remote principal through the lawful documentary process. The entry records the actual method, credential details and associated number required by COMAR, as well as the remote appearance mode and other fields. The performance recording is separately preserved under the remote rules."
+      },
+      "keyFacts": [
+        "Every act is journaled, including free service.",
+        "COMAR requires the associated credential identification number.",
+        "Record appearance mode as well as identity method.",
+        "Ten-year retention uses the last act in that journal.",
+        "Approved repositories and regulatory storage provide specified alternatives."
+      ]
+    },
+    "seals-fees": {
+      "summary": "Current Maryland fee ceilings depend on the actual service. Official stamp identity, device security and certificate execution each require attention.",
+      "sections": [
+        {
+          "heading": "Classify the charge",
+          "body": "COMAR.02 caps an original ordinary act at $8 and a remote act at $30. The same-record copies signed at the same time by the same person or persons permit $8 per first-copy signature and $4 per additional-copy signature. Mere reproductions are capped at $2 per furnished copy, and certification of a journal-record copy may cost $6. Travel may include the prevailing IRS business-travel mileage reimbursement and a fee not exceeding $5."
+        },
+        {
+          "heading": "Use a compliant official impression",
+          "body": "The stamp identifies the notary's name and office with required county information and can be copied with its record. A nonresident uses the qualification county. Expiration can be in the stamp or certificate under §18-217(b). A notary public's tangible-record certificate receives the official affixed or embossed stamp. The statute separately uses may for an electronic-record officer's stamp association, subject to applicable standards."
+        },
+        {
+          "heading": "Protect the device through its lifecycle",
+          "body": "The notary remains responsible for security and cannot allow another person's use. Employer payment does not transfer the stamp's personal ownership or custody. On the statutory resignation, revocation and expiration events, disable the device so it is unusable. Promptly notify the Secretary after loss or theft. The responsible possessor has disabling duties following death or incompetency."
+        }
+      ],
+      "example": {
+        "heading": "Two requested copy services",
+        "body": "One requester asks for a plain reproduction of a journal entry and another asks for a certified copy of a journal record. The notary identifies the actual service before applying the $2 reproduction limit or $6 certification charge. Calling every copy a remote act would misclassify the service and its fee."
+      },
+      "keyFacts": [
+        "Current original ordinary and remote ceilings are $8 and $30.",
+        "The special additional-copy rule requires all stated same-time conditions.",
+        "Verify the prevailing IRS mileage rate instead of assuming a historical figure.",
+        "The stamp is personal to the commissioned officer.",
+        "Tangible certificates performed by a notary public require the official stamp."
+      ]
+    },
+    "prohibited-acts": {
+      "summary": "The mandatory conflict rule concerns the notary and spouse's party status or direct beneficial interests. Official broader family caution is separately identified.",
+      "sections": [
+        {
+          "heading": "Screen actual statutory interests",
+          "body": "Section 18-203 bars an act on a record to which the notary or spouse is a party or in which either has a direct beneficial interest. A violation is voidable. The FAQ recommends refraining for immediate family and indirect personal involvement beyond the stated duty. Ordinary employment by a corporation does not automatically establish a prohibited personal interest under the FAQ's described nonparty situation."
+        },
+        {
+          "heading": "Respect authority and honesty",
+          "body": "Dishonest applications, misleading claims of public authority and adverse other-state notary action are statutory discipline grounds. COMAR includes identity, certificate, fee, journal and remote-notice failures among enforcement examples. A professional license alone does not supply notarial authority. Maryland acts occur while the officer is physically in Maryland, with statewide authority regardless of commissioning county."
+        },
+        {
+          "heading": "Preserve the statutory limits on validity",
+          "body": "Section 18-221 does not validate acts by persons without authority and preserves challenges to the underlying record/transaction and other lawful remedies. Commission discipline also does not foreclose other civil/criminal remedies. A covered conviction has the specific COMAR reporting period. The FAQ permits denying illegal, improper or known fraudulent requests and confines the notarial role in a customer's document to its proper certificate."
+        }
+      ],
+      "example": {
+        "heading": "A spouse's interest with an unrelated customer",
+        "body": "An unrelated seller appears with a record in which the notary's spouse is a party. The notary applies the record-based conflict, not just the appearing person's relationship. Another authorized officer is needed. A fee waiver and complete journal would not remove that statutory interest."
+      },
+      "keyFacts": [
+        "Check both notary and spouse's party/direct-benefit interests.",
+        "A conflicting act is voidable.",
+        "Broader immediate-family caution is a recommendation in the FAQ.",
+        "Professional licensure alone does not create notarial office.",
+        "A valid notarization does not settle all transaction challenges."
+      ]
+    },
+    "electronic-ron": {
+      "summary": "Maryland remote service uses the official notification route matching the intended record and technology. State approval, identity, recording and continuing notification duties apply.",
+      "sections": [
+        {
+          "heading": "Authorize the intended route",
+          "body": "The online form permits selecting electronic-record RON using an authorized vendor and/or other-technology remote acts. The route without credential analysis/identity proofing requires the personal-knowledge or qualifying credible-witness foundation in COMAR.07 A(3). For the documentary route, §18-214 combines credential presentation, analysis and identity proofing. Vendor changes have ten-business-day notice;renewal requires a new remote notification."
+        },
+        {
+          "heading": "Control the session and location",
+          "body": "The notary is physically in Maryland and confirms the same record. Abroad principals need the statutory United States connection and no actual knowledge by the notary of foreign prohibition. COMAR requires technology capable of recording the entire physical location and all persons physically present, and those people identify themselves and their roles. Create and retain the audiovisual performance record at least ten years."
+        },
+        {
+          "heading": "Complete the tangible and certificate steps",
+          "body": "The statutory tangible declaration method requires the principal to sign both record and integrated/securely attached declaration during recording and send them within three days. The officer executes the certificate after receipt, and the compliant act is effective on the declaration date. The statute preserves other qualifying same-record procedures. The certificate indicates the remotely located individual and communication technology. Successors assuming recording authority have thirty-day state notice."
+        }
+      ],
+      "example": {
+        "heading": "A replacement remote vendor",
+        "body": "A notary selects a new authorized vendor, completes its required training and reports the change within ten business days. If the selected system appears unable to comply, the notary promptly reports the problem. An active subscription does not extend remote authority past commission expiration, and renewal requires the new remote notification."
+      },
+      "keyFacts": [
+        "Select the actual electronic-vendor and/or other-technology route.",
+        "The documentary identity method contains three components.",
+        "Record the required surroundings and identify physically present people.",
+        "Maryland's specified tangible declaration method sends papers within three days.",
+        "Remote authority expires with the ordinary commission."
+      ]
+    }
+  },
+  "MO": {
+    "commission": {
+      "summary": "Missouri's ordinary route combines eligibility, handbook/prescribed preparation, an 80% examination result, application, bond and county qualification.",
+      "sections": [
+        {
+          "heading": "Prepare and disclose accurately",
+          "body": "Applicants meet age, lawful residence, English literacy and Missouri residence/work/business requirements. The nonresident route limits use to Missouri employment and includes service-of-process authorization. Section 486.630 requires the specified criminal, professional and bond histories and a sworn/affirmed declaration of truthful complete information, understanding duties and lawful service. Attest to handbook reading or prescribed training and score at least 80%. The opened written alternative has 30 items;uniform online count and time remain unverified."
+        },
+        {
+          "heading": "Complete the two post-issue clocks",
+          "body": "After commission issuance, present the required $10, 000 four-year bond and take the county-clerk/designee oath within 60 days. The official FAQ lists the commission letter, bond, photo ID and local qualification fee. Mail the oath and bond with a postmark no more than seven days after the oath. The Secretary examines and approves the papers and updates commissioned status. The signature specimen matches the exact commissioned name."
+        },
+        {
+          "heading": "Reapply and amend through the official route",
+          "body": "A term lasts four years. Current and former notaries comply anew for a new commission, with new bond, qualification and updated seal. Address and legal-name changes have the stated ten-day notices and surety updates. Name changes include official evidence, amended bond and a new confirmed-name seal. Loss of the qualifying Missouri connection requires resignation. Another state's commission does not transfer automatically."
+        }
+      ],
+      "example": {
+        "heading": "County oath followed by mailing",
+        "body": "An applicant receives a commission issue notice, schedules county qualification inside 60 days and brings the required papers. After the oath, the applicant signs the official specimen and mails the oath/bond within the separate seven-day postmark period. Receipt and state approval complete the status update."
+      },
+      "keyFacts": [
+        "Ordinary passing is at least 80%.",
+        "The written form has 30 items;uniform online count/time remain unverified.",
+        "The ordinary bond is $10, 000 for the four-year term.",
+        "Track 60 days from issue and seven days from oath separately.",
+        "Reappointment requires compliance anew."
+      ]
+    },
+    "journals": {
+      "summary": "Missouri's ordinary bound journal records each act contemporaneously. Remote registration adds an electronic journal without removing the bound record.",
+      "sections": [
+        {
+          "heading": "Create the required transaction record",
+          "body": "Use one active permanently bound journal with numbered pages. Record date/time, act type, document/proceeding description, principal signature/name/address, requester-of-fact details, actual identity evidence, fee and any different act address. The documentary identity record includes issuer and serial/ID number with issuance or expiration date. Credible-witness details follow the actual method. Social Security and credit-card numbers are prohibited. The FAQ permits circumstances of nonperformance and requires pertinent correction notation."
+        },
+        {
+          "heading": "Safeguard and lawfully provide access",
+          "body": "When not in use, keep the journal in a secure area under exclusive notary control. Another notary cannot use it, and it is not surrendered to an employer at termination. Surrender/destruction follows court or Secretary authority and statutory disposition. Section 486.710 provides official investigation/subpoena/state access, limited copy charges and no-cost certified copies on the Secretary's written request, while preserving appropriate judicial protective orders."
+        },
+        {
+          "heading": "Handle loss and the end of office",
+          "body": "Report listed theft, loss, damage, destruction or unreadability within ten days through a receipt-producing means, with theft/vandalism law-enforcement reporting. The bound record has a ten-year last-entry period and is delivered under the cessation/death provisions. Ordinary cessation disposition is within 30 days. The specified pending-recommission expiration case extends to three months unless recommissioned. Section 486.800 gives the representative's death-specific notice, seal-forwarding and 30-day record duties."
+        }
+      ],
+      "example": {
+        "heading": "A retired officer's records",
+        "body": "A notary resigns with recently used bound journals. The notary follows the statutory delivery to the Secretary within the cessation period, preserving receipt evidence. The general ten-year record period is not treated as permission to ignore the specific surrender obligation. The official seal follows its applicable separate disposal rule."
+      },
+      "keyFacts": [
+        "Use one active permanently bound journal.",
+        "Entries are made at notarization.",
+        "Social Security and credit-card numbers stay out.",
+        "Ten-day loss/damage reporting includes receipt evidence.",
+        "Follow the specific 30-day or qualified three-month disposition provision."
+      ]
+    },
+    "prohibited-acts": {
+      "summary": "Missouri requires the principal's presence, identity, understanding, free will and direct shared-language communication, with defined conflicts and certificate limits.",
+      "sections": [
+        {
+          "heading": "Identify and communicate under Missouri's standard",
+          "body": "Personal knowledge comes from sufficient interactions over time. Ordinary documentary evidence is a current qualifying federal/state/tribal document in an understood language with facial photograph, signature and physical description, or the stated passport exception. Credible witnesses are disinterested and use the one-person personally-known or two-person credential-identified arrangement. The principal also understands the transaction, acts freely, signs in understood language/characters and directly communicates in a shared language."
+        },
+        {
+          "heading": "Screen relationships and special execution",
+          "body": "The officer is disqualified when party/named in the record, receiving the prohibited excess direct/indirect consideration, or within the listed spouse/domestic-partner/ancestor/descendant/sibling relationships including in-law, step and half relatives. The signing-agent fee exception requires payment independent of signing, initialing or notarizing. A mark is affixed before the notary and two disinterested witnesses, with witness signatures and the required below-mark statement, before the actual acknowledgment, jurat or witnessing."
+        },
+        {
+          "heading": "Perform truthful acts and impartial service",
+          "body": "A jurat includes signing before the notary and the actual oath/affirmation. Copy certification excludes vital, public and recorded documents and requires exact complete comparison including applicable metadata. Section 486.660 prohibits false, incomplete, advance or detached certificates. Section 486.650 sets the impartial-service duty and stated refusal/scheduling exceptions. Where immediate completion is impractical due to timing/number, arrange later completion without unreasonable delay."
+        }
+      ],
+      "example": {
+        "heading": "An interested identity witness",
+        "body": "A principal without documentary evidence brings a transaction beneficiary to identify them. The officer checks the witness definition and ordinary evidence route. Because the proposed witness is interested, the notary obtains a qualifying lawful identity basis before proceeding. A casual introduction and an offered extra fee do not satisfy the witness method."
+      },
+      "keyFacts": [
+        "Ordinary documentary ID uses the statute's actual required features and passport exception.",
+        "Credible identity witnesses are disinterested.",
+        "The family list reaches ancestors, descendants and step/half/in-law relationships.",
+        "A signing-agent exception depends on noncontingent payment.",
+        "The notary does not send pre-signed certificates for later outside attachment."
+      ]
+    },
+    "seals-fees": {
+      "summary": "Missouri defines service-specific fee units, advance travel disclosure, personal seal custody and detailed paper certificate/correction procedures.",
+      "sections": [
+        {
+          "heading": "Apply the correct fee and employer rule",
+          "body": "Ordinary acknowledgment, jurat and witnessing maxima are $5 per signature. Copy certification uses $1 per page with the stated $3 minimum total. Fees may be reduced or waived. No notarial fee is charged for absentee-ballot or absentee-voter-registration signatures. Travel is agreed before travel and explained as separate and nonmandated. Display/present the required English schedule in at least 12-point type. Private and governmental employers have distinct fee-sharing/waiver rules under §486.695."
+        },
+        {
+          "heading": "Keep official identity and seal control",
+          "body": "The seal contains exact commissioned name, number, required wording and expiration, with the stated border. Keep it off document text and use the FAQ's permitted legibility remedies. A nonreproducible embossing supplements the official seal. The seal is personal, secure and used only for acts. Report listed loss/damage within ten days. Follow event-specific disposition, including state forwarding for revocation and the representative's death duties."
+        },
+        {
+          "heading": "Attach and correct certificates as prescribed",
+          "body": "The ordinary certificate gives the official signature/seal, actual Missouri venue, date and act facts in understood language/characters. Separate paper certificates use an evidence-of-detachment attachment, with required size-based placement and all elements on one sheet. To correct the officer's own certificate, obtain the original papers, verify the error from written evidence, make the ink-initialed/dated correction or correct replacement and append the journal notation."
+        }
+      ],
+      "example": {
+        "heading": "A returned certificate error",
+        "body": "A client returns the original document and certificate with a genuine venue error. The notary verifies the actual act location from the journal and document, legibly corrects and initials/dates it in ink or replaces the certificate properly, and appends the correction's nature/date to the entry. An emailed photograph alone would not satisfy the original-return condition."
+      },
+      "keyFacts": [
+        "Ordinary act fees use per-signature or certified-page units.",
+        "Travel agreement occurs before travel.",
+        "No part of the fee schedule is smaller than 12-point type.",
+        "The official seal remains the notary's exclusive property.",
+        "A certificate correction requires the originals and journal notation."
+      ]
+    },
+    "electronic-ron": {
+      "summary": "Missouri RON requires additional preparation and registration, live principal participation, registered electronic elements and multiple protected records.",
+      "sections": [
+        {
+          "heading": "Register and conduct the lawful remote act",
+          "body": "A Missouri commissioned notary completes the approved additional remote course and examination, then registers conforming technology through the official process. The officer stays physically in Missouri. The principal uses live audio-video, is lawfully identified, understands, acts freely, communicates directly in a shared language and establishes the electronic signature as their own. Abroad principals are permitted only under the stated foreign prohibition condition. The approved documentary identity route combines presentation, analysis and proofing."
+        },
+        {
+          "heading": "Execute the registered certificate securely",
+          "body": "Complete appropriate remote wording with registered signature/seal, exact name, jurisdiction, Electronic Notary Public title, number and expiration. Use language/characters understood by the officer. The registered elements are independently verifiable, tamper-evidently associated and under sole control. Employers cannot retain the exclusive production means after termination. A separate remote transaction fee is agreed before the act and explained as separate and nonmandated."
+        },
+        {
+          "heading": "Preserve both journals and the performance recording",
+          "body": "Keep the remote electronic journal and the additional permanently bound record. Electronic entries carry the specified participant, identity, fee, location and signature-technology information, with two-factor access, protected sequence/content, duplicate backup and state read-only access instructions. Electronic entries and recordings have their respective at-least-ten-year periods. A recording/electronic-journal employer custodian requires a jointly signed record or qualifying repository arrangement and remains subject to legal record duties."
+        }
+      ],
+      "example": {
+        "heading": "A provider change with employer support",
+        "body": "An employer funds a registered remote notary's software. The notary keeps sole control over the registered seal and signature production, while any employer custody of recordings/electronic journals uses the specific jointly signed designation. Employer funding does not authorize a coworker to perform acts with the officer's electronic credentials."
+      },
+      "keyFacts": [
+        "The remote course/exam is additional to ordinary commissioning preparation.",
+        "The officer remains physically in Missouri.",
+        "A live session still requires understanding, free will and direct shared language.",
+        "Both electronic and bound journals record remote acts.",
+        "Electronic record custody does not authorize employer use of the seal."
+      ]
+    }
+  },
   "MT": {
     "application": {
       "summary": "Establish individual eligibility, complete the required filing evidence and maintain authority throughout commissioned work.",
@@ -381,6 +1151,1156 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       ]
     }
   },
+  "NE": {
+    "eligibility": {
+      "summary": "Nebraska appointment depends on personal qualifications, sworn legal understanding, the examination and state issuance of authority.",
+      "sections": [
+        {
+          "heading": "Residence, age and authority",
+          "body": "Section 64-101 sets the nineteen-year minimum and a four-year term from the effective date, subject to earlier removal. Residents of a bordering state may qualify through Nebraska employment or a regular Nebraska work or business location when the SOS obtains the required physical-address evidence. A general commission operates throughout Nebraska. Its statewide scope does not give a traveling officer authority to exercise Nebraska powers outside the state."
+        },
+        {
+          "heading": "Integrity and the application undertaking",
+          "body": "The applicant certifies under oath that the notary laws have been carefully read and understood and that official duties and records will be handled faithfully. The statute addresses felony and recent fraud or dishonesty convictions. The SOS FAQ identifies a full pardon for a felony applicant. Bond purchase and training attendance do not independently appoint the applicant. Authority depends on the required bond filing and commission issuance under section 64-102."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "An Iowa resident regularly works at an Omaha office and prepares an application. The applicant supplies the physical work address for the neighboring-state route, completes the other prerequisites and waits for issuance. She can later serve a client in Kearney under the same general commission while physically in Nebraska."
+      },
+      "keyFacts": [
+        "Appointment age is nineteen.",
+        "The ordinary term is four years from its effective date unless sooner removed.",
+        "A bordering-state applicant needs the specified Nebraska work connection and address evidence.",
+        "The SOS is the commissioning authority."
+      ]
+    },
+    "examination": {
+      "summary": "Use Nebraska's official examination materials and preserve the actual passing certificate for the application.",
+      "sections": [
+        {
+          "heading": "Ordinary initial examination",
+          "body": "Section 64-101.01 assigns development and administration to the SOS and identifies laws, procedures and ethics as the subject matter. The current initial instructions link to an online ClassMarker examination with twenty questions and an eighty-five percent passing score. Applicants must complete it without help from other people. Private practice material can support preparation, while the official instructions determine which test result is accepted."
+        },
+        {
+          "heading": "Attempts and proof",
+          "body": "The initial instructions allow three attempts and say a person unsuccessful after three is no longer eligible. A passing result remains valid for ninety days. Save the digital passing certificate as a PDF for the application. The official materials reviewed do not establish a test-duration specification. Additional approved course and examination requirements belong to electronic and online registration and should be tracked separately from the ordinary initial result."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A candidate studies the official statutes and then completes the state-linked examination independently. After passing, the candidate saves its certificate PDF and plans the remaining application within ninety days. A score from a commercial study quiz remains preparation evidence and cannot be uploaded as the official passing certificate."
+      },
+      "keyFacts": [
+        "The ordinary initial examination has twenty questions.",
+        "The stated passing threshold is eighty-five percent.",
+        "The official passing result is valid for ninety days.",
+        "The reviewed initial instructions do not specify a duration."
+      ]
+    },
+    "relatives": {
+      "summary": "Screen relationships, personal interests and certificate comprehension before accepting a Nebraska assignment.",
+      "sections": [
+        {
+          "heading": "Relationships and interests",
+          "body": "Section 64-105.01 disqualifies a spouse, ancestor, descendant or sibling of the principal and expressly includes in-law, step and half relationships. It separately addresses a financial or beneficial interest beyond the ordinary fee and being individually named as a party. The financial-interest provision cross-references specified duties in sections 64-211 through 64-215. Those are targeted legal provisions that require actual review of the proposed work."
+        },
+        {
+          "heading": "Professional boundaries",
+          "body": "The same section disqualifies an officer who does not understand the acknowledgment or certificate. Section 64-105.03 limits a nonattorney's selection of missing notarial wording and document assistance, preserves a specified qualified industry/professional-field provision and regulates advertising and claims to immigration powers. An employer's request, a charitable purpose or a customer waiver does not erase the applicable statutory boundary."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A principal asks her stepmother to notarize a scholarship agreement. The stepmother has no financial stake and would charge nothing, but the family provision still applies. An unrelated eligible officer must assess the request independently. The original officer should not treat the fee waiver as permission to proceed."
+      },
+      "keyFacts": [
+        "Covered family categories include in-law, step and half relatives.",
+        "Ordinary notarial fees are excepted from the stated financial-interest ground.",
+        "A named-party interest and self-signature request require independent scrutiny.",
+        "The notary must understand the certificate used."
+      ]
+    },
+    "ordinary-records": {
+      "summary": "Distinguish optional ordinary journals from mandatory electronic records for online acts, and keep document handling within the notarial role.",
+      "sections": [
+        {
+          "heading": "Ordinary documents and journals",
+          "body": "The SOS FAQ calls ordinary journals optional and strongly recommends them. It also directs refusal when document blanks remain unresolved, until the principal fills them or lines through and initials them. If a journal is kept, note how the principal dealt with those spaces. The notary need not read and approve every document term, and the commission alone does not authorize legal advice about enforceability or document drafting."
+        },
+        {
+          "heading": "Online evidence and retention",
+          "body": "Section 64-409 requires a secure electronic record for each online act, with date and time, act and document description, principal details, identity evidence, conference recording and any fee. The conference recording must exclude images of the notarized documents. Maintain a backup, protect both records and backups from unauthorized use, and retain them at least ten years after the transaction or proceeding. Surrender and destruction are restricted by the statutory court-order and authorized-rule provisions."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A notary adds remote work to an office that previously kept a voluntary paper journal. The office continues that useful paper practice, and it separately configures the mandatory secure online entries, conference recording without document images, protected backup and transaction-based ten-year retention. The paper journal alone does not satisfy the new online duties."
+      },
+      "keyFacts": [
+        "Ordinary journals are recommended and optional under the SOS FAQ.",
+        "Online records and backups have a statutory minimum ten-year retention period.",
+        "Online conference recordings exclude images of notarized documents.",
+        "The principal resolves document blanks before notarization."
+      ]
+    },
+    "seal": {
+      "summary": "Use the Nebraska commission's exact details for ordinary authentication and preserve exclusive control of online credentials.",
+      "sections": [
+        {
+          "heading": "Ordinary ink seal",
+          "body": "Section 64-210 requires an official ink stamp before the notary performs duties. It bears State of Nebraska, General Notary or General Notarial, the commissioned name and commission expiration. Official acts are authenticated with that seal. The FAQ recommends a clear impression near the notary signature without overprinting existing text or signatures. A missing stamp box does not eliminate the authentication duty."
+        },
+        {
+          "heading": "Changes and electronic security",
+          "body": "A legally renamed officer may continue using the original commission, name and seal until expiration or termination under section 64-114. A formal amendment follows the SOS update process, including the required bond for name or signature changes. Online signatures, seals, records and backups remain secure under exclusive control under section 64-410. Theft or vandalism requires immediate law-enforcement and SOS notice, while loss or another person's use separately requires immediate SOS notice."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "After marriage, a notary chooses the statutory original-name option and continues signing that commissioned name with the matching old-name stamp through the remaining term. A different officer instead files an approved name amendment, downloads the changed certificate and obtains a matching stamp. Both plans depend on consistent commissioned information."
+      },
+      "keyFacts": [
+        "The ordinary stamp includes the commission expiration date.",
+        "The ink stamp must be legible and must authenticate official acts.",
+        "The original-name option is available after a legal name change.",
+        "Online credentials and records remain under exclusive control."
+      ]
+    },
+    "identity": {
+      "summary": "Match the actual evidence to Nebraska's specified ordinary or online identity route.",
+      "sections": [
+        {
+          "heading": "Ordinary identity routes",
+          "body": "Section 64-105 specifies current government documentary evidence with facial image, signature and physical description, with the stated properly stamped passport exception. Personal knowledge means interaction over time sufficient to dispel reasonable identity uncertainty. The one-witness ordinary route uses an unaffected credible witness personally known to the officer and personally knowing the principal. The two-witness route requires each unaffected witness to know the principal and show the required documentary identification. Witness evidence is sworn or affirmed."
+        },
+        {
+          "heading": "Special execution and remote identity",
+          "body": "Section 64-105.02 supplies carefully witnessed procedures for a signature by mark and for the notary to sign at the direction of a person physically unable to sign or mark. These require prescribed explanations and a listed notarial act. Online documentary identity under section 64-411 combines remote presentation, credential analysis and identity proofing. Its credible-witness route has distinct physical-presence and witness-identification conditions. Avoid carrying the ordinary witness structure into remote work without checking the separate law."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A principal lacks a qualifying credential. Two unaffected witnesses each personally know him and each supplies qualifying ID, then give the required oath or affirmation. The officer evaluates that ordinary two-witness route. One witness's friendship with the other witness alone would not establish the required knowledge of the principal."
+      },
+      "keyFacts": [
+        "Ordinary documentary identification must be current.",
+        "Personal knowledge requires enough familiarity to dispel reasonable uncertainty.",
+        "Each of two ordinary credible witnesses personally knows the principal.",
+        "Online remote credential presentation alone does not complete the documentary route."
+      ]
+    },
+    "venue": {
+      "summary": "Complete the certificate for the act actually performed and correct stale preprinted location information visibly.",
+      "sections": [
+        {
+          "heading": "Location and certificate content",
+          "body": "The SOS FAQ defines venue as the state and county where notarization actually occurred. An Iowa land description or an out-of-state drafting office does not change a Lincoln appointment's Nebraska and Lancaster County venue. Cross through an incorrect preprinted state or county and insert the correct information. SOS expressly forbids correction fluid or tape. Sections 64-203 and 64-205 identify the appearance, identity and execution declarations involved in acknowledgment."
+        },
+        {
+          "heading": "Forms and attachment",
+          "body": "Section 64-206 supplies short forms for individuals and representative categories, while expressly preserving other forms. Section 64-204 gives alternative form-acceptance conditions. Representative wording should identify the person who appeared and the role involved. SOS permits a separate typed attestation clause signed, notarized and stapled to the presented record when space is lacking. For an online act, section 64-411 requires notation of online status."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A lender sends a prefilled Colorado certificate for an appointment actually held in Lincoln. The officer visibly strikes the wrong venue, inserts Nebraska and Lancaster County and completes the accurate transaction fields. The property's Colorado location does not justify copying that location into the venue."
+      },
+      "keyFacts": [
+        "Venue describes the act's actual location.",
+        "Use strike-through correction rather than correction fluid or tape.",
+        "The statutory short forms are not exclusive.",
+        "An online certificate notes the act's online status."
+      ]
+    },
+    "application-documents": {
+      "summary": "Prepare consistent assurance documents and actual official result PDFs before the online initial filing.",
+      "sections": [
+        {
+          "heading": "Bond execution and identity",
+          "body": "Section 64-102 requires a fifteen-thousand-dollar bond with an incorporated surety company, approved and filed with SOS. The endorsed oath or affirmation concerns constitutional support and faithful, impartial official duties. The initial instructions tell applicants to use the intended official notary name, the home address and consistent signatures, signing once as principal and again before another notary for the oath. E&O coverage is optional and does not replace the bond."
+        },
+        {
+          "heading": "Portal submission and amendments",
+          "body": "The current hub requires online filing. The initial packet includes the official passing certificate, executed bond and any applicable supporting documents saved as PDFs, with the thirty-dollar filing fee. Missing information can be saved in a draft for later completion through the work queue. After approval, download the commission certificate and use its details for the ink seal. The update instructions separately require a new bond for name or signature changes and identify other record amendments."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "An applicant checks the bond's intended official name and home address, completes both signatures and prepares its PDF together with the official examination certificate. When a supporting document is unavailable, the applicant saves a portal draft and returns to complete it. The saved draft supplies no authority to notarize."
+      },
+      "keyFacts": [
+        "The ordinary surety bond amount is $15,000.",
+        "The initial filing fee listed by SOS is $30.",
+        "The bond uses the applicant's home address under the instructions.",
+        "A portal draft is separate from a submitted and approved commission."
+      ]
+    },
+    "remote-registration": {
+      "summary": "Nebraska adds distinct electronic and online registrations to the ordinary commission, with approved education, technology and records duties.",
+      "sections": [
+        {
+          "heading": "Qualifying and registering",
+          "body": "Sections 64-303 through 305 and 64-403 through 406 establish the additional paths. A valid Nebraska commission remains foundational. Online applicants complete the required SOS course before the official online examination and registration filing. Current instructions list twenty questions, eighty-five percent, three attempts and ninety-day score validity for that separate examination. Identify approved provider technology, supply the required certifications and email, pay the listed registration fee and obtain the approval letter."
+        },
+        {
+          "heading": "Service design and limits",
+          "body": "In-person electronic notarization retains physical presence. Online work uses simultaneous sight-and-sound communication and its own identity, security, record and certificate requirements. Section 64-411 requires independently verifiable, tamper-evident signature and seal attachment. Section 64-418 preserves listed general laws subject to conflicts and excepts testamentary instruments and the specified UCC category from its appearance-satisfaction provision. Ordinary-only notaries are not compelled to register for services they do not perform."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A commissioned officer wants to serve distant clients. Purchasing an in-person electronic account does not authorize that workflow. The officer follows the separate online education, test and registration process, configures approved provider technology and mandatory records, then evaluates each requested instrument against the Online Act's service boundaries."
+      },
+      "keyFacts": [
+        "In-person electronic and online services are distinct.",
+        "The online registration filing fee listed in the instructions is $50.",
+        "Approved online applicants receive an approval letter.",
+        "Not every instrument-specific appearance rule is satisfied by the Online Act."
+      ]
+    },
+    "renewal": {
+      "summary": "Track the general commission term, timely filing window and dependent special-service registrations together.",
+      "sections": [
+        {
+          "heading": "Timely and expired applications",
+          "body": "Section 64-104 permits renewal within thirty days before expiration using the prescribed application, fee and new bond. An application after expiration must use the same manner as a new application. The official timely current-commission instructions require continuing qualifications, a new fifteen-thousand-dollar bond and online filing. They do not include repeating the ordinary initial examination. The expiration date remains an authority boundary while a filing is pending."
+        },
+        {
+          "heading": "Continuing services and supplies",
+          "body": "Electronic and online registrations coincide with the general term and may be renewed alongside it. SOS directs registrants who will continue those services to complete Special Services in the renewal. Online technology changes must be identified and supplied by an approved provider. After approval, download the new certificate and obtain a matching stamp with the new expiration. General resignation simultaneously resigns electronic and online registrations under the SOS update instructions."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A notary opens the renewal twenty days before expiration, prepares the new bond and completes Special Services to continue online work. The officer also reports the intended approved-provider change. After the new certificate is issued, the officer uses its term details for the stamp and ensures the dependent registration is renewed."
+      },
+      "keyFacts": [
+        "The timely window is thirty days before expiration.",
+        "Expired commissions use the new-application manner.",
+        "Renewal requires a new bond.",
+        "Electronic and online registration terms coincide with the general term."
+      ]
+    }
+  },
+  "NV": {
+    "training-process": {
+      "summary": "Complete Nevada's required traditional education and separate official examination before seeking appointment.",
+      "sections": [
+        {
+          "heading": "The required course",
+          "body": "NRS 240.018 requires at least three instructional hours plus an examination. It includes initial applicants, renewing appointees and specified enforcement cases directed to study by SOS. Courses may be offered by SOS or an approved vendor. The current official LMS requires separate enrollment and completion of the Commission Course and Commission Exam. A private study product's badge does not establish completion of that official route."
+        },
+        {
+          "heading": "LMS and application evidence",
+          "body": "The LMS directs payment through SilverFlume during application submission and separately lists traditional and electronic training fees. It recommends desktop study and closing the completed training player to save progress. Save a screenshot or PDF of completion evidence and attach the specified Exam Completion notification or certificate with the application documents and payment. Those administrative actions support proof of prerequisites while the state appointment remains a separate decision."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A first applicant completes the traditional course, enrolls separately in the Commission Exam and saves the actual completion evidence. The applicant then prepares the county bond-and-oath evidence and SilverFlume packet. A completed video alone does not establish the separate examination or issued appointment."
+      },
+      "keyFacts": [
+        "At least three instructional hours plus an examination are required.",
+        "Renewing traditional appointees also complete mandatory study.",
+        "The official LMS separates course and exam enrollments.",
+        "Official payment occurs through SilverFlume."
+      ]
+    },
+    "county-filing": {
+      "summary": "Keep Nevada's county recording evidence distinct from the state application and appointment.",
+      "sections": [
+        {
+          "heading": "Bond and oath route",
+          "body": "NRS 240.030 requires a ten-thousand-dollar bond and the prescribed oath. Residents file and record them with the residence county clerk. An adjoining-state applicant uses the Nevada county of the qualifying business or employment. The clerk certifies filing and recording to SOS on the prescribed form. NRS 240.033 describes the State of Nevada as obligee and sets the indemnification purpose, coverage and replacement provisions."
+        },
+        {
+          "heading": "Supporting information",
+          "body": "The state application includes the statutory fee and satisfactory course proof. Adjoining-state applicants add address affidavits, applicable state and local licensing evidence and the employer affidavit when not self-employed. NAC 240.210 requires consistent permitted name forms on the application and bond. The statute protects residential address and telephone information on application documents that become public. Check the actual document requirements without assuming a generic vendor form satisfies each step."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A California resident works regularly at a registered Washoe County employer. The applicant assembles the required nonresident affidavit and employer licensing evidence, files the bond and oath with the Washoe clerk and uses the county certification in the state application. A California filing would not satisfy the specified Nevada county route."
+      },
+      "keyFacts": [
+        "The ordinary bond is $10,000.",
+        "The bond and oath are recorded together.",
+        "The appropriate Nevada clerk provides the required filing certification.",
+        "Adjoining-state applicants have additional affidavits and licensing evidence."
+      ]
+    },
+    "start-of-authority": {
+      "summary": "Appointment timing, assurance continuity and compliant supplies all affect Nevada authority to act.",
+      "sections": [
+        {
+          "heading": "Authority and continuing qualifications",
+          "body": "The statutory term runs four years unless sooner removed and commences on the bond effective date. NRS 240.030 nevertheless forbids acts before the appointment certificate has been issued. Qualification includes age eighteen, civil rights and the required residence or adjoining-state connection. NRS 240.033 suspends appointment by operation of law when required coverage ends or its penal sum is exhausted. An old printed certificate does not override that event."
+        },
+        {
+          "heading": "Stamp and changed details",
+          "body": "NRS 240.040 requires the prescribed indelible reproducible stamped statement, readable rectangular imprint and appointment data. Nonresident stamps carry that word. Store the device securely and keep it off printed material. The amendment, loss and damage provisions have different notice periods. After an amended certificate, destroy the old stamp, obtain the matching replacement and notify the surety. A supplier must see the specified appointment-certificate evidence before manufacturing a device."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A bond becomes effective before the state finishes issuing an applicant's certificate. The term's commencement does not supply immediate acting authority. The applicant waits for issuance, then obtains a stamp using the certificate details and serves only while the appointment and required assurance remain effective."
+      },
+      "keyFacts": [
+        "Bond effectiveness and certificate issuance are separate facts.",
+        "Nevada authority operates within Nevada.",
+        "Required assurance must continue.",
+        "The stamp must match appointment information and remain secure."
+      ]
+    },
+    "family": {
+      "summary": "Evaluate extended family, direct benefits and professional exceptions independently.",
+      "sections": [
+        {
+          "heading": "Relationships and interests",
+          "body": "NRS 240.065 addresses instruments the officer executed or is named in, direct transaction benefits beyond the authorized fee, domestic partners and covered relatives. Its definition includes step, half and adopted relationships and specified relatives of a spouse or domestic partner. The licensed-attorney and registered-document-preparer provisions address particular compensation grounds. They do not erase independent relationship or participation restrictions."
+        },
+        {
+          "heading": "Employer and advertising duties",
+          "body": "NRS 240.143 makes the stamp, journal and appointment certificate the notary's personal property even if another person paid. Employers may not withhold them. NRS 240.085 imposes same-language professional-limit notices under its terms and independently forbids specified non-English titles for nonattorneys. The employer has related compliance duties. Using a public appointment to endorse a product is separately prohibited by NRS 240.075."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A registered document preparer plans an ordinary paid act for a domestic partner. The preparation-fee exception addresses compensation, while the partner prohibition independently prevents that assignment. Another eligible officer must evaluate the service without treating the preparer's registration as a family-rule waiver."
+      },
+      "keyFacts": [
+        "Domestic partners are expressly covered.",
+        "Extended relative categories include adopted and step relationships.",
+        "Compensation exceptions have a limited scope.",
+        "Employer payment does not transfer ownership of notarial property."
+      ]
+    },
+    "physical-appearance": {
+      "summary": "Apply the evidence and appearance requirements of the particular Nevada act and service method.",
+      "sections": [
+        {
+          "heading": "Ordinary identity and execution",
+          "body": "NRS 240.1655 requires personal presentation for an ordinary acknowledgment and specifies identity routes including personal knowledge, sworn credible witnesses and listed documentary alternatives. Conditional senior and state-prisoner routes have their own predicates. A jurat includes identity, present signing and an oath or affirmation. Copy certification requires the entire presented document, subject to express document restrictions elsewhere in the chapter."
+        },
+        {
+          "heading": "Accommodation and remote work",
+          "body": "A physically unable principal may direct someone other than the officer to sign, with the required explanatory notation. NAC 240.340 requires both principal and helper to appear at signing. Registered remote work uses separate audiovisual presence and identity rules. The officer remains physically in Nevada. An overseas principal must satisfy the known-prohibition condition and confirm the specified United States connection. Remote documentary identification combines credential presentation, analysis and the prescribed authentication or authorized proofing process."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "At a care facility, a physically unable person directs a helper to sign while both appear before the notary. The officer remains the certifying officer and adds the required directed-signature explanation. The helper's presence alone would not satisfy the regulation, and the notary cannot become the directed helper under this procedure."
+      },
+      "keyFacts": [
+        "Ordinary acknowledgment requires the signer's personal presentation.",
+        "A jurat includes present signing and an oath or affirmation.",
+        "A directed helper must be someone other than the notarial officer.",
+        "The remote officer must be physically in Nevada."
+      ]
+    },
+    "entry-timing": {
+      "summary": "Make contemporaneous Nevada entries with the correct transaction detail and any authorized fee evidence.",
+      "sections": [
+        {
+          "heading": "Journal detail and exceptions",
+          "body": "NRS 240.120 requires entries when acts occur, including fee, document title, date, principal name and ordinarily signature, identity evidence, oath indication and certificate type. One entry may document specified acts for the same person at the same time on one or similar documents. The journal-signature exception requires all the recent-service, personal-knowledge and employer/coworker business conditions. Credible witnesses sign in the evidence space and receive the required notation."
+        },
+        {
+          "heading": "Fees and travel",
+          "body": "NRS 240.100 distinguishes act-fee categories and additional travel conditions. Requested travel, disclosure and advance agreement on the hourly rate are required, with separate daytime and nighttime ceilings. A two-hour minimum is permitted, followed by pro rata charging. Record the travel fee amount and travel start/end dates and times. NRS 240.110 requires a conspicuous fee table in the specified type size before fees may be charged."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A notary travels at a customer's request under a compliant advance agreement, then performs several acts for that person together on similar records. The officer evaluates the combined-entry rule and still records the actual transaction details, act fees and required travel interval evidence. One total payment amount does not by itself explain those separate services."
+      },
+      "keyFacts": [
+        "Journal entries are made when acts are performed.",
+        "Combined entries have specified person, time and document conditions.",
+        "The coworker signature exception has multiple cumulative conditions.",
+        "Travel charges require additional journal information."
+      ]
+    },
+    "retention": {
+      "summary": "Nevada uses distinct custody, access and retention provisions for ordinary journals, electronic journals and recordings.",
+      "sections": [
+        {
+          "heading": "Ordinary records",
+          "body": "NRS 240.120 requires a bound ordinary journal with preprinted page numbers, secure non-entry storage, public inspection and certified entry copies on request and payment. Each journal remains until seven years after the person ceases to be a notary. Lost or stolen journals are reported to SOS and appropriate law enforcement. Personal ownership of a journal does not eliminate its legal public-inspection obligation."
+        },
+        {
+          "heading": "Electronic journals and recordings",
+          "body": "NRS 240.201 preserves the officer's sole-control duty despite employer records and requires copy capability and timely production to SOS. NAC 240.708 prevents post-entry deletion or changes to content or sequence and requires secure backup. NAC 240.710 excludes nonrequired personal identifying information and the recording itself from the journal. Recordings remain at least seven years even after incomplete remote acts, and their authorized recipients are governed separately from ordinary public journal access."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A remote session fails before completion. The officer preserves the recording for the required period while maintaining the separate electronic journal. The platform keeps the recording out of the journal itself, protects both stores and backups, and applies the recording-access categories before releasing a copy."
+      },
+      "keyFacts": [
+        "Ordinary journal retention is measured from cessation as a notary.",
+        "An incomplete remote act still has recording-retention duties.",
+        "The electronic journal and audiovisual recording remain distinct.",
+        "Employer recordkeeping does not replace the officer's obligations."
+      ]
+    },
+    "electronic-sequence": {
+      "summary": "Register Nevada electronic authority and configure the actual session process before offering remote services.",
+      "sections": [
+        {
+          "heading": "Registration and continuity",
+          "body": "The LMS puts a traditional commission first, then separate eRegistration course and examination. NRS 240.192 requires the additional registration, fee, proof and intended signature technology. NAC 240.658 makes effectiveness depend on the official system update. Electronic registration is coterminous with ordinary appointment and suspended when the underlying appointment no longer exists. Specified electronic changes have a ten-day notice and fee requirement."
+        },
+        {
+          "heading": "Session integrity",
+          "body": "The parties agree to the audiovisual method. The officer identifies the actual signed electronic document, informs all participants about recording and records required personal-knowledge or credible-witness explanations. NAC 240.680 requires a restart, including identity confirmation, after participant exit, a broken link or the specified quality compromise. Complete the signature, seal and certificate association and tamper-evidence step. Insecure signature technology requires cessation until replacement and the prescribed SOS notice."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A remote principal exits while locating a missing attachment and returns shortly afterward. The officer restarts performance under the rule and reconfirms identity, then identifies the actual signed record. Keeping the same browser tab and file title does not remove the restart requirement."
+      },
+      "keyFacts": [
+        "Electronic authority requires separate state registration.",
+        "Electronic registration follows the general appointment term.",
+        "Participant exit or a broken link triggers the specified restart.",
+        "The completed electronic record must be tamper-evident."
+      ]
+    },
+    "course-validity": {
+      "summary": "Preserve valid official Nevada completion evidence and keep unrelated identity-assessment metrics separate.",
+      "sections": [
+        {
+          "heading": "Validity and documentation",
+          "body": "NAC 240.270 makes the required successful-completion certificate valid ninety days after issuance and specifies the SOS validation stamp. The official LMS separately states that training, examinations and payment must be completed within ninety days for validity. Save the completion notification or certificate in the stated screenshot or PDF form and attach it through SilverFlume with the supporting packet and payment."
+        },
+        {
+          "heading": "Verified assessment scope",
+          "body": "The original materials reviewed establish the instructional minimum and the existence of the Commission Exam, but do not establish its numerical question count, duration or passing threshold. NAC 240.697 does state five-question, eighty-percent, two-minute criteria for a remote principal's dynamic KBA identity assessment. Those are identity rules for a signer, so they supply no Commission Exam threshold. An independent study score also cannot establish official completion."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A learner finds an eighty-percent number in the remote identity regulation and considers treating it as the Commission Exam passing score. The learner keeps that specification with principal identity proofing and instead relies on the actual official exam completion notification for application evidence. The ordinary numeric threshold remains unverified in this content."
+      },
+      "keyFacts": [
+        "The course certificate has ninety-day validity.",
+        "The LMS includes payment in its ninety-day instruction.",
+        "Preserve official completion evidence.",
+        "Remote principal KBA metrics do not establish Commission Exam specifications."
+      ]
+    },
+    "truthful-certificate": {
+      "summary": "Certify the act actually performed and apply Nevada's document-completeness and refusal boundaries.",
+      "sections": [
+        {
+          "heading": "Prohibited certification",
+          "body": "NRS 240.075 prohibits knowingly false certification, deceptive acts including journal alteration, stamps without certificates, signature-only documents and the listed vital-record/divorce-decree photocopy certifications. The ordinary copy power does not waive those exclusions. NAC 240.310 permits the signer to fill information spaces, mark them not applicable or line them through, with a limited rule for clearly excluded additional-signer lines."
+        },
+        {
+          "heading": "Judgment and record protection",
+          "body": "The statute permits refusal when the officer is unsatisfied about capacity, competence or knowing and voluntary signing, and preserves other refusal authority subject to law. NRS 240.145 restricts completed certificates used in promotional mailings. NRS 240.147 prohibits knowing destruction, defacement or concealment of notarial records. A clean stamp impression, a customer waiver or a generous payment does not establish the truth of a false certificate."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A form's information fields are complete and a separate additional-signer line remains blank. The officer evaluates whether the current notarization clearly excludes that line under NAC 240.310. If it does, the line has a different treatment from unresolved transaction information. The officer still performs and documents the requested lawful act accurately."
+      },
+      "keyFacts": [
+        "No stamp is affixed without a notarial certificate.",
+        "Knowingly false certification is prohibited.",
+        "Unused information spaces follow the completion rule.",
+        "Competence and voluntary-execution concerns can support refusal."
+      ]
+    }
+  },
+  "NJ": {
+    "initial-process": {
+      "summary": "Follow the current New Jersey education and examination portal, then complete state appointment and county qualification.",
+      "sections": [
+        {
+          "heading": "State prerequisites",
+          "body": "The 2026 manual identifies age eighteen and New Jersey residence or the stated employment/practice connection, subject to disqualification. A nonattorney initial applicant completes the Treasurer's required course and prescribed examination. The current portal directs thorough manual reading, the entire training-video series and the completion attestation. Passing the exam permits the registration application to be completed. It does not finish every appointment step."
+        },
+        {
+          "heading": "Application and verified limits",
+          "body": "Applications are electronic, endorsed by a member of the Legislature and subject to the stated twenty-five-dollar nonrefundable commission fee. The 2026 manual omits the course-hour figures in the older 2022 announcement. That difference is preserved here without inventing a reconciled duration. Current ordinary exam count, duration and numerical passing threshold remain unconfirmed in the opened official materials. Use the actual official approval and complete the county oath process."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A first nonattorney applicant reads the manual, watches the whole video series and attests to completion, then uses the New Commissioning Application and passes the official test. The applicant completes registration with the required endorsement and payment and later qualifies before the proper county clerk. A commercial badge supplies no appointment authority."
+      },
+      "keyFacts": [
+        "Initial nonattorney applicants complete the required education and prescribed exam.",
+        "The portal places the exam before completing registration.",
+        "The manual's application fee is $25 and nonrefundable.",
+        "Current numerical exam specifications remain unverified."
+      ]
+    },
+    "attorney-exception": {
+      "summary": "Apply the New Jersey attorney instruction to the examination sequence while preserving the remaining commissioning and act duties.",
+      "sections": [
+        {
+          "heading": "The relevant professional category",
+          "body": "The manual defines a nonattorney applicant as someone who is not also licensed as an attorney-at-law in New Jersey. A law degree or another state's license does not by itself establish that New Jersey status. The official initial portal directs attorneys to the registration-application step. The instruction addresses the listed examination sequence. An application, appointment and the prescribed county qualification remain distinct administrative matters."
+        },
+        {
+          "heading": "Practice and records boundaries",
+          "body": "Attorney status does not provide a general waiver of the notarial officer's party or direct-beneficial-interest prohibition. The manual does provide a particular regular-law-practice-files record alternative for New Jersey-admitted attorneys and stated employees. The alternative concerns records form, with other applicable identity, certificate and remote-recording duties preserved. A nonattorney commission grants no legal-advice or immigration-consulting authority."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A lawyer licensed only outside New Jersey examines the manual's definition before claiming the portal exception. The applicant cannot treat a law-school diploma or an attorney friend's license as personal New Jersey admission. An eligible attorney following the skip instruction still completes the proper registration and qualifies the issued commission."
+      },
+      "keyFacts": [
+        "The manual's category turns on New Jersey attorney licensure.",
+        "The portal directs attorneys to registration.",
+        "The commission's county oath remains a separate requirement.",
+        "The regular-file alternative is a records provision."
+      ]
+    },
+    "lapsed-commission": {
+      "summary": "Determine the correct renewal or new-applicant route and preserve the distinction between an application and current acting authority.",
+      "sections": [
+        {
+          "heading": "Active renewal and a longer lapse",
+          "body": "The official portal states that active notaries renewing need not take the exam. It treats expiration more than thirty days earlier as a new application requiring the examination. That classification does not state an extension of the old authority. The manual separately requires continuing education for its specified renewal category, including the described prior-course or pre-law appointees. Follow the current portal and education instructions together."
+        },
+        {
+          "heading": "Qualification and historical records",
+          "body": "An initial or renewed commission requires timely county swearing-in. A missed three-month receipt-based oath period causes the cancellation and revocation described in the manual. Resignation, revocation or suspension also leaves journal-retention or prescribed transmission duties. The statutory validity provision does not validate purported acts by persons without authority, and validity of an act does not bar all challenges to the underlying transaction."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A former notary discovers the commission has been expired more than thirty days. The person follows the portal's new-applicant examination route and stops treating the old stamp as authority. Historical journals remain subject to their retention or transfer requirements while the new appointment process is completed."
+      },
+      "keyFacts": [
+        "Active renewal has the portal's no-exam instruction.",
+        "A lapse over thirty days triggers stated new-applicant exam treatment.",
+        "The current manual requires applicable continuing education.",
+        "Records duties continue after current service ends."
+      ]
+    },
+    "county-oath": {
+      "summary": "Use the proper New Jersey county clerk and complete the commission's receipt-based qualification steps.",
+      "sections": [
+        {
+          "heading": "Initial and renewed qualification",
+          "body": "Within three months after receipt of an initial or renewed commission, the notary takes and subscribes the oath before the proper county clerk and files it there. A resident uses the residence county. The manual describes the nonresident route by the specified New Jersey office or qualifying employer county. The oath includes faithful and honest performance and truthful legally required records. Failure within the stated period leads to cancellation and revocation."
+        },
+        {
+          "heading": "Certificates and changed information",
+          "body": "After administering the oath, the clerk causes the commission-and-qualification certificate to be endorsed and transmits it electronically to Treasury within ten days. Nonresident applicants certify the specified residence and New Jersey employment information and later file changes. Before official signing in an adopted new name, the manual requires the prescribed signed sworn statement explaining the circumstances. Keep these state records aligned with the actual commissioned identity."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A nonresident works remotely for a business whose primary place is in New Jersey. The person verifies the manual's qualifying employment category and proper New Jersey county route, takes the oath within three months of receiving the commission and files later workplace changes. The principal's county is irrelevant to selecting this qualifying clerk."
+      },
+      "keyFacts": [
+        "Both initial and renewed commissions require the timely oath.",
+        "The resident route uses the residence county clerk.",
+        "The clerk's transmission period is ten days after the oath.",
+        "New-name official signing requires the stated prior filing."
+      ]
+    },
+    "conflicts": {
+      "summary": "Screen New Jersey party and benefit restrictions, professional claims, lawful refusal and service-fee categories.",
+      "sections": [
+        {
+          "heading": "Eligibility for the particular record",
+          "body": "The manual prohibits an officer's act on a record to which the officer or spouse/civil union partner is a party or has a direct beneficial interest, and states a violating act is voidable. Identity evidence alone cannot remove that independent interest. The manual also regulates nonattorney legal titles and professional-limit notices with advertising in any language. Misleading legal-authority claims and unlawful withholding of client records are commission-action grounds."
+        },
+        {
+          "heading": "Refusal, fees and procedure",
+          "body": "Chapter 10 permits refusal on the stated capacity, voluntary-execution and signature/photo-conformity concerns, subject to other New Jersey law. Chapter 11 separates ordinary listed acts from its special grantor-transfer and mortgagor-financing transaction fees. Adverse commission action follows the manual's written notice and hearing-request procedure, including the twenty-calendar-day request receipt period. Paying an act fee supplies no waiver of these independent duties."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A principal offers a large fee for a record that directly benefits the officer's civil union partner. The officer recognizes the party/benefit restriction before deciding any price or evaluating signature evidence. A different eligible officer can assess the requested act without the original officer's prohibited interest."
+      },
+      "keyFacts": [
+        "Spouse and civil union partner interests are expressly included.",
+        "The manual describes a prohibited-interest act as voidable.",
+        "Advertising notice applies in any language under the manual.",
+        "Fees do not authorize an otherwise prohibited act."
+      ]
+    },
+    "identity": {
+      "summary": "Apply the manual's identity route and the actual act requirements without importing another state's credential rules.",
+      "sections": [
+        {
+          "heading": "Personal and documentary evidence",
+          "body": "Chapter 7 defines personal knowledge by dealings sufficient to give reasonable certainty. Listed passport, license and government non-driver credentials may be current or expired no more than three years. The other-government-ID route permits a signature or facial photograph and requires officer satisfaction. A credible witness gives sworn or affirmed verification, appears through the allowed means and is personally known or identified under the specified credential route. Additional assurance may be requested."
+        },
+        {
+          "heading": "Acts, assistance and remote identity",
+          "body": "Acknowledgment identity includes the appearing individual and connection to the signature. Verification on oath or affirmation concerns truth of a record statement. A physically unable person may direct someone other than the officer to sign, with the prescribed explanation. Remote work under Chapter 8 uses visual Chapter 7 document verification and the stated proofing method. Signature/photo mismatch, competence or involuntary execution can support refusal under Chapter 10."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A principal presents a government credential with a photograph but no signature. The officer identifies whether the alternative-government-ID category applies, checks its timing and officer-satisfaction conditions and seeks more information if necessary. A rule demanding both features from another state should not replace New Jersey's stated alternative."
+      },
+      "keyFacts": [
+        "The listed expiration allowance is no more than three years.",
+        "The other-government-ID category uses signature or photograph plus satisfaction.",
+        "The officer may request additional identity assurance.",
+        "Remote visual verification and identity proofing have separate roles."
+      ]
+    },
+    "record-ownership": {
+      "summary": "Keep New Jersey notarial property secure and preserve complete records through changes of employer or authority.",
+      "sections": [
+        {
+          "heading": "Ownership and ordinary journals",
+          "body": "The manual makes the stamping device and journal the notary's property even when an employer paid. The ordinary journal chronicles all tangible and electronic acts in one current journal, using the prescribed permanent paper or tamper-evident electronic format. Entries identify act time and type, persons served, actual identity evidence and itemized fees. A device's narrow physical-assistance exception does not transfer the notarial role."
+        },
+        {
+          "heading": "Retention and transitions",
+          "body": "Report journal loss or theft within ten days and device loss or theft within ten calendar days as directed. The journal is retained ten years after its last chronicled act or handled through Treasury's secure-transmission instructions. Resignation or discipline preserves those record obligations. Death or adjudicated incompetency creates a forty-five-day Treasury contact step in the current manual. Electronic credentials and remote recordings have additional control and custody provisions."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A notary leaves an employer that purchased every supply. The officer keeps responsibility for the personal journal and device, identifies the last entry date for retention and maintains electronic access controls. The employer's payment does not justify treating the book as an ordinary disposable departmental file."
+      },
+      "keyFacts": [
+        "The journal and stamping device belong to the notary.",
+        "The ordinary rule permits only one current journal.",
+        "Journal retention runs ten years from the last chronicled act.",
+        "Employer changes do not erase historical records duties."
+      ]
+    },
+    "records-exception": {
+      "summary": "Use the New Jersey regular-file alternative only within its listed professional and business categories.",
+      "sections": [
+        {
+          "heading": "Eligible records form",
+          "body": "Chapter 6 permits New Jersey-admitted attorneys, notaries employed by attorneys and the specified employees or agents of licensed title insurers to keep act records in regularly maintained law-practice or title-business files. This is an alternative to the ordinary journal format. An ordinary business does not become eligible simply because it uses folders, and a title-related name does not establish the required insurer license."
+        },
+        {
+          "heading": "Preserved duties and recognized records",
+          "body": "The alternative still preserves a record of the notarial acts. It does not waive identification, accurate certificates, prohibited-interest screening or Chapter 8 recording requirements. The statute separately recognizes specified authorized acts from other states, tribal jurisdictions, federal authority and foreign jurisdictions. Those recognition provisions have their own authority and jurisdiction predicates and do not issue a New Jersey commission to the outside performer."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A title-insurer agent checks that the insurer is licensed in New Jersey and records actual acts in its regularly maintained business files under the stated category. When the agent also conducts a remote service, the audiovisual evidence is created and retained under Chapter 8. The file alternative alone does not replace that recording."
+      },
+      "keyFacts": [
+        "The exception is an alternative record form.",
+        "Qualifying attorney employees are expressly included.",
+        "The stated title-insurer category requires licensing.",
+        "Other act duties continue to apply."
+      ]
+    },
+    "technology-notice": {
+      "summary": "Follow New Jersey's separate communication-technology and electronic-record requirements for the actual proposed service.",
+      "sections": [
+        {
+          "heading": "Notice, presence and remote evidence",
+          "body": "Before first communication-technology work, notify Treasury electronically and identify the intended technologies. The officer remains in New Jersey, with simultaneous secure sight-and-sound communication, same-record confirmation, the prescribed identity workflow and recording. Overseas cases need the stated United States connection and foreign-law condition. The current manual preserves special testamentary laws and describes a limited tangible-record route with its particular conditions."
+        },
+        {
+          "heading": "Tangible and electronic completion",
+          "body": "Chapter 8 distinguishes acknowledgment when the officer holds the tangible record from the process when it is elsewhere. The latter involves session signing and declaration, sending within three days, recorded signing, post-receipt certificate completion and explanatory wording. Chapter 9 separately addresses advance electronic-record notice, officer technology selection, reliable credentials and tamper-evident association. A subscription does not itself supply any of these legal steps."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A remote principal holds the original paper. The officer chooses the manual's record-not-present process, captures the required signatures and declaration during the session, receives the materials sent within the stated period and completes the required certificate after receipt. An emailed scan alone does not establish that whole procedure."
+      },
+      "keyFacts": [
+        "First remote and first electronic-record work have stated notice requirements.",
+        "The remote officer must be in New Jersey.",
+        "Remote tangible records have specific alternative workflows.",
+        "Electronic credentials must be unique, verifiable, controlled and tamper-evident."
+      ]
+    },
+    "copy-comparison": {
+      "summary": "Certify an actual full and accurate reproduction and connect its certificate to the correct record.",
+      "sections": [
+        {
+          "heading": "Source and determination",
+          "body": "Chapter 7 requires determining that the copy is a full, true and accurate transcription or reproduction of the record or item. Missing attachments or altered wording can defeat that determination for the identified source. The copy certificate describes the reproduction, not a commercial guarantee about the source's claims. The short form identifies the relevant record in the named person's possession."
+        },
+        {
+          "heading": "Certificate and electronic copies",
+          "body": "Complete the act before signing the certificate, with accurate contemporaneous date and the required officer and stamp details. A tangible certificate is part of or attached to its record, and electronic association must be accurate, reliable and tamper-evident. N.J.S.A. 52:7-10.15(c) supplies the stated recording treatment for tangible copies of electronic records when the executing officer certifies copy accuracy. A mere printout does not supply that certification."
+        }
+      ],
+      "example": {
+        "heading": "Worked example",
+        "body": "A reproduction of a private agreement leaves out the schedule incorporated into the complete source. The officer obtains a full accurate reproduction before certifying the entire agreement, then completes and attaches the correct certificate. A readable stamp cannot cure the missing portion of the copy."
+      },
+      "keyFacts": [
+        "The copy must be full, true and accurate.",
+        "The act must precede the officer's certificate signature.",
+        "The certificate belongs to the actual identified record.",
+        "Electronic-to-tangible recording treatment has a stated accuracy-certification condition."
+      ]
+    }
+  },
+  "NM": {
+    "initial-process": {
+      "summary": "Prepare the ordinary application around eligibility, matching documents, approved learning, the oath, and assurance. A complete filing starts the state review, while commission issuance and stamp registration establish the conditions for beginning acts.",
+      "sections": [
+        {
+          "heading": "Eligibility and evidence",
+          "body": "Check age eighteen, a New Mexico residence or place of employment, and the ability to read and write English against the SOS application instructions. Review the applicable criminal-history and prior-notary disciplinary questions rather than treating training as the only qualification. Use the name appearing on state-issued identification. The application and bond require consistent names and signatures."
+        },
+        {
+          "heading": "Submission and the start of authority",
+          "body": "Complete the approved course and examination, arrange the oath and $10,000 assurance, and upload the required evidence through the current online process. The $30 application fee is nonrefundable and does not include tuition. After issuance, obtain the compliant stamp and submit its copy within forty-five days and before performing any act. A filing receipt or course certificate does not issue a commission."
+        }
+      ],
+      "example": {
+        "heading": "An employee moves to Albuquerque",
+        "body": "A person living across the state line has a place of employment in Albuquerque and applies through that connection. The person still completes the training, oath, bond, fee, and eligibility review. On receiving the commission, the person waits to perform an office acknowledgment until the stamp-copy requirement has been satisfied."
+      },
+      "keyFacts": [
+        "A residence or place of employment in New Mexico supplies the geographical connection.",
+        "The ordinary bond or equivalent assurance is $10,000.",
+        "The $30 application fee is separate from approved training charges.",
+        "Stamp registration is required before the first act."
+      ]
+    },
+    "passing-score": {
+      "summary": "New Mexico specifies an eighty-percent threshold for the approved ordinary examination and separately for the RON examination. Keep those specifications distinct from the timed knowledge-based authentication used to identify a remote principal.",
+      "sections": [
+        {
+          "heading": "Completion evidence and unknown specifications",
+          "body": "The application includes proof of successful approved learning and examination. Third-party examination vendors retain examination records, including scores, for five years. The official provisions reviewed establish the passing threshold. They do not establish a licensing-exam question count or time allowance, so preparation materials should leave those specifications unknown."
+        },
+        {
+          "heading": "Renewal and changed rules",
+          "body": "Where SOS has a record of prior passage, the renewal exemption has conditions. A commission expired more than one year requires the specified learning again. Substantial statutory or rule changes, as determined by SOS, can also require retraining and reexamination. The handbook additionally describes the post-January 1, 2022 course context. Review current renewal instructions and the administrative rule together."
+        }
+      ],
+      "example": {
+        "heading": "A recorded passing result meets a changed-law notice",
+        "body": "A renewing notary has a recorded prior passing score and an unexpired commission. If SOS determines that substantial changes require fresh training and examination, the notary follows that requirement. The short expiration exception alone does not answer the changed-law issue."
+      },
+      "keyFacts": [
+        "The ordinary examination passing threshold is at least eighty percent.",
+        "RON has its own approved learning and examination requirement.",
+        "Vendor examination records are retained for five years.",
+        "The reviewed materials leave licensing-exam length and duration unconfirmed."
+      ]
+    },
+    "applicant-oath": {
+      "summary": "The applicant's oath is an office-entry requirement performed before another authorized officer. It is separate from the oaths or affirmations the future notary may administer to customers.",
+      "sections": [
+        {
+          "heading": "Arrange an independent notarization",
+          "body": "Before issuance, the applicant takes the prescribed oath of office. Another currently authorized New Mexico notarial officer performs its notarization. The applicant's principal signature on the bond is notarized by another currently commissioned New Mexico notary. An applicant who already holds a commission cannot notarize the applicant's own signature merely because this is a renewal."
+        },
+        {
+          "heading": "Complete the application sequence",
+          "body": "Check that the oath and bond signatures and names agree with the application requirements. Upload the required documents with the evidence of approved learning and payment through the current filing process. Taking the oath does not create interim authority. Issuance, the commission's effective period, and the stamp-copy condition still govern when ordinary acts can begin."
+        }
+      ],
+      "example": {
+        "heading": "A current notary renews",
+        "body": "An active notary prepares a renewal oath and bond. A coworker who is a current authorized New Mexico officer notarizes the oath, and another current New Mexico notary notarizes the required bond signature. The applicant does not use the applicant's own stamp on either personal signature."
+      },
+      "keyFacts": [
+        "The oath precedes commission issuance.",
+        "An applicant cannot notarize the applicant's own signature.",
+        "The bond's principal signature has its own notarization requirement.",
+        "A completed oath form does not grant temporary authority."
+      ]
+    },
+    "stamp-content": {
+      "summary": "A New Mexico official stamp identifies the particular officer and role. Commissioned notaries and automatic notarial officers use the details applicable to their authority, including the current official-seal requirement.",
+      "sections": [
+        {
+          "heading": "Commissioned notary stamp",
+          "body": "Use the commissioned legal name, commission number, expiration date, required Notary Public and State of New Mexico wording, and the official state seal. The administrative rule requires ten-point type. The stamp must use permanent ink that is photographically reproducible. Review an impression before submitting the copy and before placing it on customer records."
+        },
+        {
+          "heading": "Automatic officers and custody",
+          "body": "An automatic notarial officer uses the applicable Notarial Officer title and role-specific identifiers. An attorney uses the state bar identification number. Judicial officers identify the judicial district or area served, while county clerks use the applicable county detail. Follow the current statute for those distinctions. Protect the stamping device from another person's use and avoid publishing a reusable official-stamp image."
+        }
+      ],
+      "example": {
+        "heading": "An attorney orders the wrong design",
+        "body": "A New Mexico attorney exercising automatic notarial authority receives a design labeled with an ordinary commission number but omitting the attorney's bar identifier. The attorney obtains a design meeting the automatic-officer requirements and registers the proper stamp before acting."
+      },
+      "keyFacts": [
+        "The commissioned name must match the commission.",
+        "The official stamp uses ten-point type.",
+        "Current law requires the official seal.",
+        "Automatic-role identifiers differ by the officer's source of authority."
+      ]
+    },
+    "stamp-registration": {
+      "summary": "The forty-five-day stamp requirement also contains a first-act condition. Completing the deadline calculation alone does not establish permission to start notarizing.",
+      "sections": [
+        {
+          "heading": "Ordinary stamp copy",
+          "body": "After issuance, the officer provides the official stamp copy on the prescribed SOS form within forty-five days and before performing the first notarial act. A new officer should build that filing into the start-up sequence. The rule provides for referral to the State Ethics Commission when the required information is not supplied."
+        },
+        {
+          "heading": "Updates and electronic stamps",
+          "body": "Follow the stamp-registration process after replacement or an amended commissioned name. A name amendment requires a matching updated stamp. Remote authorization has a parallel but expressly stated electronic-stamp requirement. SOS must receive the electronic copy before the first RON and within forty-five days of authorization. The ink-stamp record does not itself provide the electronic-stamp copy."
+        }
+      ],
+      "example": {
+        "heading": "An act is offered on day ten",
+        "body": "A newly commissioned notary owns a compliant stamp but has not provided the stamp copy. A customer offers an acknowledgment ten days after commissioning. The notary completes the required stamp filing before performing the act, even though the outer forty-five-day deadline has not arrived."
+      },
+      "keyFacts": [
+        "Both the forty-five-day deadline and first-act condition apply.",
+        "Electronic stamp submission accompanies remote authorization.",
+        "The RON copy must reach SOS before the first remote act.",
+        "Replacement and name changes require attention to the registered stamp."
+      ]
+    },
+    "retention": {
+      "summary": "A New Mexico journal supports a durable, sequential record of the officer's acts. Plan for ordinary storage, electronic recovery, departure from employment, and the end of the commission before a custody problem develops.",
+      "sections": [
+        {
+          "heading": "Journal format and custody",
+          "body": "Record each act contemporaneously with the required date and time, record and act description, principal details, identification basis, and fee if any. A tangible journal is bound with numbered pages. An electronic journal must be permanent, tamper-evident, recoverable, and producible in the required PDF form. Current statute permits a paper journal for tangible records and an electronic journal for electronic records. The officer maintains secure control. Permitted employer copies are marked as copies."
+        },
+        {
+          "heading": "Ten-year duties and remote records",
+          "body": "Retain the journal for ten years after its last recorded act or transfer it to an authorized recipient. Resignation and suspension do not erase the duty. A transfer to the state records officer requires the prescribed SOS notice within thirty days. RON also creates a recording obligation, generally at least ten years from recording, alongside the journal. Use protected open-format recordings and a repository contract that preserves compliance when service ends."
+        }
+      ],
+      "example": {
+        "heading": "Leaving a law office",
+        "body": "A notary changes employers with seven years remaining on the journal's retention period. The officer keeps or lawfully transfers the original journal and may furnish permitted, clearly marked copies of relevant entries. The employer's payment for the book does not decide custody."
+      },
+      "keyFacts": [
+        "Journal retention runs ten years from the last recorded act.",
+        "Electronic journal design includes recovery and PDF production.",
+        "RON recordings and journals are separate records.",
+        "Subscription termination does not end retention requirements."
+      ]
+    },
+    "oath": {
+      "summary": "Choose and perform the act that the principal's record requires. An acknowledgment concerns execution, a verification concerns sworn truth, and signature witnessing has its own presence and identity requirements.",
+      "sections": [
+        {
+          "heading": "Appearance and the declaration",
+          "body": "For a verification on oath or affirmation, establish identity, administer the truth declaration, and have the principal sign in the officer's presence. For an acknowledgment, obtain the required execution declaration, including proper authority for representative execution. Do not treat an existing signature as a substitute for a required current signing. Use the actual act date in the certificate."
+        },
+        {
+          "heading": "Identity, assistance, and impartial judgment",
+          "body": "The listed identification may be current or expired no more than one year, subject to the statutory credential requirements. A credible witness must satisfy the statute's independence and identification conditions and give an oath or affirmation. A principal unable to sign may direct someone other than the officer to sign, with the required notation. Evaluate knowing, voluntary action and capacity concerns while following the nondiscrimination requirements."
+        }
+      ],
+      "example": {
+        "heading": "A signed verification arrives",
+        "body": "A customer presents a statement signed at home and requests a verification on oath or affirmation. The officer establishes identity, administers the truth declaration, and obtains signing in the officer's presence. The officer does not convert the earlier signature into a jurat merely by adding a stamp."
+      },
+      "keyFacts": [
+        "A sworn verification requires the principal's oath or affirmation of truth.",
+        "The New Mexico expired-credential window is no more than one year.",
+        "A directed-signature helper must be someone other than the officer.",
+        "Conflicts involving the officer, spouse, or domestic partner require attention under the statute."
+      ]
+    },
+    "copy-limits": {
+      "summary": "Copy certification requires an accuracy determination about an eligible original. The customer's willingness to sign a statement does not replace the officer's comparison or overcome a record-type restriction.",
+      "sections": [
+        {
+          "heading": "Check the original and comparison method",
+          "body": "The handbook excludes vital records, public records, and publicly recordable documents from its ordinary copy-certification instruction. For an eligible record, the officer makes or supervises the copy or reviews the original and copy to determine completeness and accuracy. Inspect every relevant page and confirm that the certificate describes the copy and source correctly."
+        },
+        {
+          "heading": "Electronic sources and fees",
+          "body": "Current law permits certifying that a tangible copy accurately reproduces an electronic record. Under the remote rule, a certified tangible copy of an electronic record with the required copy certificate is considered an original record. An uncertified printout does not obtain that status automatically. The ordinary copy-fee provision is fifty cents per page with a five-dollar minimum total charge. Keep copy certification distinct from authenticating a photograph, which the handbook prohibits."
+        }
+      ],
+      "example": {
+        "heading": "A family requests a birth-certificate copy",
+        "body": "A customer brings a birth certificate and asks the officer to certify a photocopy. The officer identifies the vital-record restriction and refers the customer to the appropriate official custodian. A separate personal business document may be eligible after comparison with its original."
+      },
+      "keyFacts": [
+        "Review the original and complete copy.",
+        "The handbook restricts vital, public, and publicly recordable originals.",
+        "A certified tangible electronic-record copy requires the appropriate certificate.",
+        "The ordinary copy fee has a fifty-cent-per-page formula and five-dollar minimum."
+      ]
+    },
+    "separate-authorization": {
+      "summary": "RON requires individual state authorization, an approved active system, compliant remote appearance, and tamper-evident execution. Ordinary commissioning supplies the foundation for a commissioned applicant but does not supply remote authority by itself.",
+      "sections": [
+        {
+          "heading": "Apply and verify the platform",
+          "body": "Apply to SOS and receive approval before the first remote act. The rule permits simultaneous ordinary-commission and RON applications. Identify every approved intended system, explain journal and recording storage, supply the required training proof, and pay the nonrefundable $75 application fee. The officer must be physically in New Mexico and verify provider active status for each act. Notify SOS when adopting a new system."
+        },
+        {
+          "heading": "Conduct a compliant session",
+          "body": "Identify the principal at the start. Where the prescribed proofing route applies, credential analysis and KBA support real-time visual comparison. KBA has its own question, timing, retry, and confidentiality rules. Use sufficient synchronous audio and video with accessibility and security protections. Restart from the beginning after exits or interrupted or compromised feeds. Maintain sole control of electronic credentials and include the communication-technology disclosure in the certificate."
+        }
+      ],
+      "example": {
+        "heading": "An authorized officer travels",
+        "body": "A RON-authorized New Mexico notary visits another state and receives an urgent platform request. The officer cannot perform that New Mexico RON while physically outside New Mexico. After returning, the officer checks provider active status and other per-act requirements before accepting a new session."
+      },
+      "keyFacts": [
+        "SOS approval precedes remote acts.",
+        "The officer is physically in New Mexico during RON.",
+        "Provider active status is checked for each remote notarization.",
+        "RON electronic credentials remain under the officer's sole control."
+      ]
+    },
+    "lost-journal": {
+      "summary": "Loss reporting, recovery, and long-term custody work together. A journal or stamp becoming unavailable requires prompt action even when the officer plans to buy a replacement.",
+      "sections": [
+        {
+          "heading": "Prompt notice and secure recovery",
+          "body": "Promptly notify SOS on its prescribed form when the journal is lost or stolen. Prompt notice also applies to a lost or stolen stamping device. Electronic journals must be designed for recovery after software or hardware failure. Activate that recovery capability when entries become inaccessible, secure the remaining records and credentials, and follow the prescribed replacement and registration processes."
+        },
+        {
+          "heading": "Departure, death, and closing the office",
+          "body": "Keep the original journal under the required custody when employment ends, or transfer it as the statute permits. Resignation or suspension requires continuing retention and notice of location. After death or adjudicated incompetence, the personal representative or another person knowingly possessing the journal follows the authorized disposition procedure. A stamping device must be rendered unusable when the applicable cessation rules require it."
+        }
+      ],
+      "example": {
+        "heading": "A laptop becomes inaccessible",
+        "body": "A notary's electronic journal cannot be accessed after a storage failure. The officer activates the required recovery arrangement. If the journal is lost or stolen, the officer promptly follows the prescribed SOS notice process. Keeping the failed laptop physically on the desk does not supply accessible entries or the required recovery capability."
+      },
+      "keyFacts": [
+        "Prompt notice applies to lost or stolen journals and stamping devices.",
+        "Electronic journal recovery is a design requirement.",
+        "Former employers do not automatically acquire the original journal.",
+        "Death and cessation require deliberate record and device disposition."
+      ]
+    }
+  },
+  "OH": {
+    "application": {
+      "summary": "The ordinary Ohio first route combines eligibility, a recent BCI report, authorized education and testing, and electronic filing.",
+      "sections": [
+        {
+          "heading": "Prepare the evidence",
+          "body": "Meet age eighteen and the ordinary Ohio legal-residence condition unless the specified attorney alternative applies. A nonexempt applicant submits a BCI report within the preceding six months. The initial nonattorney course is three hours with the authorized provider's test. The SOS page calls for education within twelve months before application and identifies completion evidence for upload."
+        },
+        {
+          "heading": "File the complete application",
+          "body": "Upload the signature sample, required background report and provider proof through the official online system. Provider education fees and state filing fees are separate. The ordinary retake waits at least thirty days and stays within the BCI-based outer window. A second failure requires the restart described by rule. Approval is followed by the office oath before work."
+        }
+      ],
+      "example": {
+        "heading": "A report near expiration",
+        "body": "A Cleveland applicant studies after receiving a BCI report. A failed test means the applicant checks both the thirty-day waiting period and the six-month report clock before booking a retake. The course receipt does not refresh the older report."
+      },
+      "keyFacts": [
+        "Ordinary initial nonattorneys take three hours and a test.",
+        "The BCI report has its own six-month window.",
+        "State applications are electronic."
+      ]
+    },
+    "attorney-exception": {
+      "summary": "Ohio attorneys have specific ordinary exceptions, while online authority keeps separate residence, term and learning conditions.",
+      "sections": [
+        {
+          "heading": "Apply the actual ordinary exception",
+          "body": "An Ohio-admitted attorney can use the specified principal-business or primary-practice connection while nonresident. Ohio attorneys are exempt from the application BCI check. First commissioning after September 20, 2019 still requires the ordinary course but no ordinary test. The earlier commissioned attorney category has its stated education and test exception."
+        },
+        {
+          "heading": "Track online duties separately",
+          "body": "Ordinary attorney authority continues only while the statutory Ohio connection, good standing and no-revocation conditions hold. RON still needs separate authorization and learning, and the online officer is an Ohio resident physically in Ohio. Attorney online authorization expires at the earlier of five years or the ordinary term ending. Attorney online-journal access also has principal and privilege safeguards."
+        }
+      ],
+      "example": {
+        "heading": "A border-state law office",
+        "body": "An Ohio-admitted attorney lives in Kentucky and has a primary Ohio practice. That can satisfy the ordinary connection alternative. It does not satisfy the separate Ohio-resident condition for online notarization, so the attorney does not treat ordinary eligibility as remote authorization."
+      },
+      "keyFacts": [
+        "Attorney ordinary test exemption does not waive every course.",
+        "Ordinary attorney authority depends on continuing conditions.",
+        "Attorney RON has a separate five-year limit."
+      ]
+    },
+    "oath": {
+      "summary": "An Ohio jurat requires actual oath or affirmation and signing in the notary's presence. Its certificate describes that procedure.",
+      "sections": [
+        {
+          "heading": "Administer the truth pledge",
+          "body": "Identify the lawful appearance and administer the statutory or substantially similar truth question. A signer may affirm under penalty of perjury without religious swearing. The signer makes the pledge about the document and signs in the notary's presence. Silent observation or a document heading cannot perform these elements."
+        },
+        {
+          "heading": "Match the written evidence",
+          "body": "Use a jurat only when the oath or affirmation actually occurred, and avoid acknowledgment in place of a required pledge. A nonattorney may explain the procedural difference but does not choose the act best suited to the customer's legal situation. A wrong-act certificate requires a correct certificate at no charge while the completed-original alteration prohibition remains applicable."
+        }
+      ],
+      "example": {
+        "heading": "An unsigned truth declaration",
+        "body": "A Dayton customer is willing to affirm truth but has brought an earlier signed document. The notary completes the requested lawful jurat procedure, including present signing, instead of assuming the existing signature alone completes every element. The certificate reflects the actual oath event."
+      },
+      "keyFacts": [
+        "A jurat includes appearance, pledge and present signing.",
+        "Affirmation is a recognized alternative.",
+        "Certificate wording follows the act actually performed."
+      ]
+    },
+    "copy-limits": {
+      "summary": "Ohio distinguishes prohibited direct copy certification from a holder's notarized statement and specific statutory journal or authenticator routes.",
+      "sections": [
+        {
+          "heading": "Keep the assertion with its maker",
+          "body": "The ordinary notary does not directly certify that a document is an original or true copy. Section 147.141(B) preserves notarizing the holder's signature on the holder's written copy-accuracy statement. The chosen signature act still requires its normal procedure. The notary does not convert that act into a personal guarantee of the copied record."
+        },
+        {
+          "heading": "Use specific exceptions within scope",
+          "body": "An online notary can certify copies from the officer's own electronic journal under the section and its access conditions. Section 147.591 separately gives an authenticator-certificate route for printed electronically executed documents. The authenticator makes the reproduction assertion and the certificate cannot be signed or notarized with electronic signature or seal, including RON."
+        }
+      ],
+      "example": {
+        "heading": "A holder brings a private copy",
+        "body": "A Toledo holder writes and signs a sworn statement about their copy. The notary administers the lawful requested signature act. A separate request for the notary's own direct true-copy certificate remains outside ordinary power. The identity of the person making the copy assertion matters."
+      },
+      "keyFacts": [
+        "Ordinary direct original/true-copy certification is prohibited.",
+        "Holder-signature notarization is expressly preserved.",
+        "The authenticator certificate has a paper-execution restriction."
+      ]
+    },
+    "incomplete-records": {
+      "summary": "Ohio prohibits notarizing blank or incomplete records and limits changes after signing or completed notarization.",
+      "sections": [
+        {
+          "heading": "Pause for the actual document and signer",
+          "body": "The notary does not notarize a signature on a blank or incomplete document or deliver a signed blank certificate for later use. Apparent inability to understand nature and effect, or coercion compromising free will, prevents the stated act. A clear ID does not establish document completion or voluntary understanding."
+        },
+        {
+          "heading": "Preserve accurate completed evidence",
+          "body": "Do not alter the signed instrument or amend a completed certificate under the prohibited-acts section. Every act needs the completed certificate with actual venue, wording, date, commissioned signature, printed name, seal and expiration, plus the applicable electronic-method statement. The correct-certificate duty for a wrong-act form is distinct from permission to edit an original."
+        }
+      ],
+      "example": {
+        "heading": "A pressured blank agreement",
+        "body": "At a Columbus office, a companion urges immediate signing while substantive terms remain empty. The notary resolves neither problem by collecting the fee or applying a legible seal. The incomplete-record and free-will conditions both require attention before a lawful act."
+      },
+      "keyFacts": [
+        "Substantive blanks cannot be cured by a promise to fill later.",
+        "Signed instruments and completed certificates have alteration prohibitions.",
+        "Certificate contents describe the actual event."
+      ]
+    },
+    "ordinary-fees": {
+      "summary": "Ohio's current statute uses separate basic ordinary and online fee ceilings, with additional travel and technology conditions.",
+      "sections": [
+        {
+          "heading": "Use the correct unit",
+          "body": "The ordinary non-online ceiling is five dollars and the online basic ceiling is thirty. The two basic categories cannot be stacked for the same online act, and the statutory basic fee is not calculated per signature. A provider's education charge is a different fee from the notarial service received by a customer."
+        },
+        {
+          "heading": "Apply additional charges correctly",
+          "body": "A reasonable travel fee is agreed with the principal before the act. The online technology fee is capped at ten dollars total per session and can apply despite noncompletion, including identity-process failure. Several attempts in one session do not create a fresh cap for every question or retry. Overcharging or accepting an excessive act fee is prohibited."
+        }
+      ],
+      "example": {
+        "heading": "An online invoice with two basics",
+        "body": "An Akron online invoice lists thirty dollars online basic, five dollars ordinary basic and a lawful capped technology charge. The added ordinary basic conflicts with the no-stacking rule. The technology charge is assessed under its own statutory conditions."
+      },
+      "keyFacts": [
+        "Ordinary basic maximum is five dollars.",
+        "Online basic maximum is thirty dollars.",
+        "Technology is at most ten dollars per online session."
+      ]
+    },
+    "representative-capacity": {
+      "summary": "Ohio acknowledgment identifies the human representative and their execution for the represented principal or entity.",
+      "sections": [
+        {
+          "heading": "Describe the representative act",
+          "body": "Corporate officers, LLC members or managers, partners, attorneys-in-fact and other representatives have specific statutory acknowledgment meanings and short forms. They acknowledge proper authority and execution for the represented party and stated purpose. Identity assurance remains necessary even where the certificate lists an impressive title."
+        },
+        {
+          "heading": "Keep legal opinions separate",
+          "body": "A nonattorney notary does not determine legal validity of the power of attorney or other representative-capacity form under section 147.141(A)(17). The representative's acknowledgment of authority is distinct from the notary issuing a legal opinion on that source of authority. The notary also screens their own named-party or direct-interest conflict."
+        }
+      ],
+      "example": {
+        "heading": "An agent and a power document",
+        "body": "A Cincinnati attorney-in-fact appears with a power document. The notary identifies the agent and records the proper representative acknowledgment. A request to guarantee the power's legal validity calls for an authority the nonattorney notary does not acquire through this ceremony."
+      },
+      "keyFacts": [
+        "The human representative appears and is identified.",
+        "The certificate reflects the represented role.",
+        "Nonattorney authority does not include a legal-validity opinion."
+      ]
+    },
+    "remote-authorization": {
+      "summary": "Ohio online work requires separate state authorization, compliant technology and secure records under the current statute and rules.",
+      "sections": [
+        {
+          "heading": "Qualify and conduct the session",
+          "body": "Hold ordinary authority, meet Ohio residency, complete the RON course and test and obtain written authorization. The online officer is physically in Ohio. Use personal knowledge or the prescribed identity route, adequate live two-way audiovisual technology, matching electronic document and tamper-evident execution. A broken or compromised session triggers restarting identity authentication and incomplete acts."
+        },
+        {
+          "heading": "Secure the record lifecycle",
+          "body": "Keep chronological tamper-evident authenticated electronic journals with the required participant, record, location, system and fee information. Exclude social security numbers. Preserve required audiovisual records and backups under personal control, with compliant third-party storage if used. Expiration transfer, approved repository retention and a new journal on renewal have separate statutory steps. Credentials and incident reports follow section 147.66."
+        }
+      ],
+      "example": {
+        "heading": "A successful proofing result before disconnection",
+        "body": "An Ohio principal passes the identity process, then the link breaks before completion. Reconnection does not permit simply stamping the record. The rule requires restarting identity authentication and incomplete acts from the beginning, with the actual lawful session recorded and entered."
+      },
+      "keyFacts": [
+        "The online notary resides and acts physically in Ohio.",
+        "A proofing result does not replace the remaining act.",
+        "Records and credentials have separate security and transfer duties."
+      ]
+    },
+    "oath-of-office": {
+      "summary": "An Ohio appointee takes the office oath after approval and before entering upon duties.",
+      "sections": [
+        {
+          "heading": "Appear before an authorized officer",
+          "body": "The current SOS sequence places the oath after application approval. The appointee personally appears before a notary or another officer authorized by law to administer oaths. A self-signed promise or saved approval email does not administer the required oath. It is separate from a customer's later jurat or the RON identity quiz."
+        },
+        {
+          "heading": "Prepare the official execution supply",
+          "body": "Before duties, obtain the Ohio seal with its prescribed coat-of-arms circle and surrounding information. The statute allows the notary's name to be supplied legibly near the signature rather than built into the seal. The specified grandfather provision concerns a previously compliant seal already possessed by a person commissioned before the cutoff, and does not extend authority's term."
+        }
+      ],
+      "example": {
+        "heading": "Approval on a busy morning",
+        "body": "An approved appointee receives a first customer request before taking the oath. The appointee arranges the personal oath before a legally authorized officer and obtains the required seal before working. A customer deadline does not move the oath after the first act."
+      },
+      "keyFacts": [
+        "Approval precedes the office oath in the current process.",
+        "The oath precedes official duties.",
+        "Another legally authorized oath officer can administer it."
+      ]
+    },
+    "renewal": {
+      "summary": "Ohio ordinary and online renewals have separate windows and continuing education rules. Expiration before filing changes the route.",
+      "sections": [
+        {
+          "heading": "Prepare within the window",
+          "body": "Ordinary nonattorney authority lasts five years unless revoked. Renewal opens three months before expiration and needs the applicable new BCI report and application. The current education table uses one ordinary approved hour with no test. Online renewal separately uses one approved hour with no test and its own authorization date, including for attorneys."
+        },
+        {
+          "heading": "Handle expiration and official changes",
+          "body": "If the commission expires before renewal submission, apply for a new commission under the section. Known expiration or resignation bars further acts, even though a separate provision addresses validity of acts already performed. Report legal name or address changes within thirty days and resignation through the prescribed effective-date notice. Cooperation with lawful investigation remains required."
+        }
+      ],
+      "example": {
+        "heading": "A late renewal filing",
+        "body": "A Springfield nonattorney discovers expiration before submitting the renewal. The statute directs the new-commission route. The person does not perform a free favor with the expired seal while preparing the application, because pending plans do not restore current authority."
+      },
+      "keyFacts": [
+        "Ordinary renewal opens three months before expiration.",
+        "Ordinary nonattorney renewal uses one hour and no test.",
+        "Expiration before submission leads to a new application route."
+      ]
+    }
+  },
   "OR": {
     "commission": {
       "summary": "Maintain the Oregon connection supporting appointment, finish each commissioning step and distinguish statutory authority from workplace arrangements. The official examination remains open book, with its unpublished numerical specifications left unknown.",
@@ -472,6 +2392,474 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         "The Oregon notary remains physically in Oregon.",
         "The customer's KBA quiz is an identity process, not the licensing examination.",
         "A recording supplements the required electronic RON journal."
+      ]
+    }
+  },
+  "UT": {
+    "commission": {
+      "summary": "A Utah commission combines eligibility, an online examination, background review, bonding and a notarized oath. Its four-year authority carries continuing name, address, signature and seal duties.",
+      "sections": [
+        {
+          "heading": "Build a complete commission file",
+          "body": "The current process starts with qualifications and a state account, then the online test and payment. The office directs applicants to continue preparing the bond and oath while the background review proceeds. The bond name matches the application and the applicant signs as principal. Uploading the signed bond and notarized oath completes the application without a separate Final Submit button. Approval and the Certificate of Authority precede purchasing the official supplies."
+        },
+        {
+          "heading": "Keep the authority usable",
+          "body": "Use the exact commissioned name for the official signature and obtain the compliant seal. A new commission requires a new seal. Report a residential or business address change within thirty days. A legal name change requires the documented state filing and bond rider procedure, including destruction of the former commission and seal. Check conflicts before each act and avoid using official office to promote a product or supply legal advice."
+        }
+      ],
+      "example": {
+        "heading": "Office move during a term",
+        "body": "A Provo employee-notary changes business offices while keeping the same home. The business address change still has its own thirty-day notice requirement. The move does not create a new four-year term or eliminate the need to protect the personally assigned stamp."
+      },
+      "keyFacts": [
+        "Ordinary commissions run for four years.",
+        "The current first application process includes an online examination and mandatory background check.",
+        "The ordinary bond is five thousand dollars.",
+        "Use the exact commissioned name in the official signature."
+      ]
+    },
+    "acts": {
+      "summary": "Identify the requested act before performing it. Utah distinguishes acknowledgment, jurat, signature witnessing, oath or affirmation, and eligible copy certification.",
+      "sections": [
+        {
+          "heading": "Match the procedure to the certificate",
+          "body": "An acknowledgment establishes the appearing person's admission of voluntary execution and can concern an earlier signature. A jurat includes the truthfulness oath or affirmation and voluntary signing in the notary's presence. Signature witnessing also requires present signing but does not by itself include the truthfulness oath. Complete a certificate describing the actual act, including a remote statement when applicable."
+        },
+        {
+          "heading": "Establish identity through an actual statutory route",
+          "body": "Personal knowledge requires enough acquaintance to eliminate every reasonable doubt. Otherwise apply a qualifying unexpired identification or credible-individual route. The current code permits both a credible witness personally known to the notary and a separately conditioned route for an unknown credible witness. Remote evidence adds its applicable secondary authentication. A driving privilege card does not qualify as satisfactory evidence under the stated exclusion."
+        }
+      ],
+      "example": {
+        "heading": "Already signed affidavit",
+        "body": "At an Ogden appointment, a customer presents an affidavit with an earlier signature and a jurat. Explaining that acknowledgments can cover earlier signatures does not complete the requested jurat. The notary administers the oath or affirmation and witnesses the voluntary signing required for that act before making a truthful certificate."
+      },
+      "keyFacts": [
+        "An acknowledgment still requires appearance.",
+        "A jurat requires an oath or affirmation and present signing.",
+        "Signature witnessing has its own present-signing element.",
+        "An unknown credible witness must satisfy the current code's identification and oath conditions."
+      ]
+    },
+    "copies": {
+      "summary": "Utah copy certification addresses an accurate photocopy of an eligible source record. Public records and publicly recorded documents fall outside its statutory definition.",
+      "sections": [
+        {
+          "heading": "Screen the source before comparison",
+          "body": "Determine whether the requested source is eligible for the Utah copy-certification act. A customer's private purpose does not change a public record into a private record, and an exact image of a publicly recorded document remains outside the definition. Explain that the status of the source record controls this boundary before spending time comparing pages."
+        },
+        {
+          "heading": "Certify the reproduction actually examined",
+          "body": "For an eligible source, compare the proposed photocopy and verify that it is accurate, exact and unaltered. A missing page, obscured content or changed text prevents that conclusion. Identify the source in the copy certificate and preserve a truthful description of the comparison. This act does not verify the factual truth of every statement in the source or guarantee its acceptance by a receiving organization."
+        }
+      ],
+      "example": {
+        "heading": "Two-page private certificate",
+        "body": "A customer brings an eligible private two-page completion certificate with a photocopy containing only the first page. The notary requests a complete copy and compares both pages before considering certification. A separate acknowledgment on the customer's cover letter would establish a different act and would not establish the attachment's accuracy."
+      },
+      "keyFacts": [
+        "Screen for both public-record and publicly-recorded exclusions.",
+        "Compare the eligible source and the actual photocopy.",
+        "The ordinary copy-certification fee ceiling is ten dollars per page.",
+        "The certification concerns reproduction accuracy."
+      ]
+    },
+    "journal": {
+      "summary": "Utah's May 6, 2026 transition changes ordinary journal duties for newly issued and renewed commissions. Remote notaries also have secure electronic-journal and recording requirements.",
+      "sections": [
+        {
+          "heading": "Choose the cohort and medium",
+          "body": "A commission received on or after May 6, 2026 brings the new physical-journal duty for nonremote acts. The state supplement explicitly includes renewals after that date. The current code provides the bounded chronological physical format and completion-time entries. Remote acts use the secure electronic journal and associated audiovisual recording. Apply the limited employment exception for acts within the course and scope of qualifying attorney, law-firm or title-agency employment."
+        },
+        {
+          "heading": "Retain securely and disclose carefully",
+          "body": "Preserve the journal for ten years after the last recorded act even after leaving the profession, then follow the statutory destruction requirements. Ordinary access is limited to a specified entry, an identified requester and a signed inspection-request entry containing the required details. Official requests have their own scope limitations. Remote biometric information and identification images have an additional written-consent, court-order or lieutenant-governor release restriction."
+        }
+      ],
+      "example": {
+        "heading": "Renewal changes the workflow",
+        "body": "A notary whose prior commission predates the change renews in September 2026. Nonremote work under the renewed commission belongs in the required physical journal. The notary records the obtainable information and reason when refusing an incomplete appointment, instead of treating an unsuccessful meeting as having no record duty."
+      },
+      "keyFacts": [
+        "The transition is based on commission issuance, including renewal.",
+        "New-cohort entries include last four ID digits plus other specified ID details.",
+        "A limited multi-act entry needs the same person, same time and one or similar records.",
+        "Retention runs ten years from the last recorded act."
+      ]
+    },
+    "remote": {
+      "summary": "Utah RON requires a separate approved workflow, increased bond coverage and secure electronic execution. The remote notary performs the act while physically in Utah.",
+      "sections": [
+        {
+          "heading": "Obtain and maintain separate remote approval",
+          "body": "The published RON process requires an existing ordinary commission, hiring or contracting by an approved vendor, total bond coverage of ten thousand dollars and a vendor-provided electronic signature and seal. Submit the notarized remote oath, bond evidence and seal sample. The office sends separate fee instructions after document review, and final active confirmation completes approval. Reapply for remote authority when renewing the ordinary commission."
+        },
+        {
+          "heading": "Conduct and preserve the remote act",
+          "body": "Meet the real-time communication and identity requirements, including applicable secondary authentication. Record the session and include the recording with the secure electronic journal. Render the remote seal in black and attach signature and seal so later alteration of the certificate or associated record is evident. Protect backups and apply the statutory restrictions to any vendor acting as seal guardian or journal custodian."
+        }
+      ],
+      "example": {
+        "heading": "Travel interrupts availability",
+        "body": "A certified Utah remote notary visits Wyoming and receives a request from a Utah customer. A Utah vendor account and a Utah customer do not place the notary inside Utah. The notary arranges a session when physically back within the authorized state and still follows identity, act, certificate and recording requirements."
+      },
+      "keyFacts": [
+        "The remote notary must be physically in Utah.",
+        "Total RON bond coverage is ten thousand dollars.",
+        "Remote approval is reapplied for after ordinary renewal.",
+        "Remote certificates state that the act was performed remotely."
+      ]
+    }
+  },
+  "VT": {
+    "commission": {
+      "summary": "Ordinary Vermont commissioning requires the applicable eligibility, jurisprudence examination, signed notarized oath and complete online application. Fixed biennial authority brings continuing record-update duties.",
+      "sections": [
+        {
+          "heading": "Prepare the complete state file",
+          "body": "Verify the minimum age and citizenship or permanent-legal-residency qualification and the Vermont residence, employment or practice connection. Unless a specific exemption applies, complete the office-approved examination. Current instructions call it open book and direct uploading only the answer sheet. Prepare the signed notarized Oath of Office before filling out the online application. A complete file includes all required answers, attestations, materials and fees."
+        },
+        {
+          "heading": "Maintain the filed identity and authority",
+          "body": "Use the name signed on the filed oath for notarial acts. Update a changed name, address or email in the online record within thirty days. A name change also requires court documentation and the updated notarized oath, and the rules bar acts after the change until that oath is submitted. Track the printed expiration in the fixed cycle and perform acts under Vermont authority while physically in Vermont."
+        }
+      ],
+      "example": {
+        "heading": "Practice across the border",
+        "body": "A New Hampshire resident maintains a place of professional practice in Vermont and applies through that qualifying connection. After commissioning, the person performs a Vermont-authority appointment from the Vermont office. The qualifying place of practice does not authorize use of that commission from a New Hampshire living room."
+      },
+      "keyFacts": [
+        "The applicant must be at least eighteen.",
+        "The current jurisprudence directions permit source consultation.",
+        "The required oath precedes issuance.",
+        "The commission itself grants no legal-practice authority."
+      ]
+    },
+    "exemptions": {
+      "summary": "Vermont assigns different ordinary requirements to particular professional roles. Read the employee category, official-duty setting and exact credential requirement together.",
+      "sections": [
+        {
+          "heading": "Use the particular professional exemption",
+          "body": "The administrative rules retain commissioning for judiciary-related employees while specifying their examination, fee and ordinary-renewal CE exemptions. Attorneys licensed and in good standing in Vermont receive the listed examination and ordinary CE exemptions. Town clerks, assistants and justices of the peace receive the listed fee exemption. These categories have different conditions, so one office title cannot be treated as another category."
+        },
+        {
+          "heading": "Check duty scope and endorsement separately",
+          "body": "Qualifying law-enforcement-related employees have the express official-duty exception from obtaining a commission or endorsement under the rules. The statute defines both the employee categories and the kinds of records associated with official duties. Judiciary-related employees performing outside that scope must comply with all requirements. The general ordinary exemptions do not automatically carry to special endorsements. Attorney complaints have the stated referral route to the Professional Responsibility Board."
+        }
+      ],
+      "example": {
+        "heading": "A court employee helps a neighbor",
+        "body": "A judiciary-related employee uses the official-duty ordinary exemption at work. A neighbor later asks for an unrelated private appointment. The rules require full compliance for that outside-scope work. The person checks the ordinary credential requirements for the private service instead of assuming the employment title supplies the same exemption everywhere."
+      },
+      "keyFacts": [
+        "Ordinary fee exemption and examination exemption are different.",
+        "Vermont attorney status must include good standing.",
+        "The official-duty context matters for employee categories.",
+        "Special endorsement has its own requirements and specified law-enforcement exception."
+      ]
+    },
+    "identity": {
+      "summary": "Vermont permits personal knowledge, specified documentary evidence and a credible-witness route. Personal appearance and knowing voluntary execution are separate concerns.",
+      "sections": [
+        {
+          "heading": "Apply the actual identity route",
+          "body": "Personal knowledge arises from dealings sufficient to establish reasonable certainty. The listed passport, driver-license and nondriver-ID routes permit current documents or expiration no more than three years before the act. Another government ID can qualify under its separate feature and satisfaction conditions. A credible witness personally appears and verifies on oath or affirmation, while the notary knows or properly identifies the witness. Necessary additional information may be requested."
+        },
+        {
+          "heading": "Assess the person and requested act",
+          "body": "The ordinary tangible-record procedure uses shared physical space. A lawful remote procedure needs the endorsement and its separate communication and identity requirements. For acknowledgment and verification, establish the required identity and signature attribution. A notary may refuse when not satisfied about capacity or knowing voluntary execution, subject to other laws. A physically unable signer can direct someone other than the notary to sign, with the required notation."
+        }
+      ],
+      "example": {
+        "heading": "Recent expiration with a discrepancy",
+        "body": "At a Burlington appointment, a signer offers a driver's license expired two years ago. That date is within the statutory window. A mismatch still causes the notary reasonable identity concern, so the notary asks for necessary additional evidence. The expiration allowance does not require ignoring an unresolved discrepancy."
+      },
+      "keyFacts": [
+        "Personal knowledge requires reasonable certainty.",
+        "The listed documentary window allows up to three years of expiration.",
+        "A credible witness supplies a sworn verification and must be known or identified.",
+        "Capacity and voluntary execution can support a lawful refusal."
+      ]
+    },
+    "certificates": {
+      "summary": "A Vermont certificate records the completed act, actual date, jurisdiction and notary information. Physical stamping is optional, with specific rules when a stamp is used.",
+      "sections": [
+        {
+          "heading": "Execute an accurate connected certificate",
+          "body": "Sign contemporaneously after performing the act and use the filed signature manner. Include the required event and commission information. A paper certificate is part of or securely attached to the record, and a different-page certificate includes the individual's name under the rule. An electronic certificate is affixed or logically associated with its record. The particular statutory remote paper procedure addresses later receipt and certificate execution."
+        },
+        {
+          "heading": "Keep stamp and copy powers within their rules",
+          "body": "A notary can clearly print or type the required information without a physical stamp. A chosen stamp contains the specified name, Vermont, title and commission number, is copyable and excludes the State Seal. It remains personal and missing physical stamps require prompt notice within forty-eight hours. The rules limit copy certification to a tangible copy of an electronic record, using the required format assessment and personal or supervised printing."
+        }
+      ],
+      "example": {
+        "heading": "No stamp at the appointment",
+        "body": "A Montpelier notary leaves the stamp at a secure office but has the necessary commission details. The rules permit clear printing or typing of the required information and completion of the actual certificate. That option does not permit the notary to omit signature, act date, jurisdiction or other applicable facts."
+      },
+      "keyFacts": [
+        "Complete the act before adding the notary signature.",
+        "Required certificate information remains necessary without a stamp.",
+        "The physical official stamp cannot include the Vermont State Seal.",
+        "Spouse-party and direct-benefit conflicts can make an act voidable."
+      ]
+    },
+    "renewal-remote": {
+      "summary": "Current ordinary renewal requires one approved CE hour unless exempt. A special endorsement adds one relevant hour and authorizes electronic-record and remote acts under separate safeguards.",
+      "sections": [
+        {
+          "heading": "Maintain the biennial credentials",
+          "body": "Renewal opens six weeks before the printed expiration date through the online system. Current rules and February 2026 instructions require one approved ordinary hour plus one additional relevant endorsement hour. Upload evidence identifying the course, date, attendance and credits. Actual learner time counts, while breaks and lunches do not. Initial issuance within the specified ninety-day end-of-cycle window receives the next-full-period treatment, and subsequent renewals remain required."
+        },
+        {
+          "heading": "Select and control the remote process",
+          "body": "The endorsed notary remains physically in Vermont and uses selected compliant technology. The remote identity routes include qualifying personal knowledge, a credible witness or the prescribed two-part proofing. Confirm the same record, make the simultaneous audiovisual recording and retain it at least seven years under the current rule. Electronic records also require the valid digital certificate and tamper-evident execution. Foreign-located signers have additional nexus and local-prohibition conditions."
+        }
+      ],
+      "example": {
+        "heading": "Electronic signing in the office",
+        "body": "A Rutland signer appears physically but wants an electronic record notarized. The ordinary commission alone covers tangible records with physical appearance. Because the record is electronic, the notary needs the special endorsement and electronic execution safeguards even though no remote video connection is needed for that in-room appointment."
+      },
+      "keyFacts": [
+        "Current ordinary CE is one approved hour unless exempt.",
+        "Endorsement renewal adds one relevant hour.",
+        "Both electronic format and remote location independently trigger endorsement.",
+        "The current recording rule sets at least seven years."
+      ]
+    }
+  },
+  "WI": {
+    "commission": {
+      "summary": "Wisconsin has an ordinary four-year route and a permanent route for qualifying Wisconsin attorneys. Ordinary first applicants and renewals take the required final examination and provide the prescribed application materials.",
+      "sections": [
+        {
+          "heading": "Prepare the ordinary file",
+          "body": "The ordinary eligibility conditions include United States residency, minimum age eighteen, the stated educational equivalency and qualifications for public trust. Study the official duties through the free tutorial or proceed directly to the required final if already knowledgeable. The current final has thirty questions, requires ninety percent and is completed in one sitting. Save the passing browser certificate because the instructions say the office cannot regenerate it."
+        },
+        {
+          "heading": "Wait for issued authority",
+          "body": "Follow the current filing page for the online information, executed oath, specific bond and active seal/signature samples. Notice that the commission has issued precedes performing acts. Permanent attorney applicants have separate good-standing evidence and no ordinary bond, but must still apply and receive issuance. On the November 14 verification date, the filing page schedules a new system for November 16, 2026 at 7 a.m. Central, so consult the official entry when actually filing."
+        }
+      ],
+      "example": {
+        "heading": "An experienced renewal applicant",
+        "body": "A long-serving Milwaukee notary prepares the next four-year application. Familiarity permits skipping readings and quizzes, but the current introduction still requires the final for renewals within its recency window. The applicant saves the passing evidence and completes the renewed materials instead of treating experience as an examination waiver."
+      },
+      "keyFacts": [
+        "Ordinary authority has a four-year term.",
+        "New and renewing four-year applicants take the final.",
+        "Current final passage is ninety percent or better.",
+        "Bar admission alone does not appoint an attorney as notary."
+      ]
+    },
+    "supplies": {
+      "summary": "A four-year Wisconsin commission uses a specific five-hundred-dollar surety bond and a compliant filed official device. Name consistency and prior filing matter whenever a device is used or added.",
+      "sections": [
+        {
+          "heading": "Distinguish the coverage products",
+          "body": "The ordinary bond is a separate notary surety bond, with a qualified Wisconsin provider and full-term coverage. An employment blanket bond does not substitute. Optional E&O can help with covered defense costs and damages but is kept in personal records and does not replace the statutory bond. The surety coverage protects the harmed public and does not cap all personal responsibility."
+        },
+        {
+          "heading": "Match the device to filed execution",
+          "body": "Obtain the official seal or rubber stamp before completing the application as instructed. Include Notary Public, State of Wisconsin and the selected name with the current legal last name in full. The signature used for acts exactly matches the filed device name. All commissioned notaries, including attorneys, use the required tangible-record impression. Additional devices need samples and the prescribed filing and DFI confirmation before use."
+        }
+      ],
+      "example": {
+        "heading": "A second device for travel",
+        "body": "A Green Bay notary wants a portable ink stamp in addition to an embosser. The new device uses the same filed identity and its sample is sent with the required change information before use. Buying from the same supplier as the embosser does not itself complete the agency process."
+      },
+      "keyFacts": [
+        "The ordinary bond amount is five hundred dollars.",
+        "A blanket employment bond is insufficient.",
+        "Permanent attorney commissions have no ordinary bond requirement.",
+        "The seal name includes the full current legal last name."
+      ]
+    },
+    "acts": {
+      "summary": "Choose the ceremony that matches the requested act and certificate. Wisconsin distinguishes acknowledgment, unsworn witnessing and sworn or affirmed statements, with separate conflict and record boundaries.",
+      "sections": [
+        {
+          "heading": "Complete the person-centered ceremony",
+          "body": "For acknowledgment, establish the lawful appearance, identity, understanding and knowing voluntary execution. An earlier signature can be acknowledged through the present procedure. Signature witnessing involves observed signing, and a sworn statement adds the specific truth pledge by oath or affirmation. The handbook requires real-time signing for the sworn-signature procedure and directs re-signing when necessary."
+        },
+        {
+          "heading": "Record the event accurately",
+          "body": "Use the actual notarial location for venue and the actual event date. Sign and make the legible official impression with the proper certificate. A representative confirms due authority and the certificate identifies that role. Screen the notary, spouse and domestic partner conflicts. The handbook prohibits vital-record copying and notarization of vital-record photocopies and directs customers to official custodians. Nonattorney commissioning does not authorize drafting legal papers."
+        }
+      ],
+      "example": {
+        "heading": "Earlier agreement, current affidavit",
+        "body": "A customer brings a previously signed private agreement for acknowledgment and an earlier signed affidavit for sworn verification. The first can be acknowledged through the present ceremony. For the affidavit, the notary administers the oath or affirmation and witnesses the required fresh signing. The certificates describe the different acts actually completed."
+      },
+      "keyFacts": [
+        "Venue follows the location of the notarial act.",
+        "Acknowledgment can concern an earlier signature.",
+        "A truth pledge belongs to the sworn procedure.",
+        "Representative execution requires the appropriate authority confirmation."
+      ]
+    },
+    "maintenance": {
+      "summary": "Wisconsin requires timely written contact updates and prior filing for new-name or device use. Journals, filed public records, replacement certificates and insurance have separate treatment.",
+      "sections": [
+        {
+          "heading": "Update the official usage record",
+          "body": "Report changed contact information, including email, in writing within ten days. Before using a new name and device, submit the required change form and samples. The tutorial permits continuing the former filed name for the remainder of the existing commission when the signature exactly matches the device, but a later commission uses the current legal last name. Additional devices use the stated prior filing and confirmation process."
+        },
+        {
+          "heading": "Respond to loss and preserve useful evidence",
+          "body": "Immediately report a lost or stolen official device in writing. Order the directed different-appearance replacement, submit the required sample and wait for DFI confirmation before using it. A replacement commission certificate has its own written-request procedure. The ordinary journal is encouraged rather than generally mandated by the handbook, while remote audiovisual preservation has its own requirement. Filed commission application and bond papers are subject to the stated public-record framework."
+        }
+      ],
+      "example": {
+        "heading": "Move and loss in the same month",
+        "body": "A Madison notary changes email and later discovers a missing stamp. The email update has the ten-day written notice rule, while the stamp loss calls for immediate written notice and the separate replacement workflow. Completing one notice does not automatically authorize a new device or update every other changed detail."
+      },
+      "keyFacts": [
+        "Contact changes have a ten-day written notice deadline.",
+        "Signature and filed device name stay consistent.",
+        "Device loss or theft requires immediate written notice.",
+        "An ordinary optional journal does not waive remote recording retention."
+      ]
+    },
+    "remote": {
+      "summary": "Wisconsin ordinary RON uses approved technology with provider-specific training and remote safeguards. Estate-planning acts use a distinct attorney-supervised procedure under section 140.147.",
+      "sections": [
+        {
+          "heading": "Arrange ordinary RON safeguards",
+          "body": "A commissioned notary obtains authorization and training with a suitable approved provider, then checks provider notification and the public database. Confirm identity through the prescribed route, the same record, tamper evidence and the communication-technology certificate statement. Preserve the audiovisual performance for at least seven years through a retrievable arrangement. The notary remains physically in Wisconsin and ultimately responsible for preservation and confidentiality."
+        },
+        {
+          "heading": "Route estate planning correctly",
+          "body": "Identify a will, trust-related record, covered power of attorney or other listed estate-planning document before using an ordinary workflow. The special procedure needs a Wisconsin attorney in good standing supervising, real-time interactive communication and both notary and individual physically in Wisconsin. Follow the document presentation, declarations, visible execution, listed original/copy handling and attorney affidavit of compliance. Its technology treatment differs from ordinary approved-provider RON."
+        }
+      ],
+      "example": {
+        "heading": "One video request, two record types",
+        "body": "A Wisconsin notary receives a commercial closing record and a personal health-care power of attorney. The limited real-estate context and the estate-planning category require careful routing under the guide. The ordinary vendor workflow cannot simply be applied to the health-care document without the special supervision, location and affidavit safeguards."
+      },
+      "keyFacts": [
+        "No additional state commission is required for remote work.",
+        "Ordinary RON requires approved technology and system training.",
+        "The ordinary remote recording minimum is seven years.",
+        "Estate remote execution has a separate attorney-supervised process."
+      ]
+    }
+  },
+  "WY": {
+    "commission": {
+      "summary": "Wyoming terms last six years and require education and examination for each new or renewed commission.",
+      "sections": [
+        {
+          "heading": "Complete the application",
+          "body": "Meet age eighteen, the lawful U.S. status and the Wyoming residence, employment, practice or specified military-family connection. Complete the application and oath and certify education and examination. The January 2026 form directs hard-copy delivery or mail with check or money order. An approved-provider completion certificate permits skipping Part III, while the remaining required parts still apply."
+        },
+        {
+          "heading": "Maintain the authority",
+          "body": "After processing, the state sends the appointment letter and certificate. Obtain the new compliant stamp using its details. Only one Wyoming commission can be active at once. Report changed information within thirty days. A name change includes the official-signature sample and separate fee, and the current form preserves the original term dates. Commissioning provides no public-official immunity."
+        }
+      ],
+      "example": {
+        "heading": "A provider-certificate renewal",
+        "body": "A Casper notary completes an approved alternative course and exam. The certificate permits skipping the state form exam but does not remove Part IV. The applicant executes the oath before another commissioned notary and submits the remaining materials, then obtains the new-term stamp."
+      },
+      "keyFacts": [
+        "First and renewed terms require education and examination.",
+        "The state paper exam has twenty statements with fourteen correct required.",
+        "The term is six years.",
+        "A name change does not begin a fresh term."
+      ]
+    },
+    "acts": {
+      "summary": "Wyoming acts require satisfactory identity, knowing willing execution and a complete certificate for the actual procedure.",
+      "sections": [
+        {
+          "heading": "Establish the person and act",
+          "body": "Personal knowledge dispels reasonable uncertainty through interactions or corroboration. A qualifying government credential can be current or expired no more than three years, with the rule-required photograph. A credible witness personally knows the principal and gives the identity oath while being known or properly identified. Acknowledgment, witnessing and jurat have different execution conditions."
+        },
+        {
+          "heading": "Apply special role conditions",
+          "body": "Representative capacity is established through the record, personal knowledge or an official record. Physical inability permits a directed unaffected-witness signature, or an officer signature with two unaffected witnesses, with the required notation and entries. Copy certification requires full, true and accurate reproduction. Official public-entity records have the stated issuing-or-holding-entity employment exception to the prohibition."
+        }
+      ],
+      "example": {
+        "heading": "Different source records",
+        "body": "An independent Cheyenne notary receives a court-record copy request and a private copy request. The first triggers the official-record restriction unless the actual employment exception applies. The second still requires an accurate reproduction. Customer purpose and payment do not resolve either source status or accuracy."
+      },
+      "keyFacts": [
+        "Credentials meet recency and photograph requirements.",
+        "A jurat includes the principal's truth pledge.",
+        "Officer-directed signing requires two unaffected witnesses.",
+        "Spouse and civil-partner interests are separately screened."
+      ]
+    },
+    "records": {
+      "summary": "Wyoming journals chronicle all acts, and secure personal control applies to records and devices.",
+      "sections": [
+        {
+          "heading": "Protect the journal",
+          "body": "Maintain one or more tangible or electronic journals for acts on either record medium. The education presentation includes refusals and corrections. Keep records securely under sole control and do not permit another officer to use the journal. Original surrender at employment termination requires state approval, while the employer may retain the specified employment-scope copy. Promptly report journal or device loss through the prescribed route."
+        },
+        {
+          "heading": "Correct the evidence properly",
+          "body": "The stamp uses the prescribed bordered rectangle, blue-or-black color and commission details, excluding the residence county and Great Seal. Each renewal requires a new physical or electronic stamp. Certificate text corrections need supporting transaction evidence where applicable, dated and initialed edits and a corresponding journal notation. Only the original officer makes or authorizes changes, with written third-party authorization and retained copies when that route is used."
+        }
+      ],
+      "example": {
+        "heading": "Text omission and stamp error",
+        "body": "A Laramie notary finds an omitted certificate fact supported by the journal and a wrong stamp number. The text follows the correction process. The stamp image is not edited by hand. The officer obtains a corrected stamp and follows the permitted subsequent-impression procedure with the proper record."
+      },
+      "keyFacts": [
+        "All acts are chronicled regardless of payment.",
+        "Either journal medium can serve either record type.",
+        "Renewal requires a new stamp.",
+        "The performing officer controls certificate corrections."
+      ]
+    },
+    "fees": {
+      "summary": "Basic notarial fees, technology charges and travel fees have separate conditions and timing.",
+      "sections": [
+        {
+          "heading": "Agree to compliant charges",
+          "body": "The general notarial ceiling is ten dollars, with the listed multiple-person provision. Fees may be reduced or waived. Technology totals are agreed before the act with the separate nonmandated-charge explanation. Travel is agreed before the trip, stays within the standard IRS mileage rate and has its own separate-charge explanation. The chapter permits advance collection."
+        },
+        {
+          "heading": "Use the actual refund facts",
+          "body": "Completed acts have the stated nonrefund discretion. A compliant prepaid technology fee may remain nonrefundable after required proofing fails for fraud or innocent reasons. The travel rule permits retaining prepaid travel for listed lawful refusal or principal cancellation with less than twenty-four hours notice. Officer cancellation without completion requires refund. An employer may prohibit charges for employment acts."
+        }
+      ],
+      "example": {
+        "heading": "Different cancellations",
+        "body": "One principal cancels shortly before a mobile appointment. The notary cancels a separate appointment without completion. The rule permits retaining the compliant travel fee in the specified short-notice principal case and requires refund in the officer-cancellation case. The actual cancellation facts control."
+      },
+      "keyFacts": [
+        "The basic fee may be waived.",
+        "Technology agreement precedes the act.",
+        "Travel agreement precedes travel.",
+        "Officer cancellation without completion requires travel refund."
+      ]
+    },
+    "remote": {
+      "summary": "Wyoming separates remote online electronic acts from remote ink acknowledgment of tangible records.",
+      "sections": [
+        {
+          "heading": "Choose the lawful route",
+          "body": "Before the first electronic-record or remotely located-person act, notify the Secretary and identify intended technology. RON can cover authorized acts when the statutory conditions are met in one recorded session. RIN is limited to acknowledgment after the principal signs, dates and submits the tangible ink record. Both require reasonable steps ensuring the principal and required witnesses view the same record."
+        },
+        {
+          "heading": "Preserve remote evidence",
+          "body": "Record the entire communication audiovisually and apply the statutory custody and official-access rules. The certificate indicates remote method and names the actual system under the rule. Applicable system or rule conditions may add identity methods. Overseas principals need both the no-prohibition and U.S.-nexus conditions. Bordering-state officer authority depends on recognition and Wyoming rules, with accurate actual venue."
+        }
+      ],
+      "example": {
+        "heading": "An ink jurat request",
+        "body": "A principal mails an affidavit and asks for a remote ink jurat. RIN is defined as acknowledgment and cannot be used indiscriminately for every paper act. The notary explains that boundary and obtains lawful instructions for the actual requested act without certifying an unperformed oath."
+      },
+      "keyFacts": [
+        "Electronic format or remote location triggers prior notice.",
+        "RIN is a tangible acknowledgment.",
+        "The entire remote communication is recorded.",
+        "Remote certificates name the technology used."
       ]
     }
   }

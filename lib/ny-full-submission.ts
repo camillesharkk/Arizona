@@ -10,7 +10,7 @@ import { CA_EXAM } from "./ca-site";
 import { HI_EXAM } from "./hi-site";
 import { pickCaFullExam } from "./ca-exam";
 import { pickHiFullExam } from "./hi-exam";
-import type { StateCode } from "./types";
+import type { Question, StateCode } from "./types";
 import { accountProCovers, ctProCovers } from "./account-pro.ts";
 import { stateProCovers, NC_PRO_PRODUCT, entitlementServesState } from "./state-pro.ts";
 import { serverQuestionById as questionById } from "./server-questions";
@@ -77,7 +77,15 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     const expectedCount = pack?.fullCountFor?.(pro) ?? config.fullCount;
     if (input.questions.length !== expectedCount || new Set(input.questions.map(answer => answer.questionId)).size !== expectedCount) throw new Error("invalid_exam");
     if (state === "IN") await requireIndianaSitting(transaction, userId, input.examId, input.questions, pro, input.guestSitting);
-    const draw = state !== "IN" && state !== "NY" && Number.isSafeInteger(input.seed) ? (isFreeState(state) ? { questions: shuffle(serverStateQuestions(state).filter(question => pro || question.is_free), input.seed!).slice(0, expectedCount), unscoredIds: [] } : pack ? pack.pickFull(input.seed!, pro) : classic[state as keyof typeof classic].pickFull(input.seed!)) : null;
+    let draw: { questions: Question[]; unscoredIds: string[] } | null = null;
+    if (state !== "IN" && state !== "NY" && Number.isSafeInteger(input.seed)) {
+      if (isFreeState(state)) {
+        const accessible = serverStateQuestions(state).filter(question => pro || question.is_free);
+        draw = { questions: shuffle(accessible, input.seed!).slice(0, expectedCount), unscoredIds: [] };
+      } else {
+        draw = pack ? pack.pickFull(input.seed!, pro) : classic[state as keyof typeof classic].pickFull(input.seed!);
+      }
+    }
     const matchesCurrentDraw = Boolean(draw && draw.questions.every((question, index) => question.question_id === input.questions[index]?.questionId));
     const matchesFreeDraw = isFreeState(state) && pro && Number.isSafeInteger(input.seed) &&
       shuffle(serverStateQuestions(state).filter(question => question.is_free), input.seed!).slice(0, expectedCount)

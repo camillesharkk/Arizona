@@ -986,7 +986,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
     "processKind": "Approved course",
     "summary": "New applicants complete an authorized course of study and pass its examination before applying online and taking the Circuit Court oath.",
     "training": "Complete a Maryland course from an authorized provider. The Secretary of State instructs new applicants to review the official handbook. Course delivery and scheduling are arranged with the provider.",
-    "assessment": "New applicants submit the course completion certificate and the provider's certificate of passing. A single statewide question count, time limit or passing percentage was not verified from the opened official material.",
+    "assessment": "New applicants submit the course completion certificate and the provider's Certificate of Passing. COMAR 01.02.08.16 requires at least 20 multiple-choice questions, four choices per question and at least 80% correct. Providers give immediate results and qualifying applicants an opportunity to retest. A uniform examination time limit was not verified.",
     "steps": [
       "Review eligibility and the official handbook.",
       "Complete the authorized new-applicant course and pass the examination.",
@@ -1075,15 +1075,29 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
         "url": "https://sos.maryland.gov/Notary/Pages/RemoteNotaryInfo.aspx",
         "reference": "Online notification and authorization",
         "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "md-comar-exam-standards",
+        "title": "COMAR 01.02.08.16 Course of Study and Examination Standards",
+        "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.16",
+        "reference": "Sections E-I, provider question bank, minimum examination size, choices, passing result and immediate scoring",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "md-comar-provider",
+        "title": "COMAR 01.02.08.15 Authorized Provider Responsibilities",
+        "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.15",
+        "reference": "Sections D-E, completion certificate, passing certificate and retesting",
+        "checkedAt": "2026-11-14"
       }
     ],
     "specs": {
       "questions": null,
       "minutes": null,
-      "passing": null,
+      "passing": "At least 80%",
       "credential": "Course completion certificate and examination passing certificate"
     },
-    "difference": "Maryland distinguishes new applicants, who complete a course and examination, from timely renewals, which require the course. One FAQ eligibility paragraph inconsistently adds a renewal examination. The statute and dedicated renewal instructions support the distinction used here.",
+    "difference": "Maryland distinguishes new applicants, who complete a course and examination, from timely renewals, which require the course. One FAQ eligibility paragraph inconsistently adds a renewal examination. The statute and dedicated renewal instructions support the distinction used here. COMAR 01.02.08.16 establishes the minimum of 20 questions and the 80% passing threshold for authorized examinations.",
     "topics": [
       {
         "id": "commission",
@@ -3056,14 +3070,14 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
       "Check eligibility and complete the approved education and exam.",
       "Obtain the $10,000 bond and have the required applicant signature and oath notarized by another authorized officer.",
       "File online with PDF completion certificate, oath and bond and pay the $30 application fee.",
-      "After approval, obtain the compliant official stamp and register it within 45 days."
+      "After approval, obtain the compliant official stamp. Provide its copy to the Secretary of State within 45 days of receiving the commission and before performing the first notarial act."
     ],
     "exceptions": [
       "Applicants can qualify through New Mexico residency or a place of employment in the state.",
       "Automatic notarial officers have a distinct office/registration basis of authority and still have training and stamp duties. The historical 2023 training grace period is not a current new-applicant exemption."
     ],
-    "renewal": "The commission term is four years. Renew online and register the stamp within 45 days. The SOS handbook permits renewal without repeating the course/exam if the course/exam was taken after January 1, 2022 and the commission has not been expired more than one year.",
-    "ron": "A commissioned notary or qualifying automatic notarial officer completes separate RON education and examination and files the RON application as an amendment. The authorized officer must be physically in New Mexico during remote acts and must comply with separate electronic-stamp, technology, recording and journal requirements.",
+    "renewal": "The commission term is four years. Renew online. For the renewed commission, file the stamp copy within 45 days of receipt and before its first act. Under 12.9.3.8(A)(1) NMAC, a recorded prior examination pass can excuse retraining and retesting, unless the commission expired more than one year ago or the Secretary of State determines that substantial legal or rule changes since the last application require them.",
+    "ron": "A commissioned notary or qualifying automatic notarial officer completes separate RON education and examination and files the RON application as an amendment. The authorized officer must be physically in New Mexico during remote acts and must comply with separate electronic-stamp, technology, recording and journal requirements. The Secretary of State must receive the electronic-stamp copy within 45 days of RON authorization and before the first remote act.",
     "officialNext": {
       "label": "New Mexico official approved training and exam",
       "url": "https://www.sos.nm.gov/notary-and-apostille/notary-commissions/training-resources/"
@@ -3124,6 +3138,20 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
         "url": "https://www.sos.nm.gov/notary-and-apostille/notary-commissions/become-a-remote-online-notary/",
         "reference": "Separate RON application, course and examination",
         "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "nm-procedure-rule",
+        "title": "12.9.3 NMAC Notarial Procedures",
+        "url": "https://www.srca.nm.gov/parts/title12/12.009.0003.html",
+        "reference": "12.9.3.8(A)(1) and (C), renewal education and official stamp filing",
+        "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "nm-ron-rule",
+        "title": "12.9.4 NMAC Remote Online Notarization Standards",
+        "url": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+        "reference": "12.9.4.8(C) and 12.9.4.13(A), electronic stamp receipt before remote work",
+        "checkedAt": "2026-11-14"
       }
     ],
     "specs": {
@@ -3132,7 +3160,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
       "passing": "80%",
       "credential": "Certificate of Completion of Notary Education Course and exam"
     },
-    "difference": "New Mexico distinguishes commissioned notaries from automatic notarial officers. Both have education requirements, and RON requires a separate course/exam.",
+    "difference": "New Mexico distinguishes commissioned notaries from automatic notarial officers. Both have education requirements, and RON requires a separate course/exam. Ordinary and electronic stamp-copy deadlines also apply before the first act. Renewal education exceptions depend on both prior examination records and the Secretary of State's determination of substantial changes.",
     "questions": [
       {
         "id": "nm-001",

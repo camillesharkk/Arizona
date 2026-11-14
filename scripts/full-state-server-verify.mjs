@@ -19,6 +19,7 @@ const bankRoute = load('app/api/state/questions/route.ts');
 const progress = load('app/api/progress/route.ts');
 const tutor = load('app/api/ai/tutor/route.ts');
 const daily = load('app/api/daily-study/route.ts');
+const proUsageRoute = load('app/api/billing/pro-usage/route.ts');
 const mistakes = load('app/api/mistakes/route.ts');
 const { serverStateQuestions } = load('data/full-state-server.ts');
 const { shuffle } = load('lib/answer-sequence.ts');
@@ -57,9 +58,15 @@ for (const code of codes) {
     const result = await (await bankRoute.GET(request(`/api/state/questions/?state=${code}`))).json();
     assert.equal(result.questions.length, accessible, `${code} bank ${accessible}`);
     assert.equal(result.pro, isPro);
+    if (isPro) {
+      assert.equal((await proUsageRoute.POST(request('/api/billing/pro-usage/', { featureCode: 'advanced_analytics', state: code }))).status, 200);
+      assert.equal(usage.at(-1)[3], code);
+    }
     const answer = { state: code, questionId: paid.question_id, questionVersion: paid.version, selected: paid.correct_option, attemptId: randomUUID() };
     response = await postProgress(answer);
     assert.equal(response.status, isPro ? 200 : 402, `${code} paid answer authorization`);
+    response = await mistakes.POST(request('/api/mistakes/', { questionId: paid.question_id, saveForReview: true }));
+    assert.equal(response.status, isPro ? 200 : 402, `${code} new paid review authorization`);
     response = await tutor.POST(request('/api/ai/tutor/', { state: code, questionId: paid.question_id, questionVersion: paid.version, mode: 'explain' }));
     assert.equal(response.status, isPro ? 200 : 402, `${code} paid Tutor authorization`);
     const plan = await (await daily.GET(request(`/api/daily-study/?state=${code}`))).json();
@@ -80,7 +87,14 @@ for (const code of codes) {
   const saved = await Promise.all(results.map(result => result.json()));
   assert.equal(saved.filter(result => result.duplicate).length, 1);
   assert.equal(saved[0].exam.correctCount, 36);
-  assert.equal((await store.listStats(freeUser.id)).length, 40);
+  const answerStats = await store.listStats(freeUser.id);
+  assert.equal(answerStats.length, 40);
+  assert.ok(answerStats.every(stat => stat.chapter === bank.find(question => question.question_id === stat.questionId).study_topic));
+  const legacyStat = answerStats.find(stat => stat.wrongCount > 0);
+  await store.upsertStat({ ...legacyStat, chapter: legacyStat.topic });
+  const projected = await (await progress.GET(request('/api/progress/'))).json();
+  assert.equal(projected.stats.find(stat => stat.questionId === legacyStat.questionId).chapter, bank.find(question => question.question_id === legacyStat.questionId).study_topic);
+  assert.equal((await store.getStat(freeUser.id, legacyStat.questionId)).wrongCount, legacyStat.wrongCount);
   assert.equal((await packFullExamCounts(freeUser.id))[code], 1);
   assert.equal((await postProgress(full(free, 43))).status, 402, `${code} free full trial limit`);
   const wrong = await (await mistakes.GET(request(`/api/mistakes/?state=${code}`))).json();

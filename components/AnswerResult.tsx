@@ -79,9 +79,9 @@ export function AnswerResult({
             </p>
           )}
           {topicPaths ? <div className="tool-row">
-            <Link href={`${topicPaths.study}#${topic}`}>Study This Rule</Link>
-            <Link href={`${topicPaths.studyCards}?topic=${topic}`}>Study Cards</Link>
-            <Link href={`${topicPaths.practice}?mode=practice&area=${topic}`}>Practice This Topic</Link>
+            <Link className="chip" href={`${topicPaths.study}#${topic}`}>Study This Rule</Link>
+            <Link className="chip" href={`${topicPaths.studyCards}?topic=${topic}`}>Study Cards</Link>
+            <Link className="chip" href={`${topicPaths.practice}?mode=practice&area=${topic}`}>Practice This Topic</Link>
           </div> : null}
           {tutor && selected ? <TutorPanel q={q} selected={selected} /> : null}
         </div>
