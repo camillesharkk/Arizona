@@ -8,7 +8,7 @@ import { hiPaths, isHawaiiPath } from "./hi-site.ts";
 import { paths } from "./paths.ts";
 
 /** Live states on arizonanotaryprep.com. Texas stays on its own app. */
-export const LIVE_STATES = ["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"] as const;
+export const LIVE_STATES = ["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY"] as const;
 export type LiveState = (typeof LIVE_STATES)[number];
 
 export const caPaths = {
@@ -64,9 +64,13 @@ export function isCaliforniaPath(pathname: string) {
   return pathname === "/california" || pathname.startsWith("/california/");
 }
 
+import { freeStateCatalog, freeStatePaths } from "./free-state-catalog";
+
 const SWITCH_FEATURES = ["practice", "questions", "study", "studyCards", "mistakes", "daily", "resources", "examGuide", "passingScore", "laws", "become", "pricing", "home"] as const;
 
 function switchBundle(code: LiveState) {
+  const free = freeStateCatalog.find(([value]) => value === code);
+  if (free) return freeStatePaths(free[2]);
   if (code === "NC") return ncPaths;
   if (code === "IN") return inPaths;
   if (code === "CA") return caPaths;
@@ -95,7 +99,8 @@ function switchBundle(code: LiveState) {
 /** Matching page in another live state. Drops topic ids, question ids, and exam query. */
 export function switchStateHref(pathname: string, target: LiveState) {
   const path = pathname.split("?")[0] || "/";
-  const current: LiveState = isIndianaPath(path) ? "IN" : isNorthCarolinaPath(path) ? "NC" : isConnecticutPath(path) ? "CT" : isLouisianaPath(path) ? "LA" : isPennsylvaniaPath(path) ? "PA" : isNewYorkPath(path) ? "NY" : isHawaiiPath(path) ? "HI" : isCaliforniaPath(path) ? "CA" : "AZ";
+  const free = freeStateCatalog.find(([, , slug]) => path === `/${slug}` || path.startsWith(`/${slug}/`));
+  const current: LiveState = free ? free[0] : isIndianaPath(path) ? "IN" : isNorthCarolinaPath(path) ? "NC" : isConnecticutPath(path) ? "CT" : isLouisianaPath(path) ? "LA" : isPennsylvaniaPath(path) ? "PA" : isNewYorkPath(path) ? "NY" : isHawaiiPath(path) ? "HI" : isCaliforniaPath(path) ? "CA" : "AZ";
   if (current === target) return path.endsWith("/") ? path : `${path}/`;
   const here = switchBundle(current);
   const there = switchBundle(target);

@@ -26,6 +26,7 @@ const routeRequire = (id: string) => {
     },
   }) };
   if (id === "@/lib/state-release") return { productionStateBlocked: () => false };
+  if (id === "@/lib/free-state-catalog") return { isFreeState: (state: string) => ['AR', 'CO', 'IL', 'ME', 'MD', 'MO', 'MT', 'NE', 'NV', 'NJ', 'NM', 'OH', 'OR', 'UT', 'VT', 'WI', 'WY'].includes(state) };
   // Save-for-review and GET scheduling are outside these action regression checks.
   if (id.startsWith("@/")) return {};
   return require(id);

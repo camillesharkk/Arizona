@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useResolvedState, useSavedState } from "@/components/SavedState";
+import { parseStateCookie } from '@/lib/site-state';
 
 type Settings = {
   mode: "recommended" | "custom";
@@ -35,7 +36,7 @@ export function StudySettings() {
 
   const savedState = useResolvedState(useSavedState());
   const requested = useSearchParams().get("state");
-  const state = requested === "AZ" || requested === "CA" || requested === "HI" || requested === "NY" || requested === "PA" || requested === "LA" || requested === "CT" || requested === "NC" || requested === "IN" ? requested : savedState || "AZ";
+  const state = parseStateCookie(requested) ?? savedState ?? 'AZ';
 
   useEffect(() => {
     let cancelled = false;

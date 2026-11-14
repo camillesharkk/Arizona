@@ -25,8 +25,17 @@ console.log("Guide progress: real-account keys, guest/state isolation, unmarking
 
 const { prepPacks } = load("lib/prep-pack.ts");
 const { prepGuideTopics } = load("data/prep-study-guide.ts");
+const { freeStateContent } = load('data/free-state-content.ts');
 for (const pack of Object.values(prepPacks)) {
   for (const topic of pack.topics) {
+    if (pack.freeLaunch) {
+      const content = freeStateContent[pack.code];
+      assert.ok(content.topics.some(item => item.id === topic.id));
+      const rules = content.questions.filter(question => question.studyTopic === topic.id);
+      assert.ok(rules.length > 0);
+      assert.ok(rules.every(question => question.explanation.length > 20 && content.sources.some(source => source.id === question.sourceId)), `${pack.code}/${topic.id} has sourced rules and scenarios`);
+      continue;
+    }
     assert.ok(prepGuideTopics[pack.code]?.[topic.id]?.example.body || (["CT","NC","IN"].includes(pack.code) && pack.questions().some(q=>q.study_topic===topic.id && q.explanation.length>40)), `${pack.code}/${topic.id} has authored material`);
     assert.ok(pack.cards.some((card) => card.study === topic.id), `${pack.code}/${topic.id} has reviewed concepts`);
     assert.ok(pack.questions().some((question) => question.study_topic === topic.id), `${pack.code}/${topic.id} has topic questions`);

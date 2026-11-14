@@ -1,9 +1,10 @@
+import { isFreeState } from "./free-state-catalog";
 import type { Letter } from "./sitting.ts";
 import { applyMistakeImport, applyReviewImport, type ReviewTopic, type TopicMiss } from "./ca-next.ts";
 import { loadProgress, saveProgress } from "./storage.ts";
 import { currentQuestionVersion } from './question-revisions.ts';
 
-export type TopicPracticeState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN";
+export type TopicPracticeState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN" | "AR" | "CO" | "IL" | "ME" | "MD" | "MO" | "MT" | "NE" | "NV" | "NJ" | "NM" | "OH" | "OR" | "UT" | "VT" | "WI" | "WY";
 
 export type CaQuickAttempt = {
   id: string;
@@ -87,17 +88,17 @@ export function hasPendingCaAttempts(state: TopicPracticeState) {
 export function readCaAttempt(owner: string, id: string, state: TopicPracticeState = "CA") {
   if (!id) return null;
   const item = listCaAttempts(owner, state).find((item) => item.id === id);
-  if (['NY','PA','LA','CT','NC','IN'].includes(state) && item?.questionIds.some(id => (item.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
+  if (['NY','PA','LA','CT','NC','IN','AR','CO','IL','ME','MD','MO','MT','NE','NV','NJ','NM','OH','OR','UT','VT','WI','WY'].includes(state) && item?.questionIds.some(id => (item.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
   return item || null;
 }
 
 export function latestCaQuick(owner: string, state: TopicPracticeState = "CA") {
-  return listCaAttempts(owner, state).find(item => item.mode === "quick" && (!['NY','PA','LA','CT','NC','IN'].includes(state) || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id)))) || null;
+  return listCaAttempts(owner, state).find(item => item.mode === "quick" && (!['NY','PA','LA','CT','NC','IN','AR','CO','IL','ME','MD','MO','MT','NE','NV','NJ','NM','OH','OR','UT','VT','WI','WY'].includes(state) || item.questionIds.every(id => (item.questionVersions?.[id] ?? 1) === currentQuestionVersion(id)))) || null;
 }
 
 export function saveCaQuickAttempt(row: CaQuickAttempt) {
   if (typeof window === "undefined" || !row.id || !row.owner) return;
-  const state: TopicPracticeState = row.state === "AZ" || row.state === "HI" || row.state === "NY" || row.state === "PA" || row.state === "LA" || row.state === "CT" || row.state === "NC" || row.state === "IN" ? row.state : "CA";
+  const state: TopicPracticeState = isFreeState(row.state) ? row.state : row.state === "AZ" || row.state === "HI" || row.state === "NY" || row.state === "PA" || row.state === "LA" || row.state === "CT" || row.state === "NC" || row.state === "IN" ? row.state : "CA";
   const all = readList<unknown>(keys(state).attempts).map((item) => asAttempt(item, state)).filter((item): item is CaQuickAttempt => Boolean(item));
   const index = all.findIndex((item) => item.id === row.id);
   if (index >= 0) {

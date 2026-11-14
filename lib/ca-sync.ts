@@ -5,7 +5,7 @@ import { adoptGuestSittings, readSitting, sittingKey } from "@/lib/sitting";
 import { fetchAccount } from "@/lib/client-account";
 
 type SyncResult = { ok: boolean; pending: boolean; message?: string };
-const states: TopicPracticeState[] = ["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN"];
+const states: TopicPracticeState[] = ["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY"];
 const inflight = new Map<string, Promise<SyncResult>>();
 
 export async function syncCaAttempts(state: TopicPracticeState = "CA", userId?: string): Promise<SyncResult> {

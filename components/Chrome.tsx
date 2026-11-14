@@ -1,5 +1,7 @@
 "use client";
 
+import { isFreeState } from "@/lib/free-state-catalog";
+import { stateByCode } from "@/lib/states";
 import { fetchAccount, invalidateAccountRead } from "@/lib/client-account";
 import { syncGuestProgress } from "@/lib/ca-sync";
 
@@ -141,7 +143,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const onHome = Boolean(state) && (pathname === nav.home || pathname === `${nav.home.replace(/\/$/, "")}`);
   const signInHref = `${paths.login}?next=${encodeURIComponent(returnTo)}`;
   const links = state ? primaryLinks(nav) : [];
-  const extra = state ? moreLinks(nav, state) : [];
+  const extra = state ? moreLinks(nav, state).filter(item => !isFreeState(state) || item.label !== "Study cards") : [];
 
   return (
     <header className="site-header">
@@ -149,7 +151,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
         <div className="header-left">
           <Link href={state ? nav.home : "/"} className="logo">
             <span className="logo-mark">{state === "IN" ? "I" : state === "CT" ? "C" : state === "CA" ? "C" : state === "HI" ? "H" : state === "NY" ? "Y" : state === "PA" ? "P" : state === "LA" ? "L" : state === "AZ" ? "A" : "N"}</span>
-            {state === "IN" ? "Indiana" : state === "NC" ? "North Carolina" : state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
+            {isFreeState(state) ? stateByCode(state)?.name : state === "IN" ? "Indiana" : state === "NC" ? "North Carolina" : state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
           </Link>
           <StateMenu pathname={pathname} current={state} indianaPreview={indianaPreview} />
         </div>

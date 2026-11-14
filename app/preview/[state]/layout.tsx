@@ -5,7 +5,7 @@ import { StateTheme } from "@/components/StateTheme";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
 import Link from "next/link";
 
-const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", indiana: "IN", "north-carolina": "NC", connecticut: "CT" };
+const codes: Record<string, "CT" | "IN" | "NC" | "NY" | "PA" | "LA"> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", indiana: "IN", "north-carolina": "NC", connecticut: "CT" };
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },

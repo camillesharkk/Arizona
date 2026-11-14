@@ -9,6 +9,7 @@ import { packNavigationFor } from "@/lib/prep-navigation";
 import { paths } from "@/lib/paths";
 import type { LiveCode } from "@/lib/site-state";
 import { ProAccessNote, formatProUntil } from "@/components/ProAccessNote";
+import { isFreeState } from '@/lib/free-state-catalog';
 
 export type HeaderUser = {
   email: string;
@@ -111,7 +112,7 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
           <Link role="menuitem" href={paths.billing} onClick={() => setOpen(false)}>
             Billing & Access
           </Link>
-          <Link role="menuitem" href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>{pricingLabel}</Link>
+          {!isFreeState(stateCode) ? <Link role="menuitem" href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>{pricingLabel}</Link> : null}
           <div className="account-menu-sep" role="separator" />
           <button className="account-signout" type="button" role="menuitem" onClick={onLogout}>
             Sign out

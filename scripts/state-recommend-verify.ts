@@ -1,4 +1,8 @@
-import { prepStates, recommendStates, type PrepState } from "../lib/states.ts";
+import { prepStates as liveStates, recommendStates, type PrepState } from "../lib/states.ts";
+import { releasedFreeStates } from '../lib/free-state-catalog.ts';
+
+// Keep deterministic recommendation fixtures as the live catalog expands.
+const prepStates: PrepState[] = liveStates.map(state => ['AZ', 'CA', 'HI'].includes(state.code) ? state : { ...state, status: 'comingSoon', homePath: null });
 
 function fail(message: string): never {
   throw new Error(message);
@@ -61,4 +65,9 @@ if (codes(oneOther.primary) !== "AZ" || oneOther.similar || oneOther.others.leng
 
 if (prepStates.length !== 28) fail(`count ${prepStates.length}`);
 if (prepStates.filter((state) => state.status === "available").map((state) => state.code).sort().join() !== "AZ,CA,HI") fail("available");
+for (const code of releasedFreeStates) {
+  const state = liveStates.find(state => state.code === code);
+  if (state?.status !== 'available' || !state.homePath) fail(`released ${code}`);
+}
+if (liveStates.filter(state => state.status === 'available').length !== 9 + releasedFreeStates.length) fail('live state count');
 console.log("state-recommend-verify ok");

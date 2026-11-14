@@ -18,5 +18,6 @@ for (const path of ['/arizona-notary-exam/', '/california/', '/hawaii/', '/calif
 const sitemap = await (await fetch(base + '/sitemap.xml', { signal: AbortSignal.timeout(30000) })).text();
 assert.doesNotMatch(sitemap, /\/preview\//);
 assert.match(sitemap, /\/new-york\/practice\//);
-assert.doesNotMatch(sitemap, /\/pennsylvania\/|\/louisiana\//);
-console.log('Isolated production HTTP: NY/PA/LA HTML and RSC denied before render; AZ/CA/HI/NY public routes return 200; state study cards render; NY sitemap public and PA/LA closed');
+assert.match(sitemap, /\/pennsylvania\//);
+assert.match(sitemap, /\/louisiana\//);
+console.log('Production HTTP: preview HTML/RSC denied; existing public routes and study cards render; NY/PA/LA remain public in sitemap');

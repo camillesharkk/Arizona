@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { BookmarkIcon } from "@/components/QuizChrome";
 import { paths } from "@/lib/paths";
+import { parseStateCookie } from '@/lib/site-state';
 
 const PENDING_KEY = "az-pending-review-saves";
 const savedIds = new Set<string>();
@@ -21,7 +22,7 @@ function writePending(ids: string[]) {
   sessionStorage.setItem(PENDING_KEY, JSON.stringify([...new Set(ids)]));
 }
 
-let savedKnown: Promise<void> | null = null;
+const savedKnown = new Map<string, Promise<void>>();
 const localSaveChoice = new Map<string, boolean>();
 
 function rememberServerSaves(rows: { questionId?: string; savedForReview?: boolean }[]) {
@@ -31,9 +32,10 @@ function rememberServerSaves(rows: { questionId?: string; savedForReview?: boole
   }
 }
 
-function loadSavedReviews() {
-  if (!savedKnown) {
-    savedKnown = Promise.all(["/api/mistakes/", "/api/mistakes/?state=CA", "/api/mistakes/?state=NY", "/api/mistakes/?state=CT", "/api/mistakes/?state=NC", "/api/mistakes/?state=IN"].map((url) => fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => null)))
+function loadSavedReviews(questionId: string) {
+  const state = parseStateCookie(questionId.split('-')[0].toUpperCase()) || 'AZ';
+  if (!savedKnown.has(state)) {
+    const request = Promise.all([`/api/mistakes/?state=${state}`].map((url) => fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => null)))
       .then((payloads) => {
         for (const data of payloads) {
           const rows = Array.isArray(data?.mistakes) ? data.mistakes : [];
@@ -41,8 +43,9 @@ function loadSavedReviews() {
         }
       })
       .catch(() => undefined);
+    savedKnown.set(state, request);
   }
-  return savedKnown;
+  return savedKnown.get(state);
 }
 
 async function postSave(questionId: string, saveForReview: boolean) {
@@ -85,7 +88,7 @@ export function SaveForReview({
     let cancel = false;
     setSaved(savedIds.has(questionId));
     setNext(`${paths.login}?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
-    Promise.all([flushPendingReviewSaves(), loadSavedReviews()])
+    Promise.all([flushPendingReviewSaves(), loadSavedReviews(questionId)])
       .then(() => {
         if (!cancel) setSaved(savedIds.has(questionId));
       })

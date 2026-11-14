@@ -32,10 +32,10 @@ import { packFor } from "@/lib/prep-pack";
 import { getStore } from "@/lib/store";
 import type { StateCode } from "@/lib/types";
 
-export type StudyState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN";
+export type StudyState = "AZ" | "CA" | "HI" | "NY" | "PA" | "LA" | "CT" | "NC" | "IN" | "AR" | "CO" | "IL" | "ME" | "MD" | "MO" | "MT" | "NE" | "NV" | "NJ" | "NM" | "OH" | "OR" | "UT" | "VT" | "WI" | "WY";
 
 function isPack(state: StudyState) {
-  return state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN";
+  return Boolean(packFor(state)) || state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN";
 }
 
 function pool(state: StudyState, isPro: boolean) {

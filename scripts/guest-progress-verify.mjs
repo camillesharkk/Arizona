@@ -16,6 +16,7 @@ store = load('lib/store/memory-store.ts').createMemoryStore();
 owner = await store.createUser({ email: 'guest-import@example.invalid', passwordHash: 'isolated', name: null });
 const { POST } = load('app/api/progress/import/route.ts');
 const banks = {
+  ...Object.fromEntries(load('lib/free-state-catalog.ts').freeStateCatalog.map(([code]) => [code, load('data/free-state-questions.ts').freeStateQuestions(code)])),
   AZ: load('data/questions.ts').publishedQuestions(),
   CA: load('data/ca-questions.ts').publishedCaQuestions(),
   HI: load('data/hi-questions.ts').publishedHiQuestions(),

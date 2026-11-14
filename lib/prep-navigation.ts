@@ -6,7 +6,9 @@ import { paPaths } from "./pa-site.ts";
 import { laPaths } from "./la-site.ts";
 import { stateByCode } from "./states.ts";
 
-export type PrepCode = "NY" | "PA" | "LA" | "CT" | "NC" | "IN";
+import { freeStateCatalog, freeStatePaths, isFreeState, type FreeStateCode } from "./free-state-catalog";
+
+export type PrepCode = FreeStateCode | "NY" | "PA" | "LA" | "CT" | "NC" | "IN";
 
 export type PrepPaths = {
   home: string;
@@ -26,7 +28,13 @@ export type PrepPaths = {
 };
 
 /** Navigation stays small enough for login, guides and the shared header. */
+type Navigation = { code: PrepCode; name: string; slug: string; available: boolean; paths: PrepPaths };
+const freeNavigation = Object.fromEntries(freeStateCatalog.map(([code, name, slug]) => [code, {
+  code, name, slug, available: stateByCode(code)?.status === "available", paths: freeStatePaths(slug),
+}])) as Record<FreeStateCode, Navigation>;
+
 export const prepNavigation = {
+  ...freeNavigation,
   CT: { code: "CT", name: "Connecticut", slug: "connecticut", available: stateByCode("CT")?.status === "available", paths: ctPaths },
   NC: { code: "NC", name: "North Carolina", slug: "north-carolina", available: stateByCode("NC")?.status === "available", paths: ncPaths },
   IN: { code: "IN", name: "Indiana", slug: "indiana", available: stateByCode("IN")?.status === "available", paths: inPaths },
@@ -36,5 +44,5 @@ export const prepNavigation = {
 } satisfies Record<PrepCode, { code: PrepCode; name: string; slug: string; available: boolean; paths: PrepPaths }>;
 
 export function packNavigationFor(state: string | null | undefined) {
-  return state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN" ? prepNavigation[state] : null;
+  return isFreeState(state) ? prepNavigation[state] : state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN" ? prepNavigation[state] : null;
 }

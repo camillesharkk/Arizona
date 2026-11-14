@@ -1,3 +1,5 @@
+import { isFreeState, freeStateGroups, releasedFreeStates } from "./free-state-catalog.ts";
+
 export type StateStatus = "available" | "comingSoon";
 export type ExamGroup = "formalExam" | "onlineApplicationOrTraining" | "courseQuiz" | "recommendedAssessment";
 
@@ -13,7 +15,7 @@ export type PrepState = {
   developmentProgress: number | null;
 };
 
-export const prepStates: PrepState[] = [
+const catalog: PrepState[] = [
   { code: "AZ", name: "Arizona", slug: "arizona", status: "available", homePath: "/arizona-notary-exam/", examGroup: "formalExam", developmentProgress: null },
   { code: "AR", name: "Arkansas", slug: "arkansas", status: "comingSoon", homePath: null, examGroup: "onlineApplicationOrTraining", developmentProgress: 50 },
   { code: "CA", name: "California", slug: "california", status: "available", homePath: "/california/", examGroup: "formalExam", developmentProgress: null },
@@ -43,6 +45,14 @@ export const prepStates: PrepState[] = [
   { code: "WI", name: "Wisconsin", slug: "wisconsin", status: "comingSoon", homePath: null, examGroup: "onlineApplicationOrTraining", developmentProgress: 50 },
   { code: "WY", name: "Wyoming", slug: "wyoming", status: "comingSoon", homePath: null, examGroup: "onlineApplicationOrTraining", developmentProgress: 50 },
 ];
+
+export const prepStates: PrepState[] = catalog.map(state => isFreeState(state.code) ? {
+  ...state,
+  examGroup: freeStateGroups[state.code],
+  status: releasedFreeStates.includes(state.code) ? "available" : "comingSoon",
+  homePath: releasedFreeStates.includes(state.code) ? `/${state.slug}/` : null,
+  developmentProgress: releasedFreeStates.includes(state.code) ? null : state.developmentProgress,
+} : state);
 
 export function stateLabel(state: { name: string; code: string }) {
   return `${state.name} (${state.code})`;

@@ -7,6 +7,7 @@ type Action = "mastered" | "favorite" | "remove" | "save";
 export { mistakeTargets };
 
 function Jump({ label, target }: { label: string; target: MistakeTarget }) {
+  if ('hidden' in target && target.hidden) return null;
   if ("href" in target) return <Link className="chip" href={target.href}>{label}</Link>;
   return <button className="chip" type="button" disabled>{label}</button>;
 }
@@ -28,7 +29,7 @@ export function MistakeActions({
 }) {
   const added = Boolean(stat?.savedForReview);
   const busy = Boolean(pending);
-  const notes = [study, practice].flatMap((item) => ("reason" in item ? [item.reason] : []));
+  const notes = [study, practice].flatMap((item) => ("reason" in item && !item.hidden ? [item.reason] : []));
   return (
     <div className="mistake-actions" aria-busy={busy}>
       {signedIn ? (

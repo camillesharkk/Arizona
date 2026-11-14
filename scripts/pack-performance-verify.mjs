@@ -198,6 +198,7 @@ try {
   }
   const { recordQuestionAnswers } = load('lib/progress.ts');
   const guestQuestions = {
+    ...Object.fromEntries(load('lib/free-state-catalog.ts').freeStateCatalog.map(([code]) => [code, packFor(code).questions()])),
     AZ: load('data/questions.ts').publishedQuestions(), CA: load('data/ca-questions.ts').publishedCaQuestions(), HI: load('data/hi-questions.ts').publishedHiQuestions(),
     NY: packFor('NY').questions(), PA: packFor('PA').questions(), LA: packFor('LA').questions(), CT: packFor('CT').questions(),
     NC: packFor("NC").questions(),
@@ -221,7 +222,7 @@ try {
     }),/guest rollback/);
     assert.equal(JSON.stringify(await store.listStats(user.id)),snapshot,'Roll back all answers after a late failure');
   }
-  console.log('All seven PostgreSQL guest imports use at most 10 SQL statements for 10 answers, preserve retry counts and roll back late failures');
+  console.log('All configured PostgreSQL guest imports use at most 10 SQL statements for 10 answers, preserve retry counts and roll back late failures');
   console.log(JSON.stringify({ environment: 'isolated PGlite, warm schema, no simulated network latency', results }, null, 2));
 } finally {
   await db.close();

@@ -1,5 +1,7 @@
 "use client";
 
+import { isFreeState } from "@/lib/free-state-catalog";
+import { FreeStateResultNext } from "@/components/FreeStateResultNext";
 import { fetchAccount } from "@/lib/client-account";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from "react";
@@ -167,7 +169,7 @@ export function ExamRunner({
     }
     if (pack) {
       const bank = (inBank ?? pack.questions()).filter(item => stateCode !== "NC" || isPro || item.is_free);
-      if (stateCode === "NC" && preset?.length) return preset.filter(item => bank.some(question => question.question_id === item.question_id)).map(item => item.question_id);
+      if ((stateCode === "NC" || isFreeState(stateCode)) && preset?.length) return preset.filter(item => bank.some(question => question.question_id === item.question_id)).map(item => item.question_id);
       if (focusArea) {
         const pool = bank.filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
         const open = pool.filter((item) => item.is_free || isPro);
@@ -776,7 +778,7 @@ export function ExamRunner({
       : null;
     const packMiss = [...topicAcc.entries()].filter(([, value]) => value.total > value.right)
       .sort(([, a], [, b]) => (b.total - b.right) - (a.total - a.right))[0];
-    const studyHref = pack ? (packMiss ? `${site.studyCards}?topic=${packMiss[0]}` : site.study)
+    const studyHref = pack ? (packMiss ? pack.freeLaunch ? `${site.study}#${packMiss[0]}` : `${site.studyCards}?topic=${packMiss[0]}` : site.study)
       : stateCode === "CA"
       ? (caMiss ? `${site.studyCards}?topic=${caMiss.area}` : site.study)
       : (missed ? topicStudyHref(missed.topic, isPro) : paths.study);
@@ -797,12 +799,14 @@ export function ExamRunner({
       ? `${site.home}?exam=full`
       : `${site.practice}?mode=full${practiceFull ? "" : "&start=1"}`;
     const dailyHref = signedIn ? site.daily : `${site.login}?next=${encodeURIComponent(site.daily)}`;
-    const mistakesHref = mode === "full" && examSaveId.current ? `${site.mistakes}?attempt=${examSaveId.current}` : site.mistakes;
+    const mistakesHref = (mode === "full" || isFreeState(stateCode)) && examSaveId.current ? `${site.mistakes}?attempt=${examSaveId.current}` : site.mistakes;
     return (
       <div className="grid">
         <div className="card result-summary" ref={resultRef}>
           <span className="kicker">Result</span>
-          {stateCode === "NC" ? (
+          {isFreeState(stateCode) ? (
+            <><h2>{correct} of {questions.length} correct</h2><FreeStateResultNext code={stateCode} attemptId={examSaveId.current || ""} /></>
+          ) : stateCode === "NC" ? (
             <>
               <h2>{correct} of {questions.length} correct</h2>
               <p className="lede">Your {mode === "quick" ? "Quick 10" : mode === "full" ? "Comprehensive Practice" : "Topic Practice"} result. {questions.filter(item => !answers[item.question_id]).length} skipped.</p>
@@ -952,7 +956,7 @@ export function ExamRunner({
               <li key={s}>{s}</li>
             ))}
           </ul>
-          {stateCode === "CT" || stateCode === "NC" || (topicPractice && mode === "quick") ? null : guided ? (
+          {isFreeState(stateCode) || stateCode === "CT" || stateCode === "NC" || (topicPractice && mode === "quick") ? null : guided ? (
             <div className="result-links">
               {topicPractice ? <Link href={mistakesHref}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" href={mistakesHref} stateCode={stateCode} />}
               <Link href={site.study}>Review Study Guide</Link>
@@ -975,7 +979,7 @@ export function ExamRunner({
             </div>
           )}
           <AccountInvite />
-          {stateCode === "CT" ? <p className="notice">Free learning uses the Connecticut free question pool.</p> : onCa ? (
+          {isFreeState(stateCode) ? null : stateCode === "CT" ? <p className="notice">Free learning uses the Connecticut free question pool.</p> : onCa ? (
             <p className="notice">This is study feedback for California. Forty items are scored. This raw count is not an official scaled score.</p>
           ) : onHi ? (
             <p className="notice">This is study feedback for Hawaii. This score is this site's practice result, not an official exam result.</p>
@@ -1251,7 +1255,7 @@ export function QuestionBlock({
         })}
       </div>
       {reveal && !locked ? (
-        <AnswerResult q={q} selected={selected} open={explainOpen} onToggle={onToggleExplain} tutor={tutor} />
+        <AnswerResult q={q} selected={selected} open={explainOpen} onToggle={onToggleExplain} tutor={tutor && !isFreeState(q.state)} />
       ) : null}
     </div>
   );

@@ -1,6 +1,8 @@
-/** All configured packs are available on the public state routes. */
-export function productionStateBlocked(_state: unknown): boolean {
-  return false;
+import { isFreeState, releasedFreeStates } from './free-state-catalog';
+
+/** Public activation follows preview acceptance for each free launch. */
+export function productionStateBlocked(state: unknown): boolean {
+  return process.env.VERCEL_ENV === 'production' && isFreeState(state) && !releasedFreeStates.includes(state);
 }
 
 export function prepPageEnabled(slug: string): boolean {

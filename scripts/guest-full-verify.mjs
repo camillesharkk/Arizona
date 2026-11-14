@@ -19,7 +19,8 @@ const drawFor={
   AZ:seed=>({questions:load('lib/quiz.ts').pickFullExam(seed),unscoredIds:[]}),
   CA:load('lib/ca-exam.ts').pickCaFullExam,
   HI:seed=>({questions:load('lib/hi-exam.ts').pickHiFullExam(seed),unscoredIds:[]}),
-  ...Object.fromEntries(Object.entries(packs).map(([state,pack])=>[state,pack.pickFull])),
+  // Indiana's server-issued guest sittings have their dedicated handler/integration suites.
+  ...Object.fromEntries(Object.entries(packs).filter(([state, pack]) => pack.fullReady && state !== 'IN').map(([state,pack])=>[state,pack.pickFull])),
 };
 const sitting=load('lib/sitting.ts');
 const attempts=load('lib/ca-attempts.ts');

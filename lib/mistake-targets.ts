@@ -7,7 +7,7 @@ import { paths } from "@/lib/paths";
 import { packFor } from "@/lib/prep-pack";
 import type { StateCode } from "@/lib/types";
 
-export type MistakeTarget = { href: string } | { reason: string };
+export type MistakeTarget = { href: string } | { reason: string; hidden?: boolean };
 
 const azTopics = new Set<string>(topics.map((item) => item.id));
 const caTopics = new Set(caStudyTopics.map((item) => item.id));
@@ -17,6 +17,10 @@ export function mistakeTargets(stateCode: StateCode, question: { topic: string; 
   const pack = packFor(stateCode);
   if (pack) {
     const topic = question.study_topic || "";
+    if (pack.freeLaunch) return {
+      study: { href: `${pack.paths.study}#${encodeURIComponent(topic)}` },
+      practice: { reason: 'Topic practice is not open.', hidden: true },
+    };
     const known = pack.topics.some((item) => item.id === topic);
     if (!known) {
       return { study: { reason: "No study chapter for this question." }, practice: { reason: "No topic practice for this question." } };

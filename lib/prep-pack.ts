@@ -13,7 +13,12 @@ import { ctExam } from "@/lib/ct-site";
 import { shuffle } from "@/lib/answer-sequence";
 import type { Question, StateCode } from "@/lib/types";
 
+import { freeStateCatalog, isFreeState, type FreeStateCode } from "./free-state-catalog";
+import { freeStateContent } from "@/data/free-state-content";
+import { freeStateQuestions } from "@/data/free-state-questions";
+
 export type PrepPack = {
+  freeLaunch?: boolean;
   code: PrepCode;
   name: string;
   slug: string;
@@ -65,7 +70,19 @@ function quickFrom(questions: Question[], seed: number) {
 const paCounts = paQuestionCounts();
 const nyCounts = nyQuestionCounts();
 
+const freePacks = Object.fromEntries(freeStateCatalog.map(([code]) => [code, {
+  ...prepNavigation[code], freeLaunch: true,
+  topics: freeStateContent[code]?.topics || [], questions: () => freeStateQuestions(code),
+  counts: () => ({ published: freeStateQuestions(code).length, free: freeStateQuestions(code).length, pro: 0 }),
+  fullCount: 0, fullMinutes: null, fullTitle: "Comprehensive Practice", fullDetail: "",
+  anonKey: `${code.toLowerCase()}-anon-full-started`,
+  pickQuick: (seed: number) => quickFrom(freeStateQuestions(code), seed),
+  pickFull: () => null, fullReady: false, quickReady: freeStateQuestions(code).length >= 10,
+  cards: [], purchaseEnabled: false,
+} satisfies PrepPack])) as unknown as Record<FreeStateCode, PrepPack>;
+
 export const prepPacks: Record<PrepCode, PrepPack> = {
+  ...freePacks,
   CT: {
     ...prepNavigation.CT, topics: ctTopics, questions: publishedCtQuestions, counts: ctQuestionCounts,
     fullCount: ctExam.practiceQuestionCount, fullMinutes: null, fullTitle: "Comprehensive Practice",
@@ -167,10 +184,11 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
 };
 
 export function packFor(state: StateCode | string | null | undefined): PrepPack | null {
+  if (isFreeState(state)) return prepPacks[state];
   if (state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN") return prepPacks[state];
   return null;
 }
 
 export function questionById(id: string) {
-  return [...inFreeQuestions, ...publishedPaQuestions(), ...publishedNyQuestions(), ...publishedLaQuestions(), ...publishedCtQuestions(), ...publishedNcQuestions()].find((question) => question.question_id === id) || null;
+  return [...freeStateCatalog.flatMap(([code]) => freeStateQuestions(code)), ...inFreeQuestions, ...publishedPaQuestions(), ...publishedNyQuestions(), ...publishedLaQuestions(), ...publishedCtQuestions(), ...publishedNcQuestions()].find((question) => question.question_id === id) || null;
 }

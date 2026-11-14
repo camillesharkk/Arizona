@@ -44,13 +44,14 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   useEffect(() => {
     const area = searchParams.get("area") || "";
     const requested = searchParams.get("mode");
-    if (area) {
+    if (area && !pack?.freeLaunch) {
       setFocusArea(area);
       setMode("practice");
       return;
     }
     setFocusArea("");
-    if (requested === "quick" || requested === "full" || requested === "weak") setMode(requested);
+    if (pack?.freeLaunch && requested !== 'quick') setMode('pick');
+    else if (requested === "quick" || requested === "full" || requested === "weak") setMode(requested);
     else setMode("pick");
   }, [searchParams, stateCode]);
 
@@ -227,7 +228,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         </section>
       ) : null}
       <div className="grid grid-3">
-        {(stateCode === "IN" ? ["quick", "full"] as const : ["quick", "full", "weak"] as const).map((id) => {
+        {(pack?.freeLaunch ? ["quick"] as const : stateCode === "IN" ? ["quick", "full"] as const : ["quick", "full", "weak"] as const).map((id) => {
           const copy = {
             quick: ["Quick 10", "10 questions. The result shows after each answer."],
             full: pack
@@ -269,6 +270,10 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
       </div>
       </>
     );
+  }
+
+  if (mode === "full" && pack?.freeLaunch) {
+    return <div className="card"><p>Choose a free practice below.</p><button className="btn btn-primary" onClick={() => enter("quick")}>Start Free Quick 10</button></div>;
   }
 
   if (mode === "full" && fullLocked) {

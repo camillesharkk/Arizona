@@ -17,6 +17,7 @@ const attempts = load('lib/ca-attempts.ts');
 const sittings = load('lib/sitting.ts');
 const sync = load('lib/ca-sync.ts');
 const banks = {
+  ...Object.fromEntries(load('lib/free-state-catalog.ts').freeStateCatalog.map(([code]) => [code, load('data/free-state-questions.ts').freeStateQuestions(code)])),
   AZ: load('data/questions.ts').publishedQuestions(), CA: load('data/ca-questions.ts').publishedCaQuestions(),
   HI: load('data/hi-questions.ts').publishedHiQuestions(), NY: load('data/ny-content.ts').publishedNyQuestions(),
   PA: load('data/pa-content.ts').publishedPaQuestions(), LA: load('data/la-content.ts').publishedLaQuestions(),

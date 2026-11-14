@@ -1,3 +1,4 @@
+import { isFreeState } from "./free-state-catalog";
 import type { StateCode } from "./types";
 import type { CaCheck } from "@/lib/ca-daily-shape";
 import { dailyStudyView } from "@/lib/daily-study";
@@ -33,7 +34,7 @@ export async function saveCaExamCheck(userId: string, examId: string, input: { w
     checks[examId] = { wrong: input.wrongIds.length, skipped: input.skipped, wrongIds: input.wrongIds };
     await store.saveStudyPlan({ userId, state, document: { ...raw, checks } });
   };
-  return ["NY", "PA", "LA", "CT", "NC", "IN"].includes(state) ? store.learningTransaction(userId, save) : save();
+  return (isFreeState(state) || ["NY", "PA", "LA", "CT", "NC", "IN"].includes(state)) ? store.learningTransaction(userId, save) : save();
 }
 
 export async function caDailyView(userId: string, timeZoneHint?: string, now = new Date().toISOString()) {

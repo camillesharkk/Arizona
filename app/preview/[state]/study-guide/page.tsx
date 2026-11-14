@@ -8,7 +8,7 @@ import { NY_CHECKED } from "@/data/ny-content";
 import { PA_CHECKED } from "@/data/pa-content";
 import { LA_CHECKED } from "@/data/la-content";
 
-const codes: Record<string, PrepCode> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", indiana: "IN" };
+const codes: Record<string, "CT" | "IN" | "NC" | "NY" | "PA" | "LA"> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", indiana: "IN" };
 const checkedOn = { NY: NY_CHECKED, PA: PA_CHECKED, LA: LA_CHECKED, CT: "2026-11-13", NC: "2026-11-13", IN: "2026-11-13" };
 
 export default async function Page({ params }: { params: Promise<{ state: string }> }) {

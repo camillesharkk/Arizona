@@ -1,3 +1,4 @@
+import { freeStateCatalog, freeStatePaths, releasedFreeStates } from "@/lib/free-state-catalog";
 import { ctArticles } from "@/data/ct-articles";
 import { inArticles, ncArticles } from "@/data/new-state-articles";
 import { ctPaths } from "@/lib/ct-site";
@@ -21,6 +22,10 @@ import { canonicalUrl } from "@/lib/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   const urls = [
     "/",
+    ...freeStateCatalog.filter(([code]) => releasedFreeStates.includes(code)).flatMap(([, , slug]) => {
+      const site = freeStatePaths(slug);
+      return [site.home, site.practice, site.study, site.become, site.resources, site.examGuide, site.laws];
+    }),
     paths.home,
     paths.practice,
     paths.questions,
