@@ -100,7 +100,8 @@ for (const [code, name, slug] of freeStateCatalog) {
   cards[code] = content.cards;
   guides[code] = content.guideTopics;
   articles[code] = content.articles.map(({ sources: articleSources, ...article }) => ({
-    ...article, id: `${code.toLowerCase()}-${article.slug}`, state: code, path: `/${slug}/guides/${article.slug}/`,
+    ...article, title: article.title.includes(name) ? article.title : `${article.title} | ${name}`,
+    id: `${code.toLowerCase()}-${article.slug}`, state: code, path: `/${slug}/guides/${article.slug}/`,
     checked: '2026-11-14', updated: '2026-11-14',
     ledeCta: { href: `/${slug}/practice/?mode=quick`, label: 'Start Free Quick 10', placement: 'lede', targetMode: 'quick' },
     endCta: { href: `/${slug}/practice/?mode=full`, label: 'Start Comprehensive Practice', placement: 'end', targetMode: 'full' },

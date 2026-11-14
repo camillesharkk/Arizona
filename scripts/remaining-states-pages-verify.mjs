@@ -31,7 +31,10 @@ try {
       assert.ok(sitemap.includes(`https://arizonanotaryprep.com${route}`), `${code} sitemap ${route}`);
       const response = await page.goto(base + route);
       assert.equal(response.status(), 200, route);
+      assert.equal((response.headers()['x-robots-tag'] || '').toLowerCase().includes('noindex'), false, route);
       assert.ok((await page.title()).includes(name));
+      assert.equal(await page.locator('meta[name="description"]').count(), 1);
+      assert.ok((await page.locator('meta[name="description"]').getAttribute('content')).trim(), route);
       assert.equal(await page.locator('link[rel="canonical"]').count(), 1);
       assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://arizonanotaryprep.com' + route);
       assert.equal(await page.locator('meta[name="robots"]').count(), 1);

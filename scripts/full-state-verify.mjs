@@ -8,6 +8,7 @@ const { packFor } = load('lib/prep-pack.ts');
 const { freeStateCatalog } = load('lib/free-state-catalog.ts');
 const { serverStateQuestions } = load('data/full-state-server.ts');
 const { mistakeReviewQuestions } = load('lib/mistake-targets.ts');
+const { fullStateArticles } = load('data/full-state-articles.ts');
 const expected = process.env.FULL_STATE_VERIFY_CODES?.split(',') || freeStateCatalog.map(([code]) => code);
 for (const code of expected) {
   const pack = packFor(code);
@@ -24,6 +25,7 @@ for (const code of expected) {
   assert.ok(mistakeReviewQuestions(code, bank, stats, false).every(question => question.is_free), `${code} free review eligibility`);
   assert.ok(pack.topics.every(topic => serverStateQuestions(code).some(question => question.study_topic === topic.id)), `${code} every declared topic has questions`);
   assert.ok(pack.cards.length >= 50, `${code} independent cards`);
+  assert.ok(fullStateArticles[code].every(article => article.title.includes(pack.name)), `${code} article titles identify their state`);
   assert.ok(pack.cards.every(card => !pack.questions().some(question => question.question_text === card.front)));
   assert.equal(pack.pickFull(42, false).questions.length, pack.fullCount);
   assert.ok(pack.pickFull(42, false).questions.every(question => question.is_free));
