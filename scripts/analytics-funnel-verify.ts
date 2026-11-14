@@ -244,3 +244,20 @@ test("reconciliation distinguishes unavailable GA data from zero and accepts leg
   assert.deepEqual(report.gaUnmatched, ["txn_unknown"]);
   assert.deepEqual(report.missingEntitlement, ["txn_two"]);
 });
+
+test('PostHog account identification retains the current state after login', async () => {
+  const identified: Array<{ id: string; properties: Record<string, unknown> }> = [];
+  process.env.NEXT_PUBLIC_POSTHOG_KEY = 'phc_local_state_identity_fixture';
+  window.location.href = 'https://arizonanotaryprep.com/rhode-island/wrong-answers/';
+  const load = testLoader({ 'posthog-js': { __esModule: true, default: {
+    __loaded: true,
+    identify: (id: string, properties: Record<string, unknown>) => identified.push({ id, properties }),
+  } } }, { window, document: { cookie: '' } });
+  const current = load('lib/analytics.ts');
+  await current.syncAnalyticsIdentity({ id: '11111111-1111-4111-8111-111111111111', plan: 'free' });
+  assert.equal(identified.length, 1);
+  assert.equal(identified[0].properties.state, 'RI');
+  window.location.href = 'https://arizonanotaryprep.com/texas/wrong-answers/';
+  await current.syncAnalyticsIdentity({ id: '11111111-1111-4111-8111-111111111111', plan: 'pro' });
+  assert.equal(identified[1].properties.state, 'TX');
+});

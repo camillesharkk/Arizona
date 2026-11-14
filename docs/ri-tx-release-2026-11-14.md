@@ -21,8 +21,8 @@ RI uses official requirements and recommended knowledge assessment. TX uses the 
 - [x] Deliver both203-question banks,50 independent cards, complete guides and10 articles per state, with60 free questions and a topic-balanced Quick10.
 - [ ] Verify state-correct GA4/PostHog events and one emission per completed destination or sitting event.
 - [x] Run existing regressions and production build. Accept both states' desktop/mobile preview learning, login import, refresh/retry, loading, empty/error and cross-state flows.
-- [ ] Synchronize latest remote main, publish through the existing main-site workflow and wait for READY.
-- [ ] Verify formal-domain directory, free submissions, source links, sitemap and existing-state/account behavior. Record final counts, deployment and SHA.
+- [x] Synchronize latest remote main, publish through the existing main-site workflow and wait for READY.
+- [x] Verify formal-domain directory, free submissions, source links, sitemap and existing-state/account behavior. Record final counts, deployment and SHA.
 
 ## Verification commands
 
@@ -48,3 +48,12 @@ The actual PostgreSQL store passed isolated PGlite imports for RI/TX, including 
 The protected preview has no configured public GA4 or PostHog browser keys, so its real analytics dispatch is unavailable there. The existing formal California page does configure GA4. Native state/deduplication analytics tests pass18/18. Formal-domain dispatch verification remains pending.
 
 External official-link access from the local automation environment encountered an RI page timeout and a TX HTTP405 human-verification page. The RI official application text was retrieved through the research browser. TX SOS process and final adopted rules were checked through indexed primary passages, alongside fully retrieved current legislative Chapters406and121. Source audits disclose those access limits. The public pages retain the verified official URLs.
+
+
+## Formal-domain acceptance
+
+Production deployment dpl_GT9itRvge98x1MQqHBkJXJUMe2L1 became READY with apex and www aliases, serving e45cec2f6557c1da15645e2d715b8ac3d99f0926. On the formal domain, all six desktop/mobile CA-to-RI-to-TX-to-AR runs passed a single Start, the correct ten-question bank,7/10result, official next step, guest login to the original notebook, original misses and duplicate-free result refresh. Both states passed all19public URLs each, directory entries, current canonical/description/robots, sitemap, thirteen established routes and production preview isolation. Accepted state count is2.
+
+The final analytics review identified an inherited fixed AZ user-profile property in syncAnalyticsIdentity. It now derives the state from the same current-path-before-cookie resolver as client events. A fail-first regression reproduced AZ instead of RI, then passed RI and TX after the fix. Analytics now passes19/19tests, and the additional production-config build and TypeScript pass. Formal GA4 browser capture observed the correct RI state and one landing, start and completion event. PostHog browser transport is undergoing a separate connectivity check because its remote SDK/config assets did not produce an event POST during the initial QA observation.
+
+Only existing main-site environment configuration and main-site designated test accounts were used. No production schema migration, payment, entitlement grant or old Texas resource access occurred. Registration email delivery was simulated locally. Mobile checks use responsive browser viewports, with physical devices outside the test evidence.

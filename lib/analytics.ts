@@ -762,7 +762,7 @@ export async function syncAnalyticsIdentity(user: { id?: string | null; plan?: s
       const posthog = await loadPosthog();
       posthog?.identify(id, {
         plan: user?.plan === "pro" ? "pro" : "free",
-        state: ANALYTICS_STATE,
+        state: applyCommonParams().state,
         site: ANALYTICS_SITE,
       });
       return;
