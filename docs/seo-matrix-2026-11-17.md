@@ -81,3 +81,22 @@ The following paths are present in the verified local build. Their publication s
 - VT has 12 articles. Added `/vermont/guides/free-jurisprudence-exam-practice/` and `/vermont/guides/oath-examination-upload-readiness/`.
 - WI has 12 articles. Added `/wisconsin/guides/free-four-year-exam-practice/` and `/wisconsin/guides/exam-evidence-oath-bond-application-checklist/`.
 - WY has 12 articles. Added `/wyoming/guides/free-application-exam-practice/` and `/wyoming/guides/education-exam-paper-application-checklist/`.
+
+## Production release
+
+The user explicitly authorized commit, push to main and production publication on November 17, 2026.
+
+- Application release commit is `75e46333fd86ffef3db0cff070c29c64156ad1fe`.
+- A normal push advanced GitHub main from `93ed44e` to the release commit. GitHub's commit API independently confirmed the main SHA.
+- The Vercel GitHub status for this exact SHA reached `success` with the message `Deployment has completed`.
+- Deployment dashboard is https://vercel.com/sharkkk/arizona/52YiTrEsXQgDqw8LMQBGTYJNvuQm.
+- The existing Vercel CLI credential returned HTTP 403 for deployment and domain APIs. The successful deployment was monitored through the authenticated GitHub commit-status API. Vercel runtime logs could not be inspected with that credential.
+- Production browser automation was attempted. The browser control tool stopped because it could not reliably determine the current browser URL on Windows for policy enforcement. Desktop and responsive interaction evidence above belongs to the local final build. Official-domain HTTP acceptance is recorded separately below.
+
+### Official-domain acceptance
+
+- The final application release was tested at `https://arizonanotaryprep.com` with the same all-state HTTP checker used locally.
+- All 28 state article indices, 340 editorial articles and 426 distinct internal targets passed. The check confirmed direct HTTP 200, server-rendered body, unique H1, self canonical, indexability, BlogPosting data, index discovery, sitemap coverage and the applicable state product actions.
+- The first production attempt encountered a proxy socket closure. Repeating the read-only check with per-request `Connection: close` completed successfully. The completed run needed zero transient retries.
+- Production evidence is retained locally in ignored `.tools/seo-matrix-production.json`. No payment, checkout, account-write or database migration was performed in the acceptance.
+- Physical phones and production browser interactions remain outside the completed verification. The earlier local desktop/responsive checks and the official-domain HTTP checks are recorded with their respective scopes.
