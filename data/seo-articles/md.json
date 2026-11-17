@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Maryland SOS new-applicant instructions", "url": "https://sos.maryland.gov/Notary/Pages/NewApplicant.aspx", "checked": "2026-11-17" }, { "label": "Maryland examination standards", "url": "https://regs.maryland.gov/us/md/exec/comar/01.02.08.16", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-course-exam-practice-review",
+      "title": "Free Maryland Notary Course Exam Practice Review",
+      "description": "Use Maryland practice questions to review authorized-course topics, understand answer explanations and organize the certificates required for application.",
+      "lede": "Use free Maryland practice to identify topics to revisit during an authorized course. Begin with ten questions and examine the reasoning afterward. Keep your study results in a notebook while the course and examination provider supplies the official completion documents required by the state's new-applicant process.",
+      "sections": [
+        { "heading": "Start with a topic-level diagnosis", "body": "During the first Quick 10, mark any answer you could not explain without the choices. After submission, separate the missed issues into identity, acts, certificates, records, fees and application. Read the explanation for each correct guess too. Choose the most frequent weak subject for the next study session so you have a specific reason to return to the handbook." },
+        { "heading": "Worked question about application certificates", "body": "A new applicant has finished the course and saved a completion document. Is that the entire education evidence checklist? Maryland's instructions call for the course completion certificate and the examination passing certificate. Check the documents actually issued by the authorized provider and verify the applicant's information on both. This question tests whether you can distinguish attendance or completion evidence from evidence of a passing examination." },
+        { "heading": "Use a complete appointment as a review exercise", "body": "Choose a Maryland Study Guide topic and explain how it fits an appointment from the initial request through the certificate and record. Open the cited authority when a condition is unclear. A procedural sequence helps expose an omitted identity check or record detail that isolated flashcard recall might miss. Then try a different question on the same subject and compare your reasoning.", "study": true },
+        { "heading": "Choose the next set deliberately", "body": "Use a short set after a focused chapter review and Comprehensive Practice when you want broader coverage. Broader Pro access can add independent scenarios if familiar wording is masking a weak rule. Before the official provider examination, follow that provider's current instructions and review your unresolved subject list. Keep the state application and Circuit Court follow-up tasks in the same preparation calendar." }
+      ]
+    },
+    {
+      "slug": "course-certificates-circuit-court-checklist",
+      "title": "Maryland Notary Course Certificates and Circuit Court Checklist",
+      "description": "Prepare Maryland course and passing certificates, application attachments and the Circuit Court oath follow-up in one organized checklist.",
+      "lede": "Prepare the Maryland application as a document handoff from the applicant and authorized provider to the state, followed by the court stage. Each part produces different evidence. A checklist that names the documents and the next official action makes it easier to follow the process without losing time between stages.",
+      "sections": [
+        { "heading": "Confirm the provider before arranging education", "body": "Use the authorized-provider list linked from the SOS new-applicant instructions. Confirm the course and examination arrangements directly with the provider you select. Save the provider's instructions with your study calendar and check what documents are issued after completion. This gives you a defined place to resolve an education-record question before it becomes a missing item in the state application." },
+        { "heading": "Audit the application folder", "body": "Read the current new-applicant checklist and collect the identification, requested references, district information and supporting address material where applicable. Include both required education documents. Open every scan and check legibility and applicant details. Keep unresolved items on a short separate list, so a nearly finished application does not hide an attachment that still requires another person's response." },
+        { "heading": "Prepare for the court instruction", "body": "After approval, the Maryland process requires the applicant to appear before the designated Circuit Court clerk within the stated period. Read the actual notification and enter its deadline and court details on your calendar. Confirm the documents and fees to bring using current official instructions. Retain evidence of the completed oath stage with the application rather than treating approval email alone as the final checklist item." },
+        { "heading": "Keep learning while the application progresses", "body": "Use the Maryland Study Guide to rehearse recordkeeping and complete certificates before your first appointment. Try Quick 10 after the document audit, then review any remaining weak chapter. Prepare the required equipment using the issued commission details. Your final readiness sheet should show the completed official stages, the tools ready for use and the rules you still want to review before accepting work.", "study": true }
+      ]
+    }
+  ]
+}

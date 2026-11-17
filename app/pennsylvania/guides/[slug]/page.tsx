@@ -1,6 +1,6 @@
 import SharedPage from "@/app/preview/[state]/guides/[slug]/page";
 import { notFound } from "next/navigation";
-import { paArticles } from "@/data/pa-articles";
+import { paArticles } from "@/lib/seo-article-catalog";
 import { articleBySlug } from "@/lib/state-articles";
 import { pageMeta } from "@/lib/seo";
 

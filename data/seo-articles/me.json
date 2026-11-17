@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Maine examination and course-of-study statute", "url": "https://legislature.maine.gov/statutes/4/title4sec1923.html", "checked": "2026-11-17" }, { "label": "Maine application and renewal instructions", "url": "https://mobile.maine.gov/sos/corporations-commissions/commissions/apply-renew-a-notary", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-notary-practice-study-questions",
+      "title": "Free Maine Notary Practice Questions for Application Study",
+      "description": "Review Maine notary laws, procedures and ethics with a free diagnostic and use explanations to choose the next official course topic.",
+      "lede": "Start Maine preparation with a short practice set that shows which laws, procedures and ethical decisions need attention. Then study the corresponding official material and try to explain each rule in a new situation. Keep the examination and application instructions for your own route beside the revision notes.",
+      "sections": [
+        { "heading": "Use the statutory study subjects as an organizer", "body": "Maine's examination statute identifies laws, rules, procedures and ethics as subjects for the course of study. Use those headings for your review notebook. After Quick 10, place each uncertain response under the heading that best describes the gap. A procedural mistake may need a sequence exercise, while an ethical decision may need closer reading of the relevant conflict or impartiality conditions." },
+        { "heading": "Worked question about a first application", "body": "A person who holds no current Maine commission asks whether a practice certificate can satisfy the examination requirement. Section 1923 calls for the examination administered by the Secretary of State or an approved entity. Check the official application materials for the required completion evidence. Keep independent practice results for planning study and follow the designated state process for the applicant's actual examination." },
+        { "heading": "Read a rule with its boundaries", "body": "Choose a missed question and open the Maine Study Guide chapter and its source. Identify who the rule covers and which conditions must be present. Write a second example where one condition changes, then explain the consequence. This adds depth to a correct answer and helps you avoid borrowing a rule from another jurisdiction because the practice scenario sounds familiar.", "study": true },
+        { "heading": "Check mixed-topic understanding", "body": "Use Comprehensive Practice after reviewing the largest gaps. Mark correct guesses as well as misses, and compare the subjects that remain uncertain across attempts. Broader bank access can give you more scenarios for a recurring weak area. End with one official-application action, such as finding the current form or checking the next appointment instruction, so preparation and paperwork continue together." }
+      ]
+    },
+    {
+      "slug": "first-commission-study-and-oath-plan",
+      "title": "Maine Notary First-Commission Study and Oath Plan",
+      "description": "Plan Maine's course-of-study review, application documents and post-appointment oath steps with a practical preparation checklist.",
+      "lede": "Maine preparation continues beyond answering study questions. Organize the course material, application and post-appointment oath as connected stages, each with its own evidence. A combined checklist helps you use the application period for review and prepare for the instructions that arrive with the appointment.",
+      "sections": [
+        { "heading": "Choose the instructions for your current status", "body": "Begin with the official application and renewal page and identify the route that matches whether you currently hold a commission. Save the current form and read its directions before filling it in. Record the material required with the application and the delivery method. This prevents a returning applicant from assuming that a previous process or an old downloaded form still fits the present circumstances." },
+        { "heading": "Divide study into four manageable passes", "body": "Make one pass through authority and eligibility, another through identifying the signer and choosing the act, a third through certificates and records, and a final pass through ethics and service decisions. Use the Maine Study Guide to organize those sessions. After each pass, explain a complete customer example and note where you need to reopen the official source before reaching a conclusion.", "study": true },
+        { "heading": "Prepare the appointment follow-up early", "body": "The official first-commission instructions describe an oath before a Dedimus Justice and return of the qualification evidence after appointment. Identify how you will arrange that step before the appointment notice arrives. When it does arrive, enter its dates and the applicable deadlines on your calendar. Keep the notice and returned-document evidence together so you can check the completion of that stage." },
+        { "heading": "Close the loop with practical rehearsal", "body": "Use a mixed question set while the paperwork is progressing and build a short list of procedures to rehearse before serving customers. Describe how an appointment begins, what facts you establish and how it is documented. Review any uncertain rule from the source. Keep official status confirmation, equipment preparation and study progress as individually checked items on the same final readiness sheet." }
+      ]
+    }
+  ]
+}

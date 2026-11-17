@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "New York Department of State notary program", "url": "https://dos.ny.gov/notary-public", "checked": "2026-11-17" }, { "label": "New York official notary FAQs", "url": "https://dos.ny.gov/notary-public-frequently-asked-questions", "checked": "2026-11-08" }],
+  "articles": [
+    {
+      "slug": "free-notary-practice-questions-explained",
+      "title": "Free New York Notary Practice Questions with Explanations",
+      "description": "Review New York notary duties with a free Quick 10, a worked authority question and a plan for learning from missed or uncertain answers.",
+      "lede": "Start New York notary study with ten free questions and use the explanations to decide what to read next. The Department of State makes understanding the Notary Public Law a licensee responsibility. A short diagnostic can show whether you need more work on the powers of the office, procedural details or application requirements.",
+      "sections": [
+        { "heading": "Keep a confidence note beside the score", "body": "During Quick 10, mark every response that depended on a guess. After finishing, review those correct guesses with the missed answers. Write the rule you needed and the detail in the question that made it apply. This produces a better study list than the total alone because it distinguishes a known procedure from an answer you happened to select correctly." },
+        { "heading": "Worked question about notarial functions", "body": "A customer asks a New York notary to administer an oath about a written statement. Is administering oaths among the office's functions? The Department's program page lists oaths and affirmations among those functions. The next reasoning step is to study how the requested ceremony is performed and documented. Identifying a general power begins the analysis, while the applicable conditions guide the actual procedure." },
+        { "heading": "Review the current New York source", "body": "Use the New York Study Guide to find the topic behind a missed question, then read the linked License Law or official FAQ. Explain why each alternative fails under the facts presented. If you recognize a rule from another state, verify the New York provision before relying on it. Add the source and a short example to your notebook for later retrieval practice.", "study": true },
+        { "heading": "Move from short review to a complete set", "body": "After revising the largest gaps, use the site's complete New York practice to move across topics. Its question count is a study setting. Follow the Department's current written-examination instructions for the official sitting and materials. Broader Pro questions can add varied scenarios when familiar free items stop testing your reasoning. Keep application and exam-arrangement tasks beside the revision plan so knowledge leads to the next practical step." }
+      ]
+    },
+    {
+      "slug": "exam-day-document-and-review-checklist",
+      "title": "New York Notary Exam Day Document and Review Checklist",
+      "description": "Prepare a New York exam-day checklist using current Department instructions, the correct location arrangements and a focused final topic review.",
+      "lede": "Prepare for a New York notary examination by checking the current Department instructions before organizing the last study session. Separate the logistics you must confirm from the rules you still need to review. This gives the final day a manageable task list and reduces reliance on remembered instructions from another candidate's sitting.",
+      "sections": [
+        { "heading": "Open the current written-exam instructions", "body": "Use the written-examination link from the Department's notary page and verify the schedule for your intended location and date. Record the identification, payment, materials and arrival directions from that document. Check for any location-specific arrangement. Save the instructions where you can find them again before leaving, and confirm that the details refer to the sitting you actually plan to attend." },
+        { "heading": "Prepare a small document-and-logistics folder", "body": "Put the required identification and payment arrangements on a physical checklist beside your travel plan. If the selected location requires an advance arrangement, retain the relevant confirmation. Leave time for the venue's entry procedures. Checking these items ahead of the final review session prevents an administrative question from interrupting study or becoming a last-minute problem on the way to the examination." },
+        { "heading": "Choose three rules for the final review", "body": "Use your practice error list to choose the three subjects you still find hardest to explain. Revisit their New York Study Guide sections and official references, then describe an example for each without answer choices. Finish with a short diagnostic and review the reasoning. A focused task is easier to evaluate than starting another full reread when only a few weak subjects remain.", "study": true },
+        { "heading": "Plan the action after the official result", "body": "Keep the application instructions available for the next stage and follow the Department's directions about result delivery. Record any unfinished paperwork in your calendar. After the sitting, use a topic-level note to organize further study if needed, while keeping the official result and application evidence together. This makes the preparation plan useful beyond exam day and supports the administrative steps that follow." }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { caArticles } from "@/data/ca-articles";
+import { caArticles } from "@/lib/seo-article-catalog";
 import { caGuideChapters } from "@/data/ca-study-guide";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
 import { canonicalUrl } from "@/lib/site";

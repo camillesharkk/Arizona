@@ -1,4 +1,4 @@
-import { inArticles } from '@/data/new-state-articles';
+import { inArticles } from '@/lib/seo-article-catalog';
 import { IndianaGuide } from "@/components/IndianaGuide";
 import { pageMeta } from "@/lib/seo";
 export const metadata = { ...pageMeta({ title: "Indiana Official Notary Resources", description: "First-time Indiana notary application steps with direct official links.", path: "/indiana/resources/", index: true }), robots: { index: true, follow: true } };

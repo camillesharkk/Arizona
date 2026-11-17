@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Wyoming SOS notary application and education resources", "url": "https://sos.wyo.gov/Services/Notaries.aspx", "checked": "2026-11-17" }, { "label": "Wyoming notary application and examination form", "url": "https://sos.wyo.gov/Forms/NotariesPublic/WYNotaryApp.pdf", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-application-exam-practice",
+      "title": "Free Wyoming Notary Application Exam Practice Review",
+      "description": "Use Wyoming practice questions to review required education, examination routes and notarial procedures before completing the commission application.",
+      "lede": "Use free Wyoming practice to check whether you can explain the procedures covered by the official education material. Begin with Quick 10 and review the reasons behind uncertain answers. Keep the current application and any approved-provider evidence beside your study plan so you follow the correct examination route for your circumstances.",
+      "sections": [
+        { "heading": "Turn a short score into a reading list", "body": "Mark guesses and unfamiliar terms before viewing the explanations. Group the gaps into commission requirements, identity, acts, certificates, records and fees. Pick the weakest subject for a source-based review and write one example showing its controlling condition. A short note about why an alternative fails gives the next session a concrete task beyond repeating the same set until the choices look familiar." },
+        { "heading": "Worked question about completion evidence", "body": "An applicant has an education certificate and assumes every examination field may be omitted. What should be checked? Open the current Wyoming form and confirm whether the document is an approved alternative education-and-examination certificate that satisfies the form's instructions. Review the actual scope of the evidence held. The reasoning depends on matching the certificate to the permitted route before leaving part of an application unfinished." },
+        { "heading": "Rehearse the rule in a fresh situation", "body": "Use the Wyoming Study Guide to choose a missed subject, such as certificate correction or journal control. Explain what information you need and the procedure that follows from it. Open the official authority if a condition is unclear. Change one fact in the situation and explain whether the next action changes. This checks your ability to reason across examples with different wording.", "study": true },
+        { "heading": "Continue with mixed practice and document review", "body": "After reading the weak chapters, try Comprehensive Practice and inspect the remaining guesses. Broader Pro bank access can provide additional scenarios for a recurring difficulty. Before completing the official examination or application, follow the current state instructions and check the evidence required for your chosen route. End the session by selecting one study task and one real application-document task to complete next." }
+      ]
+    },
+    {
+      "slug": "education-exam-paper-application-checklist",
+      "title": "Wyoming Notary Education, Exam and Paper Application Checklist",
+      "description": "Organize Wyoming's education evidence, applicable application examination, notarized oath and paper submission before reviewing commission and stamp details.",
+      "lede": "Prepare Wyoming's application by reading the current form before filling its sections. The education, examination and oath have different completion requirements, and the finished packet follows the state's delivery directions. A document-by-document checklist helps you keep those tasks connected while preparing for the duties you will perform after appointment.",
+      "sections": [
+        { "heading": "Start from the official resources page", "body": "Open the current education presentation and application from the SOS notary page. Check the form's revision information and the directions for any approved alternative route. Keep the downloaded materials with a link to the official page for later verification. This reduces the chance of mixing a current application with an old instruction sheet or assuming that a general course certificate covers the required examination." },
+        { "heading": "Complete the applicant's required sections", "body": "Review every section before signing and identify the evidence required when an approved provider alternative is used. Follow the form's examination directions for your route. Arrange the oath before another commissioned notary and review the completed signatures and applicant details. Keep a copy of the finished packet so a later question about what was submitted can be answered from your own records." },
+        { "heading": "Use study to prepare a first-appointment routine", "body": "Review the Wyoming Study Guide chapters on identity, certificates and records, using your practice error list to choose the order. Explain a complete appointment and identify the condition that would require further research. Test that explanation with a short set and inspect the answer reasoning. Keep unresolved questions attached to their source references for a focused final review before beginning customer work.", "study": true },
+        { "heading": "Check delivery and issued commission details", "body": "Follow the current form's delivery and payment instructions and retain evidence of the submission. When the appointment letter and commission certificate arrive, compare the name and dates with the application. Obtain the prescribed stamp using the issued details and prepare secure records. Keep additional electronic or remote notice requirements in a separate checklist if those services form part of your later plans." }
+      ]
+    }
+  ]
+}

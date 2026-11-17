@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Arkansas SOS notary application instructions", "url": "https://www.sos.arkansas.gov/business-commercial-services-bcs/notary-e-notary/", "checked": "2026-11-17" }, { "label": "Arkansas official notary FAQs", "url": "https://www.sos.arkansas.gov/frequently-asked-questions", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-notary-exam-practice-review",
+      "title": "Free Arkansas Notary Exam Practice and Answer Review",
+      "description": "Prepare for Arkansas notary questions with a free diagnostic, application-sequence example and a plan for reviewing explanations.",
+      "lede": "Use a free Arkansas Quick 10 to find weak subjects before working through the state application assessment. Pay attention to the reason behind each answer. The same preparation should help you recognize what remains after a passing result, including the county and state steps in the commissioning process.",
+      "sections": [
+        { "heading": "Start with an honest diagnostic", "body": "Answer ten questions before reading explanations and mark guesses in your notes. Group the misses into application sequence, identification, ceremonies, records and fees. A cluster in one subject tells you where to begin reading. If the misses are spread out, work through the introductory chapters in order before using a complete practice set to check the broader picture." },
+        { "heading": "Worked question about the next official step", "body": "An applicant has passed the application-linked assessment. Can that result alone authorize using a notary seal? Arkansas's process continues through application approval, the county oath and recording, and return of the recorded oath for state processing. Locate the applicant on that sequence. A real milestone can still leave required steps outstanding, so build your answer around the person's current status." },
+        { "heading": "Use explanations to build a rule notebook", "body": "For every uncertain answer, write the rule and the detail that made it apply. Review the corresponding Arkansas Study Guide chapter and open the official source when the sequence is unclear. Practice explaining the county-recording stage to another applicant in plain English. That exercise checks whether you understand which office performs each step and what document moves to the next office.", "study": true },
+        { "heading": "Continue beyond the first ten questions", "body": "Use Comprehensive Practice when you want a mixed-topic review after reading the weak chapters. Review the question-bank options if you need more scenarios, and keep a separate checklist for the actual BCS application. Your preparation session should end with a concrete action, such as revisiting an identity rule, collecting an attachment or checking the status of an already submitted official filing." }
+      ]
+    },
+    {
+      "slug": "exam-to-active-commission-checklist",
+      "title": "Arkansas Notary Exam to Active Commission Checklist",
+      "description": "Organize Arkansas exam evidence, bond details, the county oath and the returned filing so each application milestone has a next step.",
+      "lede": "Plan the Arkansas notary process as a sequence of documents moving between the applicant, the Secretary of State and the county recorder. A checklist organized by stage helps you avoid buying supplies or promising appointments before the commission is active. Keep study tasks alongside the documents for each stage.",
+      "sections": [
+        { "heading": "Prepare the application evidence together", "body": "Read the current BCS instructions before uploading. Put the bond, assessment completion evidence and applicant information in a single review folder. Compare the individual's name across the documents and keep readable copies. When an employer helps with a purchase or application, make sure your checklist still identifies the individual applicant and the documents that person must review and sign." },
+        { "heading": "Make the county appointment a separate milestone", "body": "After the state approval instructions arrive, review what must be printed and brought to the county recorder. The oath and recording stage has its own paperwork. Write down the office, documents and return instructions before arranging the visit. Keep the county's recorded material with the approval notice so you can confirm exactly what still needs to be delivered to the Secretary of State." },
+        { "heading": "Use the waiting period to rehearse appointments", "body": "While the filing is moving through the official process, review the Arkansas Study Guide's identity, certificate and fee chapters. Rehearse a customer arriving with a document already signed, then describe how you would identify the requested act and the applicable procedure. Use the free questions to test the explanation. Keep any unresolved rule in your notebook for a focused follow-up reading.", "study": true },
+        { "heading": "Close the checklist with actual status evidence", "body": "Record when the returned oath is sent and check the state's processing instructions for activation. Keep the commission details and supplies checklist together. Before accepting an appointment, verify the commission's status and prepare the correct equipment. Study progress, an employer's request and a planned start date can each be useful planning information, while the official commissioning record determines the authorization you hold." }
+      ]
+    }
+  ]
+}

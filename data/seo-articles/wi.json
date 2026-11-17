@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Wisconsin DFI commissioning steps", "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-four-year-exam-practice",
+      "title": "Free Wisconsin Notary Exam Practice for Four-Year Applicants",
+      "description": "Use Wisconsin practice questions to review tutorial topics, interpret answer explanations and prepare for the official four-year commission examination.",
+      "lede": "Prepare for Wisconsin's ordinary four-year application with a free diagnostic and the DFI study resources. Use each explanation to identify the rule you need to revisit. Keep the examination result, oath, bond and equipment tasks visible in your checklist so a better practice score connects to the official commissioning process.",
+      "sections": [
+        { "heading": "Start with a short rule check", "body": "Answer Quick 10 and mark every uncertain response. After finishing, group the gaps into application, identity, acts, records and fees. Review correct guesses as well as misses and write the decisive condition behind each answer. Choose the next chapter from that list. This makes the free set a tool for directing study instead of a percentage to chase by repeating familiar wording." },
+        { "heading": "Worked question about the applicant route", "body": "A first applicant reads the permanent-notary section of the DFI page and assumes its route is available to everyone. What must be checked? DFI identifies permanent commissions as available to Wisconsin-licensed attorneys in good standing and lists the ordinary four-year route separately. Select the route that matches the applicant, then follow its actual examination and document requirements before preparing an online submission." },
+        { "heading": "Explain a complete notarial act", "body": "Use the Wisconsin Study Guide to rehearse an appointment from the initial request through identity, the chosen ceremony and the certificate. Open the official reference when a condition remains unclear. Explain why the closest incorrect answer would fail in that scenario. Then change one fact and describe the result again, which checks your understanding when a new question presents the same rule differently.", "study": true },
+        { "heading": "Use full practice before the official examination", "body": "After reviewing weak subjects, try Comprehensive Practice and inspect recurring errors. Broader Pro questions can add different examples for an unresolved topic. DFI's commissioning page requires a score of 90 percent or higher on its official online examination for the four-year route. Follow the current official examination instructions and retain the required evidence, then continue with the application, oath, bond and other listed tasks." }
+      ]
+    },
+    {
+      "slug": "exam-evidence-oath-bond-application-checklist",
+      "title": "Wisconsin Notary Exam Evidence, Oath and Bond Checklist",
+      "description": "Organize Wisconsin four-year notary examination evidence, seal samples, the notarized oath and bond before completing the online application.",
+      "lede": "Use the Wisconsin DFI commissioning page to organize the four-year application in document order. The process includes the official examination, seal or stamp, oath and bond, with specific uploads listed by the state. Prepare those items together so the final submission session can be checked against a complete evidence folder.",
+      "sections": [
+        { "heading": "Check the four-year route first", "body": "Read the DFI section for ordinary four-year applicants and compare it with your actual circumstances. Save the current instructions and examination link with the application checklist. Keep a record of the required examination completion evidence as soon as it becomes available. A clear route and dated checklist reduce confusion when another applicant's professional status or previous experience gives them different requirements." },
+        { "heading": "Prepare seal and signature samples", "body": "DFI's steps identify the wording for the seal or stamp and ask for samples of active seals and signatures. Review the current specifications before obtaining equipment and creating the upload. Compare the applicant's printed and signed information with the application. Open the saved sample file to check that the impression and signature can be read clearly before relying on it for submission." },
+        { "heading": "Arrange the oath and bond documents", "body": "The four-year checklist includes an oath completed before a current notarial officer and a $500 bond completed with the bonding company. Read each form's signing instructions and review the finished pages. Keep complete scans in the application folder and retain the originals. The bond amount describes the required assurance, while the provider's actual quote determines the separate price of obtaining it." },
+        { "heading": "Carry review through the issuance stage", "body": "Use the Wisconsin Study Guide to revisit the procedures revealed by your practice error list while the application progresses. Complete a mixed set and explain uncertain answers from the cited rule. Retain the filing confirmation and follow official notices until the commission is issued. Before appointments begin, check the issued details, prepared equipment and remaining procedure questions together on the final readiness sheet.", "study": true }
+      ]
+    }
+  ]
+}

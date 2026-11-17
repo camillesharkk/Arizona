@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Montana SOS new and renewal commission process", "url": "https://sosmt.gov/notary/applying-for-a-commission-new-and-renewal/", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-exam-practice-questions-review",
+      "title": "Free Montana Notary Exam Practice and Answer Review",
+      "description": "Use Montana practice questions to check education topics, understand separate completion evidence and plan focused review before the official exam.",
+      "lede": "Montana practice should help you connect education with decisions you can explain. Start with a free Quick 10 and review the source behind every uncertain answer. Keep the official education and examination evidence separate in your application folder so a useful study result leads to the correct commissioning step.",
+      "sections": [
+        { "heading": "Check knowledge after an education session", "body": "Choose a short practice set after studying a topic and mark the answers you guessed. During review, write the rule and its controlling condition in your own words. Compare your explanation with the official material. If the same topic appears in another scenario, try to answer from the condition rather than from a remembered phrase in the previous correct choice." },
+        { "heading": "Worked application-evidence question", "body": "A new applicant has finished approved education and wants to submit immediately. What still needs to be checked? Montana's commission instructions require the education and examination qualifications and the supporting application material. Review which certificates the applicant actually holds and whether they fit the state's timing requirements. Build the answer from the missing evidence instead of assuming that finishing a course completes every preparation requirement." },
+        { "heading": "Use state-specific examples", "body": "Work through a Montana Study Guide chapter on representative signing, records or remote work and describe an appointment from beginning to end. Verify the relevant source when a boundary is unclear. Avoid carrying a rule from a neighboring state into the explanation without checking Montana's conditions. A good review note records both the action to take and the fact that would make you stop and research.", "study": true },
+        { "heading": "Move to a complete mixed set", "body": "Use Comprehensive Practice after correcting the major gaps. Compare the new attempt with your earlier topic notes and look for errors that recur across different situations. Broader Pro bank access can provide additional variations. Before returning to the official examination or application, check its current instructions and your saved evidence, then identify one remaining administrative or study task to complete next." }
+      ]
+    },
+    {
+      "slug": "education-exam-certificate-timeline",
+      "title": "Montana Notary Education and Exam Certificate Timeline",
+      "description": "Plan Montana education, examination evidence, bond and online filing around the state's separate completion windows and application documents.",
+      "lede": "Build your Montana application timeline by listing the actual dates on education and examination evidence. The state treats those qualifications as separate items. Planning the bond and online filing around both helps you keep the application organized and leaves time to correct a document before submission.",
+      "sections": [
+        { "heading": "Make a two-certificate date sheet", "body": "Open the current Montana commission instructions and record the required timing for education and examination. Put each actual completion date beside the applicable requirement. Recheck the sheet whenever the intended filing date changes. This is especially helpful when study and paperwork are spread across several months, because a certificate that was timely when you began planning may need another review before upload." },
+        { "heading": "Prepare the bond using consistent information", "body": "Check the bond, its statement and oath directions against the applicant's information and the state's current form requirements. Arrange the necessary signing before the upload session. Save complete, readable copies of all pages. Keep the official application checklist beside the bond so an employer-assisted purchase or a vendor's delivery email does not hide a missing signature or an incorrect applicant detail." },
+        { "heading": "Give the final week specific study tasks", "body": "Use the Montana Study Guide to choose the weakest remaining subjects. Spend one session explaining representative authority and another on records or fees, based on your practice results. Complete a mixed set after those sessions and review correct guesses. The goal is to show that you can apply a rule when the surrounding facts change, with the source available for unresolved questions.", "study": true },
+        { "heading": "Carry the checklist through approval", "body": "Retain the online filing confirmation and any response from the Secretary of State. When the commission certificate becomes available, review its details before obtaining the prescribed stamp and journal. Keep equipment preparation and official status checks on the same readiness sheet. Allow enough time for state processing and document corrections before promising to begin notarial work for an employer or customer." }
+      ]
+    }
+  ]
+}

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { rememberArticleEntry, trackAnalyticsEvent } from "@/lib/analytics";
 
-type Entry = { articleId: string; articleState: Exclude<StateCode, 'AZ'> };
+type Entry = { articleId: string; articleState: StateCode };
 
 export function ArticleView({ articleId, articleState }: Entry) {
   useEffect(() => {

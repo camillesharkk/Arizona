@@ -1,5 +1,5 @@
 import {notFound} from 'next/navigation';
-import {inArticles as articles} from '@/data/new-state-articles';
+import {inArticles as articles} from '@/lib/seo-article-catalog';
 import {StateArticlePage} from '@/components/StateArticle';
 import {pageMeta} from '@/lib/seo';
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const article=articles.find(a=>a.slug===slug);return article?pageMeta({title:article.title,description:article.description,path:article.path,index:true}):{};}

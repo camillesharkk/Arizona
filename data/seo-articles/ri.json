@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Rhode Island new-commission instructions", "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/ApplyForNewCommission", "checked": "2026-11-17" }, { "label": "Rhode Island educational resources", "url": "https://www.sos.ri.gov/Divisions/NotaryPublic/EducationalResources", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-knowledge-assessment-practice",
+      "title": "Free Rhode Island Notary Knowledge Assessment Practice",
+      "description": "Review Rhode Island powers and duties with free practice questions, official training resources and explanations that guide your next study session.",
+      "lede": "Rhode Island preparation begins with knowing the powers and duties of the office. Use a free Quick 10 to identify weak subjects, then read the manual, law and Standards of Conduct linked by the Department of State. Follow the Department's own training and Knowledge Assessment guidance as you prepare the application.",
+      "sections": [
+        { "heading": "Use the short set as a study diagnosis", "body": "Answer the ten questions before reading explanations and mark guesses. During review, write the rule and the condition that made it apply. Group uncertainty under the requested act, identity, conflicts, records and fees. Choose the largest gap for a focused reading session instead of immediately repeating the same questions until their wording becomes familiar. Keep the official reference beside the resulting review note." },
+        { "heading": "Worked question about the preparation route", "body": "A first applicant asks where to begin learning the duties of the office. The Department's application page links the manual, Chapter 42-30.1, updated Standards and free training resources. Start from those materials and the Department's assessment guidance. The practice exercise is to identify the official learning route and the next task, while avoiding assumptions about unpublished examination dimensions or a commercial practice score." },
+        { "heading": "Review a complete customer decision", "body": "Use the Rhode Island Study Guide to rehearse an appointment involving a pre-signed document or a possible conflict. Identify what you need to ask and the facts that control the next action. Check the official source for any unclear condition. Then try another free question set and review the explanations, including correct guesses that still reveal a weak understanding of the procedure.", "study": true },
+        { "heading": "Continue with the available learning tools", "body": "Use the free Study Guide, study cards and practice questions to revisit weak subjects while arranging the official application. Keep the Department's training and Knowledge Assessment in the calendar with your document tasks. This site's Rhode Island learning route currently emphasizes those available review tools. End a session by choosing one chapter to revisit or one official application document to complete next." }
+      ]
+    },
+    {
+      "slug": "first-application-training-document-plan",
+      "title": "Rhode Island Notary Training and First-Application Document Plan",
+      "description": "Organize Rhode Island official learning resources, the applicant's oath, original signatures and commission follow-up in a first-application checklist.",
+      "lede": "Plan a Rhode Island application around learning the duties and completing the required original documents. The Department provides a clear starting point for eligibility, study and filing. Use that sequence to keep the applicant's oath, submission evidence and later commission details connected to a practical preparation schedule.",
+      "sections": [
+        { "heading": "Check eligibility before gathering signatures", "body": "Read the Department's current requirements and identify the qualifying Rhode Island connection for your circumstances. Record any question needing official clarification before arranging the application oath. Save the current form and instructions together. This avoids completing a set of signatures on an outdated form or assuming that a particular professional exception applies without checking its stated conditions." },
+        { "heading": "Study the official materials as a connected set", "body": "Use the manual, statute and Standards links on the application page, then follow the Department's training and assessment recommendations. The Rhode Island Study Guide can help organize topic review alongside those materials. After a free question set, explain a procedure from memory and reopen the authority for any uncertain condition. Keep a brief notebook of issues that still need another reading.", "study": true },
+        { "heading": "Prepare the original application packet", "body": "The application page directs applicants to complete the required pages with original signatures and take the oath before a Rhode Island notary. Read the current form carefully and arrange that appointment with the correct documents. Review the completed pages and follow the stated delivery and payment instructions. Retain a copy of what you send and a record of the submission date." },
+        { "heading": "Check the issued commission before beginning", "body": "When the certificate arrives, review the name and effective dates and prepare the compliant stamp. Use the waiting period for another short practice session and a review of identity, certificates and impartiality. Keep the official commission details with the procedure notes you will use for your first appointments. A final checklist should show both the completed official process and the practical tools ready for use." }
+      ]
+    }
+  ]
+}

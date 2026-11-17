@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "California SOS commissioning checklist", "url": "https://www.sos.ca.gov/notary/checklist", "checked": "2026-11-17" }, { "label": "California SOS notary handbook", "url": "https://www.sos.ca.gov/notary/handbook", "checked": "2026-11-07" }],
+  "articles": [
+    {
+      "slug": "free-practice-questions-explained",
+      "title": "Free California Notary Practice Questions with Explanations",
+      "description": "Use a free California Quick 10 to diagnose weak topics, read answer explanations and choose the next chapter before full exam practice.",
+      "lede": "Start California practice with ten questions, then use the explanations to decide what to study. A useful first attempt shows which rules you can apply to unfamiliar facts. It also reveals where you rely on remembered answer wording or mix a commissioning step with an everyday notarial duty.",
+      "sections": [
+        { "heading": "Take the first set before opening explanations", "body": "Complete the free Quick 10 using your current understanding. On a separate sheet, mark answers you guessed and terms you could not explain. After submission, compare that sheet with the explanations. A correct guess belongs in the review list because it leaves the underlying rule unresolved. Keep your list organized by topic so the next chapter you read has a clear purpose." },
+        { "heading": "Worked question about the commissioning sequence", "body": "An applicant has completed education and passed an examination. Is the process finished? The California SOS checklist continues through fingerprints, the commission packet, materials and filing the oath and bond. The useful reasoning is to place the applicant at the correct stage, then identify what remains. Use the official checklist beside your notes and avoid treating any practice result as completion evidence." },
+        { "heading": "Repair one issue at a time", "body": "For a missed question about an act, write what the signer must do and what the notary certifies. For a missed administrative question, draw the order of the required steps. Return to the California Study Guide and the cited handbook material, then explain why the rejected options fail. Different errors call for different review exercises, even when they cost the same point in practice.", "study": true },
+        { "heading": "Progress to a complete practice attempt", "body": "Once you can explain the missed rules, use full California practice to work across topics in one sitting. Review the question breakdown afterward and choose a small set of weak areas for further study. Broader Pro question-bank access can provide more variations when the free questions become familiar. Keep approved education, official registration and the later commissioning steps on a separate application checklist." }
+      ]
+    },
+    {
+      "slug": "practice-test-review-checklist",
+      "title": "California Notary Practice Test Review Checklist",
+      "description": "Review California practice errors by rule, exception, certificate and application stage, then plan a fresh mixed-topic attempt.",
+      "lede": "Review a California practice test by tracing each uncertain answer back to the rule it tests. A total score hides important differences between knowing a procedure, recalling an exception and reading the scenario carefully. Use a repeatable checklist to choose the next revision task after every full attempt.",
+      "sections": [
+        { "heading": "Record the fact that changed the answer", "body": "Start with the fact you missed, such as the type of act requested, the role of a witness or the stage of an application. Rewrite that fact without copying the whole question. Then write how changing it could change the answer. This exercise checks whether you understand the condition in the rule well enough to handle a different scenario in the same topic." },
+        { "heading": "Keep a short exception log", "body": "When an explanation turns on an exception, give the exception its own line with the relevant handbook reference. Put the ordinary rule immediately above it. During the next review, cover the explanation and state both from memory. If you can recall the exception only when you see the old answer choices, practise a new question on that topic and return to the handbook passage.", "study": true },
+        { "heading": "Audit administrative questions against the state checklist", "body": "Education, examination, fingerprints and oath-and-bond filing each belong at a particular point in California's published commissioning sequence. A practice error may come from placing an otherwise real requirement at the wrong stage. Check the official sequence and build a personal document list beside it. Add the deadline from the current instructions when it applies, using the actual notice received for your application." },
+        { "heading": "Set a concrete goal for the next attempt", "body": "Choose a goal you can observe, such as explaining every certificate question or avoiding the same application-stage error. Use Quick 10 for a short follow-up and a full set to check whether the improvement survives a topic change. Compare error categories across attempts instead of using a memorized set as your only readiness measure. Keep a separate list of questions to resolve from official sources before exam day." }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { ncArticles } from '@/data/new-state-articles';
+import { ncArticles } from '@/lib/seo-article-catalog';
 import { ncOfficial, NC_CHECKED } from "@/data/nc-resources";
 import { NcCourseFinder } from "@/components/NcCourseFinder";
 import { NcApplicationGuide } from "@/components/NcApplicationGuide";

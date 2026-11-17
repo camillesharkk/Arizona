@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { ctArticles } from '@/data/ct-articles';
+import { ctArticles } from '@/lib/seo-article-catalog';
 import { StateArticlePage } from '@/components/StateArticle';
 import { pageMeta } from '@/lib/seo';
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {

@@ -3,6 +3,7 @@ import { examConfig, officialExam, officialExamChecked } from "@/data/exam-confi
 import { paths } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
 import { eligibleExamPool } from "@/lib/quiz";
+import { supplementalArticles } from '@/data/seo-matrix-articles';
 
 const practiceBank = eligibleExamPool();
 const freeBankCount = practiceBank.filter((q) => q.is_free).length;
@@ -333,6 +334,7 @@ export const searchMatrix: { title: string; href: string; blurb: string }[] = [
   { title: "Arizona Notary Exam Study Guide", href: paths.study, blurb: "Review rules and worked examples." },
   { title: "How to Become a Notary in Arizona", href: paths.become, blurb: "Follow the application and commission checklist." },
   ...seoGuides.filter((guide) => guide.index !== false).map((guide) => ({ title: guide.h1, href: guide.path, blurb: guide.description })),
+  ...supplementalArticles.AZ.map(article => ({ title: article.title, href: article.path, blurb: article.description })),
   { title: "Seven-day exam plan", href: paths.examPrep, blurb: "Spread review and practice across a week." },
 ];
 

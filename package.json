@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "seo:matrix:verify": "node scripts/seo-matrix-verify.mjs",
+    "seo:matrix:http": "node scripts/seo-matrix-http-verify.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

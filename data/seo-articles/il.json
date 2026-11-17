@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Illinois SOS notary application instructions", "url": "https://www.ilsos.gov/departments/index/notary/online-notary.html", "checked": "2026-11-17" }, { "label": "Illinois official notary handbook", "url": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-course-exam-practice-questions",
+      "title": "Free Illinois Notary Course Exam Practice Questions",
+      "description": "Use free Illinois questions to review course knowledge, distinguish official certificates from practice results and plan your next chapter.",
+      "lede": "Illinois practice questions help you apply what you learn in a certified course. Begin with a free Quick 10 and review the explanations before expanding to a complete set. Keep your official course and examination evidence in the application folder while your practice notes track the rules you still need to understand.",
+      "sections": [
+        { "heading": "Choose questions that test a decision", "body": "For each practice item, identify the requested act and the fact that makes one answer correct. When you are unsure, mark the item and finish the set before reading feedback. During review, write the reason you rejected the closest alternative. That sentence often exposes whether you understood the rule or simply preferred a familiar phrase in the correct answer." },
+        { "heading": "Worked course-evidence question", "body": "An Illinois resident completes a commercial practice set and prepares to upload its score as education evidence. What should the applicant obtain? The state application instructions call for the required course completion evidence from the certified education process. Review the actual certificate issued through that process and check the applicant information. A practice history can guide revision while the official course document supports the application." },
+        { "heading": "Review the state's own procedures", "body": "Use the Illinois Study Guide to work through recordkeeping, certificates, advertising and remote-work distinctions. When an answer seems familiar from another jurisdiction, open the Illinois authority and check its conditions. Build a note containing the ordinary procedure and any relevant exception. Rehearse the procedure with a different customer situation before assuming the topic is resolved by one correct attempt.", "study": true },
+        { "heading": "Use mixed practice after the course review", "body": "A complete set checks whether you can move between topics without being prompted by a chapter heading. Afterward, revisit the subjects that produced guesses as well as errors. Broader Pro bank access can provide more variations once the free questions become familiar. Keep bond, oath, applicant identification and official approval tasks in your application checklist so finishing study leads to the correct next filing step." }
+      ]
+    },
+    {
+      "slug": "course-certificate-application-checklist",
+      "title": "Illinois Notary Course Certificate and Application Checklist",
+      "description": "Prepare Illinois notary course evidence, bond paperwork and applicant information in the correct resident or nonresident application workflow.",
+      "lede": "Organize an Illinois first application around the official certificate and the applicant's filing route. Resident and qualifying nonresident applicants should check the current instructions for their own process before collecting uploads. A short document audit can prevent a study milestone from being mistaken for a complete commission application.",
+      "sections": [
+        { "heading": "Identify the application route before scanning", "body": "Read the Illinois SOS instructions for the applicant's residency and qualifying connection. Write the required submission method at the top of the checklist. Then list the evidence required for that route. This prevents preparing a set of online uploads for a process with different delivery instructions and makes it easier to recognize when an application question depends on the applicant's circumstances." },
+        { "heading": "Check the course certificate against the applicant", "body": "Open the completion document issued through the certified course and examination process. Compare the name and completion details with the application and keep a readable copy. If you intend to seek electronic authority, check that the course scope matches the authority being requested. Resolve an unclear certificate with the issuing provider while the course records and completion information are easy to retrieve." },
+        { "heading": "Audit bond and oath information together", "body": "Review the current bond form and its oath instructions with the rest of the applicant's paperwork. Check names, signatures and dates before the submission session. Keep the supporting documents in a folder organized by the state's checklist. Use the Illinois Study Guide to review why the commissioning documents and the notary's later duties have different purposes, then test that understanding with a short practice set.", "study": true },
+        { "heading": "Use the approval period for procedural rehearsal", "body": "After submitting, retain the confirmation and monitor the official process for further instructions. Continue studying a complete appointment from the initial request through certificate completion and records. Prepare a supplies checklist based on the commission information once issued. Your first-customer plan should include enough time to follow the procedure carefully, with official authorization and required equipment checked before appointments begin." }
+      ]
+    }
+  ]
+}

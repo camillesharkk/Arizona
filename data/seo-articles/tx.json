@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Texas SOS traditional-notary education and application guide", "url": "https://www.sos.state.tx.us/statdoc/guides/TraditionalNotaryApplication.pdf", "checked": "2026-11-14" }, { "label": "Texas SOS 2026 education rules", "url": "https://www.sos.texas.gov/texreg/archive/December262025/Adopted%20Rules/1.ADMINISTRATION.html", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-course-review-practice-questions",
+      "title": "Free Texas Notary Course Review Practice Questions",
+      "description": "Prepare for Texas notary course study with free original questions, answer explanations and a worked example about the official SOS education process.",
+      "lede": "Use free Texas practice to review the duties you are learning for the current SOS education process. Start with ten questions and examine the explanations after finishing. Keep your SOSPortal course and application tasks separate in the checklist, with independent practice used to identify the subjects that need another reading.",
+      "sections": [
+        { "heading": "Find the weak subject before repeating", "body": "Mark guesses and unfamiliar terms during Quick 10. Afterward, group them under identity, acts, records, certificates, fees and application. Read the explanation and write the fact that controlled the answer. Choose a single topic for follow-up reading before taking another short set. This helps you learn a procedure that can be used in a new situation instead of remembering where an old answer appeared." },
+        { "heading": "Worked question about course evidence", "body": "An applicant completes independent practice and looks for a document to upload as official education proof. What process should be checked? For applications subject to the 2026 rules, use the appropriate SOS education and application workflow and retain the completion evidence it requires. Review the official guide for the applicant's route. The useful decision is identifying which system provides the required record and what task remains there." },
+        { "heading": "Review the procedure from Texas materials", "body": "Use the Texas Study Guide to revisit a missed subject and open its linked authority. Explain what the signer must do and what the notary records or certifies. Change one fact in the example and reason through the result again. For a question about online authority, keep the additional authorization conditions explicit instead of assuming that every traditional procedure carries over unchanged.", "study": true },
+        { "heading": "Continue through available course-review tools", "body": "Use the free questions, study cards and Study Guide for further review while completing the official education requirement. Keep an application folder for actual course evidence, bond and applicant documents. This site's Texas learning route currently offers short practice and course review. End each session with a particular weak rule to revisit and the next action in SOSPortal or the official document checklist." }
+      ]
+    },
+    {
+      "slug": "education-assessment-review-plan",
+      "title": "Texas Notary Education Assessment Review Plan",
+      "description": "Organize Texas course review around topic gaps, official SOSPortal instructions and saved education evidence before the application handoff.",
+      "lede": "Prepare for the Texas education assessment by making the next study session specific. Use the course material and official portal guide to identify what you need to finish, then add short independent practice to test your understanding. Keep saved education evidence with the application paperwork so the handoff is ready when the course is complete.",
+      "sections": [
+        { "heading": "Identify the correct education route", "body": "Check whether you are preparing for a traditional first application, continuing education or an additional online appointment. Open the relevant SOS guide and match it to the account and applicant profile you will use. Keep a note of the official task still open. This is particularly helpful for a previously commissioned applicant who needs to locate an existing profile before moving through the current portal process." },
+        { "heading": "Build a short list from uncertain topics", "body": "After a practice set, list the concepts you could not explain confidently. Use the Texas Study Guide and official educational resources to review the applicable procedure. Write an example and the condition that would change your response. Concentrate on the smallest unresolved point, such as who signs, what is recorded or how a charge is classified, rather than rereading an entire chapter without a purpose.", "study": true },
+        { "heading": "Follow the actual assessment instructions", "body": "Read the official course guide before starting the assessment, including its timing and final submission directions. Use the rules and messages shown for your course and account. If you receive an unsuccessful result, keep a topic-level review note and follow the official next-attempt instructions. Prepare with independent examples between official activities so your revision checks understanding without reconstructing the course's protected assessment items." },
+        { "heading": "Save completion evidence and audit the next stage", "body": "When the official course is successfully completed, save the required evidence and compare its applicant details with the application. Check the current validity and filing instructions before submission. Keep the bond, oath-related tasks and issued commission follow-up on the same calendar. Continue using free questions to keep procedures fresh while the official process advances toward authorization and practical readiness for customer appointments." }
+      ]
+    }
+  ]
+}

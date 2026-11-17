@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "New Jersey official notary examination portal", "url": "https://www.njportal.com/DOR/NotaryExam/", "checked": "2026-11-17" }, { "label": "New Jersey notary manual, September 2026", "url": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-notary-exam-practice-questions",
+      "title": "Free New Jersey Notary Exam Practice Questions Explained",
+      "description": "Prepare for New Jersey notary study with free questions, manual-and-video review and a worked example about the official portal sequence.",
+      "lede": "New Jersey practice should reinforce the official manual and full training-video series. Start with a free Quick 10, review the explanations and identify which subjects need another reading. Keep the portal's education attestation, exam and registration stages visible in your checklist as you work toward a first commission.",
+      "sections": [
+        { "heading": "Give the diagnostic a specific purpose", "body": "Answer ten questions and record the subjects you could not explain confidently. After seeing feedback, distinguish a gap in a notarial rule from uncertainty about the commissioning process. Revisit the relevant manual section or video for the biggest gap. Keep a short note containing the condition that makes the answer correct, so the next attempt tests understanding beyond recall of the old choices." },
+        { "heading": "Worked question about the portal sequence", "body": "An ordinary first applicant has reviewed study material and wants to submit the registration application immediately. What should be checked? The official portal directs the applicant through manual and video review, the commissioning application and examination before the registration application. Identify the unfinished stage from the applicant's actual record. Follow the portal's stated exceptions when they apply to the person's qualifications." },
+        { "heading": "Practise rules with their factual conditions", "body": "Use the New Jersey Study Guide to review identity, certificates, journal custody or remote acts. For a missed question, explain who participates and which fact controls the procedure. Open the manual when the condition is unclear. Then change one fact and explain the new result. This is especially helpful when a familiar notary term has a different procedural meaning in another state.", "study": true },
+        { "heading": "Prepare for a complete review", "body": "After the weak chapters are clearer, use Comprehensive Practice to check several topics together. Review guesses even when the answer was right, and use broader question-bank access if you need unfamiliar scenarios. Before entering an official attempt, check the exam portal's current directions and the status of your application. Keep the later registration and oath tasks in the same calendar as the study sessions." }
+      ]
+    },
+    {
+      "slug": "manual-videos-exam-application-plan",
+      "title": "New Jersey Notary Manual, Videos and Application Study Plan",
+      "description": "Organize New Jersey's official manual, complete video series, exam portal and registration follow-up into a practical first-applicant study plan.",
+      "lede": "Plan New Jersey preparation around the actual official learning materials and portal stages. Give manual reading and video review separate completion checks, then use independent questions to test the rules you found difficult. Keep official registration and county follow-up tasks alongside the study plan so the process continues after the examination.",
+      "sections": [
+        { "heading": "Make a manual-and-video checklist", "body": "Open the links from the official exam portal and list the manual chapters and videos you need to complete. Mark a section after finishing it and write one unresolved question beside it when necessary. The portal asks applicants to attest to completing the materials, so track the work you actually performed. A concise checklist also makes later review faster when a practice explanation reveals a gap." },
+        { "heading": "Use study sessions to answer concrete questions", "body": "Assign one question to each session, such as how the act is documented or what happens to a journal when employment ends. Read the relevant material and explain the procedure from memory. Use the New Jersey Study Guide to organize the related subjects, then check the official manual for conditions. End the session by writing which fact in a customer request would require a different response.", "study": true },
+        { "heading": "Follow the portal stage shown for the applicant", "body": "The official entry page distinguishes a new commissioning application, a new exam attempt and retrieval of results. Use the option that matches your actual account history and the page's instructions. Keep the result evidence and any confirmation together. If the account state is unclear, identify the exact missing record before restarting a process or assuming that a practice attempt has affected the official account." },
+        { "heading": "Carry the plan into registration and oath", "body": "After passing, follow the registration application instructions and retain its confirmation. Review the current manual's oath and county filing directions when the commission arrives, and enter the applicable deadline on your calendar. Continue with short mixed-topic practice during processing. This keeps the practical duties fresh while you complete the administrative steps needed before beginning work under the issued commission." }
+      ]
+    }
+  ]
+}

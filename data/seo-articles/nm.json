@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "New Mexico SOS notary commissioning resources", "url": "https://www.sos.nm.gov/notary-and-apostille/notary-commissions/", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-course-exam-practice-review",
+      "title": "Free New Mexico Notary Course Exam Practice Review",
+      "description": "Use free New Mexico practice to review notarial definitions, identify weak procedures and prepare questions for the approved education process.",
+      "lede": "Use New Mexico practice questions to connect the official education material with decisions a notary must make. Start with a short diagnostic and review the explanation for each uncertain answer. Keep the SOS commissioning, training and handbook resources open so your next session returns to the state's actual rules and application route.",
+      "sections": [
+        { "heading": "Begin with unfamiliar terms", "body": "During Quick 10, note any term you recognize but cannot define accurately. After the set, use the official definitions and handbook to resolve it. Write an example showing how the term affects a customer request. A vocabulary gap can make several choices seem plausible, so clearing up a small number of definitions may improve your reasoning across more than one study subject." },
+        { "heading": "Worked question about official course evidence", "body": "An ordinary first applicant has used a practice website and wants to file. Which education record should be checked? Follow the training resources linked from the SOS commissioning page and confirm the approved course and examination completion evidence requested by the current application. Use the person's actual completion document for that check. Independent practice can reveal a weak subject while the designated education process supplies its required record." },
+        { "heading": "Rehearse the act before the paperwork", "body": "Use the New Mexico Study Guide to choose an acknowledgment, oath or copy-related exercise. Explain what you need to know before choosing the procedure and what the certificate will establish afterward. Check the cited source for the exact conditions. Then review the practice explanation and identify the fact you overlooked. This keeps the reasoning connected to the requested act instead of to a remembered answer letter.", "study": true },
+        { "heading": "Add mixed practice and an application task", "body": "Use Comprehensive Practice after correcting the largest gaps and inspect the topics that still produce guesses. Broader Pro questions can provide fresh situations for a difficult chapter. Finish the session by reviewing one item in the real application checklist, such as an education attachment, oath or bond document. This makes the study session support a concrete next step toward a complete filing." }
+      ]
+    },
+    {
+      "slug": "education-bond-oath-upload-checklist",
+      "title": "New Mexico Notary Education, Bond and Oath Upload Checklist",
+      "description": "Prepare New Mexico notary education evidence, the bond and oath, readable application uploads and post-approval supplies in a clear sequence.",
+      "lede": "Organize a New Mexico application by the evidence each stage requires. Keep education completion, the bond and the applicant's oath as separately checked documents. A readable upload folder and a short status record help you move through the online process while continuing to study the duties of the office.",
+      "sections": [
+        { "heading": "Start from the official commissioning hub", "body": "Use the SOS page to open the current application, training resources and required forms. Record which instructions apply to the authority you are seeking. The hub also links remote-notary material, which belongs in an additional checklist when relevant. Save official links with your notes so later corrections are based on current instructions rather than on a document found through an unrelated search result." },
+        { "heading": "Check names and completed signatures", "body": "Compare the applicant's name across education evidence, bond and oath. Arrange the required notarization of the applicant's material before creating the final scans. Open every file to check all pages, signatures and readability. Keep the originals in the same document order as the upload list, making a specific correction easier if the state requests one after submission." },
+        { "heading": "Use study to prepare for the first customer", "body": "While the filing is progressing, review New Mexico Study Guide chapters on identity, certificates and records. Explain a complete appointment and list the facts you need from the customer before performing the requested act. Test that explanation with a short question set. An unresolved question should lead back to the official reference with its exact conditions identified, ready for focused reading.", "study": true },
+        { "heading": "Review issued details before ordering supplies", "body": "Retain the filing confirmation and check official notices for the next stage. When commission information is issued, review the name and dates against your records and follow the state's stamp requirements. Prepare the journal and any required follow-up evidence using the current instructions. Mark official status, equipment and procedure readiness separately so one finished item does not conceal work still needed before serving customers." }
+      ]
+    }
+  ]
+}

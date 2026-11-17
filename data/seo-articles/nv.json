@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Nevada official notary training and examination instructions", "url": "https://training.nvsos-training.com/Default.asp", "checked": "2026-11-17" }, { "label": "Nevada notary statutes, Chapter 240", "url": "https://www.leg.state.nv.us/NRS/NRS-240.html", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-commission-exam-practice",
+      "title": "Free Nevada Notary Commission Exam Practice Review",
+      "description": "Review Nevada course knowledge with free questions and learn how course completion, exam evidence and SilverFlume filing fit together.",
+      "lede": "Use Nevada practice to prepare for the Commission Course and Commission Exam as distinct tasks. A free short set can reveal which notarial rules you need to revisit. Keep the official training account and SilverFlume application instructions beside your study plan so you know where completion evidence is created and submitted.",
+      "sections": [
+        { "heading": "Take a short set before final review", "body": "Answer Quick 10 and mark every guess or unfamiliar term. Afterward, read the explanations and group the gaps by application, identity, certificates, journals and fees. Pick the weakest subject for the next reading session. A short set works well as a diagnosis because it leaves time to investigate the rule that caused the mistake while the reasoning is still fresh." },
+        { "heading": "Worked question about course completion", "body": "A Nevada applicant finishes the Commission Course and assumes the examination enrollment is complete. What should be checked? The official training site requires separate enrollment and completion for the course and exam portions. Open the account's completion records and verify both. This example tests attention to the actual workflow, where a finished learning activity can leave another required activity outstanding." },
+        { "heading": "Explain the procedure after each answer", "body": "Use the Nevada Study Guide to review the rule behind a missed question. State the customer request, the information you need and the action you can take. Read the source when a journal detail or fee condition is unclear. Change one fact and explain the procedure again. This gives you a stronger check of understanding than repeatedly recognizing the same answer wording.", "study": true },
+        { "heading": "Save evidence before moving to the application", "body": "The training site instructs applicants to save completion evidence and submit it with supporting documents and payment through SilverFlume. Check the stated 90-day validity requirement while planning. Use Comprehensive Practice for a broader topic review before completing the official exam, and consider more question variations when familiar sets stop revealing gaps. Keep the real completion files in the application folder as soon as they are available." }
+      ]
+    },
+    {
+      "slug": "course-exam-proof-silverflume-checklist",
+      "title": "Nevada Notary Course, Exam Proof and SilverFlume Checklist",
+      "description": "Track Nevada's separately completed course and exam, saved proof, county filing material and SilverFlume submission in one checklist.",
+      "lede": "A Nevada application can involve the training system, county paperwork and SilverFlume. Organize the handoffs before the final upload session. Give each completion record a saved file and each official step a status check so a finished course does not conceal an unfinished examination or missing application attachment.",
+      "sections": [
+        { "heading": "Keep course and examination records distinct", "body": "Use the official training site to verify enrollment and completion for both required portions. Follow its directions for closing the training player so progress is saved. Download or capture the completion evidence as instructed, then reopen the saved files. A checklist with separate lines for the course and exam makes it easier to identify the missing record if the account shows only one completed activity." },
+        { "heading": "Prepare the county evidence before submission", "body": "Read the current commission application and bond-and-oath instructions for the applicant's circumstances. Arrange the county filing and retain its evidence. Compare names and other identifying details with the training records and application. Keep every completed page together so the later SilverFlume session can be checked against the official attachment list without searching through separate emails and paper folders." },
+        { "heading": "Check timing and payment location", "body": "The training site places training and examination payment in SilverFlume during application submission and states that training, examinations and payments must be completed within 90 days for validity. Record the actual dates and check the current instructions before filing. Keep the payment confirmation with the submitted evidence, making it clear which account contains learning records and which contains the commission application." },
+        { "heading": "Use the final review for operational readiness", "body": "Revisit Nevada Study Guide chapters for the topics you still find difficult, then complete a mixed practice set and inspect the explanations. Keep remote or electronic commission plans on their own checklist because the training site describes additional portions for that route. After the traditional appointment is issued, use its details to prepare the proper supplies and check official status before offering services.", "study": true }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Utah official qualifications and application process", "url": "https://notary.utah.gov/qualifications-and-process/", "checked": "2026-11-17" }, { "label": "Utah official study guide and handbook", "url": "https://notary.utah.gov/wp-content/uploads/UtahNotaryPublicStudyGuideandHandbook-5-16-2022.pdf", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-notary-exam-practice-review",
+      "title": "Free Utah Notary Exam Practice Questions and Review",
+      "description": "Use free Utah questions to review the current guide and journal supplement, analyze answer explanations and prepare before the official online test.",
+      "lede": "Begin Utah preparation with a free diagnostic and the official study materials linked from the application page. Review every uncertain answer and identify the rule you need to read again. Include the current journal supplement in your reading list so older notes do not become the sole basis for your procedure.",
+      "sections": [
+        { "heading": "Use the current source list", "body": "The Utah application page links the guide, notary code, FAQs and a 2026 journal supplement. Keep those sources together before taking Quick 10. Mark a question when you guessed or relied on an old note. During review, find the actual controlling provision and record its condition. This lets the first set reveal outdated assumptions as well as subjects you have not studied yet." },
+        { "heading": "Worked question about preparation material", "body": "An applicant studies only an older handbook and ignores the journal supplement linked from the current process page. What should change in the study plan? Add the supplement and compare its instructions with the older notes before relying on a recordkeeping answer. The exercise tests whether the candidate can identify the current official source set, an important step before reasoning through the contents of a particular rule." },
+        { "heading": "Read the reasoning behind the score", "body": "Use the Utah Study Guide for the topic behind a missed question and open the cited authority. Explain the complete procedure and why the nearest alternative fails. If an answer turns on a specific condition, change that fact and explain the new result. This helps you apply the rule to a fresh situation when the wording and distractors differ from the first exercise.", "study": true },
+        { "heading": "Prepare for the official account sequence", "body": "Use Comprehensive Practice after revising the major gaps and inspect the remaining guesses. Broader Pro questions can provide additional examples. Before taking the official test, follow Utah's current account, payment and results instructions and review what remains for the background check, bond and oath. Keep your actual completion evidence beside the application checklist so a successful test leads to an organized next stage." }
+      ]
+    },
+    {
+      "slug": "test-background-bond-oath-checklist",
+      "title": "Utah Notary Test, Background Check, Bond and Oath Checklist",
+      "description": "Organize Utah's official test and payment, background-check instructions, signed bond and notarized oath before reviewing the application status.",
+      "lede": "Use Utah's official process page as the checklist for moving from study to application. The test, payment, background check and uploaded documents are connected steps with different evidence. Record the status of each so a completed examination does not hide paperwork that remains before the commission can be issued.",
+      "sections": [
+        { "heading": "Prepare the source set and account details", "body": "Open the study guide, current code and journal supplement from Utah's process page. Confirm eligibility and use the official account route for the application. Keep your applicant information consistent across the account and later documents. Before the official test, use a short practice set to identify the last weak subjects and review the reasons behind both incorrect answers and correct guesses." },
+        { "heading": "Record the actual test and payment result", "body": "Follow the state's instructions for taking the test, paying and receiving the result. Retain the confirmation and review the next steps shown for your application. If further review is needed, use topic notes to direct study and check the official retry directions. Keep the site's independent practice history in your study notebook and the state transaction evidence in the application folder." },
+        { "heading": "Prepare bond and oath uploads carefully", "body": "Read the background-check directions and continue the application as the state instructs. Obtain the prescribed bond, compare the applicant name and complete the required principal signature and notarized oath. Open the saved files to confirm every page is readable. Use the current process page for the upload and completion behavior, including how to verify that the documents have been received." },
+        { "heading": "Rehearse work while awaiting the commission", "body": "Use the Utah Study Guide to revisit journal, identity and certificate procedures, especially any subject that appeared in your error list. Practise a complete customer example and check unresolved conditions from the authority. When the Certificate of Authority is received, review the issued details and prepare the required stamp and records. Keep official status and equipment checks visible before offering appointments.", "study": true }
+      ]
+    }
+  ]
+}

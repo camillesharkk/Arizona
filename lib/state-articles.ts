@@ -8,7 +8,7 @@ export type ArticleLink = {
 
 export type StateArticle = {
   id: string;
-  state: Exclude<StateCode, 'AZ'>;
+  state: StateCode;
   slug: string;
   path: string;
   keyword: string;

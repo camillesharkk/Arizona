@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Hawaii Attorney General notary requirements", "url": "https://ag.hawaii.gov/notaries-public/", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-practice-questions-explained",
+      "title": "Free Hawaii Notary Practice Questions and Answer Review",
+      "description": "Use free Hawaii practice questions to check application knowledge and notarial procedures, then review explanations before a comprehensive set.",
+      "lede": "Free Hawaii practice works best as a diagnostic. Take a Quick 10, identify which answers you guessed and use the explanations to choose your next review topic. Begin with the Hawaii materials because a familiar notary rule from another state can lead you toward the wrong conclusion.",
+      "sections": [
+        { "heading": "Choose a useful first-session goal", "body": "Use the first ten questions to discover what you need to learn. Write down unclear terms and any point where two answers appear equally plausible. After finishing, read the reasoning for the correct choice and for the alternatives. Keep the smallest statement that resolves the confusion, together with the source reference. This turns an initial score into specific tasks for a second study session." },
+        { "heading": "Worked application question", "body": "A self-employed Hawaii applicant has arranged study time but needs a justification letter. Who may prepare that letter? The Attorney General's instructions allow a self-employed applicant to prepare their own. An employed applicant follows the specified organizational route. The point is to identify the applicant's circumstances before choosing the document procedure, then check that the letter addresses the information the state actually requests." },
+        { "heading": "Review duties as well as application facts", "body": "Application knowledge is only one part of preparation. Add practice on identifying a signer, distinguishing acknowledgments and oaths, completing a certificate and handling records. Use the Hawaii Study Guide to connect the procedure to the official reference. Explain the sequence aloud as if you were handling an appointment. A smooth explanation can reveal a skipped step that a memorized answer letter would conceal.", "study": true },
+        { "heading": "Use comprehensive practice for broader coverage", "body": "When the short questions become familiar, try the site's Hawaii Comprehensive Practice and review the remaining gaps by topic. Its length is a study setting. Verify official testing arrangements from the Attorney General and the examination instructions for your application. Broader Pro questions can add scenarios for weak subjects. Keep the official application, supporting letters and scheduling tasks alongside the study plan so you can act on your preparation." }
+      ]
+    },
+    {
+      "slug": "application-documents-study-checklist",
+      "title": "Hawaii Notary Application Documents and Study Checklist",
+      "description": "Organize Hawaii's justification and character letters, application information and exam preparation into a practical first-applicant checklist.",
+      "lede": "Begin your Hawaii notary application by organizing the documents that require another person's input. Preparing letters early gives you time to correct omissions while you study the notarial duties. Use a document checklist and a study checklist together so a missing attachment does not interrupt an otherwise prepared application.",
+      "sections": [
+        { "heading": "Start with the two supporting-letter purposes", "body": "The Attorney General requests a justification letter and a character recommendation for an ordinary application. The justification explains the need for the commission and the expected work. The character letter addresses the applicant's suitability and must come from an eligible writer. Read the official instructions before asking someone to write, and give the writer enough context to address the required purpose accurately." },
+        { "heading": "Build an attachment review appointment", "body": "Before submitting, open every saved attachment and check that it is readable, complete and about the same applicant. Compare your name and contact information across the form and letters. If another person prepared a letter, resolve an omission with that writer while the document is still easy to correct. Keep copies of the material submitted and record the date so later follow-up uses the same information." },
+        { "heading": "Study during the document-gathering period", "body": "Start with a Hawaii Quick 10 and mark uncertain responses. Read the matching Study Guide chapters, then rehearse an identification decision and an acknowledgment-or-oath decision without looking at the answer choices. Alternate reading with short scenario explanations. This uses the time while documents are being assembled and produces a clear list of unresolved questions to check against the official material.", "study": true },
+        { "heading": "Keep application status and exam planning connected", "body": "Use the Attorney General's current application and examination instructions to determine the next official step for your file. Reserve study sessions around the arrangements you actually receive. Before a comprehensive practice attempt, check your letter checklist again so study progress and paperwork move forward together. When a document or scheduling instruction is unclear, identify the exact missing detail before contacting the official notary program." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Colorado SOS application and renewal FAQs", "url": "https://www.coloradosos.gov/pubs/notary/FAQ/apply.html", "checked": "2026-11-17" }, { "label": "Colorado official notary training", "url": "https://www.coloradosos.gov/pubs/notary/notaryTraining.html", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-open-book-practice-questions",
+      "title": "Free Colorado Notary Practice Questions for Open-Book Study",
+      "description": "Use Colorado practice explanations and source lookups to prepare for the official open-book assessment and review weak notarial topics.",
+      "lede": "Prepare for Colorado's open-book assessment by practising both the decision and the lookup. A short free set can reveal whether you recognize an issue, know where the relevant rule lives and can explain the answer after finding it. Track all three skills during your first practice session.",
+      "sections": [
+        { "heading": "Try one pass without a reference", "body": "Begin Quick 10 with your current understanding and mark the questions you would need to research. Complete the set, then open the relevant sources during review. This gives you a baseline for rule knowledge and a separate list of lookup needs. Keep the headings you used so later study starts from a route through the material that you have already tested." },
+        { "heading": "Worked question about preparation timing", "body": "An applicant finished training several months ago and now plans to submit. What should be checked first? Colorado's instructions place training and examination completion within a 90-day period before application. Compare the actual completion dates with the intended filing date. The useful skill is evaluating both supporting documents against the applicable window before assuming that a saved certificate remains timely." },
+        { "heading": "Read the controlling condition", "body": "An open-book answer requires more than finding a sentence containing a familiar word. Read who the rule covers, when it applies and whether the surrounding paragraph adds a condition. Use the Colorado Study Guide to organize your weak topics, then check the linked official material. Write a one-sentence explanation that connects the decisive fact in the question with the condition in the rule.", "study": true },
+        { "heading": "Expand from lookups to mixed practice", "body": "After revising the weak chapters, use Comprehensive Practice to work across application, identity, certificates and records in one sitting. Note which answers still require a long search. Broader question-bank access can add variation when familiar wording makes short sets too easy. Keep the official course, examination certificate and application attachments in your filing checklist so the study sequence supports a complete submission." }
+      ]
+    },
+    {
+      "slug": "training-exam-application-timeline",
+      "title": "Colorado Notary Training, Exam and Application Timeline",
+      "description": "Build a Colorado filing timeline around training and exam certificates, a notarized affirmation and the online application's supporting documents.",
+      "lede": "Choose a realistic Colorado application date before arranging your final preparation sessions. The training and examination evidence must fit the state's timing requirements, and the filing still needs its supporting documents. A backward-planned checklist helps you finish study and paperwork within the same preparation period.",
+      "sections": [
+        { "heading": "Plan from the intended filing date", "body": "List the dates on your training and examination evidence beside the day you expect to apply. Check the official 90-day requirement before treating either certificate as ready for upload. If the filing date changes, recalculate using both completion dates. Leave room to correct an unreadable attachment or resolve an application question, rather than aiming to submit at the last possible moment." },
+        { "heading": "Prepare the affirmation and identity material", "body": "Open the current application instructions and collect the affirmation, acceptable identification and completion certificates. Arrange the required notarization of the affirmation before the upload session. Open each file and check the page edges, signature and legibility. Keep the source document with the scan so an upload rejection can be corrected from your own records without reconstructing the application." },
+        { "heading": "Schedule two different study sessions", "body": "Use one session for open-book retrieval and another for mixed-topic decision practice. In the first, locate a rule and explain its conditions. In the second, complete a set before reading the explanations. Return to the Colorado Study Guide for the subjects that caused uncertainty in either session. This gives you a preparation plan with an observable purpose for each practice attempt.", "study": true },
+        { "heading": "Prepare for the approval stage", "body": "Once the application is submitted, retain the confirmation and check the official account for the next instructions. After approval, review the commission certificate and prepare the required stamp and journal before handling appointments. Keep remote-notary plans in a separate task list because that authorization has its own process. Close each checklist item only when you have the relevant document or official status evidence." }
+      ]
+    }
+  ]
+}

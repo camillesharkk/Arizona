@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Nebraska SOS initial commission instructions", "url": "https://sos.nebraska.gov/sites/default/files/doc/business-services/Notary/StepstoObtainanInitialNotaryCommission.pdf", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-exam-practice-before-classmarker",
+      "title": "Free Nebraska Notary Exam Practice Before ClassMarker",
+      "description": "Use Nebraska practice questions and explanations to prepare before an official attempt, with attention to the limited attempts and certificate window.",
+      "lede": "Prepare for the Nebraska notary examination before opening an official attempt. The state's instructions limit attempts, so use independent questions to find the subjects that need more work. Start with a free diagnostic, read the explanations and check whether you can apply the same rule to a different situation.",
+      "sections": [
+        { "heading": "Use independent practice to identify gaps", "body": "Take Quick 10 and mark guesses before reviewing the results. Separate gaps in eligibility or application knowledge from gaps in performing an act. Read the corresponding official material for the largest weak area. Keep a brief rule notebook with the decisive condition in each explanation so later revision has a clear target beyond improving a percentage on a familiar set." },
+        { "heading": "Worked question about official attempts", "body": "A candidate plans to use the official examination repeatedly as a study tool. Is that a sound plan? Nebraska's initial instructions describe three attempts and state that a person unsuccessful after all three becomes ineligible. Prepare with independent exercises first and follow the official requirement to complete the examination without help. Treat the real attempt as an official application step with its own consequences." },
+        { "heading": "Check the rule behind a correct response", "body": "For every uncertain answer, explain why the closest alternative fails. Use the Nebraska Study Guide to find the subject and open the linked authority. Rehearse a customer request involving identity or representative capacity and identify the facts you need before acting. This helps you recognize when an answer depends on missing information, even if the first practice item's wording made the choice easy.", "study": true },
+        { "heading": "Connect readiness to application timing", "body": "When practice shows that you can explain the major topics, review the official instructions before taking the state examination. Save the passing certificate and check its 90-day validity for the intended application date. Plan the bond and online filing accordingly. Broader practice can support revision, while your official certificate, application evidence and commission approval remain the records that move the process forward." }
+      ]
+    },
+    {
+      "slug": "passing-certificate-90-day-checklist",
+      "title": "Nebraska Notary Passing Certificate and 90-Day Checklist",
+      "description": "Plan Nebraska's passing certificate, surety bond, oath and online application within the official certificate's 90-day validity window.",
+      "lede": "After passing the Nebraska examination, save the certificate and plan the remaining application work immediately. The initial-commission instructions give the result a 90-day validity period. A dated checklist makes it easier to prepare the bond, oath and online documents while keeping the filing inside that window.",
+      "sections": [
+        { "heading": "Save the original evidence first", "body": "Download the digital passing certificate and open the saved file to check that it is readable and complete. Record the examination date and the intended application date beside the state's validity instruction. Keep another accessible copy with the application folder. This prevents a later upload session from depending on a browser download you cannot locate or an account page you assumed would remain available." },
+        { "heading": "Prepare the bond and oath consistently", "body": "Nebraska's initial instructions specify a $15,000 surety bond and explain how the applicant signs it and completes the oath. Compare the intended official name across the certificate, bond and application. Arrange the oath before uploading and review the completed pages. The bond amount is the required assurance amount, so use the actual provider quote when planning the separate cost of obtaining it." },
+        { "heading": "Recheck the electronic filing folder", "body": "The state uses online filing and identifies the exam certificate and bond among the uploads. Open each PDF before starting the application, then check the portal's requirements for any other supporting evidence. Keep the submission confirmation and track the official work queue. If a correction is requested, use your saved originals to resolve the specific problem while monitoring the certificate timing." },
+        { "heading": "Prepare for commissioned work while waiting", "body": "Use the Nebraska Study Guide to rehearse the identity and certificate decisions that caused uncertainty in practice. Try a mixed set after reviewing those subjects. Once the commission is approved, download its certificate and use the issued details for the prescribed stamp. Keep the separate electronic or online authorization instructions available if those services are part of your later plans.", "study": true }
+      ]
+    }
+  ]
+}

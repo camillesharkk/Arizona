@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Louisiana SOS examination preparation", "url": "https://www.sos.la.gov/notary/exam-preparation", "checked": "2026-11-17" }, { "label": "Louisiana SOS application process", "url": "https://www.sos.la.gov/notary/application-process", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-notary-practice-case-review",
+      "title": "Free Louisiana Notary Practice Questions and Case Review",
+      "description": "Use free Louisiana practice to build an issue list, trace statutory reasoning and identify chapters to revisit in the official study guide.",
+      "lede": "Louisiana notary practice calls for reading a legal situation carefully and connecting its facts to the governing rules. Use a free short set to find where your reasoning breaks down. Keep the current official Fundamentals of Louisiana Notarial Law and Practice beside the public statutory references used in these independent exercises.",
+      "sections": [
+        { "heading": "Begin with an issue list", "body": "Before selecting an answer, identify the instrument, the people involved and the legal question raised by the facts. Write a brief issue label such as authority, form, ownership or consent. After the set, compare those labels with the explanations. If you identified the wrong issue, begin your review there because reading the correct rule for a different question will still produce an unreliable answer." },
+        { "heading": "Use a preparation-sequence question", "body": "A nonlawyer applicant has completed a study session and wants to book the state examination. What must be checked? Open the SOS application process and confirm qualification, pre-assessment and registration instructions for the intended sitting. Record the current deadlines from that page in your own calendar. A preparation score helps select study work, while official eligibility and registration determine the examination arrangements." },
+        { "heading": "Read explanations against the actual authority", "body": "Use the Louisiana Study Guide to organize the topics, then check cited public statutes and the relevant part of the official book. Write which fact satisfies each condition in the rule. If an explanation covers a selected statutory topic, continue studying the official guide's broader treatment. These exercises provide additional reasoning practice alongside the prescribed material, with their own coverage and source limits.", "study": true },
+        { "heading": "Build a larger mixed-topic session", "body": "After reviewing the weakest subjects, use a complete practice set to move between instruments and legal issues. Track mistakes in issue identification separately from mistakes in applying a rule you correctly located. Broader Pro bank access can add independent scenarios. Finish each session with a small list of chapters to revisit and an updated official-registration checklist, so practice supports both preparation and the next administrative step." }
+      ]
+    },
+    {
+      "slug": "official-guide-study-roadmap",
+      "title": "Louisiana Notary Exam Official-Guide Study Roadmap",
+      "description": "Organize Louisiana notary preparation around the current official guide, statutory issue notes, case explanations and the official application calendar.",
+      "lede": "Build Louisiana preparation around the current official study guide and a realistic reading schedule. Add independent questions after a chapter to test how well you can use its rules. A roadmap should show what you have read, what you can explain and which official registration tasks remain before the intended examination.",
+      "sections": [
+        { "heading": "Check the prescribed reference before planning", "body": "Use the SOS preparation page to identify the current edition of Fundamentals of Louisiana Notarial Law and Practice and the examination instructions that apply to your sitting. Make a chapter checklist from the book you actually have. Check the permitted-reference instructions directly before exam day. This gives the study plan a defined scope and helps you avoid building it from scattered topic summaries alone." },
+        { "heading": "Give each chapter a reasoning task", "body": "After reading, choose a short example and identify its instrument, parties, required form and possible consequence. Write the controlling rule in your own words and attach a reference. Return to the text when a condition remains vague. Use the Louisiana Study Guide and independent exercises to test selected subjects, while keeping the official chapter checklist as the record of coverage across the prescribed material.", "study": true },
+        { "heading": "Track difficult facts across instruments", "body": "A useful review notebook follows recurring questions, such as who has authority to act, what consent is required or whether a formality has been satisfied. Compare how the issue appears in different instruments. Keep separate notes when the applicable rules differ. This helps you build a reasoned answer from the facts presented, instead of applying the conclusion from the last superficially similar practice problem." },
+        { "heading": "Maintain an administrative calendar beside study", "body": "Open the current SOS application and registration instructions and enter each required step and deadline for your intended date. Leave time for qualification and pre-assessment processing where applicable. Review the calendar whenever you change your study schedule. Close a week with a mixed practice attempt and two updates, the chapter work still needed and the next official document or registration action to complete." }
+      ]
+    }
+  ]
+}

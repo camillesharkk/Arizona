@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Arizona SOS examination notice", "url": "https://azsos.gov/business/notary-public/new-notary", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "practice-test-score-review",
+      "title": "What to Do After an Arizona Notary Practice Test",
+      "description": "Turn an Arizona practice score into a review plan using explanations, manual references, lookup time and a fresh mixed-topic attempt.",
+      "lede": "After an Arizona practice test, review the decisions that produced your score before starting another attempt. A missed identity rule needs a different repair from a correct answer that took several minutes to locate. Your review should produce a short list of rules to explain and find again.",
+      "sections": [
+        { "heading": "Separate a rule gap from a lookup delay", "body": "For each missed or uncertain answer, record the act requested, the fact you overlooked and the manual heading you needed. Mark an answer as uncertain even if you guessed correctly. Keep a separate timing note when you understood the rule but struggled to locate it. This gives you a specific task for the next study session instead of another undirected reread." },
+        { "heading": "Work through an exam-format mistake", "body": "Suppose a practice question asks whether the open-book format removes the need to prepare. The answer is no. The SOS notice specifies 45 questions in 60 minutes and provides access to the manual. Open-book access therefore still requires recognizing the issue and locating relevant material efficiently. Review the chapter for the missed issue, then explain the answer without looking at the choices.", "study": true },
+        { "heading": "Choose the next practice format", "body": "Use Quick 10 when you want a short check after reviewing one or two weak chapters. Move to Full 45 when you want to practise maintaining attention across the whole sitting. During the full attempt, keep explanations closed until submission. Compare the pattern of errors with your earlier attempt, particularly whether a previously confusing rule now makes sense in a different scenario." },
+        { "heading": "Decide whether another attempt will teach you anything", "body": "An immediate repeat can reward recognition of the answer wording. Before repeating, change the task by writing why each rejected option fails or by finding the authority from a blank starting point. Pro provides broader question-bank access when you need more varied practice. Keep the official booking and application steps on your checklist alongside revision, so a better study score leads to an organized next step." }
+      ]
+    },
+    {
+      "slug": "open-book-manual-lookup-drills",
+      "title": "Arizona Notary Exam Manual Lookup Drills",
+      "description": "Practise finding Arizona notary rules in the official manual with issue-first lookup exercises before a timed open-book practice exam.",
+      "lede": "Prepare for the Arizona open-book exam by practising how you find a rule. Begin with the issue in a short scenario, locate the relevant manual heading and explain the condition that controls the answer. These drills help you use reference time deliberately during a complete practice attempt.",
+      "sections": [
+        { "heading": "Build a heading-based route through the manual", "body": "Open the current manual from the SOS examination page. On a separate study sheet, list headings for identity, acknowledgments, oaths, records, fees and remote acts. Under each heading, write the kind of customer question it answers. Practise moving from a situation to the heading before searching for an isolated word. A familiar word can appear in several chapters with different purposes." },
+        { "heading": "Use a two-step lookup exercise", "body": "Take an unanswered practice item and identify the requested act before opening a reference. Predict which heading will contain the controlling condition, then look it up and write a one-sentence explanation. If the passage answers a different question, return to the scenario and reconsider the issue. Record the useful heading in your review notes so the exercise produces a reusable retrieval route.", "study": true },
+        { "heading": "Check a realistic timing decision", "body": "A candidate spends four minutes searching a single difficult item during practice. With 45 official questions and 60 minutes, the arithmetic averages about 80 seconds per item. That average is a personal pacing reference. Use your practice attempt to discover which lookups take longest, then rehearse those headings separately. Follow the official testing interface instructions for reviewing questions and using the embedded manual." },
+        { "heading": "Combine retrieval with answer explanations", "body": "Finish with a free Quick 10 and note every answer that required a lookup. Read its explanation and check whether the quoted rule actually addresses the facts you identified. When your lookup route is comfortable, use Full 45 to practise working across topics. Keep your study notes for preparation and follow the official notice about materials permitted in the real examination environment." }
+      ]
+    }
+  ]
+}

@@ -6,6 +6,9 @@ import { officialExamChecked } from "@/data/exam-config";
 import { expandedGuides } from "@/lib/seo-expansion";
 import { paths } from "@/lib/paths";
 import { seoGuideById } from "@/lib/seo-guides";
+import { ArticleStudyActions } from '@/components/ArticleStudyActions';
+import { ArticleView } from '@/components/ArticleLink';
+import { supplementalArticles } from '@/data/seo-matrix-articles';
 
 const MODIFIED = "2026-11-07";
 
@@ -23,6 +26,7 @@ export function SeoGuidePage({ id }: { id: string }) {
   ];
   return (
     <main className="wrap hero">
+      <ArticleView articleId={`az-${guide.id}`} articleState="AZ" />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -45,7 +49,7 @@ export function SeoGuidePage({ id }: { id: string }) {
       <p className="notice">Published {published}. Updated {MODIFIED}. {siteByline()}</p>
       {guide.checked === officialExamChecked ? (
         <p className="notice">
-          Question count, time, and the retry rule are kept on the <Link href="/arizona/exam-guide/">Arizona exam guide</Link>.
+          Question count, time, and the retry rule are kept on the <Link href={paths.examGuide}>Arizona exam guide</Link>.
         </p>
       ) : guide.checked ? (
         <p className="notice">{guide.checked}</p>
@@ -90,6 +94,7 @@ export function SeoGuidePage({ id }: { id: string }) {
           <p>{item.a}</p>
         </details>
       ))}
+      <ArticleStudyActions state="AZ" articleId={`az-${guide.id}`} />
       <section className="card" style={{ marginTop: 24 }}>
         <h2>Related reading</h2>
         <ul>
@@ -98,6 +103,7 @@ export function SeoGuidePage({ id }: { id: string }) {
               <Link href={item.href}>{item.label}</Link>
             </li>
           ))}
+          {supplementalArticles.AZ.map(article => <li key={article.path}><Link href={article.path}>{article.title}</Link></li>)}
         </ul>
       </section>
     </main>

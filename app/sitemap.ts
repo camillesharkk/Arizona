@@ -1,20 +1,14 @@
 import { fullStateSummary } from '@/data/full-state-summary';
-import { fullStateArticles } from '@/data/full-state-articles';
+import { stateSeoArticles } from '@/lib/seo-article-catalog';
+import { stateByCode } from '@/lib/states';
 import { freeStateCatalog, freeStateFeatures, freeStatePaths, releasedFreeStates } from "@/lib/free-state-catalog";
-import { ctArticles } from "@/data/ct-articles";
-import { inArticles, ncArticles } from "@/data/new-state-articles";
 import { ctPaths } from "@/lib/ct-site";
 import { inPaths } from "@/lib/in-site";
 import { ncPaths } from "@/lib/nc-site";
 import type { MetadataRoute } from "next";
-import { caArticles } from "@/data/ca-articles";
-import { nyArticles } from "@/data/ny-articles";
-import { paArticles } from "@/data/pa-articles";
 import { paPaths } from "@/lib/pa-site";
 import { laPaths } from "@/lib/la-site";
-import { laArticles } from "@/data/la-articles";
 import { nyPaths } from "@/lib/ny-site";
-import { hiArticles } from "@/data/hi-articles";
 import { seoGuides } from "@/lib/seo-guides";
 import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
@@ -26,7 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     ...freeStateCatalog.filter(([code]) => releasedFreeStates.includes(code)).flatMap(([code, , slug]) => {
       const site = freeStatePaths(slug);
-      return [site.home, site.practice, site.study, site.become, site.resources, site.examGuide, site.laws, ...(fullStateSummary[code]?.ready ? [site.questions, site.studyCards, ...(freeStateFeatures[code]?.purchase !== false ? [site.pricing] : []), ...(fullStateArticles[code] || []).map(article => article.path)] : [])];
+      return [site.home, site.practice, site.study, site.become, site.resources, site.examGuide, site.laws, ...(fullStateSummary[code]?.ready ? [site.questions, site.studyCards, ...(freeStateFeatures[code]?.purchase !== false ? [site.pricing] : [])] : [])];
     }),
     paths.home,
     paths.practice,
@@ -111,7 +105,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     laPaths.pricing,
     ...[ctPaths, inPaths, ncPaths].flatMap(paths => [paths.home, paths.practice, paths.questions, paths.study, paths.studyCards, paths.resources, paths.examGuide, paths.passingScore, paths.laws, paths.become, paths.pricing]),
   ];
-  const articles = [...caArticles, ...hiArticles, ...nyArticles, ...paArticles, ...laArticles, ...ctArticles, ...inArticles, ...ncArticles];
+  const articles = Object.entries(stateSeoArticles)
+    .filter(([code]) => stateByCode(code)?.status === 'available')
+    .flatMap(([, articles]) => articles);
   const indexed = [...new Set([...urls, ...seoGuides.filter((guide) => guide.index !== false).map((guide) => guide.path), ...articles.map((article) => article.path)])];
   const updated = new Map<string, string>([
     ...articles.map((article) => [article.path, article.updated] as const),

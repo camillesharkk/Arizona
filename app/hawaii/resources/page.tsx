@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { hiArticles } from "@/data/hi-articles";
+import { hiArticles } from "@/lib/seo-article-catalog";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
 import { canonicalUrl } from "@/lib/site";
 

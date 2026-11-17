@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Vermont OPR notary application instructions", "url": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_application_instructions.pdf", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-jurisprudence-exam-practice",
+      "title": "Free Vermont Notary Jurisprudence Exam Practice Review",
+      "description": "Use free Vermont practice to review notarial duties, find relevant authority and understand how the OPR examination fits the application route.",
+      "lede": "Prepare for Vermont notary study by practising how you identify a legal issue and locate the relevant rule. Start with a free Quick 10 and review every uncertain answer. Keep the current OPR application instructions beside the study plan so the required oath, examination and any applicable exemption are checked for your own route.",
+      "sections": [
+        { "heading": "Use a confidence mark during the short set", "body": "Mark answers you guessed or would need to verify from a source. After the set, read the explanation and locate the controlling condition in the official material. Write the heading that helped you find it and a brief reason the nearest alternative fails. This produces a retrieval plan as well as a topic list, both useful when studying rules through references." },
+        { "heading": "Worked question about application preparation", "body": "An ordinary applicant starts the online application before arranging the oath of office. What should be checked? Vermont's OPR instructions direct applicants to complete, sign and have the oath notarized before filling out the online application. They also require the jurisprudence examination where applicable. Review the applicant's actual documents and circumstances, then identify the next unfinished task under the current instructions." },
+        { "heading": "Keep traditional and remote conditions visible", "body": "Use the Vermont Study Guide to review certificates, conflicts and record handling. When practising a remote example, identify the additional authority and factual conditions that matter. Read the official source if the distinction is unclear. Explain the same request in an ordinary in-person setting and compare the procedure. This helps prevent a familiar term from carrying assumptions between different authorized workflows.", "study": true },
+        { "heading": "Use mixed practice to test understanding", "body": "After revising the largest gaps, try Comprehensive Practice and review the pattern of remaining uncertainty. Broader Pro bank access can provide new situations when a small set becomes familiar. Follow OPR's current instructions for the actual application examination and uploads. End the review with a chosen chapter and one real document task, keeping study and application progress connected through the preparation period." }
+      ]
+    },
+    {
+      "slug": "oath-examination-upload-readiness",
+      "title": "Vermont Notary Oath and Examination Upload Readiness",
+      "description": "Prepare Vermont's notarized oath, applicable jurisprudence examination and online application documents with a practical evidence checklist.",
+      "lede": "Organize Vermont notary paperwork before beginning the online application. OPR's instructions place the completed notarized oath before the application and ask for the jurisprudence examination when applicable. A short evidence audit helps you check the correct route and prepare readable files while continuing the study needed for the duties of the office.",
+      "sections": [
+        { "heading": "Check the route and any applicable exemption", "body": "Read the current OPR application instructions and follow the linked FAQ when the applicant's employment or professional status may affect a requirement. Record the basis for the route you select and keep unresolved questions separate. An exception should be checked against the actual applicant circumstances before deciding which examination or fee-related tasks belong on the final upload checklist." },
+        { "heading": "Complete the oath before the upload session", "body": "Download the current oath form and arrange its required signing and notarization. Compare the applicant information with the account details and check the completed page for legibility. Save a complete scan and retain the original. Preparing the file first makes it easier to follow the online application sequence and avoids leaving a draft open while trying to reconstruct a missing document." },
+        { "heading": "Prepare examination evidence using current directions", "body": "If the jurisprudence examination applies, open it through the official route and follow its current completion and upload instructions. Keep independent practice notes in a separate study folder. Use the Vermont Study Guide to resolve procedure questions before the official activity, with the cited authority checked for any uncertain condition. Verify which completed pages the application requests before creating the final file.", "study": true },
+        { "heading": "Track the submitted application through issuance", "body": "Retain the confirmation and check messages sent to the account's email address. Respond to any request using your saved document originals and record what was supplied. During processing, rehearse a complete in-person appointment and review weak topics with a short question set. Once the commission is issued, review its details and any additional endorsement requirements for electronic or remote plans before arranging those services." }
+      ]
+    }
+  ]
+}

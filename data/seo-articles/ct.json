@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Connecticut official notary licensing instructions", "url": "https://portal.ct.gov/SOTS/Business-Services/Notary/Notary-Public-Licensing", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-application-exam-practice",
+      "title": "Free Connecticut Notary Exam Practice and Handbook Review",
+      "description": "Prepare for Connecticut's application examination with free practice, handbook lookups and a worked example about the applicant's own documents.",
+      "lede": "Use Connecticut practice questions to check how well you can find and apply the handbook's instructions before completing the application examination. Start with a short set and review why each answer fits the facts. Keep the licensing paperwork nearby so the preparation also helps you organize the real application.",
+      "sections": [
+        { "heading": "Use the first ten questions to choose a chapter", "body": "Complete Quick 10 and mark every answer you could not explain confidently. Separate questions about the appointment process from those about serving a signer. The first group belongs beside your application checklist. The second belongs in a procedure notebook. Read the matching handbook section for the largest gap before trying to improve the score with another immediate repeat of the same material." },
+        { "heading": "Worked applicant-document question", "body": "A first applicant has prepared study notes but has not completed the requested jurat and writing sample. What belongs on the next-action list? The official Connecticut licensing instructions identify applicant documents separately from examination preparation. Open the current forms and arrange the required completion. A confident practice result leaves those documentary tasks to be performed through the application process." },
+        { "heading": "Practise explaining an act in order", "body": "Choose an acknowledgment or jurat topic from the Connecticut Study Guide. Write what information you need from the signer and what the chosen ceremony requires. Compare your explanation with the official manual and the practice feedback. If you find a missing step, rewrite the sequence from the beginning. A complete spoken procedure is a stronger review exercise than memorizing the old answer's position.", "study": true },
+        { "heading": "Connect review to a complete filing", "body": "Use a mixed practice set after revising the weak chapters, then check the application document list again. Keep the character form, applicant samples and relevant official notices together. Broader Pro practice can help when you need fresh scenarios, while the eLicense instructions govern the actual filing. End each study session with one rule to revisit or one document task you can complete next." }
+      ]
+    },
+    {
+      "slug": "first-application-readiness-checklist",
+      "title": "Connecticut Notary First-Application Readiness Checklist",
+      "description": "Organize Connecticut handbook study, character documentation, writing samples and appointment follow-up before submitting through eLicense.",
+      "lede": "Connecticut notary preparation combines handbook knowledge with documents that demonstrate the applicant's readiness. Build your checklist around the current licensing instructions, then give each attachment and study topic a clear completion test. This makes it easier to see whether the remaining work is reading, paperwork or official follow-up.",
+      "sections": [
+        { "heading": "Open the current licensing page first", "body": "Use the Connecticut licensing page to find the current manual and forms. Save links alongside your checklist so a later review returns to the same official starting point. Check whether a form has been revised before reusing an old download. Add each requested attachment by its actual name, which reduces the chance of treating two differently purposed documents as interchangeable." },
+        { "heading": "Give other people's tasks enough time", "body": "The character documentation and the applicant's notarized material may require coordination with another person. Arrange those tasks while you study, then review the resulting pages for completeness and legibility. Compare the applicant's information across all attachments. Keep an application folder with the completed documents and a separate note showing any question that still needs an answer before upload." },
+        { "heading": "Check knowledge with a handbook exercise", "body": "Choose a sample appointment involving a pre-signed document and explain what you would need to determine before completing a certificate. Find the relevant manual passages and compare them with the Connecticut Study Guide. Then try a short practice set and examine the explanations. Record unresolved procedure questions separately from application-document problems so each can receive the appropriate next action.", "study": true },
+        { "heading": "Plan what happens after submission", "body": "Retain the submission confirmation and use the state's instructions to track any request for further information. When appointment documents arrive, review the recording and follow-up requirements before accepting work. Keep a copy of the final appointment details with your procedure notebook. A checklist is complete when the required evidence and official steps are finished, with the correct information carried forward into everyday practice." }
+      ]
+    }
+  ]
+}

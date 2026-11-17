@@ -3,7 +3,7 @@ import { StudyCardsClient } from '@/components/StudyCardsClient';
 import { StateCheckout } from '@/components/StateCheckout';
 import { QuestionsClient } from '@/components/QuestionsClient';
 import { prepPacks } from '@/lib/prep-pack';
-import { fullStateArticles } from '@/data/full-state-articles';
+import { fullStateArticles } from '@/lib/seo-article-catalog';
 import { getSession } from '@/lib/session';
 import { hasStatePro } from '@/lib/entitlements';
 import { serverStateQuestions } from '@/data/full-state-server';

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { StateArticlePage } from "@/components/StateArticle";
-import { hiArticles } from "@/data/hi-articles";
+import { hiArticles } from "@/lib/seo-article-catalog";
 import { articleBySlug } from "@/lib/state-articles";
 import { canonicalUrl } from "@/lib/site";
 

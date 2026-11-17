@@ -1,5 +1,5 @@
 import { ctPaths, ctSources, CT_CHECKED_ON } from '@/lib/ct-site';
-import { ctArticles } from '@/data/ct-articles';
+import { ctArticles } from '@/lib/seo-article-catalog';
 import { pageMeta } from '@/lib/seo';
 export const metadata = pageMeta({ title: 'Connecticut Official Notary Resources', description: 'Current licensing, manual, forms and statutory sources for Connecticut notaries.', path: ctPaths.resources, index: true });
 export default function Page() {

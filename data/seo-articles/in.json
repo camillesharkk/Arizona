@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Indiana SOS new-system FAQ, May 4, 2026", "url": "https://www.in.gov/sos/business/files/New-Notary-System-FAQs-5-4-26.pdf", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-exam-practice-questions-explained",
+      "title": "Free Indiana Notary Exam Practice Questions Explained",
+      "description": "Use free Indiana questions to review the current course and examination workflow, identify weak duties and prepare for official Learner Hub study.",
+      "lede": "Indiana practice should reflect the current Applicant Hub and Learner Hub process. Start with a free ten-question check to identify gaps, then review the explanations and the state FAQ. Your practice notebook can help organize study while the official account tracks application approval, assigned education and the required examination.",
+      "sections": [
+        { "heading": "Start with the workflow you will actually use", "body": "Write down your current stage before taking a practice set. Are you collecting documents, awaiting application approval or working through assigned education? That context helps separate a knowledge gap from uncertainty about the portal. Answer the short set, mark guesses and record the topics you need to read. Keep a separate line for an official-account task that practice cannot complete for you." },
+        { "heading": "Worked question about course access", "body": "An applicant submits a file and immediately looks for a course card. What does the current FAQ say to expect? Following submission and approval, the state sends an email that the education course is ready and directs the applicant to the Learner Hub. Check the actual application status and the official message before assuming that a missing course card indicates a study problem." },
+        { "heading": "Review answers at the rule level", "body": "Use the Indiana Study Guide for the subject behind each missed response. Explain what the signer does, what the notary verifies and what the certificate records. When a practice explanation cites a document you cannot fully inspect, keep that uncertainty visible and follow the linked official material. A focused review note should identify the exact point requiring confirmation rather than generalizing from another state's rule.", "study": true },
+        { "heading": "Prepare for the official attempt", "body": "The May 2026 FAQ specifies a 30-question examination and 80 percent to pass. Use varied practice to check understanding across subjects, then follow the Learner Hub instructions for the assigned course and exam. Review fresh scenarios after a weak result instead of relying only on familiar answer wording. Keep completion evidence and state notices with your application records as you move toward the commission stage." }
+      ]
+    },
+    {
+      "slug": "failed-exam-review-and-retry-plan",
+      "title": "Indiana Notary Exam Retake and Review Plan",
+      "description": "Plan an Indiana notary exam retry around the current 24-hour reopening instruction and a focused review of missed or uncertain topics.",
+      "lede": "After an Indiana examination failure, use the waiting period to identify what to change before the next attempt. The May 2026 SOS FAQ describes a 24-hour wait and an email when the exam reopens. Build a review plan around the topics you could not explain, while checking the official Learner Hub status.",
+      "sections": [
+        { "heading": "Record useful information while the attempt is fresh", "body": "Write down the subjects that felt unclear without trying to reconstruct protected official questions. Note whether the difficulty was vocabulary, choosing the correct act or understanding an application rule. Keep any official result notice with your account records. A short topic list is enough to direct the next review and avoids spending the waiting period on an unfocused reread of everything." },
+        { "heading": "Repair one recurring misunderstanding", "body": "Choose the most persistent subject and read its Indiana Study Guide chapter with the official source beside it. Explain the ordinary procedure, then change one fact in an example and explain whether the result changes. Use a few original practice questions to test the explanation. If the same uncertainty returns, locate the precise condition you are missing before moving on to broader practice.", "study": true },
+        { "heading": "Check the retry instructions in the current system", "body": "The FAQ says an unsuccessful candidate waits 24 hours and receives an email when the examination opens again, with unlimited attempts under that described process. Check the Learner Hub and the actual message for your account. Keep email delivery and account navigation questions separate from study questions, so a portal-access issue does not get mistaken for a need to purchase another preparation product." },
+        { "heading": "Use a fresh set before returning", "body": "Finish with a short diagnostic or complete practice set, depending on the size of the remaining gaps. Review correct guesses as carefully as wrong responses. Decide what evidence shows improvement, such as explaining every identity answer without relying on the old choices. Once the official retry is available, follow its instructions and keep the next result with the rest of your application evidence." }
+      ]
+    }
+  ]
+}

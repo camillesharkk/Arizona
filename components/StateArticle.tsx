@@ -3,13 +3,18 @@ import { ArticleLink, ArticleView } from "@/components/ArticleLink";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd, articleJson, faqJson } from "@/components/JsonLd";
 import { packFor } from "@/lib/prep-pack";
+import { ArticleStudyActions } from '@/components/ArticleStudyActions';
+import { articlePaths } from '@/lib/article-study-actions';
+import { stateSeoArticles } from '@/lib/seo-article-catalog';
 import type { StateArticle } from "@/lib/state-articles";
 
 export function StateArticlePage({ article }: { article: StateArticle }) {
   const pack = packFor(article.state);
-  const home = pack ? pack.paths.home : article.state === "CA" ? "/california/" : "/hawaii/";
-  const stateName = pack ? pack.name : article.state === "CA" ? "California" : "Hawaii";
-  const resources = `${home}resources/`;
+  const site = articlePaths(article.state);
+  const home = site.home;
+  const stateName = pack ? pack.name : article.state === 'AZ' ? 'Arizona' : article.state === "CA" ? "California" : "Hawaii";
+  const resources = article.state === 'AZ' ? '/arizona-notary-exam-guides/' : site.resources;
+  const moreArticles = stateSeoArticles[article.state].filter(item => item.path !== article.path && !article.related.some(link => link.href === item.path)).slice(-3);
   const crumbs = [
     { name: "Home", path: "/" },
     { name: stateName, path: home },
@@ -89,6 +94,7 @@ export function StateArticlePage({ article }: { article: StateArticle }) {
           targetMode={article.endCta.targetMode}
         />
       </p>
+      <ArticleStudyActions state={article.state} articleId={article.id} />
       <section className="card" style={{ marginTop: 24 }}>
         <h2>Related reading</h2>
         <ul>
@@ -97,6 +103,7 @@ export function StateArticlePage({ article }: { article: StateArticle }) {
               {item.href.startsWith("/") ? <Link href={item.href}>{item.label}</Link> : <a href={item.href}>{item.label}</a>}
             </li>
           ))}
+          {moreArticles.map(item => <li key={item.path}><Link href={item.path}>{item.title}</Link></li>)}
         </ul>
       </section>
     </main>

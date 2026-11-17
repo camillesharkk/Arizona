@@ -1,19 +1,22 @@
 import { notFound } from 'next/navigation';
 import { StateArticlePage } from '@/components/StateArticle';
-import { fullStateArticles } from '@/data/full-state-articles';
-import { freeStateForSlug, freeStateCatalog } from '@/lib/free-state-catalog';
+import { stateSeoArticles } from '@/lib/seo-article-catalog';
+import { freeStateCatalog } from '@/lib/free-state-catalog';
+import { stateBySlug } from '@/lib/states';
+import type { StateCode } from '@/lib/types';
 import { productionStateBlocked } from '@/lib/state-release';
 import { pageMeta } from '@/lib/seo';
 
 export const dynamicParams = false;
 export function generateStaticParams() {
-  return freeStateCatalog.flatMap(([code, , stateSlug]) => (fullStateArticles[code] || []).map(article => ({ stateSlug, articleSlug: article.slug })));
+  const states = [['AZ', 'Arizona', 'arizona'], ...freeStateCatalog];
+  return states.flatMap(([code, , stateSlug]) => (stateSeoArticles[code as StateCode] || []).map(article => ({ stateSlug, articleSlug: article.slug })));
 }
 async function articleFor(params: Promise<{ stateSlug: string; articleSlug: string }>) {
   const { stateSlug, articleSlug } = await params;
-  const state = freeStateForSlug(stateSlug);
-  if (!state || productionStateBlocked(state[0])) notFound();
-  const article = fullStateArticles[state[0]]?.find(item => item.slug === articleSlug);
+  const state = stateBySlug(stateSlug);
+  if (!state || state.status !== 'available' || productionStateBlocked(state.code)) notFound();
+  const article = stateSeoArticles[state.code as StateCode]?.find(item => item.slug === articleSlug);
   if (!article) notFound();
   return article;
 }

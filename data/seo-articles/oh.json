@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Ohio SOS education and testing requirements", "url": "https://www.ohiosos.gov/notary/become-a-notary-in-ohio/education-and-testing", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-notary-course-practice-review",
+      "title": "Free Ohio Notary Course Practice Questions and Review",
+      "description": "Use free Ohio practice to review provider-course topics, distinguish applicant routes and learn from explanations before an official assessment.",
+      "lede": "Begin Ohio practice by identifying the application route you are preparing for. Education and testing requirements differ for a new nonattorney, an attorney, renewal and online authorization. A free diagnostic can reveal weak rules while the official provider instructions determine the course and assessment tasks that apply to your circumstances.",
+      "sections": [
+        { "heading": "Write the applicant route before the first set", "body": "Use the filing-type table on the SOS education page to identify your route. Then take Quick 10 and mark guesses or unfamiliar terms. Afterward, separate errors about commissioning requirements from errors about performing an act. Check route-dependent answers against the relevant row of the official table, which helps prevent a real requirement for one applicant from being applied automatically to another." },
+        { "heading": "Worked question about an attorney applicant", "body": "An Ohio attorney preparing an initial application assumes the education and testing row for a nonattorney applies in full. What should be checked? The official table lists initial attorney education separately and shows no test for that row. Read the row for the actual filing type, then confirm the provider's instructions. The example tests accurate classification of the applicant before choosing the required task." },
+        { "heading": "Review procedures from Ohio sources", "body": "For missed act, certificate or record questions, use the Ohio Study Guide to identify the chapter and then open its authority. Explain what the signer does and what the notary certifies. When an answer turns on a remote-work condition, make that condition explicit in the notebook. Rehearse a different situation so the review checks application of the rule beyond recognition of familiar wording.", "study": true },
+        { "heading": "Use broader practice before the provider step", "body": "After correcting weak chapters, complete a mixed set and review correct guesses as carefully as errors. Broader Pro questions can add new situations for a recurring gap. Keep the official background-check and provider tasks in the application calendar, using the current instructions for the applicant route. Your final review should end with one clear study task and the next real administrative step." }
+      ]
+    },
+    {
+      "slug": "provider-course-application-readiness",
+      "title": "Ohio Notary Provider Course and Application Readiness Checklist",
+      "description": "Choose the right Ohio education route, prepare official provider evidence and organize the application checklist alongside focused rule review.",
+      "lede": "Organize Ohio preparation around the filing type and an authorized provider. The state's education page gives different requirements for different applicants, so classify the route before paying for or scheduling instruction. Keep the official completion document, application evidence and remaining study questions in clearly named places.",
+      "sections": [
+        { "heading": "Match the course to the application type", "body": "Open the SOS provider and filing-type information and identify whether you seek an initial commission, renewal or online authorization. Check the attorney distinction where relevant. Contact an authorized provider for that route's arrangements and save the instructions. This makes it easier to verify the correct education scope and resolve a course-record issue before preparing the state application." },
+        { "heading": "Plan the background-check step using official directions", "body": "The education page advises checking the required BCI process before completing provider education and testing. Review the current application instructions for your circumstances and organize that task with the rest of the evidence. Track dates and document names in a checklist. Keep any question about the applicant's eligibility separate from a study problem so it receives the appropriate official follow-up." },
+        { "heading": "Audit the completion evidence before filing", "body": "After the required provider work, open the completion document and compare the applicant's name and dates with the application. Check the state's stated education timing and upload instructions. Save a readable copy with the other supporting records. A brief evidence audit helps distinguish an unfinished official requirement from a completed requirement whose documentation simply needs to be located or corrected." },
+        { "heading": "Carry study into the approval period", "body": "Use the Ohio Study Guide to revisit identity, certificates, fees and records, prioritizing the topics revealed by a free diagnostic. Rehearse a complete appointment and check any uncertain condition against the official reference. After filing, retain confirmations and follow state notices for the next stage. Prepare supplies from the issued commission information and keep additional online-authorization tasks in their own checklist.", "study": true }
+      ]
+    }
+  ]
+}

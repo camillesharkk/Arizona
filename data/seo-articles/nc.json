@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "North Carolina course and examination statute", "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_10B/GS_10B-8.html", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-course-exam-practice-questions",
+      "title": "Free North Carolina Notary Course Exam Practice Questions",
+      "description": "Use free North Carolina questions to review notarial laws, procedures and ethics before the approved course examination and application.",
+      "lede": "Use North Carolina practice to check how well you can apply the laws, procedures and ethics taught in the approved course. Begin with ten free questions and review every uncertain answer. Keep the official course and application requirements in the same preparation calendar so revision supports the process you must complete.",
+      "sections": [
+        { "heading": "Use the course subjects to group mistakes", "body": "Section 10B-8 identifies notarial laws, procedures and ethics as the examination and course subjects. Use those headings for your review notes after Quick 10. A missed procedural sequence needs a different exercise from an ethical conflict question. Pick the biggest gap, read its source and explain a new example before using another short set to see whether the uncertainty remains." },
+        { "heading": "Worked question about a first applicant's timing", "body": "An ordinary initial applicant takes the approved course and plans to wait several months before applying. What timing should be checked? The statute places the required course within the three months preceding the application and specifies at least six hours of classroom instruction, with the stated Bar-member exception. Compare the actual course date with the intended filing date before assuming the education evidence fits the application." },
+        { "heading": "Review the reasoning behind the choice", "body": "For a missed answer, identify the requested act, the signer's role and the condition that decides the procedure. Use the North Carolina Study Guide to locate the topic and check the official reference. Explain why the closest incorrect option fails. Change one fact and reason through the result again, which helps reveal whether you understood the rule or recognized only the old question wording.", "study": true },
+        { "heading": "Prepare for the course examination", "body": "The statute requires at least 80 percent correct for the approved examination. Use a complete practice set to review across topics after repairing the weak chapters, then follow the instructor's current examination instructions. Broader Pro questions can provide fresh scenarios for persistent gaps. Keep the course evidence and application documents organized so a passing official result leads to a prepared next filing step." }
+      ]
+    },
+    {
+      "slug": "course-to-application-study-calendar",
+      "title": "North Carolina Notary Course to Application Study Calendar",
+      "description": "Plan North Carolina course study, examination review and first-application paperwork around the statutory three-month education timing.",
+      "lede": "Choose your intended North Carolina application period when arranging the required course. That makes it easier to keep the course evidence timely and collect the paperwork while the material is fresh. Use a calendar that shows both revision sessions and the official tasks that must follow the class.",
+      "sections": [
+        { "heading": "Begin with the statutory timing", "body": "Read section 10B-8 and write the course date beside the intended application date. Recheck the three-month education condition whenever your filing plan changes. Keep any applicable exception documented from the official instructions for your circumstances. Planning this early helps you avoid treating a saved course document as automatically usable after a long interruption in the application process." },
+        { "heading": "Use the period before class for orientation", "body": "Read an introductory Study Guide chapter and try a free North Carolina Quick 10. List unfamiliar terms and procedure questions to revisit during approved instruction. Focus on understanding the difference between acts and the facts needed from the signer. Bring a short, specific question list to the course so the instructor can address the parts you genuinely find confusing.", "study": true },
+        { "heading": "Schedule a review immediately after instruction", "body": "Use your course notes and official references to explain the topics that felt least clear. Try an independent mixed set and group uncertainty under laws, procedures and ethics. Reopen the source for correct guesses as well as errors. Keep the instructor's examination directions with the course records, making it clear which study tasks you choose and which official instructions govern the required assessment." },
+        { "heading": "Protect time for the application handoff", "body": "After completing the required instruction and examination, open the current first-application checklist and review the supporting documents. Arrange any signing or notarization in time for the intended filing date. Retain the submitted material and follow official appointment notices for the later oath stage. Continue short practice during processing so the procedures remain familiar when the commission and equipment are ready." }
+      ]
+    }
+  ]
+}

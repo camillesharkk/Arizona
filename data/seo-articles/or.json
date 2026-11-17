@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Oregon SOS commission application and reapplication", "url": "https://sos.oregon.gov/business/notary/Pages/commission-application-reapplication.aspx", "checked": "2026-11-17" }, { "label": "Oregon notary administration FAQs", "url": "https://sos.oregon.gov/business/notary/pages/oregon-notary-online-system-faq.aspx", "checked": "2026-11-14" }],
+  "articles": [
+    {
+      "slug": "free-open-book-exam-practice",
+      "title": "Free Oregon Notary Open-Book Exam Practice",
+      "description": "Prepare for Oregon study with free questions, reference-lookup exercises and a worked example about training and the official state examination.",
+      "lede": "Use Oregon practice to check whether you can identify an issue and find the rule that resolves it. Begin with a short free set and review the explanations afterward. Keep Notary Basics completion and the official examination route in your checklist so independent study supports the state's actual commissioning sequence.",
+      "sections": [
+        { "heading": "Practise recognition and retrieval separately", "body": "Take Quick 10 using your current knowledge and mark the items you would need to research. After the set, locate each rule in the official material and note the heading used. A correct lookup should answer the question's actual issue and include its conditions. Keep a separate timing note when finding the passage took longer than understanding it, giving the next study session a precise task." },
+        { "heading": "Worked question about training and examination", "body": "An applicant completes a provider's Notary Basics course and assumes a state examination is unnecessary. What should be checked? Oregon's application instructions connect approved education with the official Take the Exam and Apply route. Review the education number and the required state assessment step. Completing a learning course can produce the evidence needed for the next stage while leaving that next stage to be completed." },
+        { "heading": "Review the conditions behind the answer", "body": "Use the Oregon Study Guide for identity, certificates, journal handling or copy-related questions that caused uncertainty. Explain the rule in your own words and identify which fact makes it apply. Then change one detail and explain the result again. This helps distinguish understanding of the procedure from the ability to recognize an answer encountered in a previous practice set.", "study": true },
+        { "heading": "Check broader coverage before the official process", "body": "Use Comprehensive Practice after repairing the largest gaps and review remaining guesses by subject. Broader Pro questions can add variety when the short sets become familiar. Follow the state's current instructions for the actual examination, application and oath. End the session with your next reading task and one official-process action, such as retrieving the education number or preparing an application attachment." }
+      ]
+    },
+    {
+      "slug": "notary-basics-exam-oath-timeline",
+      "title": "Oregon Notary Basics, Exam and Oath Timeline",
+      "description": "Organize Oregon training evidence, the education number, state examination and emailed oath into a practical commissioning checklist.",
+      "lede": "Plan Oregon preparation around the handoff from Notary Basics to the official examination and application. Keep the education record and number accessible before starting the state route. A checklist that continues through the oath and commission documents helps you see the next task even after study and testing are finished.",
+      "sections": [
+        { "heading": "Choose a filing period before arranging training", "body": "Open the current Oregon instructions and check the education timing for the intended application. Record your course completion date beside the planned filing date. Retrieve the education number and keep it with the course evidence. If your schedule changes, revisit the timing requirement before assuming that an earlier course still fits the new application period or the system's current directions." },
+        { "heading": "Make the final review a practical exercise", "body": "Use the Oregon Study Guide to choose two weak subjects from your diagnostic results. Explain an appointment involving each and find the controlling passage in the official source. Finish with a short set and inspect the explanations. This gives you evidence of improvement in recognizing a procedure and retrieving its conditions, both useful skills for working through open-book study material.", "study": true },
+        { "heading": "Track the application and oath handoff", "body": "Follow the state route for examination and application, keeping the confirmation and official messages together. The commissioning instructions describe an emailed oath that must be notarized and returned as directed. Read that message in full and record the required response and delivery method. Treat an instruction awaiting your action as an open checklist item even if the preceding online stage is complete." },
+        { "heading": "Prepare supplies from the issued documents", "body": "When the commission material arrives, compare its details with your application records and follow the authorized stamp instructions. Prepare the journal and a first-appointment procedure sheet. Continue mixed-topic practice while waiting for the official stages to finish. If you intend to add electronic or remote services, open the separate state instructions and make an additional authorization checklist with its own completion evidence." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "sources": [{ "label": "Missouri SOS commissioning steps", "url": "https://s1.sos.mo.gov/business/notary/newnotary", "checked": "2026-11-17" }],
+  "articles": [
+    {
+      "slug": "free-training-assessment-practice",
+      "title": "Free Missouri Notary Training Assessment Practice",
+      "description": "Review Missouri handbook knowledge with free practice questions, an application-sequence example and a method for learning from explanations.",
+      "lede": "Use free Missouri practice to check your understanding before completing the official training assessment and commission application. A short diagnostic is most useful when you review the reason behind each answer. Keep the Missouri handbook and the state's commissioning sequence beside your notes as you choose the next topic.",
+      "sections": [
+        { "heading": "Begin with the official sequence", "body": "Missouri's commissioning page starts with qualifications and handbook review, then offers the online or written training route before application. Write your current stage at the top of the notebook. Take Quick 10 and distinguish questions about completing that process from questions about a later customer appointment. Each group needs a different checklist even though both belong in a complete preparation plan." },
+        { "heading": "Worked question about a passing assessment", "body": "An applicant completes the training assessment and asks what comes next. The published sequence still includes the commission application, bond and qualification at the county clerk's office. Locate the applicant's actual position before choosing an action. A correct answer should identify the next unfinished official step and the evidence needed for it, with the current instructions used for the details of that applicant's route." },
+        { "heading": "Turn the explanation into a procedure", "body": "For a missed notarial-act question, describe the customer request, the required checks and the certificate or record that follows. Use the Missouri Study Guide to organize the rule and return to the handbook for its conditions. Change one fact in the example and explain the result again. This checks understanding beyond remembering which choice happened to be correct in the first attempt.", "study": true },
+        { "heading": "Choose broader review when ready", "body": "After revising the largest gaps, try Comprehensive Practice to move across subjects in one session. Keep an error list containing both misses and correct guesses. Broader Pro questions can provide varied situations for persistent weak topics. Finish by checking the application folder and county-stage plans, so the session produces a practical next action in study or paperwork rather than only a recorded percentage." }
+      ]
+    },
+    {
+      "slug": "application-to-county-qualification-plan",
+      "title": "Missouri Notary Application to County Qualification Plan",
+      "description": "Organize Missouri handbook review, training evidence, bond preparation and the county clerk qualification stage with a practical document checklist.",
+      "lede": "Plan the Missouri notary process around the document handoff to the state and the later visit to the county clerk. Keep each stage's instructions with its supporting evidence. This helps you prepare the correct paperwork while using the application period to practise the duties you will perform after commissioning.",
+      "sections": [
+        { "heading": "Choose the current training route", "body": "Read the handbook and open the online or written training option from the official commissioning page. Follow the directions for the route you select and retain the required evidence. If using a paper form, check that it is the current version before completing it. Keep the assessment material with the application instructions so you can verify exactly what must accompany the chosen filing method." },
+        { "heading": "Review the state submission before sending", "body": "Compare the applicant name, address and qualifying information across the application and supporting material. Save readable copies of everything submitted. Record the submission date and the official confirmation, then keep any later request for information in the same folder. This creates a clear application history and makes it easier to correct a specific issue without preparing the entire file again." },
+        { "heading": "Prepare the county-stage documents", "body": "The state's published sequence includes obtaining a surety bond and qualifying at the local county clerk after the application stage. Read the actual approval instructions and confirm the county's arrangements before visiting. Check the bond details against the commission information. Keep a short list of documents to bring and material that must be returned afterward, using the current official directions for timing." },
+        { "heading": "Rehearse the first appointment while waiting", "body": "Use the Missouri Study Guide to practise identity checks, the requested ceremony and recordkeeping. Explain a complete appointment aloud, then use a free question set to check weak subjects. Prepare the required supplies from the issued commission details. Close the readiness checklist only after the official qualification steps and equipment are complete, with a clear plan for resolving any procedure you still find uncertain.", "study": true }
+      ]
+    }
+  ]
+}
