@@ -208,6 +208,8 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
           {moreInNav ? moreMenu : null}
         </nav> : null}
         <div className="header-right">
+          {isNationalHome ? moreMenu : null}
+          {isNationalHome ? <Link href={paths.contact} className="header-contact">Contact Us</Link> : null}
           {authStatus === "loading" && (
             <span className="header-auth-placeholder" role="status" aria-label="Loading account">
               <span className="spinner" aria-hidden="true" />
@@ -224,8 +226,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
             </Link>
           )}
           {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} stateCode={state} />}
-          {isNationalHome ? <Link href={paths.contact} className="header-contact">Contact Us</Link> : null}
-          {moreInNav ? null : moreMenu}
+          {!isNationalHome && !moreInNav ? moreMenu : null}
         </div>
       </div>
     </header>

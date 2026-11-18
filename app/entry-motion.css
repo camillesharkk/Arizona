@@ -1,6 +1,7 @@
 .national-header .header-inner { min-height: 72px; }
 .national-header .header-right { position: relative; }
-.national-header .account-menu { position: static; }
+.national-header :is(.account-menu, .more-menu) { position: static; }
+.national-header .more-panel { left: 0; right: auto; }
 .national-header .header-contact {
   display: inline-flex;
   align-items: center;

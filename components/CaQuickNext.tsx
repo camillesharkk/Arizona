@@ -63,7 +63,7 @@ export function CaQuickNext({
   );
   const reviewButton = topic ? (
     <a className={band === "review" ? "btn btn-primary" : "btn btn-ghost"} href={guideHref}>
-      Review {topic.label}
+      Review Study Guide
     </a>
   ) : null;
   const mistakeButton = wrong > 0 ? (
