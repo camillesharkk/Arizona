@@ -5,7 +5,6 @@ import { getStore } from "@/lib/store";
 import { getCommerceRepo } from "@/lib/commerce";
 import { getDeviceRepo } from "@/lib/devices";
 import { confirmAndDeleteAccount } from "@/lib/auth/deletion";
-import { refreshPlanCache } from "@/lib/entitlements";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
@@ -36,11 +35,6 @@ export async function POST(req: Request) {
     requestedUserId: body.data.userId,
   });
   if (!result.ok) return NextResponse.json({ error: result.error }, { status: result.status });
-  try {
-    await refreshPlanCache(session.id);
-  } catch {
-    /* cache is best-effort after deletion */
-  }
   await clearSessionCookie();
   return NextResponse.json({ ok: true });
 }

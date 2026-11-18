@@ -8,7 +8,15 @@ export const getLifetimeCheckoutAvailability = cache(async () => {
   try {
     const sql = getPgSql();
     const [row] = await sql<{ ready: boolean }[]>`
-      select to_regclass('provider_refunds') is not null
+      select exists (select 1 from schema_migrations where id = '018_lifetime_entitlements')
+        and exists (
+          select 1 from pg_constraint where conrelid = to_regclass('entitlements')
+            and conname = 'entitlements_lifetime_window_check' and convalidated
+        )
+        and exists (
+          select 1 from information_schema.columns
+          where table_schema = current_schema() and table_name = 'provider_refunds' and column_name = 'reason'
+        )
         and exists (
           select 1 from information_schema.columns
           where table_schema = current_schema() and table_name = 'entitlements'

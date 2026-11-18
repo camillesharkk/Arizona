@@ -31,9 +31,12 @@ const missing = getPaddleWebhookConfig({ ...env, PADDLE_LIFETIME_PRODUCT_ID: und
 assert.ok(missing.ok && !missing.config.lifetimePriceId);
 const readyEnv = {
   ...env, MOR_PROVIDER: "paddle", LIFETIME_REFUND_POLICY_VERSION: LIFETIME_POLICY_VERSION,
+  LIFETIME_CHECKOUT_ENABLED: "1",
   NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: "test_fixture", NEXT_PUBLIC_PADDLE_ENV: "sandbox",
 };
 assert.equal(lifetimeCheckoutConfigured(readyEnv), true);
+assert.equal(lifetimeCheckoutConfigured({ ...readyEnv, LIFETIME_CHECKOUT_ENABLED: undefined }), false);
+assert.equal(lifetimeCheckoutConfigured({ ...readyEnv, VERCEL_ENV: "production" }), false);
 assert.equal(lifetimeCheckoutConfigured({ ...readyEnv, PADDLE_LIFETIME_PRICE_ID: "" }), false);
 assert.equal(lifetimeCheckoutConfigured({ ...readyEnv, LIFETIME_REFUND_POLICY_VERSION: "old" }), false);
 assert.equal(lifetimeCheckoutConfigured({ ...readyEnv, NEXT_PUBLIC_PADDLE_ENV: "production" }), false);
@@ -58,7 +61,11 @@ const sdk: PaddleTransactionsClient = {
       assert.deepEqual(request.items, [{ priceId, quantity: 1 }]);
       assert.equal(request.customData?.user_id, quote.userId);
       assert.equal(request.customData?.quote_id, quote.id);
-      return { id: providerTxn, checkout: { url: "https://example.test/pay" } };
+      return {
+        id: providerTxn, checkout: { url: "https://example.test/pay" },
+        status: "draft", currencyCode: "USD", customData: request.customData,
+        items: [{ quantity: 1, price: { id: priceId, productId, billingCycle: null, unitPrice: { amount: "2999", currencyCode: "USD" } } }],
+      };
     },
   },
 };
@@ -72,6 +79,92 @@ const opened = await ensurePaddleCheckout(opts);
 assert.ok(opened.ok);
 assert.equal(opened.transactionId, providerTxn);
 assert.equal(creates, 1);
+
+const rejectedRepo = createMemoryCommerceRepo();
+await rejectedRepo.putUser({ id: "price-drift", createdAt: now.toISOString(), emailVerifiedAt: now.toISOString() });
+const rejectedQuote = await createQuote(rejectedRepo, {
+  userId: "price-drift", applyCredit: false, policyAccepted: true, productCode, now,
+});
+assert.ok(rejectedQuote.ok);
+let invalidCreates = 0;
+const wrongSubtotal = {
+  id: "txn_lifetime_wrong_subtotal", status: "draft", currencyCode: "USD",
+  customData: { user_id: "price-drift", quote_id: rejectedQuote.quote.id, product_code: productCode },
+  items: [{ quantity: 1, price: { id: priceId, productId, billingCycle: null, unitPrice: { amount: "2999", currencyCode: "USD" } } }],
+  details: { lineItems: [{ priceId, quantity: 1, product: { id: productId }, totals: { subtotal: "3999" } }] },
+};
+const rejectedSdk: PaddleTransactionsClient = {
+  prices: sdk.prices,
+  transactions: {
+    create: async () => { invalidCreates++; return wrongSubtotal; },
+    get: async () => wrongSubtotal,
+  },
+};
+const wrong = await ensurePaddleCheckout({ repo: rejectedRepo, quote: rejectedQuote.quote, config, now, sdk: rejectedSdk });
+assert.ok(!wrong.ok, "The fresh provider transaction with an unexpected subtotal must never open");
+assert.equal((await rejectedRepo.getCheckoutBinding(rejectedQuote.quote.id))?.status, "creating");
+assert.equal((await rejectedRepo.getCheckoutBinding(rejectedQuote.quote.id))?.providerCheckoutId, wrongSubtotal.id);
+const later = new Date(now.getTime() + 61_000);
+const retryResult = await createQuote(rejectedRepo, {
+  userId: "price-drift", applyCredit: false, policyAccepted: true, productCode, now: later,
+});
+assert.ok(retryResult.ok);
+const retryWrong = await ensurePaddleCheckout({
+  repo: rejectedRepo, quote: retryResult.quote, config, now: later, sdk: rejectedSdk,
+});
+assert.ok(!retryWrong.ok, "A mismatched provider transaction must fence replacement until it is canceled");
+assert.equal(invalidCreates, 1);
+
+rejectedSdk.transactions.get = async () => ({ ...wrongSubtotal, status: "canceled" });
+rejectedSdk.transactions.create = async request => ({
+  ...wrongSubtotal, id: "txn_lifetime_replacement", customData: request.customData, details: null,
+});
+const resumedAfterCancellation = await ensurePaddleCheckout({
+  repo: rejectedRepo, quote: retryResult.quote, config, now: later, sdk: rejectedSdk,
+});
+assert.ok(resumedAfterCancellation.ok);
+assert.equal(resumedAfterCancellation.transactionId, "txn_lifetime_replacement");
+
+const staleRepo = createMemoryCommerceRepo();
+const claimTime = new Date(now.getTime() - 24 * 60 * 60_000);
+await staleRepo.putUser({ id: "stale", createdAt: claimTime.toISOString(), emailVerifiedAt: claimTime.toISOString() });
+const beforeTimeout = await createQuote(staleRepo, {
+  userId: "stale", applyCredit: false, policyAccepted: true, productCode, now: claimTime,
+});
+const afterTimeout = await createQuote(staleRepo, {
+  userId: "stale", applyCredit: false, policyAccepted: true, productCode, now,
+});
+assert.ok(beforeTimeout.ok && afterTimeout.ok);
+const oldQuote = beforeTimeout.quote;
+const oldClaim = { quoteId: oldQuote.id, provider: "paddle", expiresAt: oldQuote.expiresAt, now: claimTime.toISOString() };
+assert.ok((await staleRepo.claimCheckoutBinding(oldClaim)).created);
+const staleSdk: PaddleTransactionsClient = {
+  prices: sdk.prices,
+  transactions: {
+    create: async request => ({
+      ...wrongSubtotal, id: "txn_lifetime_after_timeout", customData: request.customData, details: null,
+    }),
+    list: async query => {
+      const windowEnd = Date.parse(query?.["createdAt[LTE]"] || "");
+      assert.ok(windowEnd < now.getTime() - 60_000, "Recovery must query the claim's creation window");
+      return [];
+    },
+  },
+};
+const afterStale = await ensurePaddleCheckout({ repo: staleRepo, quote: afterTimeout.quote, now, config, sdk: staleSdk });
+assert.ok(afterStale.ok);
+
+const fenceRepo = createMemoryCommerceRepo();
+assert.ok((await fenceRepo.claimCheckoutBinding(oldClaim)).created);
+assert.equal(await fenceRepo.releaseCheckoutClaim(oldQuote.id, oldClaim.now), true);
+const newClaim = { ...oldClaim, now: later.toISOString() };
+assert.ok((await fenceRepo.claimCheckoutBinding(newClaim)).created);
+assert.equal(await fenceRepo.releaseCheckoutClaim(oldQuote.id, oldClaim.now), false);
+assert.equal(await fenceRepo.completeCheckoutBinding({
+  quoteId: oldQuote.id, providerCheckoutId: "txn_lifetime_late_old", checkoutUrl: "paddle-overlay:txn_lifetime_late_old",
+  expectedCreatedAt: oldClaim.now,
+}), null);
+assert.equal((await fenceRepo.getCheckoutBinding(oldQuote.id))?.createdAt, newClaim.now);
 
 const grants = new Set<string>();
 let revokes = 0;
@@ -167,7 +260,19 @@ const early = { ...adjustment, data: { ...adjustment.data, transactionId: earlyT
 assert.equal((await event(early)).body.refundPending, true);
 assert.equal((await event(earlyPayment)).body.refunded, true);
 assert.equal((await repo.getOrderByProvider("paddle", earlyTxn))?.status, "refunded");
-assert.equal(revokes, 2);
+assert.equal((await repo.getOrderByProvider("paddle", earlyTxn))?.entitlementId, null);
+assert.equal(grants.has(earlyTxn), false);
+assert.equal(revokes, 1);
+
+const earlyDisputedTxn = "txn_lifetime_early_dispute";
+const earlyDisputed = await secondPayment(earlyDisputedTxn);
+assert.equal((await event({
+  eventType: "adjustment.created",
+  data: { ...early.data, transactionId: earlyDisputedTxn, action: "chargeback" },
+})).body.refundPending, true);
+assert.equal((await event(earlyDisputed)).body.refunded, true);
+assert.equal((await repo.getOrderByProvider("paddle", earlyDisputedTxn))?.refundReason, "chargeback");
+assert.equal(grants.has(earlyDisputedTxn), false);
 
 const disputedTxn = "txn_lifetime_disputed";
 assert.equal((await event(await secondPayment(disputedTxn))).status, 200);
@@ -181,4 +286,12 @@ assert.equal((await repo.getOrderByProvider("paddle", disputedTxn))?.refundReaso
 chargeback.data!.action = "chargeback_reverse";
 assert.equal((await event(chargeback)).body.manualReview, true);
 assert.equal((await repo.getOrderByProvider("paddle", disputedTxn))?.status, "refunded");
+
+const fullLineTxn = "txn_lifetime_full_line";
+assert.equal((await event(await secondPayment(fullLineTxn))).status, 200);
+assert.equal((await event({
+  eventType: "adjustment.updated",
+  data: { ...adjustment.data, transactionId: fullLineTxn, type: "partial", items: [{ type: "full" }] },
+})).body.refunded, true);
+assert.equal((await repo.getOrderByProvider("paddle", fullLineTxn))?.status, "refunded");
 console.log("Lifetime Paddle: catalog price, signed completed event, payment pending, idempotence, partial/full/early refund, and chargeback");

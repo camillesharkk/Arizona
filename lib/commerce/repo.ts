@@ -16,9 +16,11 @@ import type {
   RefundRequestRow,
 } from "./types.ts";
 
+export type ProviderRefundReason = "provider_initiated" | "chargeback";
+
 export type CommerceRepo = {
-  rememberProviderRefund(provider: string, transactionId: string): Promise<void>;
-  hasProviderRefund(provider: string, transactionId: string): Promise<boolean>;
+  rememberProviderRefund(provider: string, transactionId: string, reason?: ProviderRefundReason): Promise<void>;
+  getProviderRefundReason(provider: string, transactionId: string): Promise<ProviderRefundReason | null>;
   hasActiveLifetimePro(userId: string, nowIso: string): Promise<boolean>;
   getUser(id: string): Promise<ClockUser | null>;
   putUser(user: ClockUser): Promise<void>;
@@ -122,20 +124,22 @@ export type CommerceRepo = {
   completeCheckoutBinding(opts: {
     quoteId: string;
     providerCheckoutId: string;
-    checkoutUrl: string;
+    checkoutUrl: string | null;
+    expectedCreatedAt?: string;
   }): Promise<ProviderCheckoutBinding | null>;
   adoptCreatingCheckoutBinding(opts: {
     quoteId: string;
     provider: string;
     providerCheckoutId: string;
     checkoutUrl: string;
+    expectedCreatedAt?: string;
   }): Promise<ProviderCheckoutBinding | null>;
-  releaseCheckoutClaim(quoteId: string): Promise<void>;
+  releaseCheckoutClaim(quoteId: string, expectedCreatedAt?: string): Promise<boolean>;
   clearCanceledCheckout(quoteId: string, transactionId: string): Promise<boolean>;
 };
 
 type Mem = {
-  providerRefunds: string[];
+  providerRefunds: Record<string, ProviderRefundReason>;
   users: ClockUser[];
   codes: ReferralCodeRow[];
   relationships: ReferralRelationshipRow[];
@@ -152,7 +156,7 @@ type Mem = {
 
 function empty(): Mem {
   return {
-    providerRefunds: [],
+    providerRefunds: {},
     users: [],
     codes: [],
     relationships: [],
@@ -172,7 +176,9 @@ function hydrate(raw?: Record<string, unknown> | Mem): Mem {
   const base = empty();
   if (!raw) return base;
   return {
-    providerRefunds: Array.isArray(raw.providerRefunds) ? raw.providerRefunds as string[] : [],
+    providerRefunds: Array.isArray(raw.providerRefunds)
+      ? Object.fromEntries(raw.providerRefunds.filter(key => typeof key === "string").map(key => [key, "provider_initiated"]))
+      : (raw.providerRefunds as Mem["providerRefunds"]) ?? {},
     users: Array.isArray(raw.users)
       ? (raw.users as ClockUser[]).map((u) => ({
           ...u,
@@ -237,12 +243,12 @@ export function createMemoryCommerceRepo(
   }
 
   const repo: CommerceRepo = {
-    async rememberProviderRefund(provider, transactionId) {
+    async rememberProviderRefund(provider, transactionId, reason = "provider_initiated") {
       const key = JSON.stringify([provider, transactionId]);
-      if (!db.providerRefunds.includes(key)) db.providerRefunds.push(key);
+      db.providerRefunds[key] ??= reason;
     },
-    async hasProviderRefund(provider, transactionId) {
-      return db.providerRefunds.includes(JSON.stringify([provider, transactionId]));
+    async getProviderRefundReason(provider, transactionId) {
+      return db.providerRefunds[JSON.stringify([provider, transactionId])] ?? null;
     },
     async hasActiveLifetimePro(userId, nowIso) {
       if (checkLifetimePro) return checkLifetimePro(userId, nowIso);
@@ -651,6 +657,9 @@ export function createMemoryCommerceRepo(
           return { created: false, binding: existing };
         }
         if (existing?.status === "creating") {
+          if (existing.providerCheckoutId || isLifetimeProProduct(quote?.productCode ?? "")) {
+            return { created: false, binding: existing };
+          }
           const age = nowMs - new Date(existing.createdAt).getTime();
           if (age < 60_000) return { created: false, binding: existing };
         }
@@ -678,11 +687,13 @@ export function createMemoryCommerceRepo(
     },
     async completeCheckoutBinding(opts) {
       return withLock(`checkout:${opts.quoteId}`, () => {
-        const row = db.checkoutBindings.find((b) => b.quoteId === opts.quoteId && b.status === "creating");
+        const row = db.checkoutBindings.find(b => b.quoteId === opts.quoteId && b.status === "creating" &&
+          (!opts.expectedCreatedAt || b.createdAt === opts.expectedCreatedAt) &&
+          (!b.providerCheckoutId || b.providerCheckoutId === opts.providerCheckoutId));
         if (!row) return null;
         row.providerCheckoutId = opts.providerCheckoutId;
         row.checkoutUrl = opts.checkoutUrl;
-        row.status = "ready";
+        row.status = opts.checkoutUrl === null ? "creating" : "ready";
         return row;
       });
     },
@@ -700,6 +711,7 @@ export function createMemoryCommerceRepo(
             b.quoteId === opts.quoteId &&
             b.provider === opts.provider &&
             b.status === "creating" &&
+            (!opts.expectedCreatedAt || b.createdAt === opts.expectedCreatedAt) &&
             !b.providerCheckoutId
         );
         if (!row) return null;
@@ -715,10 +727,13 @@ export function createMemoryCommerceRepo(
       db.checkoutBindings.splice(index, 1);
       return true;
     },
-    async releaseCheckoutClaim(quoteId) {
+    async releaseCheckoutClaim(quoteId, expectedCreatedAt) {
       return withLock(`checkout:${quoteId}`, () => {
-        const i = db.checkoutBindings.findIndex((b) => b.quoteId === quoteId && b.status === "creating");
-        if (i >= 0) db.checkoutBindings.splice(i, 1);
+        const i = db.checkoutBindings.findIndex(b => b.quoteId === quoteId && b.status === "creating" &&
+          !b.providerCheckoutId && (!expectedCreatedAt || b.createdAt === expectedCreatedAt));
+        if (i < 0) return false;
+        db.checkoutBindings.splice(i, 1);
+        return true;
       });
     },
   };

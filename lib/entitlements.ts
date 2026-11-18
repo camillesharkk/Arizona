@@ -86,8 +86,8 @@ export async function hasStatePro(userId: string | null | undefined, _state?: st
 
 export async function refreshPlanCache(userId: string) {
   const store = await getStore();
-  const row = await getArizonaEntitlement(userId);
-  await store.updateUser(userId, {
+  const row = servingAccountEntitlement(await store.listEntitlements(userId), new Date());
+  await store.updatePlanCache(userId, {
     plan: row ? "pro" : "free",
     planStatus: row ? "active" : "expired",
     planExpiresAt: row?.expiresAt ?? null,

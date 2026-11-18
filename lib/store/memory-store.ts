@@ -117,12 +117,15 @@ export function createMemoryStore(): Store {
       if (!duplicate) row.result = result;
       return { row, duplicate };
     },
-    async learningTransaction(userId, action) {
+    async accountTransaction(_userId, action) {
       if (scope.getStore() !== committed) return action(store);
       const staged = structuredClone(committed);
       const result = await scope.run(staged, () => action(store));
       Object.assign(committed, staged);
       return result;
+    },
+    learningTransaction(userId, action) {
+      return store.accountTransaction(userId, action);
     },
     async getUserByEmail(email) {
       return db.users.find((u) => u.email === email && !u.deletedAt) ?? null;
@@ -141,6 +144,10 @@ export function createMemoryStore(): Store {
       if (i < 0) throw new Error("not_found");
       db.users[i] = { ...db.users[i], ...patch, id };
       return db.users[i];
+    },
+    async updatePlanCache(userId, plan) {
+      const index = db.users.findIndex((user) => user.id === userId && !user.deletedAt);
+      if (index >= 0) db.users[index] = { ...db.users[index], ...plan };
     },
     async putToken(row) {
       db.tokens = db.tokens.filter((t) => !(t.userId === row.userId && t.type === row.type));
@@ -322,7 +329,14 @@ export function createMemoryStore(): Store {
       const dup = db.entitlements.find((e) => e.provider === row.provider && e.providerOrderId === row.providerOrderId);
       if (dup) return dup;
       const now = new Date().toISOString();
-      const next: EntitlementRow = { ...row, id: randomUUID(), createdAt: now, updatedAt: now };
+      const deleted = db.users.find((user) => user.id === row.userId)?.deletedAt;
+      const next: EntitlementRow = {
+        ...row,
+        status: deleted && row.status === "active" ? "revoked" : row.status,
+        id: randomUUID(),
+        createdAt: now,
+        updatedAt: now,
+      };
       db.entitlements.push(next);
       return next;
     },
@@ -335,11 +349,11 @@ export function createMemoryStore(): Store {
         e.updatedAt = new Date().toISOString();
       }
     },
-    async revokeActiveArizonaEntitlements(userId) {
+    async revokeActiveEntitlements(userId) {
       const at = new Date().toISOString();
       let n = 0;
       for (const e of db.entitlements) {
-        if (e.userId === userId && e.state === "AZ" && e.status === "active") {
+        if (e.userId === userId && e.status === "active") {
           e.status = "revoked";
           e.updatedAt = at;
           n += 1;

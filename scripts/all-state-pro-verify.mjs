@@ -48,3 +48,21 @@ for (const source of ["CT", "NC", "IN"]) {
 assert.equal(Math.round((Date.parse(grants[2].expiresAt) - Date.parse(grants[0].startsAt)) / 86400000), 180);
 for (const state of states) assert.equal(await rights.hasStatePro(user.id, state), true);
 console.log(`${states.length}-state global Pro, legacy grants, inactive boundaries, one shared product, renewal stacking and retry idempotency passed`);
+
+const deletedUser = await store.createUser({ email: `${randomUUID()}@example.invalid`, passwordHash: "isolated", name: null });
+await store.updateUser(deletedUser.id, { deletedAt: now.toISOString(), planStatus: "deleted" });
+for (const productCode of ["all_state_pro_lifetime", "az_exam_pro_60d"]) {
+  const opts = { userId: deletedUser.id, provider: "paddle", providerOrderId: randomUUID(), productCode };
+  const late = await rights.grantSitePro(opts);
+  assert.equal(late.entitlement.status, "revoked");
+  assert.equal(late.entitlement.state, "ALL");
+  assert.equal((await rights.grantSitePro(opts)).entitlement.id, late.entitlement.id);
+  assert.equal(await rights.hasArizonaPro(deletedUser.id), false);
+  await rights.refundArizonaOrder(deletedUser.id, opts.provider, opts.providerOrderId);
+  assert.equal((await store.getEntitlementByProviderOrder(opts.provider, opts.providerOrderId)).status, "refunded");
+}
+const cache = await store.getUserById(deletedUser.id);
+assert.equal(cache.plan, "free");
+assert.equal(cache.planStatus, "deleted");
+assert.equal(cache.planExpiresAt, null);
+console.log("Late Lifetime and 60-day grants and refunds preserve the deleted account's plan cache");

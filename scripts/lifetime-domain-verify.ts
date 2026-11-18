@@ -98,8 +98,8 @@ assert.deepEqual((await refundEligibility(repo, { userId: "member", orderId: ord
 await repo.rememberProviderRefund("paddle", "txn_lifetime");
 await repo.rememberProviderRefund("paddle", "txn_lifetime");
 const restoredRepo = createMemoryCommerceRepo(repo.snapshot());
-assert.equal(await restoredRepo.hasProviderRefund("paddle", "txn_lifetime"), true);
-assert.equal(await restoredRepo.hasProviderRefund("mock", "txn_lifetime"), false);
+assert.equal(await restoredRepo.getProviderRefundReason("paddle", "txn_lifetime"), "provider_initiated");
+assert.equal(await restoredRepo.getProviderRefundReason("mock", "txn_lifetime"), null);
 const refund = await completeNonRestoringRefund(repo, { userId: "member", orderId: order.id, reason: "provider_initiated", now,
   refundEntitlement: async ({ providerOrderId }) => {
     const row = memberRows().find(entry => entry.providerOrderId === providerOrderId);

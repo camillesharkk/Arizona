@@ -154,8 +154,11 @@ export const fileStore: Store = {
       return { row, duplicate };
     });
   },
-  learningTransaction(userId, action) {
+  accountTransaction(_userId, action) {
     return mutate(db => learningDb.run(db, () => action(fileStore)));
+  },
+  learningTransaction(userId, action) {
+    return fileStore.accountTransaction(userId, action);
   },
   async getUserByEmail(email) {
     const db = await load();
@@ -181,6 +184,12 @@ export const fileStore: Store = {
       if (i < 0) throw new Error("not_found");
       db.users[i] = normalizeUser({ ...db.users[i], ...patch, id });
       return db.users[i];
+    });
+  },
+  updatePlanCache(userId, plan) {
+    return mutate((db) => {
+      const index = db.users.findIndex((user) => user.id === userId && !user.deletedAt);
+      if (index >= 0) db.users[index] = { ...db.users[index], ...plan };
     });
   },
   putToken(row) {
@@ -401,8 +410,10 @@ export const fileStore: Store = {
       );
       if (dup) return dup;
       const now = new Date().toISOString();
+      const deleted = db.users.find((user) => user.id === row.userId)?.deletedAt;
       const next: EntitlementRow = {
         ...row,
+        status: deleted && row.status === "active" ? "revoked" : row.status,
         id: randomUUID(),
         createdAt: now,
         updatedAt: now,
@@ -422,12 +433,12 @@ export const fileStore: Store = {
       }
     });
   },
-  revokeActiveArizonaEntitlements(userId) {
+  revokeActiveEntitlements(userId) {
     return mutate((db) => {
       const at = new Date().toISOString();
       let n = 0;
       for (const e of db.entitlements) {
-        if (e.userId === userId && e.state === "AZ" && e.status === "active") {
+        if (e.userId === userId && e.status === "active") {
           e.status = "revoked";
           e.updatedAt = at;
           n += 1;

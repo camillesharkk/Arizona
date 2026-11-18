@@ -119,11 +119,13 @@ export type Store = {
   reserveGuestExam(row: Omit<GuestExamRow, "result">): Promise<GuestExamRow>;
   finishGuestExam(owner: string, state: string, examId: string, result: Omit<ExamRow, "userId">): Promise<{ row: GuestExamRow; duplicate: boolean }>;
 
+  accountTransaction<T>(userId: string, action: (store: Store) => Promise<T>): Promise<T>;
   learningTransaction<T>(userId: string, action: (store: Store) => Promise<T>): Promise<T>;
   getUserByEmail(email: string): Promise<UserRow | null>;
   getUserById(id: string): Promise<UserRow | null>;
   createUser(data: Pick<UserRow, "email" | "passwordHash" | "name">): Promise<UserRow>;
   updateUser(id: string, patch: Partial<UserRow>): Promise<UserRow>;
+  updatePlanCache(userId: string, plan: Pick<UserRow, "plan" | "planStatus" | "planExpiresAt">): Promise<void>;
   putToken(row: TokenRow): Promise<void>;
   takeToken(token: string, type: TokenRow["type"]): Promise<TokenRow | null>;
   upsertStat(stat: QuestionStat): Promise<QuestionStat>;
@@ -174,7 +176,7 @@ export type Store = {
     providerOrderId: string,
     status: EntitlementStatus
   ): Promise<void>;
-  revokeActiveArizonaEntitlements(userId: string): Promise<number>;
+  revokeActiveEntitlements(userId: string): Promise<number>;
   deleteTokensForUser(userId: string, type?: TokenRow["type"]): Promise<void>;
   clearLearningData(userId: string): Promise<void>;
   getStudyPlan(userId: string, state: string): Promise<{ userId: string; state: string; document: unknown } | null>;

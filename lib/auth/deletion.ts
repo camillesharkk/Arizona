@@ -29,40 +29,44 @@ export async function deleteUserAccount(opts: {
   }
   const rel = await opts.commerce.getRelationshipByReferred(user.id);
   const hadPaid = await opts.commerce.hasQualifyingPaidOrder(user.id);
-
-  await forfeitReferralOnAccountDeletion(opts.commerce, { userId: user.id, now });
-  await opts.store.revokeActiveArizonaEntitlements(user.id);
-  await opts.store.clearLearningData(user.id);
-  await opts.store.deleteTokensForUser(user.id);
-  await revokeAllDevices(opts.devices, { userId: user.id, now });
-
   const placeholder = `deleted-${randomUUID()}@deleted.invalid`;
   const passwordHash = await bcrypt.hash(randomUUID() + randomUUID(), 10);
-  await opts.store.updateUser(user.id, {
-    email: placeholder,
-    name: null,
-    passwordHash,
-    emailVerified: false,
-    emailVerifiedAt: user.emailVerifiedAt,
-    deletedAt: at,
-    emailDaily: false,
-    emailWeekly: false,
-    emailExam: false,
-    plan: "free",
-    planStatus: "deleted",
-    billingCustomerId: user.billingCustomerId,
-    billingSubscriptionId: null,
-  });
 
-  await opts.store.upsertTombstone({
-    emailHmac: hmac,
-    deletedAt: at,
-    newcomerUsedOrIneligible: true,
-    referralDiscountUsedOrIneligible: Boolean(rel),
-    hadPaidOrder: hadPaid,
-  });
+  await forfeitReferralOnAccountDeletion(opts.commerce, { userId: user.id, now });
+  await revokeAllDevices(opts.devices, { userId: user.id, now });
 
-  return { ok: true as const };
+  // Entitlement inserts take the same user lock, so deletion and payment cannot leave active access behind.
+  return opts.store.accountTransaction(user.id, async (store) => {
+    const current = await store.getUserById(user.id);
+    if (!current || current.deletedAt) return { ok: false as const, error: "not_found" };
+
+    await store.updateUser(user.id, {
+      email: placeholder,
+      name: null,
+      passwordHash,
+      emailVerified: false,
+      deletedAt: at,
+      emailDaily: false,
+      emailWeekly: false,
+      emailExam: false,
+      plan: "free",
+      planStatus: "deleted",
+      planExpiresAt: null,
+      billingSubscriptionId: null,
+    });
+    await store.revokeActiveEntitlements(user.id);
+    await store.clearLearningData(user.id);
+    await store.deleteTokensForUser(user.id);
+    await store.upsertTombstone({
+      emailHmac: hmac,
+      deletedAt: at,
+      newcomerUsedOrIneligible: true,
+      referralDiscountUsedOrIneligible: Boolean(rel),
+      hadPaidOrder: hadPaid,
+    });
+
+    return { ok: true as const };
+  });
 }
 
 export async function confirmAndDeleteAccount(opts: {

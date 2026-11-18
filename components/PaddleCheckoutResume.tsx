@@ -13,11 +13,13 @@ export function PaddleCheckoutResume({ successOrigin }: { successOrigin: string 
   const [err, setErr] = useState("");
 
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get("_ptxn") || "";
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("_ptxn") || "";
     if (!/^txn_[a-z0-9]+$/i.test(id)) return;
     setTxn(id);
     if (opened.has(id)) return;
     opened.add(id);
+    const lifetime = params.get("plan") === "lifetime" || pendingAnalyticsCheckout(LIFETIME_PRO_PRODUCT_CODE)?.transactionId === id;
     let stop = () => {};
     let cancelled = false;
     let openedCheckout = false;
@@ -42,7 +44,7 @@ export function PaddleCheckoutResume({ successOrigin }: { successOrigin: string 
         transactionId: id,
         settings: {
           ...PADDLE_OVERLAY_SETTINGS,
-          successUrl: paddleSuccessUrl(successOrigin, pendingAnalyticsCheckout(LIFETIME_PRO_PRODUCT_CODE)?.transactionId === id),
+          successUrl: paddleSuccessUrl(successOrigin, lifetime, id),
         },
       });
     })();

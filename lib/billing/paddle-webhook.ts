@@ -62,6 +62,19 @@ export type PaddleWebhookEventLike = {
   data?: PaddleTxnLike;
 };
 
+export function paddleWebhookWriteScope(event: PaddleWebhookEventLike, config: PaddleWebhookConfig) {
+  const data = event.data;
+  if (!data || !config.lifetimePriceId) return null;
+  if ((event.eventType === "adjustment.created" || event.eventType === "adjustment.updated") && isPaddleTransactionId(data.transactionId || "")) {
+    return { transactionId: data.transactionId!, userId: "" };
+  }
+  const custom = readCustom(data);
+  if (event.eventType === "transaction.completed" && isLifetimeProProduct(custom.product_code) && isPaddleTransactionId(data.id || "")) {
+    return { transactionId: data.id!, userId: custom.user_id };
+  }
+  return null;
+}
+
 function fail(status: number, error: string, extra?: Record<string, unknown>): PaddleWebhookResult {
   paddleLog(error, extra);
   return { status, body: { ok: false, error, ...extra } };
@@ -98,7 +111,9 @@ export async function handlePaddleWebhook(opts: {
   event: PaddleWebhookEventLike;
   grantPro: GrantProFn;
   refundEntitlement?: RefundEntitlementFn;
+  report?: typeof reportPaddleFulfillment;
 }): Promise<PaddleWebhookResult> {
+  const report = opts.report ?? reportPaddleFulfillment;
   const eventType = String(opts.event.eventType || "");
   const notificationId = opts.event.notificationId ? String(opts.event.notificationId) : undefined;
 
@@ -109,8 +124,9 @@ export async function handlePaddleWebhook(opts: {
       return ok({ ok: true, ignored: true, reason: "tax_adjustment" });
     }
     const chargeback = adjustment.action === "chargeback";
-    const fullRefund = adjustment.action === "refund" && adjustment.type === "full";
-    const partialRefund = adjustment.action === "refund" && adjustment.type === "partial";
+    const onlyLineFullyRefunded = adjustment.items?.some(item => item.type === "full") === true;
+    const fullRefund = adjustment.action === "refund" && (adjustment.type === "full" || onlyLineFullyRefunded);
+    const partialRefund = adjustment.action === "refund" && adjustment.type === "partial" && !fullRefund;
     const disputeReview = adjustment.action === "chargeback_reverse" || adjustment.action === "chargeback_warning";
     if (!chargeback && !fullRefund && !partialRefund && !disputeReview) return ok({ ok: true, ignored: true });
     const transactionId = adjustment.transactionId || "";
@@ -134,12 +150,13 @@ export async function handlePaddleWebhook(opts: {
       }
       if (!opts.refundEntitlement) return fail(503, "refund_handler_unavailable");
       // Receipt first: if completion is in flight, it will see this even before the order is available here.
-      await opts.repo.rememberProviderRefund(PADDLE_PROVIDER, transactionId);
+      const reason = chargeback ? "chargeback" : "provider_initiated";
+      await opts.repo.rememberProviderRefund(PADDLE_PROVIDER, transactionId, reason);
       const current = order ?? await opts.repo.getOrderByProvider(PADDLE_PROVIDER, transactionId);
       if (current && isLifetimeProProduct(current.productCode) && current.status !== "refunded") {
         const refund = await completeNonRestoringRefund(opts.repo, {
           userId: current.userId, orderId: current.id,
-          reason: chargeback ? "chargeback" : "provider_initiated",
+          reason,
           refundEntitlement: opts.refundEntitlement,
         });
         if (!refund.ok && refund.error !== "already_refunded") throw new Error(refund.error);
@@ -294,6 +311,9 @@ export async function handlePaddleWebhook(opts: {
   }
 
   try {
+    const priorLifetimeRefund = catalog.priceId
+      ? await opts.repo.getProviderRefundReason(PADDLE_PROVIDER, transactionId)
+      : null;
     const result = await confirmPaidOrder(opts.repo, {
       userId: quote.userId,
       quoteId: quote.id,
@@ -301,6 +321,7 @@ export async function handlePaddleWebhook(opts: {
       providerOrderId: transactionId,
       grantPro: opts.grantPro,
       boundFulfillment: true,
+      priorLifetimeRefund,
     });
     if (!result.ok) {
       if (result.error === "quote_consumed" || result.error === "expired" || result.error === "PRICE_CHANGED") {
@@ -318,18 +339,21 @@ export async function handlePaddleWebhook(opts: {
       paddleLog("order_confirm_failed", { orderId: transactionId, quoteId: quote.id, event: result.error });
       return fail(503, result.error, { orderId: transactionId, quoteId: quote.id });
     }
-    if (catalog.priceId && await opts.repo.hasProviderRefund(PADDLE_PROVIDER, transactionId)) {
-      if (!opts.refundEntitlement) return fail(503, "refund_handler_unavailable");
+    const refundReason = priorLifetimeRefund ?? (catalog.priceId
+      ? await opts.repo.getProviderRefundReason(PADDLE_PROVIDER, transactionId)
+      : null);
+    if (refundReason) {
       if (result.order.status !== "refunded") {
+        if (!opts.refundEntitlement) return fail(503, "refund_handler_unavailable");
         const refund = await completeNonRestoringRefund(opts.repo, {
-          userId: result.order.userId, orderId: result.order.id, reason: "provider_initiated",
+          userId: result.order.userId, orderId: result.order.id, reason: refundReason,
           refundEntitlement: opts.refundEntitlement,
         });
         if (!refund.ok && refund.error !== "already_refunded") throw new Error(refund.error);
       }
       return ok({ ok: true, refunded: true, orderId: result.order.id }, { recordNotificationId: notificationId });
     }
-    await reportPaddleFulfillment({
+    await report({
       userId: quote.userId,
       duplicate: Boolean(result.duplicate),
       orderConfirmed: true,
@@ -349,7 +373,7 @@ export async function handlePaddleWebhook(opts: {
     );
   } catch {
     paddleLog("order_confirm_exception", { orderId: transactionId, quoteId: quote.id });
-    await reportPaddleFulfillment({
+    await report({
       userId: quote.userId,
       duplicate: false,
       orderConfirmed: false,

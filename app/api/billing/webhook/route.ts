@@ -3,7 +3,8 @@ import { applyBillingEvent, parsePaddleLike, verifyMorSignature } from "@/lib/bi
 import { handleLemonWebhook } from "@/lib/billing/lemon-webhook";
 import { getLemonConfig, isLemonProvider, verifyLemonWebhookSignature } from "@/lib/billing/lemonsqueezy";
 import { PADDLE_PROVIDER, createPaddleSdk, getPaddleWebhookConfig, isPaddleProvider, paddleLog } from "@/lib/billing/paddle";
-import { handlePaddleWebhook } from "@/lib/billing/paddle-webhook";
+import { handlePaddleWebhook, paddleWebhookWriteScope, type PaddleWebhookEventLike, type PaddleWebhookResult } from "@/lib/billing/paddle-webhook";
+import { reportPaddleFulfillment } from "@/lib/analytics-server";
 import { getCommerceRepo } from "@/lib/commerce";
 import { grantArizonaPro60d, grantSitePro, refundArizonaOrder } from "@/lib/entitlements";
 import { isPurchasableProProduct } from "@/lib/pro-products";
@@ -58,17 +59,16 @@ export async function POST(req: Request) {
     if (!signature) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
-    let event: { eventType?: string; notificationId?: string | null; data?: { id?: string } };
+    let event: PaddleWebhookEventLike;
     try {
       const paddle = createPaddleSdk(cfg.config);
-      event = await paddle.webhooks.unmarshal(raw, cfg.config.webhookSecret, signature);
+      event = await paddle.webhooks.unmarshal(raw, cfg.config.webhookSecret, signature) as PaddleWebhookEventLike;
     } catch {
       paddleLog("invalid_signature");
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
-    const repo = await getCommerceRepo();
-    const result = await handlePaddleWebhook({
-      repo,
+    const run = (repo: Awaited<ReturnType<typeof getCommerceRepo>>, report?: typeof reportPaddleFulfillment) => handlePaddleWebhook({
+      repo, report,
       config: cfg.config,
       event,
       grantPro: async (opts) => {
@@ -80,6 +80,32 @@ export async function POST(req: Request) {
         await refundArizonaOrder(opts.userId, opts.provider, opts.providerOrderId);
       },
     });
+    const scope = paddleWebhookWriteScope(event, cfg.config);
+    let result: PaddleWebhookResult;
+    if (scope && /^postgres(?:ql)?:\/\//.test(process.env.DATABASE_URL || "")) {
+      const { getPgSql, withPaddlePaymentTransaction } = await import("@/lib/store/pg-store");
+      const { createPgCommerceRepo } = await import("@/lib/commerce/pg-repo");
+      const reports: Parameters<typeof reportPaddleFulfillment>[0][] = [];
+      let rejected: PaddleWebhookResult | undefined;
+      try {
+        result = await withPaddlePaymentTransaction(scope.transactionId, scope.userId, async () => {
+          const outcome = await run(createPgCommerceRepo(getPgSql()), async (report) => { reports.push(report); });
+          if (outcome.status >= 400) {
+            rejected = outcome;
+            throw new Error("paddle_write_rejected");
+          }
+          return outcome;
+        });
+      } catch {
+        await Promise.allSettled(reports.filter(report => !report.orderConfirmed).map(reportPaddleFulfillment));
+        if (rejected) return NextResponse.json(rejected.body, { status: rejected.status });
+        paddleLog("paddle_write_failed", { event: event.eventType, orderId: scope.transactionId });
+        return NextResponse.json({ error: "Payment update unavailable" }, { status: 503 });
+      }
+      await Promise.allSettled(reports.map(reportPaddleFulfillment));
+    } else {
+      result = await run(await getCommerceRepo());
+    }
     if (result.status === 200 && result.recordNotificationId) {
       try {
         const store = await getStore();

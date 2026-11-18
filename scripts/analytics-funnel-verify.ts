@@ -4,6 +4,7 @@ import { test, beforeEach, afterEach } from "node:test";
 import * as analytics from "../lib/analytics.ts";
 import { reconcilePurchases } from "./analytics-reconcile.ts";
 import { testLoader } from "./pack-test-utils.mjs";
+import { lifetimeReturnTransaction, paddleCheckoutFallback, paddleSuccessUrl } from "../lib/billing/paddle-public.ts";
 
 const originalEnv = { ...process.env };
 function storage() {
@@ -255,6 +256,25 @@ test("sandbox checkout traffic is always internal", () => {
   process.env.NEXT_PUBLIC_PADDLE_ENV = "sandbox";
   analytics.trackEvent("pricing_view");
   assert.equal(events("pricing_view")[0].traffic_type, "internal");
+});
+
+test("Lifetime return without browser storage only confirms the current account's matching paid order", () => {
+  const id = "txn_lifetimereturn";
+  const returnUrl = new URL(paddleSuccessUrl("https://arizonanotaryprep.com", true, id));
+  assert.equal(returnUrl.searchParams.get("plan"), "lifetime");
+  const returned = lifetimeReturnTransaction(returnUrl.searchParams);
+  assert.equal(returned, id);
+  assert.equal(lifetimeReturnTransaction(new URLSearchParams("txn=unexpected")), null);
+  assert.equal(new URL(paddleSuccessUrl(returnUrl.origin, false, id)).searchParams.has("txn"), false);
+  const fallback = paddleCheckoutFallback("https://pay.example.com/", id, returnUrl.host, true);
+  assert.equal(new URL(fallback!).searchParams.get("plan"), "lifetime");
+  const order = {
+    providerOrderId: id, productCode: "all_state_pro_lifetime", status: "paid", amountCents: 2999,
+    entitlementId: "ent_lifetime", entitlementActive: true,
+  };
+  assert.equal(analytics.isLifetimePurchaseConfirmed({ transactionId: returned! }, [], true), false);
+  assert.equal(analytics.isLifetimePurchaseConfirmed({ transactionId: returned! }, [{ ...order, status: "refunded" }], true), false);
+  assert.equal(analytics.isLifetimePurchaseConfirmed({ transactionId: returned! }, [order], true), true);
 });
 
 test("reconciliation distinguishes unavailable GA data from zero and accepts legacy ids", () => {

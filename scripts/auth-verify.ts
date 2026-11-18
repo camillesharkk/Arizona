@@ -16,8 +16,12 @@ import { confirmAndDeleteAccount } from "../lib/auth/deletion.ts";
 import { issueVerificationEmail } from "../lib/auth/verify-mail.ts";
 import { emailTombstoneHash, TombstoneSecretError } from "../lib/auth/tombstone.ts";
 import { resetRateLimit, resetRateLimits } from "../lib/rate-limit.ts";
+import { accountProCovers } from "../lib/account-pro.ts";
+import { LIFETIME_PRO_PRODUCT_CODE } from "../lib/pro-products.ts";
 import {
   bindReferral,
+  confirmPaidOrder,
+  createQuote,
   eligibilitySnapshot,
   isNewcomerEligible,
 } from "../lib/commerce/service.ts";
@@ -454,6 +458,51 @@ async function run() {
     providerOrderId: `future-${providerOrderId}`,
     providerCustomerId: null,
   });
+  const lifetimeEnt = await delStore.insertEntitlement({
+    ...ent,
+    state: "ALL",
+    productCode: LIFETIME_PRO_PRODUCT_CODE,
+    expiresAt: null,
+    provider: "paddle",
+    providerOrderId: "lifetime-before-deletion",
+  });
+  const sitewideTimed = await delStore.insertEntitlement({
+    ...futureEnt,
+    state: "ALL",
+    providerOrderId: "sitewide-after-deletion-date",
+  });
+  const otherTimed = await delStore.insertEntitlement({
+    ...ent,
+    userId: otherReg.user.id,
+    state: "ALL",
+    providerOrderId: "other-account-pro",
+  });
+  const lateQuote = await createQuote(delCommerce, {
+    userId: delReg.user.id,
+    productCode: LIFETIME_PRO_PRODUCT_CODE,
+    applyCredit: false,
+    policyAccepted: true,
+    now,
+  });
+  if (!lateQuote.ok) throw new Error(`late payment fixture: ${lateQuote.error}`);
+  const lateProviderOrderId = "lifetime-paid-after-deletion";
+  const lateClaim = await delCommerce.claimCheckoutBinding({
+    quoteId: lateQuote.quote.id,
+    provider: "paddle",
+    expiresAt: lateQuote.quote.expiresAt,
+    now: now.toISOString(),
+  });
+  if (!lateClaim.created) throw new Error("late payment fixture: no checkout claim");
+  await delCommerce.completeCheckoutBinding({
+    quoteId: lateQuote.quote.id,
+    providerCheckoutId: lateProviderOrderId,
+    checkoutUrl: `paddle-overlay:${lateProviderOrderId}`,
+  });
+  await delStore.updateUser(delReg.user.id, {
+    plan: "pro",
+    planStatus: "active",
+    planExpiresAt: ent.expiresAt,
+  });
   await delStore.upsertStat({
     userId: delReg.user.id,
     questionId: "q1",
@@ -589,6 +638,9 @@ async function run() {
     fail("deleted user PII not anonymized");
   } else ok("user PII anonymized");
   if (deleted && deleted.emailVerified !== false) fail("deleted user still emailVerified");
+  if (deleted?.plan !== "free" || deleted.planStatus !== "deleted" || deleted.planExpiresAt !== null) {
+    fail("deleted account retains cached Pro access");
+  } else ok("deleted account has no cached Pro access");
   const sessions = await delDevices.listSessions(delReg.user.id);
   if (sessions.some((s) => !s.revokedAt)) fail("device sessions still active");
   else ok("all device sessions revoked");
@@ -626,12 +678,48 @@ async function run() {
   const future = await delStore.getEntitlementByProviderOrder("mock", `future-${providerOrderId}`);
   if (future?.status !== "revoked") fail("future entitlement still active");
   else ok("future entitlement revoked");
+  const revokedLifetime = await delStore.getEntitlementByProviderOrder(lifetimeEnt.provider, lifetimeEnt.providerOrderId);
+  if (revokedLifetime?.id !== lifetimeEnt.id || revokedLifetime.status !== "revoked" || revokedLifetime.expiresAt !== null) {
+    fail("active sitewide Lifetime receipt was not revoked in place");
+  } else ok("sitewide Lifetime receipt revoked in place");
+  const revokedTimed = await delStore.getEntitlementByProviderOrder(sitewideTimed.provider, sitewideTimed.providerOrderId);
+  if (revokedTimed?.id !== sitewideTimed.id || revokedTimed.status !== "revoked" || revokedTimed.expiresAt !== sitewideTimed.expiresAt) {
+    fail("future sitewide 60-day receipt was not revoked in place");
+  } else ok("future sitewide 60-day receipt revoked in place");
+  const stillActive = await delStore.getEntitlementByProviderOrder(otherTimed.provider, otherTimed.providerOrderId);
+  if (stillActive?.status !== "active") fail("deletion revoked another account's Pro receipt");
+  else ok("another account's Pro receipt remains active");
   const orders = await delCommerce.listOrders(delReg.user.id);
   if (!orders.find((o) => o.id === orderId && o.status === "paid" && o.amountCents === 1999)) {
     fail("commerce history lost");
   } else ok("commerce history remains consistent");
   if ((await delCommerce.listRefundRequests(delReg.user.id)).length) fail("delete created an automatic refund");
   else ok("delete does NOT create automatic refund");
+  const settleLate = () => confirmPaidOrder(delCommerce, {
+    userId: delReg.user.id,
+    quoteId: lateQuote.quote.id,
+    provider: "paddle",
+    providerOrderId: lateProviderOrderId,
+    boundFulfillment: true,
+    now: hoursFrom(now, 1),
+    grantPro: async (opts) => ({ entitlement: await delStore.insertEntitlement({
+      ...opts,
+      state: "ALL",
+      status: "active",
+      startsAt: hoursFrom(now, 1).toISOString(),
+      expiresAt: null,
+      providerCustomerId: null,
+    }) }),
+  });
+  const latePayment = await settleLate();
+  const lateReceipt = await delStore.getEntitlementByProviderOrder("paddle", lateProviderOrderId);
+  const lateReplay = await settleLate();
+  if (!latePayment.ok || latePayment.order.status !== "paid" || latePayment.order.amountCents !== 2999 ||
+      lateReceipt?.id !== latePayment.order.entitlementId || lateReceipt?.status !== "revoked" ||
+      !lateReplay.ok || lateReplay.order.id !== latePayment.order.id ||
+      accountProCovers(await delStore.listEntitlements(delReg.user.id), hoursFrom(now, 2))) {
+    fail("late verified Lifetime payment should keep a paid order linked to an inactive receipt");
+  } else ok("late verified Lifetime payment preserves its paid order and inactive receipt across replay");
   if ((await delStore.listStats(delReg.user.id)).length || (await delStore.listExams(delReg.user.id)).length) {
     fail("study data remained");
   } else ok("study data removed/anonymized");

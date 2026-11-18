@@ -224,14 +224,14 @@ async function hasActiveLifetimePro(sql: any, userId: string, nowIso: string) {
 
 export function createPgCommerceRepo(sql: any): CommerceRepo {
   return {
-    async rememberProviderRefund(provider, transactionId) {
-      await sql`insert into provider_refunds (provider, transaction_id)
-        values (${provider}, ${transactionId}) on conflict do nothing`;
+    async rememberProviderRefund(provider, transactionId, reason = "provider_initiated") {
+      await sql`insert into provider_refunds (provider, transaction_id, reason)
+        values (${provider}, ${transactionId}, ${reason}) on conflict do nothing`;
     },
-    async hasProviderRefund(provider, transactionId) {
-      const rows = await sql`select 1 from provider_refunds
+    async getProviderRefundReason(provider, transactionId) {
+      const [row] = await sql`select reason from provider_refunds
         where provider = ${provider} and transaction_id = ${transactionId}`;
-      return rows.length > 0;
+      return row?.reason ?? null;
     },
     hasActiveLifetimePro: (userId, nowIso) => hasActiveLifetimePro(sql, userId, nowIso),
     async getUser(id) {
@@ -815,7 +815,8 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
           return { created: false, binding: existing };
         }
         const age = existing ? new Date(opts.now).getTime() - new Date(existing.createdAt).getTime() : 0;
-        const steal = existing && (existing.status === "failed" || (existing.status === "creating" && age >= 60_000));
+        const steal = existing && (existing.status === "failed" || (existing.status === "creating"
+          && !isLifetimeProProduct(quote?.product_code ?? "") && !existing.providerCheckoutId && age >= 60_000));
         if (steal) {
           const taken = await sql`
             update provider_checkout_bindings
@@ -828,7 +829,8 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
             where quote_id = ${opts.quoteId}
               and (
                 status = 'failed'
-                or (status = 'creating' and created_at <= ${new Date(new Date(opts.now).getTime() - 60_000).toISOString()})
+                or (status = 'creating' and provider_checkout_id is null
+                  and created_at <= ${new Date(new Date(opts.now).getTime() - 60_000).toISOString()})
               )
             returning *
           `;
@@ -846,8 +848,10 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
         update provider_checkout_bindings
         set provider_checkout_id = ${opts.providerCheckoutId},
             checkout_url = ${opts.checkoutUrl},
-            status = 'ready'
+            status = ${opts.checkoutUrl === null ? "creating" : "ready"}
         where quote_id = ${opts.quoteId} and status = 'creating'
+          and (${opts.expectedCreatedAt ?? null}::timestamptz is null or created_at = ${opts.expectedCreatedAt ?? null})
+          and (provider_checkout_id is null or provider_checkout_id = ${opts.providerCheckoutId})
         returning *
       `;
       return rows[0] ? mapBinding(rows[0] as Record<string, unknown>) : null;
@@ -870,6 +874,7 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
           and provider = ${opts.provider}
           and status = 'creating'
           and provider_checkout_id is null
+          and (${opts.expectedCreatedAt ?? null}::timestamptz is null or created_at = ${opts.expectedCreatedAt ?? null})
         returning *
       `;
       return rows[0] ? mapBinding(rows[0] as Record<string, unknown>) : null;
@@ -879,8 +884,12 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
         and provider_checkout_id=${transactionId} returning quote_id`;
       return rows.length > 0;
     },
-    async releaseCheckoutClaim(quoteId) {
-      await sql`delete from provider_checkout_bindings where quote_id = ${quoteId} and status = 'creating'`;
+    async releaseCheckoutClaim(quoteId, expectedCreatedAt) {
+      const rows = await sql`delete from provider_checkout_bindings
+        where quote_id = ${quoteId} and status = 'creating' and provider_checkout_id is null
+          and (${expectedCreatedAt ?? null}::timestamptz is null or created_at = ${expectedCreatedAt ?? null})
+        returning quote_id`;
+      return rows.length > 0;
     },
   };
 }

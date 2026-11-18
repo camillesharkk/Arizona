@@ -18,6 +18,7 @@ import { examState } from "@/lib/ca-daily-shape";
 import { hiPaths } from "@/lib/hi-site";
 import { isLifetimePurchaseConfirmed, pendingAnalyticsCheckout, recoverPendingPurchase, type AnalyticsPaidOrder } from "@/lib/analytics";
 import { LIFETIME_PRO_PRODUCT_CODE } from "@/lib/pro-products";
+import { lifetimeReturnTransaction, paddleSuccessUrl } from "@/lib/billing/paddle-public";
 import { syncGuestProgress } from "@/lib/ca-sync";
 import { clientStatePro } from "@/lib/state-pro";
 
@@ -66,7 +67,10 @@ function clearCheckoutQuery() {
   const url = new URL(window.location.href);
   if (url.searchParams.get("checkout") !== "success") return;
   url.searchParams.delete("checkout");
-  if (url.searchParams.get("plan") === "lifetime") url.searchParams.delete("plan");
+  if (url.searchParams.get("plan") === "lifetime") {
+    url.searchParams.delete("plan");
+    url.searchParams.delete("txn");
+  }
   const search = url.searchParams.toString();
   window.history.replaceState(null, "", `${url.pathname}${search ? `?${search}` : ""}${url.hash}`);
 }
@@ -90,6 +94,7 @@ export function DashboardClient() {
   const [checkoutPhase, setCheckoutPhase] = useState<CheckoutPhase>("boot");
   const [accessRetry, setAccessRetry] = useState(0);
   const [checkingLifetime, setCheckingLifetime] = useState(false);
+  const [signInReturn, setSignInReturn] = useState<string>(paths.dashboard);
   const [activatedLifetime, setActivatedLifetime] = useState(false);
   const grantedRef = useRef(false);
 
@@ -122,7 +127,13 @@ export function DashboardClient() {
     const pending = params.get("checkout") === "success";
     const lifetimeCheckout = pending && params.get("plan") === "lifetime";
     setCheckingLifetime(lifetimeCheckout);
-    const pendingLifetime = lifetimeCheckout ? pendingAnalyticsCheckout(LIFETIME_PRO_PRODUCT_CODE) : null;
+    const returnedId = lifetimeCheckout ? lifetimeReturnTransaction(params) : null;
+    const pendingLifetime = returnedId ? { transactionId: returnedId }
+      : lifetimeCheckout ? pendingAnalyticsCheckout(LIFETIME_PRO_PRODUCT_CODE) : null;
+    if (pending) {
+      const returnUrl = new URL(paddleSuccessUrl(window.location.origin, lifetimeCheckout, returnedId ?? undefined));
+      setSignInReturn(returnUrl.pathname + returnUrl.search);
+    }
 
     let cancelled = false;
 
@@ -233,7 +244,7 @@ export function DashboardClient() {
       <div className="card">
         <p>Your session needs to be refreshed.</p>
         <p>Please sign in again to check your Pro access.</p>
-        <Link className="btn btn-primary" href={`${paths.login}?next=${encodeURIComponent(`${paths.dashboard}?checkout=success${checkingLifetime ? "&plan=lifetime" : ""}`)}`}>
+        <Link className="btn btn-primary" href={`${paths.login}?next=${encodeURIComponent(signInReturn)}`}>
           Sign in
         </Link>
       </div>

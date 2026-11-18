@@ -38,7 +38,7 @@ function persistWrap(inner: CommerceRepo & { snapshot: () => unknown }): Commerc
 
   return {
     rememberProviderRefund: wrap(inner.rememberProviderRefund.bind(inner)),
-    hasProviderRefund: inner.hasProviderRefund.bind(inner),
+    getProviderRefundReason: inner.getProviderRefundReason.bind(inner),
     hasActiveLifetimePro: inner.hasActiveLifetimePro.bind(inner),
     getUser: inner.getUser,
     putUser: wrap(inner.putUser.bind(inner)),

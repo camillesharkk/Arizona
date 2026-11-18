@@ -89,13 +89,16 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
   const [applyCredit, setApplyCredit] = useState(false);
   const [policy, setPolicy] = useState(false);
   const [err, setErr] = useState("");
+  const [checkoutNote, setCheckoutNote] = useState("");
   const [priceChanged, setPriceChanged] = useState(false);
   const [busy, setBusy] = useState(false);
   const [now, setNow] = useState(() => Date.now());
   const [dismissed, setDismissed] = useState(false);
   const [hideModal, setHideModal] = useState(false);
   const submitting = useRef(false);
+  const stopLifetimeWatch = useRef<() => void>(() => undefined);
   const policyId = useId();
+  useEffect(() => () => stopLifetimeWatch.current(), []);
 
   const load = useCallback(async (credit: boolean) => {
     const me = await fetchAccount().then((r) => {
@@ -166,6 +169,22 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
     pauseClarityRecording();
     const paddle = await loadBrowserPaddle();
     if (!paddle) return { ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" };
+    if (lifetime) {
+      stopLifetimeWatch.current();
+      setCheckoutNote("");
+      stopLifetimeWatch.current = watchPaddleCheckout((event) => {
+        if (event.transactionId && event.transactionId !== transactionId) return;
+        if (event.name === "checkout.completed") {
+          setCheckoutNote("Payment submitted. Waiting for confirmation.");
+          stopLifetimeWatch.current();
+        } else if (event.name === "checkout.closed") {
+          setCheckoutNote("Checkout closed. You can continue the same checkout.");
+          stopLifetimeWatch.current();
+        } else if (event.name === "checkout.error" || event.name === "checkout.failed") {
+          setCheckoutNote("Checkout reported a payment error. You can retry the same checkout.");
+        }
+      });
+    }
     return await new Promise<{ ok: true } | { ok: false; error: string }>((resolve) => {
       let settled = false;
       let timer: number | undefined;
@@ -189,7 +208,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
           transactionId,
           settings: {
             ...PADDLE_OVERLAY_SETTINGS,
-            successUrl: paddleSuccessUrl(window.location.origin, lifetime),
+            successUrl: paddleSuccessUrl(window.location.origin, lifetime, transactionId),
           },
         });
       } catch {
@@ -219,12 +238,12 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
       if (lifetime && (data.productCode !== productCode || data.finalPriceCents !== LIFETIME_TOTAL_CENTS || !/^txn_[a-z0-9]+$/i.test(data.transactionId))) throw new Error("Checkout mismatch");
       if (lifetime && data.paymentPending) {
         rememberPendingCheckout(data.transactionId, productCode);
-        window.location.assign(paddleSuccessUrl(window.location.origin, true));
+        window.location.assign(paddleSuccessUrl(window.location.origin, true, data.transactionId));
         return;
       }
       trackBeginCheckout(breakdown, data.transactionId, productCode);
       if (lifetime) setHasPendingLifetime(true);
-      const fallback = paddleCheckoutFallback(data.checkoutUrl, data.transactionId, window.location.host);
+      const fallback = paddleCheckoutFallback(data.checkoutUrl, data.transactionId, window.location.host, lifetime);
       if (fallback) {
         window.location.assign(fallback);
         return;
@@ -425,6 +444,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
       <div role="status">
         {busy && <span className="visually-hidden">Preparing secure checkout.</span>}
         {priceChanged && <p className="notice">Your available price has changed.</p>}
+        {checkoutNote && <p className="notice">{checkoutNote}</p>}
         {err && (
           <p className="notice">
             {err}{" "}

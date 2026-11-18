@@ -18,7 +18,7 @@ import { isLifetimeProProduct, isPurchasableProProduct } from "../pro-products.t
 import { LIFETIME_POLICY_VERSION, LIFETIME_TOTAL_CENTS } from "../pricing/lifetime.ts";
 import { addHours } from "../pricing/money.ts";
 import { generateReferralCode, isReferralCodeFormat, normalizeReferralCode } from "./codes.ts";
-import type { CommerceRepo } from "./repo.ts";
+import type { CommerceRepo, ProviderRefundReason } from "./repo.ts";
 import type {
   CommerceOrderRow,
   PricingQuoteRow,
@@ -350,6 +350,7 @@ export async function confirmPaidOrder(
     grantPro: GrantProFn;
     now?: Date;
     boundFulfillment?: boolean;
+    priorLifetimeRefund?: ProviderRefundReason | null;
   }
 ): Promise<{ ok: true; order: CommerceOrderRow; duplicate?: boolean } | { ok: false; error: string }> {
   const now = opts.now ?? new Date();
@@ -366,6 +367,7 @@ export async function confirmPaidOrder(
   if (!quote || quote.userId !== opts.userId) return { ok: false, error: "quote_not_found" };
   const lifetime = isLifetimeProProduct(quote.productCode);
   if (lifetime && !hasFixedLifetimePrice(quote)) return { ok: false, error: "PRICE_CHANGED" };
+  const priorRefund = lifetime && opts.boundFulfillment ? opts.priorLifetimeRefund ?? null : null;
   const quoteCreditIds = quote.creditIds?.length ? quote.creditIds : quote.creditId ? [quote.creditId] : [];
   if (!opts.boundFulfillment) {
     const valid = await assertQuoteStillValid(repo, quote, now);
@@ -415,14 +417,17 @@ export async function confirmPaidOrder(
     if (!consumed) return { ok: false, error: "quote_consumed" };
   }
 
-  let granted: Awaited<ReturnType<GrantProFn>>;
+  let entitlementId: string | null = null;
   try {
-    granted = await opts.grantPro({
-      userId: opts.userId,
-      provider: opts.provider,
-      providerOrderId: opts.providerOrderId,
-      productCode: quote.productCode,
-    });
+    if (!priorRefund) {
+      const granted = await opts.grantPro({
+        userId: opts.userId,
+        provider: opts.provider,
+        providerOrderId: opts.providerOrderId,
+        productCode: quote.productCode,
+      });
+      entitlementId = granted.entitlement.id;
+    }
   } catch (error) {
     if (!opts.boundFulfillment) await repo.releaseCheckoutClaim(quote.id);
     throw error;
@@ -433,8 +438,8 @@ export async function confirmPaidOrder(
     userId: opts.userId,
     productCode: quote.productCode,
     quoteId: quote.id,
-    entitlementId: granted.entitlement.id,
-    status: "paid",
+    entitlementId,
+    status: priorRefund ? "refunded" : "paid",
     paidAt: now.toISOString(),
     amountCents: quote.finalPriceCents,
     currency: quote.currency,
@@ -447,8 +452,8 @@ export async function confirmPaidOrder(
     creditCents: quote.creditCents,
     policyVersion: quote.policyVersion,
     policyAcceptedAt: quote.policyAcceptedAt,
-    refundedAt: null,
-    refundReason: null,
+    refundedAt: priorRefund ? now.toISOString() : null,
+    refundReason: priorRefund,
     createdAt: now.toISOString(),
   };
   const inserted = await repo.insertOrder(order);

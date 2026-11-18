@@ -26,6 +26,19 @@ export async function ensurePgSchema() {
   await assertSchema();
 }
 
+export async function withPaddlePaymentTransaction<T>(transactionId: string, userId: string, action: () => Promise<T>) {
+  await assertSchema();
+  return db().begin(async (transaction) => {
+    await transaction`select pg_advisory_xact_lock(881122, hashtext(${transactionId}))`;
+    const [order] = userId ? [] : await transaction`
+      select user_id from commerce_orders where provider = 'paddle' and provider_order_id = ${transactionId}
+    `;
+    const accountId = userId || (order ? String(order.user_id) : "");
+    if (accountId) await transaction`select id from users where id = ${accountId} for update`;
+    return learningSql.run({ sql: transaction as unknown as ReturnType<typeof postgres>, userId: accountId }, action);
+  }) as Promise<T>;
+}
+
 let schemaReady = false;
 let revisionColumnsReady = false;
 
@@ -161,18 +174,24 @@ export const pgStore: Store = {
     if (!row || row.examId !== examId || !row.result) throw new Error("invalid_exam");
     return { row, duplicate: true };
   },
-  async learningTransaction<T>(userId: string, action: (store: Store) => Promise<T>): Promise<T> {
+  async accountTransaction<T>(userId: string, action: (store: Store) => Promise<T>): Promise<T> {
     const current = learningSql.getStore();
     if (current) {
-      if (current.userId !== userId) throw new Error("Cross-account learning transaction");
+      if (current.userId !== userId) throw new Error("Cross-account store transaction");
       return action(pgStore);
     }
     await assertSchema();
-    await requireRevisionStorage("ny-learning");
     return db().begin(async transaction => {
       await transaction`select id from users where id = ${userId} for update`;
       return learningSql.run({ sql: transaction as unknown as ReturnType<typeof postgres>, userId }, () => action(pgStore));
     }) as Promise<T>;
+  },
+  async learningTransaction<T>(userId: string, action: (store: Store) => Promise<T>): Promise<T> {
+    if (!learningSql.getStore()) {
+      await assertSchema();
+      await requireRevisionStorage("ny-learning");
+    }
+    return pgStore.accountTransaction(userId, action);
   },
   async getUserByEmail(email) {
     await assertSchema();
@@ -220,6 +239,12 @@ export const pgStore: Store = {
       updated_at = ${new Date().toISOString()}
       where id = ${id}`;
     return next;
+  },
+  async updatePlanCache(userId, plan) {
+    await assertSchema();
+    await db()`update users set plan = ${plan.plan}, plan_status = ${plan.planStatus},
+      plan_expires_at = ${plan.planExpiresAt}, updated_at = now()
+      where id = ${userId} and deleted_at is null`;
   },
   async putToken(row) {
     await assertSchema();
@@ -556,14 +581,19 @@ export const pgStore: Store = {
     const id = randomUUID();
     const now = new Date().toISOString();
     const inserted = await db()`
+      with account as (
+        select id, deleted_at from users where id = ${row.userId} for update
+      )
       insert into entitlements (
         id, user_id, product_code, state, status, starts_at, expires_at,
         provider, provider_order_id, provider_customer_id, created_at, updated_at
-      ) values (
-        ${id}, ${row.userId}, ${row.productCode}, ${row.state}, ${row.status},
-        ${row.startsAt}, ${row.expiresAt}, ${row.provider}, ${row.providerOrderId},
-        ${row.providerCustomerId}, ${now}, ${now}
       )
+      select ${id}, account.id, ${row.productCode}, ${row.state},
+        case when account.deleted_at is not null and ${row.status}::text = 'active'
+          then 'revoked' else ${row.status}::text end,
+        ${row.startsAt}::timestamptz, ${row.expiresAt}::timestamptz, ${row.provider}, ${row.providerOrderId},
+        ${row.providerCustomerId}, ${now}::timestamptz, ${now}::timestamptz
+      from account
       on conflict (provider, provider_order_id) do nothing
       returning *
     `;
@@ -580,12 +610,12 @@ export const pgStore: Store = {
       where user_id = ${userId} and provider = ${provider} and provider_order_id = ${providerOrderId}
     `;
   },
-  async revokeActiveArizonaEntitlements(userId) {
+  async revokeActiveEntitlements(userId) {
     await assertSchema();
     const rows = await db()`
       update entitlements
       set status = 'revoked', updated_at = ${new Date().toISOString()}
-      where user_id = ${userId} and state = 'AZ' and status = 'active'
+      where user_id = ${userId} and status = 'active'
       returning id
     `;
     return rows.length;

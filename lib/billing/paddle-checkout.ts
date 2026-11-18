@@ -10,6 +10,7 @@ import {
   createPaddleSdk,
   createPaddleTransaction,
   isPositiveCents,
+  matchPaddleTransactionToQuote,
   paddleCatalogForProduct,
   paddleLog,
   validatePaddleLifetimePrice,
@@ -80,7 +81,7 @@ export async function ensurePaddleCheckout(opts: {
     quoteId: quote.id,
     provider: PADDLE_PROVIDER,
     expiresAt: quote.expiresAt,
-    now: now.toISOString(),
+    now: (opts.now ?? new Date()).toISOString(),
   });
 
   if ("error" in claimed) {
@@ -118,9 +119,10 @@ export async function ensurePaddleCheckout(opts: {
     return { ok: false, error: "checkout_in_progress", status: 409 };
   }
 
+  const expectedCreatedAt = claimed.binding.createdAt;
   if (catalog.priceId && !await validatePaddleLifetimePrice(sdk, { ...catalog, priceId: catalog.priceId })) {
     // No provider transaction was attempted, so another checkout may safely retry this quote.
-    await opts.repo.releaseCheckoutClaim(quote.id);
+    await opts.repo.releaseCheckoutClaim(quote.id, expectedCreatedAt);
     return { ok: false, error: "LIFETIME_PRODUCT_UNAVAILABLE", status: 503 };
   }
   const payload = buildPaddleTransactionPayload({
@@ -137,15 +139,32 @@ export async function ensurePaddleCheckout(opts: {
     reportCheckoutCreate(false, quote.userId);
     return { ok: false, error: created.error, status: 502 };
   }
+  if (catalog.priceId) {
+    const matched = matchPaddleTransactionToQuote(created.transaction, quote, catalog.productId, catalog.priceId);
+    if (!matched.ok) {
+      // Keep this provider ID bound until reconciliation can verify or confirm cancellation.
+      await opts.repo.completeCheckoutBinding({
+        quoteId: quote.id,
+        providerCheckoutId: created.id,
+        checkoutUrl: null,
+        expectedCreatedAt,
+      });
+      paddleLog(matched.error, { quoteId: quote.id, orderId: created.id });
+      reportCheckoutCreate(false, quote.userId);
+      return { ok: false, error: "LIFETIME_PRODUCT_UNAVAILABLE", status: 503 };
+    }
+  }
   reportCheckoutCreate(true, quote.userId);
 
   const finished = await opts.repo.completeCheckoutBinding({
     quoteId: quote.id,
     providerCheckoutId: created.id,
     checkoutUrl: created.checkoutUrl || `paddle-overlay:${created.id}`,
+    expectedCreatedAt,
   });
   if (!finished?.providerCheckoutId) {
     paddleLog("checkout_complete_lost", { quoteId: quote.id, orderId: created.id });
+    if (catalog.priceId) return { ok: false, error: "checkout_in_progress", status: 409 };
     const current = await opts.repo.getCheckoutBinding(quote.id);
     if (current?.status === "ready" && current.providerCheckoutId) {
       return {

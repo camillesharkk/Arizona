@@ -116,9 +116,11 @@ export function paddleCatalogForProduct(config: PaddleCheckoutConfig, productCod
 }
 
 export function lifetimeCheckoutConfigured(env: PaddleEnvMap = process.env) {
+  if (env.LIFETIME_CHECKOUT_ENABLED !== "1") return false;
   if (!isPaddleProvider(env) || env.LIFETIME_REFUND_POLICY_VERSION !== LIFETIME_POLICY_VERSION) return false;
   const config = getPaddleWebhookConfig(env);
   if (!config.ok || !config.config.lifetimePriceId) return false;
+  if (env.VERCEL_ENV === "production" && config.config.environment !== "production") return false;
   const browserToken = env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN?.trim();
   return env.NEXT_PUBLIC_PADDLE_ENV === config.config.environment &&
     Boolean(browserToken?.startsWith(config.config.environment === "sandbox" ? "test_" : "live_"));
@@ -174,7 +176,7 @@ export type PaddleTxnSnapshot = {
       priceId?: string | null;
       quantity?: number;
       product?: { id?: string | null } | null;
-      totals?: { discount?: string | null } | null;
+      totals?: { discount?: string | null; subtotal?: string | null } | null;
     }> | null;
   } | null;
   checkout?: { url?: string | null } | null;
@@ -237,6 +239,10 @@ export function matchPaddleTransactionToQuote(
   const lineProductId = lineItems[0]?.product?.id ? String(lineItems[0].product.id) : "";
   if (lineProductId && lineProductId !== productId) return { ok: false, error: "product_id_mismatch" };
   if (lineItems[0] && Number(lineItems[0].quantity) !== 1) return { ok: false, error: "quantity_mismatch" };
+  const subtotal = lineItems[0]?.totals?.subtotal;
+  if (priceId && subtotal != null && !paddleUnitPriceMatchesQuote(subtotal, quote.finalPriceCents)) {
+    return { ok: false, error: "amount_mismatch" };
+  }
   if (hasUnauthorizedPaddleDiscount(txn)) return { ok: false, error: "paddle_discount_not_allowed" };
   const status = String(txn.status || "").toLowerCase();
   if (status === "canceled" || status === "cancelled") return { ok: false, error: "transaction_canceled" };
@@ -313,7 +319,7 @@ export type PaddleTransactionsClient = {
     }>;
   };
   transactions: {
-    create: (payload: CreateTransactionRequestBody) => Promise<{ id: string; checkout?: { url?: string | null } | null }>;
+    create: (payload: CreateTransactionRequestBody) => Promise<PaddleTxnSnapshot>;
     get?: (transactionId: string) => Promise<PaddleTxnSnapshot>;
     list?: (
       query?: PaddleListQuery
@@ -340,7 +346,7 @@ export async function createPaddleTransaction(
   config: PaddleCheckoutConfig,
   payload: CreateTransactionRequestBody,
   sdk: PaddleTransactionsClient = createPaddleSdk(config)
-): Promise<{ ok: true; id: string; checkoutUrl: string | null } | { ok: false; error: string }> {
+): Promise<{ ok: true; id: string; checkoutUrl: string | null; transaction: PaddleTxnSnapshot } | { ok: false; error: string }> {
   try {
     const created = await sdk.transactions.create(payload);
     const id = String(created.id || "");
@@ -348,7 +354,7 @@ export async function createPaddleTransaction(
       paddleLog("paddle_checkout_invalid_response");
       return { ok: false, error: "PADDLE_CHECKOUT_INVALID_RESPONSE" };
     }
-    return { ok: true, id, checkoutUrl: created.checkout?.url ?? null };
+    return { ok: true, id, checkoutUrl: created.checkout?.url ?? null, transaction: created };
   } catch (err) {
     const code = err && typeof err === "object" && "code" in err ? String((err as { code?: unknown }).code || "") : "";
     paddleLog("paddle_checkout_http", { event: code || "network" });

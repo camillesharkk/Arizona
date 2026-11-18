@@ -175,6 +175,7 @@ create index if not exists entitlements_user_state_idx
 create table if not exists provider_refunds (
   provider text not null,
   transaction_id text not null,
+  reason text not null default 'provider_initiated' check (reason in ('provider_initiated', 'chargeback')),
   created_at timestamptz not null default now(),
   primary key (provider, transaction_id)
 );
