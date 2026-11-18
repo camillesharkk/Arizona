@@ -5,7 +5,7 @@ let hookIndex=0;
 const hooks=[],effects=[];
 const jsx=(type,props)=>({type,props:props||{}});
 const load=testLoader({
-  react:{useState(initial){const slot=hookIndex++;if(!(slot in hooks))hooks[slot]=initial;return[hooks[slot],value=>{hooks[slot]=typeof value==='function'?value(hooks[slot]):value;}];},useEffect(fn){effects.push(fn);},useId:()=> 'test-password'},
+  react:{useState(initial){const slot=hookIndex++;if(!(slot in hooks))hooks[slot]=initial;return[hooks[slot],value=>{hooks[slot]=typeof value==='function'?value(hooks[slot]):value;}];},useEffect(fn){effects.push(fn);},useLayoutEffect(){},useId:()=> 'test-password'},
   'react/jsx-runtime':{jsx,jsxs:jsx,Fragment:'fragment'},'next/link':{__esModule:true,default:'a'},
 }, {window:{location:{search:''}}});
 const {AuthForm}=load('components/AuthForm.tsx');
@@ -16,7 +16,9 @@ for(const mode of ['login','register','forgot','reset']){
   assert.ok(!nodes(initial).some(node=>node.type==='form'),'No credential form before its submit handler is mounted');
   assert.ok(nodes(initial).some(node=>node.type==='noscript'),'Explain the JavaScript requirement');
   effects.splice(0).forEach(effect=>effect());hookIndex=0;
-  const form=AuthForm({mode});
+  const entry=AuthForm({mode});
+  const form=entry.type(entry.props);
   assert.equal(form.type,'form');assert.equal(form.props.method,'post');assert.equal(form.props.action,`/api/auth/${mode}/`);
+  assert.equal(form.props.noValidate,true,'Use site-owned validation copy after initialization');
 }
 console.log('Login/register/forgot/reset wait for client initialization and use POST for native fallback');
