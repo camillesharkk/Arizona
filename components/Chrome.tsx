@@ -60,7 +60,7 @@ function primaryLinks(nav: ReturnType<typeof navFor>) {
     { href: nav.study, label: "Study Guide" },
     { href: nav.mistakes, label: "Wrong Answers" },
     { href: nav.daily, label: "Daily Study" },
-    { href: nav.resources, label: "Resources" },
+    { href: paths.community, label: "Community Insights" },
     { href: nav.laws, label: "Laws" },
   ];
 }
@@ -71,7 +71,7 @@ function moreLinks(nav: ReturnType<typeof navFor>, state: LiveCode) {
     { href: nav.flashcards, label: "Study cards" },
     { href: nav.examPrep, label: isFreeState(state) && freeStateFeatures[state]?.fullPractice === false ? "Requirements guide" : "Exam guide" },
     { href: nav.become, label: "Become a Notary" },
-    { href: paths.community, label: "Community Insights" },
+    { href: nav.resources, label: "Resources" },
     ...(state === "AZ" ? [{ href: paths.courses, label: "Courses" }] : []),
   ];
 }
@@ -165,7 +165,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
             {links.map((item) => item.label === "Wrong Answers" && state ? (
               <WrongAnswersLink key={item.href} href={item.href} stateCode={state} className={active(pathname, item.href) ? "active" : ""} />
             ) : (
-              <Link key={item.href} href={item.href} className={active(pathname, item.href) ? "active" : ""}>
+              <Link key={item.href} href={item.href} aria-current={active(pathname, item.href) ? "page" : undefined} className={active(pathname, item.href) ? "active" : ""}>
                 {item.label}
               </Link>
             ))}

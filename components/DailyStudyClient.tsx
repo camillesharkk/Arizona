@@ -232,6 +232,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         <span>Target {view.targetDate}</span>
         <Link href={studySettingsHref}>Study Settings</Link>
         <button className="btn btn-ghost" type="button" aria-haspopup="dialog" onClick={() => setGuideStep(0)}>Daily Study guide</button>
+        <Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link>
       </div>
       {guideStep != null ? (
         <MessageDialog title="Daily Study guide" onClose={closeGuide}>

@@ -1,3 +1,7 @@
+import { caCommunityInsights } from "./community-insights-ca";
+import { nyCommunityInsights } from "./community-insights-ny";
+import { statesCommunityInsights } from "./community-insights-states";
+
 export type CommunityInsight = {
   id: string;
   state: string;
@@ -10,11 +14,12 @@ export type CommunityInsight = {
   studyHref: string;
   studyLabel: string;
   officialUrl: string;
+  keywords: readonly string[];
 };
 
 // Manually curated through the same checked-in editorial workflow as study cards.
 // Public discussions identify study needs. Official references support the learning material.
-export const communityInsights = [
+const earlierInsights = [
   {
     id: "az-manual-navigation",
     state: "AZ",
@@ -24,12 +29,13 @@ export const communityInsights = [
     platform: "Reddit",
     postUrl:
       "https://www.reddit.com/r/Notary/comments/1or8gh6/arizona_notary_exam/",
-    checkedAt: "2026-11-18",
-    updatedAt: "2026-11-18",
+    checkedAt: "2026-11-19",
+    updatedAt: "2026-11-19",
     studyHref:
       "/arizona-notary-study-cards/?topic=commission&card=kc-manual-navigation",
     studyLabel: "Study manual navigation",
     officialUrl: "https://azsos.gov/business/notary-public/new-notary",
+    keywords: ["handbook", "time management"],
   },
   {
     id: "ca-retake-topics",
@@ -40,11 +46,12 @@ export const communityInsights = [
     platform: "Reddit",
     postUrl:
       "https://www.reddit.com/r/Notary/comments/1qvax7b/study_advice_for_retaking_the_exam_got_a_69_on_my/",
-    checkedAt: "2026-11-18",
-    updatedAt: "2026-11-18",
+    checkedAt: "2026-11-19",
+    updatedAt: "2026-11-19",
     studyHref: "/california/practice/?mode=practice&area=identification",
     studyLabel: "Practice identification",
     officialUrl: "https://www.sos.ca.gov/notary/handbook",
+    keywords: ["retake", "identification"],
   },
   {
     id: "ny-recall-notarial-fees",
@@ -55,11 +62,12 @@ export const communityInsights = [
     platform: "Reddit",
     postUrl:
       "https://www.reddit.com/r/Notary/comments/1x1r806/passed_my_nys_notary_exam_what_worked_for_me/",
-    checkedAt: "2026-11-18",
-    updatedAt: "2026-11-18",
+    checkedAt: "2026-11-19",
+    updatedAt: "2026-11-19",
     studyHref: "/new-york/study-cards/?topic=fees",
     studyLabel: "Review New York fee flashcards",
     officialUrl: "https://www.nysenate.gov/legislation/laws/EXC/136",
+    keywords: ["fees", "flashcards"],
   },
   {
     id: "la-scenario-application",
@@ -69,11 +77,12 @@ export const communityInsights = [
       "A Louisiana discussion about the official guide highlights how several concepts can apply to the same situation. After reading one topic, work through a scenario and explain why each rule applies.",
     platform: "Reddit",
     postUrl: "https://www.reddit.com/r/Notary/comments/1li4jg7/louisiana_notary/",
-    checkedAt: "2026-11-18",
-    updatedAt: "2026-11-18",
+    checkedAt: "2026-11-19",
+    updatedAt: "2026-11-19",
     studyHref: "/louisiana/practice/?mode=practice&area=acts",
     studyLabel: "Practice Louisiana authentic acts",
     officialUrl: "https://www.sos.la.gov/notary/application-process",
+    keywords: ["authentic acts", "scenarios"],
   },
   {
     id: "ca-exam-to-commission",
@@ -84,19 +93,30 @@ export const communityInsights = [
     platform: "LinkedIn",
     postUrl:
       "https://www.linkedin.com/posts/melodygwhite_on-march-8th-i-decided-to-start-ritual-notary-activity-7468725664741908480-2eEE",
-    checkedAt: "2026-11-18",
-    updatedAt: "2026-11-18",
+    checkedAt: "2026-11-19",
+    updatedAt: "2026-11-19",
     studyHref: "/california/practice/?mode=practice&area=commission",
     studyLabel: "Practice California commissioning",
     officialUrl: "https://www.sos.ca.gov/notary/qualifications",
+    keywords: ["commission", "exam prep"],
   },
 ] as const satisfies readonly CommunityInsight[];
+
+export const communityInsights: readonly CommunityInsight[] = [
+  ...earlierInsights,
+  ...caCommunityInsights,
+  ...nyCommunityInsights,
+  ...statesCommunityInsights,
+];
 
 export const communityInsightsUpdatedAt = communityInsights
   .map(({ updatedAt }) => updatedAt)
   .sort()
   .at(-1);
 
-export const homepageCommunityInsights = [...communityInsights]
-  .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
-  .slice(0, 3);
+const newestByState = new Map<string, CommunityInsight>();
+for (const insight of [...communityInsights].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))) {
+  if (!newestByState.has(insight.state)) newestByState.set(insight.state, insight);
+}
+
+export const homepageCommunityInsights = [...newestByState.values()].slice(0, 3);

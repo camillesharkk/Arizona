@@ -44,6 +44,8 @@ function publicPost(row: Row) {
 
 export type CommunityPost = ReturnType<typeof publicPost>;
 
+export type CommunityInsightActivity = { id: string; likes: number; liked: boolean; comments: number };
+
 type NewPost = {
   id: string;
   userId: string;
@@ -74,6 +76,28 @@ export function communityStore(sql = getPgSql()) {
   `;
 
   return {
+    async insightActivity(ids: readonly string[], viewer: string | null) {
+      return sql<CommunityInsightActivity[]>`
+        select target.id, l.likes, l.liked, c.comments
+        from unnest(${sql.array([...ids])}::text[]) as target(id)
+        cross join lateral (
+          select count(*)::int as likes, coalesce(bool_or(reaction.user_id = ${viewer}), false) as liked
+          from community_insight_likes reaction
+          join users author on author.id = reaction.user_id and author.deleted_at is null
+          where reaction.insight_id = target.id
+        ) l
+        cross join lateral (
+          select coalesce(sum(1 + (
+            select count(*) from community_posts reply
+            join users reply_author on reply_author.id = reply.user_id and reply_author.deleted_at is null
+            where reply.thread_id = root.id and reply.deleted_at is null
+          )), 0)::int as comments
+          from community_posts root
+          join users author on author.id = root.user_id and author.deleted_at is null
+          where root.insight_id = target.id and root.parent_id is null and root.deleted_at is null
+        ) c
+      `;
+    },
     async insightLikes(insightId: string, viewer: string | null) {
       const [row] = await sql<{ likes: number; liked: boolean }[]>`
         select count(*)::int as likes, coalesce(bool_or(l.user_id = ${viewer}), false) as liked

@@ -71,7 +71,7 @@ export function CommunityLike({ id, liked, likes, target, insight = false }: {
   );
 }
 
-export function CommunityShare({ href }: { href: string }) {
+export function CommunityShare({ href, label = "Copy insight link" }: { href: string; label?: string }) {
   const link = useRef<HTMLAnchorElement>(null);
   const linkId = useId();
   const [status, setStatus] = useState("");
@@ -102,7 +102,7 @@ export function CommunityShare({ href }: { href: string }) {
     <div>
       <button className="btn btn-ghost" type="button" {...{ command: "--copy", commandfor: linkId }}
         onClick={() => { if (!("CommandEvent" in window)) void copy(); }}>
-        Copy insight link
+        {label}
       </button>
       <span className="community-meta" role="status">{status}</span>
       <a ref={link} id={linkId} href={href} hidden={!manual}>Open shareable insight link</a>

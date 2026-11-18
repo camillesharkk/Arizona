@@ -45,6 +45,10 @@ try {
   assert.equal(insightLikes.liked, true);
   assert.equal((await store.insightLikes(editorial.insightId, null)).liked, false);
   assert.equal((await store.insightLikes("different-insight", "b")).likes, 0);
+  assert.deepEqual(await store.insightActivity([editorial.insightId, "different-insight"], "b"), [
+    { id: editorial.insightId, likes: 1, liked: true, comments: 1 },
+    { id: "different-insight", likes: 0, liked: false, comments: 0 },
+  ]);
   await store.setInsightLike(editorial.insightId, "b", false);
   assert.equal((await store.insightLikes(editorial.insightId, "b")).likes, 0);
   await Promise.all([store.setLike(first.id, "b", true), secondStore.setLike(first.id, "b", true)]);

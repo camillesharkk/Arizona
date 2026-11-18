@@ -1,6 +1,5 @@
-import { HomeCommunity } from "@/components/HomeCommunity";
 import { CommunityDiscussions, type CommunitySearchParams } from "@/components/CommunityDiscussions";
-import { communityInsights, communityInsightsUpdatedAt } from "@/data/community-insights";
+import { communityInsightsUpdatedAt } from "@/data/community-insights";
 import { paths } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
 import "../national-home.css";
@@ -21,7 +20,16 @@ export default async function CommunityInsightsPage({
   return (
     <main className="national-home glass-home-demo">
       <div className="home-container">
-        <HomeCommunity insights={communityInsights} updatedAt={communityInsightsUpdatedAt} standalone />
+        <header className="home-section community-intro">
+          <h1>Community Insights</h1>
+          <p className="home-section-intro">
+            Public discussions help us find difficult study topics. We check the rules in our questions and explanations against official sources.
+          </p>
+          {communityInsightsUpdatedAt && <p className="home-editorial-date">Manually reviewed · Last updated{" "}
+            <time dateTime={communityInsightsUpdatedAt}>{communityInsightsUpdatedAt}</time>
+          </p>}
+          <a className="btn btn-ghost" href="#community-discussions">Share your experience</a>
+        </header>
         <CommunityDiscussions params={await searchParams} />
       </div>
     </main>

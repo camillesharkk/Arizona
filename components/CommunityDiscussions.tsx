@@ -3,11 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { communityInsights } from "@/data/community-insights";
 import { communityDiscussionPath } from "@/lib/community-links";
-import { communityDisplayName, communityStore, COMMUNITY_MAX_DEPTH, type CommunityPost } from "@/lib/community-store";
+import { communityDisplayName, communityStore, COMMUNITY_MAX_DEPTH, type CommunityInsightActivity, type CommunityPost } from "@/lib/community-store";
 import { paths } from "@/lib/paths";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { CommunityComposer, CommunityLike, CommunityRemove, CommunityShare } from "./CommunityPostForms";
+import { CommunityInsightFeed } from "./CommunityInsightFeed";
 
 const dateFormat = new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" });
 
@@ -73,6 +74,8 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
   const insightId = insight?.id ?? null;
   const threadId = typeof params.discussion === "string" && idPattern.test(params.discussion) ? params.discussion : null;
   const page = typeof params.page === "string" && /^\d{1,4}$/.test(params.page) ? Math.max(0, Number(params.page) - 1) : 0;
+  const overview = !insight && !threadId;
+  const insights = insight ? [insight] : overview ? communityInsights : [];
   const heading = insight ? `Discussion: ${insight.title}` : "Community discussions";
   const session = await getSession();
   const user = session ? await (await getStore()).getUserById(session.id).catch(() => null) : null;
@@ -80,12 +83,12 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
   let posts: CommunityPost[] = [];
   let allReplies: CommunityPost[] = [];
   let more = false;
-  let insightReaction: { liked: boolean; likes: number } | null = null;
+  let activity: CommunityInsightActivity[] | null = null;
+  let memberHighlights: CommunityPost[] = [];
   let unavailable = !process.env.DATABASE_URL;
   if (!unavailable) {
     try {
       const store = communityStore();
-      if (insightId) insightReaction = await store.insightLikes(insightId, session?.id ?? null);
       if (threadId) {
         const thread = await store.thread(insightId, threadId, session?.id ?? null);
         if (thread) {
@@ -95,8 +98,10 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
       } else {
         ({ posts, more } = await store.list(insightId, session?.id ?? null, page));
       }
+      if (overview) memberHighlights = page === 0 ? posts : (await store.list(null, session?.id ?? null, 0)).posts;
+      if (insights.length) activity = await store.insightActivity(insights.map((item) => item.id), session?.id ?? null);
     } catch {
-      // Leave the editorial carousel available during a database interruption.
+      // Leave the editorial feed available during a database interruption.
       unavailable = true;
     }
   }
@@ -111,19 +116,14 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
   const author = communityDisplayName(user?.name);
 
   return (
+    <>
+    <CommunityInsightFeed insights={insights} activity={activity} memberPosts={memberHighlights} signedIn={Boolean(user)} showHighlights={overview} />
     <section className="community-discussions home-section" id="community-discussions" aria-labelledby="community-discussions-heading">
       <div className="community-discussions-header">
         <Image src="/images/glass-demo/community-chat.png" alt="" width={72} height={48} sizes="72px" />
         <h2 id="community-discussions-heading">{heading}</h2>
       </div>
       {insight && <p className="community-meta">Comments about this reviewed insight are written by members.</p>}
-      {insight && (
-        <div className="row community-navigation">
-          {user && insightReaction && <CommunityLike id={insight.id} target={insight.title} insight {...insightReaction} />}
-          {!user && insightReaction && <span className="community-meta">{insightReaction.likes} {insightReaction.likes === 1 ? "like" : "likes"} for this insight</span>}
-          <CommunityShare href={communityDiscussionPath(insight.id)} />
-        </div>
-      )}
       {(threadId || insight) && (
         <div className="row community-navigation">
           {threadId && <Link href={communityDiscussionPath(insightId)}>Back to {insight ? "insight comments" : "discussions"}</Link>}
@@ -149,6 +149,7 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
               <Message post={post} />
               <div className="row">
                 <MessageActions post={post} signedIn={Boolean(user)} />
+                <CommunityShare href={communityDiscussionPath(insightId, post.id)} label="Share" />
                 {!threadId && (
                   <Link className="btn btn-ghost" href={communityDiscussionPath(insightId, post.id)}>
                     {post.replies} {post.replies === 1 ? "reply" : "replies"}
@@ -177,5 +178,6 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
         </>
       )}
     </section>
+    </>
   );
 }

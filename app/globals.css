@@ -241,6 +241,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--brand); width:
 .more-panel a { display: block; padding: 10px 12px; min-height: 44px; color: var(--ink); }
 .loading-stage { min-height: 40vh; display: grid; place-items: center; }
 .nav a:hover, .nav a.active { color: var(--ink); }
+.nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: .24em; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   gap: 8px; border: 0; cursor: pointer; font-weight: 500;
@@ -906,6 +907,7 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
 @media (min-width: 901px) and (max-width: 1100px) {
   .header-inner { gap: 10px; }
   .nav-desktop { gap: 10px; }
+  .nav-scroll { gap: 10px; overflow-x: auto; }
   .nav a { font-size: 0.88rem; }
   .header-cta { padding: 10px 14px; font-size: 0.88rem; }
   .header-right { gap: 8px; }

@@ -98,6 +98,7 @@ try {
   await guide.getByRole("button", { name: "Next", exact: true }).click();
   await guide.getByRole("button", { name: "Finish guide" }).click();
   await guide.waitFor({ state: "hidden" });
+  assert.equal(await page.getByRole("link", { name: "Explore Community Insights" }).getAttribute("href"), "/community-insights/");
   const review = page.locator(".daily-review-quiz");
   await review.getByText("1 / 15", { exact: true }).waitFor();
   const prompt = (await review.locator(".quiz-stem").innerText()).replace(/^\d+\.\s*/, "");

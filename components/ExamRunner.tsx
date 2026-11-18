@@ -534,6 +534,7 @@ export function ExamRunner({
       <span className="kicker">Saved result</span><h2>{restrictedResult.correctIds.length} of {restrictedResult.questionIds.length} correct</h2>
       <p>Your completed score and progress are saved. Pro opens the paid questions and explanations in this practice.</p>
       <FreeStateResultNext code={stateCode} attemptId={restrictedResult.id} />
+      {mode === "quick" && <Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link>}
     </div></div>;
   }
 
@@ -1027,6 +1028,7 @@ export function ExamRunner({
               </Link>
             </div>
           )}
+          {mode === "quick" && <p><Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link></p>}
           <AccountInvite />
           {isFreeState(stateCode) ? null : stateCode === "CT" ? <p className="notice">Free learning uses the Connecticut free question pool.</p> : onCa ? (
             <p className="notice">This is study feedback for California. Forty items are scored. This raw count is not an official scaled score.</p>
