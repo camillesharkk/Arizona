@@ -13,67 +13,141 @@
   margin-block: .5rem 1rem;
 }
 
-.national-home .community-spotlight {
-  margin-block-start: 1rem;
-  padding-block: .5rem 1rem;
+.community-intro .home-editorial-date time {
+  white-space: nowrap;
+}
+
+.community-spotlight {
+  position: relative;
+  inline-size: min(100%, 65rem);
+  aspect-ratio: 100 / 57;
+  margin: clamp(.8rem, 2vw, 1.65rem) auto 0;
+}
+
+.national-home .community-spotlight .community-intro {
+  inline-size: 66%;
+  margin: 0 auto;
+  padding-block: 24% 1rem;
+  text-align: center;
+}
+
+.national-home .community-spotlight h1 {
+  font-size: clamp(2.05rem, 5vw, 3.6rem);
+  line-height: 1.06;
+  margin-block-end: .8rem;
+  text-wrap: balance;
+}
+
+.national-home .community-spotlight .home-section-intro {
+  max-inline-size: 34rem;
+  margin-inline: auto;
+  margin-block-end: .65rem;
+  font-size: clamp(.95rem, 1.65vw, 1.08rem);
+  line-height: 1.5;
+  text-wrap: pretty;
 }
 
 .community-spotlight-track {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(11rem, 1fr);
-  align-items: stretch;
-  gap: 1rem;
-  margin: .75rem 0 0;
-  padding: .25rem .25rem 1.5rem;
+  position: absolute;
+  inset: 0 0 auto;
+  aspect-ratio: 100 / 57;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
   list-style: none;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  scroll-snap-type: x proximity;
+  pointer-events: none;
+}
+
+.community-spotlight-track::before {
+  content: "";
+  position: absolute;
+  inset: 12.28% 7% auto;
+  aspect-ratio: 2 / 1;
+  border: 2px solid #bfd6e4;
+  border-block-end: 0;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
 }
 
 .community-spotlight-track li {
-  min-inline-size: 0;
-  scroll-snap-align: start;
+  position: absolute;
+  left: var(--arc-x);
+  top: var(--arc-y);
+  translate: -50% -50%;
+  inline-size: 9.3%;
 }
 
 .community-spotlight-link {
+  position: relative;
   display: grid;
-  align-content: start;
-  justify-items: start;
-  gap: .45rem;
-  min-block-size: 100%;
-  padding: 1rem;
-  background: linear-gradient(145deg, #ffffffed, #edf5f9c7 65%, #eeedf7bb);
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: center;
+  justify-items: center;
+  aspect-ratio: 1;
+  padding: 7%;
+  border: 1px solid #d5e4ee;
+  border-radius: 20%;
+  background: linear-gradient(145deg, #fff 8%, #e8f2f9 68%, #eeedf7);
+  box-shadow: inset 1px 1px 0 #fff, 0 6px 16px #526f8b21;
+  transform: rotate(var(--arc-tilt));
   text-decoration: none;
+  pointer-events: auto;
 }
 
-.community-spotlight-link:hover strong {
-  text-decoration: underline;
+.community-spotlight-track li:nth-child(3n) .community-spotlight-link {
+  background: linear-gradient(145deg, #fff, #edf0fa 62%, #e9e4f3);
+}
+
+.community-spotlight-link:hover {
+  border-color: #7495ad;
+  box-shadow: inset 1px 1px 0 #fff, 0 9px 18px #526f8b30;
 }
 
 .community-spotlight-link img {
   display: block;
-  inline-size: 100%;
+  max-inline-size: 100%;
+  max-block-size: 100%;
+  inline-size: auto;
   block-size: auto;
-  aspect-ratio: 5 / 3;
+  aspect-ratio: 1;
   object-fit: contain;
 }
 
-.community-spotlight-link .home-state-tag {
-  margin: 0;
+.community-spotlight-keyword {
+  display: -webkit-box;
+  max-inline-size: 100%;
+  overflow: hidden;
+  color: #35566f;
+  font-size: clamp(.65rem, 1.1vw, .77rem);
+  font-weight: 650;
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
-@media (min-width: 1050px) {
-  .community-spotlight-track li:first-child,
-  .community-spotlight-track li:last-child {
-    margin-block-start: 2rem;
+@media (max-width: 660px) {
+  .national-home .community-spotlight .community-intro {
+    inline-size: min(calc(100% - 7rem), 72%);
+    padding-block-start: 32%;
   }
 
-  .community-spotlight-track li:nth-child(2),
-  .community-spotlight-track li:nth-last-child(2) {
-    margin-block-start: 1rem;
+  .national-home .community-spotlight h1 {
+    font-size: clamp(1.65rem, 5.4vw, 2.05rem);
   }
+
+  .community-spotlight-track li {
+    left: var(--arc-small-x);
+    top: var(--arc-small-y);
+    inline-size: clamp(44px, 12.8vw, 66px);
+  }
+
+  .community-spotlight-track li:nth-child(n+8) { display: none; }
+  .community-spotlight-link {
+    grid-template-rows: minmax(0, 1fr);
+    transform: rotate(var(--arc-small-tilt));
+  }
+  .community-spotlight-keyword { display: none; }
 }
 
 .national-home .community-editorial {
