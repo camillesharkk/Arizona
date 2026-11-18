@@ -733,7 +733,7 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
 .pricing-notes strong { font-weight: 600; }
 .outcome-demo { margin-top: 16px; }
 .outcome-demo h2 { margin: 0 0 4px; }
-.outcome-sub, .outcome-label, .outcome-disclaimer, .outcome-method p {
+.outcome-sub, .outcome-label, .outcome-method p {
   margin: 0 0 8px;
   color: var(--muted);
   font-size: 14px;

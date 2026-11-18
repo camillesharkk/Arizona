@@ -51,9 +51,6 @@ export const examOutcomeDemo = {
   methodology:
     "The demonstration contains four independent groups of 100 simulated participants. Relative improvement is calculated by dividing the difference between the two pass rates by the comparison-group pass rate.",
 
-  limitations:
-    "These figures are simulated for demonstration purposes only. They do not represent actual ArizonaNotaryPrep.com customer outcomes, official Arizona exam statistics, or a guarantee of individual results.",
-
   lastVerifiedAt: "2026-10-22",
 } as const;
 

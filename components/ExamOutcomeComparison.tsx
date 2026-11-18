@@ -80,7 +80,6 @@ export function ExamOutcomeComparison({ show = SHOW_SIMULATED_OUTCOME_DATA }: { 
         />
         <Chart title="Pro access comparison" control={pro.control} treatment={pro.treatment} lift={pro.relativeLift} />
       </div>
-      <p className="outcome-disclaimer">{demo.limitations}</p>
       <details className="card outcome-method">
         <summary>How this simulated comparison was calculated</summary>
         <h3>Sample</h3>
