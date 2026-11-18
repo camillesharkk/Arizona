@@ -15,9 +15,9 @@ export const metadata = pageMeta({
 export default async function StudyCardsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ topic?: string }>;
+  searchParams: Promise<{ topic?: string; card?: string }>;
 }) {
-  const { topic } = await searchParams;
+  const { topic, card } = await searchParams;
   const session = await getSession();
   const pro = await hasArizonaPro(session?.id);
   const cards = publicStudyCards(pro);
@@ -34,7 +34,7 @@ export default async function StudyCardsPage({
           {freeCards} study cards are free. Pro opens the rest of the {allCards}-card deck. <Link href={paths.pricing}>View Pro</Link>
         </p>
       )}
-      <StudyCardsClient cards={cards} initialTopic={isTopicSlug(topic) ? topic : "all"} />
+      <StudyCardsClient initialCardId={card} cards={cards} initialTopic={isTopicSlug(topic) ? topic : "all"} />
     </main>
   );
 }

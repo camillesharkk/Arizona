@@ -34,9 +34,9 @@ async function complete(page, count, correctCount, state = 'CT', practice = true
     if (index === 0 && state === 'CT') {
       assert.equal(await page.getByRole('link', { name: 'Open Official Handbook', exact: true }).count(), 1);
       if (practice && correctCount < count) {
-        await page.getByRole('button', { name: 'Show explanation', exact: true }).click();
-        assert.ok((await page.locator('.answer-result > .explain').first().innerText()).includes(question.source_reference));
-        assert.equal(await page.locator('.answer-result > .explain').first().getByText(/is wrong\./).count(), 3);
+        await page.getByRole('button', { name: 'Compare the other options', exact: true }).click();
+        assert.ok((await page.locator('.answer-result .answer-source').first().innerText()).includes(question.source_reference));
+        assert.equal(await page.locator('.answer-option-notes > li').count(), 3);
       }
     }
     if (index < count - 1) {

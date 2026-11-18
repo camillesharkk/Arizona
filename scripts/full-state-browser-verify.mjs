@@ -48,8 +48,8 @@ async function finish(page, bank, { count = 40, wrongCount = 4, full = true } = 
   await page.getByRole('button', { name: full ? 'Submit exam' : 'See results', exact: true }).click();
   await page.locator('.result-summary').waitFor({ timeout: 90000 });
   assert.ok((await page.locator('.result-summary').innerText()).includes(`${count - wrongCount} of ${count} correct`));
-  await page.getByRole('button', { name: 'Show explanation', exact: true }).first().click();
-  assert.ok((await page.locator('.answer-result .explain a').first().getAttribute('href')).startsWith('https://'));
+  await page.getByRole('button', { name: 'Compare the other options', exact: true }).first().click();
+  assert.ok((await page.locator('.answer-result .answer-source a').first().getAttribute('href')).startsWith('https://'));
   return ids;
 }
 
@@ -133,7 +133,7 @@ const page = await context.newPage();
           if (kind === 'pro' && process.env.FULL_STATE_TUTOR === '1' && width === widths[0]) {
             const paidIndex = ids.findIndex(id => !bank.find(question => question.question_id === id).is_free);
             const question = page.locator('.card:has(> .quiz-stem)').nth(paidIndex);
-            const explanation = question.getByRole('button', { name: 'Show explanation', exact: true });
+            const explanation = question.getByRole('button', { name: 'Compare the other options', exact: true });
             if (await explanation.count()) await explanation.click();
             const [response] = await Promise.all([
               page.waitForResponse(response => new URL(response.url()).pathname === '/api/ai/tutor/' && response.request().method() === 'POST', { timeout: 45000 }),

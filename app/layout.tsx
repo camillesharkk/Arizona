@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Suspense } from "react";
 import { cookies, headers } from "next/headers";
 import "./globals.css";
+import "./answer-explanations.css";
 import { SiteFooter, SiteHeader } from "@/components/Chrome";
 import { SavedStateProvider } from "@/components/SavedState";
 import { STATE_COOKIE, parseStateCookie, resolveState } from "@/lib/site-state";
@@ -15,6 +16,8 @@ import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { AnalyticsFunnel } from "@/components/AnalyticsFunnel";
 import { MicrosoftClarity } from "@/components/MicrosoftClarity";
 import { PaddleCheckoutResume } from "@/components/PaddleCheckoutResume";
+import { EntryMotion } from "@/components/EntryMotion";
+import "./entry-motion.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const saved = parseStateCookie((await cookies()).get(STATE_COOKIE)?.value);
@@ -59,6 +62,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en" data-state={state && state !== "AZ" ? state : undefined}>
       <body>
+        <EntryMotion />
         <GoogleAnalytics />
         <MicrosoftClarity />
         <AnalyticsIdentity />

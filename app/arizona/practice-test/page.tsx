@@ -58,7 +58,7 @@ export default function PracticeTestPage() {
               <h3>{i + 1}. {q.question_text}</h3>
               <ol type="A">{Object.entries(options).map(([letter, text]) => <li key={letter}>{text}</li>)}</ol>
               <p><strong>Answer: {q.correct_option}. {options[q.correct_option]}</strong></p>
-              <AnswerExplain explanation={q.explanation} sourceUrl={getSource(q.source_id).url} sourceLabel={q.source_reference} />
+              <AnswerExplain question={q} explanation={q.explanation} sourceUrl={getSource(q.source_id).url} sourceLabel={q.source_reference} />
               <Link href={paths.topic(q.topic)}>Practice more questions on this topic</Link>
             </article>
           );

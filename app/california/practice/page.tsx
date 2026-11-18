@@ -22,6 +22,9 @@ export default function Page() {
     const q = free.find((item) => item.study_topic === topic.id);
     if (!q) return [];
     return [{
+      source_id: q.source_id,
+      source_reference: q.source_reference,
+      last_verified_at: q.last_verified_at,
       question_id: q.question_id,
       question_text: q.question_text,
       options: { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d },

@@ -404,6 +404,7 @@ function QuestionReview({ q, index, choice }: { q: Question; index: number; choi
         <p>Your answer: {choice === "unsure" ? "I'm not sure" : "Not answered"}</p>
       )}
       <AnswerExplain
+        question={q}
         explanation={q.explanation}
         wrongNote={choice && choice !== "unsure" && choice !== q.correct_option ? q.option_feedback[choice] : undefined}
         sourceUrl={source?.url}

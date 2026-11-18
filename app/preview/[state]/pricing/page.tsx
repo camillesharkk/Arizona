@@ -1,3 +1,4 @@
+import { LifetimeProOffer } from "@/components/LifetimeProOffer";
 import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
 import { StateCheckout } from "@/components/StateCheckout";
@@ -12,7 +13,8 @@ export default async function Page({ params }: { params: Promise<{ state: string
   const pack = prepPacks[code];
   const counts = pack.counts();
   if (code === "LA") {
-    return <main className="wrap"><StateCheckout source={code} /></main>;
+    return <main className="wrap">
+      <LifetimeProOffer compact /><StateCheckout source={code} /></main>;
   }
   return (
     <main className="wrap">

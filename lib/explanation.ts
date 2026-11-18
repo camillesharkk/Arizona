@@ -17,12 +17,15 @@ function sentences(text: string): string[] {
 }
 
 function keepSentence(sentence: string): string | null {
-  let s = sentence.trim().replace(/,?\s*which is outside this item's main pin-cite\.?$/i, ".").trim();
+  let s = sentence
+    .trim()
+    .replace(/,?\s*which is outside this item's main pin-cite\.?$/i, ".")
+    .trim();
   if (!s) return null;
   if (/\bpin-cite\b/i.test(s)) return null;
   if (
     /\b(question bank|the app expects|not tested by this item|not tested here|are not this question|not this question|used to write the answer|does not invent|page is cited|manual page number|it is not the question)\b/i.test(
-      s
+      s,
     )
   ) {
     return null;
@@ -41,10 +44,22 @@ export function cleanExplanation(text: string): string {
     .join(" ");
 }
 
-export function presentExplanation(text: string): { short: string; why: string } {
+export function presentExplanation(text: string): {
+  short: string;
+  why: string;
+} {
   const kept = sentences(text)
     .map(keepSentence)
     .filter((s): s is string => Boolean(s));
   if (kept.length <= 3) return { short: kept.join(" "), why: "" };
   return { short: kept.slice(0, 3).join(" "), why: kept.slice(3).join(" ") };
+}
+
+/** Keep the authored rule and each supporting point readable on their own. */
+export function explanationParts(text: string): {
+  rule: string;
+  reasoning: string[];
+} {
+  const [rule = "", ...reasoning] = sentences(cleanExplanation(text));
+  return { rule, reasoning };
 }

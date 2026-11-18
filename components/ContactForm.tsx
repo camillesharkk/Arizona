@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { validateContactInput, type ContactFieldErrors, type PreferredContact } from "@/lib/contact-validation";
 
-export function ContactForm() {
+export function ContactForm({ examRefund = false }: { examRefund?: boolean }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [preferred, setPreferred] = useState<PreferredContact>("Email");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(examRefund ? "Lifetime Pro exam refund request\nOrder number\nExam date\nOfficial result date\nOfficial failure proof link or request for submission instructions\n" : "");
   const [honeypot, setHoneypot] = useState("");
   const [fields, setFields] = useState<ContactFieldErrors>({});
   const [error, setError] = useState("");

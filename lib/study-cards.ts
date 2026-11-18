@@ -117,7 +117,7 @@ export function publicStudyCards(isPro: boolean): PublicStudyCard[] {
   const preview = new Set<string>(HOME_STUDY_CARD_IDS);
   return studyCardCatalog().map((card) => {
     const linked = (card.question_ids ?? []).map((id) => questions.get(id)).filter((item) => item != null);
-    const free = preview.has(card.id) || linked.some((question) => question.is_free);
+    const free = card.id === "kc-manual-navigation" || preview.has(card.id) || linked.some((question) => question.is_free);
     const source = findSource(card.source_id);
     const locked = !isPro && !free;
     const pending = Boolean(card.pendingVerification) || !source;

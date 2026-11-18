@@ -1,14 +1,13 @@
 :root {
   --bg: #ffffff;
-  --bg-2: #f5f5f7;
-  --ink: #1d1d1f;
-  --muted: #6e6e73;
-  --line: #d2d2d7;
-  --brand: #0071e3;
-  --brand-hover: #0077ed;
-  --brand-dark: #0066cc;
-  --brand-soft: #e8f2fc;
-  --state: #c45c26;
+  --bg-2: #f0f5f8;
+  --ink: #334455;
+  --muted: #586b7a;
+  --line: #cddbe5;
+  --brand: #56758a;
+  --brand-hover: #4c697e;
+  --brand-dark: #34546b;
+  --brand-soft: #e6f0f7;
   --sage: #1f7a3a;
   --sage-soft: #e8f6ec;
   --danger: #c41e16;
@@ -16,40 +15,27 @@
   --warn: #9a4d00;
   --warn-soft: #fff4e5;
   --radius: 18px;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --focus: 0 0 0 4px rgba(0, 113, 227, 0.3);
+  --glass-surface: #f3f7fa;
+  --glass-fill: var(--glass-surface);
+  --glass-edge: #e1eaf1;
+  --glass-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.94),
+    inset -1px -1px 0 rgb(164 188 206 / 0.16),
+    0 14px 30px rgb(77 112 141 / 0.11), 0 3px 8px rgb(95 124 148 / 0.04);
+  --glass-control: linear-gradient(135deg, #ffffff, #edf4f8);
+  --glass-button-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.3),
+    0 6px 14px rgb(66 99 125 / 0.18);
+  --shadow: var(--glass-shadow);
+  --focus-color: #355d78;
+  --focus: 0 0 0 3px var(--focus-color);
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --serif: var(--font);
 }
 
-html[data-state="CA"],
-html[data-state="HI"],
-html[data-state="NY"] {
-  --brand: #0b3a6e;
-  --brand-hover: #082c56;
-  --brand-dark: #082c56;
-  --brand-soft: #e7eef6;
-  --state: #0b3a6e;
-  --focus: 0 0 0 4px rgba(11, 58, 110, 0.28);
-}
-
-html[data-state="LA"] {
-  --brand: #4c1d95;
-  --brand-hover: #3b0764;
-  --brand-dark: #3b0764;
-  --brand-soft: #f3e8ff;
-  --state: #4c1d95;
-  --focus: 0 0 0 4px rgba(76, 29, 149, 0.28);
-}
-
-html[data-state="PA"] {
-  --brand: #0f3d3e;
-  --brand-hover: #0b2e2f;
-  --brand-dark: #0b2e2f;
-  --brand-soft: #e7f3f3;
-  --state: #0f3d3e;
-  --focus: 0 0 0 4px rgba(15, 61, 62, 0.28);
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  :root {
+    --glass-fill: linear-gradient(135deg, rgb(255 255 255 / 0.86), rgb(229 240 248 / 0.65));
+  }
 }
 
 * { box-sizing: border-box; }
@@ -217,8 +203,9 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--brand); width:
 }
 .logo-mark {
   width: 34px; height: 34px; border-radius: 10px;
-  background: var(--state);
-  color: white; display: grid; place-items: center;
+  background: var(--glass-control);
+  color: var(--brand-dark); display: grid; place-items: center;
+  box-shadow: var(--glass-shadow);
   font-family: var(--font); font-weight: 600;
 }
 .nav { display: flex; gap: 18px; align-items: center; flex-wrap: nowrap; min-width: 0; }
@@ -1252,4 +1239,123 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
   .daily-practice-quiz { grid-row: 2; }
   .daily-review-card { grid-row: 3; }
   .daily-review-quiz { grid-row: 4; }
+}
+
+/* Common surfaces use the same light direction and cool tones as the homepage. */
+.card,
+.state-card,
+.price-summary-card,
+.flash-card {
+  background: var(--glass-fill);
+  border-color: var(--glass-edge);
+  border-radius: 26px;
+  box-shadow: var(--glass-shadow);
+}
+
+.card.danger-zone {
+  border-color: #f0c2bf;
+}
+
+/* Use actual backdrop blur only where content can scroll or sit underneath. */
+.site-header,
+.sticky-nav,
+.nav-drawer,
+.more-panel,
+.state-menu-panel,
+.account-dropdown,
+.message-dialog {
+  background: var(--glass-surface);
+  border-color: var(--glass-edge);
+  box-shadow: var(--glass-shadow);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .site-header,
+  .sticky-nav,
+  .nav-drawer,
+  .more-panel,
+  .state-menu-panel,
+  .account-dropdown,
+  .message-dialog {
+    background: rgb(247 250 252 / 0.94);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+}
+
+.stat,
+.submit-status,
+.q-option:not(.selected, .correct, .wrong),
+.field :is(input:not([type="checkbox"], [type="radio"]), select, textarea),
+.state-search input {
+  background: var(--glass-control);
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 rgb(164 188 206 / 0.14);
+}
+
+.btn-primary {
+  background: var(--brand);
+  box-shadow: var(--glass-button-shadow);
+}
+
+.btn-primary:hover:not(:disabled, [aria-disabled="true"]) {
+  background: var(--brand-hover);
+}
+
+.btn-ghost:not(.is-on),
+.menu-btn,
+.state-menu-btn,
+.q-num:not(.on),
+.chip:not(.on),
+.tool-row .chip:not(.on)::before {
+  background: var(--glass-control);
+}
+
+.tool-row .chip:not(.on) {
+  background: transparent;
+}
+
+.mistake-actions .chip:not(.on) {
+  background: var(--glass-control);
+}
+
+:is(.btn-ghost:not(.is-on), .menu-btn, .state-menu-btn, .q-num:not(.on)):hover:not(:disabled, [aria-disabled="true"]) {
+  background: var(--brand-soft);
+}
+
+:is(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus-color);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:active { transform: none; }
+  .q-option,
+  .menu-icon,
+  .menu-icon::before,
+  .menu-icon::after { transition: none; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root { --glass-fill: var(--glass-surface); }
+
+  .site-header,
+  .sticky-nav,
+  .nav-drawer,
+  .more-panel,
+  .state-menu-panel,
+  .account-dropdown,
+  .message-dialog {
+    background: var(--glass-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (forced-colors: active) {
+  :root { --focus-color: CanvasText; }
+
+  .field :is(input, select, textarea):focus-visible {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+  }
 }

@@ -1,3 +1,4 @@
+import { LifetimeProOffer } from "@/components/LifetimeProOffer";
 import type { Metadata } from "next";
 import { StateCheckout } from "@/components/StateCheckout";
 import { caQuestionCounts } from "@/data/ca-questions";
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main className="wrap">
+      <LifetimeProOffer compact />
       <h1>California Pro</h1>
       <div className="card">
         <p>{counts.free} of {counts.published} published questions are free, and all {caCards.length} study cards are free. One full 45-question practice exam is included.</p>

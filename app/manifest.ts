@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Arizona notary exam practice",
     start_url: "/arizona-notary-exam/",
     display: "standalone",
-    background_color: "#f6f1ea",
-    theme_color: "#c45c26",
+    background_color: "#ffffff",
+    theme_color: "#56758a",
   };
 }

@@ -1,0 +1,106 @@
+.lifetime-offer {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background: var(--glass-fill);
+  color: var(--ink);
+  border: 1px solid var(--glass-edge);
+  border-radius: 24px;
+  margin: 2rem 0;
+}
+.lifetime-offer h2 {
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  margin: 0.4rem 0 1rem;
+}
+.lifetime-offer p {
+  max-width: 60ch;
+  line-height: 1.65;
+}
+.lifetime-offer a {
+  color: inherit;
+}
+.lifetime-offer .btn-primary {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+.lifetime-offer .btn-primary:hover {
+  background: var(--brand-hover);
+}
+.lifetime-eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.lifetime-price > p > strong {
+  font-size: 2.8rem;
+}
+.lifetime-guarantee {
+  background: #fff;
+  border: 1px solid var(--glass-edge);
+  color: var(--ink);
+  padding: 1rem;
+  border-radius: 14px;
+  margin-top: 1rem;
+}
+.lifetime-guarantee p {
+  margin: 0.35rem 0;
+}
+.lifetime-guarantee p:first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.08rem;
+}
+.lifetime-guarantee p:first-child span {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  border-radius: 10px;
+  font-size: 1.6rem;
+}
+.lifetime-guarantee a {
+  text-decoration: underline;
+  font-size: 0.9rem;
+}
+.lifetime-comparison {
+  display: grid;
+  gap: 0.6rem;
+}
+.lifetime-comparison div {
+  padding: 0.65rem 0;
+  border-top: 1px solid var(--glass-edge);
+}
+.lifetime-comparison dt {
+  font-weight: 700;
+}
+.lifetime-comparison dd {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+}
+.lifetime-offer-compact {
+  padding: 1.5rem;
+}
+.lifetime-offer-compact h2 {
+  font-size: 1.7rem;
+}
+@media (max-width: 680px) {
+  .lifetime-offer {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .lifetime-price {
+    width: 100%;
+  }
+  .lifetime-price .btn {
+    display: block;
+    text-align: center;
+  }
+}

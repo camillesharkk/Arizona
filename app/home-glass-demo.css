@@ -1,0 +1,204 @@
+/* Material-only demo: national-home.css retains all layout and type dimensions. */
+.glass-home-demo {
+  --home-blue: #587b94;
+  --home-blue-dark: var(--brand-dark);
+  --home-ink: var(--ink);
+  --home-muted: var(--muted);
+  --home-line: #d1dfe7;
+  --glass-button-bg: var(--brand);
+  --glass-rim: rgb(255 255 255 / 0.94);
+  --glass-surface: #f3f7fa;
+  --glass-shadow: inset 1px 1px 0 var(--glass-rim), inset -1px -1px 0 rgb(164 188 206 / 0.16), 0 18px 38px rgb(77 112 141 / 0.12), 0 4px 10px rgb(95 124 148 / 0.04);
+  background: #ffffff;
+}
+body:has(.glass-home-demo),
+.glass-home-demo .home-hero {
+  background: #ffffff;
+  background-image: none;
+}
+.glass-home-demo h1 span { color: #526f84; }
+
+/* Opaque fallback first. All tinted light stays within component boundaries. */
+.glass-home-demo :is(.home-state-field input, .home-community-card, .home-evidence, .home-faq details) {
+  background: var(--glass-surface);
+  border-color: #e3ebf1;
+  box-shadow: var(--glass-shadow);
+}
+.glass-home-demo :is(.home-community-card, .home-evidence, .home-faq details) {
+  border-radius: 26px;
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .glass-home-demo :is(.home-state-field input, .home-community-card, .home-evidence, .home-faq details) {
+    background: linear-gradient(135deg, rgb(255 255 255 / 0.82), rgb(241 248 252 / 0.58));
+    border-color: rgb(255 255 255 / 0.88);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+}
+.glass-home-demo .home-state-field input {
+  background: linear-gradient(120deg, #f4f8fb, #eaf2f7);
+  border-color: #d1dfe8;
+  box-shadow: inset 2px 2px 5px rgb(97 127 151 / 0.09), inset -2px -2px 5px #ffffff, 0 8px 22px rgb(77 112 141 / 0.07);
+}
+.glass-home-demo .home-state-field input::placeholder { color: #526878; }
+.glass-home-demo :is(.home-state-clear, .home-state-chevron) { color: #405f75; }
+.glass-home-demo .home-state-list {
+  background: #f2f7fa;
+  border-color: #c9d9e4;
+  box-shadow: var(--glass-shadow);
+}
+.glass-home-demo .home-state-list button { background: transparent; }
+.glass-home-demo .home-state-list button:is(:hover, .is-active) { background: #dcebf3; }
+
+.glass-home-demo :is(.home-primary, .home-lifetime .btn-primary) {
+  border-color: #6d899e;
+  background: var(--glass-button-bg);
+  color: #ffffff;
+  box-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.3), inset -1px -1px 0 rgb(42 67 87 / 0.12), 0 12px 26px rgb(66 99 125 / 0.22), 0 3px 6px rgb(66 99 125 / 0.08);
+}
+@supports (color: contrast-color(white)) {
+  .glass-home-demo :is(.home-primary, .home-lifetime .btn-primary) {
+    color: contrast-color(var(--glass-button-bg));
+  }
+}
+.glass-home-demo :is(.home-primary, .home-lifetime .btn-primary):hover:not(:disabled) {
+  background: #4c697e;
+  box-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.35), 0 16px 30px rgb(66 99 125 / 0.25), 0 3px 8px rgb(66 99 125 / 0.08);
+}
+.glass-home-demo :is(.home-carousel-controls button, .home-contact-button) {
+  background: linear-gradient(135deg, #ffffffcf, #eaf3f9b3);
+  border-color: #d1e0ea;
+  color: #34546b;
+  box-shadow: var(--glass-shadow);
+}
+.glass-home-demo :is(.home-carousel-controls button, .home-contact-button):hover:not(:disabled) { background: #e4eff6; }
+.glass-home-demo .home-carousel-controls button:disabled {
+  background: #f0f4f7;
+  border-color: #dce5ec;
+  color: #6c8191;
+  box-shadow: inset 1px 1px 3px rgb(93 123 148 / 0.06);
+}
+.glass-home-demo .home-step-icon {
+  background: linear-gradient(135deg, #ffffffd9, #e4eef6b3);
+  color: #496b82;
+  box-shadow: var(--glass-shadow);
+}
+.glass-home-demo .home-step:nth-of-type(2) .home-step-icon { background: linear-gradient(135deg, #ffffffd9, #e3f1f5bd); }
+.glass-home-demo .home-step:nth-of-type(3) .home-step-icon { background: linear-gradient(135deg, #ffffffd9, #eeedf6c4); }
+.glass-home-demo .home-step-glass-art {
+  width: 54px;
+  height: 48px;
+  object-fit: contain;
+  filter: saturate(0.55) drop-shadow(0 3px 3px rgb(72 103 129 / 0.12));
+}
+.glass-home-demo .home-step-icon span {
+  background: #637f94;
+  border-color: #ffffff;
+  box-shadow: 0 4px 9px rgb(73 103 126 / 0.16);
+}
+.glass-home-demo .home-step-connector { color: #c2d6e4; }
+.glass-home-demo .home-state-tag {
+  background: linear-gradient(135deg, #ffffffd6, #dfedf5);
+  color: #36586f;
+  box-shadow: inset 1px 1px 0 #ffffff, 0 3px 7px rgb(91 123 149 / 0.06);
+}
+.glass-home-demo .home-community-card:first-child {
+  background: radial-gradient(ellipse at 90% 100%, rgb(186 213 232 / 0.23), transparent 70%), linear-gradient(135deg, #ffffffe0, #eef5faad);
+}
+.glass-home-demo .home-community-card:nth-child(2) {
+  background: radial-gradient(ellipse at 90% 100%, rgb(208 205 231 / 0.2), transparent 70%), linear-gradient(135deg, #ffffffe0, #f1f5faad);
+}
+.glass-home-demo .home-trust {
+  background: radial-gradient(ellipse at 5% 100%, #ddebf2a6, transparent 58%), radial-gradient(ellipse at 100% 0%, #e8ecf6b8, transparent 65%), #f3f7fa;
+  border-color: #edf3f7;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #c9dae63b, 0 20px 44px rgb(80 117 146 / 0.08);
+}
+.glass-home-demo .home-evidence:first-child {
+  background: linear-gradient(135deg, #ffffffc4, #eef5fa9e);
+}
+.glass-home-demo .home-evidence-product {
+  background: radial-gradient(ellipse at 100% 100%, #c5e6ef40, transparent 75%), linear-gradient(135deg, #ffffffc4, #eef7fa91);
+}
+.glass-home-demo .home-evidence:last-child {
+  background: radial-gradient(ellipse at 100% 100%, #d8d7ed4a, transparent 75%), linear-gradient(135deg, #ffffffc4, #f2f3fa9e);
+}
+.glass-home-demo .home-sample-question { border-color: #abc8da; }
+.glass-home-demo .home-product-window {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(130deg, #ffffffa8, #dfeef67d);
+  border-color: #fffffff0;
+  box-shadow: inset 1px 1px 0 #ffffff, 0 12px 26px rgb(73 111 142 / 0.14), 4px 5px 0 -1px #e7f1f7, 7px 8px 0 -2px #ffffffb3;
+}
+.glass-home-demo :is(.home-product-titlebar, .home-product-window figcaption) {
+  background: #ffffff59;
+  border-color: #b4cad547;
+}
+.glass-home-demo .home-notebook-record {
+  background: linear-gradient(135deg, #ffffffad, #edf6fb73);
+  border-color: #ffffffb3;
+  box-shadow: inset 1px 1px 0 #ffffff, 0 7px 16px rgb(77 113 141 / 0.08);
+}
+.glass-home-demo .home-notebook-preview .chip {
+  background: linear-gradient(135deg, #ffffffeb, #e6f0f7b3);
+  color: #36566c;
+  border-color: #d5e4ed;
+  box-shadow: inset 1px 1px 0 #ffffff, 0 3px 7px rgb(79 115 142 / 0.09);
+}
+.glass-home-demo .home-notebook-preview .chip.on {
+  background: #56758a;
+  color: #ffffff;
+  border-color: #56758a;
+  box-shadow: inset 0 1px 0 #ffffff3b, 0 3px 7px rgb(79 115 142 / 0.12);
+}
+.glass-home-demo .home-notebook-record .chip { background: #dfedf5; }
+.glass-home-demo .home-notebook-preview .tool-row .chip::before { display: none; }
+.glass-home-demo .home-lifetime .lifetime-offer {
+  background: radial-gradient(ellipse at 90% 0%, #cfdfec45, transparent 60%), linear-gradient(130deg, #f9fcfd, #edf4f8);
+  border-color: #e3edf4;
+  color: #334455;
+  box-shadow: var(--glass-shadow);
+}
+.glass-home-demo .lifetime-eyebrow { color: #49677b; }
+.glass-home-demo .lifetime-guarantee {
+  background: linear-gradient(135deg, #ffffffbd, #e6f1f88c);
+  border-color: #ffffff;
+  color: #334b5d;
+  box-shadow: inset 1px 1px 0 #ffffff, 0 9px 20px rgb(82 116 143 / 0.08);
+}
+.glass-home-demo .lifetime-guarantee p:first-child span { background: #dfedf5; color: #3e6077; }
+.glass-home-demo :is(a, button, input, summary, [tabindex]):focus-visible { outline: 3px solid #355d78; outline-offset: 4px; }
+body:has(.glass-home-demo) .national-header {
+  background: #f7fafc;
+  border-color: #e2eaf0;
+  box-shadow: 0 4px 14px rgb(78 112 140 / 0.06);
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  body:has(.glass-home-demo) .national-header {
+    background: #f7fafcd1;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+}
+body:has(.glass-home-demo) .national-header .logo-mark {
+  background: linear-gradient(135deg, #ffffffd9, #dfebf4);
+  color: #3d6079;
+  box-shadow: inset 1px 1px 0 #ffffff, 0 5px 12px rgb(80 115 144 / 0.12);
+}
+body:has(.glass-home-demo) :is(.national-header a, .footer a) { color: #35566f; }
+body:has(.glass-home-demo) .footer { background: #ffffff; border-color: #e0e9f0; }
+@media (prefers-reduced-motion: no-preference) {
+  .glass-home-demo :is(button, .home-contact-button, .home-lifetime .btn-primary) { transition: box-shadow 160ms ease-out, scale 160ms ease-out; }
+  .glass-home-demo :is(button:enabled, .home-contact-button, .home-lifetime .btn-primary):active { scale: 0.985; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass-home-demo :is(.home-state-field input, .home-community-card, .home-evidence, .home-faq details),
+  body:has(.glass-home-demo) .national-header {
+    background: #f1f6fa;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@media (forced-colors: active) {
+  .glass-home-demo :is(a, button, input, summary, [tabindex]):focus-visible { outline-color: CanvasText; }
+}

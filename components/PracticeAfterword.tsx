@@ -8,6 +8,9 @@ export function PracticeAfterword({
 }: {
   during: string;
   samples: {
+    source_id: string;
+    source_reference: string;
+    last_verified_at: string;
     question_id: string;
     question_text: string;
     options: Record<string, string>;
@@ -33,7 +36,7 @@ export function PracticeAfterword({
             <h3>{i + 1}. {q.question_text}</h3>
             <ol type="A">{Object.entries(q.options).map(([letter, text]) => <li key={letter}>{text}</li>)}</ol>
             <p><strong>Answer: {q.correct}. {q.options[q.correct]}</strong></p>
-            <AnswerExplain explanation={q.explanation} sourceUrl={q.sourceUrl} sourceLabel={q.sourceLabel} />
+            <AnswerExplain question={q} explanation={q.explanation} sourceUrl={q.sourceUrl} sourceLabel={q.sourceLabel} />
             <Link href={q.moreHref}>Practice more questions on this topic</Link>
           </article>
         ))}

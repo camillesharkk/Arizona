@@ -6,6 +6,19 @@ import { ncSources } from "./nc-sources.ts";
 import { ctSources, CT_CHECKED_ON } from "../lib/ct-site.ts";
 
 export const sources: Record<string, Source> = {
+  "ca-official": { source_id: "ca-official", source_type: "SOS", title: "California SOS Notary Public Handbook", document_url: "https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf", reference: "See the question-specific statutory or manual reference", url: "https://www.sos.ca.gov/notary/handbook", last_verified_at: "2026-11-05", last_checked_at: "2026-11-17" },
+  "hi-official": { source_id: "hi-official", source_type: "SOS", title: "Hawaii Attorney General Notaries Public Documents", document_url: "https://ag.hawaii.gov/wp-content/uploads/2023/04/Notary-Manual-website-version-2023_AG-website_updated-2023-04-14.pdf", reference: "See the question-specific statutory or manual reference", url: "https://ag.hawaii.gov/notaries-public/notaries-public-documents/", last_verified_at: "2026-11-07", last_checked_at: "2026-11-17" },
+  "ny-official": { source_id: "ny-official", source_type: "SOS", title: "New York DOS Notary Public License Law", reference: "See the question-specific statutory or manual reference", url: "https://dos.ny.gov/notary-public-license-law", last_verified_at: "2026-11-09", last_checked_at: "2026-11-17" },
+  "pa-official": { source_id: "pa-official", source_type: "SOS", title: "Pennsylvania Department of State Notary Resources", reference: "See the question-specific statutory or manual reference", url: "https://www.pa.gov/agencies/dos/programs/notaries", last_verified_at: "2026-11-12", last_checked_at: "2026-11-17" },
+  "la-official": { source_id: "la-official", source_type: "SOS", title: "Louisiana Secretary of State Notary Resources", reference: "See the question-specific statutory or manual reference", url: "https://www.sos.la.gov/notary/frequently-asked-questions", last_verified_at: "2026-11-12", last_checked_at: "2026-11-17" },
+
+  "az-exam-notice-2026-11": {
+    source_id: "az-exam-notice-2026-11", source_type: "SOS",
+    title: "Arizona SOS New Notary — Notary Exam Notice",
+    reference: "Notary Exam Notice, built-in manual and physical-copy restriction",
+    url: "https://azsos.gov/business/notary-public/new-notary",
+    last_verified_at: "2026-11-17", last_checked_at: "2026-11-17",
+  },
   ...freeStateSources,
   ...fullStateSources,
   ...Object.fromEntries([
@@ -49,10 +62,10 @@ export const sources: Record<string, Source> = {
     source_type: "Manual",
     title: "Arizona Notary Public Reference Manual (current SOS download)",
     reference:
-      "SOS exam notice (2026-10-19) names the 2026 Notary Public Reference Manual. Download filename Notary-Manual-Aug-2026.pdf. A January 2025 cover date was recorded earlier and the PDF cover was not re-opened on 2026-10-19.",
+      "SOS exam notice (2026-10-19) names the 2026 Notary Public Reference Manual. The media page now links Notary-Manual-Oct-2026.pdf, checked 2026-11-17. Individual question verification dates remain unchanged.",
     url: "https://azsos.gov/media/143",
-    document_url: "https://azsos.gov/sites/default/files/docs/Notary-Manual-Aug-2026.pdf",
-    version: "SOS title: 2026 Notary Public Reference Manual; filename Notary-Manual-Aug-2026.pdf; cover date not re-checked 2026-10-19",
+    document_url: "https://azsos.gov/sites/default/files/docs/Notary-Manual-Oct-2026.pdf",
+    version: "SOS current download filename Notary-Manual-Oct-2026.pdf; link checked 2026-11-17",
     last_verified_at: "2026-10-19",
     last_checked_at: "2026-10-19",
   },

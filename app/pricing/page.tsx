@@ -1,3 +1,4 @@
+import { LifetimeProOffer } from "@/components/LifetimeProOffer";
 import { Fragment, Suspense } from "react";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { PricingAnalytics } from "@/components/PricingAnalytics";
@@ -36,6 +37,7 @@ export default function PricingPage() {
   const freeCount = pricingFreeCount;
   return (
     <main className="wrap hero">
+      <LifetimeProOffer compact />
       <PricingAnalytics />
       <JsonLd data={faqJson(faqs)} />
       <Breadcrumb items={[{ name: "Home", path: paths.home }, { name: "Pricing", path: paths.pricing }]} />

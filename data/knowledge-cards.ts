@@ -3,6 +3,15 @@ import type { Flashcard } from "../lib/types.ts";
 /** Rules drawn from the scenario set. Checked on azleg.gov 2026-10-19. */
 export const knowledgeCards: Flashcard[] = [
   {
+    id: "kc-manual-navigation", category: "definitions", topic: "commission", kind: "core",
+    title: "Rehearse a manual lookup",
+    front: "How can I prepare to locate a rule in Arizona's open-book examination?",
+    back: "The official SOS notice says the manual is built into the examination and a physical copy is not allowed. Before timed practice, open the official manual, locate a rule, and explain how it applies to a scenario.",
+    rule: "Use the official manual to rehearse rule lookups before timed practice.",
+    boundary: "The official notice confirms a built-in manual. Interface controls can vary, so follow the examination instructions.",
+    source_id: "az-exam-notice-2026-11", question_ids: [],
+  },
+  {
     id: "kc-id",
     category: "identification",
     topic: "identification",

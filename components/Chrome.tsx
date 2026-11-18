@@ -148,14 +148,14 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const extra = state ? moreLinks(nav, state).filter(item => !isFreeState(state) || fullStateSummary[state]?.ready || item.label !== "Study cards") : [];
 
   return (
-    <header className="site-header">
+    <header className={`site-header${pathname === "/" ? " national-header" : ""}`}>
       <div className="wrap header-inner">
         <div className="header-left">
           <Link href={state ? nav.home : "/"} className="logo">
             <span className="logo-mark">{state === "IN" ? "I" : state === "CT" ? "C" : state === "CA" ? "C" : state === "HI" ? "H" : state === "NY" ? "Y" : state === "PA" ? "P" : state === "LA" ? "L" : state === "AZ" ? "A" : "N"}</span>
             {isFreeState(state) ? stateByCode(state)?.name : state === "IN" ? "Indiana" : state === "NC" ? "North Carolina" : state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
           </Link>
-          <StateMenu pathname={pathname} current={state} indianaPreview={indianaPreview} />
+          {pathname !== "/" ? <StateMenu pathname={pathname} current={state} indianaPreview={indianaPreview} /> : null}
         </div>
         {links.length ? <nav className="nav nav-desktop" aria-label="Primary">
           <div className="nav-scroll">
@@ -185,6 +185,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
           ) : null}
         </nav> : null}
         <div className="header-right">
+          {pathname === "/" ? <Link href={paths.contact} className="header-contact">Contact Us</Link> : null}
           {authStatus === "loading" && (
             <span className="header-auth-placeholder" role="status" aria-label="Loading account">
               <span className="spinner" aria-hidden="true" />

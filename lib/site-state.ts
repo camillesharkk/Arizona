@@ -37,6 +37,8 @@ export function parseStateCookie(value: string | undefined | null): LiveCode | n
 
 /** A state page wins. Otherwise use the saved choice. */
 export function resolveState(pathname: string, saved: LiveCode | null): LiveCode | null {
+  const path = pathname.split(/[?#]/)[0] || "/";
+  if (path === "/") return null;
   return pathState(pathname) ?? saved;
 }
 

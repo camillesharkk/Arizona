@@ -1,10 +1,17 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+} from "react";
+import { stateEntry } from "@/lib/state-entry";
 import { MessageDialog } from "@/components/MessageDialog";
 import {
-  comingSoonPath,
   prepStates,
   recommendStates,
   stateByCode,
@@ -14,31 +21,168 @@ import {
   type StateRecommendation,
 } from "@/lib/states";
 
-type Notice = "denied" | "timeout" | "unsupported" | "failed" | "unlisted" | "outside" | null;
+type Notice =
+  | "denied"
+  | "timeout"
+  | "unsupported"
+  | "failed"
+  | "unlisted"
+  | "outside"
+  | null;
 
 const noticeCopy: Record<Exclude<Notice, null>, string> = {
   denied: "Location permission was blocked. Choose a state below.",
   timeout: "Location lookup timed out. Choose a state below.",
   unsupported: "This browser can't share your location. Choose a state below.",
   failed: "We couldn't read that location. Choose a state below.",
-  unlisted: "That location is in a state this site doesn't list yet. Choose a state below.",
+  unlisted:
+    "That location is in a state this site doesn't list yet. Choose a state below.",
   outside: "That location isn't in a listed U.S. state. Choose a state below.",
 };
 
-export function StatePicker({ indianaPreview = false }: { indianaPreview?: boolean }) {
-  const catalog = indianaPreview ? prepStates.map(state => state.code === "IN" ? { ...state, status: "available" as const, homePath: "/indiana/" } : state) : prepStates;
-  const states = statesByName(catalog);
+export function StatePicker({
+  indianaPreview = false,
+}: {
+  indianaPreview?: boolean;
+}) {
+  const states = useMemo(
+    () =>
+      statesByName(
+        indianaPreview
+          ? prepStates.map((state) =>
+              state.code === "IN"
+                ? {
+                    ...state,
+                    status: "available" as const,
+                    homePath: "/indiana/",
+                  }
+                : state,
+            )
+          : prepStates,
+      ),
+    [indianaPreview],
+  );
   const [query, setQuery] = useState("");
+  const [selected, setSelected] = useState<PrepState | null>(null);
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [selectionHint, setSelectionHint] = useState(false);
+  const [listHeight, setListHeight] = useState(320);
+  const container = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLInputElement>(null);
+  const list = useRef<HTMLUListElement>(null);
+  const listId = useId();
   const [finding, setFinding] = useState(false);
   const [notice, setNotice] = useState<Notice>(null);
   const [detected, setDetected] = useState<PrepState | null>(null);
-  const [recommendation, setRecommendation] = useState<StateRecommendation | null>(null);
+  const [recommendation, setRecommendation] =
+    useState<StateRecommendation | null>(null);
   const requestId = useRef(0);
   const filtered = useMemo(() => {
-    const term = query.trim().toLowerCase();
+    const term = selected ? "" : query.trim().toLowerCase();
     if (!term) return states;
-    return states.filter((state) => state.name.toLowerCase().includes(term) || state.code.toLowerCase() === term);
-  }, [query, states]);
+    const exactCode = states.find((state) => state.code.toLowerCase() === term);
+    if (exactCode) return [exactCode];
+    return states.filter((state) => state.name.toLowerCase().includes(term));
+  }, [query, selected, states]);
+
+  useEffect(() => {
+    if (!open) return;
+    function outside(event: PointerEvent) {
+      if (!container.current?.contains(event.target as Node)) setOpen(false);
+    }
+    function fitList() {
+      const field = input.current;
+      if (!field) return;
+      const viewport = window.visualViewport;
+      const viewportBottom =
+        (viewport?.height || window.innerHeight) + (viewport?.offsetTop || 0);
+      let available =
+        viewportBottom - field.getBoundingClientRect().bottom - 12;
+      if (window.innerWidth <= 600 && available < 120) {
+        field.scrollIntoView({ block: "center", behavior: "instant" });
+        available = viewportBottom - field.getBoundingClientRect().bottom - 12;
+      }
+      setListHeight(
+        Math.max(96, Math.min(window.innerWidth <= 600 ? 260 : 320, available)),
+      );
+    }
+    fitList();
+    document.addEventListener("pointerdown", outside);
+    window.addEventListener("resize", fitList);
+    window.visualViewport?.addEventListener("resize", fitList);
+    window.visualViewport?.addEventListener("scroll", fitList);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      window.removeEventListener("resize", fitList);
+      window.visualViewport?.removeEventListener("resize", fitList);
+      window.visualViewport?.removeEventListener("scroll", fitList);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (open && activeIndex >= 0) {
+      list.current?.children[activeIndex]?.scrollIntoView({
+        block: "nearest",
+        inline: "nearest",
+        behavior: "instant",
+      });
+    }
+  }, [open, activeIndex]);
+
+  function selectState(state: PrepState) {
+    cancelLocate();
+    setSelected(state);
+    setQuery(stateLabel(state));
+    setOpen(false);
+    setSelectionHint(false);
+  }
+
+  function editQuery(value: string) {
+    cancelLocate();
+    setQuery(value);
+    setSelected(null);
+    setOpen(true);
+    setActiveIndex(0);
+    setSelectionHint(false);
+  }
+
+  function onKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Escape") {
+      setOpen(false);
+      return;
+    }
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      setOpen(true);
+      const direction = event.key === "ArrowDown" ? 1 : -1;
+      setActiveIndex((index) =>
+        open
+          ? Math.max(0, Math.min(filtered.length - 1, index + direction))
+          : direction === 1
+            ? 0
+            : filtered.length - 1,
+      );
+    } else if (event.key === "Enter" && open) {
+      event.preventDefault();
+      if (filtered[activeIndex]) selectState(filtered[activeIndex]);
+    } else if (event.key === "Tab") {
+      setOpen(false);
+    }
+  }
+
+  function start(event: FormEvent) {
+    event.preventDefault();
+    if (selected) {
+      cancelLocate();
+      window.location.assign(stateEntry(selected).href);
+      return;
+    }
+    setSelectionHint(true);
+    setOpen(true);
+    setActiveIndex(filtered.length ? 0 : -1);
+    input.current?.focus();
+  }
 
   function cancelLocate() {
     requestId.current += 1;
@@ -58,14 +202,20 @@ export function StatePicker({ indianaPreview = false }: { indianaPreview?: boole
     setRecommendation(null);
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        void finishLocate(id, position.coords.latitude, position.coords.longitude);
+        void finishLocate(
+          id,
+          position.coords.latitude,
+          position.coords.longitude,
+        );
       },
       (error) => {
         if (id !== requestId.current) return;
         setFinding(false);
-        setNotice(error.code === 1 ? "denied" : error.code === 3 ? "timeout" : "failed");
+        setNotice(
+          error.code === 1 ? "denied" : error.code === 3 ? "timeout" : "failed",
+        );
       },
-      { enableHighAccuracy: false, timeout: 12000, maximumAge: 300000 }
+      { enableHighAccuracy: false, timeout: 12000, maximumAge: 300000 },
     );
   }
 
@@ -86,13 +236,13 @@ export function StatePicker({ indianaPreview = false }: { indianaPreview?: boole
         setNotice(data.match === "unlisted" ? "unlisted" : "outside");
         return;
       }
-      const state = stateByCode(data.code);
+      const state = stateByCode(data.code, states);
       if (!state) {
         setNotice("unlisted");
         return;
       }
       if (state.status === "available" && state.homePath) {
-        window.location.assign(state.homePath);
+        selectState(state);
         return;
       }
       setDetected(state);
@@ -113,45 +263,132 @@ export function StatePicker({ indianaPreview = false }: { indianaPreview?: boole
 
   return (
     <>
-      <section className="locate-panel" aria-labelledby="find-state-title">
-        <h2 id="find-state-title">Find Your State</h2>
-        <p>With your permission, we’ll use your location once to find your state. If its prep is available, we’ll open it. Otherwise, we’ll show available options here.</p>
-        <button className="btn btn-primary" type="button" onClick={locate} disabled={finding}>
-          {finding ? "Finding your state…" : "Use My Location"}
-        </button>
-        {notice ? <p className="notice" role="status">{noticeCopy[notice]}</p> : null}
-        <p className="notice">Or choose a state below.</p>
-      </section>
-      <label className="state-search">
-        <span className="kicker">Search</span>
-        <input
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search by state name or abbreviation"
-          aria-label="Search by state name or abbreviation"
-        />
-      </label>
-      {filtered.length ? (
-        <div className="state-grid">
-          {filtered.map((state) => (
-            <Link
-              key={state.code}
-              className="state-card"
-              href={state.status === "available" && state.homePath ? state.homePath : comingSoonPath(state)}
-              onClick={cancelLocate}
-            >
-              <span className="state-card-name">{stateLabel(state)}</span>
-              <span className={state.status === "available" ? "badge" : "badge badge-warn"}>
-                {state.status === "available" ? "Available" : "Coming soon"}
+      <form className="home-state-form" onSubmit={start} data-home-enter>
+        <div className="home-state-combobox" ref={container}>
+          <label className="home-state-label" htmlFor={listId + "-input"}>
+            Choose your state
+          </label>
+          <div className="home-state-field">
+            <input
+              ref={input}
+              id={listId + "-input"}
+              type="text"
+              role="combobox"
+              autoComplete="off"
+              spellCheck={false}
+              value={query}
+              placeholder="Search or select your state"
+              aria-expanded={open}
+              aria-haspopup="listbox"
+              aria-controls={listId}
+              aria-autocomplete="list"
+              aria-activedescendant={
+                open && filtered[activeIndex]
+                  ? listId + "-" + filtered[activeIndex].code
+                  : undefined
+              }
+              aria-describedby={selectionHint ? listId + "-hint" : undefined}
+              onFocus={() => {
+                setOpen(true);
+                setActiveIndex(
+                  selected
+                    ? filtered.findIndex(
+                        (state) => state.code === selected.code,
+                      )
+                    : 0,
+                );
+              }}
+              onClick={() => setOpen(true)}
+              onChange={(event) => editQuery(event.target.value)}
+              onKeyDown={onKeyDown}
+            />
+            {query ? (
+              <button
+                className="home-state-clear"
+                type="button"
+                aria-label="Clear state selection"
+                onClick={() => {
+                  editQuery("");
+                  input.current?.focus();
+                }}
+              >
+                ×
+              </button>
+            ) : (
+              <span className="home-state-chevron" aria-hidden="true">
+                ⌄
               </span>
-            </Link>
-          ))}
+            )}
+          </div>
+          <ul
+            className="home-state-list"
+            id={listId}
+            role="listbox"
+            aria-label="States"
+            ref={list}
+            hidden={!open}
+            style={{ maxHeight: listHeight }}
+          >
+            {filtered.map((state, index) => (
+              <li key={state.code} role="presentation">
+                <button
+                  id={listId + "-" + state.code}
+                  type="button"
+                  role="option"
+                  tabIndex={-1}
+                  aria-selected={selected?.code === state.code}
+                  className={index === activeIndex ? "is-active" : undefined}
+                  onPointerDown={(event) => event.preventDefault()}
+                  onClick={() => selectState(state)}
+                >
+                  <span>
+                    {state.name}{" "}
+                    <span className="home-state-code">{state.code}</span>
+                  </span>
+                  <small>{stateEntry(state).task}</small>
+                </button>
+              </li>
+            ))}
+            {!filtered.length ? (
+              <li className="home-state-empty" role="presentation">
+                No matching states found
+              </li>
+            ) : null}
+          </ul>
+          <span className="home-sr-only" role="status">
+            {open ? filtered.length + " states found" : ""}
+          </span>
         </div>
-      ) : (
-        <p role="status">No matching states. Try another name or abbreviation.</p>
-      )}
+        {selectionHint ? (
+          <p id={listId + "-hint"} className="home-state-hint" role="status">
+            Select your state to continue
+          </p>
+        ) : null}
+        {selected && selected.status !== "available" ? (
+          <p className="home-state-hint" role="status">
+            Prep for {selected.name} is coming soon. View the current updates.
+          </p>
+        ) : null}
+        <button className="home-primary" type="submit">
+          {selected ? stateEntry(selected).label : "Start Free Practice"}
+          <span aria-hidden="true">→</span>
+        </button>
+        <div className="home-location">
+          <button type="button" onClick={locate} disabled={finding}>
+            {finding ? "Finding your state…" : "Use My Location"}
+          </button>
+        </div>
+        {notice ? (
+          <p className="home-state-hint" role="status">
+            {noticeCopy[notice]}
+          </p>
+        ) : null}
+      </form>
       {detected && recommendation ? (
-        <MessageDialog title={`${stateLabel(detected)} Is Coming Soon`} onClose={closeDialog}>
+        <MessageDialog
+          title={`${stateLabel(detected)} Is Coming Soon`}
+          onClose={closeDialog}
+        >
           <p>
             {hasPrimary
               ? `We’re still building notary prep for ${stateLabel(detected)}. You can explore an available state below.`
@@ -159,10 +396,18 @@ export function StatePicker({ indianaPreview = false }: { indianaPreview?: boole
           </p>
           {hasPrimary ? (
             <div className="recommend-block">
-              <h3>{recommendation.similar ? "Explore States With a Similar Exam Format" : "Explore an Available State"}</h3>
+              <h3>
+                {recommendation.similar
+                  ? "Explore States With a Similar Exam Format"
+                  : "Explore an Available State"}
+              </h3>
               <div className="recommend-actions">
                 {recommendation.primary.map((state) => (
-                  <a key={state.code} className="btn btn-primary" href={state.homePath || "/"}>
+                  <a
+                    key={state.code}
+                    className="btn btn-primary"
+                    href={state.homePath || "/"}
+                  >
                     Explore {stateLabel(state)}
                   </a>
                 ))}
@@ -172,17 +417,28 @@ export function StatePicker({ indianaPreview = false }: { indianaPreview?: boole
                   <h3>Other Available States</h3>
                   <div className="recommend-actions">
                     {recommendation.others.map((state) => (
-                      <a key={state.code} className="btn btn-ghost" href={state.homePath || "/"}>
+                      <a
+                        key={state.code}
+                        className="btn btn-ghost"
+                        href={state.homePath || "/"}
+                      >
                         {stateLabel(state)}
                       </a>
                     ))}
                   </div>
                 </>
               ) : null}
-              <p className="notice">Notary laws and exam requirements vary by state. Use these materials to preview the learning experience.</p>
+              <p className="notice">
+                Notary laws and exam requirements vary by state. Use these
+                materials to preview the learning experience.
+              </p>
             </div>
           ) : null}
-          <button className="btn btn-ghost message-dialog-close" type="button" onClick={closeDialog}>
+          <button
+            className="btn btn-ghost message-dialog-close"
+            type="button"
+            onClick={closeDialog}
+          >
             Keep Choosing a State
           </button>
         </MessageDialog>

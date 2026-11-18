@@ -1,3 +1,4 @@
+import { LifetimeProOffer } from "@/components/LifetimeProOffer";
 import type { Metadata } from "next";
 import { StateCheckout } from "@/components/StateCheckout";
 import { hiCards } from "@/data/hi-cards";
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main className="wrap">
+      <LifetimeProOffer compact />
       <h1>Hawaii Pro</h1>
       <div className="card">
         <p>{counts.free} of {counts.published} published questions are free, and all {hiCards.length} study cards are free. One Comprehensive Practice is included. That set is 50 questions with no time limit, and that count is this site's practice setting.</p>
