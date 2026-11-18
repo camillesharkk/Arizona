@@ -82,6 +82,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
   const [loadError, setLoadError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [guideStep, setGuideStep] = useState<number | null>(null);
+  const guideOpenedFor = useRef<string | null>(null);
   const guideHeading = useRef<HTMLHeadingElement>(null);
   const loadId = useRef(0);
   const [practiceIndex, setPracticeIndex] = useState(0);
@@ -94,25 +95,32 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
   const visibleStart = useRef<number | null>(null);
 
   const query = `timeZone=${encodeURIComponent(zone)}&state=${stateCode}`;
-  const guideKey = view?.accountId ? `notary-daily-study-guide:${view.accountId}` : null;
+  const guideAccountId = view?.accountId;
 
   useEffect(() => {
-    if (!guideKey) return;
+    if (!guideAccountId) return;
+    let cancelled = false;
+    let seenLocally = false;
     try {
-      setGuideStep(localStorage.getItem(guideKey) ? null : 0);
+      seenLocally = Boolean(localStorage.getItem(`notary-daily-study-guide:${guideAccountId}`));
     } catch {
-      setGuideStep(0);
+      // The account receipt also works when browser storage is unavailable.
     }
-  }, [guideKey]);
+    fetch("/api/daily-study/guide/", { method: "POST" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((result) => {
+        if (!cancelled && result?.show === true && !seenLocally && guideOpenedFor.current !== guideAccountId) {
+          guideOpenedFor.current = guideAccountId;
+          setGuideStep(0);
+        }
+      })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, [guideAccountId]);
 
-  function closeGuide() {
-    setGuideStep(null);
-    if (!guideKey) return;
-    try {
-      localStorage.setItem(guideKey, "seen");
-    } catch {
-      // The guide can still be dismissed when browser storage is unavailable.
-    }
+  function openGuide() {
+    guideOpenedFor.current = guideAccountId ?? null;
+    setGuideStep(0);
   }
 
   useEffect(() => {
@@ -232,11 +240,11 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         <span>{progress}% of this plan</span>
         <span>Target {view.targetDate}</span>
         <Link href={studySettingsHref}>Study Settings</Link>
-        <button className="btn btn-ghost" type="button" aria-haspopup="dialog" onClick={() => setGuideStep(0)}>Daily Study guide</button>
+        <button className="btn btn-ghost" type="button" aria-haspopup="dialog" onClick={openGuide}>Daily Study guide</button>
         <Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link>
       </div>
       {guideStep != null ? (
-        <MessageDialog title="Daily Study guide" onClose={closeGuide}>
+        <MessageDialog title="Daily Study guide" onClose={() => setGuideStep(null)}>
           <p className="kicker">Step {guideStep + 1} of {guideSteps.length}</p>
           <h3 ref={guideHeading} tabIndex={-1}>{guideSteps[guideStep].title}</h3>
           <p>{guideSteps[guideStep].text}</p>

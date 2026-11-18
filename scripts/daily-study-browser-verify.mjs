@@ -45,6 +45,8 @@ async function saveMiss(user, question, details = {}) {
 const main = await createUser("main");
 const other = await createUser("other");
 const empty = await createUser("empty");
+const returning = await createUser("returning");
+await store.updateUser(returning.id, { createdAt: past });
 const ca = load("data/ca-questions.ts").publishedCaQuestions();
 const ny = load("data/ny-content.ts").publishedNyQuestions().filter(q => q.is_free);
 const az = load("data/questions.ts").publishedQuestions().find(q => !q.is_free);
@@ -65,7 +67,10 @@ try {
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 900 }, timezoneId: "America/Phoenix" });
   const mobile = await browser.newContext({ viewport: { width: 390, height: 840 }, timezoneId: "America/Phoenix" });
   const newLearner = await browser.newContext({ viewport: { width: 320, height: 840 }, timezoneId: "America/Phoenix" });
-  for (const [context, account] of [[desktop, main], [mobile, other], [newLearner, empty]]) {
+  const returningLearner = await browser.newContext({ viewport: { width: 390, height: 840 }, timezoneId: "America/Phoenix" });
+  const guideUrl = `${base}/api/daily-study/guide/`;
+  assert.equal((await returningLearner.request.post(guideUrl)).status(), 401);
+  for (const [context, account] of [[desktop, main], [mobile, other], [newLearner, empty], [returningLearner, returning]]) {
     await context.route("https://**/*", route => route.abort());
     const login = await context.request.post(`${base}/api/auth/login/`, { data: { email: account.email, password: TEST_PASSWORD } });
     assert.equal(login.status(), 200);
@@ -86,6 +91,20 @@ try {
   const nyPlan = await getDaily(desktop, "NY");
   assert.equal(nyPlan.due.length, 12, "Older mistakes without dates go into review");
   assert.ok(nyPlan.reviewQuestionIds.includes(revised.question_id), "A revised question is still eligible for review");
+
+  const returningPage = await returningLearner.newPage();
+  const returningClaim = returningPage.waitForResponse(guideUrl);
+  await returningPage.goto(`${base}/california/daily-study/`);
+  const returningButton = returningPage.getByRole("button", { name: "Daily Study guide", exact: true });
+  const returningGuide = returningPage.getByRole("dialog", { name: "Daily Study guide" });
+  await returningButton.waitFor();
+  assert.deepEqual(await (await returningClaim).json(), { show: false });
+  await assert.rejects(returningGuide.waitFor({ timeout: 450 }), { name: "TimeoutError" },
+    "An existing account in a fresh browser must not get the automatic guide");
+  await returningButton.click();
+  await returningGuide.getByText("Step 1 of 4").waitFor();
+  await returningGuide.getByRole("button", { name: "Skip guide" }).click();
+  await returningGuide.waitFor({ state: "hidden" });
 
   const page = await desktop.newPage();
   await page.goto(`${base}/california/daily-study/`);
@@ -162,14 +181,27 @@ try {
   const rect = await smallGuide.boundingBox();
   assert.ok(rect.x >= 0 && rect.x + rect.width <= 390);
   if (process.env.DAILY_VERIFY_MOBILE_SCREENSHOT) await small.screenshot({ path: process.env.DAILY_VERIFY_MOBILE_SCREENSHOT });
-  await smallGuide.getByRole("button", { name: "Skip guide" }).click();
+  // Leaving before finishing or skipping still counts as the first showing.
+  const reloadClaim = small.waitForResponse(guideUrl);
   await small.reload();
   await small.getByText("1 question missed on your account.").waitFor();
-  assert.equal(await smallGuide.count(), 0);
+  assert.deepEqual(await (await reloadClaim).json(), { show: false });
+  await assert.rejects(smallGuide.waitFor({ timeout: 450 }), { name: "TimeoutError" });
   await small.getByRole("button", { name: "Daily Study guide" }).click();
   await smallGuide.getByText("Step 1 of 4").waitFor();
   await small.keyboard.press("Escape");
   await smallGuide.waitFor({ state: "hidden" });
+  const newBrowser = await browser.newContext({ viewport: { width: 390, height: 840 } });
+  await newBrowser.route("https://**/*", route => route.abort());
+  await newBrowser.addCookies(await mobile.cookies());
+  const revisit = await newBrowser.newPage();
+  const revisitClaim = revisit.waitForResponse(guideUrl);
+  await revisit.goto(`${base}/new-york/daily-study/`);
+  await revisit.getByRole("button", { name: "Daily Study guide", exact: true }).waitFor();
+  assert.deepEqual(await (await revisitClaim).json(), { show: false });
+  await assert.rejects(revisit.getByRole("dialog", { name: "Daily Study guide" }).waitFor({ timeout: 450 }), { name: "TimeoutError" },
+    "The account-wide receipt applies in a fresh browser and another state");
+  await newBrowser.close();
   const smallMissed = small.getByRole("region", { name: "Missed questions across the site" });
   assert.equal(await smallMissed.locator(".daily-state-tile").count(), 4);
   assert.equal(await smallMissed.getByRole("link", { name: "Arizona (0 missed)" }).count(), 1);
@@ -192,6 +224,16 @@ try {
   assert.equal(await blank.getByRole("region", { name: "Scheduled review" }).getByRole("button").count(), 0);
   assert.equal(await blank.locator(".daily-state-tile").count(), 4);
   assert.ok(await blank.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  const parallel = await createUser("parallel");
+  const concurrent = await browser.newContext();
+  const login = await concurrent.request.post(`${base}/api/auth/login/`, { data: { email: parallel.email, password: TEST_PASSWORD } });
+  assert.equal(login.status(), 200);
+  const receipts = await Promise.all(Array.from({ length: 3 }, () => concurrent.request.post(guideUrl)));
+  assert.ok(receipts.every(response => response.ok()));
+  const claimed = await Promise.all(receipts.map(response => response.json()));
+  assert.equal(claimed.filter(item => item.show).length, 1, "Only one simultaneous visit may claim the guide");
+  await concurrent.close();
+  console.log("Daily Study guide verified: existing accounts are manual-only, new accounts get one showing across refresh, states, browsers and concurrent visits.");
   console.log("Daily Study browser verification passed: 30 missed questions, circle sizing and state links, due/future/mastered items, thumbnail and picker navigation, review writes, and zero/one-miss mobile layouts.");
 } finally {
   await browser.close();
