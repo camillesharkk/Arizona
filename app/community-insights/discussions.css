@@ -61,7 +61,7 @@
   padding-block-start: 1rem;
 }
 
-.community-discussions :is(.community-remove summary, .community-navigation a) {
+.community-discussions :is(.community-remove summary, .community-navigation a:not([hidden])) {
   display: inline-block;
   min-block-size: 44px;
   align-content: center;
@@ -69,6 +69,10 @@
 
 .community-remove summary {
   cursor: pointer;
+}
+
+.community-discussions button + [role="status"] {
+  margin-inline-start: 8px;
 }
 
 #reply-composer {
