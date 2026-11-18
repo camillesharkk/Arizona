@@ -59,6 +59,9 @@ const californiaStatutePages: Record<string, number> = {
 };
 
 const authoredUrlPattern = /https:\/\/[^\s<>"\];,]+/g;
+const indianaGuide = "https://inbiz.in.gov/Assets/NotaryGuide.pdf";
+const indianaFaq = "https://www.in.gov/sos/business/files/New-Notary-System-FAQs-5-4-26.pdf";
+const indianaFaqCopy = "https://www.in.gov/dA/93ab6b5f72/New-Notary-System-FAQs-5-4-26.pdf?language_id=1";
 
 function officialUrl(value?: string): string | undefined {
   if (!value) return undefined;
@@ -118,6 +121,15 @@ export function resolveAnswerEvidence(question: AnswerEvidenceFields) {
   const publisher = links[0] ? new URL(links[0]).hostname.replace(/^www\./, "") : "";
   let link = links[0];
   let resolution = link ? "authored URL" : "registry source";
+  if (link === indianaFaq) {
+    // This PDF's table of contents uses the same numbering as its PDF pages.
+    const page = reference.match(/\bp\.\s*([3-9])\b/i)?.[1];
+    const fragment = page ? `#page=${page}` : "";
+    link += fragment;
+    links[0] = link;
+    links.push(indianaFaqCopy + fragment);
+    if (page) resolution = "handbook section";
+  }
   if (!link && question.source_id === "ca-official") {
     const statute = californiaCitation(reference);
     const page = handbookSection(reference);
@@ -131,6 +143,9 @@ export function resolveAnswerEvidence(question: AnswerEvidenceFields) {
     }
   }
   const href = link || fallback;
+  if (href === indianaGuide || links.includes(indianaGuide)) {
+    links.push("https://inbiz.in.gov/certification/notary");
+  }
   if (href?.startsWith("https://cpshr.us/")) {
     links.push("https://www.sos.ca.gov/notary/checklist/take-exam");
   }

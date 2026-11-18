@@ -1,5 +1,12 @@
 import { resolveAnswerEvidence, type AnswerEvidenceFields } from "@/lib/answer-evidence";
 
+function additionalSourceName(href: string, index: number) {
+  if (href.includes("/notary-handbook-current.pdf")) return "California Notary Public Handbook";
+  if (href.includes("/dA/93ab6b5f72/")) return "Indiana Secretary of State FAQ (alternate PDF)";
+  if (href === "https://inbiz.in.gov/certification/notary") return "Indiana INBiz Notary Resources";
+  return `Additional source ${index + 1}`;
+}
+
 export function AnswerSource({ question }: { question: AnswerEvidenceFields }) {
   const evidence = resolveAnswerEvidence(question);
   const date = question.last_verified_at?.trim();
@@ -18,9 +25,7 @@ export function AnswerSource({ question }: { question: AnswerEvidenceFields }) {
           <span key={href}>
             {" · "}
             <a href={href} target="_blank" rel="noopener noreferrer">
-              {href.includes("/notary-handbook-current.pdf")
-                ? "California Notary Public Handbook"
-                : `Additional source ${index + 1}`}
+              {additionalSourceName(href, index)}
             </a>
           </span>
         ))}

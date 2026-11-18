@@ -1,6 +1,3 @@
-import { publishedQuestions } from "./questions";
-import { getSource } from "./sources";
-
 export type CommunityInsight = {
   id: string;
   state: string;
@@ -100,15 +97,6 @@ export const communityInsightsUpdatedAt = communityInsights
   .sort()
   .at(-1);
 
-const sample = publishedQuestions().find(
-  (question) => question.question_id === "az-001",
-)!;
-export const sourceTrustSample = {
-  questionId: sample.question_id,
-  question: sample.question_text,
-  answer: sample.option_b,
-  reference: sample.source_reference,
-  officialUrl: getSource(sample.source_id).url,
-  lastVerifiedAt: sample.last_verified_at,
-  practiceHref: "/arizona/practice-test/",
-};
+export const homepageCommunityInsights = [...communityInsights]
+  .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+  .slice(0, 3);

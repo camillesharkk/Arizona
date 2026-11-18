@@ -8,7 +8,7 @@ import { LifetimeProOffer } from "@/components/LifetimeProOffer";
 import { canonicalUrl } from "@/lib/site";
 import { prepStates, statesByName } from "@/lib/states";
 import { stateEntry } from "@/lib/state-entry";
-import { communityInsights, communityInsightsUpdatedAt } from "@/data/community-insights";
+import { communityInsightsUpdatedAt, homepageCommunityInsights } from "@/data/community-insights";
 import "./national-home.css";
 import "./home-glass-demo.css";
 
@@ -120,6 +120,8 @@ export default function Page() {
         </div>
       </section>
       <div className="home-container">
+        <HomeTrust />
+        <HomeCommunity insights={homepageCommunityInsights} updatedAt={communityInsightsUpdatedAt} />
         <section
           className="home-section home-how"
           aria-labelledby="home-how-heading"
@@ -154,8 +156,6 @@ export default function Page() {
             ))}
           </div>
         </section>
-        <HomeCommunity insights={communityInsights.slice(0, 3)} updatedAt={communityInsightsUpdatedAt} />
-        <HomeTrust />
         <section
           className="home-section home-lifetime"
           aria-label="Lifetime Pro"

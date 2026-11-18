@@ -103,7 +103,7 @@ export function HomeCommunity({
   const CardHeading = standalone ? "h2" : "h3";
   return (
     <section
-      className="home-section home-community"
+      className={`home-section home-community${standalone ? "" : " home-community-preview"}`}
       id="community-insights"
       aria-labelledby={headingId}
       aria-roledescription="carousel"
