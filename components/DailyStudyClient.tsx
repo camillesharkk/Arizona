@@ -4,12 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedQuestions } from "@/data/questions";
+import { MissedStateGallery, ScheduledReviewGallery, type MissedState, type ScheduledReviewItem } from "@/components/DailyStudyGalleries";
 import { ExamRunner } from "@/components/ExamRunner";
 import { MessageDialog } from "@/components/MessageDialog";
 import { StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
 import { StudyPager } from "@/components/StudyPager";
 import { LoadingNote } from "@/components/QuizChrome";
-import { caPaths, switchStateHref } from "@/lib/ca-site";
+import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { hiStudyLabel } from "@/lib/hi-topics";
@@ -17,8 +18,8 @@ import { syncCaAttempts } from "@/lib/ca-sync";
 import { paths } from "@/lib/paths";
 import { isFreeState } from "@/lib/free-state-catalog";
 import { packFor } from "@/lib/prep-pack";
-import { stateByCode } from "@/lib/states";
 import type { Question, StateCode } from "@/lib/types";
+import "@/app/daily-study-galleries.css";
 
 const guideSteps = [
   {
@@ -43,7 +44,7 @@ type Card = StudyCardView & { id: string };
 type View = {
   accountId: string;
   wrongQuestionCount: number;
-  wrongQuestionsByState: { state: StateCode; count: number; available: boolean }[];
+  wrongQuestionsByState: MissedState[];
   today: string;
   dayNumber: number;
   done: number;
@@ -70,7 +71,7 @@ type View = {
   nextReviewAt: string | null;
   taskStatus: { key: string; kind: string; status: string }[];
   recent?: { id: string; at: string; label: string; correct: number; total: number; wrong: number }[];
-  scheduled?: { questionId: string; prompt: string | null; nextReviewAt: string | null; wrongCount: number; previousWrongCount: number; mastered: boolean; due: boolean }[];
+  scheduled?: ScheduledReviewItem[];
 };
 
 export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }) {
@@ -355,34 +356,8 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
           </ul>
         </section>
       ) : null}
-      <section className="card" aria-labelledby="daily-missed-heading">
-        <h2 id="daily-missed-heading">Missed questions across the site</h2>
-        <p>{view.wrongQuestionCount} {view.wrongQuestionCount === 1 ? "question" : "questions"} missed on your account.</p>
-        {view.wrongQuestionsByState.length > 0 ? (
-          <ul className="check">
-            {view.wrongQuestionsByState.map(({ state, count, available }) => {
-              const label = `${stateByCode(state)?.name ?? state} (${count})`;
-              return <li key={state}>{available && state !== stateCode ? <Link href={switchStateHref(site.daily, state)}>{label}</Link> : label}</li>;
-            })}
-          </ul>
-        ) : <p>Questions you miss will appear here.</p>}
-      </section>
-      {view.scheduled && view.scheduled.length > 0 ? (
-        <section className="card">
-          <h2>Scheduled review</h2>
-          <p>Review history for {stateByCode(stateCode)?.name ?? stateCode}, including mastered questions.</p>
-          <ul className="check">
-            {view.scheduled.map((item) => (
-              <li key={item.questionId}>
-                {item.prompt ?? "Question unavailable for review"}
-                {" · "}
-                {item.wrongCount > 0 ? `Wrong ${item.wrongCount}` : item.previousWrongCount > 0 ? "Missed an earlier version" : "Added"}
-                {item.mastered ? " · Mastered" : item.prompt && item.nextReviewAt ? ` · ${item.due ? "Due" : "Next"} ${new Date(item.nextReviewAt).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}` : ""}
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      <MissedStateGallery total={view.wrongQuestionCount} states={view.wrongQuestionsByState} stateCode={stateCode} dailyHref={site.daily} />
+      <ScheduledReviewGallery key={stateCode} items={view.scheduled ?? []} stateCode={stateCode} />
     </>
   );
 }
