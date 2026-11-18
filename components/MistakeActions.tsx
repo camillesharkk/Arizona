@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
+import { DailyStudySaveDialog } from "@/components/DailyStudySaveDialog";
 import { mistakeTargets, type MistakeTarget } from "@/lib/mistake-targets";
 import type { QuestionStat } from "@/lib/store/types";
 
@@ -25,18 +29,20 @@ export function MistakeActions({
   stat?: QuestionStat | null;
   pending?: string;
   signedIn?: boolean;
-  onAction: (action: Action) => void;
+  onAction: (action: Action, includeNotebook?: boolean) => void;
 }) {
+  const [asking, setAsking] = useState(false);
   const added = Boolean(stat?.savedForReview);
   const busy = Boolean(pending);
   const notes = [study, practice].flatMap((item) => ("reason" in item && !item.hidden ? [item.reason] : []));
   return (
     <div className="mistake-actions" aria-busy={busy}>
       {signedIn ? (
-        <button className={`chip${added ? " on" : ""}`} type="button" disabled={busy} aria-pressed={added} aria-busy={pending === "save"} onClick={() => onAction("save")}>
+        <button className={`chip${added ? " on" : ""}`} type="button" disabled={busy} aria-pressed={added} aria-busy={pending === "save"} aria-haspopup={added ? undefined : "dialog"} onClick={() => added ? onAction("save") : setAsking(true)}>
           {pending === "save" ? "Saving…" : added ? "Added to Daily Study" : "Add to Daily Study"}
         </button>
       ) : null}
+      {asking ? <DailyStudySaveDialog onDismiss={() => setAsking(false)} onSave={(includeNotebook) => onAction("save", includeNotebook)} /> : null}
       {signedIn && stat ? (
         <>
           <button className="chip" type="button" disabled={busy || stat.mastered} aria-busy={pending === "mastered"} onClick={() => onAction("mastered")}>

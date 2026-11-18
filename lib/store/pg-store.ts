@@ -28,6 +28,7 @@ export async function ensurePgSchema() {
 
 let schemaReady = false;
 let revisionColumnsReady = false;
+let dailyStudyChoiceReady = false;
 
 async function assertSchema() {
   if (schemaReady) return;
@@ -39,7 +40,14 @@ async function assertSchema() {
     throw new Error("Postgres schema is missing. Set DATABASE_URL and run: npm run db:migrate");
   }
   revisionColumnsReady = await hasRevisionColumns();
+  dailyStudyChoiceReady = await hasDailyStudyChoice();
   schemaReady = true;
+}
+
+async function hasDailyStudyChoice() {
+  const columns = await db()`select column_name from information_schema.columns
+    where table_schema = current_schema() and table_name = 'question_stats' and column_name = 'daily_study_only'`;
+  return columns.length === 1;
 }
 
 async function hasRevisionColumns() {
@@ -125,6 +133,7 @@ function mapStat(r: Record<string, unknown>): QuestionStat {
     mastered: Boolean(r.mastered),
     favorited: Boolean(r.favorited),
     savedForReview: Boolean(r.saved_for_review),
+    dailyStudyOnly: Boolean(r.daily_study_only),
   };
 }
 
@@ -168,7 +177,6 @@ export const pgStore: Store = {
       return action(pgStore);
     }
     await assertSchema();
-    await requireRevisionStorage("ny-learning");
     return db().begin(async transaction => {
       await transaction`select id from users where id = ${userId} for update`;
       return learningSql.run({ sql: transaction as unknown as ReturnType<typeof postgres>, userId }, () => action(pgStore));
@@ -250,6 +258,10 @@ export const pgStore: Store = {
     if (!stats.length) return;
     await assertSchema();
     for (const stat of stats) await requireRevisionStorage(stat.questionId);
+    if (!dailyStudyChoiceReady && stats.some(stat => stat.dailyStudyOnly)) {
+      dailyStudyChoiceReady = await hasDailyStudyChoice();
+      if (!dailyStudyChoiceReady) throw new Error("Daily Study save choices require migration 020.");
+    }
     // Bind serialized JSON as text so postgres.js does not JSON-encode the string again.
     const rows = JSON.stringify(stats.map(stat => ({
       user_id: stat.userId, question_id: stat.questionId, topic: stat.topic,
@@ -263,17 +275,18 @@ export const pgStore: Store = {
       last_correct_option: stat.lastCorrectOption, first_at: stat.firstAt,
       last_at: stat.lastAt, mastered: stat.mastered, favorited: stat.favorited,
       saved_for_review: Boolean(stat.savedForReview), question_version: stat.questionVersion ?? 1,
+      daily_study_only: Boolean(stat.savedForReview && stat.dailyStudyOnly),
       revision_history: stat.revisionHistory ?? [],
     })));
     const sql = db();
     await sql`insert into question_stats (
       user_id, question_id, topic, bank, chapter, state, first_correct, last_correct, wrong_count, right_count,
       review_count, consecutive_correct, review_stage, last_wrong_at, last_reviewed_at, next_review_at, review_plan,
-      last_selected, last_correct_option, first_at, last_at, mastered, favorited, saved_for_review${revisionColumnsReady ? sql`, question_version, revision_history` : sql``}
+      last_selected, last_correct_option, first_at, last_at, mastered, favorited, saved_for_review${revisionColumnsReady ? sql`, question_version, revision_history` : sql``}${dailyStudyChoiceReady ? sql`, daily_study_only` : sql``}
     ) select
       user_id, question_id, topic, bank, chapter, state, first_correct, last_correct, wrong_count, right_count,
       review_count, consecutive_correct, review_stage, last_wrong_at, last_reviewed_at, next_review_at, review_plan,
-      last_selected, last_correct_option, first_at, last_at, mastered, favorited, saved_for_review${revisionColumnsReady ? sql`, question_version, revision_history` : sql``}
+      last_selected, last_correct_option, first_at, last_at, mastered, favorited, saved_for_review${revisionColumnsReady ? sql`, question_version, revision_history` : sql``}${dailyStudyChoiceReady ? sql`, daily_study_only` : sql``}
       from jsonb_populate_recordset(null::question_stats, ${rows}::text::jsonb)
       on conflict (user_id, question_id) do update set
       ${revisionColumnsReady ? sql`question_version = excluded.question_version, revision_history = excluded.revision_history,` : sql``}
@@ -296,6 +309,7 @@ export const pgStore: Store = {
       mastered = excluded.mastered,
       favorited = excluded.favorited,
       saved_for_review = excluded.saved_for_review,
+      ${dailyStudyChoiceReady ? sql`daily_study_only = excluded.daily_study_only,` : sql``}
       updated_at = now()
       where question_stats.user_id = excluded.user_id`;
   },

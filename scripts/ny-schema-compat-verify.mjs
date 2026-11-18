@@ -4,11 +4,11 @@ import vm from 'node:vm';
 import ts from 'typescript';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { PGlite } from '../.tools/ny-pg/node_modules/@electric-sql/pglite/dist/index.js';
+const { PGlite } = await import(process.env.PGLITE_VERIFY_MODULE ?? '../.tools/ny-pg/node_modules/@electric-sql/pglite/dist/index.js');
 const native = createRequire(import.meta.url);
 const db = new PGlite();
 await db.exec('create table schema_migrations(id text primary key)');
-for (const file of fs.readdirSync('db/migrations').filter(file => file.endsWith('.sql') && !file.startsWith('016')).sort()) {
+for (const file of fs.readdirSync('db/migrations').filter(file => file.endsWith('.sql') && !/^(016|020)_/.test(file)).sort()) {
   await db.exec(fs.readFileSync('db/migrations/' + file, 'utf8'));
   await db.query('insert into schema_migrations values ($1)', [file.slice(0, -4)]);
 }
@@ -70,5 +70,21 @@ try {
   assert.equal(revised.revisionHistory[0].wrongCount, 3);
   await store.upsertStat({ ...revised, rightCount: 2 });
   assert.equal((await store.getStat('test', 'ny-057')).revisionHistory.length, 1);
-  console.log('PostgreSQL compatibility passed: 001-015 AZ/CA/HI insert/update; NY refusal before dedup claim; additive 016 twice; old production code after 016; retry and NY revision history after 016.');
+  const az = await store.getStat('test', 'az-001');
+  await store.upsertStat({ ...az, savedForReview: true });
+  await assert.rejects(store.upsertStat({ ...az, savedForReview: true, dailyStudyOnly: true }), /020/);
+  const notebookMigration = fs.readFileSync('db/migrations/020_daily_study_notebook_choice.sql', 'utf8');
+  await db.exec(notebookMigration);
+  await db.exec(notebookMigration);
+  const legacySave = await store.getStat('test', 'az-001');
+  assert.equal(legacySave.savedForReview, true);
+  assert.equal(legacySave.dailyStudyOnly, false);
+  await store.upsertStat({ ...legacySave, dailyStudyOnly: true });
+  const dailyOnly = await store.getStat('test', 'az-001');
+  assert.equal(dailyOnly.dailyStudyOnly, true);
+  await store.upsertStat({ ...dailyOnly, rightCount: dailyOnly.rightCount + 1 });
+  assert.equal((await store.getStat('test', 'az-001')).dailyStudyOnly, true);
+  await store.upsertStat({ ...dailyOnly, dailyStudyOnly: false });
+  assert.equal((await store.getStat('test', 'az-001')).dailyStudyOnly, false);
+  console.log('PostgreSQL compatibility passed for migrations 016 and 020, including legacy writes and saves, repeat migrations, warm retry, and choice round-trips.');
 } finally { await db.close(); }

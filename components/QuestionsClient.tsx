@@ -379,7 +379,7 @@ export function QuestionsClient({
               lockChoice
               isPro={isPro}
               marked={marked.includes(active[pastIndex].question_id)}
-              extra={<SaveForReview questionId={active[pastIndex].question_id} hint={false} />}
+              extra={<SaveForReview key={active[pastIndex].question_id} questionId={active[pastIndex].question_id} hint={false} onAsk={cancelAutoAdvance} />}
               explainOpen={Boolean(explainOpen[active[pastIndex].question_id])}
               onToggleExplain={() => {
                 const id = active[pastIndex].question_id;
@@ -422,7 +422,7 @@ export function QuestionsClient({
               marked={marked.includes(q.question_id)}
               onMark={() => setMarked((current) => current.includes(q.question_id) ? current.filter((id) => id !== q.question_id) : [...current, q.question_id])}
               isPro={isPro}
-              extra={<SaveForReview questionId={q.question_id} hint={false} />}
+              extra={<SaveForReview key={q.question_id} questionId={q.question_id} hint={false} onAsk={cancelAutoAdvance} />}
               explainOpen={Boolean(explainOpen[q.question_id])}
               onToggleExplain={() => setExplainOpen((current) => ({ ...current, [q.question_id]: !current[q.question_id] }))}
               tutor

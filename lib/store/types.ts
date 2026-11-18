@@ -69,6 +69,7 @@ export type QuestionStat = {
   mastered: boolean;
   favorited: boolean;
   savedForReview?: boolean;
+  dailyStudyOnly?: boolean;
 };
 
 export type ExamRow = {

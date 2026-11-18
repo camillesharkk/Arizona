@@ -77,7 +77,7 @@ export async function recordQuestionAnswer(opts: {
   const store = opts.store || await getStore();
   const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId) ?? questionById(opts.questionId);
   if (!q) throw new Error("unknown_question");
-  if ((isFreeState(q.state) || q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT" || q.state === "NC" || q.state === "IN") && !opts.store) {
+  if (!opts.store) {
     return store.learningTransaction(opts.userId, transaction => recordQuestionAnswer({ ...opts, store: transaction }));
   }
   if (opts.attemptId) {
@@ -112,6 +112,7 @@ export async function recordQuestionAnswer(opts: {
     mastered: prev?.mastered && opts.correct ? true : false,
     favorited: prev?.favorited ?? false,
     savedForReview: prev?.savedForReview ?? false,
+    dailyStudyOnly: prev?.dailyStudyOnly ?? false,
   };
   await store.upsertStat(next);
   const user = await store.getUserById(opts.userId);

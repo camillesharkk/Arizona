@@ -340,7 +340,7 @@ h2 { font-size: 1.5rem; }
 .quiz-meta .kicker { margin: 0; }
 .quiz-meta-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-left: auto; }
 .quiz-meta .save-review { margin: 0; }
-.quiz-meta .btn { background: var(--bg); width: auto; flex: 0 0 auto; }
+.quiz-meta .btn:where(:not(.message-dialog *)) { background: var(--bg); width: auto; flex: 0 0 auto; }
 .stat {
   background: var(--bg);
   border: 1px solid var(--line);

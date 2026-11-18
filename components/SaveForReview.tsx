@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { BookmarkIcon } from "@/components/QuizChrome";
+import { DailyStudySaveDialog } from "@/components/DailyStudySaveDialog";
 import { paths } from "@/lib/paths";
 import { parseStateCookie } from '@/lib/site-state';
 
@@ -10,20 +11,34 @@ const PENDING_KEY = "az-pending-review-saves";
 const savedIds = new Set<string>();
 
 function readPending() {
+  const pending = new Map<string, boolean>();
   try {
     const raw = JSON.parse(sessionStorage.getItem(PENDING_KEY) || "[]");
-    return Array.isArray(raw) ? raw.filter((id) => typeof id === "string") : [];
-  } catch {
-    return [];
-  }
+    if (Array.isArray(raw)) for (const entry of raw) {
+      if (typeof entry === "string") pending.set(entry, true);
+      else if (typeof entry?.questionId === "string" && typeof entry.includeNotebook === "boolean") {
+        pending.set(entry.questionId, entry.includeNotebook);
+      }
+    }
+  } catch {}
+  return pending;
 }
 
-function writePending(ids: string[]) {
-  sessionStorage.setItem(PENDING_KEY, JSON.stringify([...new Set(ids)]));
+function writePending(pending: Map<string, boolean>) {
+  try {
+    sessionStorage.setItem(PENDING_KEY, JSON.stringify(Array.from(pending, ([questionId, includeNotebook]) => ({ questionId, includeNotebook }))));
+  } catch {}
 }
 
 const savedKnown = new Map<string, Promise<void>>();
 const localSaveChoice = new Map<string, boolean>();
+
+export function publishReviewSave(questionId: string, saved: boolean) {
+  if (saved) savedIds.add(questionId);
+  else savedIds.delete(questionId);
+  localSaveChoice.set(questionId, saved);
+  window.dispatchEvent(new CustomEvent("az-review-save", { detail: { questionId, saved } }));
+}
 
 function rememberServerSaves(rows: { questionId?: string; savedForReview?: boolean }[]) {
   for (const row of rows) {
@@ -39,7 +54,9 @@ function loadSavedReviews(questionId: string) {
       .then((payloads) => {
         for (const data of payloads) {
           const rows = Array.isArray(data?.mistakes) ? data.mistakes : [];
-          rememberServerSaves(rows);
+          rememberServerSaves(Array.isArray(data?.savedReviewIds)
+            ? data.savedReviewIds.map((id: string) => ({ questionId: id, savedForReview: true }))
+            : rows);
         }
       })
       .catch(() => undefined);
@@ -48,41 +65,59 @@ function loadSavedReviews(questionId: string) {
   return savedKnown.get(state);
 }
 
-async function postSave(questionId: string, saveForReview: boolean) {
+async function postSave(questionId: string, saveForReview: boolean, includeNotebook?: boolean) {
   return fetch("/api/mistakes/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ questionId, saveForReview }),
+    body: JSON.stringify({ questionId, saveForReview, includeNotebook }),
   });
 }
 
-export async function flushPendingReviewSaves() {
+let pendingFlush: Promise<void> | undefined;
+
+function flushPendingReviewSaves() {
+  if (pendingFlush) return pendingFlush;
   const pending = readPending();
-  if (!pending.length) return;
-  const left: string[] = [];
-  for (const id of pending) {
-    const res = await postSave(id, true).catch(() => null);
-    if (res?.ok) savedIds.add(id);
-    else if (res?.status === 401) left.push(id);
-    else left.push(id);
+  if (!pending.size) return;
+  pendingFlush = applyPending(pending).finally(() => { pendingFlush = undefined; });
+  return pendingFlush;
+}
+
+async function applyPending(pending: Map<string, boolean>) {
+  for (const [id, includeNotebook] of pending) {
+    const res = await postSave(id, true, includeNotebook).catch(() => null);
+    if (res?.status === 401) break;
+    if (!res?.ok) continue;
+    const body = await res.json().catch(() => null);
+    if (body?.ok !== true || body.savedForReview !== true || body.savedInNotebook !== includeNotebook) continue;
+    const left = readPending();
+    if (left.get(id) === includeNotebook) {
+      left.delete(id);
+      writePending(left);
+    }
+    publishReviewSave(id, true);
   }
-  writePending(left);
 }
 
 export function SaveForReview({
   questionId,
   label = "Add to Daily Study",
   hint = true,
+  onAsk,
 }: {
   questionId: string;
   label?: string;
   hint?: boolean;
+  onAsk?: () => void;
 }) {
   const [saved, setSaved] = useState(savedIds.has(questionId));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [needLogin, setNeedLogin] = useState(false);
   const [next, setNext] = useState<string>(paths.login);
+  const [asking, setAsking] = useState(false);
+  const [message, setMessage] = useState("");
+  const saving = useRef(false);
 
   useEffect(() => {
     let cancel = false;
@@ -93,25 +128,34 @@ export function SaveForReview({
         if (!cancel) setSaved(savedIds.has(questionId));
       })
       .catch(() => undefined);
+    function onSaved(event: Event) {
+      const { questionId: changed, saved: nextSaved } = (event as CustomEvent<{ questionId: string; saved: boolean }>).detail;
+      if (changed === questionId) setSaved(nextSaved);
+    }
+    window.addEventListener("az-review-save", onSaved);
     return () => {
       cancel = true;
+      window.removeEventListener("az-review-save", onSaved);
     };
   }, [questionId]);
 
-  async function toggle() {
-    if (busy) return;
+  async function save(nextSaved: boolean, includeNotebook?: boolean) {
+    if (saving.current) return;
+    saving.current = true;
     setBusy(true);
     setError("");
+    setMessage("");
     setNeedLogin(false);
-    const nextSaved = !saved;
-    const res = await postSave(questionId, nextSaved).catch(() => null);
+    const res = await postSave(questionId, nextSaved, includeNotebook).catch(() => null);
+    const body = res?.ok ? await res.json().catch(() => null) : null;
+    saving.current = false;
     setBusy(false);
     if (!res) {
       setError("Could not save this question. Try again.");
       return;
     }
     if (res.status === 401) {
-      writePending([...readPending(), questionId]);
+      if (nextSaved && includeNotebook !== undefined) writePending(readPending().set(questionId, includeNotebook));
       setNeedLogin(true);
       return;
     }
@@ -119,24 +163,29 @@ export function SaveForReview({
       setError("Could not save this question. Try again.");
       return;
     }
-    const body = await res.json().catch(() => null);
-    if (!body?.ok || Boolean(body.savedForReview) !== nextSaved) {
+    if (!body?.ok || body.savedForReview !== nextSaved ||
+      (includeNotebook !== undefined && body.savedInNotebook !== includeNotebook)) {
       setError("Could not save this question. Try again.");
       return;
     }
-    if (nextSaved) savedIds.add(questionId);
-    else savedIds.delete(questionId);
-    localSaveChoice.set(questionId, nextSaved);
-    writePending(readPending().filter((id) => id !== questionId));
+    const pending = readPending();
+    pending.delete(questionId);
+    writePending(pending);
     setSaved(nextSaved);
-    window.dispatchEvent(new CustomEvent("az-review-save", { detail: { questionId, saved: nextSaved } }));
+    if (nextSaved) setMessage(includeNotebook ? "Saved to Daily Study and Wrong Answers." : "Saved to Daily Study.");
+    publishReviewSave(questionId, nextSaved);
   }
 
   return (
     <div className="save-review">
-      <button className={`btn btn-ghost${saved ? " is-on" : ""}`} type="button" onClick={toggle} disabled={busy} aria-pressed={saved}>
+      <button className={`btn btn-ghost${saved ? " is-on" : ""}`} type="button" onClick={() => {
+        onAsk?.();
+        if (saved) return save(false);
+        setAsking(true);
+      }} disabled={busy} aria-pressed={saved} aria-haspopup={saved ? undefined : "dialog"}>
         <BookmarkIcon /> {busy ? "Saving…" : saved ? "Added to Daily Study" : label}
       </button>
+      {asking ? <DailyStudySaveDialog onDismiss={() => setAsking(false)} onSave={(includeNotebook) => void save(true, includeNotebook)} /> : null}
       {hint && !saved ? <p className="notice">Adds this question to Daily Study. It does not count as a missed answer.</p> : null}
       {needLogin ? (
         <p className="notice" role="status">
@@ -144,6 +193,7 @@ export function SaveForReview({
         </p>
       ) : null}
       {error ? <p className="form-error" role="alert">{error}</p> : null}
+      {message ? <p className="notice" role="status">{message}</p> : null}
     </div>
   );
 }

@@ -1086,7 +1086,7 @@ export function ExamRunner({
         isPro={isPro}
         marked={marked.includes(view.question_id)}
         onMark={past ? undefined : () => toggleMark(view.question_id)}
-        extra={<SaveForReview questionId={view.question_id} hint={false} />}
+        extra={<SaveForReview key={view.question_id} questionId={view.question_id} hint={false} onAsk={cancelAutoAdvance} />}
         explainOpen={Boolean(explainOpen[view.question_id])}
         onToggleExplain={() => {
           const id = view.question_id;

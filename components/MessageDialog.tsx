@@ -11,7 +11,7 @@ function outsideDialog(event: PointerEvent<HTMLDialogElement>) {
 
 export function MessageDialog({ title, onClose, children }: {
   title: string;
-  onClose: () => void;
+  onClose: (result: string) => void;
   children: ReactNode;
 }) {
   const titleId = useId();
@@ -32,7 +32,13 @@ export function MessageDialog({ title, onClose, children }: {
       className="card message-dialog"
       aria-labelledby={titleId}
       {...{ closedby: "any" }}
-      onClose={(event) => { if (!event.currentTarget.open) onClose(); }}
+      onClose={(event) => {
+        const dialog = event.currentTarget;
+        if (dialog.open) return;
+        const result = dialog.returnValue;
+        dialog.returnValue = "";
+        onClose(result);
+      }}
       onPointerDown={(event) => {
         if (!("closedBy" in HTMLDialogElement.prototype)) pressedOutside.current = outsideDialog(event);
       }}

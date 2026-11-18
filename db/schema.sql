@@ -73,6 +73,7 @@ create table if not exists question_stats (
   mastered boolean not null default false,
   favorited boolean not null default false,
   saved_for_review boolean not null default false,
+  daily_study_only boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   primary key (user_id, question_id)
