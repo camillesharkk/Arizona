@@ -11,6 +11,9 @@ export type MissedState = { state: StateCode; count: number; available: boolean 
 export type ScheduledReviewItem = {
   questionId: string;
   prompt: string | null;
+  scenario: string | null;
+  answer: string | null;
+  keyword: string | null;
   nextReviewAt: string | null;
   wrongCount: number;
   previousWrongCount: number;
@@ -26,7 +29,6 @@ const stateArtwork: Partial<Record<StateCode, string>> = {
 };
 
 const starterStates: StateCode[] = ["AZ", "CA", "NY", "CO"];
-const reviewArtwork = ["journal", "identification", "seal", "calendar"] as const;
 const artworkRoot = "/images/daily-study/";
 
 export function MissedStateGallery({ total, states, stateCode, dailyHref }: {
@@ -99,38 +101,65 @@ export function MissedStateGallery({ total, states, stateCode, dailyHref }: {
   );
 }
 
+const reviewOffsets = [-3, -2, -1, 0, 1, 2, 3];
+const reviewPlaceholders = ["review-placeholder", "identification", "journal", "calendar", "seal"];
+
 export function ScheduledReviewGallery({ items, stateCode }: { items: ScheduledReviewItem[]; stateCode: StateCode }) {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selection, setSelection] = useState<{ id: string; direction: number } | null>(null);
   const heading = useId();
   const promptRef = useRef<HTMLHeadingElement>(null);
-  const index = Math.max(0, items.findIndex(item => item.questionId === selectedId));
+  const focusAfterSelection = useRef(false);
+  const index = Math.max(0, items.findIndex(item => item.questionId === selection?.id));
   const item = items[index];
   const stateName = stateByCode(stateCode)?.name ?? stateCode;
 
-  function showQuestion(position: number) {
+  useEffect(() => {
+    if (!focusAfterSelection.current) return;
+    focusAfterSelection.current = false;
+    promptRef.current?.focus({ preventScroll: true });
+  }, [selection]);
+
+  function showQuestion(position: number, direction = Math.sign(position - index)) {
     const next = items[position];
-    if (next) setSelectedId(next.questionId);
+    if (next && position !== index) {
+      setSelection({ id: next.questionId, direction });
+    }
   }
 
-  function thumbnailRail(offsets: number[], side: "before" | "after") {
+  function reviewArc(face: "front" | "back") {
+    const orbitLength = Math.max(items.length, reviewOffsets.length);
     return (
-      <div className={`daily-review-thumbs daily-review-thumbs-${side}`}>
-        {offsets.map((offset, slot) => {
-          const position = index + offset;
+      <div className={`daily-review-arc daily-review-arc--${face}`}>
+        {reviewOffsets.map((offset) => {
+          const orbitPosition = index + offset;
+          const position = (orbitPosition + orbitLength) % orbitLength;
           const preview = items[position];
-          const artIndex = preview ? position % reviewArtwork.length : (slot + (side === "before" ? 0 : 2)) % reviewArtwork.length;
-          const picture = <img src={`${artworkRoot}${reviewArtwork[artIndex]}.webp`} alt="" width={192} height={192} loading="lazy" decoding="async" />;
+          // The tile returning at the bottom enters as a new element instead of crossing the entire arc.
+          const tileKey = `${preview?.questionId ?? position}-${Math.floor(orbitPosition / orbitLength)}`;
+          const style = {
+            "--review-step": offset,
+            "--review-distance": Math.abs(offset),
+            "--review-angle": `${offset * 20}deg`,
+          } as CSSProperties;
+
           return preview ? (
-            <button className="daily-review-thumb" type="button" key={offset}
-              aria-label={`Show review item ${position + 1} of ${items.length}`}
+            <button type="button" className="daily-review-thumb" key={tileKey} style={style}
+              data-review-slot={offset} data-review-item={position + 1}
+              aria-hidden={offset === 0 ? true : undefined} disabled={offset === 0}
+              aria-label={`Show review item ${position + 1} of ${items.length} from ${face === "front" ? "question" : "answer"} cards`}
               onClick={() => {
-                showQuestion(position);
-                promptRef.current?.focus({ preventScroll: true });
+                focusAfterSelection.current = true;
+                showQuestion(position, Math.sign(offset));
               }}>
-              {picture}<span>{position + 1}</span>
+              <span className="daily-review-thumb-number">{position + 1}</span>
+              <span className="daily-review-keyword">{preview.keyword ?? "Unavailable"}</span>
             </button>
           ) : (
-            <span className="daily-review-thumb is-decorative" aria-hidden="true" key={offset}>{picture}</span>
+            <span className="daily-review-thumb is-decorative" key={tileKey}
+              style={style} data-review-slot={offset} aria-hidden="true">
+              <img src={`${artworkRoot}${reviewPlaceholders[position % reviewPlaceholders.length]}.webp`} width={280} height={280}
+                alt="" loading="lazy" decoding="async" />
+            </span>
           );
         })}
       </div>
@@ -138,37 +167,52 @@ export function ScheduledReviewGallery({ items, stateCode }: { items: ScheduledR
   }
 
   return (
-    <section className="card daily-gallery" aria-labelledby={heading}>
-      <h2 id={heading}>Scheduled review</h2>
-      <p className="daily-gallery-description">Review history for {stateName}, including mastered questions.</p>
-      <div className="daily-review-gallery">
-        {thumbnailRail([-3, -2, -1], "before")}
-        <article className="daily-review-feature">
-          <div className="daily-review-content" aria-live="polite" aria-atomic="true">
-            {item ? (
-              <>
-                <div className="daily-review-status">
-                  {item.wrongCount > 0 ? (
-                    <span className="daily-review-tag">{item.wrongCount === 1 ? "Missed once" : `Missed ${item.wrongCount} times`}</span>
-                  ) : (
-                    <span className="daily-review-tag">{item.previousWrongCount > 0 ? "Missed an earlier version" : "Added"}</span>
-                  )}
-                  {item.mastered ? <span className="daily-review-tag is-schedule">Mastered</span> : item.prompt && item.nextReviewAt ? (
-                    <span className="daily-review-tag is-schedule">
-                      {item.due ? "Due" : "Next"}{" "}
-                      <time dateTime={item.nextReviewAt}>{new Date(item.nextReviewAt).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}</time>
+    <section className="card daily-gallery daily-scheduled-gallery" aria-labelledby={heading}>
+      <header className="daily-scheduled-heading">
+        <h2 id={heading}>Scheduled review</h2>
+        <p className="daily-gallery-description">Review history for {stateName}, including mastered questions.</p>
+      </header>
+      <div className="daily-review-gallery" data-review-moving={selection ? "" : undefined}
+        style={{ "--review-direction": selection?.direction ?? 0 } as CSSProperties}>
+        <div className="daily-review-main">
+          {item ? (
+            <>
+              <div className="daily-review-pair">
+                <article className="daily-review-feature daily-review-feature--front" aria-label="Question" key={`front-${item.questionId}`}>
+                  <span className="daily-review-face-label">Question</span>
+                  <div className="daily-review-content">
+                    {item.scenario ? <p className="daily-review-scenario">{item.scenario}</p> : null}
+                    <h3 ref={promptRef} tabIndex={-1}>{item.prompt ?? "Question unavailable for review"}</h3>
+                  </div>
+                  <div className="daily-review-status">
+                    <span className="daily-review-tag">
+                      {item.wrongCount > 0 ? (
+                        item.wrongCount === 1 ? "Missed once" : `Missed ${item.wrongCount} times`
+                      ) : item.previousWrongCount > 0 ? "Missed an earlier version" : "Added"}
                     </span>
-                  ) : null}
-                </div>
-                <h3 ref={promptRef} tabIndex={-1}>{item.prompt ?? "Question unavailable for review"}</h3>
-              </>
-            ) : (
-              <>
-                <h3>No reviews scheduled yet</h3>
-                <p>Questions you miss or add to Daily Study will appear here when they’re ready to track.</p>
-              </>
-            )}
-          </div>
+                    {item.mastered ? <span className="daily-review-tag is-schedule">Mastered</span> : item.prompt && item.nextReviewAt ? (
+                      <span className="daily-review-tag is-schedule">
+                        {item.due ? "Due" : "Next"}{" "}
+                        <time dateTime={item.nextReviewAt}>{new Date(item.nextReviewAt).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}</time>
+                      </span>
+                    ) : null}
+                  </div>
+                </article>
+                <article className="daily-review-feature daily-review-feature--back" aria-label="Answer" key={`back-${item.questionId}`}>
+                  <span className="daily-review-face-label">Answer</span>
+                  <div className="daily-review-content">
+                    <p className="daily-review-answer">{item.answer ?? "The answer is currently unavailable."}</p>
+                  </div>
+                </article>
+              </div>
+              <span className="visually-hidden" role="status">Review item {index + 1} of {items.length}</span>
+            </>
+          ) : (
+            <article className="daily-review-feature daily-review-empty">
+              <h3>No reviews scheduled yet</h3>
+              <p>Questions you miss or add to Daily Study will appear here when they’re ready to track.</p>
+            </article>
+          )}
           {items.length > 1 ? (
             <div className="daily-review-navigation">
               <button className="btn btn-ghost" type="button" aria-label="Previous review item" aria-disabled={index === 0}
@@ -180,8 +224,9 @@ export function ScheduledReviewGallery({ items, stateCode }: { items: ScheduledR
                 onClick={() => showQuestion(index + 1)}>Next</button>
             </div>
           ) : null}
-        </article>
-        {thumbnailRail([1, 2, 3], "after")}
+        </div>
+        {reviewArc("front")}
+        {reviewArc("back")}
       </div>
     </section>
   );

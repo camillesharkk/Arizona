@@ -7,6 +7,8 @@ import { hiCards } from "@/data/hi-cards";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { publishedQuestions } from "@/data/questions";
+import { topics } from "@/data/exam-config";
+import { optionText } from "@/lib/answer-sequence";
 import { localDate } from "@/lib/calendar";
 import { recentCaExams, type CaCheck } from "@/lib/ca-daily-shape";
 import { caPaths } from "@/lib/ca-site";
@@ -35,9 +37,14 @@ import { LIVE_STATES } from "@/lib/ca-site";
 import { productionStateBlocked } from "@/lib/state-release";
 import { getStore } from "@/lib/store";
 import type { QuestionStat } from "@/lib/store/types";
-import type { StateCode } from "@/lib/types";
+import type { Question, StateCode, TopicId } from "@/lib/types";
 
 export type StudyState = StateCode;
+
+const compactReviewTopics: Partial<Record<TopicId, string>> = {
+  commission: "Comm.",
+  acknowledgments: "Ack.",
+};
 
 function previousWrongCount(stat: QuestionStat) {
   return (stat.revisionHistory ?? []).reduce((sum, revision) => sum + revision.wrongCount, 0);
@@ -264,7 +271,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
 }
 
 function reviewHistory(
-  questions: { question_id: string; question_text: string; exam_area?: string }[],
+  questions: Question[],
   stats: QuestionStat[],
   exams: { id: string; mode: string; correctCount: number; total: number; at: string }[],
   checks: Record<string, CaCheck> | undefined,
@@ -276,9 +283,13 @@ function reviewHistory(
     .filter((stat) => stat.wrongCount > 0 || stat.savedForReview || previousWrongCount(stat) > 0)
     .map((stat) => {
       const question = byId.get(stat.questionId);
+      const topic = question ? compactReviewTopics[question.topic] ?? topics.find((topic) => topic.id === question.topic)?.short : null;
       return {
         questionId: stat.questionId,
         prompt: question?.question_text ?? null,
+        scenario: question?.scenario_text ?? null,
+        answer: question ? optionText(question, question.correct_option) : null,
+        keyword: question && /\bRON\b/.test(question.question_text) ? "RON" : topic ?? null,
         area: question?.exam_area || "",
         nextReviewAt: stat.nextReviewAt,
         wrongCount: stat.wrongCount,

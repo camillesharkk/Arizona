@@ -86,7 +86,9 @@ try {
   assert.equal(before.wrongQuestionCount, 30);
   assert.equal(before.scheduled.length, 17);
   assert.equal(before.due.length, 15);
-  assert.equal((await getDaily(desktop, "AZ")).scheduled[0].prompt, null, "Locked question text must stay private");
+  const locked = (await getDaily(desktop, "AZ")).scheduled[0];
+  assert.deepEqual([locked.prompt, locked.scenario, locked.answer, locked.keyword], [null, null, null, null],
+    "Locked review content must stay private");
   assert.equal((await getDaily(mobile, "CA")).wrongQuestionCount, 1);
   const nyPlan = await getDaily(desktop, "NY");
   assert.equal(nyPlan.due.length, 12, "Older mistakes without dates go into review");
@@ -129,23 +131,71 @@ try {
   assert.ok(widths[0] > widths[1] && widths[1] > widths[2], "State circles scale with actual counts");
   assert.equal(await schedule.locator("select option").count(), 17);
   const current = schedule.getByRole("heading", { level: 3 });
-  assert.equal(await current.textContent(), before.scheduled[0].prompt);
+  const currentAnswer = schedule.getByRole("article", { name: "Answer" }).locator(".daily-review-answer");
+  async function checkPair(position) {
+    const original = ca.find(question => question.question_id === before.scheduled[position].questionId);
+    assert.equal(await current.textContent(), original.question_text);
+    assert.equal(await currentAnswer.textContent(), original[`option_${original.correct_option.toLowerCase()}`]);
+  }
+  await checkPair(0);
+  assert.equal(await schedule.locator(".daily-review-arc img").count(), 0, "A full deck fills the arcs even on the first card");
+  const front = await schedule.getByRole("article", { name: "Question" }).boundingBox();
+  const back = await schedule.getByRole("article", { name: "Answer" }).boundingBox();
+  assert.ok(front.x + front.width < back.x && Math.abs(front.height - back.height) < 2, "Two equal, side-by-side review faces");
+  const scheduleBox = await schedule.boundingBox();
+  assert.ok(scheduleBox.width > 1390 && scheduleBox.height >= 900, "Review takes up a full desktop viewport");
+  assert.equal(await current.evaluate(el => getComputedStyle(el).fontSize), "21.44px", "Question text retains its desktop size");
+
+  const pairedThumbs = schedule.locator("[data-review-item='3']");
+  const beforeAdvance = await pairedThumbs.evaluateAll(nodes => nodes.map(node => ({
+    x: node.getBoundingClientRect().x,
+    y: node.getBoundingClientRect().y - node.parentElement.getBoundingClientRect().y,
+    keyword: node.textContent,
+  })));
+  assert.equal(beforeAdvance.length, 2);
+  assert.equal(beforeAdvance[0].keyword, beforeAdvance[1].keyword);
+  assert.match(beforeAdvance[0].keyword, /^3\D/);
   await schedule.getByRole("button", { name: "Next review item" }).click();
-  assert.equal(await current.textContent(), before.scheduled[1].prompt);
-  await schedule.getByRole("button", { name: "Show review item 4 of 17" }).click();
-  assert.equal(await current.textContent(), before.scheduled[3].prompt);
+  await checkPair(1);
+  const afterAdvance = await pairedThumbs.evaluateAll(async nodes => {
+    await Promise.allSettled(nodes.flatMap(node => node.getAnimations().map(animation => animation.finished)));
+    return nodes.map(node => ({
+      x: node.getBoundingClientRect().x,
+      y: node.getBoundingClientRect().y - node.parentElement.getBoundingClientRect().y,
+      slot: node.dataset.reviewSlot,
+    }));
+  });
+  assert.ok(afterAdvance.every(({ y, slot }, i) => slot === "1" && y < beforeAdvance[i].y),
+    "Both sides advance the same card upward by one slot");
+  assert.ok(afterAdvance[0].x > beforeAdvance[0].x && afterAdvance[1].x < beforeAdvance[1].x,
+    "Cards follow mirrored arcs");
+  await schedule.getByRole("button", { name: "Show review item 4 of 17 from answer cards" }).press("Enter");
+  await checkPair(3);
+  await page.waitForFunction(() => document.activeElement?.matches(".daily-review-feature--front h3"), null, { timeout: 3000 });
+  assert.equal(await schedule.locator(".daily-review-arc img").count(), 0, "Filled slots use only real cards");
   await schedule.getByRole("combobox", { name: "Review item" }).selectOption("15");
-  assert.equal(await current.textContent(), before.scheduled[15].prompt);
+  await checkPair(15);
   await schedule.getByText(/^Next /).waitFor();
   await schedule.getByRole("button", { name: "Next review item" }).click();
   await schedule.getByText("Mastered", { exact: true }).waitFor();
   assert.equal(await schedule.getByRole("button", { name: "Next review item" }).getAttribute("aria-disabled"), "true");
-  await schedule.getByRole("combobox", { name: "Review item" }).selectOption("0");
+  await schedule.getByRole("combobox", { name: "Review item" }).selectOption("1");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await schedule.getByRole("button", { name: "Previous review item" }).click();
+  await checkPair(0);
+  assert.ok(await schedule.locator(".daily-review-thumb, .daily-review-feature").evaluateAll(nodes =>
+    nodes.every(node => node.getAnimations().length === 0)), "Reduced motion shows the final pair immediately");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await schedule.getByRole("combobox", { name: "Review item" }).selectOption("3");
   if (process.env.DAILY_GALLERY_SCREENSHOT_DIR) {
     for (const [section, name] of [[missed, "missed-desktop"], [schedule, "scheduled-desktop"]]) {
       await section.evaluate(element => element.scrollIntoView({ block: "center", behavior: "instant" }));
       await section.locator("img").evaluateAll(images => Promise.all(images.map(img => img.decode())));
-      await section.screenshot({ path: path.join(process.env.DAILY_GALLERY_SCREENSHOT_DIR, `${name}.png`) });
+      await section.screenshot({
+        path: path.join(process.env.DAILY_GALLERY_SCREENSHOT_DIR, `${name}.png`),
+        style: ".site-header, .study-pager-nav { visibility: hidden; }",
+        animations: "disabled",
+      });
     }
   }
 
@@ -207,12 +257,22 @@ try {
   assert.equal(await smallMissed.getByRole("link", { name: "Arizona (0 missed)" }).count(), 1);
   const smallSchedule = small.getByRole("region", { name: "Scheduled review" });
   assert.equal(await smallSchedule.getByRole("button").count(), 0);
+  assert.ok(await smallSchedule.locator(".daily-review-arc img:visible").count() >= 4, "Missing cards have decorative art");
+  const smallFront = await smallSchedule.getByRole("article", { name: "Question" }).boundingBox();
+  const smallBack = await smallSchedule.getByRole("article", { name: "Answer" }).boundingBox();
+  assert.ok(smallFront.y + smallFront.height < smallBack.y, "Narrow screens stack the same card pair");
+  assert.ok((await smallSchedule.boundingBox()).height >= 840);
+  assert.equal(await smallSchedule.locator("h3").evaluate(el => getComputedStyle(el).fontSize), "16.8px");
   assert.ok(await small.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   if (process.env.DAILY_GALLERY_SCREENSHOT_DIR) {
     for (const [section, name] of [[smallMissed, "missed-mobile"], [smallSchedule, "scheduled-mobile"]]) {
       await section.evaluate(element => element.scrollIntoView({ block: "center", behavior: "instant" }));
       await section.locator("img:visible").evaluateAll(images => Promise.all(images.map(img => img.decode())));
-      await section.screenshot({ path: path.join(process.env.DAILY_GALLERY_SCREENSHOT_DIR, `${name}.png`) });
+      await section.screenshot({
+        path: path.join(process.env.DAILY_GALLERY_SCREENSHOT_DIR, `${name}.png`),
+        style: ".site-header, .study-pager-nav { visibility: hidden; }",
+        animations: "disabled",
+      });
     }
   }
 
@@ -221,7 +281,10 @@ try {
   await blank.getByRole("button", { name: "Skip guide" }).click();
   await blank.getByText("0 questions missed on your account.").waitFor();
   await blank.getByRole("heading", { name: "No reviews scheduled yet" }).waitFor();
-  assert.equal(await blank.getByRole("region", { name: "Scheduled review" }).getByRole("button").count(), 0);
+  const blankSchedule = blank.getByRole("region", { name: "Scheduled review" });
+  assert.equal(await blankSchedule.getByRole("button").count(), 0);
+  assert.equal(await blankSchedule.getByRole("article", { name: "Answer" }).count(), 0);
+  assert.ok(await blankSchedule.locator(".daily-review-arc img:visible").count() >= 4);
   assert.equal(await blank.locator(".daily-state-tile").count(), 4);
   assert.ok(await blank.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   const parallel = await createUser("parallel");

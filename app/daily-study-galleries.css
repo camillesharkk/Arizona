@@ -137,109 +137,165 @@ a.daily-state-tile:hover .daily-state-caption { background: #fff; }
   }
 }
 
+.daily-gallery.daily-scheduled-gallery {
+  display: grid;
+  align-content: center;
+  gap: clamp(1.1rem, 2.4vw, 2rem);
+  min-block-size: 100vh;
+  min-block-size: 100svh;
+  inline-size: auto;
+  margin-inline: calc(50% - 50vw + clamp(.7rem, 1.3vw, 1.5rem));
+  padding: clamp(1rem, 2.5vw, 2.5rem);
+}
+
+.daily-scheduled-heading { text-align: center; }
+.daily-scheduled-heading h2 {
+  font-size: clamp(1.8rem, 4vw, 3.85rem);
+  line-height: 1.1;
+  letter-spacing: -.035em;
+}
+.daily-scheduled-heading p { margin-block: .65rem 0; }
+
 .daily-review-gallery {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(19rem, 1.9fr) minmax(0, 1fr);
-  align-items: stretch;
-  gap: clamp(.75rem, 3vw, 2.5rem);
-  padding: .25rem .35rem .6rem;
+  grid-template: "front main back" auto / minmax(0, 1fr) minmax(0, min(65%, 60rem)) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(.65rem, 1.4vw, 1.5rem);
 }
 
+.daily-review-main { grid-area: main; min-inline-size: 0; }
+.daily-review-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(.65rem, 1.4vw, 1.35rem); }
 .daily-review-feature {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1rem;
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: clamp(.9rem, 2vw, 1.5rem);
   min-inline-size: 0;
+  min-block-size: clamp(15rem, 37vh, 22rem);
   padding: clamp(1rem, 2.3vw, 1.65rem);
   border: 1px solid var(--line);
-  border-radius: 20px;
-  background: linear-gradient(130deg, rgba(255, 255, 255, .9), rgba(233, 242, 249, .75));
-  box-shadow: inset 0 1px 0 #fff, 0 14px 30px rgba(46, 77, 112, .11);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, .9), rgba(228, 240, 248, .74));
+  box-shadow: inset 1px 1px 0 #fff, 0 16px 32px rgba(46, 77, 112, .12);
+  overflow-wrap: anywhere;
 }
 
-.daily-review-feature h3 { margin: 0; font-size: clamp(1.05rem, 1.7vw, 1.34rem); line-height: 1.4; }
-.daily-review-feature p { margin-block: .5rem 0; color: var(--muted); }
-.daily-review-status { display: flex; flex-wrap: wrap; gap: .4rem; margin-block-end: .8rem; }
+.daily-review-feature--front { grid-template-rows: auto 1fr auto; }
+.daily-review-feature--back {
+  background: linear-gradient(135deg, rgba(255, 255, 255, .9), rgba(231, 230, 248, .72));
+  --review-face-shift: 1;
+}
 
+.daily-review-face-label,
 .daily-review-tag {
   padding: .2rem .62rem;
-  border: 1px solid rgba(255, 255, 255, .75);
+  border: 1px solid rgba(255, 255, 255, .85);
   border-radius: 999px;
   background: #e4ecf5;
   color: var(--ink);
   font-size: .82rem;
-  font-weight: 600;
+  font-weight: 650;
 }
-
+.daily-review-face-label { font-size: .875rem; }
+.daily-review-feature--back .daily-review-face-label,
 .daily-review-tag.is-schedule { background: #eae7f5; }
-
-.daily-review-thumbs {
-  display: grid;
-  align-content: space-evenly;
-  align-items: center;
-  row-gap: .5rem;
+.daily-review-feature :is(h3, .daily-review-answer) {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.7vw, 1.34rem);
+  line-height: 1.4;
+  font-weight: 650;
 }
+.daily-review-feature .daily-review-scenario { color: var(--muted); margin-block: 0 .65rem; }
+.daily-review-status { display: flex; flex-wrap: wrap; gap: .4rem; }
+.daily-review-empty { align-content: center; justify-items: center; text-align: center; }
+.daily-review-empty p { color: var(--muted); margin: 0; }
 
-.daily-review-thumbs-before > :nth-child(odd) { justify-self: start; --daily-thumb-tilt: -9deg; }
-.daily-review-thumbs-before > :nth-child(2) { justify-self: end; --daily-thumb-tilt: 9deg; }
-.daily-review-thumbs-after > :nth-child(odd) { justify-self: end; --daily-thumb-tilt: 9deg; }
-.daily-review-thumbs-after > :nth-child(2) { justify-self: start; --daily-thumb-tilt: -9deg; }
+.daily-review-arc {
+  --review-radius: clamp(10rem, 16vw, 17rem);
+  --review-thumb-size: clamp(4rem, 5.95vw, 6.4rem);
+  --review-side: 1;
+  grid-area: front;
+  position: relative;
+  min-block-size: calc(var(--review-radius) * 1.75 + var(--review-thumb-size));
+}
+.daily-review-arc--back { grid-area: back; --review-side: -1; }
+.daily-review-arc::before {
+  content: "";
+  position: absolute;
+  inset: 4% calc(var(--review-thumb-size) / 2) 4% .5rem;
+  border-radius: 50%;
+  border-inline-end: 1px solid #ccdeeb;
+}
+.daily-review-arc--back::before {
+  inset-inline: calc(var(--review-thumb-size) / 2) .5rem;
+  border-inline-end: 0;
+  border-inline-start: 1px solid #d9d4e9;
+}
 
 .daily-review-thumb {
-  display: block;
-  position: relative;
-  inline-size: min(64%, 5rem);
+  --review-rotation: calc(var(--review-angle) * var(--review-side));
+  --review-offset: calc(var(--review-radius) * var(--review-side));
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: calc(100% - var(--review-thumb-size) / 2);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: .16rem;
+  inline-size: var(--review-thumb-size);
   aspect-ratio: 1;
-  padding: 0;
-  border: 1px solid rgba(255, 255, 255, .94);
-  border-radius: 14px;
-  background: var(--glass-control);
+  padding: .25rem;
+  border: 1px solid rgba(255, 255, 255, .95);
+  border-radius: clamp(12px, 1.5vw, 20px);
+  background: linear-gradient(135deg, #fafdff, #e7f1f8);
+  box-shadow: 0 7px 19px rgba(46, 77, 112, .15);
   color: var(--ink);
-  box-shadow: 0 8px 20px rgba(46, 77, 112, .17);
-  rotate: var(--daily-thumb-tilt, 0deg);
+  text-align: center;
+  font: inherit;
+  transform: translate(-50%, -50%) translateX(calc(-1 * var(--review-offset)))
+    rotate(var(--review-rotation)) translateX(var(--review-offset))
+    rotate(calc(-.83 * var(--review-rotation))) scale(calc(1 - .055 * var(--review-distance)));
 }
-
+.daily-review-arc--back .daily-review-thumb {
+  inset-inline-start: calc(var(--review-thumb-size) / 2);
+  background: linear-gradient(135deg, #fbfaff, #eeedf8);
+}
+.daily-review-thumb[data-review-slot="0"] { opacity: 0; pointer-events: none; }
 button.daily-review-thumb { cursor: pointer; }
 button.daily-review-thumb:hover { border-color: var(--brand-dark); }
-.daily-review-thumb.is-decorative { opacity: .62; }
-.daily-review-thumb:nth-child(2) { inline-size: min(72%, 6.3rem); }
-
+.daily-review-thumb:focus-visible { z-index: 1; }
+.daily-review-thumb.is-decorative { opacity: .57; }
+.daily-review-thumb.is-decorative[data-review-slot="0"] { opacity: 0; }
 .daily-review-thumb img {
   display: block;
   inline-size: 100%;
   block-size: auto;
   aspect-ratio: 1;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: inherit;
 }
-
-.daily-review-thumb span {
-  display: grid;
-  place-items: center;
-  position: absolute;
-  inset: auto -.15rem -.15rem auto;
-  min-inline-size: 1.65rem;
-  padding-inline: .25rem;
-  min-block-size: 1.65rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #f7fbff;
-  color: var(--ink);
-  font-size: .75rem;
-  font-weight: 700;
-  rotate: calc(-1 * var(--daily-thumb-tilt, 0deg));
+.daily-review-thumb-number {
+  font-size: .69rem;
+  font-weight: 600;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.daily-review-keyword {
+  font-size: clamp(.63rem, 1vw, .86rem);
+  font-weight: 680;
+  line-height: 1.08;
+  hyphens: auto;
+  overflow-wrap: anywhere;
 }
 
 .daily-review-navigation {
   display: flex;
   flex-wrap: wrap;
-  gap: .45rem;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: .55rem clamp(.55rem, 1.5vw, 1.1rem);
+  margin-block-start: clamp(.85rem, 2vw, 1.45rem);
 }
-
-.daily-review-navigation .btn { font-size: .9rem; padding-inline: .75rem; }
+.daily-review-navigation .btn { font-size: .9rem; padding-inline: .85rem; }
 .daily-review-navigation select {
   min-block-size: 44px;
   padding: .25rem .5rem;
@@ -251,16 +307,48 @@ button.daily-review-thumb:hover { border-color: var(--brand-dark); }
   font-variant-numeric: tabular-nums;
 }
 
-.daily-gallery :is(a, button, select, ul[tabindex]):focus-visible { outline: 3px solid var(--brand-dark); outline-offset: 2px; }
-
-@media (max-width: 660px) {
-  .daily-review-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem .45rem; }
-  .daily-review-feature { grid-area: 1 / 1 / 2 / -1; }
-  .daily-review-thumbs { grid-row: 2; display: flex; gap: .45rem; align-items: center; justify-content: space-evenly; }
-  .daily-review-thumbs .daily-review-thumb { inline-size: clamp(44px, 11vw, 58px); flex: none; }
+.daily-gallery :is(a, button, select, h3[tabindex], ul[tabindex]):focus-visible {
+  outline: 3px solid var(--brand-dark);
+  outline-offset: 2px;
 }
 
-@media (max-width: 427px) {
-  .daily-review-thumbs-before > :first-child,
-  .daily-review-thumbs-after > :last-child { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .daily-review-thumb {
+    transition: transform 410ms cubic-bezier(.22, 1, .36, 1), opacity 250ms ease-out;
+  }
+  .daily-review-gallery[data-review-moving] .daily-review-pair .daily-review-feature {
+    animation: daily-review-arrive 410ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+  @keyframes daily-review-arrive {
+    from {
+      opacity: .58;
+      transform: translate(calc(7px * var(--review-face-shift, -1)), calc(12px * var(--review-direction))) scale(.973);
+    }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+@media (max-width: 960px) {
+  .daily-review-gallery { grid-template: "front" auto "main" auto "back" auto / minmax(0, 1fr); }
+  .daily-review-arc {
+    --review-thumb-size: clamp(3rem, 8vw, 4.5rem);
+    --review-spacing: clamp(3.05rem, 11vw, 5.25rem);
+    min-block-size: calc(var(--review-thumb-size) + 1.3rem);
+  }
+  .daily-review-arc::before { display: none; }
+  .daily-review-arc .daily-review-thumb {
+    inset-inline-start: 50%;
+    transform: translate(-50%, -50%)
+      translate(calc(var(--review-step) * var(--review-spacing) * var(--review-side)),
+        calc(var(--review-distance) * -4px * var(--review-side)))
+      rotate(calc(.12 * var(--review-rotation)));
+  }
+  .daily-review-thumb[data-review-slot="0"] { opacity: .68; }
+  .daily-review-thumb.is-decorative[data-review-slot="0"] { opacity: .57; }
+}
+
+@media (max-width: 600px) {
+  .daily-review-pair { grid-template-columns: minmax(0, 1fr); }
+  .daily-review-feature { min-block-size: 9rem; border-radius: 19px; }
+  .daily-review-thumb:is([data-review-slot="-3"], [data-review-slot="3"]) { display: none; }
 }
