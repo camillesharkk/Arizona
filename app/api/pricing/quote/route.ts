@@ -4,10 +4,10 @@ import { getSession } from "@/lib/session";
 import { getCommerceRepo } from "@/lib/commerce";
 import { createQuote } from "@/lib/commerce/service";
 import { publicBreakdown } from "@/lib/commerce/public";
-import { SITE_PRO_PRODUCT_CODE } from "@/lib/pro-products";
+import { isSiteProProduct } from "@/lib/pro-products";
 
 const schema = z.object({
-  productCode: z.literal(SITE_PRO_PRODUCT_CODE).optional(),
+  productCode: z.string().refine(isSiteProProduct).optional(),
   applyCredit: z.boolean().optional(),
   policyAccepted: z.boolean(),
 });

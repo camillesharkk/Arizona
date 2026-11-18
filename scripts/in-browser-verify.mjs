@@ -37,7 +37,7 @@ try {
   const quickIds=[];
   for(let i=0;i<10;i++){
    quickIds.push((await answer(page,'IN',kind==='pro'&&i<8)).question_id);
-   if(i===0){await page.getByRole('button',{name:'Compare the other options'}).click();await page.locator('.explain').first().waitFor();assert.ok(await page.locator('.answer-source a[href*="in.gov"]').count());}
+   if(i===0){await page.getByRole('button',{name:'View detailed explanation'}).click();await page.locator('.explain').first().waitFor();assert.ok(await page.locator('.answer-source a[href*="in.gov"]').count());}
    if(i<9)await next(page,i+2);
   }
   if(await page.getByRole('button',{name:'Submit exam',exact:true}).isVisible())await page.getByRole('button',{name:'Submit exam',exact:true}).click();

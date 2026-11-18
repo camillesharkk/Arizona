@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import type { CommunityInsight } from "@/data/community-insights";
+import { communityDiscussionPath } from "@/lib/community-links";
 import { paths } from "@/lib/paths";
 import { stateByCode } from "@/lib/states";
 
@@ -168,6 +169,9 @@ export function HomeCommunity({
               </a>
               <Link className="home-text-link" href={item.studyHref}>
                 {item.studyLabel} <span aria-hidden="true">→</span>
+              </Link>
+              <Link href={communityDiscussionPath(item.id)}>
+                Discussion<span className="visually-hidden"> about {item.title}</span> <span aria-hidden="true">→</span>
               </Link>
             </div>
           </article>

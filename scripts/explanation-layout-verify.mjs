@@ -78,6 +78,33 @@ const expanded = renderToStaticMarkup(
 assert.match(expanded, /Why the other options are incorrect/);
 assert.match(expanded, /Your choice/);
 assert.match(expanded, /Two years is shorter/);
+
+const compactResult = (open) => renderToStaticMarkup(React.createElement(AnswerResult, {
+  q,
+  selected: "A",
+  compactFeedback: true,
+  open,
+  onToggle() {},
+}));
+const compactClosed = compactResult(false);
+const closedDetails = compactClosed.match(/<div class="explain answer-option-comparison"[^>]* hidden=""[^>]*>([\s\S]*?)<div class="answer-source">/);
+assert.ok(closedDetails, "Quick feedback starts with the detail region hidden");
+const compactSummary = compactClosed.slice(0, closedDetails.index);
+assert.match(compactSummary, /Correct answer.*Four years/);
+assert.match(compactSummary, /class="answer-brief-rule"/);
+assert.match(compactSummary, /aria-expanded="false".*aria-describedby=/);
+assert.match(compactSummary, /View detailed explanation/);
+assert.match(compactSummary, /See the reasoning and why the other choices are incorrect/);
+assert.doesNotMatch(compactSummary, /Why it applies|Two years is shorter/);
+assert.match(closedDetails[1], /Why it applies/);
+assert.match(closedDetails[1], /Two years is shorter/);
+const compactOpen = compactResult(true);
+assert.match(compactOpen, /aria-expanded="true"/);
+assert.match(compactOpen, /Hide detailed explanation/);
+assert.doesNotMatch(compactOpen, /answer-option-comparison"[^>]* hidden=""/);
+assert.match(compactOpen, /Official source/);
+assert.match(compactOpen, /Last verified <time dateTime="2026-09-01">2026-09-01<\/time>/);
+
 const { AnswerExplain } = componentLoader("components/AnswerExplain.tsx");
 const staticAnswer = renderToStaticMarkup(
   React.createElement(AnswerExplain, {

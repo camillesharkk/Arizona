@@ -394,6 +394,7 @@ export function QuestionsClient({
             index={safeIdx}
             selected={selected}
             reveal={!!selected}
+            compactFeedback
             lockChoice={!!selected}
             headingRef={headingRef}
             onChoose={(l) => {

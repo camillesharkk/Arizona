@@ -744,43 +744,64 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
       return rows[0] ? mapBinding(rows[0] as Record<string, unknown>) : null;
     },
     async claimCheckoutBinding(opts) {
-      const inserted = await sql`
-        insert into provider_checkout_bindings (quote_id, provider, status, expires_at, created_at)
-        values (${opts.quoteId}, ${opts.provider}, 'creating', ${opts.expiresAt}, ${opts.now})
-        on conflict (quote_id) do nothing
-        returning *
-      `;
-      if (inserted[0]) return { created: true, binding: mapBinding(inserted[0] as Record<string, unknown>) };
-      const existingRows = await sql`select * from provider_checkout_bindings where quote_id = ${opts.quoteId} limit 1`;
-      const existing = existingRows[0] ? mapBinding(existingRows[0] as Record<string, unknown>) : null;
-      if (existing?.status === "ready" && existing.checkoutUrl) {
-        return { created: false, binding: existing };
-      }
-      const age = existing ? new Date(opts.now).getTime() - new Date(existing.createdAt).getTime() : 0;
-      const steal = existing && (existing.status === "failed" || (existing.status === "creating" && age >= 60_000));
-      if (steal) {
-        const taken = await sql`
-          update provider_checkout_bindings
-          set provider = ${opts.provider},
-              provider_checkout_id = null,
-              checkout_url = null,
-              status = 'creating',
-              expires_at = ${opts.expiresAt},
-              created_at = ${opts.now}
-          where quote_id = ${opts.quoteId}
-            and (
-              status = 'failed'
-              or (status = 'creating' and created_at <= ${new Date(new Date(opts.now).getTime() - 60_000).toISOString()})
-            )
+      return sql.begin(async (sql: any) => {
+        const quotes = await sql`select * from pricing_quotes where id=${opts.quoteId}`;
+        const quote = quotes[0];
+        if (quote) {
+          // All provider creation claims for one account share this database row lock.
+          await sql`select id from users where id=${quote.user_id} for update`;
+          const used = await sql`select kind from promotion_redemptions where user_id=${quote.user_id}`;
+          const paid = await sql`select newcomer_applied, referral_discount_applied from commerce_orders where user_id=${quote.user_id} and quote_id<>${opts.quoteId}`;
+          if ((quote.newcomer_discount_applied && (used.some((row: any) => row.kind === "newcomer") || paid.some((row: any) => row.newcomer_applied)))
+            || (quote.referral_discount_applied && (used.some((row: any) => row.kind === "referral_discount") || paid.some((row: any) => row.referral_discount_applied)))) {
+            return { created: false as const, error: "PRICE_CHANGED" as const };
+          }
+          const conflicts = await sql`select binding.quote_id from provider_checkout_bindings binding
+            join pricing_quotes other on other.id=binding.quote_id
+            where other.user_id=${quote.user_id} and other.id<>${opts.quoteId}
+              and binding.status in ('creating','ready')
+              and ((${quote.newcomer_discount_applied} and other.newcomer_discount_applied)
+                or (${quote.referral_discount_applied} and other.referral_discount_applied)) limit 1`;
+          if (conflicts.length) return { created: false as const, error: "promotion_checkout_in_progress" as const, quoteId: String(conflicts[0].quote_id) };
+        }
+        const inserted = await sql`
+          insert into provider_checkout_bindings (quote_id, provider, status, expires_at, created_at)
+          values (${opts.quoteId}, ${opts.provider}, 'creating', ${opts.expiresAt}, ${opts.now})
+          on conflict (quote_id) do nothing
           returning *
         `;
-        if (taken[0]) return { created: true, binding: mapBinding(taken[0] as Record<string, unknown>) };
-      }
-      const again = await sql`select * from provider_checkout_bindings where quote_id = ${opts.quoteId} limit 1`;
-      if (!again[0]) {
-        throw new Error("checkout_binding_missing");
-      }
-      return { created: false, binding: mapBinding(again[0] as Record<string, unknown>) };
+        if (inserted[0]) return { created: true, binding: mapBinding(inserted[0] as Record<string, unknown>) };
+        const existingRows = await sql`select * from provider_checkout_bindings where quote_id = ${opts.quoteId} limit 1`;
+        const existing = existingRows[0] ? mapBinding(existingRows[0] as Record<string, unknown>) : null;
+        if (existing?.status === "ready" && existing.checkoutUrl) {
+          return { created: false, binding: existing };
+        }
+        const age = existing ? new Date(opts.now).getTime() - new Date(existing.createdAt).getTime() : 0;
+        const steal = existing && (existing.status === "failed" || (existing.status === "creating" && age >= 60_000));
+        if (steal) {
+          const taken = await sql`
+            update provider_checkout_bindings
+            set provider = ${opts.provider},
+                provider_checkout_id = null,
+                checkout_url = null,
+                status = 'creating',
+                expires_at = ${opts.expiresAt},
+                created_at = ${opts.now}
+            where quote_id = ${opts.quoteId}
+              and (
+                status = 'failed'
+                or (status = 'creating' and created_at <= ${new Date(new Date(opts.now).getTime() - 60_000).toISOString()})
+              )
+            returning *
+          `;
+          if (taken[0]) return { created: true, binding: mapBinding(taken[0] as Record<string, unknown>) };
+        }
+        const again = await sql`select * from provider_checkout_bindings where quote_id = ${opts.quoteId} limit 1`;
+        if (!again[0]) {
+          throw new Error("checkout_binding_missing");
+        }
+        return { created: false, binding: mapBinding(again[0] as Record<string, unknown>) };
+      });
     },
     async completeCheckoutBinding(opts) {
       const rows = await sql`
@@ -814,6 +835,11 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
         returning *
       `;
       return rows[0] ? mapBinding(rows[0] as Record<string, unknown>) : null;
+    },
+    async clearCanceledCheckout(quoteId, transactionId) {
+      const rows = await sql`delete from provider_checkout_bindings where quote_id=${quoteId}
+        and provider_checkout_id=${transactionId} returning quote_id`;
+      return rows.length > 0;
     },
     async releaseCheckoutClaim(quoteId) {
       await sql`delete from provider_checkout_bindings where quote_id = ${quoteId} and status = 'creating'`;

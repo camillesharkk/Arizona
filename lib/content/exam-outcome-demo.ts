@@ -148,7 +148,7 @@ export function officialSosFaqAnswer(show = SHOW_SIMULATED_OUTCOME_DATA) {
   const pro = examOutcomeDemo.proComparison;
   return [
     INDEPENDENT_EXAM_ANSWER,
-    `In the simulated dataset shown below, candidates in the software-preparation group have a ${software.treatment.passRate}% pass rate, compared with ${software.control.passRate}% in the general-preparation group. This represents a ${software.relativeLift}% relative improvement.`,
+    `In the simulated comparison above, candidates in the software-preparation group have a ${software.treatment.passRate}% pass rate, compared with ${software.control.passRate}% in the general-preparation group. This represents a ${software.relativeLift}% relative improvement.`,
     `In the second simulated comparison, Pro users have a ${pro.treatment.passRate}% pass rate, compared with ${pro.control.passRate}% for regular users. This represents a ${pro.relativeLift}% relative improvement.`,
     `This demonstration uses ${examOutcomeDemo.totalSampleSize} synthetic participant records covering the period from ${formatOutcomeDate(examOutcomeDemo.periodStart)} through ${formatOutcomeDate(examOutcomeDemo.periodEnd)}. It was created to test the presentation and calculation of outcome statistics and does not represent real customers or official examination results.`,
     "Individual results may vary. Using this website does not guarantee that a user will pass the official examination.",

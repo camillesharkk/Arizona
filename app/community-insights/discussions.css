@@ -1,0 +1,76 @@
+.community-discussions,
+#reply-composer {
+  scroll-margin-top: 90px;
+}
+
+.community-discussions-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-block-end: 20px;
+}
+
+.community-discussions-header img {
+  flex: none;
+  width: 62px;
+  height: auto;
+}
+
+.community-post,
+.community-navigation,
+.community-empty {
+  margin-block-start: 20px;
+}
+
+.community-discussions :is(.community-meta, .community-form-caption) {
+  margin-block: 0 8px;
+}
+
+.community-meta {
+  color: var(--home-muted);
+  font-size: 0.9rem;
+}
+
+.community-form-caption {
+  font-weight: 650;
+}
+
+.community-composer textarea {
+  min-height: 5rem;
+}
+
+.community-composer :is(input:not([type="hidden"]), textarea) {
+  border-color: #738b9d;
+}
+
+.community-message {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.community-replies {
+  list-style: none;
+  border-inline-start: 2px solid var(--line);
+  padding-inline-start: clamp(0.45rem, 2vw, 1rem);
+  margin-block: 1rem;
+}
+
+.community-replies > li + li {
+  border-block-start: 1px solid var(--line);
+  margin-block-start: 1rem;
+  padding-block-start: 1rem;
+}
+
+.community-discussions :is(.community-remove summary, .community-navigation a) {
+  display: inline-block;
+  min-block-size: 44px;
+  align-content: center;
+}
+
+.community-remove summary {
+  cursor: pointer;
+}
+
+#reply-composer {
+  margin-block-start: 1rem;
+}

@@ -135,10 +135,10 @@ export function BillingAccessClient() {
         <div className="nav-backdrop" style={{ inset: 0, zIndex: 50 }} onClick={() => setModal(null)}>
           <div className="card" style={{ maxWidth: 480, margin: "18vh auto" }} onClick={(e) => e.stopPropagation()}>
             <h2>Before you request a refund</h2>
-            <p>If eligible, this purchase will be fully refunded and your Pro access will end.</p>
+            <p>If eligible, the amount you paid for 60-Day Pro will be refunded and its access will end.</p>
             <p>
-              Any one-time New Member or Referral discount used on this purchase will remain redeemed and will not be
-              restored.
+              A one-time New Member or Referral discount used on this purchase stays redeemed. It will not apply again
+              on a later purchase or be refunded as cash to your payment method.
             </p>
             <p>
               If a $3 Referral Credit was used, that credit will be restored after an eligible unused full refund is

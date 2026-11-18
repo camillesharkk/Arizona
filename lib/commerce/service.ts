@@ -53,7 +53,9 @@ export function isNewcomerEligible(opts: {
 }): boolean {
   if (opts.redeemed) return false;
   if (!opts.emailVerifiedAt) return false;
-  return opts.now.getTime() < addHours(opts.emailVerifiedAt, NEWCOMER_HOURS).getTime();
+  const verifiedAt = Date.parse(opts.emailVerifiedAt);
+  const now = opts.now.getTime();
+  return Number.isFinite(verifiedAt) && Number.isFinite(now) && verifiedAt <= now && now < verifiedAt + NEWCOMER_HOURS * 3600000;
 }
 
 export async function ensureReferralCode(repo: CommerceRepo, userId: string, now = new Date()) {
@@ -123,14 +125,16 @@ export async function eligibilitySnapshot(
   await releaseMatureRewards(repo, now);
   const user = await repo.getUser(userId);
   if (!user) throw new Error("user_not_found");
-  const newcomerRedeemed = await repo.hasPromotionRedemption(userId, "newcomer");
+  const orders = await repo.listOrders(userId);
+  const newcomerRedeemed = await repo.hasPromotionRedemption(userId, "newcomer") || orders.some(order => order.newcomerApplied);
   const newcomer = isNewcomerEligible({
     emailVerifiedAt: user.emailVerifiedAt,
     redeemed: newcomerRedeemed,
     now,
   });
   const rel = await repo.getRelationshipByReferred(userId);
-  const referralDiscountEligible = Boolean(rel && rel.discountStatus === "available");
+  const referralRedeemed = await repo.hasPromotionRedemption(userId, "referral_discount") || orders.some(order => order.referralDiscountApplied);
+  const referralDiscountEligible = Boolean(rel && rel.discountStatus === "available" && !referralRedeemed && Date.parse(rel.createdAt) <= now.getTime());
   const credits = await repo.listCredits(userId);
   const availableCredits = credits.filter((c) => c.status === "available");
   return {
@@ -359,17 +363,34 @@ export async function confirmPaidOrder(
     if (!redeemed) return { ok: false, error: "credit_redeem_failed" };
   }
 
+  if (!opts.boundFulfillment && (quote.newcomerDiscountApplied || quote.referralDiscountApplied)) {
+    const claim = await repo.claimCheckoutBinding({
+      quoteId: quote.id,
+      provider: opts.provider,
+      expiresAt: quote.expiresAt,
+      now: now.toISOString(),
+    });
+    if ("error" in claim) return { ok: false, error: claim.error };
+    if (!claim.created) return { ok: false, error: "checkout_in_progress" };
+  }
+
   if (!opts.boundFulfillment) {
     const consumed = await repo.consumeQuote(quote.id, opts.providerOrderId, now.toISOString());
     if (!consumed) return { ok: false, error: "quote_consumed" };
   }
 
-  const granted = await opts.grantPro({
-    userId: opts.userId,
-    provider: opts.provider,
-    providerOrderId: opts.providerOrderId,
-    productCode: quote.productCode,
-  });
+  let granted: Awaited<ReturnType<GrantProFn>>;
+  try {
+    granted = await opts.grantPro({
+      userId: opts.userId,
+      provider: opts.provider,
+      providerOrderId: opts.providerOrderId,
+      productCode: quote.productCode,
+    });
+  } catch (error) {
+    if (!opts.boundFulfillment) await repo.releaseCheckoutClaim(quote.id);
+    throw error;
+  }
 
   const order: CommerceOrderRow = {
     id: orderId,

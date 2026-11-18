@@ -140,6 +140,22 @@ export async function reconcilePaddleCheckoutBinding(opts: {
   if (!binding) return { ok: true, kind: "none" };
   if (binding.provider !== PADDLE_PROVIDER) return { ok: true, kind: "none" };
   if (binding.status === "ready" && binding.providerCheckoutId) {
+    const sdk = opts.sdk ?? createPaddleSdk(opts.config);
+    if (sdk.transactions.get) {
+      try {
+        const transaction = await sdk.transactions.get(binding.providerCheckoutId);
+        if (transaction.id !== binding.providerCheckoutId) throw new Error("transaction_mismatch");
+        if (transaction.status === "canceled") {
+          const cleared = await opts.repo.clearCanceledCheckout(opts.quote.id, binding.providerCheckoutId);
+          if (!cleared) throw new Error("binding_changed");
+          await opts.repo.expireQuote(opts.quote.id);
+          await opts.repo.releaseCreditsForQuote(opts.quote.id);
+          return { ok: true, kind: "cleared", quoteExpired: true };
+        }
+      } catch {
+        return { ok: false, error: "paddle_transaction_reconciliation_failed", status: 503 };
+      }
+    }
     return { ok: true, kind: "ready", transactionId: binding.providerCheckoutId };
   }
   if (binding.status !== "creating" || binding.providerCheckoutId) {
@@ -181,6 +197,12 @@ export async function reconcilePaddleCheckoutBinding(opts: {
   if (listed.matches.length === 1) {
     const txn = listed.matches[0];
     const transactionId = String(txn.id || "");
+    if (txn.status === "canceled") {
+      await opts.repo.releaseCheckoutClaim(opts.quote.id);
+      await opts.repo.expireQuote(opts.quote.id);
+      await opts.repo.releaseCreditsForQuote(opts.quote.id);
+      return { ok: true, kind: "cleared", quoteExpired: true };
+    }
     const adopted = await adoptPaddleCreatingBinding({
       repo: opts.repo,
       quoteId: opts.quote.id,

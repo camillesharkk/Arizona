@@ -1053,6 +1053,7 @@ export function ExamRunner({
         index={viewIndex}
         selected={viewSelected}
         reveal={Boolean((practice && viewSelected) || past)}
+        compactFeedback={practice && !past}
         onChoose={past ? undefined : choose}
         lockPaid={false}
         lockChoice={practiceLocked && !past}
@@ -1178,6 +1179,7 @@ export function QuestionBlock({
   index,
   selected,
   reveal,
+  compactFeedback,
   onChoose,
   marked,
   onMark,
@@ -1194,6 +1196,7 @@ export function QuestionBlock({
   index: number;
   selected?: "A" | "B" | "C" | "D";
   reveal?: boolean;
+  compactFeedback?: boolean;
   onChoose?: (l: "A" | "B" | "C" | "D") => void;
   marked?: boolean;
   onMark?: () => void;
@@ -1279,7 +1282,14 @@ export function QuestionBlock({
         })}
       </div>
       {reveal && !locked ? (
-        <AnswerResult q={q} selected={selected} open={explainOpen} onToggle={onToggleExplain} tutor={tutor && !packFor(q.state)?.freeLaunch} />
+        <AnswerResult
+          q={q}
+          selected={selected}
+          open={explainOpen}
+          onToggle={onToggleExplain}
+          compactFeedback={compactFeedback}
+          tutor={tutor && !packFor(q.state)?.freeLaunch}
+        />
       ) : null}
     </div>
   );

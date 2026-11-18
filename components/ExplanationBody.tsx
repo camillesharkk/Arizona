@@ -3,23 +3,28 @@ import { cleanExplanation, explanationParts } from "@/lib/explanation";
 export function ExplanationBody({
   explanation,
   wrongNote,
+  reasoningOnly = false,
 }: {
   explanation: string;
   wrongNote?: string;
+  reasoningOnly?: boolean;
 }) {
   const { rule, reasoning } = explanationParts(explanation);
   const note = wrongNote ? cleanExplanation(wrongNote) : "";
 
+  if (reasoningOnly && !reasoning.length && !note) return null;
   if (!rule) return <p>No explanation is recorded for this question.</p>;
 
   return (
     <dl className="explanation-sections">
-      <div>
-        <dt>The rule</dt>
-        <dd>
-          <p>{rule}</p>
-        </dd>
-      </div>
+      {!reasoningOnly && (
+        <div>
+          <dt>The rule</dt>
+          <dd>
+            <p>{rule}</p>
+          </dd>
+        </div>
+      )}
       {reasoning.length ? (
         <div>
           <dt>Why it applies</dt>

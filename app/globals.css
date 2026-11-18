@@ -104,8 +104,14 @@ body {
 .state-menu-panel a:hover { background: var(--bg-2); text-decoration: none; }
 .btn-primary .spinner { border-color: rgba(255, 255, 255, 0.4); border-top-color: #fff; }
 .btn .loading-row { color: inherit; }
-a { color: var(--brand); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a:where([href]) {
+  color: var(--brand-dark);
+  text-decoration: underline;
+  text-decoration-thickness: .07em;
+  text-underline-offset: .19em;
+}
+a:hover { text-decoration-thickness: .13em; }
+summary { cursor: pointer; }
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible {
   outline: 2px solid var(--brand);
   outline-offset: 2px;
@@ -748,7 +754,7 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
 .outcome-fill.is-treatment { background: var(--brand); }
 .outcome-lift { font-size: 13px; font-weight: 600; color: var(--brand); line-height: 1.4; }
 .outcome-method { margin-top: 12px; }
-.outcome-method summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+.outcome-method summary { min-height: 44px; padding-block: 8px; }
 @media (max-width: 700px) {
   .outcome-grid { grid-template-columns: 1fr; }
   .outcome-row-head { flex-direction: column; align-items: flex-start; gap: 2px; }
@@ -922,9 +928,17 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
 .home-choice .btn-primary { min-width: min(100%, 320px); }
 .home-choice-note { margin: -4px 0 4px; color: var(--muted); }
 .home-text-btn {
-  background: none; border: 0; padding: 0; color: var(--brand);
+  background: none; border: 0; padding: 0; color: var(--brand-dark);
   font: inherit; font-weight: 500; cursor: pointer; min-height: 44px;
 }
+.home-text-btn,
+.home-location button {
+  text-decoration: underline;
+  text-decoration-thickness: .07em;
+  text-underline-offset: .19em;
+}
+.home-text-btn:hover,
+.home-location button:hover { text-decoration-thickness: .13em; }
 .diagnostic-options { border: 0; margin: 16px 0; padding: 0; }
 .diagnostic-option { display: flex; gap: 10px; align-items: flex-start; }
 .diagnostic-option input { margin-top: 4px; }

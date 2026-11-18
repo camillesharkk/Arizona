@@ -59,6 +59,25 @@
   line-height: 1.55;
 }
 
+.answer-result-compact .answer-correct-choice {
+  margin: 8px 0 4px;
+}
+
+.answer-brief-rule {
+  margin: 0 0 10px;
+  max-width: 72ch;
+  color: #283b49;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.answer-detail-hint {
+  margin: 5px 0 0;
+  color: #516575;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .answer-result .explain-toggle {
   display: inline-flex;
   align-items: center;

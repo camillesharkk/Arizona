@@ -97,6 +97,7 @@ function persistWrap(inner: CommerceRepo & { snapshot: () => unknown }): Commerc
     claimCheckoutBinding: wrap(inner.claimCheckoutBinding.bind(inner)),
     completeCheckoutBinding: wrap(inner.completeCheckoutBinding.bind(inner)),
     adoptCreatingCheckoutBinding: wrap(inner.adoptCreatingCheckoutBinding.bind(inner)),
+    clearCanceledCheckout: wrap(inner.clearCanceledCheckout.bind(inner)),
     releaseCheckoutClaim: wrap(inner.releaseCheckoutClaim.bind(inner)),
   };
 }

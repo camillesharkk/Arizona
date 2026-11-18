@@ -3,6 +3,7 @@ import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
 import { EXAM_GUARANTEE_CENTS, LIFETIME_ACCESS_CENTS, LIFETIME_POLICY_VERSION, LIFETIME_TOTAL_CENTS } from "@/lib/pricing/lifetime";
 import { formatUsd } from "@/lib/pricing/money";
+import { GUARANTEE_DISCOUNT_NOTICE, ONE_TIME_DISCOUNT_NOTICE } from "@/lib/pricing/copy";
 
 export const metadata = pageMeta({
   title: "Refund Policy",
@@ -15,7 +16,7 @@ export default function Page() {
     <LegalCopy title="Refund Policy" path={paths.refund}>
       <section id="lifetime">
         <h2>Lifetime Pro exam refund policy</h2>
-        <p>Policy version {LIFETIME_POLICY_VERSION}. Lifetime Pro is one payment of {formatUsd(LIFETIME_TOTAL_CENTS)} USD.</p>
+        <p>Policy version {LIFETIME_POLICY_VERSION}. The standard Lifetime Pro price is {formatUsd(LIFETIME_TOTAL_CENTS)} USD.</p>
         <ul>
           <li><strong>{formatUsd(LIFETIME_ACCESS_CENTS)} · Lifetime Pro access.</strong> This portion is nonrefundable under the exam guarantee. It covers Pro access across available states with no expiration.</li>
           <li><strong>{formatUsd(EXAM_GUARANTEE_CENTS)} · Exam guarantee.</strong> If you fail an official notary exam taken after purchase, you can request a refund of this portion within 30 days of the official results. Your Lifetime Pro access remains active after this partial refund.</li>
@@ -24,6 +25,9 @@ export default function Page() {
         <p>We review complete requests within 5–7 business days. Approved partial refunds return through Paddle to the original payment method. Settlement time depends on Paddle and your bank.</p>
         <p>This policy applies to the account holder’s purchase and official exam. Independent practice test results do not constitute official failure proof. Applicable legal and payment-provider rights continue to apply.</p>
       </section>
+      <h2>Discounts and refunds</h2>
+      <p>{ONE_TIME_DISCOUNT_NOTICE} The amount paid is the basis for any refund.</p>
+      <p>{GUARANTEE_DISCOUNT_NOTICE}</p>
       <h2>60-day Pro unused refund policy</h2>
       <p>
         Our standard refund policy for Arizona Notary Exam Prep Pro: you may request a full refund within 72 hours
@@ -35,10 +39,6 @@ export default function Page() {
       </p>
       <p>
         After 72 hours from the server-confirmed payment time, the standard unused refund window ends.
-      </p>
-      <p>
-        One-time New Member and Referral discounts are redeemed once payment is successfully completed. If this
-        purchase is later refunded, those one-time discounts will not be reissued or restored.
       </p>
       <p>
         If Referral Credit(s) were used on the purchase, an eligible unused full refund under this policy will restore

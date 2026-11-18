@@ -8,7 +8,7 @@ import { fullStateSummary } from "@/data/full-state-summary";
 import { TutorPanel } from "@/components/TutorPanel";
 import { AnswerSource } from "@/components/AnswerSource";
 import { ExplanationBody } from "@/components/ExplanationBody";
-import { cleanExplanation } from "@/lib/explanation";
+import { cleanExplanation, explanationParts } from "@/lib/explanation";
 import type { Question } from "@/lib/types";
 
 export function AnswerResult({
@@ -17,12 +17,14 @@ export function AnswerResult({
   open,
   onToggle,
   tutor = false,
+  compactFeedback = false,
 }: {
   q: Question;
   selected?: "A" | "B" | "C" | "D";
   open?: boolean;
   onToggle?: () => void;
   tutor?: boolean;
+  compactFeedback?: boolean;
 }) {
   const [localOpen, setLocalOpen] = useState(false);
   const detailId = useId();
@@ -34,6 +36,10 @@ export function AnswerResult({
     D: q.option_d,
   };
   const correct = selected === q.correct_option;
+  const rule = compactFeedback ? explanationParts(q.explanation).rule : "";
+  const detailLabel = compactFeedback
+    ? (shown ? "Hide detailed explanation" : "View detailed explanation")
+    : (shown ? "Hide option comparison" : "Compare the other options");
   const topicPaths =
     isFreeState(q.state) && fullStateSummary[q.state]?.ready
       ? prepNavigation[q.state].paths
@@ -53,8 +59,8 @@ export function AnswerResult({
   }
 
   return (
-    <div className={`answer-result${correct ? " is-correct" : " is-wrong"}`}>
-      <p className="answer-result-line" role="status">
+    <div className={`answer-result${correct ? " is-correct" : " is-wrong"}${compactFeedback ? " answer-result-compact" : ""}`}>
+      <p className={compactFeedback ? "visually-hidden" : "answer-result-line"} role="status">
         {correct ? (
           <strong>Correct.</strong>
         ) : (
@@ -69,18 +75,29 @@ export function AnswerResult({
           {q.correct_option}. {options[q.correct_option]}
         </strong>
       </p>
-      <ExplanationBody explanation={q.explanation} />
+      {compactFeedback ? (
+        <p className="answer-brief-rule">{rule || "No explanation is recorded for this question."}</p>
+      ) : (
+        <ExplanationBody explanation={q.explanation} />
+      )}
       <button
         className="explain-toggle"
         type="button"
         aria-expanded={shown}
         aria-controls={detailId}
+        aria-describedby={compactFeedback && !shown ? `${detailId}-hint` : undefined}
         onClick={toggle}
       >
-        {shown ? "Hide option comparison" : "Compare the other options"}
+        {detailLabel}
         <span aria-hidden="true">{shown ? "▴" : "▾"}</span>
       </button>
+      {compactFeedback && !shown && (
+        <p id={`${detailId}-hint`} className="answer-detail-hint">
+          See the reasoning and why the other choices are incorrect.
+        </p>
+      )}
       <div className="explain answer-option-comparison" id={detailId} hidden={!shown}>
+        {compactFeedback && <ExplanationBody explanation={q.explanation} reasoningOnly />}
         {notes.length ? (
           <>
             <p className="answer-comparison-title">

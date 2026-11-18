@@ -471,13 +471,13 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  text-decoration: none;
+  text-decoration: underline;
   font-size: 15px;
   font-weight: 600;
   min-height: 44px;
 }
 .home-text-link:hover {
-  text-decoration: underline;
+  text-decoration-thickness: .13em;
 }
 .national-home .home-editorial-date {
   margin-top: 6px;

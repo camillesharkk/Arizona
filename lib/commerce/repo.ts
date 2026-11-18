@@ -114,7 +114,7 @@ export type CommerceRepo = {
     provider: string;
     expiresAt: string;
     now: string;
-  }): Promise<{ created: boolean; binding: ProviderCheckoutBinding }>;
+  }): Promise<{ created: boolean; binding: ProviderCheckoutBinding } | { created: false; error: "PRICE_CHANGED" | "promotion_checkout_in_progress"; quoteId?: string }>;
   completeCheckoutBinding(opts: {
     quoteId: string;
     providerCheckoutId: string;
@@ -127,6 +127,7 @@ export type CommerceRepo = {
     checkoutUrl: string;
   }): Promise<ProviderCheckoutBinding | null>;
   releaseCheckoutClaim(quoteId: string): Promise<void>;
+  clearCanceledCheckout(quoteId: string, transactionId: string): Promise<boolean>;
 };
 
 type Mem = {
@@ -591,7 +592,24 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
       );
     },
     async claimCheckoutBinding(opts) {
-      return withLock(`checkout:${opts.quoteId}`, () => {
+      const quote = db.quotes.find(row => row.id === opts.quoteId);
+      return withLock(`checkout-user:${quote?.userId ?? opts.quoteId}`, () => {
+        if (quote) {
+          const used = db.redemptions.filter(row => row.userId === quote.userId);
+          const paid = db.orders.filter(row => row.userId === quote.userId && row.quoteId !== quote.id);
+          if ((quote.newcomerDiscountApplied && (used.some(row => row.kind === "newcomer") || paid.some(row => row.newcomerApplied)))
+            || (quote.referralDiscountApplied && (used.some(row => row.kind === "referral_discount") || paid.some(row => row.referralDiscountApplied)))) {
+            return { created: false as const, error: "PRICE_CHANGED" as const };
+          }
+          const conflict = db.checkoutBindings.find(binding => {
+            if (binding.quoteId === quote.id || (binding.status !== "creating" && binding.status !== "ready")) return false;
+            const other = db.quotes.find(row => row.id === binding.quoteId);
+            return other?.userId === quote.userId
+              && ((quote.newcomerDiscountApplied && other.newcomerDiscountApplied)
+                || (quote.referralDiscountApplied && other.referralDiscountApplied));
+          });
+          if (conflict) return { created: false as const, error: "promotion_checkout_in_progress" as const, quoteId: conflict.quoteId };
+        }
         const existing = db.checkoutBindings.find((b) => b.quoteId === opts.quoteId);
         const nowMs = new Date(opts.now).getTime();
         if (existing?.status === "ready" && existing.checkoutUrl) {
@@ -655,6 +673,12 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
         row.status = "ready";
         return row;
       });
+    },
+    async clearCanceledCheckout(quoteId, transactionId) {
+      const index = db.checkoutBindings.findIndex(row => row.quoteId === quoteId && row.providerCheckoutId === transactionId);
+      if (index < 0) return false;
+      db.checkoutBindings.splice(index, 1);
+      return true;
     },
     async releaseCheckoutClaim(quoteId) {
       return withLock(`checkout:${quoteId}`, () => {

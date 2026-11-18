@@ -2,6 +2,7 @@ import { LegalCopy } from "@/components/LegalCopy";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
 import { site } from "@/lib/site";
+import { ONE_TIME_DISCOUNT_NOTICE } from "@/lib/pricing/copy";
 
 export const metadata = pageMeta({ title: "Terms of Service", description: "Terms for using Arizona Exam practice tools.", path: paths.terms });
 
@@ -28,8 +29,7 @@ export default function Page() {
         standard unused refund. See the <a href={paths.refund}>Refund Policy</a>.
       </p>
       <p>
-        One-time New Member and Referral discounts are redeemed when payment succeeds and are not restored after a
-        refund. Referral Credit(s) used on an order are restored only after an eligible unused full refund under that
+        {ONE_TIME_DISCOUNT_NOTICE} Earned Referral Credits used on an order are restored only after an eligible unused full refund under that
         policy. Up to 3 Referral Credits can be applied per order, subject to the purchase amount.
       </p>
       <p>

@@ -270,6 +270,7 @@ export type PaddleListQuery = {
 export type PaddleTransactionsClient = {
   transactions: {
     create: (payload: CreateTransactionRequestBody) => Promise<{ id: string; checkout?: { url?: string | null } | null }>;
+    get?: (transactionId: string) => Promise<PaddleTxnSnapshot>;
     list?: (
       query?: PaddleListQuery
     ) => AsyncIterable<PaddleTxnSnapshot> | Iterable<PaddleTxnSnapshot> | Promise<PaddleTxnSnapshot[]>;

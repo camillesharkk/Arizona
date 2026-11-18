@@ -35,7 +35,7 @@ try {
    const quickOptions=await page.locator('.q-option').allTextContents();
    const wrong=quickOptions.findIndex(t=>t.trim().slice(3)!==quickQuestion['option_'+quickQuestion.correct_option.toLowerCase()]);
    await page.locator('.q-option').nth(wrong).click();
-   await page.getByRole('button',{name:'Compare the other options'}).click();
+   await page.getByRole('button',{name:'View detailed explanation'}).click();
    const tutor=page.locator('.explain').filter({has:page.getByText('AI Tutor',{exact:true})}).last();
    await page.getByText('AI Tutor',{exact:true}).waitFor();
    if(kind==='anonymous')await page.getByRole('link',{name:'Sign in to use Tutor'}).waitFor();

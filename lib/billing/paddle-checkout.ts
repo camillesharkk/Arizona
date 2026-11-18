@@ -24,6 +24,7 @@ export async function ensurePaddleCheckout(opts: {
   now?: Date;
   sdk?: PaddleTransactionsClient;
   sourceState?: StateCode;
+  resumeDepth?: number;
 }): Promise<
   | { ok: true; transactionId: string; quoteId: string; finalPriceCents: number; checkoutUrl: string | null }
   | { ok: false; error: string; status: number }
@@ -39,17 +40,6 @@ export async function ensurePaddleCheckout(opts: {
 
   const now = opts.now ?? new Date();
   const sdk = opts.sdk ?? createPaddleSdk(opts.config);
-
-  const existing = await opts.repo.getCheckoutBinding(quote.id);
-  if (existing?.status === "ready" && existing.providerCheckoutId) {
-    return {
-      ok: true,
-      transactionId: existing.providerCheckoutId,
-      quoteId: quote.id,
-      finalPriceCents: quote.finalPriceCents,
-      checkoutUrl: existing.checkoutUrl,
-    };
-  }
 
   const recon = await reconcilePaddleCheckoutBinding({
     repo: opts.repo,
@@ -88,6 +78,22 @@ export async function ensurePaddleCheckout(opts: {
     expiresAt: quote.expiresAt,
     now: now.toISOString(),
   });
+
+  if ("error" in claimed) {
+    if (claimed.quoteId && (opts.resumeDepth ?? 0) < 5) {
+      const previous = await opts.repo.getQuote(claimed.quoteId);
+      const binding = await opts.repo.getCheckoutBinding(claimed.quoteId);
+      if (previous?.userId === quote.userId && binding?.provider === PADDLE_PROVIDER) {
+        const previousReconciliation = await reconcilePaddleCheckoutBinding({ ...opts, quote: previous, sdk, now });
+        if (!previousReconciliation.ok) return previousReconciliation;
+        if (previousReconciliation.kind === "cleared" || previousReconciliation.kind === "none") {
+          return ensurePaddleCheckout({ ...opts, resumeDepth: (opts.resumeDepth ?? 0) + 1 });
+        }
+        return ensurePaddleCheckout({ ...opts, quote: previous, resumeDepth: (opts.resumeDepth ?? 0) + 1 });
+      }
+    }
+    return { ok: false, error: claimed.error, status: 409 };
+  }
 
   if (!claimed.created) {
     if (claimed.binding.status === "ready" && claimed.binding.providerCheckoutId) {

@@ -225,6 +225,11 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
       body: JSON.stringify({ quoteId: quote.quoteId, sourceState }),
     });
     let data = await res.json();
+    if (res.status === 409 && data.error === "promotion_checkout_in_progress") {
+      setErr("A checkout with this one-time discount is already open. Continue the existing checkout or contact support.");
+      setBusy(false);
+      return;
+    }
     if (res.status === 409 && data.error === "checkout_in_progress") {
       const retry = await fetch("/api/billing/checkout/", {
         method: "POST",
@@ -370,8 +375,8 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
       )}
       {isGuest && (
         <p className="notice">
-          <Link href={registerHref}>Create an account</Link> or <Link href={loginHref}>sign in</Link> to apply New
-          Member or Referral pricing.
+          <Link href={registerHref}>Create an account</Link> or <Link href={loginHref}>sign in</Link> to see eligible
+          New Member or Referral pricing.
         </p>
       )}
 

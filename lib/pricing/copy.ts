@@ -5,7 +5,7 @@ export const REFUND_POLICY_SUMMARY =
   "You may request a refund within 3 days of purchase only if you have not used any Pro-only feature. Once any Pro-only feature is accessed, the digital service is considered used and the purchase is no longer eligible for our standard refund policy. Subject to applicable law and payment-provider requirements.";
 
 export const ONE_TIME_DISCOUNT_NOTICE =
-  "New Member and Referral discounts are redeemed once payment is successfully completed. If this purchase is later refunded, these one-time discounts will not be reissued or restored.";
+  "Eligible New Member and Referral discounts apply once per account across membership plans and are used only after successful payment. New Member eligibility lasts 72 hours after email verification. These discounts have no cash value and are not restored, reissued or paid out when a purchase is refunded.";
 
 export const CREDIT_RESTORE_NOTICE =
   "An eligible unused full refund will restore the Referral Credit(s) used on this purchase.";
@@ -14,7 +14,7 @@ export const CREDIT_PER_ORDER_NOTICE =
   "Up to 3 Referral Credits can be applied per order, subject to the purchase amount.";
 
 export const GUEST_NEWCOMER_HINT =
-  "Create an account to unlock a 72-hour New Member price.";
+  "Verify your email to start your 72-hour New Member offer.";
 
 export const REFERRAL_CREDIT_RULES = [
   "have no cash value",
@@ -32,3 +32,9 @@ export const PRO_DURATION_NOTICE =
   "One purchase unlocks Pro across all available states for 60 days, including states added while Pro is active. If you buy again while Pro is still active, the extra 60 days start after the current expiration. A new purchase after Pro has expired starts on the day it is paid.";
 
 export const TAX_CHECKOUT_NOTICE = "Applicable taxes may be added at checkout.";
+
+export const REFERRAL_PROMOTION_NOTICE =
+  "An eligible referral gives a one-time 10% Referral discount. Earned Referral Credits are a separate balance with the existing credit and unused-refund rules.";
+
+export const GUARANTEE_DISCOUNT_NOTICE =
+  "For plans with a separately priced exam refund guarantee, discounts and Referral Credits reduce the access charge. The $10 guarantee charge stays refundable under that plan’s guarantee terms.";

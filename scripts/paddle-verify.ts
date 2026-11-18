@@ -6,7 +6,6 @@
 import { randomUUID } from "crypto";
 import { readFileSync } from "fs";
 import path from "path";
-import { pathToFileURL } from "url";
 import { createMemoryCommerceRepo, type CommerceRepo } from "../lib/commerce/repo.ts";
 import { bindReferral, createQuote } from "../lib/commerce/service.ts";
 import type { GrantProFn } from "../lib/commerce/service.ts";
@@ -577,7 +576,8 @@ async function run() {
 
   const bindRepo = createMemoryCommerceRepo();
   const bindTracker = grantTracker();
-  await putUser(bindRepo, "bind", hoursAgo(now, 1));
+  // Use standard-price quotes so binding isolation is independent of one-time promotion claims.
+  await putUser(bindRepo, "bind", hoursAgo(now, 100));
   const qA = await createQuote(bindRepo, { userId: "bind", applyCredit: false, policyAccepted: true, now });
   const qB = await createQuote(bindRepo, { userId: "bind", applyCredit: false, policyAccepted: true, now });
   if (!qA.ok || !qB.ok) throw new Error("binding quotes");
@@ -1039,7 +1039,7 @@ async function run() {
     return [...source.matchAll(/transactions\.list\(\{[\s\S]*?\}\)/g)].map((match) => match[0]);
   });
   const { QueryParameters } = await import(
-    pathToFileURL(path.join(process.cwd(), "node_modules/@paddle/paddle-node-sdk/dist/esm/internal/base/query-parameters.js")).href
+    new URL("./internal/base/query-parameters.js", import.meta.resolve("@paddle/paddle-node-sdk")).href
   );
   const adjustmentQueries = [new QueryParameters({ perPage: 200 }), new QueryParameters({ perPage: 100 })].map((query) =>
     query.toQueryString()

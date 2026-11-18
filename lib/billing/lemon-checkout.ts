@@ -19,6 +19,7 @@ export async function ensureLemonCheckout(opts: {
   config: LemonConfig;
   now?: Date;
   fetchFn?: typeof fetch;
+  resumeDepth?: number;
 }): Promise<
   | { ok: true; url: string; quoteId: string; finalPriceCents: number }
   | { ok: false; error: string; status: number }
@@ -34,6 +35,17 @@ export async function ensureLemonCheckout(opts: {
     expiresAt: quote.expiresAt,
     now: (opts.now ?? new Date()).toISOString(),
   });
+
+  if ("error" in claimed) {
+    if (claimed.quoteId && (opts.resumeDepth ?? 0) < 5) {
+      const previous = await opts.repo.getQuote(claimed.quoteId);
+      const binding = await opts.repo.getCheckoutBinding(claimed.quoteId);
+      if (previous?.userId === quote.userId && binding?.provider === LEMON_PROVIDER) {
+        return ensureLemonCheckout({ ...opts, quote: previous, resumeDepth: (opts.resumeDepth ?? 0) + 1 });
+      }
+    }
+    return { ok: false, error: claimed.error, status: 409 };
+  }
 
   if (!claimed.created) {
     if (claimed.binding.status === "ready" && claimed.binding.checkoutUrl) {
