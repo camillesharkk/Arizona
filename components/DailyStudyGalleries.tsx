@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { switchStateHref } from "@/lib/ca-site";
 import { stateByCode } from "@/lib/states";
 import type { StateCode } from "@/lib/types";
@@ -35,6 +35,8 @@ export function MissedStateGallery({ total, states, stateCode, dailyHref }: {
   stateCode: StateCode;
   dailyHref: string;
 }) {
+  const rail = useRef<HTMLUListElement>(null);
+  const leadTile = useRef<HTMLLIElement>(null);
   const visible = [...states].sort((a, b) => b.count - a.count);
   if (visible.length <= 1) {
     const present = new Set(visible.map(item => item.state));
@@ -45,16 +47,31 @@ export function MissedStateGallery({ total, states, stateCode, dailyHref }: {
     }
   }
   const largest = visible[0]?.count ?? 0;
+  const leadState = largest ? visible[0].state : null;
+  const compact = visible.filter(({ count }) => largest > 0 && count <= largest * 0.48);
+  const prominent = visible.filter(({ count }) => !largest || count > largest * 0.48);
+  // Keep small columns in pairs around the full-height tiles.
+  const leftCount = Math.min(4, 2 * Math.floor((compact.length + 1) / 4));
+  const arranged = [...compact.slice(0, leftCount), ...prominent, ...compact.slice(leftCount)];
+
+  useEffect(() => {
+    const track = rail.current;
+    const tile = leadTile.current;
+    if (!track || !tile || track.scrollWidth <= track.clientWidth) return;
+    track.scrollLeft = tile.offsetLeft + (tile.offsetWidth - track.clientWidth) / 2;
+  }, [leadState]);
 
   return (
-    <section className="card daily-gallery" aria-labelledby="daily-missed-heading">
-      <h2 id="daily-missed-heading">Missed questions across the site</h2>
-      <p className="daily-gallery-description"><strong>{total}</strong> {total === 1 ? "question" : "questions"} missed on your account.</p>
-      {total === 0 ? <p className="notice">Questions you miss will appear here.</p> : null}
-      <ul className="daily-state-rail" aria-label="Missed questions by state" role="list" tabIndex={0}>
-        {visible.map(({ state, count, available }) => {
+    <section className="card daily-gallery daily-missed-gallery" aria-labelledby="daily-missed-heading">
+      <header className="daily-missed-heading">
+        <h2 id="daily-missed-heading">Missed questions across the site</h2>
+        <p className="daily-gallery-description"><strong>{total}</strong> {total === 1 ? "question" : "questions"} missed on your account.</p>
+        {total === 0 ? <p className="notice">Questions you miss will appear here.</p> : null}
+      </header>
+      <ul ref={rail} className="daily-state-rail" aria-label="Missed questions by state" role="list" tabIndex={0}>
+        {arranged.map(({ state, count, available }) => {
           const name = stateByCode(state)?.name ?? state;
-          const size = largest ? Math.sqrt(count / largest) : 0.3;
+          const size = largest ? Math.pow(count / largest, 1.4) : 0.25;
           const label = count ? `${name} (${count})` : `${name} (0 missed)`;
           const contents = (
             <>
@@ -66,7 +83,8 @@ export function MissedStateGallery({ total, states, stateCode, dailyHref }: {
             </>
           );
           return (
-            <li className={count === 0 && largest > 0 ? "daily-state-compact" : undefined}
+            <li ref={state === leadState ? leadTile : undefined}
+              className={largest > 0 && count <= largest * 0.48 ? "daily-state-compact" : undefined}
               style={{ "--daily-state-scale": size } as CSSProperties} key={state}>
               {available && state !== stateCode ? (
                 <Link className="daily-state-tile" href={switchStateHref(dailyHref, state)} aria-label={label}>{contents}</Link>

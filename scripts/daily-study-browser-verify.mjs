@@ -234,6 +234,64 @@ try {
   assert.equal(claimed.filter(item => item.show).length, 1, "Only one simultaneous visit may claim the guide");
   await concurrent.close();
   console.log("Daily Study guide verified: existing accounts are manual-only, new accounts get one showing across refresh, states, browsers and concurrent visits.");
+
+  // Exercise the full-width composition with the eight-state distribution from the layout report.
+  const mosaic = await desktop.newPage();
+  const mosaicStates = [["CA", 28], ["NY", 10], ["CO", 9], ["WY", 9], ["AZ", 8], ["NE", 8], ["HI", 7], ["PA", 6]];
+  await mosaic.route(/\/api\/daily-study\/\?/, route => {
+    if (route.request().method() !== "GET") return route.continue();
+    return route.fulfill({ json: {
+      ...before,
+      wrongQuestionCount: 85,
+      wrongQuestionsByState: mosaicStates.map(([state, count]) => ({ state, count, available: true })),
+    } });
+  });
+  for (const [width, height] of [[1440, 900], [390, 840], [320, 700]]) {
+    await mosaic.setViewportSize({ width, height });
+    await mosaic.goto(`${base}/california/daily-study/`);
+    const gallery = mosaic.getByRole("region", { name: "Missed questions across the site" });
+    await gallery.getByText("85 questions missed on your account.").waitFor();
+    const box = await gallery.boundingBox();
+    assert.ok(box.width >= width - 44, "Gallery spans almost the full viewport");
+    assert.ok(box.height >= height - (width <= 640 ? 101 : 69), "Gallery fills the viewport below the header");
+    assert.ok(await mosaic.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "Page must not scroll horizontally");
+    const circles = gallery.locator(".daily-state-tile");
+    assert.equal(await circles.count(), mosaicStates.length);
+    const diameters = await circles.evaluateAll(items => items.map(item => item.getBoundingClientRect().width).sort((a, b) => b - a));
+    assert.ok(diameters[0] / diameters[1] >= (width > 640 ? 2.3 : 1.6), "The leading circle is visibly larger");
+    const stack = await gallery.locator(".daily-state-compact").evaluateAll(items => items.map(item => {
+      const box = item.getBoundingClientRect();
+      return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+    }));
+    assert.ok(stack.some((point, index) => stack.slice(index + 1).some(other => Math.abs(other.x - point.x) < 2 && Math.abs(other.y - point.y) > 45)));
+    const rail = gallery.getByRole("list", { name: "Missed questions by state" });
+    if (width <= 640) {
+      await mosaic.waitForFunction(() => {
+        const track = document.querySelector(".daily-state-rail");
+        const lead = track.querySelector('[aria-current="true"]').getBoundingClientRect();
+        const rect = track.getBoundingClientRect();
+        return track.scrollWidth > track.clientWidth && Math.abs(lead.x + lead.width / 2 - (rect.x + rect.width / 2)) < 3;
+      }, null, { timeout: 3000 });
+      await rail.focus();
+      const start = await rail.evaluate(element => element.scrollLeft);
+      await mosaic.keyboard.press("ArrowRight");
+      await mosaic.waitForFunction(before => document.querySelector(".daily-state-rail").scrollLeft !== before, start, { timeout: 3000 });
+      await rail.evaluate(el => el.blur());
+      await mosaic.reload();
+      await gallery.getByText("85 questions missed on your account.").waitFor();
+    }
+    if (process.env.DAILY_GALLERY_SCREENSHOT_DIR && width !== 320) {
+      await gallery.scrollIntoViewIfNeeded();
+      await circles.locator("img").evaluateAll(images => images.forEach(img => { img.loading = "eager"; }));
+      await mosaic.waitForFunction(() => Array.from(document.querySelectorAll(".daily-state-rail img")).every(img => img.complete && img.naturalWidth > 0), null, { timeout: 5000 });
+      await gallery.screenshot({
+        path: path.join(process.env.DAILY_GALLERY_SCREENSHOT_DIR, `missed-mosaic-${width}.png`),
+        style: ".site-header { visibility: hidden; }",
+      });
+    }
+  }
+  await mosaic.close();
+  console.log("Eight-state Daily Study mosaic verified at 1440px, 390px and 320px: viewport scale, strong size contrast, stacked circles, and a keyboard-scrollable mobile rail.");
   console.log("Daily Study browser verification passed: 30 missed questions, circle sizing and state links, due/future/mastered items, thumbnail and picker navigation, review writes, and zero/one-miss mobile layouts.");
 } finally {
   await browser.close();
