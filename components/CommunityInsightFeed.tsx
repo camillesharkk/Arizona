@@ -10,14 +10,14 @@ function thumbnailFor(insight: CommunityInsight) {
   const topic = insight.keywords.join(" ").toLowerCase();
   if (/\b(id|identification|identity)\b/.test(topic)) return "identification";
   if (/journal|recordkeep/.test(topic)) return "journal";
-  if (/timing|time management|deadline|pacing/.test(topic)) return "timing";
   if (/handbook|manual|official (booklet|guide)/.test(topic)) return "manual";
-  if (/exam|practice|retake|quiz|study/.test(topic)) return "practice";
+  if (/timing|time management|deadline|pacing/.test(topic)) return "timing";
+  if (/exam|practice|retake|quiz|study|flashcards/.test(topic)) return "practice";
   return "discussion";
 }
 
-function Thumbnail({ name, sizes }: { name: string; sizes: string }) {
-  return <Image src={`/images/community-insights/${name}.webp`} alt="" width={384} height={384} sizes={sizes} />;
+function Thumbnail({ name, eager = false }: { name: string; eager?: boolean }) {
+  return <Image src={`/images/community-insights/${name}.webp`} alt="" width={384} height={384} unoptimized loading={eager ? "eager" : "lazy"} />;
 }
 
 function reactions({ likes, comments }: { likes: number; comments: number }) {
@@ -68,7 +68,7 @@ export function CommunityInsightFeed({ insights, activity, memberPosts, signedIn
             {spotlight.map((item) => (
               <li key={item.key}>
                 <Link className="card community-spotlight-link" href={item.href}>
-                  <Thumbnail name={item.image} sizes="(max-width: 700px) 145px, 170px" />
+                  <Thumbnail name={item.image} eager />
                   <span className="home-state-tag">{item.keyword}</span>
                   <strong>{item.title}</strong>
                   {item.activity && <span className="community-meta">{reactions(item.activity)}</span>}
@@ -83,7 +83,7 @@ export function CommunityInsightFeed({ insights, activity, memberPosts, signedIn
         <div className="community-editorial-list">
           {reviewed.map(({ insight, activity, image }) => (
             <article className="card community-insight-post" key={insight.id} id={`insight-${insight.id}`} aria-labelledby={`title-${insight.id}`}>
-              <div className="community-insight-image"><Thumbnail name={image} sizes="(max-width: 700px) 72px, 116px" /></div>
+              <div className="community-insight-image"><Thumbnail name={image} /></div>
               <div className="community-insight-content">
                 <p className="community-meta">{stateByCode(insight.state)?.name ?? insight.state} · {insight.platform}</p>
                 <h3 id={`title-${insight.id}`}>{insight.title}</h3>

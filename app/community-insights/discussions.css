@@ -4,16 +4,18 @@
   scroll-margin-block-start: 8rem;
 }
 
-.community-intro {
-  padding-block-end: 1.5rem;
+.national-home .community-intro {
+  margin-block-start: 0;
+  padding-block: clamp(2rem, 5vw, 4rem) 1.25rem;
 }
 
 .community-intro .home-editorial-date {
   margin-block: .5rem 1rem;
 }
 
-.community-spotlight {
-  padding-block-start: 0;
+.national-home .community-spotlight {
+  margin-block-start: 1rem;
+  padding-block: .5rem 1rem;
 }
 
 .community-spotlight-track {
@@ -74,8 +76,9 @@
   }
 }
 
-.community-editorial {
-  padding-block-start: .75rem;
+.national-home .community-editorial {
+  margin-block-start: .5rem;
+  padding-block-start: 1.25rem;
 }
 
 .community-editorial-list {
@@ -157,6 +160,17 @@
 }
 
 @media (max-width: 420px) {
+  .community-guest-header .logo {
+    white-space: normal;
+    overflow-wrap: normal;
+    line-height: 1.2;
+    font-size: .875rem;
+  }
+
+  .community-guest-header .logo-mark {
+    flex: none;
+  }
+
   .community-insight-post {
     column-gap: .65rem;
   }
@@ -164,6 +178,12 @@
   .community-source-links,
   .community-insight-content {
     overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 365px) {
+  .community-guest-header .logo-mark {
+    display: none;
   }
 }
 

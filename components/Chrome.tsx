@@ -151,7 +151,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const announcements = <SiteAnnouncements userId={authStatus === "signed-in" ? me?.id ?? null : null} pathname={pathname} />;
 
   const header = (
-    <header className={`site-header${pathname === "/" ? " national-header" : ""}`}>
+    <header className={`site-header${pathname === "/" ? " national-header" : !state && active(pathname, paths.community) ? " community-guest-header" : ""}`}>
       <div className="wrap header-inner">
         <div className="header-left">
           <Link href={state ? nav.home : "/"} className="logo">
