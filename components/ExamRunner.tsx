@@ -891,6 +891,7 @@ export function ExamRunner({
                   fullHref={fullHref}
                   fullResume={fullResume}
                   fullLocked={fullLocked}
+                  communityHref={onCa ? paths.community : undefined}
                   paths={pack ? pack.paths : onHi ? hiPaths : caPaths}
                   fullName={pack ? pack.fullTitle : onHi ? "Comprehensive Practice" : "Full 45 Practice Exam"}
                   labelFor={onHi ? hiStudyLabel : undefined}
@@ -1028,7 +1029,7 @@ export function ExamRunner({
               </Link>
             </div>
           )}
-          {mode === "quick" && <p><Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link></p>}
+          {mode === "quick" && (!onCa || !guided) && <p><Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link></p>}
           <AccountInvite />
           {isFreeState(stateCode) ? null : stateCode === "CT" ? <p className="notice">Free learning uses the Connecticut free question pool.</p> : onCa ? (
             <p className="notice">This is study feedback for California. Forty items are scored. This raw count is not an official scaled score.</p>

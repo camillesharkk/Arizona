@@ -14,6 +14,7 @@ export function CaQuickNext({
   fullHref,
   fullResume,
   fullLocked,
+  communityHref,
   paths = caPaths,
   fullName = "Full 45 Practice Exam",
   labelFor = caStudyLabel,
@@ -28,6 +29,7 @@ export function CaQuickNext({
   fullHref: string;
   fullResume: boolean;
   fullLocked: boolean;
+  communityHref?: string;
   paths?: { study: string; mistakes: string; daily: string; login: string; studyCards: string };
   fullName?: string;
   labelFor?: (id: string) => string;
@@ -94,6 +96,7 @@ export function CaQuickNext({
         ) : null}
         {band === "perfect" ? <a className="btn btn-ghost" href={paths.studyCards}>Explore Study Cards</a> : null}
         <a className="btn btn-ghost" href={dailyHref}>Open Daily Study</a>
+        {communityHref ? <a className="btn btn-ghost" href={communityHref}>Community Insights</a> : null}
         {nextReviewAt ? <span className="notice">Next review {new Date(nextReviewAt).toLocaleString("en-US")}.</span> : null}
       </div>
       {fullLocked && !fullResume ? <p className="notice">{limitNote}</p> : null}
