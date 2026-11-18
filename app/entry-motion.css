@@ -1,11 +1,21 @@
-.national-header .header-contact { font-size: 14px; font-weight: 600; white-space: nowrap; }
 .national-header .header-inner { min-height: 72px; }
-.national-header .header-update-trigger {
+.national-header .header-right { position: relative; }
+.national-header .account-menu { position: static; }
+.national-header .header-contact {
+  display: inline-flex;
+  align-items: center;
   min-block-size: 44px;
-  padding: 8px 12px;
+  padding-inline: 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
   font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
   white-space: nowrap;
 }
+.national-header .header-contact:hover { background: var(--bg-2); }
+.national-header .header-contact:focus-visible { outline: 2px solid var(--brand-dark); outline-offset: 2px; }
+.national-header .more-btn { color: var(--brand-dark); text-decoration: underline; text-underline-offset: .22em; }
 @media (max-width: 600px) {
   .national-header .logo { font-size: 16px; gap: 7px; white-space: normal; overflow-wrap: normal; line-height: 1.2; }
   .national-header .logo-mark { width: 28px; height: 28px; font-size: 15px; flex: none; }
@@ -13,7 +23,8 @@
   .national-header .header-right { gap: 6px; }
   .national-header .header-contact,
   .national-header .header-signin,
-  .national-header .header-update-trigger { font-size: 13px; }
+  .national-header .more-btn { font-size: 13px; }
+  .national-header .header-contact { padding-inline: 8px; }
 }
 @media (max-width: 365px) {
   .national-header .logo { font-size: 14px; }

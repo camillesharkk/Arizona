@@ -8,7 +8,7 @@ import { fetchAccount, invalidateAccountRead } from "@/lib/client-account";
 import { syncGuestProgress } from "@/lib/ca-sync";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { resetAnalyticsUser } from "@/lib/analytics";
 import { paths } from "@/lib/paths";
@@ -18,7 +18,7 @@ import { packNavigationFor } from "@/lib/prep-navigation";
 import { useResolvedState } from "@/components/SavedState";
 import type { LiveCode } from "@/lib/site-state";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
-import { SiteAnnouncements } from "@/components/SiteAnnouncements";
+import { SiteAnnouncementDialog } from "@/components/SiteAnnouncements";
 import { StateMenu } from "@/components/StateMenu";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 
@@ -81,6 +81,9 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const state = useResolvedState(savedState);
   const nav = navFor(state);
   const [openMore, setOpenMore] = useState(false);
+  const [announcementPath, setAnnouncementPath] = useState<string | null>(null);
+  const morePanelId = useId();
+  const moreButton = useRef<HTMLButtonElement>(null);
   const [me, setMe] = useState<(HeaderUser & { id: string }) | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
   const [returnTo, setReturnTo] = useState(pathname);
@@ -111,7 +114,10 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
     };
   }, [pathname]);
 
-  useEffect(() => setOpenMore(false), [pathname]);
+  useEffect(() => {
+    setOpenMore(false);
+    setAnnouncementPath(null);
+  }, [pathname]);
   useEffect(() => setReturnTo(`${pathname}${window.location.search}`), [pathname]);
   useEffect(() => {
     if (state && state !== "AZ") document.documentElement.dataset.state = state;
@@ -125,7 +131,9 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
       setOpenMore(false);
     }
     function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpenMore(false);
+      if (event.key !== "Escape") return;
+      setOpenMore(false);
+      if (moreButton.current?.parentElement?.contains(document.activeElement)) moreButton.current.focus();
     }
     document.addEventListener("pointerdown", close);
     document.addEventListener("keydown", onKey);
@@ -148,13 +156,33 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const signInHref = `${paths.login}?next=${encodeURIComponent(returnTo)}`;
   const links = state ? primaryLinks(nav) : [];
   const extra = state ? moreLinks(nav, state).filter(item => !isFreeState(state) || fullStateSummary[state]?.ready || item.label !== "Study cards") : [];
-  const announcements = (
-    <SiteAnnouncements
-      key={pathname}
-      userId={authStatus === "signed-in" ? me?.id ?? null : null}
-      pathname={pathname}
-      canAutoOpen={pathname === "/" || onHome}
-    />
+  const isNationalHome = pathname === "/";
+  const moreInNav = links.length > 0 && !isNationalHome;
+  const moreMenu = (
+    <div className="more-menu">
+      <button ref={moreButton} className="more-btn" type="button" aria-expanded={openMore}
+        aria-controls={morePanelId} onClick={() => setOpenMore(value => !value)}>
+        {isNationalHome ? "What’s More" : "More"}
+      </button>
+      <ul id={morePanelId} className="more-panel" role="list" hidden={!openMore}>
+        {extra.map(item => (
+          <li key={item.href}>
+            <Link href={item.href} aria-current={active(pathname, item.href) ? "page" : undefined}
+              onClick={() => setOpenMore(false)}>
+              {item.label}
+            </Link>
+          </li>
+        ))}
+        <li>
+          <button type="button" aria-haspopup="dialog" onClick={() => {
+            setOpenMore(false);
+            setAnnouncementPath(pathname);
+          }}>
+            What’s New
+          </button>
+        </li>
+      </ul>
+    </div>
   );
 
   const header = (
@@ -177,25 +205,9 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
               </Link>
             ))}
           </div>
-          {extra.length ? (
-            <div className="more-menu">
-              <button className="more-btn" type="button" aria-expanded={openMore} onClick={() => setOpenMore((value) => !value)}>
-                More
-              </button>
-              {openMore ? (
-                <div className="more-panel" role="menu">
-                  {extra.map((item) => (
-                    <Link key={item.href} role="menuitem" href={item.href} className={active(pathname, item.href) ? "active" : ""}>
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          ) : null}
+          {moreInNav ? moreMenu : null}
         </nav> : null}
         <div className="header-right">
-          {pathname === "/" ? <Link href={paths.contact} className="header-contact">Contact Us</Link> : null}
           {authStatus === "loading" && (
             <span className="header-auth-placeholder" role="status" aria-label="Loading account">
               <span className="spinner" aria-hidden="true" />
@@ -212,7 +224,8 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
             </Link>
           )}
           {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} stateCode={state} />}
-          {pathname === "/" ? announcements : null}
+          {isNationalHome ? <Link href={paths.contact} className="header-contact">Contact Us</Link> : null}
+          {moreInNav ? null : moreMenu}
         </div>
       </div>
     </header>
@@ -221,7 +234,12 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   return (
     <>
       {header}
-      {pathname !== "/" ? announcements : null}
+      {announcementPath === pathname && (
+        <SiteAnnouncementDialog onClose={() => {
+          setAnnouncementPath(null);
+          moreButton.current?.focus();
+        }} />
+      )}
     </>
   );
 }

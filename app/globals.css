@@ -81,10 +81,6 @@ dialog.message-dialog::backdrop {
   overflow: hidden;
   overscroll-behavior: contain;
 }
-.site-update-bar { border-block-end: 1px solid var(--line); background: var(--glass-surface); }
-.site-update-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 4px; }
-.site-update-inner > span { color: var(--muted); font-size: .875rem; font-weight: 600; }
-.site-update-inner .btn { min-height: 44px; padding-block: 6px; }
 .message-dialog-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
 .message-dialog-head h2 { margin: 0; }
 .message-dialog-x { border: 0; background: transparent; font-size: 28px; line-height: 1; cursor: pointer; min-width: 44px; min-height: 44px; }
@@ -232,13 +228,20 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--brand); width:
 .nav-scroll { display: flex; gap: 18px; align-items: center; min-width: 0; }
 .nav a, .more-btn { color: var(--muted); font-size: 0.95rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .more-menu { position: relative; flex: none; }
-.more-btn { border: 0; background: transparent; font-family: inherit; cursor: pointer; padding: 0; }
+.more-btn { border: 0; background: transparent; font-family: inherit; cursor: pointer; padding: 0; min-height: 44px; }
 .more-panel {
   position: absolute; top: calc(100% + 8px); right: 0; z-index: 40;
-  min-width: 180px; max-width: calc(100vw - 24px); padding: 6px;
+  min-width: 180px; max-width: calc(100vw - 24px); padding: 6px; margin: 0; list-style: none;
   background: var(--bg); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow);
 }
-.more-panel a { display: block; padding: 10px 12px; min-height: 44px; color: var(--ink); }
+.more-panel :is(a, button) {
+  display: flex; align-items: center; width: 100%; min-height: 44px; padding: 10px 12px;
+  color: var(--ink); background: transparent; border: 0; border-radius: 8px;
+  font: inherit; font-size: .95rem; font-weight: 600; text-align: start; text-decoration: none;
+}
+.more-panel button { cursor: pointer; }
+.more-panel :is(a, button):hover { background: var(--bg-2); }
+.more-menu :is(a, button):focus-visible { outline: 2px solid var(--brand-dark); outline-offset: 2px; }
 .loading-stage { min-height: 40vh; display: grid; place-items: center; }
 .nav a:hover, .nav a.active { color: var(--ink); }
 .nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: .24em; }
