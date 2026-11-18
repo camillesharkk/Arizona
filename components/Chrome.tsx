@@ -18,6 +18,7 @@ import { packNavigationFor } from "@/lib/prep-navigation";
 import { useResolvedState } from "@/components/SavedState";
 import type { LiveCode } from "@/lib/site-state";
 import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
+import { SiteAnnouncements } from "@/components/SiteAnnouncements";
 import { StateMenu } from "@/components/StateMenu";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 
@@ -80,7 +81,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const state = useResolvedState(savedState);
   const nav = navFor(state);
   const [openMore, setOpenMore] = useState(false);
-  const [me, setMe] = useState<HeaderUser | null>(null);
+  const [me, setMe] = useState<(HeaderUser & { id: string }) | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
   const [returnTo, setReturnTo] = useState(pathname);
 
@@ -148,7 +149,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const links = state ? primaryLinks(nav) : [];
   const extra = state ? moreLinks(nav, state).filter(item => !isFreeState(state) || fullStateSummary[state]?.ready || item.label !== "Study cards") : [];
 
-  return (
+  const header = (
     <header className={`site-header${pathname === "/" ? " national-header" : ""}`}>
       <div className="wrap header-inner">
         <div className="header-left">
@@ -206,6 +207,13 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
         </div>
       </div>
     </header>
+  );
+
+  return (
+    <>
+      {header}
+      <SiteAnnouncements userId={authStatus === "signed-in" ? me?.id ?? null : null} pathname={pathname} />
+    </>
   );
 }
 

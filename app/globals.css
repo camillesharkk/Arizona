@@ -67,11 +67,24 @@ body {
 .coming-soon-card { display: grid; gap: 12px; }
 .progress-track { height: 10px; background: var(--bg-2); border-radius: 999px; overflow: hidden; }
 .progress-track > span { display: block; height: 100%; background: var(--brand); }
-.message-dialog-backdrop {
-  position: fixed; inset: 0; z-index: 80; background: rgba(0, 0, 0, 0.32);
-  display: flex; align-items: flex-end; justify-content: center; padding: 12px;
+dialog.message-dialog {
+  inset: auto 0 12px;
+  width: min(520px, calc(100% - 24px));
+  max-height: min(90dvh, 760px);
+  margin: 0 auto;
+  overflow: auto;
+  color: var(--ink);
 }
-.message-dialog { width: min(520px, 100%); max-height: min(90dvh, 760px); overflow: auto; margin: 0; }
+dialog.message-dialog:modal { overscroll-behavior: contain; }
+dialog.message-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.32);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+.site-update-bar { border-block-end: 1px solid var(--line); background: var(--glass-surface); }
+.site-update-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 4px; }
+.site-update-inner > span { color: var(--muted); font-size: .875rem; font-weight: 600; }
+.site-update-inner .btn { min-height: 44px; padding-block: 6px; }
 .message-dialog-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
 .message-dialog-head h2 { margin: 0; }
 .message-dialog-x { border: 0; background: transparent; font-size: 28px; line-height: 1; cursor: pointer; min-width: 44px; min-height: 44px; }
@@ -81,7 +94,7 @@ body {
 @media (min-width: 360px) { .state-grid { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 900px) {
   .state-grid { grid-template-columns: repeat(4, 1fr); }
-  .message-dialog-backdrop { align-items: center; }
+  dialog.message-dialog { inset: 0; margin: auto; }
 }
 .state-menu { position: relative; flex: none; }
 .state-menu-btn {
@@ -1109,7 +1122,7 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
     padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px));
   }
   body:has(.home-exam-nav) .study-pager-nav,
-  body:has([role="dialog"][aria-modal="true"]) .study-pager-nav {
+  body:has(dialog:modal, [role="dialog"][aria-modal="true"]) .study-pager-nav {
     position: static;
     z-index: auto;
     border-top: 0;
