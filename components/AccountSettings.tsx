@@ -2,6 +2,7 @@
 
 import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { EnglishForm } from "@/components/EnglishForm";
 import { StudySettings } from "@/components/StudySettings";
 import { PERSONAL_USE_NOTICE } from "@/lib/pricing/copy";
 import { paths } from "@/lib/paths";
@@ -92,7 +93,7 @@ export function AccountSettings() {
   return (
     <>
     <div className="grid grid-2">
-      <form className="card" onSubmit={savePrefs}>
+      <EnglishForm className="card" onSubmit={savePrefs}>
         <h2>Profile</h2>
         <label className="field">
           Name
@@ -110,16 +111,16 @@ export function AccountSettings() {
         </label>
         <button className="btn btn-primary" type="submit">Save</button>
         {prefMsg && <p className="notice">{prefMsg}</p>}
-      </form>
+      </EnglishForm>
       <div className="grid">
-        <form className="card" onSubmit={changePass}>
+        <EnglishForm className="card" onSubmit={changePass}>
           <h2>Security</h2>
           <p className="lede" style={{ fontSize: "1rem" }}>Change password</p>
           <label className="field">Current<input type="password" value={currentPassword} onChange={(e) => setCurrent(e.target.value)} autoComplete="current-password" /></label>
           <label className="field">New<input type="password" minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" /></label>
           <button className="btn btn-primary" type="submit">Update password</button>
           {passMsg && <p className="notice">{passMsg}</p>}
-        </form>
+        </EnglishForm>
         <section className="card">
           <h2>Devices</h2>
           <p>Active devices {devices.length}</p>
@@ -130,7 +131,7 @@ export function AccountSettings() {
                 <strong>{d.deviceLabel}</strong>
                 {d.current ? " · This device" : ""}
                 <br />
-                <span className="notice">Last active: {new Date(d.lastSeenAt).toLocaleString()}</span>
+                <span className="notice">Last active: {new Date(d.lastSeenAt).toLocaleString("en-US")}</span>
               </p>
               {!d.current && (
                 <button className="btn btn-ghost" type="button" onClick={() => signOutDevice(d.id)}>

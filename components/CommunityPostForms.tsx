@@ -2,6 +2,7 @@
 
 import { useActionState, useCallback, useEffect, useId, useRef, useState } from "react";
 import { changeDiscussion, publishDiscussion } from "@/app/community-insights/actions";
+import { EnglishForm } from "@/components/EnglishForm";
 
 export function CommunityComposer({
   id, insightId, parentId, author, label,
@@ -18,7 +19,7 @@ export function CommunityComposer({
   const formId = useId();
   const needsTitle = insightId === null && parentId === null;
   return (
-    <form action={action} aria-labelledby={`${formId}-label`} className="community-composer">
+    <EnglishForm action={action} aria-labelledby={`${formId}-label`} className="community-composer">
       <p className="community-form-caption" id={`${formId}-label`}>{label}</p>
       <p className="community-meta" id={`${formId}-help`}>
         Posting publicly as {author}. Keep personal and exam identifying details private.
@@ -29,20 +30,20 @@ export function CommunityComposer({
       {needsTitle && (
         <label className="field">
           Title (required)
-          <input type="text" name="title" minLength={3} maxLength={100} required
+          <input type="text" name="title" minLength={3} maxLength={100} required data-required-message="Enter a title."
             value={title} onChange={(event) => setTitle(event.target.value)} />
         </label>
       )}
       <label className="field">
         Message (required)
-        <textarea name="body" minLength={3} maxLength={1600} rows={3} required aria-describedby={`${formId}-help`}
+        <textarea name="body" minLength={3} maxLength={1600} rows={3} required data-required-message="Enter a message." aria-describedby={`${formId}-help`}
           value={body} onChange={(event) => setBody(event.target.value)} />
       </label>
       <button className="btn btn-primary" disabled={pending} type="submit">
         {pending ? "Posting…" : needsTitle ? "Post discussion" : label}
       </button>
       {error && <p className="form-error" role="alert">{error}</p>}
-    </form>
+    </EnglishForm>
   );
 }
 

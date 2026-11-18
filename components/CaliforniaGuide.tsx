@@ -125,7 +125,7 @@ export function CaliforniaGuide({ state = "CA" }: { state?: "CA" | "HI" } = {}) 
             <p>No missed topics to import.</p>
           ) : (
             <>
-              <p>Finished {new Date(attempt.finishedAt).toLocaleString()}.</p>
+              <p>Finished {new Date(attempt.finishedAt).toLocaleString("en-US")}.</p>
               <ul>
                 {misses.map((item) => (
                   <li key={item.id}>{labelFor(item.id)} · {item.missed} missed</li>

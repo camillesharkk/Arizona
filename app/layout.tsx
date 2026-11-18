@@ -60,7 +60,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const path = (await headers()).get("x-pathname") || "";
   const state = resolveState(path, saved);
   return (
-    <html lang="en" data-state={state && state !== "AZ" ? state : undefined}>
+    <html lang="en-US" data-state={state && state !== "AZ" ? state : undefined}>
       <body>
         <EntryMotion />
         <GoogleAnalytics />

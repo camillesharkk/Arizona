@@ -10,7 +10,7 @@ import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import type { Difficulty } from "@/lib/types";
 import { QuestionBlock } from "@/components/ExamRunner";
-import { ExamNav, LoadingNote, QuestionJump } from "@/components/QuizChrome";
+import { ExamNav, LoadingNote, QuestionJump, RestartPracticeDialog } from "@/components/QuizChrome";
 import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress } from "@/lib/storage";
 import { clearSitting, readSitting, writeSitting } from "@/lib/sitting";
@@ -48,6 +48,7 @@ export function QuestionsClient({
   const [resumed, setResumed] = useState(false);
   const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [confirmRestart, setConfirmRestart] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [pastIndex, setPastIndex] = useState<number | null>(null);
   const [isPro, setIsPro] = useState(false);
@@ -347,7 +348,14 @@ export function QuestionsClient({
         <div className="row space">
           <span className="notice">Question {safeIdx + 1} of {active.length}{resumed ? " · Resumed" : ""}</span>
           <button className="btn btn-ghost" type="button" onClick={() => {
-            if (!window.confirm("Start a new set? This replaces the unfinished one.")) return;
+            cancelAutoAdvance();
+            setConfirmRestart(true);
+          }}>Start new</button>
+        </div>
+        {confirmRestart && (
+          <RestartPracticeDialog onClose={(restart) => {
+            setConfirmRestart(false);
+            if (!restart) return;
             clearSitting(sessionStorage, owner, modeKey, stateCode);
             setSeed(Math.floor(Math.random() * 1_000_000_000));
             setOrder(null);
@@ -360,8 +368,8 @@ export function QuestionsClient({
             recordedIds.current = [];
             attemptIds.current = {};
             doneOnce.current = false;
-          }}>Start new</button>
-        </div>
+          }} />
+        )}
         <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
           <span style={{ width: `${((safeIdx + 1) / active.length) * 100}%` }} />
         </div>

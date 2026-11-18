@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { EnglishForm } from "@/components/EnglishForm";
 import { paths } from "@/lib/paths";
 import { invalidateAccountRead } from "@/lib/client-account";
 import { PasswordField } from "@/components/PasswordField";
@@ -191,7 +192,7 @@ export function AuthForm({
   if (!ready) return <><LoadingNote text="Loading sign-in…" /><noscript><p>Enable JavaScript to sign in and save your practice.</p></noscript></>;
 
   return (
-    <form className="card clarity-mask" method="post" action={`/api/auth/${mode}/`} onSubmit={submit}>
+    <EnglishForm className="card clarity-mask" method="post" action={`/api/auth/${mode}/`} onSubmit={submit}>
       {(mode === "login" || mode === "register" || mode === "forgot") && (
         <label className="field">
           Email
@@ -226,7 +227,7 @@ export function AuthForm({
       {mode === "reset" && !initialToken && (
         <label className="field">
           Reset token
-          <input value={token} onChange={(e) => setToken(e.target.value)} required />
+          <input value={token} onChange={(e) => setToken(e.target.value)} required data-required-message="Enter your reset token." />
         </label>
       )}
       {mode === "reset" && initialToken && <input type="hidden" value={token} readOnly />}
@@ -306,6 +307,6 @@ export function AuthForm({
           </>
         )}
       </p>
-    </form>
+    </EnglishForm>
   );
 }

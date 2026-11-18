@@ -290,11 +290,11 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
           ) : null}
           {view.yesterdayWaiting.length ? (
             <p className="notice">
-              {view.yesterdayWaiting.length} missed {view.yesterdayWaiting.length === 1 ? "question is" : "questions are"} not due until {new Date(view.yesterdayWaiting[0].nextReviewAt).toLocaleString()}.
+              {view.yesterdayWaiting.length} missed {view.yesterdayWaiting.length === 1 ? "question is" : "questions are"} not due until {new Date(view.yesterdayWaiting[0].nextReviewAt).toLocaleString("en-US")}.
             </p>
           ) : null}
           {!reviewCard && !reviewQuestions.length ? (
-            <p>No reviews due today.{view.nextReviewAt ? ` Next review ${new Date(view.nextReviewAt).toLocaleString()}.` : ""}</p>
+            <p>No reviews due today.{view.nextReviewAt ? ` Next review ${new Date(view.nextReviewAt).toLocaleString("en-US")}.` : ""}</p>
           ) : null}
           {reviewCard ? (
             <>
@@ -345,7 +345,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
               <li key={exam.id}>
                 <strong>{exam.label}</strong>
                 {" · "}
-                {new Date(exam.at).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+                {new Date(exam.at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
                 {" · "}
                 {exam.correct}/{exam.total}
                 {exam.wrong > 0 ? <> · <Link href={`${site.mistakes}?attempt=${exam.id}`}>Review My Mistakes ({exam.wrong})</Link></> : " · No mistakes"}
@@ -376,7 +376,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
                 {item.prompt ?? "Question unavailable for review"}
                 {" · "}
                 {item.wrongCount > 0 ? `Wrong ${item.wrongCount}` : item.previousWrongCount > 0 ? "Missed an earlier version" : "Added"}
-                {item.mastered ? " · Mastered" : item.prompt && item.nextReviewAt ? ` · ${item.due ? "Due" : "Next"} ${new Date(item.nextReviewAt).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}` : ""}
+                {item.mastered ? " · Mastered" : item.prompt && item.nextReviewAt ? ` · ${item.due ? "Due" : "Next"} ${new Date(item.nextReviewAt).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}` : ""}
               </li>
             ))}
           </ul>

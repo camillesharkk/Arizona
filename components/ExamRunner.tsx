@@ -34,7 +34,7 @@ import { AccountInvite } from "@/components/AccountInvite";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { AnswerResult } from "@/components/AnswerResult";
 import { MessageDialog } from "@/components/MessageDialog";
-import { ExamNav, FlagIcon, LoadingNote, QuestionJump } from "@/components/QuizChrome";
+import { ExamNav, FlagIcon, LoadingNote, QuestionJump, RestartPracticeDialog } from "@/components/QuizChrome";
 import { paths } from "@/lib/paths";
 import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
 import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
@@ -159,6 +159,7 @@ export function ExamRunner({
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [unansweredToConfirm, setUnansweredToConfirm] = useState(0);
+  const [confirmRestart, setConfirmRestart] = useState(false);
   const attemptIds = useRef<Record<string, string>>({});
   const viewOnly = useRef(false);
   const reviewScroll = useRef(0);
@@ -1091,7 +1092,6 @@ export function ExamRunner({
 
   function startNew() {
     if (!owner) return;
-    if (!window.confirm("Start a new set? This replaces the unfinished one.")) return;
     cancelAutoAdvance();
     clearSitting(sessionStorage, owner, modeKey, stateCode);
     const seed = Math.floor(Math.random() * 1_000_000_000);
@@ -1137,7 +1137,10 @@ export function ExamRunner({
         </span>
         <span className="row">
           {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{(onHi || stateCode === "CT" || stateCode === "NC" || stateCode === "IN") && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
-          <button className="btn btn-ghost" type="button" onClick={startNew}>Start new</button>
+          <button className="btn btn-ghost" type="button" onClick={() => {
+            cancelAutoAdvance();
+            setConfirmRestart(true);
+          }}>Start new</button>
         </span>
       </div>
       <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
@@ -1191,6 +1194,12 @@ export function ExamRunner({
           )
         }
       />
+      {confirmRestart && (
+        <RestartPracticeDialog onClose={(restart) => {
+          setConfirmRestart(false);
+          if (restart) startNew();
+        }} />
+      )}
       {unansweredToConfirm > 0 ? (
         <MessageDialog title="Submit with unanswered questions?" onClose={() => setUnansweredToConfirm(0)}>
           <p>You have {unansweredToConfirm} unanswered {unansweredToConfirm === 1 ? "question" : "questions"}.</p>

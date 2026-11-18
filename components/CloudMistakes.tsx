@@ -144,7 +144,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
     if (local && local.owner === userId) {
       return {
         ids: local.wrongIds,
-        summary: `This practice · ${new Date(local.finishedAt).toLocaleString()} · ${local.correctIds.filter(id => !local.unscoredIds?.includes(id)).length}/${local.questionIds.length - (local.unscoredIds?.length || 0)} · ${local.wrongIds.length} missed`,
+        summary: `This practice · ${new Date(local.finishedAt).toLocaleString("en-US")} · ${local.correctIds.filter(id => !local.unscoredIds?.includes(id)).length}/${local.questionIds.length - (local.unscoredIds?.length || 0)} · ${local.wrongIds.length} missed`,
         note: "",
       };
     }
@@ -203,7 +203,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
           return [{ ...row, savedForReview: saved, dailyStudyOnly: saved && !inNotebook, nextReviewAt: data.nextReviewAt }];
         }));
         setActionMessage(saved
-          ? `${inNotebook ? "Added to Daily Study and Wrong Answers." : "Added to Daily Study."}${data.nextReviewAt ? ` Next review ${new Date(data.nextReviewAt).toLocaleString()}.` : ""}`
+          ? `${inNotebook ? "Added to Daily Study and Wrong Answers." : "Added to Daily Study."}${data.nextReviewAt ? ` Next review ${new Date(data.nextReviewAt).toLocaleString("en-US")}.` : ""}`
           : "Removed from the review plan.");
         publishReviewSave(questionId, saved);
       } else {
@@ -437,10 +437,10 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         <div className="card import-panel">
           <h2>Import Mistakes</h2>
           {!importAttempt ? <p>No finished practice on this account can be imported.</p> : importAttempt.wrongIds.length === 0 ? (
-            <p>No mistakes to import. Finished {new Date(importAttempt.finishedAt).toLocaleString()} with {importAttempt.correctIds.length} correct.</p>
+            <p>No mistakes to import. Finished {new Date(importAttempt.finishedAt).toLocaleString("en-US")} with {importAttempt.correctIds.length} correct.</p>
           ) : (
             <>
-              <p>Finished {new Date(importAttempt.finishedAt).toLocaleString()}. {importAttempt.wrongIds.length} missed. {importAttempt.wrongIds.filter((id) => stats.some((row) => row.questionId === id)).length} already saved.</p>
+              <p>Finished {new Date(importAttempt.finishedAt).toLocaleString("en-US")}. {importAttempt.wrongIds.length} missed. {importAttempt.wrongIds.filter((id) => stats.some((row) => row.questionId === id)).length} already saved.</p>
               <button className="btn btn-primary" type="button" disabled={importBusy} onClick={() => void importMistakes()}>{importBusy ? "Saving…" : "Import Mistakes"}</button>
             </>
           )}
@@ -456,7 +456,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
           <button className="btn btn-primary" type="button" onClick={() => { setReady(false); load(); }}>Retry</button>
         </div>
       ) : null}
-      {ready && due.length === 0 && nextReview ? <p className="notice">Next review {new Date(nextReview).toLocaleString()}.</p> : null}
+      {ready && due.length === 0 && nextReview ? <p className="notice">Next review {new Date(nextReview).toLocaleString("en-US")}.</p> : null}
       {phase === "empty" ? (
         <div className="card">
           <p>{emptyCopy}</p>
@@ -497,7 +497,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
             <h3>{q.question_text}</h3>
             <p>
               {s.wrongCount > 0 ? `Wrong ${s.wrongCount} ${s.wrongCount === 1 ? "time" : "times"}` : "Saved for review"}
-              {s.nextReviewAt ? ` · Next review ${new Date(s.nextReviewAt).toLocaleString()}` : ""}
+              {s.nextReviewAt ? ` · Next review ${new Date(s.nextReviewAt).toLocaleString("en-US")}` : ""}
             </p>
             <MistakeActions
               {...mistakeTargets(stateCode, q)}

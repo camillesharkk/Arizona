@@ -8,6 +8,7 @@ import { fetchAccount } from "@/lib/client-account";
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
+import { EnglishForm } from "@/components/EnglishForm";
 import { paths } from "@/lib/paths";
 import {
   CREDIT_RESTORE_NOTICE,
@@ -422,10 +423,19 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
         )
       ) : null}
       {showCheckoutForm && (
-        <form onSubmit={go}>
+        <EnglishForm onSubmit={go}>
           {signedIn && (
             <div className="policy-accept">
-              <input id={policyId} type="checkbox" required checked={policy} onChange={(e) => setPolicy(e.target.checked)} />
+              <input
+                id={policyId}
+                type="checkbox"
+                required
+                data-required-message={lifetime
+                  ? "Check the box to accept the Lifetime Pro exam guarantee terms before continuing."
+                  : "Check the box to confirm you understand the refund and promotion terms before continuing."}
+                checked={policy}
+                onChange={(e) => setPolicy(e.target.checked)}
+              />
               <span>
                 <label htmlFor={policyId}>{lifetime ? "I accept the Lifetime Pro exam guarantee terms." : "I understand the refund and promotion terms."}</label>{" "}
                 <a href={termsHref}>View refund policy</a>
@@ -435,7 +445,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
           <button className="btn btn-primary pricing-cta" type="submit" disabled={busy || signedIn !== true || (lifetime && !preview)}>
             {busy ? "Working…" : ctaLabel || checkoutLabel}
           </button>
-        </form>
+        </EnglishForm>
       )}
       {belowCta}
       <p className="notice">

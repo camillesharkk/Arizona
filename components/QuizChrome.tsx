@@ -1,3 +1,17 @@
+import { MessageDialog } from "@/components/MessageDialog";
+
+export function RestartPracticeDialog({ onClose }: { onClose: (restart: boolean) => void }) {
+  return (
+    <MessageDialog title="Start a new set?" onClose={(result) => onClose(result === "restart")}>
+      <p>Starting a new set will replace this unfinished one.</p>
+      <form className="row message-dialog-close" method="dialog">
+        <button className="btn btn-ghost" type="submit" value="keep" data-dialog-autofocus>Keep practicing</button>
+        <button className="btn btn-primary" type="submit" value="restart">Start new set</button>
+      </form>
+    </MessageDialog>
+  );
+}
+
 export function BookmarkIcon() {
   return (
     <svg className="flag-icon" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">

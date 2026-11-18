@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { EnglishForm } from "@/components/EnglishForm";
 import { resetAnalyticsUser } from "@/lib/analytics";
 import { currentEmail, loginAccount, logout, registerAccount, subscribeAuth } from "@/lib/account";
 import { loadProgress, subscribeProgress } from "@/lib/storage";
@@ -94,7 +95,7 @@ export function AccountClient() {
 
   return (
     <div className="grid grid-2">
-      <form className="card" onSubmit={submit}>
+      <EnglishForm className="card" onSubmit={submit}>
         <div className="filter-row">
           <button className={`chip ${mode === "register" ? "on" : ""}`} type="button" onClick={() => setMode("register")}>
             Create Free Account
@@ -128,7 +129,7 @@ export function AccountClient() {
         <button className="btn btn-primary" type="submit" disabled={busy}>
           {busy ? "Working…" : mode === "register" ? "Create Free Account" : "Sign in"}
         </button>
-      </form>
+      </EnglishForm>
       <aside className="card">
         <h3>What a free account keeps</h3>
         <ul>

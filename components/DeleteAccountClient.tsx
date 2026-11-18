@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { EnglishForm } from "@/components/EnglishForm";
 import { paths } from "@/lib/paths";
 import { PasswordField } from "@/components/PasswordField";
 
@@ -57,7 +58,7 @@ export function DeleteAccountClient({
       </ul>
       {arizonaPro && planExpiresAt ? (
         <p>
-          Your Pro access is currently active until: <strong>{new Date(planExpiresAt).toLocaleString()}</strong>
+          Your Pro access is currently active until: <strong>{new Date(planExpiresAt).toLocaleString("en-US")}</strong>
           <br />
           Deleting your account will end access to it.
         </p>
@@ -77,7 +78,7 @@ export function DeleteAccountClient({
         If you signed in after a password reset and no longer know your current password, use Forgot Password to set a
         new password first, then return here.
       </p>
-      <form onSubmit={submit}>
+      <EnglishForm onSubmit={submit}>
         <PasswordField
           label="Current password"
           name="password"
@@ -100,7 +101,7 @@ export function DeleteAccountClient({
         <button className="btn btn-danger" type="submit" disabled={busy || confirmation !== "DELETE"}>
           {busy ? "Deleting…" : "Permanently delete account"}
         </button>
-      </form>
+      </EnglishForm>
     </div>
   );
 }

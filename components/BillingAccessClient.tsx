@@ -89,14 +89,14 @@ export function BillingAccessClient() {
           <section className="card" key={o.orderId}>
             <h2>{lifetime ? "Lifetime Pro" : "Arizona Notary Exam Prep Pro"}</h2>
             <p>
-              {o.amount} · {o.status} · paid {new Date(o.paidAt).toLocaleString()}
+              {o.amount} · {o.status} · paid {new Date(o.paidAt).toLocaleString("en-US")}
             </p>
             {lifetime ? (
               <>
                 <p>Order number: {o.orderId}</p>
                 <h3>Lifetime Pro Exam Guarantee</h3>
                 {o.status === "refunded" ? (
-                  <p>Refunded {o.refundedAt ? new Date(o.refundedAt).toLocaleString() : ""}</p>
+                  <p>Refunded {o.refundedAt ? new Date(o.refundedAt).toLocaleString("en-US") : ""}</p>
                 ) : o.status === "paid" ? (
                   <p>The {formatUsd(EXAM_GUARANTEE_CENTS)} guarantee fee is refundable after a qualifying failed official exam. <Link href="/contact/?topic=lifetime-exam-refund">Contact support</Link> or <Link href="/legal/refund/#lifetime">read the Lifetime refund policy</Link>.</p>
                 ) : null}
@@ -110,7 +110,7 @@ export function BillingAccessClient() {
           {o.promotions.creditCents > 0 && <p className="notice">{CREDIT_RESTORE_NOTICE}</p>}
           <h3>Refund eligibility</h3>
           {o.status === "refunded" ? (
-            <p>Refunded {o.refundedAt ? new Date(o.refundedAt).toLocaleString() : ""}</p>
+            <p>Refunded {o.refundedAt ? new Date(o.refundedAt).toLocaleString("en-US") : ""}</p>
           ) : o.eligibility.eligible ? (
             <>
               <p>
@@ -126,7 +126,7 @@ export function BillingAccessClient() {
               <p>No longer eligible</p>
               <p>
                 Pro access first used:{" "}
-                {o.eligibility.usedAt ? new Date(o.eligibility.usedAt).toLocaleString() : "recorded"}
+                {o.eligibility.usedAt ? new Date(o.eligibility.usedAt).toLocaleString("en-US") : "recorded"}
               </p>
             </>
           ) : o.eligibility.reason === "expired" ? (

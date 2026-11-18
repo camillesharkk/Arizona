@@ -50,6 +50,7 @@ export function PasswordField({
           name={name}
           type={visible ? "text" : "password"}
           required
+          data-required-message={name === "password_confirm" ? "Confirm your password." : "Enter your password."}
           minLength={8}
           value={value}
           onChange={(e) => onChange(e.target.value)}

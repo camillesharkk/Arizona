@@ -94,7 +94,7 @@ export function CaQuickNext({
         ) : null}
         {band === "perfect" ? <a className="btn btn-ghost" href={paths.studyCards}>Explore Study Cards</a> : null}
         <a className="btn btn-ghost" href={dailyHref}>Open Daily Study</a>
-        {nextReviewAt ? <span className="notice">Next review {new Date(nextReviewAt).toLocaleString()}.</span> : null}
+        {nextReviewAt ? <span className="notice">Next review {new Date(nextReviewAt).toLocaleString("en-US")}.</span> : null}
       </div>
       {fullLocked && !fullResume ? <p className="notice">{limitNote}</p> : null}
     </div>

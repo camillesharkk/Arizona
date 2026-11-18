@@ -7,6 +7,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ExamRunner } from "@/components/ExamRunner";
+import { RestartPracticeDialog } from "@/components/QuizChrome";
 import { examConfig } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
@@ -37,6 +38,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   const [authError, setAuthError] = useState(false);
   const [authTry, setAuthTry] = useState(0);
   const [pendingStart, setPendingStart] = useState<"" | "quick" | "full" | "weak">("");
+  const [restartMode, setRestartMode] = useState<"quick" | "full" | "weak" | null>(null);
   const [owner, setOwner] = useState("guest");
   const [openModes, setOpenModes] = useState<Record<string, boolean>>({});
   const anonFullThisVisit = useRef(false);
@@ -159,7 +161,6 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   }
 
   function beginNew(next: "quick" | "full" | "weak") {
-    if (openModes[next] && !window.confirm("Start a new set? This replaces the unfinished one.")) return;
     clearSitting(sessionStorage, owner, next, stateCode);
     setOpenModes((current) => ({ ...current, [next]: false }));
     if (next === "full") startFull();
@@ -246,7 +247,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
                 {openModes[id] ? (
                   <div className="row">
                     <button className="btn btn-primary" type="button" onClick={() => resume(id)}>Resume</button>
-                    <button className="btn btn-ghost" type="button" onClick={() => beginNew(id)}>Start new</button>
+                    <button className="btn btn-ghost" type="button" onClick={() => setRestartMode(id)}>Start new</button>
                   </div>
                 ) : (
                   <>
@@ -268,6 +269,12 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
         })}
         {stateCode === "IN" ? <div className="card"><h3>Topic Practice</h3><p>Choose a topic. Each set shows the number of questions available to your plan.</p>{pack?.topics.map(topic => <p key={topic.id}><Link href={`${site.practice}?mode=practice&area=${topic.id}`}>{topic.label}</Link></p>)}</div> : null}
       </div>
+      {restartMode && (
+        <RestartPracticeDialog onClose={(restart) => {
+          setRestartMode(null);
+          if (restart) beginNew(restartMode);
+        }} />
+      )}
       </>
     );
   }
