@@ -6,7 +6,7 @@ import { prepNavigation } from '@/lib/prep-navigation';
 
 import { fetchAccount } from "@/lib/client-account";
 
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
 import {
@@ -15,9 +15,11 @@ import {
   REFUND_POLICY_SUMMARY,
 } from "@/lib/pricing/copy";
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
+import { EXAM_GUARANTEE_CENTS, LIFETIME_ACCESS_CENTS, LIFETIME_TOTAL_CENTS } from "@/lib/pricing/lifetime";
+import { LIFETIME_PRO_PRODUCT_CODE } from "@/lib/pro-products";
 import { formatUsd } from "@/lib/pricing/money";
-import { pauseClarityRecording, PRO_ITEM_ID, trackAnalyticsEvent, trackBeginCheckout } from "@/lib/analytics";
-import { paddleCheckoutFallback } from "@/lib/billing/paddle-public";
+import { pauseClarityRecording, pendingAnalyticsCheckout, PRO_ITEM_ID, rememberPendingCheckout, trackAnalyticsEvent, trackBeginCheckout, type CheckoutProductCode } from "@/lib/analytics";
+import { paddleCheckoutFallback, paddleSuccessUrl } from "@/lib/billing/paddle-public";
 
 type Breakdown = {
   listPriceCents: number;
@@ -45,6 +47,7 @@ type Breakdown = {
 };
 
 type Preview = {
+  productCode?: string;
   newcomerOffer: { eligible: boolean; expiresAt: string | null; redeemed: boolean };
   referralDiscount: { eligible: boolean; status: string | null };
   referralCredits: { available: number; maxApplicable: number };
@@ -64,12 +67,25 @@ function formatRemaining(ms: number) {
   return d > 0 ? `${d}d ${clock}` : clock;
 }
 
-export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_60d", sourceState }: { belowCta?: ReactNode; ctaLabel?: string; productCode?: "az_exam_pro_60d"; sourceState?: StateCode }) {
-  const returnPath = isFreeState(sourceState) ? prepNavigation[sourceState].paths.pricing : null;
+export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, sourceState, checkoutAvailable = true, lifetimePage = false }: {
+  belowCta?: ReactNode;
+  ctaLabel?: string;
+  productCode?: CheckoutProductCode;
+  sourceState?: StateCode;
+  checkoutAvailable?: boolean;
+  lifetimePage?: boolean;
+}) {
+  const lifetime = productCode === LIFETIME_PRO_PRODUCT_CODE;
+  const timedReturnPath = isFreeState(sourceState) ? prepNavigation[sourceState].paths.pricing : null;
+  const returnPath = lifetime ? `${lifetimePage ? "/lifetime/" : paths.pricing}#lifetime-checkout` : timedReturnPath;
+  const termsHref = lifetime && !lifetimePage ? "#lifetime-refund-policy" : "#refund-policy";
   const registerHref = returnPath ? `${paths.register}?next=${encodeURIComponent(returnPath)}` : paths.register;
   const loginHref = returnPath ? `${paths.login}?next=${encodeURIComponent(returnPath)}` : paths.login;
   const [preview, setPreview] = useState<Preview | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
+  const [ownsLifetime, setOwnsLifetime] = useState(false);
+  const [hasPendingLifetime, setHasPendingLifetime] = useState(false);
+  const [checkoutClosed, setCheckoutClosed] = useState(false);
   const [applyCredit, setApplyCredit] = useState(false);
   const [policy, setPolicy] = useState(false);
   const [err, setErr] = useState("");
@@ -78,31 +94,53 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
   const [now, setNow] = useState(() => Date.now());
   const [dismissed, setDismissed] = useState(false);
   const [hideModal, setHideModal] = useState(false);
+  const submitting = useRef(false);
+  const policyId = useId();
 
   const load = useCallback(async (credit: boolean) => {
-    const me = await fetchAccount().then((r) => r.json()).catch(() => ({ user: null }));
+    const me = await fetchAccount().then((r) => {
+      if (!r.ok) throw new Error("Account unavailable");
+      return r.json();
+    });
     if (!me.user) {
       setSignedIn(false);
       setPreview(null);
+      setOwnsLifetime(false);
       return;
     }
     setSignedIn(true);
-    const data = await fetch(`/api/pricing/preview/?applyCredit=${credit ? "1" : "0"}`).then((r) => r.json());
-    if (data.breakdown) setPreview(data);
-  }, []);
+    const owned = me.user.lifetimePro === true || me.lifetimePro === true;
+    setOwnsLifetime(owned);
+    if (owned || (lifetime && !checkoutAvailable)) return;
+    const res = await fetch(`/api/pricing/preview/?applyCredit=${credit ? "1" : "0"}&productCode=${productCode}`, { cache: "no-store" });
+    const data: Preview & { error?: string } = await res.json();
+    if (lifetime && data.error === "LIFETIME_PRODUCT_UNAVAILABLE") {
+      setCheckoutClosed(true);
+      return;
+    }
+    if (!res.ok || !data.breakdown || (lifetime && (data.productCode !== productCode || data.breakdown.finalPriceCents !== LIFETIME_TOTAL_CENTS))) {
+      throw new Error("Price unavailable");
+    }
+    setPreview(data);
+  }, [checkoutAvailable, lifetime, productCode]);
 
   useEffect(() => {
-    setDismissed(window.localStorage.getItem(DISMISS_KEY) === "1");
-  }, []);
+    if (lifetime) {
+      setHasPendingLifetime(Boolean(pendingAnalyticsCheckout(LIFETIME_PRO_PRODUCT_CODE)));
+      return;
+    }
+    try { setDismissed(window.localStorage.getItem(DISMISS_KEY) === "1"); } catch { /* optional display preference */ }
+  }, [lifetime]);
 
   useEffect(() => {
-    load(applyCredit);
+    void load(applyCredit).catch(() => setErr("Checkout information couldn't be loaded. Please try again."));
   }, [applyCredit, load]);
 
   useEffect(() => {
+    if (lifetime) return;
     const t = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(t);
-  }, []);
+  }, [lifetime]);
 
   const remainingMs = useMemo(() => {
     const exp = preview?.breakdown.newcomerExpiresAt;
@@ -112,7 +150,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
 
   useEffect(() => {
     if (preview?.breakdown.newcomerEligible && remainingMs <= 0) {
-      load(applyCredit);
+      void load(applyCredit).catch(() => undefined);
     }
   }, [remainingMs, preview, applyCredit, load]);
 
@@ -121,7 +159,6 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
       PADDLE_OVERLAY_SETTINGS,
       loadBrowserPaddle,
       paddleBrowserConfig,
-      paddleSuccessUrl,
       watchPaddleCheckout,
     } = await import("@/lib/billing/paddle-browser");
     const cfg = paddleBrowserConfig();
@@ -131,125 +168,138 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
     if (!paddle) return { ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" };
     return await new Promise<{ ok: true } | { ok: false; error: string }>((resolve) => {
       let settled = false;
+      let timer: number | undefined;
       const finish = (result: { ok: true } | { ok: false; error: string }) => {
         if (settled) return;
         settled = true;
+        window.clearTimeout(timer);
         stop();
         resolve(result);
       };
       const stop = watchPaddleCheckout((event) => {
+        if (event.transactionId && event.transactionId !== transactionId) return;
         if (event.name === "checkout.loaded") finish({ ok: true });
         else if (event.name === "checkout.error" || event.name === "checkout.failed") {
           finish({ ok: false, error: "CHECKOUT_OPEN_FAILED" });
         }
       });
-      paddle.Checkout.open({
-        transactionId,
-        settings: {
-          ...PADDLE_OVERLAY_SETTINGS,
-          successUrl: paddleSuccessUrl(window.location.origin),
-        },
-      });
-      window.setTimeout(() => finish({ ok: false, error: "CHECKOUT_OPEN_FAILED" }), 8000);
+      timer = window.setTimeout(() => finish({ ok: false, error: "CHECKOUT_OPEN_FAILED" }), 8000);
+      try {
+        paddle.Checkout.open({
+          transactionId,
+          settings: {
+            ...PADDLE_OVERLAY_SETTINGS,
+            successUrl: paddleSuccessUrl(window.location.origin, lifetime),
+          },
+        });
+      } catch {
+        finish({ ok: false, error: "CHECKOUT_OPEN_FAILED" });
+      }
     });
   }
 
   async function finishPaddle(
-    data: { transactionId?: string; checkoutUrl?: string | null; url?: string; error?: string },
+    data: { transactionId?: string; checkoutUrl?: string | null; url?: string; error?: string; productCode?: string; finalPriceCents?: number; paymentPending?: boolean },
     breakdown: { finalPriceCents?: number; newcomerApplied?: boolean; referralApplied?: boolean; creditApplied?: boolean } | null
   ) {
+    if (data.error === "lifetime_already_owned") {
+      await load(false);
+      return;
+    }
+    if (data.error === "LIFETIME_PRODUCT_UNAVAILABLE") {
+      setCheckoutClosed(true);
+      return;
+    }
     if (data.error === "PRICE_CHANGED") {
       setPriceChanged(true);
       await load(applyCredit);
-      setBusy(false);
       return;
     }
     if (data.transactionId) {
-      trackBeginCheckout(breakdown, String(data.transactionId));
-      const fallback = paddleCheckoutFallback(data.checkoutUrl, String(data.transactionId), window.location.host);
+      if (lifetime && (data.productCode !== productCode || data.finalPriceCents !== LIFETIME_TOTAL_CENTS || !/^txn_[a-z0-9]+$/i.test(data.transactionId))) throw new Error("Checkout mismatch");
+      if (lifetime && data.paymentPending) {
+        rememberPendingCheckout(data.transactionId, productCode);
+        window.location.assign(paddleSuccessUrl(window.location.origin, true));
+        return;
+      }
+      trackBeginCheckout(breakdown, data.transactionId, productCode);
+      if (lifetime) setHasPendingLifetime(true);
+      const fallback = paddleCheckoutFallback(data.checkoutUrl, data.transactionId, window.location.host);
       if (fallback) {
         window.location.assign(fallback);
         return;
       }
-      const overlay = await openPaddleOverlay(String(data.transactionId));
+      const overlay = await openPaddleOverlay(data.transactionId);
       if (!overlay.ok) {
         setErr("Checkout couldn't be opened. Please try again.");
-        setBusy(false);
-        return;
       }
-      setBusy(false);
       return;
     }
-    if (!data.url) {
+    if (lifetime || !data.url) {
       setErr(
         data.error === "checkout_in_progress"
-          ? "Checkout is already starting. Please try again."
-          : data.error || "Could not start checkout"
+          ? "Checkout is already starting. Please try again to continue."
+          : "Checkout couldn't be started. Please try again."
       );
-      setBusy(false);
       return;
     }
-    trackBeginCheckout(breakdown);
+    trackBeginCheckout(breakdown, undefined, productCode);
     window.location.href = data.url;
   }
 
-  async function go() {
-    if (!policy) {
-      setErr("Please confirm the refund and promotion terms before checkout.");
-      return;
-    }
-    trackAnalyticsEvent("checkout_click", { product_code: PRO_ITEM_ID, plan: "free", entry_point: "pricing" });
+  async function go(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!policy || submitting.current || signedIn !== true || ownsLifetime || !checkoutAvailable || checkoutClosed || (lifetime && !preview)) return;
+    submitting.current = true;
+    trackAnalyticsEvent("checkout_click", { product_code: productCode, plan: "free", entry_point: "pricing" });
     setBusy(true);
     setErr("");
     setPriceChanged(false);
-    const quoteRes = await fetch("/api/pricing/quote/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productCode, applyCredit, policyAccepted: true }),
-    });
-    const quote = await quoteRes.json();
-    if (quoteRes.status === 409 || quote.error === "PRICE_CHANGED") {
-      setPriceChanged(true);
-      await load(applyCredit);
-      setBusy(false);
-      return;
-    }
-    if (!quoteRes.ok) {
-      setErr(quote.error || "Could not create price quote");
-      setBusy(false);
-      return;
-    }
-    const res = await fetch("/api/billing/checkout/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ quoteId: quote.quoteId, sourceState }),
-    });
-    let data = await res.json();
-    if (res.status === 409 && data.error === "promotion_checkout_in_progress") {
-      setErr("A checkout with this one-time discount is already open. Continue the existing checkout or contact support.");
-      setBusy(false);
-      return;
-    }
-    if (res.status === 409 && data.error === "checkout_in_progress") {
-      const retry = await fetch("/api/billing/checkout/", {
+    try {
+      const quoteRes = await fetch("/api/pricing/quote/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productCode, applyCredit: !lifetime && applyCredit, policyAccepted: true }),
+      });
+      const quote = await quoteRes.json();
+      if (!quoteRes.ok) {
+        if (quoteRes.status === 401) setSignedIn(false);
+        else await finishPaddle(quote, null);
+        return;
+      }
+      if (lifetime && quote.breakdown?.finalPriceCents !== LIFETIME_TOTAL_CENTS) throw new Error("Checkout price mismatch");
+      const createCheckout = () => fetch("/api/billing/checkout/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ quoteId: quote.quoteId, sourceState }),
       });
-      data = await retry.json();
-      if (!retry.ok && retry.status !== 409) {
-        setErr(data.error || "Could not start checkout");
-        setBusy(false);
+      let res = await createCheckout();
+      let data = await res.json();
+      if (res.status === 409 && data.error === "promotion_checkout_in_progress") {
+        setErr("A checkout with this one-time discount is already open. Continue the existing checkout or contact support.");
         return;
       }
+      if (res.status === 409 && data.error === "checkout_in_progress") {
+        res = await createCheckout();
+        data = await res.json();
+      }
+      if (res.status === 401) setSignedIn(false);
+      else await finishPaddle(data, quote.breakdown);
+    } catch {
+      setErr("Checkout couldn't be started. Please try again.");
+    } finally {
+      submitting.current = false;
+      setBusy(false);
     }
-    await finishPaddle(data, quote.breakdown);
   }
 
-  const b = preview?.breakdown;
-  const guestPrice = formatUsd(STANDARD_PRICE_CENTS);
+  const b = lifetime ? undefined : preview?.breakdown;
+  const guestPrice = formatUsd(lifetime ? LIFETIME_TOTAL_CENTS : STANDARD_PRICE_CENTS);
   const ctaPrice = b ? b.display.final : guestPrice;
   const isGuest = signedIn === false;
+  const unavailable = lifetime && (!checkoutAvailable || checkoutClosed);
+  const checkoutLabel = lifetime ? `${hasPendingLifetime ? "Continue Checkout" : "Get Lifetime Pro"} — ${ctaPrice}` : `Get 60-Day Pro — ${ctaPrice}`;
+  const showCheckoutForm = !isGuest && !unavailable && !ownsLifetime;
   const savingsCents = b ? b.listPriceCents - b.finalPriceCents : 0;
   const showSave = !isGuest && Boolean(b) && savingsCents > 0;
   const showNewcomerPromo = Boolean(signedIn && b?.newcomerApplied && !dismissed);
@@ -258,7 +308,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
 
   return (
     <div className="pricing-buy clarity-mask">
-      {signedIn && (preview?.referralCredits.available || 0) > 0 && (preview?.referralCredits.maxApplicable || 0) > 0 && (
+      {!lifetime && signedIn && (preview?.referralCredits.available || 0) > 0 && (preview?.referralCredits.maxApplicable || 0) > 0 && (
         <label className="notice credit-apply">
           <input type="checkbox" checked={applyCredit} onChange={(e) => setApplyCredit(e.target.checked)} />{" "}
           You have {preview?.referralCredits.available} Referral Credit
@@ -292,7 +342,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
         )}
         <div className="price-hero">
           <div>
-            <p className="price-hero-label">{isGuest || !b ? "YOUR PRICE" : "YOUR PRICE TODAY"}</p>
+            <p className="price-hero-label">{lifetime ? "STANDARD PRICE" : (isGuest || !b ? "YOUR PRICE" : "YOUR PRICE TODAY")}</p>
             <p className="price-today" aria-label={`Your price today ${ctaPrice}`}>
               {ctaPrice}
             </p>
@@ -302,8 +352,14 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
           )}
         </div>
         <dl className="price-breakdown">
-          <dt>Standard price</dt>
-          <dd>{b?.display.standard || guestPrice}</dd>
+          {lifetime ? (
+            <>
+              <dt>Lifetime Pro access</dt><dd>{formatUsd(LIFETIME_ACCESS_CENTS)}</dd>
+              <dt>Official exam guarantee</dt><dd>{formatUsd(EXAM_GUARANTEE_CENTS)}</dd>
+            </>
+          ) : (
+            <><dt>Standard price</dt><dd>{b?.display.standard || guestPrice}</dd></>
+          )}
           {signedIn && b?.newcomerApplied && b.display.newcomer && (
             <>
               <dt>New Member price</dt>
@@ -329,64 +385,72 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = "az_exam_pro_
           </p>
         )}
         <p className="price-assurance">
-          One-time payment · 60-day full access · No subscription · No automatic renewal
+          {lifetime ? "One-time payment · All available states · No expiration" : "One-time payment · 60-day full access · No subscription · No automatic renewal"}
         </p>
       </section>
 
-      {signedIn && (
-        <label className="policy-accept">
-          <input type="checkbox" checked={policy} onChange={(e) => setPolicy(e.target.checked)} />
-          <span>
-            I understand the refund and promotion terms.{" "}
-            <a href="#refund-policy">View refund policy</a>
-          </span>
-        </label>
-      )}
-
-      {isGuest ? (
-        <Link className="btn btn-primary pricing-cta" href={registerHref}>
-          {ctaLabel || "Create Free Account to Unlock Offer"}
-        </Link>
-      ) : (
-        <button
-          className="btn btn-primary pricing-cta"
-          type="button"
-          onClick={go}
-          disabled={busy || signedIn !== true || !policy}
-        >
-          {busy ? "Working…" : ctaLabel || `Get 60-Day Pro — ${ctaPrice}`}
-        </button>
+      {ownsLifetime ? (
+        <p className="checkout-status" role="status">Lifetime Pro is active on your account. <Link href={paths.billing}>View Billing &amp; Access</Link></p>
+      ) : unavailable ? (
+        <p className="checkout-status" role="status">Lifetime checkout is currently unavailable.</p>
+      ) : isGuest ? (
+        lifetime ? (
+          <Link className="btn btn-primary pricing-cta" href={loginHref}>Sign in to buy Lifetime Pro</Link>
+        ) : (
+          <Link className="btn btn-primary pricing-cta" href={registerHref}>
+            {ctaLabel || "Create Free Account to Unlock Offer"}
+          </Link>
+        )
+      ) : null}
+      {showCheckoutForm && (
+        <form onSubmit={go}>
+          {signedIn && (
+            <div className="policy-accept">
+              <input id={policyId} type="checkbox" required checked={policy} onChange={(e) => setPolicy(e.target.checked)} />
+              <span>
+                <label htmlFor={policyId}>{lifetime ? "I accept the Lifetime Pro exam guarantee terms." : "I understand the refund and promotion terms."}</label>{" "}
+                <a href={termsHref}>View refund policy</a>
+              </span>
+            </div>
+          )}
+          <button className="btn btn-primary pricing-cta" type="submit" disabled={busy || signedIn !== true || (lifetime && !preview)}>
+            {busy ? "Working…" : ctaLabel || checkoutLabel}
+          </button>
+        </form>
       )}
       {belowCta}
       <p className="notice">
         <Link href={paths.contact}>Contact support</Link>
       </p>
-      {priceChanged && <p className="notice">Your available price has changed.</p>}
-      {err && (
-        <p className="notice">
-          {err} <Link href={paths.contact}>Contact support</Link>
-          {signedIn !== true && (
-            <>
-              {" "}
-              <Link href={loginHref}>Sign in</Link>
-            </>
-          )}
-        </p>
-      )}
-      {isGuest && (
+      <div role="status">
+        {busy && <span className="visually-hidden">Preparing secure checkout.</span>}
+        {priceChanged && <p className="notice">Your available price has changed.</p>}
+        {err && (
+          <p className="notice">
+            {err}{" "}
+            {(signedIn === null || (lifetime && !preview)) && (
+              <button className="link-button" type="button" onClick={() => {
+                setErr("");
+                void load(applyCredit).catch(() => setErr("Checkout information couldn't be loaded. Please try again."));
+              }}>Retry</button>
+            )}
+          </p>
+        )}
+      </div>
+      {!lifetime && isGuest && (
         <p className="notice">
           <Link href={registerHref}>Create an account</Link> or <Link href={loginHref}>sign in</Link> to see eligible
           New Member or Referral pricing.
         </p>
       )}
 
-      <div className="card pricing-policy-card" id="refund-policy">
+      {!lifetime && <div className="card pricing-policy-card" id="refund-policy">
         <h3>3-Day Unused Refund Policy</h3>
         <p>{REFUND_POLICY_SUMMARY}</p>
         <h3>One-time discount notice</h3>
         <p>{ONE_TIME_DISCOUNT_NOTICE}</p>
         {applyCredit && <p>{CREDIT_RESTORE_NOTICE}</p>}
-      </div>
+      </div>}
 
       {hideModal && (
         <div className="nav-backdrop" style={{ inset: 0, zIndex: 50 }} onClick={() => setHideModal(false)}>

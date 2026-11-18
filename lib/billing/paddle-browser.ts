@@ -1,7 +1,8 @@
 "use client";
 
 import { getPaddleInstance, initializePaddle, type Environments, type Paddle, type PaddleEventData } from "@paddle/paddle-js";
-import { notifyCheckoutChange, pauseClarityRecording, PRO_ITEM_ID, trackAnalyticsEvent } from "../analytics.ts";
+import { notifyCheckoutChange, pauseClarityRecording, pendingAnalyticsCheckout, PRO_ITEM_ID, trackAnalyticsEvent } from "../analytics.ts";
+import { LIFETIME_PRO_PRODUCT_CODE } from "../pro-products.ts";
 import { PADDLE_OVERLAY_SETTINGS, paddleSuccessUrl } from "./paddle-public.ts";
 
 export { PADDLE_OVERLAY_SETTINGS, paddleSuccessUrl };
@@ -29,6 +30,7 @@ let paddleInit: Promise<Paddle | undefined> | null = null;
 
 export type PaddleCheckoutNotice = {
   name?: string;
+  transactionId?: string;
   code?: string;
   detail?: string;
 };
@@ -46,6 +48,7 @@ function onPaddleCheckoutEvent(event: PaddleEventData) {
   const raw = event as PaddleEventData & { code?: string; detail?: string; data?: { code?: string; detail?: string } };
   const notice: PaddleCheckoutNotice = {
     name: event?.name,
+    transactionId: event?.data?.transaction_id,
     code: raw.code || raw.data?.code,
     detail: raw.detail || raw.data?.detail,
   };
@@ -54,7 +57,8 @@ function onPaddleCheckoutEvent(event: PaddleEventData) {
   if (event?.name === "checkout.completed") notifyCheckoutChange();
   if (event?.name !== "checkout.loaded") return;
   pauseClarityRecording();
-  trackAnalyticsEvent("checkout_open", { product_code: PRO_ITEM_ID, plan: "free" });
+  const lifetime = Boolean(notice.transactionId && pendingAnalyticsCheckout(LIFETIME_PRO_PRODUCT_CODE)?.transactionId === notice.transactionId);
+  trackAnalyticsEvent("checkout_open", { product_code: lifetime ? LIFETIME_PRO_PRODUCT_CODE : PRO_ITEM_ID, plan: "free" });
 }
 
 export function loadBrowserPaddle(): Promise<Paddle | undefined> {

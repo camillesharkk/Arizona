@@ -1,11 +1,11 @@
-import { isSiteProProduct } from "./pro-products.ts";
+import { isPurchasableProProduct } from "./pro-products.ts";
 import { accountProCovers, accountProExpiry } from "./account-pro.ts";
 import type { EntitlementRow } from "./store/types.ts";
 
 export const NC_PRO_PRODUCT = "nc_exam_pro_60d";
 
 export function stateProRows(rows: EntitlementRow[], state: string) {
-  return rows.filter(row => isSiteProProduct(row.productCode));
+  return rows.filter(row => isPurchasableProProduct(row.productCode));
 }
 
 export function stateProExpiry(rows: EntitlementRow[], state: string, now = new Date()) {
@@ -22,5 +22,5 @@ export function clientStatePro(user: { ncPro?: boolean; connecticutPro?: boolean
 
 /** Attribute usage to products that provide shared account access. */
 export function entitlementServesState(row: EntitlementRow, state: string) {
-  return isSiteProProduct(row.productCode);
+  return isPurchasableProProduct(row.productCode);
 }

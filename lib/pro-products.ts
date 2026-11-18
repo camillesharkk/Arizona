@@ -2,6 +2,7 @@ import { AZ_PRO_PRODUCT_CODE } from "./pricing/catalog.ts";
 
 /** The live catalog product. One purchase covers every available state. */
 export const SITE_PRO_PRODUCT_CODE = AZ_PRO_PRODUCT_CODE;
+export const LIFETIME_PRO_PRODUCT_CODE = "all_state_pro_lifetime";
 
 const HISTORICAL_PRO_CODES = new Set([
   SITE_PRO_PRODUCT_CODE,
@@ -13,4 +14,12 @@ const HISTORICAL_PRO_CODES = new Set([
 
 export function isSiteProProduct(code: string) {
   return HISTORICAL_PRO_CODES.has(code);
+}
+
+export function isLifetimeProProduct(code: string) {
+  return code === LIFETIME_PRO_PRODUCT_CODE;
+}
+
+export function isPurchasableProProduct(code: string) {
+  return isLifetimeProProduct(code) || isSiteProProduct(code);
 }

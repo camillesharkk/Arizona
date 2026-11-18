@@ -1,7 +1,8 @@
 import type { StateCode } from "@/lib/types";
 import { Environment, Paddle, type CreateTransactionRequestBody } from "@paddle/paddle-node-sdk";
 import { AZ_PRO_PRODUCT_CODE, CURRENCY } from "../pricing/catalog.ts";
-import { isSiteProProduct } from "../pro-products.ts";
+import { isLifetimeProProduct, isPurchasableProProduct } from "../pro-products.ts";
+import { LIFETIME_POLICY_VERSION, LIFETIME_TOTAL_CENTS } from "../pricing/lifetime.ts";
 
 export const PADDLE_PROVIDER = "paddle" as const;
 
@@ -15,6 +16,8 @@ export type PaddleCheckoutConfig = {
   apiKey: string;
   productId: string;
   environment: PaddleEnvName;
+  lifetimeProductId?: string;
+  lifetimePriceId?: string;
 };
 
 export type PaddleWebhookConfig = PaddleCheckoutConfig & {
@@ -65,12 +68,19 @@ export function getPaddleCheckoutConfig(env: PaddleEnvMap = process.env): Paddle
   if (!/^pro_/i.test(productId)) {
     return { ok: false, error: "PADDLE_CONFIG_INVALID", missing: [] };
   }
+  const lifetimeProductId = env.PADDLE_LIFETIME_PRODUCT_ID?.trim();
+  const lifetimePriceId = env.PADDLE_LIFETIME_PRICE_ID?.trim();
+  const lifetime = lifetimeProductId && /^pro_[a-z0-9]{26}$/.test(lifetimeProductId) && lifetimeProductId !== productId &&
+    lifetimePriceId && /^pri_[a-z0-9]{26}$/.test(lifetimePriceId)
+    ? { lifetimeProductId, lifetimePriceId }
+    : {};
   return {
     ok: true,
     config: {
       apiKey: String(env.PADDLE_API_KEY).trim(),
       productId,
       environment: mode.environment,
+      ...lifetime,
     },
   };
 }
@@ -97,6 +107,21 @@ export function getPaddleConfig(env: PaddleEnvMap = process.env): PaddleConfigOk
 
 export function paddleSdkEnvironment(environment: PaddleEnvName) {
   return environment === "production" ? Environment.production : Environment.sandbox;
+}
+
+export function paddleCatalogForProduct(config: PaddleCheckoutConfig, productCode: string) {
+  if (!isLifetimeProProduct(productCode)) return { productId: config.productId };
+  if (!config.lifetimeProductId || !config.lifetimePriceId || config.lifetimeProductId === config.productId) return null;
+  return { productId: config.lifetimeProductId, priceId: config.lifetimePriceId };
+}
+
+export function lifetimeCheckoutConfigured(env: PaddleEnvMap = process.env) {
+  if (!isPaddleProvider(env) || env.LIFETIME_REFUND_POLICY_VERSION !== LIFETIME_POLICY_VERSION) return false;
+  const config = getPaddleWebhookConfig(env);
+  if (!config.ok || !config.config.lifetimePriceId) return false;
+  const browserToken = env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN?.trim();
+  return env.NEXT_PUBLIC_PADDLE_ENV === config.config.environment &&
+    Boolean(browserToken?.startsWith(config.config.environment === "sandbox" ? "test_" : "live_"));
 }
 
 export function createPaddleSdk(config: Pick<PaddleCheckoutConfig, "apiKey" | "environment">): Paddle {
@@ -137,6 +162,7 @@ export type PaddleTxnSnapshot = {
   items?: Array<{
     quantity?: number;
     price?: {
+      id?: string | null;
       productId?: string | null;
       unitPrice?: { amount?: string | null; currencyCode?: string | null } | null;
       billingCycle?: unknown;
@@ -145,6 +171,7 @@ export type PaddleTxnSnapshot = {
   details?: {
     totals?: { discount?: string | null } | null;
     lineItems?: Array<{
+      priceId?: string | null;
       quantity?: number;
       product?: { id?: string | null } | null;
       totals?: { discount?: string | null } | null;
@@ -178,12 +205,13 @@ export function hasUnauthorizedPaddleDiscount(txn: PaddleTxnSnapshot) {
 export function matchPaddleTransactionToQuote(
   txn: PaddleTxnSnapshot,
   quote: { id: string; userId: string; productCode: string; currency: string; finalPriceCents: number },
-  productId: string
+  productId: string,
+  priceId?: string
 ): { ok: true } | { ok: false; error: string } {
   const custom = readPaddleCustom(txn);
   if (custom.quote_id !== quote.id) return { ok: false, error: "quote_mismatch" };
   if (custom.user_id !== quote.userId) return { ok: false, error: "user_mismatch" };
-  if (!isSiteProProduct(custom.product_code) || custom.product_code !== quote.productCode) {
+  if (!isPurchasableProProduct(custom.product_code) || custom.product_code !== quote.productCode) {
     return { ok: false, error: "product_mismatch" };
   }
   if (String(txn.currencyCode || "") !== CURRENCY || quote.currency !== CURRENCY) {
@@ -194,15 +222,18 @@ export function matchPaddleTransactionToQuote(
   const item = items[0];
   if (Number(item.quantity) !== 1) return { ok: false, error: "quantity_mismatch" };
   if (String(item.price?.productId || "") !== productId) return { ok: false, error: "product_id_mismatch" };
+  if (priceId && item.price?.id !== priceId) return { ok: false, error: "price_id_mismatch" };
+  if (priceId && quote.finalPriceCents !== LIFETIME_TOTAL_CENTS) return { ok: false, error: "amount_mismatch" };
   if (item.price?.billingCycle) return { ok: false, error: "subscription_not_allowed" };
   if (!paddleUnitPriceMatchesQuote(item.price?.unitPrice?.amount, quote.finalPriceCents)) {
     return { ok: false, error: "amount_mismatch" };
   }
-  if (item.price?.unitPrice?.currencyCode && item.price.unitPrice.currencyCode !== CURRENCY) {
+  if ((priceId || item.price?.unitPrice?.currencyCode) && item.price?.unitPrice?.currencyCode !== CURRENCY) {
     return { ok: false, error: "currency_mismatch" };
   }
   const lineItems = txn.details?.lineItems || [];
   if (lineItems.length > 1) return { ok: false, error: "item_count_mismatch" };
+  if (priceId && lineItems[0]?.priceId && lineItems[0].priceId !== priceId) return { ok: false, error: "price_id_mismatch" };
   const lineProductId = lineItems[0]?.product?.id ? String(lineItems[0].product.id) : "";
   if (lineProductId && lineProductId !== productId) return { ok: false, error: "product_id_mismatch" };
   if (lineItems[0] && Number(lineItems[0].quantity) !== 1) return { ok: false, error: "quantity_mismatch" };
@@ -223,6 +254,7 @@ export function paddleRedirectPath() {
 
 export function buildPaddleTransactionPayload(opts: {
   productId: string;
+  priceId?: string;
   finalPriceCents: number;
   userId: string;
   quoteId: string;
@@ -239,7 +271,7 @@ export function buildPaddleTransactionPayload(opts: {
     items: [
       {
         quantity: 1,
-        price: {
+        ...(opts.priceId ? { priceId: opts.priceId } : { price: {
           productId: opts.productId,
           name: PADDLE_PRICE_NAME,
           description: PADDLE_PRICE_DESCRIPTION,
@@ -249,7 +281,7 @@ export function buildPaddleTransactionPayload(opts: {
           },
           taxMode: "account_setting",
           billingCycle: null,
-        },
+        } }),
       },
     ],
     currencyCode: CURRENCY,
@@ -268,6 +300,18 @@ export type PaddleListQuery = {
 };
 
 export type PaddleTransactionsClient = {
+  prices?: {
+    get: (priceId: string) => Promise<{
+      id: string;
+      productId: string;
+      status: string;
+      type: string;
+      billingCycle: unknown;
+      trialPeriod: unknown;
+      unitPrice: { amount: string; currencyCode: string };
+      unitPriceOverrides: Array<{ unitPrice: { amount: string; currencyCode: string } }>;
+    }>;
+  };
   transactions: {
     create: (payload: CreateTransactionRequestBody) => Promise<{ id: string; checkout?: { url?: string | null } | null }>;
     get?: (transactionId: string) => Promise<PaddleTxnSnapshot>;
@@ -276,6 +320,21 @@ export type PaddleTransactionsClient = {
     ) => AsyncIterable<PaddleTxnSnapshot> | Iterable<PaddleTxnSnapshot> | Promise<PaddleTxnSnapshot[]>;
   };
 };
+
+export async function validatePaddleLifetimePrice(sdk: PaddleTransactionsClient, catalog: { productId: string; priceId: string }) {
+  if (!sdk.prices) return false;
+  try {
+    const price = await sdk.prices.get(catalog.priceId);
+    return price.id === catalog.priceId && price.productId === catalog.productId &&
+      price.status === "active" && price.type === "standard" &&
+      price.billingCycle === null && price.trialPeriod === null &&
+      price.unitPrice.amount === String(LIFETIME_TOTAL_CENTS) && price.unitPrice.currencyCode === CURRENCY &&
+      price.unitPriceOverrides.every(({ unitPrice }) => unitPrice.amount === String(LIFETIME_TOTAL_CENTS) && unitPrice.currencyCode === CURRENCY);
+  } catch {
+    paddleLog("lifetime_catalog_price_unavailable");
+    return false;
+  }
+}
 
 export async function createPaddleTransaction(
   config: PaddleCheckoutConfig,

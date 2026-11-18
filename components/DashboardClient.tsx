@@ -16,7 +16,8 @@ import { isFreeState } from '@/lib/free-state-catalog';
 import { packFor } from "@/lib/prep-pack";
 import { examState } from "@/lib/ca-daily-shape";
 import { hiPaths } from "@/lib/hi-site";
-import { recoverPendingPurchase, type AnalyticsPaidOrder } from "@/lib/analytics";
+import { isLifetimePurchaseConfirmed, pendingAnalyticsCheckout, recoverPendingPurchase, type AnalyticsPaidOrder } from "@/lib/analytics";
+import { LIFETIME_PRO_PRODUCT_CODE } from "@/lib/pro-products";
 import { syncGuestProgress } from "@/lib/ca-sync";
 import { clientStatePro } from "@/lib/state-pro";
 
@@ -27,6 +28,7 @@ type ProgressPayload = {
   stats: QuestionStat[];
   exams: ExamRow[];
   user: UserRow | null;
+  lifetimePro?: boolean;
   arizonaPro?: boolean;
   californiaPro?: boolean;
   hawaiiPro?: boolean;
@@ -41,6 +43,7 @@ type ProgressPayload = {
 type CheckoutPhase = "boot" | "off" | "activating" | "activated" | "timeout" | "session";
 
 type AccessPayload = {
+  lifetimePro?: boolean;
   ncPro?: boolean;
   connecticutPro?: boolean;
   connecticutProExpiresAt?: string | null;
@@ -63,12 +66,13 @@ function clearCheckoutQuery() {
   const url = new URL(window.location.href);
   if (url.searchParams.get("checkout") !== "success") return;
   url.searchParams.delete("checkout");
+  if (url.searchParams.get("plan") === "lifetime") url.searchParams.delete("plan");
   const search = url.searchParams.toString();
   window.history.replaceState(null, "", `${url.pathname}${search ? `?${search}` : ""}${url.hash}`);
 }
 
 function trackPaidAccess(access: AccessPayload) {
-  recoverPendingPurchase(Array.isArray(access.orders) ? access.orders : []);
+  recoverPendingPurchase(Array.isArray(access.orders) ? access.orders : [], access.lifetimePro === true);
 }
 
 async function readAccess(res: Response): Promise<AccessPayload | null> {
@@ -85,22 +89,26 @@ export function DashboardClient() {
   const [checkEmail, setCheckEmail] = useState(false);
   const [checkoutPhase, setCheckoutPhase] = useState<CheckoutPhase>("boot");
   const [accessRetry, setAccessRetry] = useState(0);
+  const [checkingLifetime, setCheckingLifetime] = useState(false);
+  const [activatedLifetime, setActivatedLifetime] = useState(false);
   const grantedRef = useRef(false);
 
   const applyProAccess = useCallback((access: AccessPayload) => {
     grantedRef.current = true;
+    setActivatedLifetime(access.lifetimePro === true);
     trackPaidAccess(access);
     setData((prev) => {
       if (!prev?.user) {
-        return prev ? { ...prev, arizonaPro: true } : prev;
+        return prev ? { ...prev, arizonaPro: true, lifetimePro: access.lifetimePro === true } : prev;
       }
       return {
         ...prev,
         arizonaPro: true,
+        lifetimePro: access.lifetimePro === true,
         user: {
           ...prev.user,
           plan: "pro",
-          planExpiresAt: access.planExpiresAt ?? prev.user.planExpiresAt,
+          planExpiresAt: access.lifetimePro ? null : (access.planExpiresAt ?? prev.user.planExpiresAt),
         },
       };
     });
@@ -112,6 +120,9 @@ export function DashboardClient() {
     const params = new URLSearchParams(window.location.search);
     setCheckEmail(params.get("checkEmail") === "1");
     const pending = params.get("checkout") === "success";
+    const lifetimeCheckout = pending && params.get("plan") === "lifetime";
+    setCheckingLifetime(lifetimeCheckout);
+    const pendingLifetime = lifetimeCheckout ? pendingAnalyticsCheckout(LIFETIME_PRO_PRODUCT_CODE) : null;
 
     let cancelled = false;
 
@@ -157,7 +168,10 @@ export function DashboardClient() {
         }
         const access = await readAccess(res);
         if (cancelled) return;
-        if (access && proForState(access, state ?? "AZ")) {
+        const confirmed = lifetimeCheckout
+          ? Boolean(access && isLifetimePurchaseConfirmed(pendingLifetime, access.orders ?? [], access.lifetimePro === true))
+          : Boolean(access && proForState(access, state ?? "AZ"));
+        if (access && confirmed) {
           applyProAccess(access);
           return;
         }
@@ -188,7 +202,8 @@ export function DashboardClient() {
     setAccessRetry((n) => n + 1);
   };
   const activating = checkoutPhase === "activating" || checkoutPhase === "timeout";
-  const isAzPro = Boolean(proForState(data, state ?? "AZ") || (state === "AZ" && data?.user?.plan === "pro") || checkoutPhase === "activated");
+  const lifetimePro = data?.lifetimePro === true || activatedLifetime;
+  const isAzPro = Boolean(lifetimePro || proForState(data, state ?? "AZ") || (state === "AZ" && data?.user?.plan === "pro") || checkoutPhase === "activated");
 
   useEffect(() => {
     if (!loaded || !data?.user || !isAzPro || !isFreeState(state) || packFor(state)?.freeLaunch) return;
@@ -217,8 +232,8 @@ export function DashboardClient() {
     return (
       <div className="card">
         <p>Your session needs to be refreshed.</p>
-        <p>Please sign in again to view your activated Pro access.</p>
-        <Link className="btn btn-primary" href={paths.login}>
+        <p>Please sign in again to check your Pro access.</p>
+        <Link className="btn btn-primary" href={`${paths.login}?next=${encodeURIComponent(`${paths.dashboard}?checkout=success${checkingLifetime ? "&plan=lifetime" : ""}`)}`}>
           Sign in
         </Link>
       </div>
@@ -226,13 +241,13 @@ export function DashboardClient() {
   }
 
   if (activating && !data?.user) {
-    return <CheckoutStatus phase={checkoutPhase} onRefresh={retryAccess} />;
+    return <CheckoutStatus phase={checkoutPhase} lifetime={checkingLifetime} onRefresh={retryAccess} />;
   }
 
   if (checkoutPhase === "activated" && !data?.user) {
     return (
       <div className="card">
-        <p className="notice">Pro activated successfully.</p>
+        <p className="notice">{activatedLifetime ? "Lifetime Pro is now active." : "Pro activated successfully."}</p>
       </div>
     );
   }
@@ -264,13 +279,13 @@ export function DashboardClient() {
     byTopic.set(key, cur);
   });
   const ready = readinessScore(stats, exams);
-  const showAsPro = (state === "AZ" || state === "NY" || state === "NC" || state === "CT" || fullState) && isAzPro;
+  const showAsPro = lifetimePro || ((state === "AZ" || state === "NY" || state === "NC" || state === "CT" || fullState) && isAzPro);
   const hideFreePlan = activating && !showAsPro;
   const weakPlan = [...byTopic.entries()]
     .map(([id, v]) => ({ id, acc: v.r + v.w ? Math.round((v.r / (v.r + v.w)) * 100) : 100, missed: v.w }))
     .sort((a, b) => a.acc - b.acc)
     .slice(0, 3);
-  const planLabel = isAzPro ? "Pro" : hideFreePlan ? "…" : "Free";
+  const planLabel = lifetimePro ? "Lifetime Pro" : isAzPro ? "Pro" : hideFreePlan ? "…" : "Free";
   const bestScore = exams.length ? Math.max(...exams.map((row) => row.score)) : null;
   const lastStudy = [...stats.map((row) => row.lastAt), ...exams.map((row) => row.at)].filter(Boolean).sort().at(-1) || null;
 
@@ -278,18 +293,18 @@ export function DashboardClient() {
     <div className="grid">
       {syncMessage && <p className="notice" role="status">{syncMessage} <button type="button" className="link-button" onClick={() => { setLoaded(false); setAccessRetry(n => n + 1); }}>Retry sync</button></p>}
       {checkEmail && <p className="notice">Check your inbox for a verification email, then click the link.</p>}
-      {checkoutPhase === "activated" && <p className="notice">Pro activated successfully.</p>}
-      {activating && <CheckoutStatus phase={checkoutPhase} onRefresh={retryAccess} />}
+      {checkoutPhase === "activated" && <p className="notice" role="status">{activatedLifetime ? "Lifetime Pro is now active." : "Pro activated successfully."}</p>}
+      {activating && <CheckoutStatus phase={checkoutPhase} lifetime={checkingLifetime} onRefresh={retryAccess} />}
       <div className="grid grid-4 stats-mobile">
         <div className="stat"><b>{answered}</b><span>Answers</span></div>
         <div className="stat"><b>{acc}%</b><span>Accuracy</span></div>
         <div className="stat"><b>{user.streakDays}</b><span>{state === "IN" || fullState ? "Account streak" : "Day streak"}</span></div>
         <div className="stat"><b>{planLabel}</b><span>Plan</span></div>
       </div>
-      {state === "IN" && data?.indianaPro && data.indianaProExpiresAt ? <p className="notice">All-state Pro · Active until {new Date(data.indianaProExpiresAt).toLocaleDateString("en-US")}</p> : null}
+      {!lifetimePro && state === "IN" && data?.indianaPro && data.indianaProExpiresAt ? <p className="notice">All-state Pro · Active until {new Date(data.indianaProExpiresAt).toLocaleDateString("en-US")}</p> : null}
       {showAsPro && (
         <div className="card">
-          {state === "NC" ? <p>North Carolina Pro{data?.ncPlanExpiresAt ? ` · Active until ${formatProUntil(data.ncPlanExpiresAt)}` : ""}</p> : <ProAccessNote plan="pro" planExpiresAt={user.planExpiresAt} purchaseEnabled={packFor(state)?.purchaseEnabled !== false} />}
+          {state === "NC" && !lifetimePro ? <p>North Carolina Pro{data?.ncPlanExpiresAt ? ` · Active until ${formatProUntil(data.ncPlanExpiresAt)}` : ""}</p> : <ProAccessNote plan="pro" lifetimePro={lifetimePro} planExpiresAt={user.planExpiresAt} purchaseEnabled={packFor(state)?.purchaseEnabled !== false} />}
         </div>
       )}
       <div className="card">
@@ -335,23 +350,17 @@ export function DashboardClient() {
   );
 }
 
-function CheckoutStatus({ phase, onRefresh }: { phase: CheckoutPhase; onRefresh: () => void }) {
-  if (phase === "timeout") {
-    return (
-      <div className="card">
-        <p>Payment received, but activation is taking longer than expected.</p>
-        <p>Please refresh this page in a moment.</p>
+function CheckoutStatus({ phase, lifetime, onRefresh }: { phase: CheckoutPhase; lifetime: boolean; onRefresh: () => void }) {
+  const timedOut = phase === "timeout";
+  return (
+    <div className="card">
+      <p role="status">{timedOut ? "We're still waiting for confirmation from Paddle." : `Checking your ${lifetime ? "Lifetime Pro" : "Pro"} purchase…`}</p>
+      {timedOut && <>
+        <p>If Paddle sent a receipt, keep it and check your access again. <Link href={paths.contact}>Contact support</Link> if you need help.</p>
         <button className="btn btn-primary" type="button" onClick={onRefresh}>
           Refresh access
         </button>
-      </div>
-    );
-  }
-  return (
-    <div className="card">
-      <p>Payment received.</p>
-      <p>Activating your Pro access…</p>
-      <p className="notice">This usually takes just a few seconds.</p>
+      </>}
     </div>
   );
 }

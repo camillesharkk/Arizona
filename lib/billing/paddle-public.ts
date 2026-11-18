@@ -10,8 +10,8 @@ export function paddleSuccessPath() {
   return "/dashboard/?checkout=success";
 }
 
-export function paddleSuccessUrl(origin: string) {
-  return `${origin.replace(/\/$/, "")}${paddleSuccessPath()}`;
+export function paddleSuccessUrl(origin: string, lifetime = false) {
+  return `${origin.replace(/\/$/, "")}${paddleSuccessPath()}${lifetime ? "&plan=lifetime" : ""}`;
 }
 
 /** Paddle only opens checkout from the account's approved payment-link host. */

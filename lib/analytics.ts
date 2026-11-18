@@ -1,11 +1,13 @@
 import { paths } from "./paths.ts";
 import { parseStateCookie, pathState, resolveState, STATE_COOKIE } from "./site-state.ts";
 import { stateByCode } from "./states.ts";
+import { LIFETIME_PRO_PRODUCT_CODE } from "./pro-products.ts";
 
 export const GA_MEASUREMENT_ID_ENV = "NEXT_PUBLIC_GA_MEASUREMENT_ID";
 export const GA_SCRIPT_ORIGIN = "https://www.googletagmanager.com/gtag/js";
 export const PRO_ITEM_ID = "az_exam_pro_60d";
 export const PRO_ITEM_NAME = "Arizona Notary Exam Prep Pro — 60-Day Access";
+export type CheckoutProductCode = typeof PRO_ITEM_ID | typeof LIFETIME_PRO_PRODUCT_CODE;
 export const ANALYTICS_STATE = "AZ";
 export const ANALYTICS_SITE = "arizona_notary_prep";
 export const POSTHOG_US_HOST = "https://us.i.posthog.com";
@@ -335,12 +337,12 @@ export function checkoutStartParams(b?: {
   newcomerApplied?: boolean;
   referralApplied?: boolean;
   creditApplied?: boolean;
-} | null) {
+} | null, productCode: CheckoutProductCode = PRO_ITEM_ID) {
   const value = typeof b?.finalPriceCents === "number" ? Number((b.finalPriceCents / 100).toFixed(2)) : undefined;
   return sanitizeEventParams({
     value,
     currency: "USD",
-    quote_type: PRO_ITEM_ID,
+    quote_type: productCode,
     discount_type: discountTypeFromBreakdown(b),
   });
 }
@@ -600,36 +602,50 @@ export function initializeGa() {
   return true;
 }
 
-function ecommerceItem(valueCents: number) {
-  return { item_id: PRO_ITEM_ID, item_name: PRO_ITEM_NAME, price: Number((valueCents / 100).toFixed(2)), quantity: 1 };
+function ecommerceItem(valueCents: number, productCode: CheckoutProductCode = PRO_ITEM_ID) {
+  const item_name = productCode === LIFETIME_PRO_PRODUCT_CODE ? "Notary Exam Prep Lifetime Pro" : PRO_ITEM_NAME;
+  return { item_id: productCode, item_name, price: Number((valueCents / 100).toFixed(2)), quantity: 1 };
 }
 
 export function notifyCheckoutChange() {
   try { window.dispatchEvent(new Event("az:checkout-change")); } catch { /* SSR/storage optional */ }
 }
 
-export function trackBeginCheckout(b: Parameters<typeof checkoutStartParams>[0], transactionId?: string) {
+function pendingStorageKey(productCode: CheckoutProductCode) {
+  return productCode === LIFETIME_PRO_PRODUCT_CODE ? `${PENDING_CHECKOUT_STORAGE}:${productCode}` : PENDING_CHECKOUT_STORAGE;
+}
+
+export function rememberPendingCheckout(transactionId: string, productCode: CheckoutProductCode) {
   // Remember only a provider-created transaction, never infer payment from a redirect.
-  if (transactionId && /^txn_[a-z0-9]+$/i.test(transactionId)) {
-    try {
-      window.localStorage.setItem(PENDING_CHECKOUT_STORAGE, JSON.stringify({
+  if (!/^txn_[a-z0-9]+$/i.test(transactionId)) return;
+  try {
+    const previous = pendingAnalyticsCheckout(productCode);
+    if (previous?.transactionId !== transactionId || productCode === PRO_ITEM_ID) {
+      window.localStorage.setItem(pendingStorageKey(productCode), JSON.stringify({
         transactionId, at: Date.now(), ...readUpgradeSource(),
       }));
-      notifyCheckoutChange();
-    } catch { /* payment must not depend on storage */ }
-  }
-  trackEvent("checkout_start", checkoutStartParams(b)); // Existing reports retain their event.
+    }
+  } catch { /* payment must not depend on storage */ }
+  notifyCheckoutChange();
+}
+
+export function trackBeginCheckout(b: Parameters<typeof checkoutStartParams>[0], transactionId?: string, productCode: CheckoutProductCode = PRO_ITEM_ID) {
+  const isResume = productCode === LIFETIME_PRO_PRODUCT_CODE &&
+    Boolean(transactionId && pendingAnalyticsCheckout(productCode)?.transactionId === transactionId);
+  if (transactionId) rememberPendingCheckout(transactionId, productCode);
+  if (isResume) return;
+  trackEvent("checkout_start", checkoutStartParams(b, productCode)); // Existing reports retain their event.
   const amount = b?.finalPriceCents;
   if (typeof amount !== "number" || !Number.isSafeInteger(amount) || amount < 0) return;
   try {
     sendGa("begin_checkout", {
-      ...applyCommonParams(checkoutStartParams(b)),
-      entry_point: "pricing", items: [ecommerceItem(amount)],
+      ...applyCommonParams(checkoutStartParams(b, productCode)),
+      entry_point: "pricing", items: [ecommerceItem(amount, productCode)],
     });
   } catch { /* analytics must not block checkout */ }
 }
 
-export function trackPurchase(opts: { transactionId: string; valueCents: number; params?: Record<string, unknown> }) {
+export function trackPurchase(opts: { transactionId: string; valueCents: number; productCode?: CheckoutProductCode; params?: Record<string, unknown> }) {
   try {
     if (typeof window === "undefined") return false;
     const transaction_id = String(opts.transactionId || "").trim();
@@ -644,7 +660,7 @@ export function trackPurchase(opts: { transactionId: string; valueCents: number;
       transaction_id,
       value: Number((opts.valueCents / 100).toFixed(2)),
       currency: "USD",
-      items: [ecommerceItem(opts.valueCents)],
+      items: [ecommerceItem(opts.valueCents, opts.productCode)],
     });
     if (!queued) return false;
     (window.azGaPurchases ??= new Set()).add(transaction_id);
@@ -662,12 +678,15 @@ function sendGa(name: string, params?: Record<string, unknown>) {
   return true;
 }
 
-export function pendingAnalyticsCheckout(): { transactionId: string; upgrade_source?: string; upgrade_page?: string } | null {
+type PendingCheckout = { transactionId: string; at: number; analyticsConfirmed?: boolean; upgrade_source?: string; upgrade_page?: string };
+
+export function pendingAnalyticsCheckout(productCode: CheckoutProductCode = PRO_ITEM_ID): PendingCheckout | null {
   try {
-    const pending = JSON.parse(window.localStorage.getItem(PENDING_CHECKOUT_STORAGE) || "null");
+    const key = pendingStorageKey(productCode);
+    const pending = JSON.parse(window.localStorage.getItem(key) || "null");
     if (!pending || !/^txn_[a-z0-9]+$/i.test(pending.transactionId) || !Number.isFinite(pending.at)) return null;
     if (Date.now() - pending.at > 72 * 60 * 60 * 1000) {
-      window.localStorage.removeItem(PENDING_CHECKOUT_STORAGE);
+      window.localStorage.removeItem(key);
       return null;
     }
     return pending;
@@ -675,22 +694,53 @@ export function pendingAnalyticsCheckout(): { transactionId: string; upgrade_sou
 }
 
 export type AnalyticsPaidOrder = {
-  orderId?: string; providerOrderId?: string; status?: string; amountCents?: number; entitlementId?: string | null;
+  orderId?: string; providerOrderId?: string; productCode?: string; status?: string; amountCents?: number;
+  entitlementId?: string | null; entitlementActive?: boolean;
 };
 
-/** Input comes exclusively from the signed-in billing/access endpoint. */
-export function recoverPendingPurchase(orders: AnalyticsPaidOrder[]) {
-  const pending = pendingAnalyticsCheckout();
-  if (!pending) return false;
-  const order = orders.find((item) => item.providerOrderId === pending.transactionId && item.status === "paid");
+export function hasUnconfirmedPendingPurchase() {
+  const lifetime = pendingAnalyticsCheckout(LIFETIME_PRO_PRODUCT_CODE);
+  return Boolean(pendingAnalyticsCheckout() || (lifetime && !lifetime.analyticsConfirmed));
+}
+
+function confirmedLifetimeOrder(pending: Pick<PendingCheckout, "transactionId"> | null, orders: AnalyticsPaidOrder[], lifetimePro: boolean) {
+  if (!pending || !lifetimePro) return undefined;
+  return orders.find((item) => item.providerOrderId === pending.transactionId && item.productCode === LIFETIME_PRO_PRODUCT_CODE &&
+    item.status === "paid" && item.entitlementId && item.entitlementActive === true);
+}
+
+export function isLifetimePurchaseConfirmed(pending: Pick<PendingCheckout, "transactionId"> | null, orders: AnalyticsPaidOrder[], lifetimePro: boolean) {
+  return Boolean(confirmedLifetimeOrder(pending, orders, lifetimePro));
+}
+
+function recoverProductPurchase(orders: AnalyticsPaidOrder[], productCode: CheckoutProductCode, lifetimePro: boolean) {
+  const pending = pendingAnalyticsCheckout(productCode);
+  if (!pending || pending.analyticsConfirmed) return false;
+  const lifetime = productCode === LIFETIME_PRO_PRODUCT_CODE;
+  const order = lifetime ? confirmedLifetimeOrder(pending, orders, lifetimePro) : orders.find((item) => (
+    item.providerOrderId === pending.transactionId && item.status === "paid" && item.productCode !== LIFETIME_PRO_PRODUCT_CODE
+  ));
   if (!order || typeof order.amountCents !== "number") return false;
-  const queued = trackPurchase({ transactionId: pending.transactionId, valueCents: order.amountCents, params: {
+  const queued = trackPurchase({ transactionId: pending.transactionId, valueCents: order.amountCents, productCode, params: {
     upgrade_source: pending.upgrade_source, upgrade_page: pending.upgrade_page,
   } });
   if (!queued || !order.entitlementId) return false;
-  trackEvent("entitlement_granted", { transaction_id: pending.transactionId, plan: "pro" });
-  try { window.localStorage.removeItem(PENDING_CHECKOUT_STORAGE); } catch { /* optional */ }
+  if (pendingAnalyticsCheckout(productCode)?.transactionId !== pending.transactionId) return false;
+  trackEvent("entitlement_granted", { transaction_id: pending.transactionId, plan: "pro", ...(lifetime && { product_code: productCode }) });
+  try {
+    const key = pendingStorageKey(productCode);
+    // Keep the transaction available for the dashboard return even if analytics has already recovered it.
+    if (lifetime) window.localStorage.setItem(key, JSON.stringify({ ...pending, analyticsConfirmed: true }));
+    else window.localStorage.removeItem(key);
+  } catch { /* optional */ }
   return true;
+}
+
+/** Input comes exclusively from the signed-in billing/access endpoint. */
+export function recoverPendingPurchase(orders: AnalyticsPaidOrder[], lifetimePro = false) {
+  const timed = recoverProductPurchase(orders, PRO_ITEM_ID, false);
+  const lifetime = recoverProductPurchase(orders, LIFETIME_PRO_PRODUCT_CODE, lifetimePro);
+  return timed || lifetime;
 }
 
 type PosthogLike = {

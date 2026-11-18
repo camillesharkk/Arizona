@@ -478,8 +478,8 @@ export const pgStore: Store = {
         and state = ${state}
         and status = 'active'
         and starts_at <= now()
-        and expires_at > now()
-      order by expires_at desc
+        and (expires_at is null or expires_at > now())
+      order by expires_at desc nulls first
       limit 1
     `;
     return rows[0] ? mapEntitlement(rows[0] as Record<string, unknown>) : null;
@@ -512,8 +512,8 @@ export const pgStore: Store = {
         and state = 'AZ'
         and status = 'active'
         and starts_at <= now()
-        and expires_at > now()
-      order by expires_at desc
+        and (expires_at is null or expires_at > now())
+      order by expires_at desc nulls first
       limit 1
     `;
     return rows[0] ? mapEntitlement(rows[0] as Record<string, unknown>) : null;
@@ -526,7 +526,7 @@ export const pgStore: Store = {
         and state = 'AZ'
         and status = 'active'
         and starts_at <= now()
-        and expires_at > now()
+        and (expires_at is null or expires_at > now())
       order by starts_at asc
     `;
     return rows.map((r) => mapEntitlement(r as Record<string, unknown>));
@@ -555,7 +555,7 @@ export const pgStore: Store = {
     await assertSchema();
     const id = randomUUID();
     const now = new Date().toISOString();
-    await db()`
+    const inserted = await db()`
       insert into entitlements (
         id, user_id, product_code, state, status, starts_at, expires_at,
         provider, provider_order_id, provider_customer_id, created_at, updated_at
@@ -564,9 +564,13 @@ export const pgStore: Store = {
         ${row.startsAt}, ${row.expiresAt}, ${row.provider}, ${row.providerOrderId},
         ${row.providerCustomerId}, ${now}, ${now}
       )
+      on conflict (provider, provider_order_id) do nothing
+      returning *
     `;
-    const created = await db()`select * from entitlements where id = ${id} limit 1`;
-    return mapEntitlement(created[0] as Record<string, unknown>);
+    if (inserted[0]) return mapEntitlement(inserted[0]);
+    const existing = await this.getEntitlementByProviderOrder(row.provider, row.providerOrderId);
+    if (!existing) throw new Error("entitlement_missing");
+    return existing;
   },
   async setEntitlementStatus(userId, provider, providerOrderId, status) {
     await assertSchema();
@@ -653,7 +657,7 @@ function mapEntitlement(r: Record<string, unknown>): EntitlementRow {
     state: String(r.state),
     status: r.status as EntitlementRow["status"],
     startsAt: iso(r.starts_at) as string,
-    expiresAt: iso(r.expires_at) as string,
+    expiresAt: iso(r.expires_at),
     provider: String(r.provider),
     providerOrderId: String(r.provider_order_id),
     providerCustomerId: r.provider_customer_id ? String(r.provider_customer_id) : null,

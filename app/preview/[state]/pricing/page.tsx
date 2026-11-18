@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
   const counts = pack.counts();
   if (code === "LA") {
     return <main className="wrap">
-      <StateCheckout source={code} /></main>;
+      <StateCheckout source={code} preview /></main>;
   }
   return (
     <main className="wrap">
@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
         <p>{counts.free} of {counts.published} published questions are free. One full practice is included. Pro is the same 60-day account product used in every available state. It does not create a separate state fee.</p>
         <a className="btn btn-ghost" href={`${pack.paths.practice}?mode=quick`}>Check My Knowledge — 10 Questions</a>
       </div>
-      <StateCheckout source={code} />
+      <StateCheckout source={code} preview />
     </main>
   );
 }

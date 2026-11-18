@@ -1,13 +1,14 @@
 import { EventName } from "@paddle/paddle-node-sdk";
 import type { CommerceRepo } from "../commerce/repo.ts";
-import type { GrantProFn } from "../commerce/service.ts";
-import { confirmPaidOrder, quotedCreditsBoundToQuote } from "../commerce/service.ts";
+import type { GrantProFn, RefundEntitlementFn } from "../commerce/service.ts";
+import { completeNonRestoringRefund, confirmPaidOrder, quotedCreditsBoundToQuote } from "../commerce/service.ts";
 import { CURRENCY } from "../pricing/catalog.ts";
-import { isSiteProProduct } from "../pro-products.ts";
+import { isLifetimeProProduct, isPurchasableProProduct } from "../pro-products.ts";
 import {
   PADDLE_PROVIDER,
   isPaddleTransactionId,
   matchPaddleTransactionToQuote,
+  paddleCatalogForProduct,
   paddleLog,
   paddleUnitPriceMatchesQuote,
   type PaddleWebhookConfig,
@@ -23,19 +24,25 @@ export type PaddleWebhookResult = {
 
 type PaddleMoneyLike = { amount?: string | null; currencyCode?: string | null };
 type PaddlePriceLike = {
+  id?: string | null;
   productId?: string | null;
   unitPrice?: PaddleMoneyLike | null;
   billingCycle?: unknown;
 };
-type PaddleItemLike = { quantity?: number; price?: PaddlePriceLike | null };
+type PaddleItemLike = { quantity?: number; price?: PaddlePriceLike | null; type?: string | null };
 type PaddleProductLike = { id?: string | null };
 type PaddleLineLike = {
+  priceId?: string | null;
   quantity?: number;
   product?: PaddleProductLike | null;
   totals?: { discount?: string | null; subtotal?: string | null } | null;
 };
 type PaddleTxnLike = {
   id?: string;
+  transactionId?: string | null;
+  action?: string | null;
+  type?: string | null;
+  totals?: { subtotal?: string | null } | null;
   status?: string;
   currencyCode?: string;
   discountId?: string | null;
@@ -90,9 +97,58 @@ export async function handlePaddleWebhook(opts: {
   config: PaddleWebhookConfig;
   event: PaddleWebhookEventLike;
   grantPro: GrantProFn;
+  refundEntitlement?: RefundEntitlementFn;
 }): Promise<PaddleWebhookResult> {
   const eventType = String(opts.event.eventType || "");
   const notificationId = opts.event.notificationId ? String(opts.event.notificationId) : undefined;
+
+  if (eventType === "adjustment.created" || eventType === "adjustment.updated") {
+    const adjustment = opts.event.data;
+    if (!adjustment || adjustment.status !== "approved") return ok({ ok: true, ignored: true });
+    if (adjustment.action === "refund" && adjustment.items?.length && adjustment.items.every(item => item.type === "tax")) {
+      return ok({ ok: true, ignored: true, reason: "tax_adjustment" });
+    }
+    const chargeback = adjustment.action === "chargeback";
+    const fullRefund = adjustment.action === "refund" && adjustment.type === "full";
+    const partialRefund = adjustment.action === "refund" && adjustment.type === "partial";
+    const disputeReview = adjustment.action === "chargeback_reverse" || adjustment.action === "chargeback_warning";
+    if (!chargeback && !fullRefund && !partialRefund && !disputeReview) return ok({ ok: true, ignored: true });
+    const transactionId = adjustment.transactionId || "";
+    if (!isPaddleTransactionId(transactionId)) return fail(409, "transaction_id_invalid");
+    try {
+      const order = await opts.repo.getOrderByProvider(PADDLE_PROVIDER, transactionId);
+      if (order && !isLifetimeProProduct(order.productCode)) return ok({ ok: true, ignored: true });
+      if (partialRefund || disputeReview) {
+        if (!order) return ok({ ok: true, ignored: true });
+        if (disputeReview) paddleLog("lifetime_dispute_manual_review", { event: eventType, orderId: transactionId });
+        return ok({
+          ok: true, lifetimeAccessUnchanged: true, manualReview: disputeReview,
+        }, { recordNotificationId: notificationId });
+      }
+      if (!order) {
+        const binding = await opts.repo.getCheckoutBindingByProviderId(PADDLE_PROVIDER, transactionId);
+        const quote = binding && await opts.repo.getQuote(binding.quoteId);
+        if ((quote && !isLifetimeProProduct(quote.productCode)) || (!quote && !opts.config.lifetimePriceId)) {
+          return ok({ ok: true, ignored: true });
+        }
+      }
+      if (!opts.refundEntitlement) return fail(503, "refund_handler_unavailable");
+      // Receipt first: if completion is in flight, it will see this even before the order is available here.
+      await opts.repo.rememberProviderRefund(PADDLE_PROVIDER, transactionId);
+      const current = order ?? await opts.repo.getOrderByProvider(PADDLE_PROVIDER, transactionId);
+      if (current && isLifetimeProProduct(current.productCode) && current.status !== "refunded") {
+        const refund = await completeNonRestoringRefund(opts.repo, {
+          userId: current.userId, orderId: current.id,
+          reason: chargeback ? "chargeback" : "provider_initiated",
+          refundEntitlement: opts.refundEntitlement,
+        });
+        if (!refund.ok && refund.error !== "already_refunded") throw new Error(refund.error);
+      }
+      return ok({ ok: true, refunded: Boolean(current), refundPending: !current }, { recordNotificationId: notificationId });
+    } catch {
+      return fail(503, "refund_failed", { orderId: transactionId });
+    }
+  }
 
   if (eventType !== EventName.TransactionCompleted && eventType !== "transaction.completed") {
     return ok({ ok: true, ignored: true, event: eventType });
@@ -108,10 +164,12 @@ export async function handlePaddleWebhook(opts: {
   if (!isPaddleTransactionId(transactionId)) return fail(409, "transaction_id_invalid", { event: eventType });
 
   const custom = readCustom(txn);
-  const expectedProductId = opts.config.productId;
-  if (!isSiteProProduct(custom.product_code)) {
+  if (!isPurchasableProProduct(custom.product_code)) {
     return fail(409, "product_mismatch", { orderId: transactionId, quoteId: custom.quote_id });
   }
+  const catalog = paddleCatalogForProduct(opts.config, custom.product_code);
+  if (!catalog) return fail(503, "LIFETIME_PRODUCT_UNAVAILABLE");
+  const expectedProductId = catalog.productId;
   if (!custom.quote_id || !custom.user_id) {
     return fail(409, "custom_data_missing", { orderId: transactionId });
   }
@@ -164,7 +222,7 @@ export async function handlePaddleWebhook(opts: {
     return fail(409, "currency_mismatch", { orderId: transactionId, quoteId: quote.id });
   }
 
-  const matched = matchPaddleTransactionToQuote(txn, quote, expectedProductId);
+  const matched = matchPaddleTransactionToQuote(txn, quote, expectedProductId, catalog.priceId);
   if (!matched.ok) return fail(409, matched.error, { orderId: transactionId, quoteId: quote.id });
 
   const held = await quotedCreditsBoundToQuote(opts.repo, quote);
@@ -259,6 +317,17 @@ export async function handlePaddleWebhook(opts: {
       }
       paddleLog("order_confirm_failed", { orderId: transactionId, quoteId: quote.id, event: result.error });
       return fail(503, result.error, { orderId: transactionId, quoteId: quote.id });
+    }
+    if (catalog.priceId && await opts.repo.hasProviderRefund(PADDLE_PROVIDER, transactionId)) {
+      if (!opts.refundEntitlement) return fail(503, "refund_handler_unavailable");
+      if (result.order.status !== "refunded") {
+        const refund = await completeNonRestoringRefund(opts.repo, {
+          userId: result.order.userId, orderId: result.order.id, reason: "provider_initiated",
+          refundEntitlement: opts.refundEntitlement,
+        });
+        if (!refund.ok && refund.error !== "already_refunded") throw new Error(refund.error);
+      }
+      return ok({ ok: true, refunded: true, orderId: result.order.id }, { recordNotificationId: notificationId });
     }
     await reportPaddleFulfillment({
       userId: quote.userId,

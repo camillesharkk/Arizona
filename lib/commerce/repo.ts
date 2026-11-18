@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import { isLifetimeProProduct } from "../pro-products.ts";
 import type {
   ClockUser,
   CommerceOrderRow,
@@ -16,6 +17,9 @@ import type {
 } from "./types.ts";
 
 export type CommerceRepo = {
+  rememberProviderRefund(provider: string, transactionId: string): Promise<void>;
+  hasProviderRefund(provider: string, transactionId: string): Promise<boolean>;
+  hasActiveLifetimePro(userId: string, nowIso: string): Promise<boolean>;
   getUser(id: string): Promise<ClockUser | null>;
   putUser(user: ClockUser): Promise<void>;
 
@@ -84,7 +88,7 @@ export type CommerceRepo = {
   consumeQuoteForBoundFulfillment(id: string, providerOrderId: string, at: string): Promise<boolean>;
   expireQuote(id: string): Promise<void>;
 
-  insertOrder(row: CommerceOrderRow): Promise<void>;
+  insertOrder(row: CommerceOrderRow): Promise<boolean>;
   getOrder(id: string): Promise<CommerceOrderRow | null>;
   getOrderByProvider(provider: string, providerOrderId: string): Promise<CommerceOrderRow | null>;
   listOrders(userId: string): Promise<CommerceOrderRow[]>;
@@ -114,7 +118,7 @@ export type CommerceRepo = {
     provider: string;
     expiresAt: string;
     now: string;
-  }): Promise<{ created: boolean; binding: ProviderCheckoutBinding } | { created: false; error: "PRICE_CHANGED" | "promotion_checkout_in_progress"; quoteId?: string }>;
+  }): Promise<{ created: boolean; binding: ProviderCheckoutBinding } | { created: false; error: "PRICE_CHANGED" | "promotion_checkout_in_progress" | "lifetime_checkout_in_progress" | "lifetime_already_owned"; quoteId?: string }>;
   completeCheckoutBinding(opts: {
     quoteId: string;
     providerCheckoutId: string;
@@ -131,6 +135,7 @@ export type CommerceRepo = {
 };
 
 type Mem = {
+  providerRefunds: string[];
   users: ClockUser[];
   codes: ReferralCodeRow[];
   relationships: ReferralRelationshipRow[];
@@ -147,6 +152,7 @@ type Mem = {
 
 function empty(): Mem {
   return {
+    providerRefunds: [],
     users: [],
     codes: [],
     relationships: [],
@@ -166,6 +172,7 @@ function hydrate(raw?: Record<string, unknown> | Mem): Mem {
   const base = empty();
   if (!raw) return base;
   return {
+    providerRefunds: Array.isArray(raw.providerRefunds) ? raw.providerRefunds as string[] : [],
     users: Array.isArray(raw.users)
       ? (raw.users as ClockUser[]).map((u) => ({
           ...u,
@@ -207,7 +214,10 @@ function hydrate(raw?: Record<string, unknown> | Mem): Mem {
 
 export type MemoryCommerceRepo = CommerceRepo & { snapshot: () => Mem };
 
-export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): MemoryCommerceRepo {
+export function createMemoryCommerceRepo(
+  raw?: Record<string, unknown> | Mem,
+  checkLifetimePro?: CommerceRepo["hasActiveLifetimePro"]
+): MemoryCommerceRepo {
   const db = hydrate(raw);
   const locks = new Map<string, Promise<void>>();
 
@@ -227,6 +237,18 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
   }
 
   const repo: CommerceRepo = {
+    async rememberProviderRefund(provider, transactionId) {
+      const key = JSON.stringify([provider, transactionId]);
+      if (!db.providerRefunds.includes(key)) db.providerRefunds.push(key);
+    },
+    async hasProviderRefund(provider, transactionId) {
+      return db.providerRefunds.includes(JSON.stringify([provider, transactionId]));
+    },
+    async hasActiveLifetimePro(userId, nowIso) {
+      if (checkLifetimePro) return checkLifetimePro(userId, nowIso);
+      return db.orders.some(order => order.userId === userId && order.status === "paid"
+        && isLifetimeProProduct(order.productCode) && Date.parse(order.paidAt) <= Date.parse(nowIso));
+    },
     async getUser(id) {
       return db.users.find((u) => u.id === id) ?? null;
     },
@@ -520,7 +542,9 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
       if (q && q.status === "open") q.status = "expired";
     },
     async insertOrder(row) {
+      if (db.orders.some(order => order.provider === row.provider && order.providerOrderId === row.providerOrderId)) return false;
       db.orders.push(row);
+      return true;
     },
     async getOrder(id) {
       return db.orders.find((o) => o.id === id) ?? null;
@@ -593,8 +617,19 @@ export function createMemoryCommerceRepo(raw?: Record<string, unknown> | Mem): M
     },
     async claimCheckoutBinding(opts) {
       const quote = db.quotes.find(row => row.id === opts.quoteId);
-      return withLock(`checkout-user:${quote?.userId ?? opts.quoteId}`, () => {
+      return withLock(`checkout-user:${quote?.userId ?? opts.quoteId}`, async () => {
         if (quote) {
+          if (await repo.hasActiveLifetimePro(quote.userId, opts.now)) {
+            return { created: false as const, error: "lifetime_already_owned" as const };
+          }
+          if (isLifetimeProProduct(quote.productCode)) {
+            const lifetimeConflict = db.checkoutBindings.find(binding => {
+              if (binding.quoteId === quote.id || (binding.status !== "creating" && binding.status !== "ready")) return false;
+              const other = db.quotes.find(row => row.id === binding.quoteId);
+              return other?.userId === quote.userId && other.status !== "consumed" && isLifetimeProProduct(other.productCode);
+            });
+            if (lifetimeConflict) return { created: false as const, error: "lifetime_checkout_in_progress" as const, quoteId: lifetimeConflict.quoteId };
+          }
           const used = db.redemptions.filter(row => row.userId === quote.userId);
           const paid = db.orders.filter(row => row.userId === quote.userId && row.quoteId !== quote.id);
           if ((quote.newcomerDiscountApplied && (used.some(row => row.kind === "newcomer") || paid.some(row => row.newcomerApplied)))

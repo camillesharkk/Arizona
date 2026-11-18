@@ -12,14 +12,17 @@ export function daysUntil(iso: string) {
 export function ProAccessNote({
   plan,
   planExpiresAt,
+  lifetimePro = false,
   compact = false,
   purchaseEnabled = true,
 }: {
   plan?: string | null;
   planExpiresAt?: string | null;
+  lifetimePro?: boolean;
   compact?: boolean;
   purchaseEnabled?: boolean;
 }) {
+  if (lifetimePro) return compact ? <span>No expiration</span> : <p><strong>Lifetime Pro</strong> · All available states · No expiration</p>;
   if (plan !== "pro" || !planExpiresAt) return null;
   const label = formatProUntil(planExpiresAt);
   const days = daysUntil(planExpiresAt);

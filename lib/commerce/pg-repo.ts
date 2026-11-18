@@ -1,3 +1,4 @@
+import { LIFETIME_PRO_PRODUCT_CODE, isLifetimeProProduct } from "../pro-products.ts";
 import type { CommerceRepo } from "./repo.ts";
 import type {
   ClockUser,
@@ -211,8 +212,28 @@ function mapBinding(r: Record<string, unknown>): ProviderCheckoutBinding {
   };
 }
 
+async function hasActiveLifetimePro(sql: any, userId: string, nowIso: string) {
+  const rows = await sql`
+    select 1 from entitlements
+    where user_id = ${userId} and product_code = ${LIFETIME_PRO_PRODUCT_CODE}
+      and state = 'ALL' and status = 'active' and expires_at is null and starts_at <= ${nowIso}
+    limit 1
+  `;
+  return rows.length > 0;
+}
+
 export function createPgCommerceRepo(sql: any): CommerceRepo {
   return {
+    async rememberProviderRefund(provider, transactionId) {
+      await sql`insert into provider_refunds (provider, transaction_id)
+        values (${provider}, ${transactionId}) on conflict do nothing`;
+    },
+    async hasProviderRefund(provider, transactionId) {
+      const rows = await sql`select 1 from provider_refunds
+        where provider = ${provider} and transaction_id = ${transactionId}`;
+      return rows.length > 0;
+    },
+    hasActiveLifetimePro: (userId, nowIso) => hasActiveLifetimePro(sql, userId, nowIso),
     async getUser(id) {
       const rows = await sql`select id, created_at, email_verified_at from users where id = ${id} limit 1`;
       const r = rows[0];
@@ -639,7 +660,7 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
       await sql`update pricing_quotes set status = 'expired' where id = ${id} and status = 'open'`;
     },
     async insertOrder(row) {
-      await sql`insert into commerce_orders (
+      const rows = await sql`insert into commerce_orders (
         id, user_id, product_code, quote_id, entitlement_id, status, paid_at, amount_cents, currency,
         provider, provider_order_id, newcomer_applied, referral_discount_applied, credit_id, credit_ids, credit_cents,
         policy_version, policy_accepted_at, refunded_at, refund_reason, created_at
@@ -648,7 +669,8 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
         ${row.paidAt}, ${row.amountCents}, ${row.currency}, ${row.provider}, ${row.providerOrderId},
         ${row.newcomerApplied}, ${row.referralDiscountApplied}, ${row.creditId}, ${JSON.stringify(row.creditIds || [])}, ${row.creditCents},
         ${row.policyVersion}, ${row.policyAcceptedAt}, ${row.refundedAt}, ${row.refundReason}, ${row.createdAt}
-      )`;
+      ) on conflict (provider, provider_order_id) do nothing returning id`;
+      return rows.length > 0;
     },
     async getOrder(id) {
       const rows = await sql`select * from commerce_orders where id = ${id} limit 1`;
@@ -750,6 +772,22 @@ export function createPgCommerceRepo(sql: any): CommerceRepo {
         if (quote) {
           // All provider creation claims for one account share this database row lock.
           await sql`select id from users where id=${quote.user_id} for update`;
+          if (await hasActiveLifetimePro(sql, quote.user_id, opts.now)) {
+            return { created: false as const, error: "lifetime_already_owned" as const };
+          }
+          if (isLifetimeProProduct(quote.product_code)) {
+            // Expired quotes can still have a payable provider transaction.
+            const lifetimeConflicts = await sql`select binding.quote_id from provider_checkout_bindings binding
+              join pricing_quotes other on other.id = binding.quote_id
+              where other.user_id = ${quote.user_id} and other.id <> ${opts.quoteId}
+                and other.product_code = ${LIFETIME_PRO_PRODUCT_CODE} and other.status <> 'consumed'
+                and binding.status in ('creating', 'ready')
+              order by binding.created_at, binding.quote_id
+              limit 1`;
+            if (lifetimeConflicts.length) {
+              return { created: false as const, error: "lifetime_checkout_in_progress" as const, quoteId: String(lifetimeConflicts[0].quote_id) };
+            }
+          }
           const used = await sql`select kind from promotion_redemptions where user_id=${quote.user_id}`;
           const paid = await sql`select newcomer_applied, referral_discount_applied from commerce_orders where user_id=${quote.user_id} and quote_id<>${opts.quoteId}`;
           if ((quote.newcomer_discount_applied && (used.some((row: any) => row.kind === "newcomer") || paid.some((row: any) => row.newcomer_applied)))

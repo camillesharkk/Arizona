@@ -14,6 +14,7 @@ import { examConfig } from "@/data/exam-config";
 
 export function HomeProCta() {
   const [isPro, setIsPro] = useState(false);
+  const [lifetimePro, setLifetimePro] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
@@ -24,6 +25,7 @@ export function HomeProCta() {
       .then((r) => r.json())
       .then((d) => {
         setIsPro(Boolean(d.user?.arizonaPro));
+        setLifetimePro(d.user?.lifetimePro === true);
         setSignedIn(Boolean(d.user));
         setExpiresAt(d.user?.planExpiresAt || null);
       })
@@ -35,8 +37,8 @@ export function HomeProCta() {
     return (
       <section className="card" style={{ marginTop: 20 }}>
         <h2>You&apos;re on Pro</h2>
-        <ProAccessNote plan="pro" planExpiresAt={expiresAt} />
-        <p className="lede">Pro is active for every available state until the date below. This is not a lifetime membership.</p>
+        <ProAccessNote plan="pro" lifetimePro={lifetimePro} planExpiresAt={expiresAt} />
+        {!lifetimePro && <p className="lede">Pro is active for every available state until your access expires.</p>}
         <Link className="btn btn-ghost" href={paths.dashboard}>
           Go to Dashboard
         </Link>

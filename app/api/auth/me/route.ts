@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
-import { accountProExpiry, ctProCovers } from "@/lib/account-pro";
+import { accountProExpiry, ctProCovers, hasLifetimePro } from "@/lib/account-pro";
 import { getArizonaEntitlement, indianaEntitlement, packFullExamCounts } from "@/lib/entitlements";
 import { stateProCovers, stateProExpiry } from "@/lib/state-pro";
 import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
@@ -18,9 +18,11 @@ export async function GET() {
   if (!user) return NextResponse.json({ user: null }, { headers: { "Cache-Control": "private, no-store" } });
   const entitlement = await getArizonaEntitlement(session.id, entitlements);
   const arizonaPro = Boolean(entitlement);
+  const lifetimePro = hasLifetimePro(entitlements);
   const connecticutPro = ctProCovers(entitlements);
   const count = (mode: string) => exams.filter(exam => exam.mode === mode).length;
   return NextResponse.json({
+    lifetimePro,
     user: {
       id: user.id,
       email: user.email,
@@ -29,6 +31,7 @@ export async function GET() {
       planStatus: user.planStatus,
       emailVerified: user.emailVerified,
       arizonaPro,
+      lifetimePro,
       connecticutPro,
       connecticutProExpiresAt: connecticutPro ? accountProExpiry(entitlements, new Date(), "CT")?.toISOString() ?? null : null,
       ncPro: stateProCovers(entitlements, "NC"),

@@ -340,7 +340,7 @@ export const fileStore: Store = {
           e.state === state &&
           e.status === "active" &&
           new Date(e.startsAt).getTime() <= now &&
-          new Date(e.expiresAt).getTime() > now
+          (e.expiresAt === null || Date.parse(e.expiresAt) > now)
       ) ?? null
     );
   },
@@ -348,7 +348,7 @@ export const fileStore: Store = {
     const db = await load();
     const times = db.entitlements
       .filter((e) => e.userId === userId && e.state === state && e.status === "active")
-      .map((e) => new Date(e.expiresAt).getTime());
+      .flatMap((e) => e.expiresAt === null ? [] : [Date.parse(e.expiresAt)]);
     if (!times.length) return null;
     return new Date(Math.max(...times));
   },
@@ -366,7 +366,7 @@ export const fileStore: Store = {
           e.state === "AZ" &&
           e.status === "active" &&
           new Date(e.startsAt).getTime() <= now &&
-          new Date(e.expiresAt).getTime() > now
+          (e.expiresAt === null || Date.parse(e.expiresAt) > now)
       ) ?? null
     );
   },
@@ -379,14 +379,14 @@ export const fileStore: Store = {
         e.state === "AZ" &&
         e.status === "active" &&
         new Date(e.startsAt).getTime() <= now &&
-        new Date(e.expiresAt).getTime() > now
+        (e.expiresAt === null || Date.parse(e.expiresAt) > now)
     );
   },
   async getLatestArizonaExpiry(userId) {
     const db = await load();
     const times = db.entitlements
       .filter((e) => e.userId === userId && e.state === "AZ" && e.status === "active")
-      .map((e) => new Date(e.expiresAt).getTime());
+      .flatMap((e) => e.expiresAt === null ? [] : [Date.parse(e.expiresAt)]);
     if (!times.length) return null;
     return new Date(Math.max(...times));
   },

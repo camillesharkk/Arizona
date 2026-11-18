@@ -1,4 +1,4 @@
-import { pendingAnalyticsCheckout, recoverPendingPurchase } from "./analytics.ts";
+import { hasUnconfirmedPendingPurchase, recoverPendingPurchase } from "./analytics.ts";
 
 /** Starts at mount, on checkout creation/completion, and when the user returns. */
 export function observePendingPurchases() {
@@ -8,7 +8,7 @@ export function observePendingPurchases() {
   let timer: ReturnType<typeof setTimeout> | undefined;
   const controller = new AbortController();
   const poll = async () => {
-    if (stopped || inFlight || !pendingAnalyticsCheckout()) return;
+    if (stopped || inFlight || !hasUnconfirmedPendingPurchase()) return;
     inFlight = true;
     attempts += 1;
     let done = false;
@@ -18,7 +18,8 @@ export function observePendingPurchases() {
       if (res.ok) {
         const access = await res.json();
         if (stopped) return;
-        done = Array.isArray(access.orders) && recoverPendingPurchase(access.orders);
+        if (Array.isArray(access.orders)) recoverPendingPurchase(access.orders, access.lifetimePro === true);
+        done = !hasUnconfirmedPendingPurchase();
       }
     } catch { /* Analytics must not affect the page or payment. */ }
     finally {

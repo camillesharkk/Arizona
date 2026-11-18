@@ -1,5 +1,6 @@
-import { mkdir, readFile, writeFile } from "fs/promises";
+import { mkdir, readFile, rename, writeFile } from "fs/promises";
 import path from "path";
+import { hasLifetimePro } from "../account-pro.ts";
 import { fileStore } from "../store/file-store";
 import { createMemoryCommerceRepo, type CommerceRepo } from "./repo.ts";
 import type { ClockUser } from "./types.ts";
@@ -16,8 +17,11 @@ async function loadRaw(): Promise<Record<string, unknown>> {
 }
 
 async function saveRaw(data: unknown) {
-  await mkdir(path.dirname(filePath()), { recursive: true });
-  await writeFile(filePath(), JSON.stringify(data, null, 2));
+  const target = filePath();
+  const temporary = target + ".tmp";
+  await mkdir(path.dirname(target), { recursive: true });
+  await writeFile(temporary, JSON.stringify(data, null, 2));
+  await rename(temporary, target);
 }
 
 function persistWrap(inner: CommerceRepo & { snapshot: () => unknown }): CommerceRepo {
@@ -33,6 +37,9 @@ function persistWrap(inner: CommerceRepo & { snapshot: () => unknown }): Commerc
     };
 
   return {
+    rememberProviderRefund: wrap(inner.rememberProviderRefund.bind(inner)),
+    hasProviderRefund: inner.hasProviderRefund.bind(inner),
+    hasActiveLifetimePro: inner.hasActiveLifetimePro.bind(inner),
     getUser: inner.getUser,
     putUser: wrap(inner.putUser.bind(inner)),
     getCodeByUser: inner.getCodeByUser.bind(inner),
@@ -104,7 +111,8 @@ function persistWrap(inner: CommerceRepo & { snapshot: () => unknown }): Commerc
 
 export async function createFileCommerceRepo(): Promise<CommerceRepo> {
   const raw = await loadRaw();
-  const inner = createMemoryCommerceRepo(raw);
+  const inner = createMemoryCommerceRepo(raw, async (userId, nowIso) =>
+    hasLifetimePro(await fileStore.listEntitlements(userId), new Date(nowIso)));
   const repo = persistWrap(inner);
   return {
     ...repo,

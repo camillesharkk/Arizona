@@ -9,6 +9,7 @@ import {
   createPaddleSdk,
   isPaddleTransactionId,
   matchPaddleTransactionToQuote,
+  paddleCatalogForProduct,
   paddleLog,
   readPaddleCustom,
   type PaddleCheckoutConfig,
@@ -18,7 +19,7 @@ import {
 } from "./paddle.ts";
 
 export type ReconcilePaddleCheckoutResult =
-  | { ok: true; kind: "ready"; transactionId: string }
+  | { ok: true; kind: "ready"; transactionId: string; paymentPending?: boolean }
   | { ok: true; kind: "in_progress" }
   | { ok: true; kind: "cleared"; quoteExpired: boolean }
   | { ok: true; kind: "none" }
@@ -97,6 +98,7 @@ export async function listMatchingPaddleTransactions(opts: {
   sdk: PaddleTransactionsClient;
   quote: PricingQuoteRow;
   productId: string;
+  priceId?: string;
   createdAtGte: string;
   createdAtLte: string;
 }): Promise<{ ok: true; matches: PaddleTxnSnapshot[] } | { ok: false; error: string }> {
@@ -108,7 +110,8 @@ export async function listMatchingPaddleTransactions(opts: {
   if (!listed.ok) return listed;
   const matches = listed.items.filter((txn) => {
     if (readPaddleCustom(txn).quote_id !== opts.quote.id) return false;
-    return matchPaddleTransactionToQuote(txn, opts.quote, opts.productId).ok;
+    const match = matchPaddleTransactionToQuote(txn, opts.quote, opts.productId, opts.priceId);
+    return match.ok || Boolean(opts.priceId && match.error === "transaction_canceled");
   });
   return { ok: true, matches };
 }
@@ -139,6 +142,8 @@ export async function reconcilePaddleCheckoutBinding(opts: {
   const binding = await opts.repo.getCheckoutBinding(opts.quote.id);
   if (!binding) return { ok: true, kind: "none" };
   if (binding.provider !== PADDLE_PROVIDER) return { ok: true, kind: "none" };
+  const catalog = paddleCatalogForProduct(opts.config, opts.quote.productCode);
+  if (!catalog) return { ok: false, error: "paddle_transaction_reconciliation_failed", status: 503 };
   if (binding.status === "ready" && binding.providerCheckoutId) {
     const sdk = opts.sdk ?? createPaddleSdk(opts.config);
     if (sdk.transactions.get) {
@@ -151,6 +156,14 @@ export async function reconcilePaddleCheckoutBinding(opts: {
           await opts.repo.expireQuote(opts.quote.id);
           await opts.repo.releaseCreditsForQuote(opts.quote.id);
           return { ok: true, kind: "cleared", quoteExpired: true };
+        }
+        if (catalog.priceId) {
+          const match = matchPaddleTransactionToQuote(transaction, opts.quote, catalog.productId, catalog.priceId);
+          if (!match.ok) throw new Error("transaction_mismatch");
+          return {
+            ok: true, kind: "ready", transactionId: binding.providerCheckoutId,
+            paymentPending: transaction.status === "paid" || transaction.status === "completed",
+          };
         }
       } catch {
         return { ok: false, error: "paddle_transaction_reconciliation_failed", status: 503 };
@@ -171,7 +184,7 @@ export async function reconcilePaddleCheckoutBinding(opts: {
   const listed = await listMatchingPaddleTransactions({
     sdk: opts.sdk ?? createPaddleSdk(opts.config),
     quote: opts.quote,
-    productId: opts.config.productId,
+    ...catalog,
     createdAtGte,
     createdAtLte: now.toISOString(),
   });
@@ -211,7 +224,8 @@ export async function reconcilePaddleCheckoutBinding(opts: {
     });
     const current = adopted ?? (await opts.repo.getCheckoutBinding(opts.quote.id));
     if (current?.status === "ready" && current.providerCheckoutId === transactionId) {
-      return { ok: true, kind: "ready", transactionId };
+      return { ok: true, kind: "ready", transactionId, paymentPending: catalog.priceId
+        ? txn.status === "paid" || txn.status === "completed" : undefined };
     }
     paddleLog("paddle_transaction_reconciliation_failed", { quoteId: opts.quote.id, orderId: transactionId });
     return { ok: false, error: "paddle_transaction_reconciliation_failed", status: 503 };

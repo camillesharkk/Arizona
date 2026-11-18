@@ -14,7 +14,8 @@ import {
   STANDARD_PRICE_CENTS,
 } from "../pricing/catalog.ts";
 import { calculatePrice, type PriceBreakdown } from "../pricing/engine.ts";
-import { isSiteProProduct } from "../pro-products.ts";
+import { isLifetimeProProduct, isPurchasableProProduct } from "../pro-products.ts";
+import { LIFETIME_POLICY_VERSION, LIFETIME_TOTAL_CENTS } from "../pricing/lifetime.ts";
 import { addHours } from "../pricing/money.ts";
 import { generateReferralCode, isReferralCodeFormat, normalizeReferralCode } from "./codes.ts";
 import type { CommerceRepo } from "./repo.ts";
@@ -31,7 +32,7 @@ export type GrantProFn = (opts: {
   productCode: string;
 }) => Promise<{ entitlement: { id: string } }>;
 
-export type ActiveEntitlement = { id: string; startsAt: string; expiresAt: string };
+export type ActiveEntitlement = { id: string; startsAt: string; expiresAt: string | null };
 
 export type ListActiveEntitlementsFn = (userId: string) => Promise<ActiveEntitlement[]>;
 
@@ -177,21 +178,26 @@ export async function createQuote(
   const now = opts.now ?? new Date();
   if (!opts.policyAccepted) return { ok: false, error: "policy_required" };
   const productCode = opts.productCode ?? AZ_PRO_PRODUCT_CODE;
-  if (!isSiteProProduct(productCode)) return { ok: false, error: "product_mismatch" };
-  const { snap, breakdown } = await previewPrice(repo, opts.userId, opts.applyCredit, now, opts.requestedCreditCount);
+  if (!isPurchasableProProduct(productCode)) return { ok: false, error: "product_mismatch" };
+  if (await repo.hasActiveLifetimePro(opts.userId, now.toISOString())) return { ok: false, error: "lifetime_already_owned" };
+  const lifetime = isLifetimeProProduct(productCode);
+  if (lifetime && !(await repo.getUser(opts.userId))) throw new Error("user_not_found");
+  const { snap, breakdown } = lifetime
+    ? { snap: null, breakdown: lifetimeBreakdown() }
+    : await previewPrice(repo, opts.userId, opts.applyCredit, now, opts.requestedCreditCount);
   if (opts.applyCredit && !breakdown.creditApplied) {
     return { ok: false, error: "credit_unavailable" };
   }
   let creditIds: string[] = [];
   let expires = new Date(now.getTime() + QUOTE_TTL_MS);
-  if (breakdown.newcomerApplied && snap.newcomerExpiresAt) {
+  if (breakdown.newcomerApplied && snap?.newcomerExpiresAt) {
     const promoEnd = new Date(snap.newcomerExpiresAt);
     if (promoEnd.getTime() < expires.getTime()) expires = promoEnd;
   }
   if (expires.getTime() <= now.getTime()) return { ok: false, error: "PRICE_CHANGED" };
 
   if (breakdown.creditsAppliedCount > 0) {
-    creditIds = snap.availableCredits.slice(0, breakdown.creditsAppliedCount).map((c) => c.id);
+    creditIds = snap?.availableCredits.slice(0, breakdown.creditsAppliedCount).map((c) => c.id) ?? [];
     if (creditIds.length !== breakdown.creditsAppliedCount) return { ok: false, error: "credit_unavailable" };
   }
 
@@ -212,10 +218,10 @@ export async function createQuote(
     creditCents: breakdown.creditCents,
     subtotalCents: breakdown.subtotalBeforeCreditCents,
     finalPriceCents: breakdown.finalPriceCents,
-    newcomerExpiresAt: snap.newcomerExpiresAt,
-    referralRelationshipId: snap.relationship?.id ?? null,
-    policyVersion: POLICY_VERSION,
-    refundPolicyVersion: REFUND_POLICY_VERSION,
+    newcomerExpiresAt: snap?.newcomerExpiresAt ?? null,
+    referralRelationshipId: snap?.relationship?.id ?? null,
+    policyVersion: lifetime ? LIFETIME_POLICY_VERSION : POLICY_VERSION,
+    refundPolicyVersion: lifetime ? LIFETIME_POLICY_VERSION : REFUND_POLICY_VERSION,
     promotionPolicyVersion: PROMOTION_POLICY_VERSION,
     policyAcceptedAt: now.toISOString(),
     status: "open",
@@ -252,13 +258,25 @@ export async function abandonQuote(repo: CommerceRepo, quoteId: string) {
   await repo.expireQuote(quoteId);
 }
 
+function hasFixedLifetimePrice(quote: PricingQuoteRow) {
+  return quote.currency === CURRENCY && quote.finalPriceCents === LIFETIME_TOTAL_CENTS
+    && quote.subtotalCents === LIFETIME_TOTAL_CENTS
+    && !quote.newcomerDiscountApplied && quote.newcomerDiscountCents === 0
+    && !quote.referralDiscountApplied && quote.referralDiscountCents === 0
+    && quote.creditCents === 0 && !quote.creditId && !quote.creditIds?.length;
+}
+
 export async function assertQuoteStillValid(
   repo: CommerceRepo,
   quote: PricingQuoteRow,
   now = new Date()
-): Promise<{ ok: true; breakdown: PriceBreakdown } | { ok: false; error: "PRICE_CHANGED" | "expired" }> {
+): Promise<{ ok: true; breakdown: PriceBreakdown } | { ok: false; error: "PRICE_CHANGED" | "expired" | "lifetime_already_owned" }> {
   if (quote.status !== "open") return { ok: false, error: "expired" };
-  if (quote.policyVersion !== POLICY_VERSION || quote.promotionPolicyVersion !== PROMOTION_POLICY_VERSION) {
+  if (await repo.hasActiveLifetimePro(quote.userId, now.toISOString())) return { ok: false, error: "lifetime_already_owned" };
+  const lifetime = isLifetimeProProduct(quote.productCode);
+  if (lifetime
+    ? quote.policyVersion !== LIFETIME_POLICY_VERSION || quote.refundPolicyVersion !== LIFETIME_POLICY_VERSION
+    : quote.policyVersion !== POLICY_VERSION || quote.promotionPolicyVersion !== PROMOTION_POLICY_VERSION) {
     return { ok: false, error: "PRICE_CHANGED" };
   }
   if (new Date(quote.expiresAt).getTime() <= now.getTime()) {
@@ -267,6 +285,10 @@ export async function assertQuoteStillValid(
       await repo.releaseCreditsForQuote(quote.id);
     }
     return { ok: false, error: "expired" };
+  }
+  if (lifetime) {
+    if (!hasFixedLifetimePrice(quote)) return { ok: false, error: "PRICE_CHANGED" };
+    return { ok: true, breakdown: lifetimeBreakdown() };
   }
   const snap = await eligibilitySnapshot(repo, quote.userId, now);
   const quoteCreditIds = quote.creditIds?.length ? quote.creditIds : quote.creditId ? [quote.creditId] : [];
@@ -332,15 +354,29 @@ export async function confirmPaidOrder(
 ): Promise<{ ok: true; order: CommerceOrderRow; duplicate?: boolean } | { ok: false; error: string }> {
   const now = opts.now ?? new Date();
   const existing = await repo.getOrderByProvider(opts.provider, opts.providerOrderId);
-  if (existing) return { ok: true, order: existing, duplicate: true };
+  if (existing) {
+    if (existing.userId !== opts.userId || existing.quoteId !== opts.quoteId) return { ok: false, error: "order_conflict" };
+    if (opts.boundFulfillment && isLifetimeProProduct(existing.productCode)) {
+      await repo.consumeQuoteForBoundFulfillment(existing.quoteId, existing.providerOrderId, now.toISOString());
+    }
+    return { ok: true, order: existing, duplicate: true };
+  }
 
   const quote = await repo.getQuote(opts.quoteId);
   if (!quote || quote.userId !== opts.userId) return { ok: false, error: "quote_not_found" };
+  const lifetime = isLifetimeProProduct(quote.productCode);
+  if (lifetime && !hasFixedLifetimePrice(quote)) return { ok: false, error: "PRICE_CHANGED" };
   const quoteCreditIds = quote.creditIds?.length ? quote.creditIds : quote.creditId ? [quote.creditId] : [];
   if (!opts.boundFulfillment) {
     const valid = await assertQuoteStillValid(repo, quote, now);
     if (!valid.ok) return { ok: false, error: valid.error };
   } else if (quote.status !== "open" && quote.status !== "expired") {
+    if (quote.status === "consumed" && quote.providerOrderId === opts.providerOrderId) {
+      const canonical = await repo.getOrderByProvider(opts.provider, opts.providerOrderId);
+      if (canonical?.quoteId === quote.id && canonical.userId === opts.userId) {
+        return { ok: true, order: canonical, duplicate: true };
+      }
+    }
     return { ok: false, error: quote.status === "consumed" ? "quote_consumed" : "expired" };
   } else {
     const held = await quotedCreditsBoundToQuote(repo, quote);
@@ -415,7 +451,17 @@ export async function confirmPaidOrder(
     refundReason: null,
     createdAt: now.toISOString(),
   };
-  await repo.insertOrder(order);
+  const inserted = await repo.insertOrder(order);
+  if (!inserted) {
+    const canonical = await repo.getOrderByProvider(opts.provider, opts.providerOrderId);
+    if (canonical?.userId !== order.userId || canonical.quoteId !== order.quoteId) {
+      return { ok: false, error: "order_conflict" };
+    }
+    if (opts.boundFulfillment && lifetime) {
+      await repo.consumeQuoteForBoundFulfillment(quote.id, canonical.providerOrderId, now.toISOString());
+    }
+    return { ok: true, order: canonical, duplicate: true };
+  }
 
   if (opts.boundFulfillment) {
     const consumed = await repo.consumeQuoteForBoundFulfillment(quote.id, opts.providerOrderId, now.toISOString());
@@ -453,7 +499,7 @@ export async function confirmPaidOrder(
     if (!redeemed) return { ok: false, error: "credit_redeem_failed" };
   }
 
-  await maybeCreateReferralReward(repo, { referredUserId: opts.userId, order, now });
+  if (!lifetime) await maybeCreateReferralReward(repo, { referredUserId: opts.userId, order, now });
   return { ok: true, order };
 }
 
@@ -466,7 +512,7 @@ async function maybeCreateReferralReward(
   const qualified = await repo.hasQualifyingPaidOrder(rel.referrerUserId);
   if (!qualified) return;
   const prior = await repo.listOrders(opts.referredUserId);
-  const paid = prior.filter((o) => o.status === "paid" || o.id === opts.order.id);
+  const paid = prior.filter((o) => !isLifetimeProProduct(o.productCode) && (o.status === "paid" || o.id === opts.order.id));
   const firstPaid = paid.sort((a, b) => a.paidAt.localeCompare(b.paidAt))[0];
   if (!firstPaid || firstPaid.id !== opts.order.id) return;
 
@@ -505,7 +551,9 @@ async function maybeCreateReferralReward(
 
 export function currentlyServingEntitlements(ents: ActiveEntitlement[], now = new Date()) {
   const t = now.getTime();
-  return ents.filter((e) => new Date(e.startsAt).getTime() <= t && new Date(e.expiresAt).getTime() > t);
+  const serving = ents.filter(e => Date.parse(e.startsAt) <= t && (e.expiresAt === null || Date.parse(e.expiresAt) > t));
+  const lifetime = serving.filter(e => e.expiresAt === null);
+  return lifetime.length ? lifetime : serving;
 }
 
 export async function markProUsed(
@@ -620,7 +668,7 @@ export async function releaseMatureRewards(repo: CommerceRepo, now = new Date())
 
 export type RefundEligibility =
   | { eligible: true; remainingMs: number; order: CommerceOrderRow }
-  | { eligible: false; reason: "not_found" | "already_refunded" | "expired" | "pro_used"; order?: CommerceOrderRow; usedAt?: string };
+  | { eligible: false; reason: "not_found" | "already_refunded" | "expired" | "pro_used" | "exam_review_required"; order?: CommerceOrderRow; usedAt?: string };
 
 export async function refundEligibility(
   repo: CommerceRepo,
@@ -630,6 +678,7 @@ export async function refundEligibility(
   const order = await repo.getOrder(opts.orderId);
   if (!order || order.userId !== opts.userId) return { eligible: false, reason: "not_found" };
   if (order.status === "refunded") return { eligible: false, reason: "already_refunded", order };
+  if (isLifetimeProProduct(order.productCode)) return { eligible: false, reason: "exam_review_required", order };
   const deadline = addHours(order.paidAt, REFUND_HOURS);
   if (now.getTime() >= deadline.getTime()) return { eligible: false, reason: "expired", order };
   if (order.entitlementId) {
@@ -644,7 +693,7 @@ export async function requestEligibleRefund(
   opts: { userId: string; orderId: string; now?: Date }
 ) {
   const now = opts.now ?? new Date();
-  const el = await refundEligibility(repo, opts);
+  const el = await refundEligibility(repo, { ...opts, now });
   if (!el.eligible) return { ok: false as const, error: el.reason, eligibility: el };
   await repo.insertRefundRequest({
     id: randomUUID(),
@@ -746,3 +795,20 @@ export async function forfeitReferralOnAccountDeletion(
 }
 
 export { LIST_PRICE_CENTS, STANDARD_PRICE_CENTS };
+
+export function lifetimeBreakdown(): PriceBreakdown {
+  return {
+    ...calculatePrice({
+      newcomerEligible: false,
+      newcomerExpiresAt: null,
+      referralDiscountEligible: false,
+      applyCredit: false,
+      availableCreditCount: 0,
+    }),
+    listPriceCents: LIFETIME_TOTAL_CENTS,
+    standardPriceCents: LIFETIME_TOTAL_CENTS,
+    baseAppliedPriceCents: LIFETIME_TOTAL_CENTS,
+    subtotalBeforeCreditCents: LIFETIME_TOTAL_CENTS,
+    finalPriceCents: LIFETIME_TOTAL_CENTS,
+  };
+}

@@ -5,13 +5,18 @@ import { pageMeta } from "@/lib/seo";
 import { LIFETIME_TOTAL_CENTS } from "@/lib/pricing/lifetime";
 import { formatUsd } from "@/lib/pricing/money";
 import { LifetimeGuaranteeTerms } from "@/components/LifetimeGuaranteeTerms";
+import { CheckoutButton } from "@/components/CheckoutButton";
+import { LIFETIME_PRO_PRODUCT_CODE } from "@/lib/pro-products";
+import { getLifetimeCheckoutAvailability } from "@/lib/billing/lifetime-availability";
+import { TAX_CHECKOUT_NOTICE } from "@/lib/pricing/copy";
 export const metadata = pageMeta({
   title: "Lifetime Pro — $29.99 All-State Access",
   description:
-    "Lifetime Pro access plus a $10 official exam guarantee. Lifetime purchasing is not open yet.",
+    "One-time Lifetime Pro access across all available states plus a $10 official exam guarantee.",
   path: "/lifetime/",
 });
-export default function LifetimePage() {
+export default async function LifetimePage() {
+  const lifetimeAvailable = await getLifetimeCheckoutAvailability();
   return (
     <main className="wrap hero">
       <h1>Lifetime Pro</h1>
@@ -45,10 +50,10 @@ export default function LifetimePage() {
         <h2>What the price covers</h2>
         <LifetimeGuaranteeTerms />
       </section>
-      <section className="card">
-        <h2>Lifetime purchasing is not open yet</h2>
-        <p>You can use free practice or choose 60-day Pro today.</p>
-        <Link href="/contact/">Contact support</Link>
+      <section className="card" id="lifetime-checkout">
+        <h2>Lifetime Pro Checkout</h2>
+        <CheckoutButton productCode={LIFETIME_PRO_PRODUCT_CODE} checkoutAvailable={lifetimeAvailable} lifetimePage
+          belowCta={<p className="notice">{TAX_CHECKOUT_NOTICE}</p>} />
       </section>
       <p>
         <Link href="/pricing/#lifetime-checkout">Compare both Pro checkouts</Link>

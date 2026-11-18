@@ -10,12 +10,13 @@ import { hiPaths } from "@/lib/hi-site";
 import { packNavigationFor } from "@/lib/prep-navigation";
 import { paths } from "@/lib/paths";
 import type { LiveCode } from "@/lib/site-state";
-import { ProAccessNote, formatProUntil } from "@/components/ProAccessNote";
+import { ProAccessNote } from "@/components/ProAccessNote";
 import { freeStateFeatures, isFreeState } from '@/lib/free-state-catalog';
 
 export type HeaderUser = {
   email: string;
   plan: "free" | "pro";
+  lifetimePro?: boolean;
   name: string | null;
   indianaPro?: boolean;
   indianaProExpiresAt?: string | null;
@@ -37,7 +38,7 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const menuId = "account-menu-dropdown";
-  const isPro = stateCode === "IN" ? Boolean(me.indianaPro) : stateCode === "NC" ? Boolean(me.ncPro) : stateCode === "CT" ? Boolean(me.connecticutPro) : me.plan === "pro";
+  const isPro = Boolean(me.lifetimePro || (stateCode === "IN" ? me.indianaPro : stateCode === "NC" ? me.ncPro : stateCode === "CT" ? me.connecticutPro : me.plan === "pro"));
   const expiresAt = stateCode === "IN" ? me.indianaProExpiresAt : stateCode === "NC" ? me.ncPlanExpiresAt : stateCode === "CT" ? me.connecticutProExpiresAt : me.planExpiresAt;
   const pack = packNavigationFor(stateCode);
   const settingsHref = `${paths.account}${stateCode && stateCode !== "AZ" ? `?state=${stateCode}` : ""}#study-settings`;
@@ -87,11 +88,11 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
             {me.name?.trim() ? <p className="account-menu-name">{me.name.trim()}</p> : null}
             <p className="account-dropdown-email">{me.email}</p>
             <p className="account-plan-row">
-              {isPro ? <span className="badge badge-pro">Pro</span> : <span className="badge">Free plan</span>}
+              {isPro ? <span className="badge badge-pro">{me.lifetimePro ? "Lifetime Pro" : "Pro"}</span> : <span className="badge">Free plan</span>}
             </p>
-            {isPro && expiresAt ? (
+            {isPro && (me.lifetimePro || expiresAt) ? (
               <p className="notice" style={{ margin: "6px 0 0" }}>
-                <ProAccessNote plan={isPro ? "pro" : "free"} planExpiresAt={expiresAt} compact purchaseEnabled={!isFreeState(stateCode) || freeStateFeatures[stateCode]?.purchase !== false} />
+                <ProAccessNote plan="pro" lifetimePro={me.lifetimePro} planExpiresAt={expiresAt} compact purchaseEnabled={!isFreeState(stateCode) || freeStateFeatures[stateCode]?.purchase !== false} />
               </p>
             ) : null}
           </div>

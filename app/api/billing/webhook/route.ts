@@ -5,8 +5,8 @@ import { getLemonConfig, isLemonProvider, verifyLemonWebhookSignature } from "@/
 import { PADDLE_PROVIDER, createPaddleSdk, getPaddleWebhookConfig, isPaddleProvider, paddleLog } from "@/lib/billing/paddle";
 import { handlePaddleWebhook } from "@/lib/billing/paddle-webhook";
 import { getCommerceRepo } from "@/lib/commerce";
-import { grantArizonaPro60d, refundArizonaOrder } from "@/lib/entitlements";
-import { isSiteProProduct } from "@/lib/pro-products";
+import { grantArizonaPro60d, grantSitePro, refundArizonaOrder } from "@/lib/entitlements";
+import { isPurchasableProProduct } from "@/lib/pro-products";
 import { getStore } from "@/lib/store";
 
 export async function POST(req: Request) {
@@ -72,13 +72,12 @@ export async function POST(req: Request) {
       config: cfg.config,
       event,
       grantPro: async (opts) => {
-        if (!isSiteProProduct(opts.productCode)) throw new Error("product_mismatch");
-        const granted = await grantArizonaPro60d({
-          userId: opts.userId,
-          provider: opts.provider,
-          providerOrderId: opts.providerOrderId,
-        });
+        if (!isPurchasableProProduct(opts.productCode)) throw new Error("product_mismatch");
+        const granted = await grantSitePro(opts);
         return { entitlement: { id: granted.entitlement.id } };
+      },
+      refundEntitlement: async (opts) => {
+        await refundArizonaOrder(opts.userId, opts.provider, opts.providerOrderId);
       },
     });
     if (result.status === 200 && result.recordNotificationId) {

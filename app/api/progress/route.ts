@@ -6,7 +6,7 @@ import { recordProUsage } from "@/lib/commerce/usage";
 import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
-import { ctProCovers, accountProExpiry } from "@/lib/account-pro";
+import { ctProCovers, accountProExpiry, hasLifetimePro } from "@/lib/account-pro";
 import { isFreeState } from "@/lib/free-state-catalog";
 import { packFor } from "@/lib/prep-pack";
 import { serverQuestionById as questionById } from "@/lib/server-questions";
@@ -150,12 +150,14 @@ export async function GET(req: Request) {
     store.listEntitlements(session.id),
   ]);
   const arizonaPro = stateProCovers(entitlements, "AZ");
+  const lifetimePro = hasLifetimePro(entitlements);
   const expiry = stateProExpiry(entitlements, "AZ");
   const ncPro = stateProCovers(entitlements, "NC");
   return NextResponse.json({
     stats: stats.filter(stat => !productionStateBlocked(stat.state)).map(toClientStat),
     exams: exams.filter(exam => !productionStateBlocked(exam.mode.split("-")[0].toUpperCase())).map(toClientExam),
-    user: user ? toClientUser(user, arizonaPro, expiry?.toISOString() ?? user.planExpiresAt) : null,
+    user: user ? toClientUser(user, arizonaPro, lifetimePro ? null : (expiry?.toISOString() ?? user.planExpiresAt)) : null,
+    lifetimePro,
     arizonaPro,
     californiaPro: arizonaPro,
     hawaiiPro: arizonaPro,

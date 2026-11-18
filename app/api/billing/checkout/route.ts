@@ -6,7 +6,7 @@ import { getSession, setSessionCookie } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { checkoutUrl } from "@/lib/billing";
 import { grantArizonaPro60d, hasArizonaPro } from "@/lib/entitlements";
-import { isSiteProProduct } from "@/lib/pro-products";
+import { isLifetimeProProduct, isSiteProProduct } from "@/lib/pro-products";
 import { getCommerceRepo } from "@/lib/commerce";
 import { assertQuoteStillValid, abandonQuote, confirmPaidOrder } from "@/lib/commerce/service";
 import { ensureLemonCheckout } from "@/lib/billing/lemon-checkout";
@@ -14,6 +14,7 @@ import { getLemonConfig, isLemonProvider } from "@/lib/billing/lemonsqueezy";
 import { ensurePaddleCheckout } from "@/lib/billing/paddle-checkout";
 import { CURRENCY } from "@/lib/pricing/catalog";
 import { getPaddleCheckoutConfig, isPaddleProvider, isPositiveCents } from "@/lib/billing/paddle";
+import { getLifetimeCheckoutAvailability } from "@/lib/billing/lifetime-availability";
 
 const postSchema = z.object({
   quoteId: z.string().uuid(),
@@ -32,6 +33,12 @@ export async function POST(req: Request) {
   const repo = await getCommerceRepo();
   const quote = await repo.getQuote(body.data.quoteId);
   if (!quote || quote.userId !== session.id) return NextResponse.json({ error: "quote_not_found" }, { status: 404 });
+  if (await repo.hasActiveLifetimePro(session.id, new Date().toISOString())) {
+    return NextResponse.json({ error: "lifetime_already_owned" }, { status: 409 });
+  }
+  if (isLifetimeProProduct(quote.productCode) && !await getLifetimeCheckoutAvailability()) {
+    return NextResponse.json({ error: "LIFETIME_PRODUCT_UNAVAILABLE" }, { status: 503 });
+  }
 
   if (quote.currency !== CURRENCY) return NextResponse.json({ error: "currency_mismatch" }, { status: 400 });
   if (!isPositiveCents(quote.finalPriceCents)) return NextResponse.json({ error: "price_invalid" }, { status: 400 });
@@ -52,6 +59,8 @@ export async function POST(req: Request) {
       transactionId: paddle.transactionId,
       quoteId: paddle.quoteId,
       finalPriceCents: paddle.finalPriceCents,
+      productCode: quote.productCode,
+      paymentPending: paddle.paymentPending,
       checkoutUrl: paddle.checkoutUrl,
       provider: "paddle",
     });

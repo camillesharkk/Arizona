@@ -132,7 +132,7 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     const proUsage: UsageReceipt | undefined = proUsageFeature ? {
       eventId: `${mode}:${input.examId}`, featureCode: proUsageFeature, at: now.toISOString(),
       entitlementIds: entitlements.filter(entitlement => entitlement.status === "active" && entitlementServesState(entitlement, state)
-        && new Date(entitlement.startsAt) <= now && new Date(entitlement.expiresAt) > now).map(entitlement => entitlement.id),
+        && Date.parse(entitlement.startsAt) <= now.getTime() && (entitlement.expiresAt === null || Date.parse(entitlement.expiresAt) > now.getTime())).map(entitlement => entitlement.id),
     } : undefined;
     const wrongIds: string[] = [];
     let correctCount = 0;

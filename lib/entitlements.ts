@@ -11,10 +11,10 @@ import {
   FREE_FULL_EXAMS,
   PRO_DURATION_DAYS,
 } from "@/lib/product";
-import { isSiteProProduct, SITE_PRO_PRODUCT_CODE } from "@/lib/pro-products";
-import { accountProCovers, accountProExpiry, ctProCovers } from "./account-pro.ts";
+import { isLifetimeProProduct, isSiteProProduct, SITE_PRO_PRODUCT_CODE } from "@/lib/pro-products";
+import { accountTimedProExpiry, activeLifetimePro } from "./account-pro.ts";
 
-export { accountProCovers, accountProExpiry };
+export { accountProCovers, accountProExpiry, hasLifetimePro } from "./account-pro.ts";
 
 export type Plan = "free" | "pro";
 
@@ -34,22 +34,16 @@ export async function getArizonaEntitlement(userId: string | null | undefined, e
   if (!userId) return null;
   const store = await getStore();
   const rows = entitlements ?? await store.listEntitlements(userId);
-  const now = new Date();
-  if (!accountProCovers(rows, now)) return null;
-  const expiry = accountProExpiry(rows, now);
-  const current = rows
-    .filter((row) => isSiteProProduct(row.productCode) && row.status === "active" && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
-    .sort((a, b) => new Date(b.expiresAt).getTime() - new Date(a.expiresAt).getTime())[0];
-  if (!current || !expiry) return null;
-  return { ...current, state: "ALL", expiresAt: expiry.toISOString() };
+  const entitlement = servingAccountEntitlement(rows, new Date());
+  return entitlement ? { ...entitlement, state: "ALL" } : null;
 }
 
-export function servingEntitlements<T extends { startsAt: string; expiresAt: string }>(
+export function servingEntitlements<T extends { startsAt: string; expiresAt: string | null }>(
   ents: T[],
   now = new Date()
 ): T[] {
   const t = now.getTime();
-  return ents.filter((e) => new Date(e.startsAt).getTime() <= t && new Date(e.expiresAt).getTime() > t);
+  return ents.filter((e) => Date.parse(e.startsAt) <= t && (e.expiresAt === null || Date.parse(e.expiresAt) > t));
 }
 
 export function nextProWindow(latestExpiry: Date | null, now = new Date(), days = PRO_DURATION_DAYS) {
@@ -67,13 +61,18 @@ export async function hasArizonaPro(userId: string | null | undefined) {
 
 export const IN_PRO_PRODUCT = "in_exam_pro_60d";
 
-export function indianaEntitlement(rows: EntitlementRow[], now = new Date()): EntitlementRow | null {
-  if (!accountProCovers(rows, now)) return null;
-  const serving = rows.filter(row => isSiteProProduct(row.productCode) && row.status === "active"
-    && new Date(row.startsAt).getTime() <= now.getTime() && new Date(row.expiresAt).getTime() > now.getTime())
-    .sort((a, b) => Date.parse(b.expiresAt) - Date.parse(a.expiresAt))[0];
-  const expiry = accountProExpiry(rows, now);
+function servingAccountEntitlement(rows: EntitlementRow[], now: Date): EntitlementRow | null {
+  const lifetime = activeLifetimePro(rows, now);
+  if (lifetime) return lifetime;
+  const timed = rows.filter((row): row is EntitlementRow & { expiresAt: string } =>
+    row.status === "active" && isSiteProProduct(row.productCode) && row.expiresAt !== null);
+  const serving = servingEntitlements(timed, now).sort((a, b) => Date.parse(b.expiresAt) - Date.parse(a.expiresAt))[0];
+  const expiry = accountTimedProExpiry(timed, now);
   return serving && expiry ? { ...serving, expiresAt: expiry.toISOString() } : null;
+}
+
+export function indianaEntitlement(rows: EntitlementRow[], now = new Date()): EntitlementRow | null {
+  return servingAccountEntitlement(rows, now);
 }
 
 export async function getIndianaEntitlement(userId: string | null | undefined): Promise<EntitlementRow | null> {
@@ -111,7 +110,7 @@ export async function grantStatePro60d(opts: {
   }
   const rows = await store.listEntitlements(opts.userId);
   const now = new Date();
-  const window = nextProWindow(accountProExpiry(rows, now), now);
+  const window = nextProWindow(accountTimedProExpiry(rows, now), now);
   const entitlement = await store.insertEntitlement({
     userId: opts.userId,
     productCode: SITE_PRO_PRODUCT_CODE,
@@ -123,8 +122,35 @@ export async function grantStatePro60d(opts: {
     providerOrderId: opts.providerOrderId,
     providerCustomerId: opts.providerCustomerId ?? null,
   });
+  if (entitlement.userId !== opts.userId) throw new Error("order_user_mismatch");
+  if (!isSiteProProduct(entitlement.productCode)) throw new Error("product_mismatch");
   await refreshPlanCache(opts.userId);
   return { ok: true, duplicate: false, entitlement };
+}
+
+export async function grantSitePro(opts: Parameters<typeof grantStatePro60d>[0] & { productCode: string }) {
+  if (isSiteProProduct(opts.productCode)) return grantStatePro60d(opts);
+  if (!isLifetimeProProduct(opts.productCode)) throw new Error("product_mismatch");
+
+  const store = await getStore();
+  const existing = await store.getEntitlementByProviderOrder(opts.provider, opts.providerOrderId);
+  const entitlement = existing ?? await store.insertEntitlement({
+    userId: opts.userId,
+    productCode: opts.productCode,
+    state: "ALL",
+    status: "active",
+    startsAt: new Date().toISOString(),
+    expiresAt: null,
+    provider: opts.provider,
+    providerOrderId: opts.providerOrderId,
+    providerCustomerId: opts.providerCustomerId ?? null,
+  });
+  if (entitlement.userId !== opts.userId) throw new Error("order_user_mismatch");
+  if (!isLifetimeProProduct(entitlement.productCode) || entitlement.state !== "ALL" || entitlement.expiresAt !== null) {
+    throw new Error("product_mismatch");
+  }
+  await refreshPlanCache(opts.userId);
+  return { ok: true as const, duplicate: existing !== null, entitlement };
 }
 
 export async function grantArizonaPro60d(opts: {

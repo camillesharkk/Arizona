@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { EXAM_GUARANTEE_CENTS, LIFETIME_ACCESS_CENTS, LIFETIME_TOTAL_CENTS } from "@/lib/pricing/lifetime";
 import { formatUsd } from "@/lib/pricing/money";
+import { getLifetimeCheckoutAvailability } from "@/lib/billing/lifetime-availability";
 import "./LifetimeProOffer.css";
 
-export function LifetimeProOffer() {
+export async function LifetimeProOffer() {
+  const checkoutAvailable = await getLifetimeCheckoutAvailability();
   return (
     <section
       className="lifetime-offer"
@@ -26,7 +28,7 @@ export function LifetimeProOffer() {
         <Link className="btn btn-primary" href="/lifetime/">
           Explore Lifetime Pro
         </Link>
-        <p className="notice">Purchasing is not open yet.</p>
+        {!checkoutAvailable && <p className="notice">Purchasing is not open yet.</p>}
         <div className="lifetime-guarantee">
           <p>
             <span aria-hidden="true">🛡</span>{" "}

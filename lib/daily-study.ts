@@ -143,7 +143,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   const account = await storeForExpiry.listEntitlements(userId);
   const indiana = state === "IN" ? indianaEntitlement(account, new Date(now)) : null;
   const pro = state === "IN" ? Boolean(indiana) : state === "CT" ? ctProCovers(account) : stateProCovers(account, state);
-  const expires = state === "IN" ? (indiana ? new Date(indiana.expiresAt) : null) : state === "CT" ? accountProExpiry(account, new Date(now), "CT") : stateProExpiry(account, state, new Date(now));
+  const expires = state === "IN" ? (indiana?.expiresAt ? new Date(indiana.expiresAt) : null) : state === "CT" ? accountProExpiry(account, new Date(now), "CT") : stateProExpiry(account, state, new Date(now));
   const loaded = await loadDocument(userId, state, localDate(now, timeZoneHint || DEFAULT_STUDY_TIME_ZONE), timeZoneHint);
   let doc = loaded.doc;
   const { store, checks } = loaded;

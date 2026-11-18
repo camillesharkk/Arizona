@@ -5,7 +5,7 @@ export const REFUND_POLICY_SUMMARY =
   "You may request a refund within 3 days of purchase only if you have not used any Pro-only feature. Once any Pro-only feature is accessed, the digital service is considered used and the purchase is no longer eligible for our standard refund policy. Subject to applicable law and payment-provider requirements.";
 
 export const ONE_TIME_DISCOUNT_NOTICE =
-  "Eligible New Member and Referral discounts apply once per account across membership plans and are used only after successful payment. New Member eligibility lasts 72 hours after email verification. These discounts have no cash value and are not restored, reissued or paid out when a purchase is refunded.";
+  "Eligible New Member and Referral discounts for 60-Day Pro apply once per account and are used only after successful payment. New Member eligibility lasts 72 hours after email verification. These discounts have no cash value and are not restored, reissued or paid out when a purchase is refunded.";
 
 export const CREDIT_RESTORE_NOTICE =
   "An eligible unused full refund will restore the Referral Credit(s) used on this purchase.";
@@ -37,4 +37,4 @@ export const REFERRAL_PROMOTION_NOTICE =
   "An eligible referral gives a one-time 10% Referral discount. Earned Referral Credits are a separate balance with the existing credit and unused-refund rules.";
 
 export const GUARANTEE_DISCOUNT_NOTICE =
-  "For plans with a separately priced exam refund guarantee, discounts and Referral Credits reduce the access charge. The $10 guarantee charge stays refundable under that plan’s guarantee terms.";
+  "Lifetime Pro is a fixed $29.99 one-time purchase before applicable taxes. New Member and Referral discounts and Referral Credits apply to eligible 60-Day Pro purchases.";

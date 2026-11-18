@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
+import { pendingAnalyticsCheckout } from "@/lib/analytics";
+import { LIFETIME_PRO_PRODUCT_CODE } from "@/lib/pro-products";
 
 const opened = new Set<string>();
 
@@ -40,7 +42,7 @@ export function PaddleCheckoutResume({ successOrigin }: { successOrigin: string 
         transactionId: id,
         settings: {
           ...PADDLE_OVERLAY_SETTINGS,
-          successUrl: paddleSuccessUrl(successOrigin),
+          successUrl: paddleSuccessUrl(successOrigin, pendingAnalyticsCheckout(LIFETIME_PRO_PRODUCT_CODE)?.transactionId === id),
         },
       });
     })();

@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { CREDIT_RESTORE_NOTICE, ONE_TIME_DISCOUNT_NOTICE, PERSONAL_USE_NOTICE, PRO_DURATION_NOTICE } from "@/lib/pricing/copy";
 import { formatUsd } from "@/lib/pricing/money";
 import { ProAccessNote } from "@/components/ProAccessNote";
+import { EXAM_GUARANTEE_CENTS } from "@/lib/pricing/lifetime";
+import { LIFETIME_PRO_PRODUCT_CODE } from "@/lib/pro-products";
 
 type Order = {
   orderId: string;
+  productCode?: string;
   status: string;
   paidAt: string;
   amount: string;
@@ -28,6 +32,7 @@ export function BillingAccessClient() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [isPro, setIsPro] = useState(false);
+  const [lifetimePro, setLifetimePro] = useState(false);
   const [requests, setRequests] = useState<{ id: string; orderId: string; status: string; note: string | null }[]>([]);
   const [modal, setModal] = useState<string | null>(null);
   const [msg, setMsg] = useState("");
@@ -39,6 +44,7 @@ export function BillingAccessClient() {
     setRequests(d.refundRequests || []);
     setExpiresAt(d.planExpiresAt || null);
     setIsPro(Boolean(d.arizonaPro));
+    setLifetimePro(d.lifetimePro === true);
   }
   useEffect(() => {
     load().catch(() => undefined);
@@ -68,21 +74,34 @@ export function BillingAccessClient() {
 
   return (
     <div className="grid">
-      {isPro && (
+      {(isPro || lifetimePro) && (
         <section className="card">
-          <h2>Arizona Notary Exam Prep Pro</h2>
-          <ProAccessNote plan="pro" planExpiresAt={expiresAt} />
-          <p className="notice">{PRO_DURATION_NOTICE}</p>
+          <h2>Pro access</h2>
+          <ProAccessNote plan="pro" lifetimePro={lifetimePro} planExpiresAt={expiresAt} />
+          {!lifetimePro && <p className="notice">{PRO_DURATION_NOTICE}</p>}
           <p className="notice">{PERSONAL_USE_NOTICE}</p>
         </section>
       )}
       {msg && <p className="notice">{msg}</p>}
-      {live.map((o) => (
-        <section className="card" key={o.orderId}>
-          <h2>Arizona Notary Exam Prep Pro</h2>
-          <p>
-            {o.amount} · {o.status} · paid {new Date(o.paidAt).toLocaleString()}
-          </p>
+      {live.map((o) => {
+        const lifetime = o.productCode === LIFETIME_PRO_PRODUCT_CODE;
+        return (
+          <section className="card" key={o.orderId}>
+            <h2>{lifetime ? "Lifetime Pro" : "Arizona Notary Exam Prep Pro"}</h2>
+            <p>
+              {o.amount} · {o.status} · paid {new Date(o.paidAt).toLocaleString()}
+            </p>
+            {lifetime ? (
+              <>
+                <p>Order number: {o.orderId}</p>
+                <h3>Lifetime Pro Exam Guarantee</h3>
+                {o.status === "refunded" ? (
+                  <p>Refunded {o.refundedAt ? new Date(o.refundedAt).toLocaleString() : ""}</p>
+                ) : o.status === "paid" ? (
+                  <p>The {formatUsd(EXAM_GUARANTEE_CENTS)} guarantee fee is refundable after a qualifying failed official exam. <Link href="/contact/?topic=lifetime-exam-refund">Contact support</Link> or <Link href="/legal/refund/#lifetime">read the Lifetime refund policy</Link>.</p>
+                ) : null}
+              </>
+            ) : <>
           <h3>Promotions used on this purchase</h3>
           <p>New Member Offer {o.promotions.newcomer ? "Redeemed" : "Not used"}</p>
           <p>Referral Discount {o.promotions.referralDiscount ? "Redeemed" : "Not used"}</p>
@@ -118,8 +137,10 @@ export function BillingAccessClient() {
           ) : (
             <p>Not eligible ({o.eligibility.reason})</p>
           )}
-        </section>
-      ))}
+            </>}
+          </section>
+        );
+      })}
       {!live.length && <p className="notice">No purchases on this account yet.</p>}
       {requests.length > 0 && (
         <section className="card">

@@ -227,6 +227,30 @@ test("purchase recovery waits for its entitlement without re-emitting the purcha
   assert.equal(events("entitlement_granted").length, 1);
 });
 
+test("Lifetime requires the exact paid product and an active Lifetime entitlement", () => {
+  const productCode = "all_state_pro_lifetime";
+  analytics.trackBeginCheckout({ finalPriceCents: 2999 }, "txn_lifetime", productCode);
+  analytics.trackBeginCheckout({ finalPriceCents: 1999 }, "txn_timed");
+  const paid = {
+    providerOrderId: "txn_lifetime", productCode, status: "paid", amountCents: 2999,
+    entitlementId: "ent_lifetime", entitlementActive: true,
+  };
+  assert.equal(events("begin_checkout")[0].items[0].item_id, productCode);
+  assert.equal(analytics.pendingAnalyticsCheckout(productCode)?.transactionId, "txn_lifetime");
+  assert.equal(analytics.recoverPendingPurchase([{ ...paid, productCode: "az_exam_pro_60d" }], true), false);
+  assert.equal(analytics.recoverPendingPurchase([{ ...paid, providerOrderId: "txn_other" }], true), false);
+  assert.equal(analytics.recoverPendingPurchase([{ ...paid, entitlementActive: false }], true), false);
+  assert.equal(analytics.recoverPendingPurchase([paid], false), false);
+  assert.equal(events("purchase").length, 0);
+  assert.equal(analytics.recoverPendingPurchase([paid], true), true);
+  assert.equal(events("purchase")[0].items[0].item_id, productCode);
+  assert.equal(analytics.isLifetimePurchaseConfirmed(analytics.pendingAnalyticsCheckout(productCode), [paid], true), true);
+  analytics.recoverPendingPurchase([paid], true);
+  assert.equal(events("purchase").length, 1);
+  assert.equal(events("entitlement_granted").length, 1);
+  assert.equal(analytics.pendingAnalyticsCheckout()?.transactionId, "txn_timed");
+});
+
 test("sandbox checkout traffic is always internal", () => {
   process.env.NEXT_PUBLIC_PADDLE_ENV = "sandbox";
   analytics.trackEvent("pricing_view");

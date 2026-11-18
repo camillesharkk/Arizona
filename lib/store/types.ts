@@ -98,7 +98,7 @@ export type EntitlementRow = {
   state: string;
   status: EntitlementStatus;
   startsAt: string;
-  expiresAt: string;
+  expiresAt: string | null;
   provider: string;
   providerOrderId: string;
   providerCustomerId: string | null;

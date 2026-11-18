@@ -3,14 +3,16 @@ import type { CommerceRepo } from "../commerce/repo.ts";
 import type { PricingQuoteRow } from "../commerce/types.ts";
 import { assertQuoteStillValid } from "../commerce/service.ts";
 import { CURRENCY } from "../pricing/catalog.ts";
-import { isSiteProProduct } from "../pro-products.ts";
+import { isLifetimeProProduct, isPurchasableProProduct } from "../pro-products.ts";
 import {
   PADDLE_PROVIDER,
   buildPaddleTransactionPayload,
   createPaddleSdk,
   createPaddleTransaction,
   isPositiveCents,
+  paddleCatalogForProduct,
   paddleLog,
+  validatePaddleLifetimePrice,
   type PaddleCheckoutConfig,
   type PaddleTransactionsClient,
 } from "./paddle.ts";
@@ -26,14 +28,15 @@ export async function ensurePaddleCheckout(opts: {
   sourceState?: StateCode;
   resumeDepth?: number;
 }): Promise<
-  | { ok: true; transactionId: string; quoteId: string; finalPriceCents: number; checkoutUrl: string | null }
+  | { ok: true; transactionId: string; quoteId: string; finalPriceCents: number; checkoutUrl: string | null; paymentPending?: boolean }
   | { ok: false; error: string; status: number }
 > {
   const quote = opts.quote;
-  if (!isSiteProProduct(quote.productCode)) {
+  if (!isPurchasableProProduct(quote.productCode)) {
     return { ok: false, error: "product_mismatch", status: 400 };
   }
-  const productId = opts.config.productId;
+  const catalog = paddleCatalogForProduct(opts.config, quote.productCode);
+  if (!catalog) return { ok: false, error: "LIFETIME_PRODUCT_UNAVAILABLE", status: 503 };
   if (quote.currency !== CURRENCY) return { ok: false, error: "currency_mismatch", status: 400 };
   if (!isPositiveCents(quote.finalPriceCents)) return { ok: false, error: "price_invalid", status: 400 };
   if (!quote.policyAcceptedAt) return { ok: false, error: "policy_required", status: 400 };
@@ -57,6 +60,7 @@ export async function ensurePaddleCheckout(opts: {
       quoteId: quote.id,
       finalPriceCents: quote.finalPriceCents,
       checkoutUrl: bound?.checkoutUrl ?? null,
+      paymentPending: recon.paymentPending,
     };
   }
   if (recon.kind === "in_progress") {
@@ -92,11 +96,16 @@ export async function ensurePaddleCheckout(opts: {
         return ensurePaddleCheckout({ ...opts, quote: previous, resumeDepth: (opts.resumeDepth ?? 0) + 1 });
       }
     }
-    return { ok: false, error: claimed.error, status: 409 };
+    const error = claimed.error === "lifetime_checkout_in_progress" ? "checkout_in_progress" : claimed.error;
+    return { ok: false, error, status: 409 };
   }
 
   if (!claimed.created) {
     if (claimed.binding.status === "ready" && claimed.binding.providerCheckoutId) {
+      if (isLifetimeProProduct(quote.productCode)) {
+        // A concurrent caller may have completed this binding since we first checked it.
+        return { ok: false, error: "checkout_in_progress", status: 409 };
+      }
       return {
         ok: true,
         transactionId: claimed.binding.providerCheckoutId,
@@ -109,8 +118,13 @@ export async function ensurePaddleCheckout(opts: {
     return { ok: false, error: "checkout_in_progress", status: 409 };
   }
 
+  if (catalog.priceId && !await validatePaddleLifetimePrice(sdk, { ...catalog, priceId: catalog.priceId })) {
+    // No provider transaction was attempted, so another checkout may safely retry this quote.
+    await opts.repo.releaseCheckoutClaim(quote.id);
+    return { ok: false, error: "LIFETIME_PRODUCT_UNAVAILABLE", status: 503 };
+  }
   const payload = buildPaddleTransactionPayload({
-    productId,
+    ...catalog,
     finalPriceCents: quote.finalPriceCents,
     userId: quote.userId,
     quoteId: quote.id,

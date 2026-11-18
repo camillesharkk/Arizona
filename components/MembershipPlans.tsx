@@ -34,7 +34,7 @@ const benefits: [string, BenefitValue, BenefitValue, BenefitValue][] = [
   ["Cloud progress", "full", "full", "full"],
   ["Weekly progress email", "none", "full", "full"],
   ["Exam guarantee", "none", "none", { text: guarantee }],
-  ["Eligible account discount", "none", "full", "full"],
+  ["Eligible account discount", "none", "full", "none"],
 ];
 
 function BenefitCell({ value }: { value: BenefitValue }) {
@@ -48,7 +48,7 @@ function BenefitCell({ value }: { value: BenefitValue }) {
   );
 }
 
-export function MembershipPlans() {
+export function MembershipPlans({ lifetimeAvailable }: { lifetimeAvailable: boolean }) {
   return (
     <>
       <section className="membership-plans" aria-labelledby="membership-plans-heading">
@@ -67,8 +67,8 @@ export function MembershipPlans() {
             <h3>Lifetime Pro</h3>
             <p className="membership-price">{lifetime} <small>USD once</small></p>
             <p>{access} for lifetime access + {guarantee} for the official exam guarantee.</p>
-            <p className="notice">Purchasing is not open yet.</p>
-            <a className="btn btn-ghost" href="#lifetime-checkout">View Lifetime Pro checkout</a>
+            {!lifetimeAvailable && <p className="notice">Checkout is currently unavailable.</p>}
+            <a className="btn btn-ghost" href="#lifetime-checkout">{lifetimeAvailable ? "Continue to Lifetime Pro checkout" : "View Lifetime Pro checkout"}</a>
           </article>
         </div>
       </section>

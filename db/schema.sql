@@ -156,16 +156,25 @@ create table if not exists entitlements (
   state text not null,
   status text not null check (status in ('active', 'expired', 'refunded', 'revoked')),
   starts_at timestamptz not null,
-  expires_at timestamptz not null,
-  provider text not null check (provider in ('lemon_squeezy', 'mock')),
+  expires_at timestamptz,
+  provider text not null check (provider in ('lemon_squeezy', 'mock', 'paddle')),
   provider_order_id text not null,
   provider_customer_id text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
+  constraint entitlements_lifetime_window_check check (
+    (product_code = 'all_state_pro_lifetime' and state = 'ALL' and expires_at is null)
+    or (product_code <> 'all_state_pro_lifetime' and expires_at is not null)
+  ),
   unique (provider, provider_order_id)
 );
 
 create index if not exists entitlements_user_state_idx
   on entitlements (user_id, state, status, starts_at, expires_at);
 
-
+create table if not exists provider_refunds (
+  provider text not null,
+  transaction_id text not null,
+  created_at timestamptz not null default now(),
+  primary key (provider, transaction_id)
+);
