@@ -23,15 +23,24 @@ export default async function LifetimePage() {
       <p className="lede">
         {formatUsd(LIFETIME_TOTAL_CENTS)} USD standard · All available states · No expiration
       </p>
-      <section className="card">
-        <h2>Everything you need to keep preparing</h2>
+      <section className="card guide-chapter" id="lifetime-checkout" aria-labelledby="lifetime-checkout-heading">
+        <h2 id="lifetime-checkout-heading">Lifetime Pro Checkout</h2>
+        <CheckoutButton productCode={LIFETIME_PRO_PRODUCT_CODE} checkoutAvailable={lifetimeAvailable} lifetimePage
+          belowCta={<p className="notice">{TAX_CHECKOUT_NOTICE}</p>} />
+      </section>
+      <section className="card pricing-policy-card guide-chapter" id="refund-policy" aria-labelledby="lifetime-terms-heading">
+        <h2 id="lifetime-terms-heading">Lifetime Pro Exam Guarantee</h2>
+        <LifetimeGuaranteeTerms />
+      </section>
+      <section className="card pricing-policy-card">
+        <h2>What’s included</h2>
         <p>
           Full question banks, unlimited available practice exams, weak-area
           training, wrong-answer review, full flashcards, readiness and study
           planning tools, cross-device progress and the Pro daily AI allowance.
           Features follow each state’s available preparation format.
         </p>
-        <h2>Included states</h2>
+        <h2 className="guide-chapter" id="included-states">Included states</h2>
         <p>
           {LIVE_STATES.map(
             (code) => `${stateByCode(code)?.name ?? code} (${code})`,
@@ -45,15 +54,6 @@ export default async function LifetimePage() {
           Independent exam preparation. State applications, official exams,
           required training, commissions and government fees are separate.
         </p>
-      </section>
-      <section className="card" id="refund-policy">
-        <h2>What the price covers</h2>
-        <LifetimeGuaranteeTerms />
-      </section>
-      <section className="card" id="lifetime-checkout">
-        <h2>Lifetime Pro Checkout</h2>
-        <CheckoutButton productCode={LIFETIME_PRO_PRODUCT_CODE} checkoutAvailable={lifetimeAvailable} lifetimePage
-          belowCta={<p className="notice">{TAX_CHECKOUT_NOTICE}</p>} />
       </section>
       <p>
         <Link href="/pricing/#lifetime-checkout">Compare both Pro checkouts</Link>

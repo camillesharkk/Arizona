@@ -25,8 +25,8 @@ export async function LifetimeProOffer() {
         <p>
           <strong>{formatUsd(LIFETIME_TOTAL_CENTS)}</strong> USD · one-time
         </p>
-        <Link className="btn btn-primary" href="/lifetime/">
-          Explore Lifetime Pro
+        <Link className="btn btn-primary" href="/lifetime/#lifetime-checkout">
+          {checkoutAvailable ? "Get Lifetime Pro" : "Explore Lifetime Pro"}
         </Link>
         {!checkoutAvailable && <p className="notice">Purchasing is not open yet.</p>}
         <div className="lifetime-guarantee">

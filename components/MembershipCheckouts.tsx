@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { Suspense } from "react";
-import Link from "next/link";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { LifetimeGuaranteeTerms } from "@/components/LifetimeGuaranteeTerms";
 import type { StateCode } from "@/lib/types";
@@ -37,7 +36,7 @@ export function MembershipCheckouts({ source, timedNotes, lifetimeAvailable }: {
             <h3 id="lifetime-guarantee-heading">Lifetime Pro Exam Guarantee</h3>
             <LifetimeGuaranteeTerms />
           </section>
-          <p className="notice"><Link href="/lifetime/">See the full list of included states</Link></p>
+          <p className="notice"><a href="/lifetime/#included-states">See the full list of included states</a></p>
         </>} />
       </section>
     </div>

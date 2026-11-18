@@ -245,14 +245,20 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
       trackBeginCheckout(breakdown, data.transactionId, productCode);
       if (lifetime) setHasPendingLifetime(true);
       const fallback = paddleCheckoutFallback(data.checkoutUrl, data.transactionId, window.location.host, lifetime);
-      if (fallback) {
+      if (!lifetime && fallback) {
         window.location.assign(fallback);
         return;
       }
-      const overlay = await openPaddleOverlay(data.transactionId);
-      if (!overlay.ok) {
-        setErr("Checkout couldn't be opened. Please try again.");
+      const overlay = await openPaddleOverlay(data.transactionId).catch(() => ({ ok: false as const }));
+      if (overlay.ok) return;
+      if (lifetime) {
+        stopLifetimeWatch.current();
+        if (fallback) {
+          window.location.assign(fallback);
+          return;
+        }
       }
+      setErr("Checkout couldn't be opened. Please try again.");
       return;
     }
     if (lifetime || !data.url) {
