@@ -74,12 +74,14 @@ export function AnswerResult({
         <strong>
           {q.correct_option}. {options[q.correct_option]}
         </strong>
+        {compactFeedback ? (
+          <>
+            {" "}
+            <span className="answer-brief-rule">{rule || "No explanation is recorded for this question."}</span>
+          </>
+        ) : null}
       </p>
-      {compactFeedback ? (
-        <p className="answer-brief-rule">{rule || "No explanation is recorded for this question."}</p>
-      ) : (
-        <ExplanationBody explanation={q.explanation} />
-      )}
+      {!compactFeedback && <ExplanationBody explanation={q.explanation} />}
       <button
         className="explain-toggle"
         type="button"

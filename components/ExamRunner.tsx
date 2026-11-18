@@ -1071,36 +1071,6 @@ export function ExamRunner({
   const viewIndex = past && pastIndex != null ? pastIndex : idx;
   const viewSelected = past ? answers[past.question_id] : selected;
   const nextLabel = lastQuestion ? (practice ? "See results" : "Submit exam") : "Next";
-  const questionBody = (
-    <>
-      <QuestionBlock
-        q={view}
-        index={viewIndex}
-        selected={viewSelected}
-        reveal={Boolean((practice && viewSelected) || past)}
-        compactFeedback={practice && !past}
-        onChoose={past ? undefined : choose}
-        lockPaid={false}
-        lockChoice={practiceLocked && !past}
-        headingRef={past ? undefined : headingRef}
-        isPro={isPro}
-        marked={marked.includes(view.question_id)}
-        onMark={past ? undefined : () => toggleMark(view.question_id)}
-        extra={<SaveForReview key={view.question_id} questionId={view.question_id} hint={false} onAsk={cancelAutoAdvance} />}
-        explainOpen={Boolean(explainOpen[view.question_id])}
-        onToggleExplain={() => {
-          const id = view.question_id;
-          setExplainOpen((current) => ({ ...current, [id]: !current[id] }));
-        }}
-        tutor
-      />
-      {past ? (
-        <button className="card-corner-btn" type="button" onClick={closePast}>
-          Back to this question
-        </button>
-      ) : null}
-    </>
-  );
   const previousAnswer =
     practice && idx > 0 && pastIndex == null ? (
       <button className="card-corner-btn" type="button" onClick={openPast}>
@@ -1180,16 +1150,46 @@ export function ExamRunner({
         onJump={goTo}
       />
       {previousAnswer}
-      {questionBody}
-      {submitStatus}
-      <ExamNav
-        prevDisabled={prevLocked}
-        nextDisabled={nextLocked}
-        onPrev={() => goTo(idx - 1)}
-        onNext={() => (lastQuestion ? requestFinish() : goTo(idx + 1))}
-        nextLabel={nextLabel}
-        progress={`${idx + 1} / ${questions.length}`}
-        submit={lastQuestion && !practice}
+      <QuestionBlock
+        q={view}
+        index={viewIndex}
+        selected={viewSelected}
+        reveal={Boolean((practice && viewSelected) || past)}
+        compactFeedback={practice && !past}
+        onChoose={past ? undefined : choose}
+        lockPaid={false}
+        lockChoice={practiceLocked && !past}
+        headingRef={past ? undefined : headingRef}
+        isPro={isPro}
+        marked={marked.includes(view.question_id)}
+        onMark={past ? undefined : () => toggleMark(view.question_id)}
+        extra={<SaveForReview key={view.question_id} questionId={view.question_id} hint={false} onAsk={cancelAutoAdvance} />}
+        explainOpen={Boolean(explainOpen[view.question_id])}
+        onToggleExplain={() => {
+          const id = view.question_id;
+          setExplainOpen((current) => ({ ...current, [id]: !current[id] }));
+        }}
+        tutor
+        navigation={
+          past ? (
+            <button className="btn btn-ghost" type="button" onClick={closePast}>
+              Back to this question
+            </button>
+          ) : (
+            <>
+              <ExamNav
+                prevDisabled={prevLocked}
+                nextDisabled={nextLocked}
+                onPrev={() => goTo(idx - 1)}
+                onNext={() => (lastQuestion ? requestFinish() : goTo(idx + 1))}
+                nextLabel={nextLabel}
+                progress={`${idx + 1} / ${questions.length}`}
+                submit={lastQuestion && !practice}
+              />
+              {submitStatus}
+            </>
+          )
+        }
       />
       {unansweredToConfirm > 0 ? (
         <MessageDialog title="Submit with unanswered questions?" onClose={() => setUnansweredToConfirm(0)}>
@@ -1228,6 +1228,7 @@ export function QuestionBlock({
   lockChoice = false,
   headingRef,
   extra,
+  navigation,
   explainOpen,
   onToggleExplain,
   tutor = false,
@@ -1246,6 +1247,7 @@ export function QuestionBlock({
   headingRef?: Ref<HTMLHeadingElement>;
   explain?: boolean;
   extra?: ReactNode;
+  navigation?: ReactNode;
   explainOpen?: boolean;
   onToggleExplain?: () => void;
   tutor?: boolean;
@@ -1321,6 +1323,7 @@ export function QuestionBlock({
           );
         })}
       </div>
+      {navigation ? <div className="question-navigation">{navigation}</div> : null}
       {reveal && !locked ? (
         <AnswerResult
           q={q}

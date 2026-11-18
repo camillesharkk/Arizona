@@ -40,16 +40,28 @@ export function SiteAnnouncements({ userId, pathname }: { userId: string | null;
     setDialog(null);
   }
 
+  const inHeader = pathname === "/";
+  const trigger = (
+    <button
+      className={inHeader ? "btn btn-ghost header-update-trigger" : "btn btn-ghost"}
+      type="button"
+      aria-haspopup="dialog"
+      onClick={() => setDialog({ userId })}
+    >
+      What’s new
+    </button>
+  );
+
   return (
     <>
-      <aside className="site-update-bar" aria-label="Site announcements">
-        <div className="wrap site-update-inner">
-          <span>Site updates</span>
-          <button className="btn btn-ghost" type="button" aria-haspopup="dialog" onClick={() => setDialog({ userId })}>
-            What’s new
-          </button>
-        </div>
-      </aside>
+      {inHeader ? trigger : (
+        <aside className="site-update-bar" aria-label="Site announcements">
+          <div className="wrap site-update-inner">
+            <span>Site updates</span>
+            {trigger}
+          </div>
+        </aside>
+      )}
       {dialog && dialog.userId === userId && (
         <MessageDialog title="What’s new" onClose={dismiss}>
           <ul>

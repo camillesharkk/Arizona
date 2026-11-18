@@ -148,6 +148,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const signInHref = `${paths.login}?next=${encodeURIComponent(returnTo)}`;
   const links = state ? primaryLinks(nav) : [];
   const extra = state ? moreLinks(nav, state).filter(item => !isFreeState(state) || fullStateSummary[state]?.ready || item.label !== "Study cards") : [];
+  const announcements = <SiteAnnouncements userId={authStatus === "signed-in" ? me?.id ?? null : null} pathname={pathname} />;
 
   const header = (
     <header className={`site-header${pathname === "/" ? " national-header" : ""}`}>
@@ -204,6 +205,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
             </Link>
           )}
           {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} stateCode={state} />}
+          {pathname === "/" ? announcements : null}
         </div>
       </div>
     </header>
@@ -212,7 +214,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   return (
     <>
       {header}
-      <SiteAnnouncements userId={authStatus === "signed-in" ? me?.id ?? null : null} pathname={pathname} />
+      {pathname !== "/" ? announcements : null}
     </>
   );
 }

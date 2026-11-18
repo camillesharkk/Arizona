@@ -60,15 +60,18 @@
 }
 
 .answer-result-compact .answer-correct-choice {
-  margin: 8px 0 4px;
+  display: block;
+  margin: 8px 0 10px;
+  line-height: 1.55;
+}
+
+.answer-result-compact .answer-correct-choice strong {
+  margin-inline: 0.35em;
 }
 
 .answer-brief-rule {
-  margin: 0 0 10px;
-  max-width: 72ch;
   color: #283b49;
   font-size: 15px;
-  line-height: 1.55;
 }
 
 .answer-detail-hint {

@@ -1,9 +1,21 @@
 .national-header .header-contact { font-size: 14px; font-weight: 600; white-space: nowrap; }
 .national-header .header-inner { min-height: 72px; }
+.national-header .header-update-trigger {
+  min-block-size: 44px;
+  padding: 8px 12px;
+  font-size: 14px;
+  white-space: nowrap;
+}
 @media (max-width: 600px) {
-  .national-header .logo { font-size: 16px; gap: 7px; }
-  .national-header .logo-mark { width: 28px; height: 28px; font-size: 15px; }
+  .national-header .logo { font-size: 16px; gap: 7px; white-space: normal; overflow-wrap: normal; line-height: 1.2; }
+  .national-header .logo-mark { width: 28px; height: 28px; font-size: 15px; flex: none; }
   .national-header .header-inner { gap: 8px; min-height: 60px; }
-  .national-header .header-right { gap: 12px; }
-  .national-header .header-signin { font-size: 13px; }
+  .national-header .header-right { gap: 6px; }
+  .national-header .header-contact,
+  .national-header .header-signin,
+  .national-header .header-update-trigger { font-size: 13px; }
+}
+@media (max-width: 365px) {
+  .national-header .logo { font-size: 14px; }
+  .national-header .logo-mark { display: none; }
 }

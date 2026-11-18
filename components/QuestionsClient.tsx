@@ -370,24 +370,22 @@ export function QuestionsClient({
           <button className="card-corner-btn" type="button" onClick={openPast}>Previous answer</button>
         ) : null}
         {pastIndex != null && active[pastIndex] ? (
-          <>
-            <QuestionBlock
-              q={active[pastIndex]}
-              index={pastIndex}
-              selected={answers[active[pastIndex].question_id]}
-              reveal
-              lockChoice
-              isPro={isPro}
-              marked={marked.includes(active[pastIndex].question_id)}
-              extra={<SaveForReview key={active[pastIndex].question_id} questionId={active[pastIndex].question_id} hint={false} onAsk={cancelAutoAdvance} />}
-              explainOpen={Boolean(explainOpen[active[pastIndex].question_id])}
-              onToggleExplain={() => {
-                const id = active[pastIndex].question_id;
-                setExplainOpen((current) => ({ ...current, [id]: !current[id] }));
-              }}
-            />
-            <button className="card-corner-btn" type="button" onClick={closePast}>Back to this question</button>
-          </>
+          <QuestionBlock
+            q={active[pastIndex]}
+            index={pastIndex}
+            selected={answers[active[pastIndex].question_id]}
+            reveal
+            lockChoice
+            isPro={isPro}
+            marked={marked.includes(active[pastIndex].question_id)}
+            extra={<SaveForReview key={active[pastIndex].question_id} questionId={active[pastIndex].question_id} hint={false} onAsk={cancelAutoAdvance} />}
+            navigation={<button className="btn btn-ghost" type="button" onClick={closePast}>Back to this question</button>}
+            explainOpen={Boolean(explainOpen[active[pastIndex].question_id])}
+            onToggleExplain={() => {
+              const id = active[pastIndex].question_id;
+              setExplainOpen((current) => ({ ...current, [id]: !current[id] }));
+            }}
+          />
         ) : (
           <QuestionBlock
             q={q}
@@ -426,23 +424,27 @@ export function QuestionsClient({
               explainOpen={Boolean(explainOpen[q.question_id])}
               onToggleExplain={() => setExplainOpen((current) => ({ ...current, [q.question_id]: !current[q.question_id] }))}
               tutor
+              navigation={
+                <>
+                  <ExamNav
+                    prevDisabled={safeIdx === 0 || submitting}
+                    nextDisabled={submitting || !selected}
+                    onPrev={() => goTo(safeIdx - 1)}
+                    onNext={() => (lastQuestion ? void finishSet() : goTo(safeIdx + 1))}
+                    nextLabel={lastQuestion ? "See results" : "Next"}
+                    progress={`${safeIdx + 1} / ${active.length}`}
+                  />
+                  {submitting ? <SubmitStatus /> : null}
+                  {submitError ? (
+                    <p className="form-error" role="alert">
+                      {submitError}{" "}
+                      <button className="btn btn-ghost" type="button" onClick={() => void finishSet()}>Try again</button>
+                    </p>
+                  ) : null}
+                </>
+              }
             />
         )}
-        {submitting ? <SubmitStatus /> : null}
-        {submitError ? (
-          <p className="form-error" role="alert">
-            {submitError}{" "}
-            <button className="btn btn-ghost" type="button" onClick={() => void finishSet()}>Try again</button>
-          </p>
-        ) : null}
-        <ExamNav
-          prevDisabled={safeIdx === 0 || pastIndex != null || submitting}
-          nextDisabled={pastIndex != null || submitting || !selected}
-          onPrev={() => goTo(safeIdx - 1)}
-          onNext={() => (lastQuestion ? void finishSet() : goTo(safeIdx + 1))}
-          nextLabel={lastQuestion ? "See results" : "Next"}
-          progress={`${safeIdx + 1} / ${active.length}`}
-        />
       </div>
       ) : null}
     </div>
