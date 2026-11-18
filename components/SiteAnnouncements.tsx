@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { MessageDialog } from "@/components/MessageDialog";
 import { latestSiteUpdate } from "@/data/site-update";
 import { paths } from "@/lib/paths";
@@ -10,33 +10,41 @@ function storageKey(userId: string) {
   return `notary-site-update:${latestSiteUpdate.version}:${userId}`;
 }
 
-function hasSeenUpdate(userId: string) {
+function claimUpdate(key: string) {
   try {
-    return localStorage.getItem(storageKey(userId)) === "seen";
+    if (localStorage.getItem(key) === "seen") return false;
+    localStorage.setItem(key, "seen");
+    return true;
   } catch {
+    // Keep the update manual when the browser can't remember that it was shown.
     return false;
   }
 }
 
-export function SiteAnnouncements({ userId, pathname }: { userId: string | null; pathname: string }) {
+export function SiteAnnouncements({ userId, pathname, canAutoOpen }: {
+  userId: string | null;
+  pathname: string;
+  canAutoOpen: boolean;
+}) {
   const [dialog, setDialog] = useState<{ userId: string | null } | null>(null);
-  const seenInPage = useRef(new Set<string>());
-  const isLearningPage = /(?:\/practice(?:-test)?|-practice-test|\/daily-study)\/?$/.test(pathname);
 
   useEffect(() => {
-    if (!userId || isLearningPage || seenInPage.current.has(userId) || hasSeenUpdate(userId)) return;
-    setDialog({ userId });
-  }, [isLearningPage, pathname, userId]);
+    if (!userId || !canAutoOpen) return;
+    const key = storageKey(userId);
+    let cancelled = false;
+    function openIfUnseen() {
+      if (cancelled || window.location.pathname !== pathname || document.querySelector("dialog[open]")) return;
+      const query = new URLSearchParams(window.location.search);
+      if (query.has("_ptxn") || query.has("txn")) return;
+      if (claimUpdate(key)) setDialog({ userId });
+    }
+    // Serialize the check and write across tabs that share this account's storage.
+    if (navigator.locks) void navigator.locks.request(key, openIfUnseen).catch(openIfUnseen);
+    else openIfUnseen();
+    return () => { cancelled = true; };
+  }, [canAutoOpen, pathname, userId]);
 
   function dismiss() {
-    if (userId) {
-      seenInPage.current.add(userId);
-      try {
-        localStorage.setItem(storageKey(userId), "seen");
-      } catch {
-        // Remember this dismissal in the current page when storage is unavailable.
-      }
-    }
     setDialog(null);
   }
 
@@ -46,7 +54,10 @@ export function SiteAnnouncements({ userId, pathname }: { userId: string | null;
       className={inHeader ? "btn btn-ghost header-update-trigger" : "btn btn-ghost"}
       type="button"
       aria-haspopup="dialog"
-      onClick={() => setDialog({ userId })}
+      onClick={() => {
+        if (userId) claimUpdate(storageKey(userId));
+        setDialog({ userId });
+      }}
     >
       What’s new
     </button>

@@ -148,7 +148,14 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const signInHref = `${paths.login}?next=${encodeURIComponent(returnTo)}`;
   const links = state ? primaryLinks(nav) : [];
   const extra = state ? moreLinks(nav, state).filter(item => !isFreeState(state) || fullStateSummary[state]?.ready || item.label !== "Study cards") : [];
-  const announcements = <SiteAnnouncements userId={authStatus === "signed-in" ? me?.id ?? null : null} pathname={pathname} />;
+  const announcements = (
+    <SiteAnnouncements
+      key={pathname}
+      userId={authStatus === "signed-in" ? me?.id ?? null : null}
+      pathname={pathname}
+      canAutoOpen={pathname === "/" || onHome}
+    />
+  );
 
   const header = (
     <header className={`site-header${pathname === "/" ? " national-header" : !state && active(pathname, paths.community) ? " community-guest-header" : ""}`}>
