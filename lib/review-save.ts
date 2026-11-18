@@ -4,10 +4,14 @@ import { scheduleReview, DEFAULT_STUDY_TIME_ZONE } from "./review-schedule.ts";
 import type { QuestionStat } from "./store/types.ts";
 import { currentQuestionVersion } from './question-revisions';
 
+export function savedInNotebook(stat: Pick<QuestionStat, "savedForReview" | "dailyStudyOnly">) {
+  return Boolean(stat.savedForReview && !stat.dailyStudyOnly);
+}
+
 export function savedReviewStat(
   prev: QuestionStat | null,
   question: Question,
-  input: { userId: string; save: boolean; now: string; timeZone?: string }
+  input: { userId: string; save: boolean; includeNotebook?: boolean; now: string; timeZone?: string }
 ): QuestionStat | null {
   const timeZone = input.timeZone || DEFAULT_STUDY_TIME_ZONE;
   if (!input.save && !prev) return null;
@@ -44,6 +48,8 @@ export function savedReviewStat(
       chapter: isFreeState(question.state) ? question.study_topic || question.topic : base.chapter,
       userId: input.userId,
       savedForReview: true,
+      dailyStudyOnly: input.includeNotebook === undefined ? Boolean(base.savedForReview && base.dailyStudyOnly) : !input.includeNotebook,
+      mastered: false,
       nextReviewAt: base.nextReviewAt || scheduleReview(input.now, base.reviewStage || 0, timeZone),
       reviewPlan: "v2",
     };
@@ -54,6 +60,7 @@ export function savedReviewStat(
     chapter: isFreeState(question.state) ? question.study_topic || question.topic : base.chapter,
     userId: input.userId,
     savedForReview: false,
+    dailyStudyOnly: false,
     nextReviewAt: manualOnly ? null : base.nextReviewAt,
   };
 }

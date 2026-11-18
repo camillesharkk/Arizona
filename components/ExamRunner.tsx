@@ -33,6 +33,7 @@ import { currentQuestionVersion } from '@/lib/question-revisions';
 import { AccountInvite } from "@/components/AccountInvite";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { AnswerResult } from "@/components/AnswerResult";
+import { MessageDialog } from "@/components/MessageDialog";
 import { ExamNav, FlagIcon, LoadingNote, QuestionJump } from "@/components/QuizChrome";
 import { paths } from "@/lib/paths";
 import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
@@ -82,7 +83,8 @@ export function ExamRunner({
   focusArea?: string;
 }) {
   const baseModeKey = sittingMode || mode;
-  const modeKey = (stateCode === "CT" || isFreeState(stateCode)) && preset
+  const dailySet = Boolean(practice && preset && sittingMode?.startsWith("daily-"));
+  const modeKey = !dailySet && (stateCode === "CT" || isFreeState(stateCode)) && preset
     ? `${baseModeKey}:${preset.map(question => question.question_id).join(",")}`
     : baseModeKey;
   const cloudSaved = useRef(false);
@@ -156,6 +158,7 @@ export function ExamRunner({
   const completeReported = useRef(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [unansweredToConfirm, setUnansweredToConfirm] = useState(0);
   const attemptIds = useRef<Record<string, string>>({});
   const viewOnly = useRef(false);
   const reviewScroll = useRef(0);
@@ -164,6 +167,9 @@ export function ExamRunner({
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   function drawQuestionIds(seed: number, inBank?: Question[]) {
+    if (dailySet && preset) {
+      return preset.filter(item => item.state === stateCode).map(item => item.question_id);
+    }
     if (stateCode === "IN" && preset?.length) return preset.filter(item => item.state === "IN" && (item.is_free || isPro)).map(item => item.question_id);
     if (stateCode === "CT" && preset && mode !== "full") {
       return preset.filter(item => item.state === "CT" && (item.is_free || isPro)).map(item => item.question_id);
@@ -276,6 +282,7 @@ export function ExamRunner({
     setLockedIds(null);
     setRestored(false);
     setDone(false);
+    setUnansweredToConfirm(0);
     setAnswers({});
     answersRef.current = {};
     setIdx(0);
@@ -310,6 +317,11 @@ export function ExamRunner({
         const params = new URLSearchParams(window.location.search);
         const startFresh = params.get("start") === "1";
         let existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
+        const savedQuestionIds = existing?.questionIds;
+        if (dailySet && savedQuestionIds && preset && (savedQuestionIds.length !== preset.length ||
+          preset.some(question => !savedQuestionIds.includes(question.question_id)))) {
+          existing = null;
+        }
         if (startFresh && existing?.done) {
           clearSitting(sessionStorage, nextOwner, modeKey, stateCode);
           existing = null;
@@ -625,7 +637,7 @@ export function ExamRunner({
         const at = idx;
         scheduleAfterCorrect(() => {
           if (at + 1 < questions.length) setIdx(at + 1);
-          else finish();
+          else requestFinish();
         });
       } else {
         cancelAutoAdvance();
@@ -633,10 +645,23 @@ export function ExamRunner({
     }
   }
 
+  function requestFinish() {
+    const current = answersRef.current;
+    if (finishOnce.current || submitting) return;
+    if (reportStart === "answer" && Object.keys(current).length === 0) return;
+    const unanswered = questions.filter((item) => !current[item.question_id]).length;
+    if (unanswered > 0 && !localSaved.current) {
+      cancelAutoAdvance();
+      setUnansweredToConfirm(unanswered);
+      return;
+    }
+    void finish();
+  }
+
   async function finish() {
     if (finishOnce.current || submitting) return;
-    if (reportStart === "answer" && Object.keys(answersRef.current).length === 0) return;
     finishOnce.current = true;
+    setUnansweredToConfirm(0);
     setSubmitError("");
     setSubmitting(true);
     if (reportStart === "answer") reportExamStart();
@@ -1061,7 +1086,7 @@ export function ExamRunner({
         isPro={isPro}
         marked={marked.includes(view.question_id)}
         onMark={past ? undefined : () => toggleMark(view.question_id)}
-        extra={<SaveForReview questionId={view.question_id} hint={false} />}
+        extra={<SaveForReview key={view.question_id} questionId={view.question_id} hint={false} onAsk={cancelAutoAdvance} />}
         explainOpen={Boolean(explainOpen[view.question_id])}
         onToggleExplain={() => {
           const id = view.question_id;
@@ -1097,6 +1122,7 @@ export function ExamRunner({
   function startNew() {
     if (!owner) return;
     if (!window.confirm("Start a new set? This replaces the unfinished one.")) return;
+    cancelAutoAdvance();
     clearSitting(sessionStorage, owner, modeKey, stateCode);
     const seed = Math.floor(Math.random() * 1_000_000_000);
     const ids = drawQuestionIds(seed, authorizedQuestions || undefined);
@@ -1123,6 +1149,7 @@ export function ExamRunner({
     setRestored(false);
     setPastIndex(null);
     setSubmitError("");
+    setUnansweredToConfirm(0);
   }
 
   function toggleMark(questionId: string) {
@@ -1159,11 +1186,24 @@ export function ExamRunner({
         prevDisabled={prevLocked}
         nextDisabled={nextLocked}
         onPrev={() => goTo(idx - 1)}
-        onNext={() => (lastQuestion ? void finish() : goTo(idx + 1))}
+        onNext={() => (lastQuestion ? requestFinish() : goTo(idx + 1))}
         nextLabel={nextLabel}
         progress={`${idx + 1} / ${questions.length}`}
         submit={lastQuestion && !practice}
       />
+      {unansweredToConfirm > 0 ? (
+        <MessageDialog title="Submit with unanswered questions?" onClose={() => setUnansweredToConfirm(0)}>
+          <p>You have {unansweredToConfirm} unanswered {unansweredToConfirm === 1 ? "question" : "questions"}.</p>
+          <form className="row message-dialog-close" method="dialog">
+            <button className="btn btn-ghost" type="submit" data-dialog-autofocus>
+              Return to questions
+            </button>
+            <button className="btn btn-primary" type="button" onClick={() => void finish()}>
+              Submit anyway
+            </button>
+          </form>
+        </MessageDialog>
+      ) : null}
     </div>
   );
 }

@@ -270,8 +270,9 @@ export function buildDay(input: {
   const doc = input.doc;
   const questionById = new Map(input.questions.map((item) => [item.id, item]));
   const unseenCards = input.cardIds.filter((id) => !doc.cards[id]?.firstStudiedAt).sort();
-  const unseenQuestions = input.questionIds.filter((id) => !questionById.get(id)?.firstAt).sort();
   const dueQuestions = input.questions.filter((item) => item.nextReviewAt && Date.parse(item.nextReviewAt) <= Date.parse(input.now) && !item.mastered);
+  const dueQuestionIds = new Set(dueQuestions.map((item) => item.id));
+  const unseenQuestions = input.questionIds.filter((id) => !questionById.get(id)?.firstAt && !dueQuestionIds.has(id)).sort();
   const reviewBacklog = dueQuestions.length + input.cardIds.filter((id) => {
     const card = doc.cards[id];
     return card?.nextReviewAt && Date.parse(card.nextReviewAt) <= Date.parse(input.now);
@@ -301,7 +302,9 @@ export function buildDay(input: {
     .map((item) => item.id)
     .sort();
 
-  const existing = doc.days[input.today]?.tasks ? doc.days[input.today].tasks.map((task) => ({ ...task })) : [];
+  const existing = (doc.days[input.today]?.tasks ?? [])
+    .filter((task) => task.kind !== "new-question" || task.status !== "pending" || !dueQuestionIds.has(task.key.slice(9)))
+    .map((task) => ({ ...task }));
   const keys = new Set(existing.map((task) => task.key));
   let sort = existing.reduce((max, task) => Math.max(max, task.sort), 0);
 
@@ -358,7 +361,9 @@ export function buildDay(input: {
     }
     if (task.kind === "review-question") {
       const question = questionById.get(task.key.slice(9));
-      if (question?.lastReviewedAt && localDate(question.lastReviewedAt, input.timeZone) === input.today) task.status = "done";
+      const reviewedToday = question?.lastReviewedAt && localDate(question.lastReviewedAt, input.timeZone) === input.today;
+      const missedToday = question?.lastWrongAt && localDate(question.lastWrongAt, input.timeZone) === input.today;
+      if (reviewedToday || (missedToday && question?.nextReviewAt && Date.parse(question.nextReviewAt) > Date.parse(input.now))) task.status = "done";
     }
   }
 

@@ -5,10 +5,11 @@ import Link from "next/link";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedQuestions } from "@/data/questions";
 import { ExamRunner } from "@/components/ExamRunner";
+import { MessageDialog } from "@/components/MessageDialog";
 import { StudyCardBody, type StudyCardView } from "@/components/StudyCardBody";
 import { StudyPager } from "@/components/StudyPager";
 import { LoadingNote } from "@/components/QuizChrome";
-import { caPaths } from "@/lib/ca-site";
+import { caPaths, switchStateHref } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { hiStudyLabel } from "@/lib/hi-topics";
@@ -16,10 +17,33 @@ import { syncCaAttempts } from "@/lib/ca-sync";
 import { paths } from "@/lib/paths";
 import { isFreeState } from "@/lib/free-state-catalog";
 import { packFor } from "@/lib/prep-pack";
+import { stateByCode } from "@/lib/states";
 import type { Question, StateCode } from "@/lib/types";
+
+const guideSteps = [
+  {
+    title: "Start with today’s tasks",
+    text: "Today’s Practice gives you new cards and questions. Start with Today’s Review when you have reviews due, so you revisit material before moving on.",
+  },
+  {
+    title: "Find all your missed questions",
+    text: "When you miss a question in practice or a submitted exam, we record it under your account. Missed questions across the site shows your totals by state. Open a state’s Daily Study to see its review queue and scheduled questions.",
+  },
+  {
+    title: "Review before you forget",
+    text: "Spaced repetition is inspired by the forgetting curve. After a miss, your next review is scheduled for the following day. Correct answers on due reviews extend the interval to 7, 14, and then 30 days. Another miss brings the question back the next day.",
+  },
+  {
+    title: "Set a plan that fits your schedule",
+    text: "Open Study Settings to choose an exam target date, study days, and time zone. Use the recommended pace or set your own daily goals. Check Scheduled review to see when a question comes back.",
+  },
+];
 
 type Card = StudyCardView & { id: string };
 type View = {
+  accountId: string;
+  wrongQuestionCount: number;
+  wrongQuestionsByState: { state: StateCode; count: number; available: boolean }[];
   today: string;
   dayNumber: number;
   done: number;
@@ -46,7 +70,7 @@ type View = {
   nextReviewAt: string | null;
   taskStatus: { key: string; kind: string; status: string }[];
   recent?: { id: string; at: string; label: string; correct: number; total: number; wrong: number }[];
-  scheduled?: { questionId: string; prompt: string; nextReviewAt: string | null; wrongCount: number; saved: boolean; due: boolean }[];
+  scheduled?: { questionId: string; prompt: string | null; nextReviewAt: string | null; wrongCount: number; previousWrongCount: number; mastered: boolean; due: boolean }[];
 };
 
 export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }) {
@@ -56,6 +80,8 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
   const [view, setView] = useState<View | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [guideStep, setGuideStep] = useState<number | null>(null);
+  const guideHeading = useRef<HTMLHeadingElement>(null);
   const loadId = useRef(0);
   const [practiceIndex, setPracticeIndex] = useState(0);
   const [reviewIndex, setReviewIndex] = useState(0);
@@ -67,6 +93,30 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
   const visibleStart = useRef<number | null>(null);
 
   const query = `timeZone=${encodeURIComponent(zone)}&state=${stateCode}`;
+  const guideKey = view?.accountId ? `notary-daily-study-guide:${view.accountId}` : null;
+
+  useEffect(() => {
+    if (!guideKey) return;
+    try {
+      setGuideStep(localStorage.getItem(guideKey) ? null : 0);
+    } catch {
+      setGuideStep(0);
+    }
+  }, [guideKey]);
+
+  function closeGuide() {
+    setGuideStep(null);
+    if (!guideKey) return;
+    try {
+      localStorage.setItem(guideKey, "seen");
+    } catch {
+      // The guide can still be dismissed when browser storage is unavailable.
+    }
+  }
+
+  useEffect(() => {
+    if (guideStep != null && guideStep > 0) guideHeading.current?.focus();
+  }, [guideStep]);
 
   async function load() {
     const id = ++loadId.current;
@@ -163,7 +213,13 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
   const reviewCard = reviewCards[Math.min(reviewIndex, Math.max(reviewCards.length - 1, 0))];
   const bank = authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : stateCode === "HI" ? publishedHiQuestions() : stateCode === "CA" ? publishedCaQuestions() : publishedQuestions();
   const practiceQuestions = bank.filter((question) => pending("new-question").has(`question:${question.question_id}`));
-  const reviewQuestions = bank.filter((question) => pending("review-question").has(`question:${question.question_id}`));
+  const questionsById = new Map(bank.map((question) => [question.question_id, question]));
+  const pendingReviews = pending("review-question");
+  const reviewQuestions = view.reviewQuestionIds.flatMap((id) => {
+    const question = questionsById.get(id);
+    return question && pendingReviews.has(`question:${id}`) ? [question] : [];
+  });
+  const studySettingsHref = `${paths.account}${stateCode === "AZ" ? "" : `?state=${stateCode}`}#study-settings`;
   const entitlement = view.entitlementExpiresAt ? view.entitlementExpiresAt.slice(0, 10) : null;
   const progress = view.total ? Math.round(((view.introduced + view.reviewed) / (view.total * 2)) * 100) : 0;
 
@@ -174,8 +230,24 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         <span>{view.done} / {view.goal} today</span>
         <span>{progress}% of this plan</span>
         <span>Target {view.targetDate}</span>
-        <Link href={stateCode === "AZ" ? `${paths.account}#study-settings` : `${paths.account}?state=${stateCode}#study-settings`}>Study Settings</Link>
+        <Link href={studySettingsHref}>Study Settings</Link>
+        <button className="btn btn-ghost" type="button" aria-haspopup="dialog" onClick={() => setGuideStep(0)}>Daily Study guide</button>
       </div>
+      {guideStep != null ? (
+        <MessageDialog title="Daily Study guide" onClose={closeGuide}>
+          <p className="kicker">Step {guideStep + 1} of {guideSteps.length}</p>
+          <h3 ref={guideHeading} tabIndex={-1}>{guideSteps[guideStep].title}</h3>
+          <p>{guideSteps[guideStep].text}</p>
+          <form className="row message-dialog-close daily-guide-actions" method="dialog">
+            <button className="btn btn-ghost" type="submit">Skip guide</button>
+            {guideStep === guideSteps.length - 1 ? (
+              <button className="btn btn-primary" type="submit" key="finish">Finish guide</button>
+            ) : (
+              <button className="btn btn-primary" type="button" key="next" data-dialog-autofocus onClick={() => setGuideStep(guideStep + 1)}>Next</button>
+            )}
+          </form>
+        </MessageDialog>
+      ) : null}
       {stateCode === "AZ" && view.freeOnly ? (
         <p className="notice">
           Today’s plan uses the free set: {view.freeQuestionCount} questions and {view.freeCardCount} study cards. Pro uses all {view.questionCount} questions and {view.cardCount} study cards.{" "}
@@ -246,12 +318,12 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         </section>
         {practiceQuestions.length ? (
           <div className="daily-practice-quiz">
-            <ExamRunner mode="practice" practice isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view?.freeOnly === false} preset={practiceQuestions} onRecorded={load} sittingMode={stateCode === "CT" || isFreeState(stateCode) ? `daily-practice-${view?.today}` : "daily-practice"} stateCode={stateCode} />
+            <ExamRunner mode="practice" practice isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={practiceQuestions} onRecorded={load} sittingMode={`daily-practice-${view.today}`} stateCode={stateCode} />
           </div>
         ) : null}
         {reviewQuestions.length ? (
           <div className="daily-review-quiz">
-            <ExamRunner mode="weak" practice review isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view?.freeOnly === false} preset={reviewQuestions} onRecorded={load} sittingMode={stateCode === "CT" || isFreeState(stateCode) ? `daily-review-${view?.today}` : "daily-review"} stateCode={stateCode} />
+            <ExamRunner mode="weak" practice review isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={reviewQuestions} onRecorded={load} sittingMode={`daily-review-${view.today}`} stateCode={stateCode} />
           </div>
         ) : null}
       </div>
@@ -282,16 +354,29 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
           </ul>
         </section>
       ) : null}
+      <section className="card" aria-labelledby="daily-missed-heading">
+        <h2 id="daily-missed-heading">Missed questions across the site</h2>
+        <p>{view.wrongQuestionCount} {view.wrongQuestionCount === 1 ? "question" : "questions"} missed on your account.</p>
+        {view.wrongQuestionsByState.length > 0 ? (
+          <ul className="check">
+            {view.wrongQuestionsByState.map(({ state, count, available }) => {
+              const label = `${stateByCode(state)?.name ?? state} (${count})`;
+              return <li key={state}>{available && state !== stateCode ? <Link href={switchStateHref(site.daily, state)}>{label}</Link> : label}</li>;
+            })}
+          </ul>
+        ) : <p>Questions you miss will appear here.</p>}
+      </section>
       {view.scheduled && view.scheduled.length > 0 ? (
         <section className="card">
           <h2>Scheduled review</h2>
+          <p>Review history for {stateByCode(stateCode)?.name ?? stateCode}, including mastered questions.</p>
           <ul className="check">
             {view.scheduled.map((item) => (
               <li key={item.questionId}>
-                {item.prompt}
+                {item.prompt ?? "Question unavailable for review"}
                 {" · "}
-                {item.saved && item.wrongCount === 0 ? "Added" : `Wrong ${item.wrongCount}`}
-                {item.nextReviewAt ? ` · ${item.due ? "Due" : "Next"} ${new Date(item.nextReviewAt).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}` : ""}
+                {item.wrongCount > 0 ? `Wrong ${item.wrongCount}` : item.previousWrongCount > 0 ? "Missed an earlier version" : "Added"}
+                {item.mastered ? " · Mastered" : item.prompt && item.nextReviewAt ? ` · ${item.due ? "Due" : "Next"} ${new Date(item.nextReviewAt).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}` : ""}
               </li>
             ))}
           </ul>

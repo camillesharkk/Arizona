@@ -1,81 +1,60 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useId, useLayoutEffect, useRef, type PointerEvent, type ReactNode } from "react";
 
-const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+function outsideDialog(event: PointerEvent<HTMLDialogElement>) {
+  if (event.target !== event.currentTarget) return false;
+  const bounds = event.currentTarget.getBoundingClientRect();
+  return event.clientX < bounds.left || event.clientX > bounds.right ||
+    event.clientY < bounds.top || event.clientY > bounds.bottom;
+}
 
-export function MessageDialog({
-  title,
-  onClose,
-  children,
-}: {
+export function MessageDialog({ title, onClose, children }: {
   title: string;
-  onClose: () => void;
+  onClose: (result: string) => void;
   children: ReactNode;
 }) {
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const restoreRef = useRef<HTMLElement | null>(null);
-  const closeRef = useRef(onClose);
-  closeRef.current = onClose;
+  const titleId = useId();
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const pressedOutside = useRef(false);
 
-  useEffect(() => {
-    restoreRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+  useLayoutEffect(() => {
     const dialog = dialogRef.current;
-    const focusables = () => [...(dialog?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [])];
-    (focusables()[0] ?? dialog)?.focus();
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        closeRef.current();
-        return;
-      }
-      if (event.key !== "Tab" || !dialog) return;
-      const items = focusables();
-      if (!items.length) {
-        event.preventDefault();
-        dialog.focus();
-        return;
-      }
-      const first = items[0];
-      const last = items[items.length - 1];
-      if (!first || !last) return;
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKey);
-      restoreRef.current?.focus();
-    };
+    if (!dialog) return;
+    dialog.querySelector("[data-dialog-autofocus]")?.setAttribute("autofocus", "");
+    dialog.showModal();
+    return () => dialog.close();
   }, []);
 
   return (
-    <div className="message-dialog-backdrop" onClick={onClose}>
-      <div
-        ref={dialogRef}
-        className="card message-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="message-dialog-title"
-        tabIndex={-1}
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="message-dialog-head">
-          <h2 id="message-dialog-title">{title}</h2>
-          <button className="message-dialog-x" type="button" aria-label="Close" onClick={onClose}>
-            ×
-          </button>
-        </div>
-        {children}
+    <dialog
+      ref={dialogRef}
+      className="card message-dialog"
+      aria-labelledby={titleId}
+      {...{ closedby: "any" }}
+      onClose={(event) => {
+        const dialog = event.currentTarget;
+        if (dialog.open) return;
+        const result = dialog.returnValue;
+        dialog.returnValue = "";
+        onClose(result);
+      }}
+      onPointerDown={(event) => {
+        if (!("closedBy" in HTMLDialogElement.prototype)) pressedOutside.current = outsideDialog(event);
+      }}
+      onPointerUp={(event) => {
+        if (pressedOutside.current && outsideDialog(event)) event.currentTarget.close();
+        pressedOutside.current = false;
+      }}
+      onPointerCancel={() => { pressedOutside.current = false; }}
+    >
+      <div className="message-dialog-head">
+        <h2 id={titleId}>{title}</h2>
+        <button className="message-dialog-x" type="button" aria-label="Close" onClick={() => dialogRef.current?.close()}>
+          ×
+        </button>
       </div>
-    </div>
+      {children}
+    </dialog>
   );
 }

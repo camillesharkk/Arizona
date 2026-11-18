@@ -6,7 +6,7 @@ import { publishedQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { serverQuestionById as questionById } from "@/lib/server-questions";
-import { savedReviewStat } from "@/lib/review-save";
+import { savedInNotebook, savedReviewStat } from "@/lib/review-save";
 import { localDate } from "@/lib/calendar";
 import { compareMistakes, DEFAULT_STUDY_TIME_ZONE, isDue } from "@/lib/review-schedule";
 import { getSession } from "@/lib/session";
@@ -24,9 +24,12 @@ export async function POST(req: Request) {
       favorited: z.boolean().optional(),
       remove: z.boolean().optional(),
       saveForReview: z.boolean().optional(),
+      includeNotebook: z.boolean().optional(),
     })
     .safeParse(await req.json().catch(() => null));
-  if (!body.success) return NextResponse.json({ error: "Invalid" }, { status: 400 });
+  if (!body.success || (body.data.includeNotebook !== undefined && body.data.saveForReview !== true)) {
+    return NextResponse.json({ error: "Invalid" }, { status: 400 });
+  }
   if (productionStateBlocked(body.data.questionId.split("-")[0].toUpperCase())) return NextResponse.json({ error: "State not available" }, { status: 404 });
   const store = await getStore();
   const update = async () => {
@@ -44,12 +47,13 @@ export async function POST(req: Request) {
       const next = savedReviewStat(stat, question, {
         userId: session.id,
         save: body.data.saveForReview,
+        includeNotebook: body.data.includeNotebook,
         now: new Date().toISOString(),
         timeZone,
       });
       if (!next) return NextResponse.json({ error: "Not found" }, { status: 404 });
       await store.upsertStat(next);
-      return NextResponse.json({ ok: true, savedForReview: Boolean(next.savedForReview), nextReviewAt: next.nextReviewAt });
+      return NextResponse.json({ ok: true, savedForReview: Boolean(next.savedForReview), savedInNotebook: savedInNotebook(next), nextReviewAt: next.nextReviewAt });
     }
     if (body.data.mastered === undefined && body.data.favorited === undefined && !body.data.remove) {
       return NextResponse.json({ error: "Choose an action" }, { status: 400 });
@@ -69,7 +73,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Could not update this question. Please try again." }, { status: 500 });
     }
   };
-  return isFreeState(body.data.questionId.split('-')[0].toUpperCase()) || /^(ny|pa|la|ct|nc|in)-/.test(body.data.questionId) ? store.learningTransaction(session.id, update) : update();
+  return store.learningTransaction(session.id, update);
 }
 
 export async function GET(req: Request) {
@@ -83,19 +87,20 @@ export async function GET(req: Request) {
   const timeZone = zone && zone.length < 80 ? zone : DEFAULT_STUDY_TIME_ZONE;
   const bank = isFreeState(state) ? `${state.toLowerCase()}-notary-practice` : state === "CA" ? "california-notary-exam" : state === "HI" ? "hawaii-notary-exam" : state === "NY" ? "new-york-notary-exam" : state === "PA" ? "pennsylvania-notary-exam" : state === "NC" ? "north-carolina-notary-practice" : state === "IN" ? "indiana-notary-exam" : state === "CT" ? "connecticut-notary-exam" : state === "LA" ? "louisiana-notary-exam" : "arizona-notary-exam";
   const store = await getStore();
-  const stats = await store.listStats(session.id);
+  const stats = (await store.listStats(session.id)).filter(stat => stat.state === state);
   const now = Date.now();
   const mistakes = stats
-    .filter((s) => s.state === state && s.bank === bank && !s.mastered && (s.wrongCount > 0 || s.savedForReview))
+    .filter((s) => s.bank === bank && !s.mastered && (s.wrongCount > 0 || savedInNotebook(s)))
     .sort((a, b) => compareMistakes(a, b, now));
   return NextResponse.json({
     state,
     accountId: session.id,
     studyDay: localDate(new Date().toISOString(), timeZone),
     mistakes: mistakes.map(toClientStat),
+    savedReviewIds: stats.filter(stat => stat.savedForReview && !stat.mastered).map(stat => stat.questionId),
     dueCount: mistakes.filter((s) => isDue(s, now)).length,
     truncated: false,
-    favorites: stats.filter((s) => s.state === state && s.favorited).map(toClientStat),
+    favorites: stats.filter((s) => s.favorited).map(toClientStat),
   }, { headers: { "Cache-Control": "private, no-store" } });
 }
 

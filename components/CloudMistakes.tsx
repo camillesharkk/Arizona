@@ -19,6 +19,7 @@ import { hiPaths } from "@/lib/hi-site";
 import { hiStudyLabel, hiStudyTopics } from "@/lib/hi-topics";
 import { ExamRunner } from "@/components/ExamRunner";
 import { MistakeActions, mistakeTargets } from "@/components/MistakeActions";
+import { publishReviewSave } from "@/components/SaveForReview";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { LoadingNote } from "@/components/QuizChrome";
 import { topicLabel } from "@/lib/quiz";
@@ -27,6 +28,7 @@ import { readCaAttempt, latestCaQuick, type CaQuickAttempt } from "@/lib/ca-atte
 import { listPhase } from "@/lib/list-phase";
 import { markMistakePromptSeen, mistakePrompt, readMistakePrompts, type MistakeAction, type MistakePrompt } from "@/lib/mistake-prompts";
 import { packFor } from "@/lib/prep-pack";
+import { savedInNotebook } from "@/lib/review-save";
 import { syncCaAttempts } from "@/lib/ca-sync";
 import type { Question, StateCode } from "@/lib/types";
 import type { QuestionStat } from "@/lib/store/types";
@@ -160,7 +162,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
     return { ids: null, summary: "", note: "That practice is not on this account. Showing every saved record for this state." };
   }
 
-  async function updateRecord(stat: QuestionStat, action: "mastered" | "favorite" | "remove" | "save") {
+  async function updateRecord(stat: QuestionStat, action: "mastered" | "favorite" | "remove" | "save", includeNotebook?: boolean) {
     const questionId = stat.questionId;
     if (pendingIds.current.has(questionId)) return;
     pendingIds.current.add(questionId);
@@ -171,7 +173,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
     ++requestId.current;
     try {
       const patch = action === "save"
-        ? { saveForReview: !stat.savedForReview }
+        ? { saveForReview: includeNotebook !== undefined || !stat.savedForReview, includeNotebook }
         : action === "mastered" ? { mastered: true }
         : action === "remove" ? { remove: true } : { favorited: !stat.favorited };
       const response = await fetch("/api/mistakes/", {
@@ -191,12 +193,19 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
       ++requestId.current;
       if (action === "save") {
         const saved = Boolean(data.savedForReview);
-        setStats((current) => current.map((row) => row.questionId === questionId
-          ? { ...row, savedForReview: saved, nextReviewAt: data.nextReviewAt ?? row.nextReviewAt }
-          : row));
+        const inNotebook = Boolean(data.savedInNotebook);
+        if (saved !== patch.saveForReview || (includeNotebook !== undefined && inNotebook !== includeNotebook)) {
+          throw new Error("Could not update this question. Please try again.");
+        }
+        setStats((current) => current.flatMap((row) => {
+          if (row.questionId !== questionId) return [row];
+          if (row.wrongCount === 0 && !inNotebook) return [];
+          return [{ ...row, savedForReview: saved, dailyStudyOnly: saved && !inNotebook, nextReviewAt: data.nextReviewAt }];
+        }));
         setActionMessage(saved
-          ? `Added to Daily Study.${data.nextReviewAt ? ` Next review ${new Date(data.nextReviewAt).toLocaleString()}.` : ""}`
+          ? `${inNotebook ? "Added to Daily Study and Wrong Answers." : "Added to Daily Study."}${data.nextReviewAt ? ` Next review ${new Date(data.nextReviewAt).toLocaleString()}.` : ""}`
           : "Removed from the review plan.");
+        publishReviewSave(questionId, saved);
       } else {
         setStats((current) => action === "favorite"
           ? current.map((row) => row.questionId === questionId ? { ...row, favorited: !stat.favorited } : row)
@@ -207,6 +216,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         }
         setActionMessage(action === "mastered" ? "Question marked as mastered."
           : action === "remove" ? "Record deleted." : stat.favorited ? "Favorite removed." : "Question favorited.");
+        if (action === "mastered" || action === "remove") publishReviewSave(questionId, false);
       }
       window.dispatchEvent(new Event("az-mistakes-change"));
       router.refresh();
@@ -258,7 +268,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
   const filtered = byTopic.filter((s) => {
     if (scopeIds && !scopeIds.includes(s.questionId)) return false;
     if (source === "incorrect") return s.wrongCount > 0;
-    if (source === "saved") return Boolean(s.savedForReview);
+    if (source === "saved") return savedInNotebook(s);
     return true;
   });
   const due = filtered.filter(dueNow);
@@ -282,10 +292,10 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
     router.replace(notebookHref(site.mistakes, topic, ""), { scroll: false });
   }
 
-  function requestAction(stat: QuestionStat, action: "mastered" | "favorite" | "remove" | "save") {
+  function requestAction(stat: QuestionStat, action: "mastered" | "favorite" | "remove" | "save", includeNotebook?: boolean) {
     if (pendingIds.current.has(stat.questionId)) return;
     if (action === "save") {
-      void updateRecord(stat, action);
+      void updateRecord(stat, action, includeNotebook);
       return;
     }
     const copy = mistakePrompt(action, { favorited: stat.favorited, seenMastered: seen.mastered, seenFavorite: seen.favorite });
@@ -482,7 +492,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
             <span className="kicker">
               {(onHi ? hiStudyLabel(q.study_topic || q.topic) : onCa ? caStudyLabel(q.study_topic || q.topic) : topicLabel(q.topic))} · {dueNow(s) ? "Due" : "Later"}
               {s.wrongCount > 0 ? " · Incorrect" : ""}
-              {s.savedForReview ? " · Saved" : ""}
+              {savedInNotebook(s) ? " · Saved" : ""}
             </span>
             <h3>{q.question_text}</h3>
             <p>
@@ -493,7 +503,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
               {...mistakeTargets(stateCode, q)}
               stat={s}
               pending={pending[s.questionId]}
-              onAction={(action) => requestAction(s, action)}
+              onAction={(action, includeNotebook) => requestAction(s, action, includeNotebook)}
             />
             {actionErrors[s.questionId] ? (
               <div className="form-error" role="alert">

@@ -31,10 +31,17 @@ import { DEFAULT_STUDY_TIME_ZONE, scheduleReview } from "@/lib/review-schedule";
 import { stateProCovers, stateProExpiry } from "@/lib/state-pro";
 import { publishedInQuestions } from "@/data/in-questions";
 import { packFor } from "@/lib/prep-pack";
+import { LIVE_STATES } from "@/lib/ca-site";
+import { productionStateBlocked } from "@/lib/state-release";
 import { getStore } from "@/lib/store";
+import type { QuestionStat } from "@/lib/store/types";
 import type { StateCode } from "@/lib/types";
 
 export type StudyState = StateCode;
+
+function previousWrongCount(stat: QuestionStat) {
+  return (stat.revisionHistory ?? []).reduce((sum, revision) => sum + revision.wrongCount, 0);
+}
 
 function isPack(state: StudyState) {
   return Boolean(packFor(state)) || state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN";
@@ -138,7 +145,6 @@ async function saveDocument(store: Awaited<ReturnType<typeof getStore>>, userId:
 }
 
 export async function dailyStudyView(userId: string, timeZoneHint?: string, now = new Date().toISOString(), state: StudyState = "AZ") {
-  const topicPractice = state === "CA" || state === "HI" || isPack(state);
   const storeForExpiry = await getStore();
   const account = await storeForExpiry.listEntitlements(userId);
   const indiana = state === "IN" ? indianaEntitlement(account, new Date(now)) : null;
@@ -151,16 +157,22 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   const today = localDate(now, timeZone);
   const { questions, cards, cardsByQuestion } = pool(state, pro);
   const stats = await store.listStats(userId);
-  const stateStats = stats.filter((item) => item.state === state);
-  if (topicPractice) {
-    for (const stat of stateStats) {
-      if (stat.mastered || stat.wrongCount <= 0 || stat.nextReviewAt) continue;
-      stat.nextReviewAt = scheduleReview(stat.lastWrongAt || stat.firstAt || now, stat.reviewStage || 0, timeZone);
-      await store.updateReviewStat(userId, stat.questionId, { nextReviewAt: stat.nextReviewAt });
+  const stateStats = stats.filter((item) => item.state === state).map((stat) => {
+    if (stat.mastered || (stat.wrongCount <= 0 && !stat.savedForReview) || stat.nextReviewAt) return stat;
+    const lastRevision = stat.revisionHistory?.at(-1);
+    const since = stat.lastWrongAt || stat.lastAt || stat.firstAt || lastRevision?.lastAt;
+    const nextReviewAt = since ? scheduleReview(since, stat.reviewStage || 0, timeZone) : now;
+    return { ...stat, nextReviewAt };
+  });
+  const statById = new Map(stateStats.map((item) => [item.questionId, item]));
+  const wrongCounts = new Map<string, number>();
+  for (const stat of stats) {
+    if (stat.wrongCount > 0 || previousWrongCount(stat) > 0) {
+      wrongCounts.set(stat.state, (wrongCounts.get(stat.state) ?? 0) + 1);
     }
   }
   const progress: ItemProgress[] = questions.map((question) => {
-    const stat = stateStats.find((item) => item.questionId === question.question_id);
+    const stat = statById.get(question.question_id);
     return {
       id: question.question_id,
       wrongCount: stat?.wrongCount ?? 0,
@@ -213,6 +225,12 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     activeDays: 0,
   });
   return {
+    accountId: userId,
+    wrongQuestionCount: Array.from(wrongCounts.values()).reduce((total, count) => total + count, 0),
+    wrongQuestionsByState: LIVE_STATES.flatMap((code) => {
+      const count = wrongCounts.get(code);
+      return count ? [{ state: code, count, available: !productionStateBlocked(code) }] : [];
+    }),
     dayNumber: dayNumber(doc.settings.startedOn, today),
     today,
     done: built.done,
@@ -241,31 +259,33 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     unmappedQuestionIds: built.unmappedQuestionIds,
     nextReviewAt: nextReview,
     taskStatus: built.tasks,
-    ...californiaPlan(questions, stateStats, await store.listExams(userId), checks, state),
+    ...reviewHistory(questions, stateStats, await store.listExams(userId), checks, state, now),
   };
 }
 
-function californiaPlan(
+function reviewHistory(
   questions: { question_id: string; question_text: string; exam_area?: string }[],
-  stats: { questionId: string; state: string; wrongCount: number; savedForReview?: boolean; mastered: boolean; nextReviewAt: string | null; lastWrongAt: string | null; firstAt: string | null }[],
+  stats: QuestionStat[],
   exams: { id: string; mode: string; correctCount: number; total: number; at: string }[],
   checks: Record<string, CaCheck> | undefined,
   state: StudyState,
+  now: string,
 ) {
   const byId = new Map(questions.map((question) => [question.question_id, question]));
-  const now = new Date().toISOString();
   const scheduled = stats
-    .filter((stat) => !stat.mastered && (stat.wrongCount > 0 || stat.savedForReview) && byId.has(stat.questionId))
+    .filter((stat) => stat.wrongCount > 0 || stat.savedForReview || previousWrongCount(stat) > 0)
     .map((stat) => {
-      const question = byId.get(stat.questionId)!;
+      const question = byId.get(stat.questionId);
       return {
-        questionId: question.question_id,
-        prompt: question.question_text,
-        area: question.exam_area || "",
+        questionId: stat.questionId,
+        prompt: question?.question_text ?? null,
+        area: question?.exam_area || "",
         nextReviewAt: stat.nextReviewAt,
         wrongCount: stat.wrongCount,
+        previousWrongCount: previousWrongCount(stat),
         saved: Boolean(stat.savedForReview),
-        due: Boolean(stat.nextReviewAt && stat.nextReviewAt <= now),
+        mastered: stat.mastered,
+        due: Boolean(question && !stat.mastered && stat.nextReviewAt && stat.nextReviewAt <= now),
       };
     })
     .sort((a, b) => (a.nextReviewAt || "9").localeCompare(b.nextReviewAt || "9"));
@@ -273,7 +293,7 @@ function californiaPlan(
     state,
     recent: recentCaExams(exams, checks || {}, stats, state),
     scheduled,
-    due: scheduled.filter((item) => item.due).map((item) => ({ questionId: item.questionId, prompt: item.prompt, due: item.nextReviewAt, area: item.area })),
+    due: scheduled.flatMap((item) => item.due && item.prompt !== null ? [{ questionId: item.questionId, prompt: item.prompt, due: item.nextReviewAt, area: item.area }] : []),
     hasPractice: recentCaExams(exams, checks || {}, stats, state).length > 0 || stats.some((stat) => stat.firstAt || stat.savedForReview),
   };
 }
