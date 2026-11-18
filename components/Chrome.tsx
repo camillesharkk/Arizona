@@ -70,6 +70,7 @@ function moreLinks(nav: ReturnType<typeof navFor>, state: LiveCode) {
     { href: nav.flashcards, label: "Study cards" },
     { href: nav.examPrep, label: isFreeState(state) && freeStateFeatures[state]?.fullPractice === false ? "Requirements guide" : "Exam guide" },
     { href: nav.become, label: "Become a Notary" },
+    { href: paths.community, label: "Community Insights" },
     ...(state === "AZ" ? [{ href: paths.courses, label: "Courses" }] : []),
   ];
 }
@@ -228,6 +229,7 @@ export function SiteFooter({ savedState }: { savedState: LiveCode | null }) {
           ) : (
             <Link href="/">Choose another state</Link>
           )}
+          <Link href={paths.community}>Community Insights</Link>
           <Link href={paths.privacy}>Privacy</Link>
           <Link href={paths.terms}>Terms</Link>
           <Link href={paths.refund}>Refund Policy</Link>

@@ -8,7 +8,7 @@ import { LifetimeProOffer } from "@/components/LifetimeProOffer";
 import { canonicalUrl } from "@/lib/site";
 import { prepStates, statesByName } from "@/lib/states";
 import { stateEntry } from "@/lib/state-entry";
-import { communityInsights } from "@/data/community-insights";
+import { communityInsights, communityInsightsUpdatedAt } from "@/data/community-insights";
 import "./national-home.css";
 import "./home-glass-demo.css";
 
@@ -154,7 +154,7 @@ export default function Page() {
             ))}
           </div>
         </section>
-        <HomeCommunity insights={communityInsights} />
+        <HomeCommunity insights={communityInsights.slice(0, 3)} updatedAt={communityInsightsUpdatedAt} />
         <HomeTrust />
         <section
           className="home-section home-lifetime"

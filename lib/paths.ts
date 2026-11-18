@@ -42,6 +42,7 @@ export const paths = {
   daily: "/daily-study/",
   pricing: "/pricing/",
   contact: "/contact/",
+  community: "/community-insights/",
   privacy: "/legal/privacy/",
   terms: "/legal/terms/",
   cookies: "/legal/cookies/",

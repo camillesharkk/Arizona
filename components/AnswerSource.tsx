@@ -1,32 +1,34 @@
-import { findSource } from "@/data/sources";
-import type { Question } from "@/lib/types";
+import { resolveAnswerEvidence, type AnswerEvidenceFields } from "@/lib/answer-evidence";
 
-export function AnswerSource({
-  question,
-}: {
-  question: Pick<
-    Question,
-    "source_id" | "source_reference" | "last_verified_at"
-  >;
-}) {
-  const source = findSource(question.source_id);
+export function AnswerSource({ question }: { question: AnswerEvidenceFields }) {
+  const evidence = resolveAnswerEvidence(question);
+  const date = question.last_verified_at?.trim();
   return (
     <div className="answer-source">
       <p>
         Official source{" "}
-        {source?.url ? (
-          <a
-            href={source.document_url || source.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {source.title} · {question.source_reference}
+        {evidence.href ? (
+          <a href={evidence.href} target="_blank" rel="noopener noreferrer">
+            {evidence.label}
           </a>
         ) : (
-          <span>{question.source_reference || "Reference unavailable"}</span>
+          <span>{evidence.label} · Link unavailable</span>
         )}
+        {evidence.additional.map((href, index) => (
+          <span key={href}>
+            {" · "}
+            <a href={href} target="_blank" rel="noopener noreferrer">
+              {href.includes("/notary-handbook-current.pdf")
+                ? "California Notary Public Handbook"
+                : `Additional source ${index + 1}`}
+            </a>
+          </span>
+        ))}
       </p>
-      <p>Last verified {question.last_verified_at || "Date unavailable"}</p>
+      <p>
+        Last verified{" "}
+        {date ? <time dateTime={date}>{date}</time> : "Date unavailable"}
+      </p>
     </div>
   );
 }

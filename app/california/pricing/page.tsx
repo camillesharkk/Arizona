@@ -1,4 +1,3 @@
-import { LifetimeProOffer } from "@/components/LifetimeProOffer";
 import type { Metadata } from "next";
 import { StateCheckout } from "@/components/StateCheckout";
 import { caQuestionCounts } from "@/data/ca-questions";
@@ -17,11 +16,10 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main className="wrap">
-      <LifetimeProOffer compact />
       <h1>California Pro</h1>
       <div className="card">
         <p>{counts.free} of {counts.published} published questions are free, and all {caCards.length} study cards are free. One full 45-question practice exam is included.</p>
-        <p>Pro removes the one-exam limit and uses the account AI tutor allowance. One purchase covers Arizona, California, and Hawaii.</p>
+        <p>Pro removes the one-exam limit and uses the account AI tutor allowance. One purchase covers all available states.</p>
         <a className="btn btn-ghost" href={`${caPaths.practice}?mode=quick`}>Check My Knowledge — 10 Questions</a>
       </div>
       <StateCheckout source="CA" />

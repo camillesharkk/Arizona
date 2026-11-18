@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { PracticeAfterword } from "@/components/PracticeAfterword";
 import { PracticeLaunch } from "@/components/PracticeLaunch";
 import { publishedCaQuestions, caQuestionCounts } from "@/data/ca-questions";
-import { getSource } from "@/data/sources";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
 import { caStudyTopics } from "@/lib/ca-topics";
 import { canonicalUrl } from "@/lib/site";
@@ -30,8 +29,6 @@ export default function Page() {
       options: { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d },
       correct: q.correct_option,
       explanation: q.explanation,
-      sourceUrl: getSource(q.source_id).url,
-      sourceLabel: q.source_reference,
       moreHref: `${caPaths.questions}?topic=${topic.id}`,
     }];
   });

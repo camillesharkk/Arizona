@@ -64,7 +64,7 @@ assert.match(
 assert.match(result, /Four years/);
 assert.match(
   result,
-  /Last verified 2026-09-01/,
+  /Last verified <time dateTime="2026-09-01">2026-09-01<\/time>/,
   "Recorded verification dates remain intact",
 );
 const expanded = renderToStaticMarkup(
@@ -92,6 +92,37 @@ assert.match(
   "The existing expanded prop must actually open the explanation",
 );
 assert.match(staticAnswer, /<dt>The rule<\/dt>/);
+
+const { resolveAnswerEvidence } = componentLoader("lib/answer-evidence.ts");
+const ca = resolveAnswerEvidence({
+  source_id: "ca-official",
+  source_reference: "Gov. Code § 8201(a)(3), (b)",
+  last_verified_at: "2026-11-05",
+});
+assert.match(ca.href, /lawCode=GOV&sectionNum=8201\.$/);
+assert.ok(ca.additional.includes("https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf#page=28"));
+const caHandbook = resolveAnswerEvidence({
+  source_id: "ca-official",
+  source_reference: "2026 California Notary Public Handbook, Electronic Notarizations",
+  last_verified_at: "2026-11-05",
+});
+assert.match(caHandbook.href, /notary-handbook-current\.pdf#page=23$/);
+const { AnswerSource } = componentLoader("components/AnswerSource.tsx");
+const nySource = renderToStaticMarkup(React.createElement(AnswerSource, {
+  question: {
+    source_id: "ny-official",
+    source_reference: "Executive Law §135-c (https://www.nysenate.gov/legislation/laws/EXC/135-C).",
+    last_verified_at: "2026-11-09",
+  },
+}));
+assert.match(nySource, /href="https:\/\/www\.nysenate\.gov\/legislation\/laws\/EXC\/135-C"/);
+assert.match(nySource, /<time dateTime="2026-11-09">2026-11-09<\/time>/);
+assert.doesNotMatch(nySource, /href="https:\/\/dos\.ny\.gov/);
+const unresolved = renderToStaticMarkup(React.createElement(AnswerSource, {
+  question: { source_id: "unknown", source_reference: "", last_verified_at: "" },
+}));
+assert.match(unresolved, /Official source.*Reference unavailable · Link unavailable/);
+assert.match(unresolved, /Last verified Date unavailable/);
 console.log(
   "Answer rendering keeps the rule visible, separates reasoning and option feedback, honors expanded, and preserves official evidence.",
 );

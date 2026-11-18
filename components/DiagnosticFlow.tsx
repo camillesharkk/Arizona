@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { chapters } from "@/data/study-guide";
-import { findSource } from "@/data/sources";
 import { AnswerExplain } from "@/components/AnswerExplain";
 import {
   arizonaDiagnostic,
@@ -380,7 +379,6 @@ function DiagnosticResult({
 
 function QuestionReview({ q, index, choice }: { q: Question; index: number; choice?: DiagnosticChoice }) {
   const correct = choice === q.correct_option;
-  const source = findSource(q.source_id);
   const study = chapterHref(q.topic);
   const options = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
   const status = !choice ? "Not answered" : choice === "unsure" ? "Unsure" : correct ? "Correct" : "Not correct";
@@ -407,10 +405,7 @@ function QuestionReview({ q, index, choice }: { q: Question; index: number; choi
         question={q}
         explanation={q.explanation}
         wrongNote={choice && choice !== "unsure" && choice !== q.correct_option ? q.option_feedback[choice] : undefined}
-        sourceUrl={source?.url}
-        sourceLabel={source ? `${source.title} · ${q.source_reference}` : q.source_reference}
       />
-      {!source ? <p>Official source not on file.{q.source_reference ? ` Cited reference: ${q.source_reference}` : ""}</p> : null}
       {study ? <p><Link href={study}>Review this chapter</Link></p> : <p>No study chapter is mapped for this topic.</p>}
     </details>
   );

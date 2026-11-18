@@ -8,7 +8,7 @@ export type LiveCode = StateCode;
 
 import { freeStateCatalog } from "./free-state-catalog.ts";
 
-const sharedPaths = ["/login", "/register", "/forgot-password", "/reset-password", "/verify-email", "/account", "/dashboard", "/contact", "/legal"];
+const sharedPaths = ["/login", "/register", "/forgot-password", "/reset-password", "/verify-email", "/account", "/dashboard", "/contact", "/community-insights", "/legal"];
 
 /** State implied by the URL. Shared pages and coming-soon pages do not imply one. */
 export function pathState(pathname: string): LiveCode | null {

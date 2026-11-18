@@ -11,16 +11,19 @@ export default function Page() {
       <p>Practice scores are not official SOS results. You must verify fees, eligibility, and procedures on azsos.gov before applying or notarizing.</p>
       <p>Paddle is the Merchant of Record. Pro access starts after Paddle confirms payment.</p>
       <p>
-        Arizona Notary Exam Prep Pro is a one-time purchase for 60-Day Full Access. It is not a lifetime membership
-        and does not renew automatically. Your Pro access lasts for 60 days from activation. If you purchase additional
+        60-Day Pro is a one-time purchase. Your access lasts for 60 days from activation without automatic renewal. If you purchase additional
         60-day access while Pro is still active, the additional time is added after your current expiration date.
+      </p>
+      <p>
+        The Lifetime Pro offer includes lifetime access and a separate $10 exam guarantee fee.
+        For the eligibility, price breakdown and refund terms, see the <a href={`${paths.refund}#lifetime`}>Lifetime Pro exam refund policy</a>.
       </p>
       <p>
         Pro access is for the personal use of the account holder. Account sharing, resale, credential sharing, or
         commercial redistribution is not permitted.
       </p>
       <p>
-        Our standard refund policy is a full refund within 72 hours of purchase only if you have not used any Pro-only
+        The standard 60-Day Pro refund policy is a full refund within 72 hours of purchase only if you have not used any Pro-only
         feature. Once any Pro-only feature is accessed, or after 72 hours, the purchase is no longer eligible for that
         standard unused refund. See the <a href={paths.refund}>Refund Policy</a>.
       </p>

@@ -1,11 +1,9 @@
-import {
-  communityInsights,
-  sourceTrustSample,
-} from "@/data/community-insights";
+import Link from "next/link";
+import { sourceTrustSample } from "@/data/community-insights";
 import { WrongAnswerPreview } from "@/components/WrongAnswerPreview";
+import { paths } from "@/lib/paths";
 
 export function HomeTrust() {
-  const community = communityInsights[0];
   return (
     <section
       className="home-trust home-section"
@@ -13,11 +11,11 @@ export function HomeTrust() {
       data-reveal
     >
       <p className="home-eyebrow">A CLOSER LOOK AT YOUR PREP</p>
-      <h2 id="home-trust-heading">Why Trust Our Prep?</h2>
+      <h2 id="home-trust-heading">Why Choose Us</h2>
       <div className="home-trust-grid">
         <article className="home-evidence">
-          <p className="home-card-label">OFFICIAL SOURCES</p>
-          <h3>A rule you can check</h3>
+          <h3>Official Sources Behind Every Answer</h3>
+          <p>See the official rule behind each answer and the date we last verified it.</p>
           <div className="home-sample-question">
             <p>{sourceTrustSample.question}</p>
             <strong>{sourceTrustSample.answer}</strong>
@@ -42,8 +40,7 @@ export function HomeTrust() {
           </a>
         </article>
         <article className="home-evidence home-evidence-product">
-          <p className="home-card-label">YOUR NEXT STUDY SESSION</p>
-          <h3>Review what you missed</h3>
+          <h3>A Study Plan Built Around Your Mistakes</h3>
           <figure className="home-product-window">
             <div className="home-product-titlebar" aria-hidden="true">
               <i />
@@ -54,33 +51,20 @@ export function HomeTrust() {
             <WrongAnswerPreview question={sourceTrustSample.question} />
             <figcaption>Interface demo · Sample study content</figcaption>
           </figure>
-          <p>Find a missed question and choose what to study next.</p>
+          <p>Take a practice test, review missed questions, and use Daily Study and flashcards to focus on the topics you need most.</p>
           <a className="home-text-link" href="/wrong-answers/">
             Open Wrong Answers <span aria-hidden="true">→</span>
           </a>
         </article>
         <article className="home-evidence">
-          <p className="home-card-label">COMMUNITY-INFORMED STUDY</p>
-          <h3>Turn a question into a study habit</h3>
+          <h3>Study Tips From the Notary Community</h3>
           <p>
-            Arizona candidates discuss finding rules under time pressure.
-            Rehearse a manual lookup with our study card.
+            We review public discussions about notary exam prep and use
+            recurring questions to guide new flashcards and practice topics.
           </p>
-          <p className="home-evidence-meta">
-            <a
-              href={community.postUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Read the public discussion ↗
-            </a>
-            <br />
-            Last reviewed{" "}
-            <time dateTime={community.checkedAt}>{community.checkedAt}</time>
-          </p>
-          <a className="home-text-link" href={community.studyHref}>
-            Study manual navigation <span aria-hidden="true">→</span>
-          </a>
+          <Link className="home-text-link" href={paths.community}>
+            Browse Community Insights <span aria-hidden="true">→</span>
+          </Link>
         </article>
       </div>
     </section>

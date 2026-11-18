@@ -16,8 +16,6 @@ export function PracticeAfterword({
     options: Record<string, string>;
     correct: string;
     explanation: string;
-    sourceUrl: string;
-    sourceLabel: string;
     moreHref: string;
   }[];
   links: { href: string; label: string }[];
@@ -36,7 +34,7 @@ export function PracticeAfterword({
             <h3>{i + 1}. {q.question_text}</h3>
             <ol type="A">{Object.entries(q.options).map(([letter, text]) => <li key={letter}>{text}</li>)}</ol>
             <p><strong>Answer: {q.correct}. {q.options[q.correct]}</strong></p>
-            <AnswerExplain question={q} explanation={q.explanation} sourceUrl={q.sourceUrl} sourceLabel={q.sourceLabel} />
+            <AnswerExplain question={q} explanation={q.explanation} />
             <Link href={q.moreHref}>Practice more questions on this topic</Link>
           </article>
         ))}

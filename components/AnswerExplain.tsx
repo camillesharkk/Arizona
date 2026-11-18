@@ -1,25 +1,17 @@
 import { AnswerSource } from "@/components/AnswerSource";
 import { ExplanationBody } from "@/components/ExplanationBody";
-import type { Question } from "@/lib/types";
+import type { AnswerEvidenceFields } from "@/lib/answer-evidence";
 
 export function AnswerExplain({
   explanation,
   question,
-  sourceUrl,
-  sourceLabel,
   wrongNote,
   expanded = false,
   reviewLinks,
 }: {
   explanation: string;
-  question?: Pick<
-    Question,
-    "source_id" | "source_reference" | "last_verified_at"
-  >;
-  sourceUrl?: string;
-  sourceLabel?: string;
+  question: AnswerEvidenceFields;
   wrongNote?: string;
-  status?: string;
   reviewLinks?: { href: string; label: string }[];
   expanded?: boolean;
 }) {
@@ -40,14 +32,7 @@ export function AnswerExplain({
           </nav>
         ) : null}
       </details>
-      {question ? <AnswerSource question={question} /> : null}
-      {!question && sourceUrl ? (
-        <p className="answer-source">
-          <a href={sourceUrl}>{sourceLabel || "Official source"}</a>
-        </p>
-      ) : !question && sourceLabel ? (
-        <p className="answer-source">{sourceLabel}</p>
-      ) : null}
+      <AnswerSource question={question} />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import { prepPacks } from '@/lib/prep-pack';
 import Link from 'next/link';
+import { AnswerExplain } from '@/components/AnswerExplain';
+import { freeStateQuestions } from '@/data/free-state-questions';
 import { freeStateContent } from '@/data/free-state-content';
 import { freeStateFeatures, freeStatePaths, type FreeStateCode } from '@/lib/free-state-catalog';
 
@@ -45,6 +47,7 @@ export function FreeStateHome({ code }: { code: FreeStateCode }) {
 export function FreeStateGuide({ code }: { code: FreeStateCode }) {
   const content = freeStateContent[code]!;
   const site = freeStatePaths(content.slug);
+  const guideQuestions = freeStateQuestions(code);
   const specs = [
     content.specs.questions === null ? null : `${content.specs.questions} official questions`,
     content.specs.minutes === null ? null : `${content.specs.minutes} official minutes`,
@@ -66,10 +69,13 @@ export function FreeStateGuide({ code }: { code: FreeStateCode }) {
     <nav aria-label="Study topics"><h2>Study topics</h2><ul>{content.topics.map(topic => <li key={topic.id}><a href={`#${topic.id}`}>{topic.label}</a></li>)}</ul></nav>
     {content.topics.map(topic => <section id={topic.id} key={topic.id} className="guide-chapter">
       <h2>{topic.label}</h2>
-      {content.questions.filter(question => question.studyTopic === topic.id).map(question => {
-        const source = content.sources.find(item => item.id === question.sourceId)!;
-        return <div key={question.id}><h3>{question.stem}</h3><p>{question.explanation}</p>
-          <p><a href={source.url}>{question.reference}</a> · Checked {source.checkedAt}</p></div>;
+      {guideQuestions.filter(question => question.study_topic === topic.id).map(question => {
+        const answers = { A: question.option_a, B: question.option_b, C: question.option_c, D: question.option_d };
+        return <div key={question.question_id}>
+          <h3>{question.question_text}</h3>
+          <p><strong>Answer: {answers[question.correct_option]}</strong></p>
+          <AnswerExplain question={question} explanation={question.explanation} expanded />
+        </div>;
       })}
     </section>)}
     <FreeStateSources code={code} />

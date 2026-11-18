@@ -20,7 +20,8 @@
 }
 .national-home h1,
 .national-home h2,
-.national-home h3 {
+.national-home h3,
+.national-home .home-community-card h2 {
   color: var(--home-ink);
 }
 .national-home h2 {
@@ -375,7 +376,7 @@
   font-size: 23px;
   cursor: pointer;
 }
-.home-carousel-controls button:disabled {
+.home-carousel-controls button:is(:disabled, [aria-disabled="true"]) {
   color: #8c97a4;
   background: #f5f7fa;
   border-color: #e3e8ee;
@@ -387,6 +388,8 @@
   grid-auto-columns: calc((100% - 40px) / 2.65);
   gap: 24px;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  touch-action: manipulation;
   scroll-snap-type: x mandatory;
   scroll-padding: 2px;
   padding: 4px 2px 16px;
@@ -429,6 +432,35 @@
   padding-top: 12px;
   margin-top: auto;
   font-size: 14px;
+}
+.home-community-actions > a {
+  display: block;
+}
+.home-community-actions > a.home-text-link {
+  display: inline-flex;
+}
+.home-community-markers {
+  margin: 0 0 12px;
+}
+.home-community-markers button {
+  min-width: 36px;
+  min-height: 36px;
+}
+.home-community-markers button[aria-current="true"] {
+  border-color: var(--home-blue-dark);
+  box-shadow: inset 0 0 0 1px var(--home-blue-dark);
+  font-weight: 700;
+}
+.national-home .home-section-top h1 {
+  margin: 0;
+}
+.home-community {
+  scroll-margin-top: 84px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home-community-track {
+    scroll-behavior: smooth;
+  }
 }
 .home-community-actions p {
   color: var(--home-muted);
@@ -781,7 +813,8 @@
   .home-community-card {
     padding: 24px;
   }
-  .home-community-card h3 {
+  .home-community-card h3,
+  .national-home .home-community-card h2 {
     font-size: 22px;
   }
   .home-community-actions {

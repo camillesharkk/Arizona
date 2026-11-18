@@ -70,27 +70,6 @@
   text-decoration: underline;
   font-size: 0.9rem;
 }
-.lifetime-comparison {
-  display: grid;
-  gap: 0.6rem;
-}
-.lifetime-comparison div {
-  padding: 0.65rem 0;
-  border-top: 1px solid var(--glass-edge);
-}
-.lifetime-comparison dt {
-  font-weight: 700;
-}
-.lifetime-comparison dd {
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
-}
-.lifetime-offer-compact {
-  padding: 1.5rem;
-}
-.lifetime-offer-compact h2 {
-  font-size: 1.7rem;
-}
 @media (max-width: 680px) {
   .lifetime-offer {
     grid-template-columns: 1fr;

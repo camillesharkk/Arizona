@@ -14,6 +14,7 @@ import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
 import { canonicalUrl } from "@/lib/site";
+import { communityInsightsUpdatedAt } from "@/data/community-insights";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const urls = [
@@ -48,6 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     paths.refund,
     paths.disclaimer,
     paths.contact,
+    paths.community,
     caPaths.home,
     caPaths.practice,
     caPaths.questions,
@@ -113,10 +115,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...articles.map((article) => [article.path, article.updated] as const),
     ...seoGuides.filter((guide) => guide.index !== false).map((guide) => [guide.path, "2026-11-07"] as const),
     [paths.flashcards, "2026-11-07"],
+    ...(communityInsightsUpdatedAt ? [[paths.community, communityInsightsUpdatedAt] as const] : []),
   ]);
   return indexed.map((path) => ({
     url: canonicalUrl(path),
-    changeFrequency: "weekly" as const,
+    ...(path === paths.community ? {} : { changeFrequency: "weekly" as const }),
     priority: updated.has(path) ? 0.7 : 0.8,
     ...(updated.has(path) ? { lastModified: updated.get(path) } : {}),
   }));

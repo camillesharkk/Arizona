@@ -1,10 +1,12 @@
 import { LegalCopy } from "@/components/LegalCopy";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
+import { EXAM_GUARANTEE_CENTS, LIFETIME_ACCESS_CENTS, LIFETIME_POLICY_VERSION, LIFETIME_TOTAL_CENTS } from "@/lib/pricing/lifetime";
+import { formatUsd } from "@/lib/pricing/money";
 
 export const metadata = pageMeta({
   title: "Refund Policy",
-  description: "3-day unused refund policy for Arizona Notary Exam Prep Pro.",
+  description: "Refund terms for 60-day Pro and the Lifetime Pro exam guarantee.",
   path: paths.refund,
 });
 
@@ -13,9 +15,13 @@ export default function Page() {
     <LegalCopy title="Refund Policy" path={paths.refund}>
       <section id="lifetime">
         <h2>Lifetime Pro exam refund policy</h2>
-        <p>Policy version 2026-11-lifetime-v1. Lifetime Pro costs $29.99 USD once and covers Pro features across all available states with no expiration.</p>
-        <p>If you fail an official notary exam taken after your Lifetime Pro purchase, you may request a refund within 30 days of the official results. Submit your order number and official failure proof through <a href="/contact/?topic=lifetime-exam-refund">Contact support</a>. Include the exam date and result date so we can verify eligibility.</p>
-        <p>We review complete requests within 5–7 business days. Approved refunds are processed through Paddle to the original payment method. Settlement time depends on the payment provider and your bank. A completed refund revokes access granted by the related order. Other valid purchases remain available.</p>
+        <p>Policy version {LIFETIME_POLICY_VERSION}. Lifetime Pro is one payment of {formatUsd(LIFETIME_TOTAL_CENTS)} USD.</p>
+        <ul>
+          <li><strong>{formatUsd(LIFETIME_ACCESS_CENTS)} · Lifetime Pro access.</strong> This portion is nonrefundable under the exam guarantee. It covers Pro access across available states with no expiration.</li>
+          <li><strong>{formatUsd(EXAM_GUARANTEE_CENTS)} · Exam guarantee.</strong> If you fail an official notary exam taken after purchase, you can request a refund of this portion within 30 days of the official results. Your Lifetime Pro access remains active after this partial refund.</li>
+        </ul>
+        <p>Submit your order number, exam date, result date and official failure proof through <a href="/contact/?topic=lifetime-exam-refund">Contact support</a>. The guarantee fee can be refunded once per order.</p>
+        <p>We review complete requests within 5–7 business days. Approved partial refunds return through Paddle to the original payment method. Settlement time depends on Paddle and your bank.</p>
         <p>This policy applies to the account holder’s purchase and official exam. Independent practice test results do not constitute official failure proof. Applicable legal and payment-provider rights continue to apply.</p>
       </section>
       <h2>60-day Pro unused refund policy</h2>
@@ -46,7 +52,7 @@ export default function Page() {
       </p>
       <p>
         Digital Pro purchases are processed by Paddle as Merchant of Record. Their tax invoice and provider rules
-        still apply. A completed refund returns the related Pro entitlement to refunded status.
+        still apply. A completed full refund returns the related Pro entitlement to refunded status.
       </p>
     </LegalCopy>
   );

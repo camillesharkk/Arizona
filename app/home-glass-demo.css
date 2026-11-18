@@ -71,8 +71,8 @@ body:has(.glass-home-demo),
   color: #34546b;
   box-shadow: var(--glass-shadow);
 }
-.glass-home-demo :is(.home-carousel-controls button, .home-contact-button):hover:not(:disabled) { background: #e4eff6; }
-.glass-home-demo .home-carousel-controls button:disabled {
+.glass-home-demo :is(.home-carousel-controls button, .home-contact-button):hover:not(:disabled, [aria-disabled="true"]) { background: #e4eff6; }
+.glass-home-demo .home-carousel-controls button:is(:disabled, [aria-disabled="true"]) {
   background: #f0f4f7;
   border-color: #dce5ec;
   color: #6c8191;

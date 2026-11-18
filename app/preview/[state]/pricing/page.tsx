@@ -1,8 +1,7 @@
-import { LifetimeProOffer } from "@/components/LifetimeProOffer";
 import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
 import { StateCheckout } from "@/components/StateCheckout";
-import { prepPacks, type PrepCode } from "@/lib/prep-pack";
+import { prepPacks } from "@/lib/prep-pack";
 
 const codes: Record<string, "CT" | "IN" | "NC" | "NY" | "PA" | "LA"> = { "new-york": "NY", pennsylvania: "PA", louisiana: "LA", indiana: "IN", "north-carolina": "NC", connecticut: "CT" };
 
@@ -14,7 +13,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
   const counts = pack.counts();
   if (code === "LA") {
     return <main className="wrap">
-      <LifetimeProOffer compact /><StateCheckout source={code} /></main>;
+      <StateCheckout source={code} /></main>;
   }
   return (
     <main className="wrap">
