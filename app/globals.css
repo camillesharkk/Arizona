@@ -89,6 +89,7 @@ dialog.message-dialog::backdrop {
 .message-dialog-head h2 { margin: 0; }
 .message-dialog-x { border: 0; background: transparent; font-size: 28px; line-height: 1; cursor: pointer; min-width: 44px; min-height: 44px; }
 .message-dialog-close { margin-top: 16px; }
+.daily-guide-actions { justify-content: flex-end; }
 .recommend-block { display: grid; gap: 10px; }
 .recommend-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 @media (min-width: 360px) { .state-grid { grid-template-columns: 1fr 1fr; } }

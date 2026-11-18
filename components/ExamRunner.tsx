@@ -83,7 +83,8 @@ export function ExamRunner({
   focusArea?: string;
 }) {
   const baseModeKey = sittingMode || mode;
-  const modeKey = (stateCode === "CT" || isFreeState(stateCode)) && preset
+  const dailySet = Boolean(practice && preset && sittingMode?.startsWith("daily-"));
+  const modeKey = !dailySet && (stateCode === "CT" || isFreeState(stateCode)) && preset
     ? `${baseModeKey}:${preset.map(question => question.question_id).join(",")}`
     : baseModeKey;
   const cloudSaved = useRef(false);
@@ -166,6 +167,9 @@ export function ExamRunner({
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   function drawQuestionIds(seed: number, inBank?: Question[]) {
+    if (dailySet && preset) {
+      return preset.filter(item => item.state === stateCode).map(item => item.question_id);
+    }
     if (stateCode === "IN" && preset?.length) return preset.filter(item => item.state === "IN" && (item.is_free || isPro)).map(item => item.question_id);
     if (stateCode === "CT" && preset && mode !== "full") {
       return preset.filter(item => item.state === "CT" && (item.is_free || isPro)).map(item => item.question_id);
@@ -313,6 +317,11 @@ export function ExamRunner({
         const params = new URLSearchParams(window.location.search);
         const startFresh = params.get("start") === "1";
         let existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
+        const savedQuestionIds = existing?.questionIds;
+        if (dailySet && savedQuestionIds && preset && (savedQuestionIds.length !== preset.length ||
+          preset.some(question => !savedQuestionIds.includes(question.question_id)))) {
+          existing = null;
+        }
         if (startFresh && existing?.done) {
           clearSitting(sessionStorage, nextOwner, modeKey, stateCode);
           existing = null;

@@ -21,12 +21,12 @@ function hasSeenUpdate(userId: string) {
 export function SiteAnnouncements({ userId, pathname }: { userId: string | null; pathname: string }) {
   const [dialog, setDialog] = useState<{ userId: string | null } | null>(null);
   const seenInPage = useRef(new Set<string>());
-  const isPracticePage = /(?:\/practice(?:-test)?|-practice-test)\/?$/.test(pathname);
+  const isLearningPage = /(?:\/practice(?:-test)?|-practice-test|\/daily-study)\/?$/.test(pathname);
 
   useEffect(() => {
-    if (!userId || isPracticePage || seenInPage.current.has(userId) || hasSeenUpdate(userId)) return;
+    if (!userId || isLearningPage || seenInPage.current.has(userId) || hasSeenUpdate(userId)) return;
     setDialog({ userId });
-  }, [isPracticePage, pathname, userId]);
+  }, [isLearningPage, pathname, userId]);
 
   function dismiss() {
     if (userId) {
