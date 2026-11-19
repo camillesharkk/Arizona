@@ -892,6 +892,135 @@ export const serverQuestionEdits: Readonly<Partial<Record<string, QuestionEdit>>
       "last_verified_at": "2026-11-19"
     }
   },
+  "me-187": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Maine notary uses an approved platform for a remote act involving an electronic record. What fact must the notary reasonably confirm about the file before completing the act?",
+      "option_a": "That the file name includes the notary’s commission number",
+      "option_b": "That the signer has saved a separate unsigned version",
+      "option_c": "That the record before the notary is the same record the signer signed",
+      "option_d": "That the file was created on the date of the remote session",
+      "correct_option": "C",
+      "explanation": "Maine requires the notary to reasonably confirm that the record before them is the same one the remote signer signed. File names, other copies, and the file creation date cannot establish that by themselves.",
+      "option_feedback": {
+        "A": "The filename does not establish which record was signed.",
+        "B": "A separate unsigned version does not identify the signed record.",
+        "C": "Correct. Confirm that the record before you is the one the signer signed.",
+        "D": "The law does not require the record to have been created on the date of the session."
+      },
+      "source_reference": "4 M.R.S. § 1915(3)(B), p. 9 https://legislature.maine.gov/statutes/4/title4ch39.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "me-196": {
+    "version": 1,
+    "replacementId": "me-204",
+    "fields": {
+      "question_text": "A Maine notary is setting up the official electronic stamp for approved remote notarizations on electronic records. Which detail must the stamp include?",
+      "option_a": "The signer’s county of residence",
+      "option_b": "The technology provider’s mailing address",
+      "option_c": "The notary’s appointment date",
+      "option_d": "The notary’s commission expiration date",
+      "correct_option": "D",
+      "explanation": "Maine’s official stamp must include the notary’s name as it appears on the commission, the words “Notary Public” and “State of Maine” or “Maine,” and the commission expiration date. It must also be capable of being copied with the associated record.",
+      "option_feedback": {
+        "A": "The signer’s county of residence is not a required stamp element.",
+        "B": "The provider’s mailing address is not a required stamp element.",
+        "C": "The appointment date and the expiration date are different. Maine requires the expiration date on the stamp.",
+        "D": "Correct. The official stamp must show the commission expiration date."
+      },
+      "source_reference": "4 M.R.S. § 1918(1)–(2), p. 16; Maine Chapter 700, § 7, p. 24 https://legislature.maine.gov/statutes/4/title4ch39.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "me-067": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "For an ordinary in-person paper act, what does the official course say about using a stamp?",
+      "option_a": "Always prohibited",
+      "option_b": "Always required by the journal statute",
+      "option_c": "It replaces the certificate",
+      "option_d": "Optional under this rule, with use strongly suggested unless prohibited",
+      "correct_option": "D",
+      "explanation": "For an ordinary in-person notarization on paper, Maine law permits an official stamp, and the Secretary of State recommends using one unless its use is prohibited. The notarial certificate is required whether or not the notary uses a stamp.",
+      "option_feedback": {
+        "A": "The Secretary of State recommends stamp use for this paper act unless its use is prohibited.",
+        "B": "The journal statute does not require a stamp for this paper act.",
+        "C": "A stamp does not replace the notarial certificate.",
+        "D": "Correct. A stamp is optional for this ordinary in-person paper act, while the certificate is required."
+      },
+      "source_reference": "4 M.R.S. § 1916(1)–(2); Maine Secretary of State notary FAQ, Q23 https://legislature.maine.gov/statutes/4/title4ch39.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "md-102": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Maryland court adjudicates a former notary incompetent. The former notary’s guardian knowingly has the notarial journal. What does Maryland law require the guardian to do?",
+      "option_a": "Discard the journal after the former notary’s last appointment.",
+      "option_b": "Sell the journal with the former notary’s office equipment.",
+      "option_c": "Make the journal’s entries publicly available.",
+      "option_d": "Send it to a repository approved by the Secretary of State, or store it as required or approved by regulation.",
+      "correct_option": "D",
+      "explanation": "After the death or adjudication of incompetency of a current or former Maryland notary, a personal representative, guardian, or other person who knowingly possesses the journal must transfer it to a repository approved by the Secretary of State or store it under the Secretary’s regulations.",
+      "option_feedback": {
+        "A": "The statute requires an authorized disposition of the journal.",
+        "B": "Selling the journal with equipment does not satisfy either statutory route.",
+        "C": "The statute calls for approved transfer or storage, not public posting.",
+        "D": "These are the two disposition routes the statute provides."
+      },
+      "source_id": "md-journal",
+      "source_reference": "Maryland State Government § 18-219(g)(1)–(2). https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&enactments=false&section=18-219",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "md-137": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "How do Maryland’s general electronic-record stamp provision and its rule for a Maryland notary public fit together?",
+      "option_a": "The general provision requires every notarial officer to use an official stamp on every electronic record.",
+      "option_b": "Maryland bars official stamps on electronic records.",
+      "option_c": "The general provision permits an official stamp. A Maryland notary public must associate the official stamp and electronic signature with the electronic record using a qualifying digital certificate.",
+      "option_d": "A Maryland notary public can omit both the electronic signature and official stamp if the signer consents.",
+      "correct_option": "C",
+      "explanation": "Section 18-215(b)(3) permits a notarial officer to attach or logically associate an official stamp with an electronic-record certificate. Section 18-223(f)(1) specifically requires a Maryland notary public to attach or logically associate both the official stamp and electronic signature with the electronic record using a qualifying digital certificate.",
+      "option_feedback": {
+        "A": "The general provision permits use of a stamp. The mandatory requirement cited here applies to a notary public under §18-223(f)(1).",
+        "B": "Maryland permits electronic official stamps and sets standards for their use by a notary public.",
+        "C": "This applies both provisions and accounts for the rule specific to a Maryland notary public.",
+        "D": "Signer consent does not waive the electronic signature and official stamp requirements."
+      },
+      "source_id": "md-electronic",
+      "source_reference": "Maryland State Government §§ 18-215(b)(3), 18-223(f)(1). https://mgaleg.maryland.gov/2026RS/Statute_Web/gsg/18-215.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-003": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A former New Jersey notary who is not licensed as an attorney in New Jersey let her commission expire 45 days ago. Which application path does the state’s exam portal direct her to follow?",
+      "option_a": "Renew automatically without taking the exam",
+      "option_b": "Wait for the expired commission to become active again",
+      "option_c": "Replace her stamp before continuing under the old commission",
+      "option_d": "Apply as a new applicant and take the notary exam",
+      "correct_option": "D",
+      "explanation": "The New Jersey exam portal treats a commission that expired more than 30 days ago as a new application. Because this applicant is not a New Jersey-licensed attorney, she must take the state notary exam as part of that process.",
+      "option_feedback": {
+        "A": "A 45-day lapse is beyond the exam portal’s 30-day threshold for the renewal route.",
+        "B": "An expired commission does not automatically become active again.",
+        "C": "Replacing a stamp does not restore a commission.",
+        "D": "Correct. Follow the new-applicant route and complete the required examination."
+      },
+      "source_id": "nj-portal",
+      "source_reference": "New Jersey DORES Notary Public Exam portal, expiration guidance; N.J.S.A. 52:7-10.3(a)–(b) https://www.njportal.com/DOR/NotaryExam/",
+      "last_verified_at": "2026-11-19"
+    }
+  },
   "il-157": {
     "version": 2,
     "previousReviewedDate": "2026-11-14",

@@ -1613,6 +1613,15 @@ export const fullStateSources: Record<string, Source> = {
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
   },
+  "nj-education-report-2026": {
+    "source_id": "nj-education-report-2026",
+    "source_type": "SOS",
+    "title": "New Jersey FY2026 Notary Education Report",
+    "reference": "p. 4, September 14 manual revision and September 24 official examination question update",
+    "url": "https://www.nj.gov/treasury/revenue/pdf/2026NotaryPublicEdcuationProgramReport.pdf#page=4",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
   "nj-law-2021": {
     "source_id": "nj-law-2021",
     "source_type": "SOS",

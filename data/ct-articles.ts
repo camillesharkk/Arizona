@@ -55,10 +55,13 @@ const guides: Guide[] = [
   ]],
 ];
 
+const revisedGuides = new Set(['in-person-identity', 'copies-and-records', 'journal-and-seal', 'maintaining-appointment']);
+
 export const ctArticles: StateArticle[] = guides.map(([slug, title, lede, sections]) => ({
   id: `ct-guide-${slug}`, state: 'CT', slug, path: `/connecticut/guides/${slug}/`, keyword: title,
   intent: lede, title, description: lede, h1: title, kicker: 'Connecticut handbook practice', lede,
-  checked: `Official sources checked ${CT_CHECKED_ON}. Manual Rev. 2026-1.`, updated: CT_CHECKED_ON,
+  checked: `Official sources checked ${revisedGuides.has(slug) ? '2026-11-19' : CT_CHECKED_ON}. Manual Rev. 2026-1.`,
+  updated: revisedGuides.has(slug) ? '2026-11-19' : CT_CHECKED_ON,
   ledeCta: { href: `${ctPaths.practice}?mode=quick`, label: 'Practice With the Handbook', placement: 'lede', targetMode: 'quick' },
   sections: sections.map(([heading, body, reference]) => ({ heading, body, link: { href: slug === 'current-fees' ? ctSources.feeAct : ctSources.manual, label: reference, placement: 'section', targetMode: 'official' } })),
   endCta: { href: ctPaths.studyCards, label: 'Review Connecticut Rule Cards', placement: 'end', targetMode: 'guide' },

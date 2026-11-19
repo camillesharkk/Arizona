@@ -4810,7 +4810,7 @@
         },
         {
           "heading": "Application and verified limits",
-          "body": "Applications are electronic, endorsed by a member of the Legislature and subject to the stated twenty-five-dollar nonrefundable commission fee. The 2026 manual omits the course-hour figures in the older 2022 announcement. That difference is preserved here without inventing a reconciled duration. Current ordinary exam count, duration and numerical passing threshold remain unconfirmed in the opened official materials. Use the actual official approval and complete the county oath process."
+          "body": "Applications are electronic, endorsed by a member of the Legislature and subject to a $25 nonrefundable commission fee. The state’s FY2026 Notary Education Report records a new set of official exam questions on September 24, 2026. It also records a September 14 manual revision for renewal education. Use the state portal for the exam and follow the current manual for training. The public sources reviewed do not establish the exam’s item count, timer or numerical passing threshold."
         }
       ],
       "example": {
@@ -4852,7 +4852,7 @@
       "sections": [
         {
           "heading": "Active renewal and a longer lapse",
-          "body": "The official portal states that active notaries renewing need not take the exam. It treats expiration more than thirty days earlier as a new application requiring the examination. That classification does not state an extension of the old authority. The manual separately requires continuing education for its specified renewal category, including the described prior-course or pre-law appointees. Follow the current portal and education instructions together."
+          "body": "The state portal directs notaries whose commissions expired more than 30 days ago to the new-applicant route. New Jersey-licensed attorneys are exempt from the initial exam. An active renewal does not require retaking that exam. The current manual separately identifies which nonattorney renewers must complete continuing education."
         },
         {
           "heading": "Qualification and historical records",
@@ -4861,11 +4861,11 @@
       ],
       "example": {
         "heading": "Worked example",
-        "body": "A former notary discovers the commission has been expired more than thirty days. The person follows the portal's new-applicant examination route and stops treating the old stamp as authority. Historical journals remain subject to their retention or transfer requirements while the new appointment process is completed."
+        "body": "A former nonattorney notary discovers that the commission expired more than 30 days ago. The notary uses the new-application exam route and waits for the new commission before acting. The existing journal remains subject to retention and transfer rules."
       },
       "keyFacts": [
         "Active renewal has the portal's no-exam instruction.",
-        "A lapse over thirty days triggers stated new-applicant exam treatment.",
+        "A lapse over 30 days triggers the new-application route. The initial exam requirement applies to nonattorney applicants.",
         "The current manual requires applicable continuing education.",
         "Records duties continue after current service ends."
       ]
@@ -5515,6 +5515,13 @@
     }
   ],
   "sources": [
+    {
+      "id": "nj-education-report-2026",
+      "title": "New Jersey FY2026 Notary Education Report",
+      "url": "https://www.nj.gov/treasury/revenue/pdf/2026NotaryPublicEdcuationProgramReport.pdf#page=4",
+      "reference": "p. 4, September 14 manual revision and September 24 official examination question update",
+      "checkedAt": "2026-11-19"
+    },
     {
       "id": "nj-law-2021",
       "title": "New Jersey Legislature — P.L. 2021, c.179, corrected copy",

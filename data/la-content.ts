@@ -1,6 +1,9 @@
 import type { Difficulty, Question, TopicId } from "@/lib/types";
 import { shuffle } from "../lib/answer-sequence.ts";
 import { laScenarioRows } from "./la-scenarios.ts";
+import { publishQuestionEdits } from "../lib/question-version.ts";
+import { questionReviewDate } from "./question-review-dates.ts";
+import { laQuestionEdits } from "./question-edits-la.ts";
 export { laCards } from "./la-cards.ts";
 
 export const LA_CHECKED = "2026-11-12";
@@ -79,14 +82,14 @@ const rows: Row[] = [
 
 const letters = ["A", "B", "C", "D"] as const;
 export function publishedLaQuestions(): Question[] {
-  return [...rows, ...laScenarioRows].map((row) => ({
+  return publishQuestionEdits([...rows, ...laScenarioRows].map((row) => ({
     question_id: row.id, state: "LA" as const, study_topic: row.study, topic: row.topic, difficulty: row.difficulty,
     question_text: row.text, option_a: row.options[0], option_b: row.options[1], option_c: row.options[2], option_d: row.options[3],
     correct_option: letters[row.correct], explanation: row.why,
     option_feedback: { A: row.miss[0], B: row.miss[1], C: row.miss[2], D: row.miss[3] },
     source_id: "la-official", source_reference: row.source, scenario_id: row.scenario_id, scenario_text: row.scenario_text,
-    effective_from: row.id <= "la-008" ? "2026-01-01" : "2026-11-12", effective_to: null, last_verified_at: LA_CHECKED, version: 1, is_free: row.free, status: "published" as const,
-  }));
+    effective_from: row.id <= "la-008" ? "2026-01-01" : "2026-11-12", effective_to: null, last_verified_at: questionReviewDate(row.id, LA_CHECKED), version: 1, is_free: row.free, status: "published" as const,
+  })), laQuestionEdits);
 }
 
 /** Site-designed 40-item comprehensive practice. All items are scored.

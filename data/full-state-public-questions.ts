@@ -5725,7 +5725,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1907(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5753,7 +5753,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1907(2)(A)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5781,7 +5781,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1907(2)(B)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5809,7 +5809,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1907(2)(B)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5837,7 +5837,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1907(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5865,7 +5865,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Slides 17,21",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5893,7 +5893,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1907(1)-(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5921,7 +5921,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1909",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5949,7 +5949,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1909",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5977,7 +5977,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1905(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6005,7 +6005,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Slides 17,29–30",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6033,7 +6033,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Slides 17,29",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6061,7 +6061,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Slide 29",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6089,7 +6089,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1905(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6117,7 +6117,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1905(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6145,7 +6145,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Slide 29",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6173,7 +6173,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Slide 29",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6201,7 +6201,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1920(1); FAQ Q10",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6229,7 +6229,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1920(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6257,7 +6257,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1920(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6285,7 +6285,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1920(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6313,7 +6313,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1920(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6341,7 +6341,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1920(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6369,7 +6369,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1920(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6397,7 +6397,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1920(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6425,7 +6425,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1904(3)(A)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6453,7 +6453,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1904(3)(B)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6481,7 +6481,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1904(3)(A)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6509,7 +6509,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1904(3)(B)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6537,7 +6537,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1904(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6565,7 +6565,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1904(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6593,7 +6593,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1904(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6621,7 +6621,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1904(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6649,7 +6649,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q13–14",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6677,7 +6677,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q15",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6705,7 +6705,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q14",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6733,7 +6733,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q16",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6761,7 +6761,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q17",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6789,7 +6789,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1915(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6817,7 +6817,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1915(2)-(3); FAQ Q11",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6845,7 +6845,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1915(3)(D)(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6875,7 +6875,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "New applicant course and examination certificates",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6903,7 +6903,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "How to Renew, step 2",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6931,7 +6931,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Renewal Application Process, step 8",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6959,7 +6959,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Can I be commissioned in the county where I work?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -6987,7 +6987,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-203(b)(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7015,7 +7015,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-206(b)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7043,7 +7043,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-219(c)(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7071,7 +7071,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-219(a), (f)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7099,7 +7099,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Fee notice effective January 22, 2024",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7127,7 +7127,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Process to become authorized, steps 1–4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7155,7 +7155,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-102(a)(4)(i)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7183,7 +7183,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-102(a)(4)(ii); renewal instructions",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7211,7 +7211,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".16E-F",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7239,7 +7239,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".15E",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7267,7 +7267,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".16F-G",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7295,7 +7295,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".16E",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7323,7 +7323,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".15E",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7351,7 +7351,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".16I",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7379,7 +7379,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Education certificate instructions",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7407,7 +7407,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-206(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7435,7 +7435,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-206(b)(1)(i)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7463,7 +7463,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-206(b)(1)(ii)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7491,7 +7491,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-206(b)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7519,7 +7519,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-206(b)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7547,7 +7547,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-206(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7575,7 +7575,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-205",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7603,7 +7603,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-205(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7631,7 +7631,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-208(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7659,7 +7659,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-219(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7687,7 +7687,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-219(a),(c)(2)(iv)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7715,7 +7715,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-219(c)(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7743,7 +7743,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-219(b)(3)(i)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7771,7 +7771,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-219(b)(3)(ii)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7799,7 +7799,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-219(b)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7827,7 +7827,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-219(b)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7855,7 +7855,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-219(c)(2)(i)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7883,7 +7883,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".02A(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7911,7 +7911,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".02A(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7939,7 +7939,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".02B",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7967,7 +7967,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".02C",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -7995,7 +7995,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".02E",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8023,7 +8023,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".02D",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8051,7 +8051,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".02D",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8079,7 +8079,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".02B",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8107,7 +8107,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-203(b)(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8135,7 +8135,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-203(b)(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8163,7 +8163,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Family notarization FAQ",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8191,7 +8191,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-203(b)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8219,7 +8219,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Named in the document FAQ",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8247,7 +8247,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "I-9 FAQ",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8275,7 +8275,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-104(a)(1)(vi)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8303,7 +8303,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§18-104(a)(1)(ii)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8331,7 +8331,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Remote authorization process",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8359,7 +8359,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Remote notification categories",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8387,7 +8387,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Incomplete or unauthorized-vendor notice",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8415,7 +8415,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".07A(2)(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8443,7 +8443,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".07A(2)(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8471,7 +8471,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".07B",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8499,7 +8499,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".07C",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -8527,7 +8527,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": ".07D",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -15285,7 +15285,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "New Notary Applicant Process, steps 1–4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -15313,7 +15313,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "New Notary Applicant Process — attorney instruction",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -15324,27 +15324,57 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "topic": "commission",
       "study_topic": "lapsed-commission",
       "difficulty": "medium",
-      "question_text": "A former New Jersey notary’s commission expired 45 days ago. What does the examination portal require for this lapse?",
-      "option_a": "Automatic renewal without examination",
-      "option_b": "Permanent ineligibility",
-      "option_c": "Only replacement of the stamp",
-      "option_d": "Treatment as a new applicant with an exam",
+      "question_text": "A former New Jersey notary who is not licensed as an attorney in New Jersey let her commission expire 45 days ago. Which application path does the state’s exam portal direct her to follow?",
+      "option_a": "Renew automatically without taking the exam",
+      "option_b": "Wait for the expired commission to become active again",
+      "option_c": "Replace her stamp before continuing under the old commission",
+      "option_d": "Apply as a new applicant and take the notary exam",
       "correct_option": "D",
-      "explanation": "The portal applies new-applicant examination treatment after more than 30 days.",
+      "explanation": "The New Jersey exam portal treats a commission that expired more than 30 days ago as a new application. Because this applicant is not a New Jersey-licensed attorney, she must take the state notary exam as part of that process.",
       "option_feedback": {
-        "A": "This lapse exceeds the portal’s limit.",
-        "B": "The portal specifies a new-application path.",
-        "C": "A stamp does not renew authority.",
-        "D": "Correct. Forty-five days exceeds 30."
+        "A": "A 45-day lapse is beyond the exam portal’s 30-day threshold for the renewal route.",
+        "B": "An expired commission does not automatically become active again.",
+        "C": "Replacing a stamp does not restore a commission.",
+        "D": "Correct. Follow the new-applicant route and complete the required examination."
       },
       "source_id": "nj-portal",
-      "source_reference": "Expired commissions — more than 30 days",
+      "source_reference": "New Jersey DORES Notary Public Exam portal, expiration guidance; N.J.S.A. 52:7-10.3(a)–(b) https://www.njportal.com/DOR/NotaryExam/",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
-      "version": 1,
+      "last_verified_at": "2026-11-19",
+      "version": 2,
       "is_free": true,
-      "status": "published"
+      "status": "published",
+      "previous_versions": [
+        {
+          "question_id": "nj-003",
+          "state": "NJ",
+          "topic": "commission",
+          "study_topic": "lapsed-commission",
+          "difficulty": "medium",
+          "question_text": "A former New Jersey notary’s commission expired 45 days ago. What does the examination portal require for this lapse?",
+          "option_a": "Automatic renewal without examination",
+          "option_b": "Permanent ineligibility",
+          "option_c": "Only replacement of the stamp",
+          "option_d": "Treatment as a new applicant with an exam",
+          "correct_option": "D",
+          "explanation": "The portal applies new-applicant examination treatment after more than 30 days.",
+          "option_feedback": {
+            "A": "This lapse exceeds the portal’s limit.",
+            "B": "The portal specifies a new-application path.",
+            "C": "A stamp does not renew authority.",
+            "D": "Correct. Forty-five days exceeds 30."
+          },
+          "source_id": "nj-portal",
+          "source_reference": "Expired commissions — more than 30 days",
+          "effective_from": "2026-11-14",
+          "effective_to": null,
+          "last_verified_at": "2026-11-14",
+          "version": 1,
+          "is_free": true,
+          "status": "published"
+        }
+      ]
     },
     {
       "question_id": "nj-004",
@@ -15369,7 +15399,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Chapter 4 — Swearing in",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -15397,7 +15427,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Chapter 3 — Prohibitions",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -15425,7 +15455,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Chapter 7 — Documentation",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -15453,7 +15483,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Chapter 6 — Journal Requirement",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -15481,7 +15511,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Chapter 6 — In-lieu-of-journal exception",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -15509,7 +15539,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Chapter 8 — prior electronic notification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -15537,7 +15567,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Chapter 7 — Copy Certification Requirements",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -16573,7 +16603,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Attorney step instruction",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -16601,7 +16631,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "2026 Manual, Chapter 4, Legislative endorsement and application",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -16685,7 +16715,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Active renewal",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -16713,7 +16743,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "2026 Manual, Chapter 4, Continuing education",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -16769,7 +16799,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Lapse over thirty days",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"

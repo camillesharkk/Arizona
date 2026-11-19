@@ -457,7 +457,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Establish eligibility and examination completion",
-          "body": "Applicants are at least 18, can read and write English and have Maine residence or a place of employment or practice in Maine. They must meet the statutory disqualification and examination requirements. Section 1923 requires the examination for an applicant without a current Maine commission and provides a course covering laws, rules, procedures and ethics. Current first-examination count, duration and percentage were not verified."
+          "body": "Applicants are at least 18, can read and write English, and have Maine residence or qualifying employment or practice. Section 1923 establishes the examination requirement. The published paper application includes an initial exam. Its question structure does not describe the separate online renewal exam."
         },
         {
           "heading": "Finish appointment and track renewal",
@@ -477,7 +477,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         "The commission term is seven years.",
         "Track the 30-day oath and 45-day certificate-return deadlines separately.",
         "Online renewal payment is followed by printed original-document and oath steps.",
-        "Current first-exam count, clock and passing percentage remain unverified."
+        "Use the published form for initial applicants. Follow the separate online renewal instructions when renewing."
       ]
     },
     "identification": {
@@ -601,11 +601,11 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Preserve the same record and required recording",
-          "body": "The officer reasonably confirms the record is the same one signed or used for the statement and creates the audiovisual recording. The certificate indicates communication technology. The statute provides an at-least-ten-year recording default subject to authorized rules. It contains a specific tangible-record declaration method with signing during the recording, transmission within four days, certificate after receipt and the statutory declaration-date effectiveness."
+          "body": "The officer reasonably confirms that the record is the same one signed or used for the statement and creates the audiovisual recording. The certificate indicates communication technology. For an acknowledgment of a tangible record that is outside the officer’s possession, Chapter 700 describes use of the statutory declaration method. It includes signing during the recording, transmission within four days and certification after receipt."
         },
         {
           "heading": "Recognize exclusions and continuing obligations",
-          "body": "The statute excludes the listed absentee-ballot, candidate, candidate-circulator and initiative/people's-veto acts remotely, and expressly prohibits remote marriage solemnization. Electronic and remote acts require the stamp and journal described by official guidance. Report provider changes within ten business days. The officer selects qualifying tamper-evident technology and cannot be compelled to use a system not selected."
+          "body": "Maine bars remote marriage solemnization and the specified election-related acts. Keep the required journal and report provider changes within ten business days. The statute requires an official stamp for an electronic-record act. For a tangible record the statute permits a stamp, while the remote FAQ describes it as required. Check the current Secretary of State instructions for that procedure."
         }
       ],
       "example": {
@@ -691,7 +691,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Retain and locate records after office",
-          "body": "Retention runs ten years after the journal's last act. Promptly report loss or theft. On resignation, revocation or suspension, retain and inform the Secretary of location, subject to transfer to an approved repository or approved regulatory storage. The representative, guardian or knowing possessor follows the statutory disposition after death or incompetency. Actual approval of the storage route matters."
+          "body": "Retention runs ten years after the journal's last act. Promptly report loss or theft. On resignation, revocation or suspension, retain the journal and tell the Secretary where it is held, or use an approved repository or regulatory storage. After death or adjudication of incompetency, the responsible person follows the statutory journal disposition."
         }
       ],
       "example": {
@@ -719,7 +719,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Protect the device through its lifecycle",
-          "body": "The notary remains responsible for security and cannot allow another person's use. Employer payment does not transfer the stamp's personal ownership or custody. On the statutory resignation, revocation and expiration events, disable the device so it is unusable. Promptly notify the Secretary after loss or theft. The responsible possessor has disabling duties following death or incompetency."
+          "body": "The notary keeps the stamp under personal control even when the employer pays. On the statutory resignation, revocation and expiration events, disable the device so it is unusable. Promptly notify the Secretary after loss or theft. The responsible person has disabling duties after death or adjudication of incompetency."
         }
       ],
       "example": {
@@ -767,7 +767,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Authorize the intended route",
-          "body": "The online form permits selecting electronic-record RON using an authorized vendor and/or other-technology remote acts. The route without credential analysis/identity proofing requires the personal-knowledge or qualifying credible-witness foundation in COMAR.07 A(3). For the documentary route, §18-214 combines credential presentation, analysis and identity proofing. Vendor changes have ten-business-day notice;renewal requires a new remote notification."
+          "body": "The online form identifies the authorized vendor or the applicable other technology. Under COMAR 01.02.08.07, a route without credential analysis and identity proofing requires personal knowledge or a qualifying credible witness. A documentary route uses presentation, analysis and identity proofing. Notify the Secretary of State in writing within ten business days of switching to a new authorized vendor and submit a new remote notification on renewal."
         },
         {
           "heading": "Control the session and location",
@@ -1629,7 +1629,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Application and verified limits",
-          "body": "Applications are electronic, endorsed by a member of the Legislature and subject to the stated twenty-five-dollar nonrefundable commission fee. The 2026 manual omits the course-hour figures in the older 2022 announcement. That difference is preserved here without inventing a reconciled duration. Current ordinary exam count, duration and numerical passing threshold remain unconfirmed in the opened official materials. Use the actual official approval and complete the county oath process."
+          "body": "Applications are electronic, endorsed by a member of the Legislature and subject to a $25 nonrefundable commission fee. The state’s FY2026 Notary Education Report records a new set of official exam questions on September 24, 2026. It also records a September 14 manual revision for renewal education. Use the state portal for the exam and follow the current manual for training. The public sources reviewed do not establish the exam’s item count, timer or numerical passing threshold."
         }
       ],
       "example": {
@@ -1671,7 +1671,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Active renewal and a longer lapse",
-          "body": "The official portal states that active notaries renewing need not take the exam. It treats expiration more than thirty days earlier as a new application requiring the examination. That classification does not state an extension of the old authority. The manual separately requires continuing education for its specified renewal category, including the described prior-course or pre-law appointees. Follow the current portal and education instructions together."
+          "body": "The state portal directs notaries whose commissions expired more than 30 days ago to the new-applicant route. New Jersey-licensed attorneys are exempt from the initial exam. An active renewal does not require retaking that exam. The current manual separately identifies which nonattorney renewers must complete continuing education."
         },
         {
           "heading": "Qualification and historical records",
@@ -1680,11 +1680,11 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       ],
       "example": {
         "heading": "Worked example",
-        "body": "A former notary discovers the commission has been expired more than thirty days. The person follows the portal's new-applicant examination route and stops treating the old stamp as authority. Historical journals remain subject to their retention or transfer requirements while the new appointment process is completed."
+        "body": "A former nonattorney notary discovers that the commission expired more than 30 days ago. The notary uses the new-application exam route and waits for the new commission before acting. The existing journal remains subject to retention and transfer rules."
       },
       "keyFacts": [
         "Active renewal has the portal's no-exam instruction.",
-        "A lapse over thirty days triggers stated new-applicant exam treatment.",
+        "A lapse over 30 days triggers the new-application route. The initial exam requirement applies to nonattorney applicants.",
         "The current manual requires applicable continuing education.",
         "Records duties continue after current service ends."
       ]

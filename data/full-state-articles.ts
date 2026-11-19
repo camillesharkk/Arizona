@@ -480,6 +480,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "arkansas-reasonable-notary-fees",
+      "updated": "2026-11-19",
       "keyword": "Arkansas notary reasonable fees",
       "intent": "Apply reasonableness, disclosure and agreement in service pricing",
       "title": "Agree on Arkansas notarial fees before the act",
@@ -529,7 +530,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "AR",
       "path": "/arkansas/guides/arkansas-reasonable-notary-fees/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/arkansas/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -1194,6 +1194,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "colorado-certificate-date-and-corrections",
+      "updated": "2026-11-19",
       "keyword": "Colorado notary certificate correction date",
       "intent": "Complete actual dates and apply the proper correction roles",
       "title": "Correct the Colorado certificate you actually performed",
@@ -1253,7 +1254,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "CO",
       "path": "/colorado/guides/colorado-certificate-date-and-corrections/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/colorado/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -1720,6 +1720,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
   "IL": [
     {
       "slug": "law-firm-journal-exception",
+      "updated": "2026-11-19",
       "keyword": "Illinois law firm notary journal exception",
       "intent": "Understand the employment journal exception",
       "title": "Illinois Law-Firm Journals and Retained Document Copies",
@@ -1779,7 +1780,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "IL",
       "path": "/illinois/guides/law-firm-journal-exception/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/illinois/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -2780,6 +2780,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "remote-tangible-declaration-method",
+      "updated": "2026-11-19",
       "keyword": "Maine remote notarization tangible record declaration",
       "intent": "Follow the statutory absent-paper-record method",
       "title": "Connecting a Maine Remote Tangible Record",
@@ -2802,7 +2803,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Keep this method within its statutory scope",
-          "body": "Subsection 7 preserves another procedure that satisfies subsection 3(B)'s same-record requirement. The declaration method therefore should not be described as the only conceivable procedure. Any alternative still needs to satisfy the applicable law and approval standards. The officer also needs identity evidence, an audiovisual recording, the required journal and technology notation, and must check the excluded remote acts before using any remote paper workflow."
+          "body": "Subsection 7 preserves other procedures satisfying the same-record requirement. Chapter 700 specifically instructs use of the declaration method for a remote acknowledgment when the paper is outside the officer’s possession. Follow the rule for that scenario. Identity evidence, the audiovisual recording and the required journal and certificate details still apply."
         },
         {
           "heading": "Maine Revised Statutes, Title 4 §1915",
@@ -2839,7 +2840,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "ME",
       "path": "/maine/guides/remote-tangible-declaration-method/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/maine/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -3344,6 +3344,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "certificate-facts-and-paper-stamp",
+      "updated": "2026-11-19",
       "keyword": "Maine notarial certificate stamp optional paper",
       "intent": "Keep certificate duties distinct from stamp guidance",
       "title": "Maine Paper Certificates Need More Than a Stamp",
@@ -3366,7 +3367,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Apply the stamp guidance to the right category",
-          "body": "The official course and FAQ make stamp use optional for ordinary in-person paper acts while strongly suggesting it unless prohibited. They require stamps for electronic and remote acts. A kept official stamp contains the specified commissioned name, Maine jurisdiction and expiration information and is reproducible with the record. The stamp's presence does not prove that appearance, identity or the verbal ceremony actually occurred, and it does not replace the officer's certificate."
+          "body": "Maine law requires an official stamp for an electronic-record act and permits a stamp on a tangible record. The Secretary of State’s FAQ gives stricter stamp instructions for remote acts. An official stamp includes the commissioned name, Maine jurisdiction and expiration information. Complete the required appearance, identification and certificate for the act."
         },
         {
           "heading": "Maine Revised Statutes, Title 4 §1916",
@@ -3423,7 +3424,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "ME",
       "path": "/maine/guides/certificate-facts-and-paper-stamp/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/maine/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -3453,6 +3453,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "electronic-format-versus-remote-presence",
+      "updated": "2026-11-19",
       "keyword": "Maine electronic notarization versus remote appearance",
       "intent": "Classify format and location correctly",
       "title": "Electronic Records and Remote Presence in Maine",
@@ -3463,7 +3464,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Classify the appointment before selecting tools",
-          "body": "The FAQ describes in-person electronic notarization using an electronic record and signature while the signer is physically with the officer. It describes remote notarization using an approved technology provider for simultaneous sight-and-sound communication with a distant signer. A keypad used at the officer's desk does not itself make the transaction remote. A distant person's paper instrument can still create remote duties, including the journal and stamp requirements in the official guidance."
+          "body": "In-person electronic notarization uses an electronic record with the signer physically present. A remote act uses approved technology for simultaneous sight and sound and carries its own journal obligations, even for a tangible record. Section 1916 requires an official stamp for electronic records. For tangible records it permits a stamp, while the remote FAQ gives stricter instructions."
         },
         {
           "heading": "Finish the approval process first",
@@ -3522,7 +3523,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "ME",
       "path": "/maine/guides/electronic-format-versus-remote-presence/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/maine/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -11981,6 +11981,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "utah-credible-individuals-and-remote-identity",
+      "updated": "2026-11-19",
       "keyword": "Using a credible individual in Utah",
       "intent": "Resolve Utah workplace notarization situations",
       "title": "Using a credible individual in Utah",
@@ -12030,7 +12031,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "UT",
       "path": "/utah/guides/utah-credible-individuals-and-remote-identity/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/utah/practice/?mode=quick",
         "label": "Start Free Quick 10",

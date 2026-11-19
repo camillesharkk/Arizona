@@ -4761,7 +4761,7 @@
       "title": "Absent tangible declaration method",
       "front": "How does the statutory paper declaration procedure connect the records?",
       "rule": "The principal signs the record and attached/integrated declaration during recording, sends both within four days, and the officer completes the stated certificate after receipt.",
-      "boundary": "A compliant act is effective on the declaration-signing date. The statute preserves other qualifying same-record procedures.",
+      "boundary": "A compliant act is effective on the declaration-signing date. Section 1915(7) preserves other qualifying same-record procedures. For a remote acknowledgment where the paper is outside the officer’s possession, Chapter 700 specifically describes the declaration method.",
       "mixup": "This defined method should not be reduced to emailing a signature page.",
       "source": "Maine Revised Statutes, Title 4 §1915 — §1915(5)-(7)",
       "sourceUrl": "https://legislature.maine.gov/statutes/4/title4sec1915.html"
@@ -4794,7 +4794,7 @@
       "title": "Electronic presence distinction",
       "front": "How do format and physical distance differ?",
       "rule": "The FAQ's in-person electronic procedure uses electronic records/signatures with the signer present. Remote work uses approved simultaneous sight-and-sound communication.",
-      "boundary": "The official guidance requires stamps and journals for electronic and remote acts.",
+      "boundary": "The statute requires a stamp for an electronic-record act. For a tangible record, the statute permits a stamp while the remote FAQ gives stricter guidance. Check the record format and the current official instructions.",
       "mixup": "An electronic record is not automatically a remote transaction.",
       "source": "Maine Secretary of State notary FAQs — Q10–14,Q23",
       "sourceUrl": "https://www.maine.gov/sos/cec/notary/faqnp.pdf"
@@ -4806,7 +4806,7 @@
       "sections": [
         {
           "heading": "Establish eligibility and examination completion",
-          "body": "Applicants are at least 18, can read and write English and have Maine residence or a place of employment or practice in Maine. They must meet the statutory disqualification and examination requirements. Section 1923 requires the examination for an applicant without a current Maine commission and provides a course covering laws, rules, procedures and ethics. Current first-examination count, duration and percentage were not verified."
+          "body": "Applicants are at least 18, can read and write English, and have Maine residence or qualifying employment or practice. Section 1923 establishes the examination requirement. The published paper application includes an initial exam. Its question structure does not describe the separate online renewal exam."
         },
         {
           "heading": "Finish appointment and track renewal",
@@ -4826,7 +4826,7 @@
         "The commission term is seven years.",
         "Track the 30-day oath and 45-day certificate-return deadlines separately.",
         "Online renewal payment is followed by printed original-document and oath steps.",
-        "Current first-exam count, clock and passing percentage remain unverified."
+        "Use the published form for initial applicants. Follow the separate online renewal instructions when renewing."
       ]
     },
     "identification": {
@@ -4950,11 +4950,11 @@
         },
         {
           "heading": "Preserve the same record and required recording",
-          "body": "The officer reasonably confirms the record is the same one signed or used for the statement and creates the audiovisual recording. The certificate indicates communication technology. The statute provides an at-least-ten-year recording default subject to authorized rules. It contains a specific tangible-record declaration method with signing during the recording, transmission within four days, certificate after receipt and the statutory declaration-date effectiveness."
+          "body": "The officer reasonably confirms that the record is the same one signed or used for the statement and creates the audiovisual recording. The certificate indicates communication technology. For an acknowledgment of a tangible record that is outside the officer’s possession, Chapter 700 describes use of the statutory declaration method. It includes signing during the recording, transmission within four days and certification after receipt."
         },
         {
           "heading": "Recognize exclusions and continuing obligations",
-          "body": "The statute excludes the listed absentee-ballot, candidate, candidate-circulator and initiative/people's-veto acts remotely, and expressly prohibits remote marriage solemnization. Electronic and remote acts require the stamp and journal described by official guidance. Report provider changes within ten business days. The officer selects qualifying tamper-evident technology and cannot be compelled to use a system not selected."
+          "body": "Maine bars remote marriage solemnization and the specified election-related acts. Keep the required journal and report provider changes within ten business days. The statute requires an official stamp for an electronic-record act. For a tangible record the statute permits a stamp, while the remote FAQ describes it as required. Check the current Secretary of State instructions for that procedure."
         }
       ],
       "example": {
@@ -5073,6 +5073,7 @@
     },
     {
       "slug": "remote-tangible-declaration-method",
+      "updated": "2026-11-19",
       "keyword": "Maine remote notarization tangible record declaration",
       "intent": "Follow the statutory absent-paper-record method",
       "title": "Connecting a Maine Remote Tangible Record",
@@ -5095,7 +5096,7 @@
         },
         {
           "heading": "Keep this method within its statutory scope",
-          "body": "Subsection 7 preserves another procedure that satisfies subsection 3(B)'s same-record requirement. The declaration method therefore should not be described as the only conceivable procedure. Any alternative still needs to satisfy the applicable law and approval standards. The officer also needs identity evidence, an audiovisual recording, the required journal and technology notation, and must check the excluded remote acts before using any remote paper workflow."
+          "body": "Subsection 7 preserves other procedures satisfying the same-record requirement. Chapter 700 specifically instructs use of the declaration method for a remote acknowledgment when the paper is outside the officer’s possession. Follow the rule for that scenario. Identity evidence, the audiovisual recording and the required journal and certificate details still apply."
         }
       ],
       "sources": [
@@ -5373,6 +5374,7 @@
     },
     {
       "slug": "certificate-facts-and-paper-stamp",
+      "updated": "2026-11-19",
       "keyword": "Maine notarial certificate stamp optional paper",
       "intent": "Keep certificate duties distinct from stamp guidance",
       "title": "Maine Paper Certificates Need More Than a Stamp",
@@ -5395,7 +5397,7 @@
         },
         {
           "heading": "Apply the stamp guidance to the right category",
-          "body": "The official course and FAQ make stamp use optional for ordinary in-person paper acts while strongly suggesting it unless prohibited. They require stamps for electronic and remote acts. A kept official stamp contains the specified commissioned name, Maine jurisdiction and expiration information and is reproducible with the record. The stamp's presence does not prove that appearance, identity or the verbal ceremony actually occurred, and it does not replace the officer's certificate."
+          "body": "Maine law requires an official stamp for an electronic-record act and permits a stamp on a tangible record. The Secretary of State’s FAQ gives stricter stamp instructions for remote acts. An official stamp includes the commissioned name, Maine jurisdiction and expiration information. Complete the required appearance, identification and certificate for the act."
         }
       ],
       "sources": [
@@ -5429,6 +5431,7 @@
     },
     {
       "slug": "electronic-format-versus-remote-presence",
+      "updated": "2026-11-19",
       "keyword": "Maine electronic notarization versus remote appearance",
       "intent": "Classify format and location correctly",
       "title": "Electronic Records and Remote Presence in Maine",
@@ -5439,7 +5442,7 @@
       "sections": [
         {
           "heading": "Classify the appointment before selecting tools",
-          "body": "The FAQ describes in-person electronic notarization using an electronic record and signature while the signer is physically with the officer. It describes remote notarization using an approved technology provider for simultaneous sight-and-sound communication with a distant signer. A keypad used at the officer's desk does not itself make the transaction remote. A distant person's paper instrument can still create remote duties, including the journal and stamp requirements in the official guidance."
+          "body": "In-person electronic notarization uses an electronic record with the signer physically present. A remote act uses approved technology for simultaneous sight and sound and carries its own journal obligations, even for a tangible record. Section 1916 requires an official stamp for electronic records. For tangible records it permits a stamp, while the remote FAQ gives stricter instructions."
         },
         {
           "heading": "Finish the approval process first",
