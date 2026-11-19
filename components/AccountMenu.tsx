@@ -89,9 +89,8 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
         aria-controls={menuId}
         onClick={() => setOpen((v) => !v)}
       >
-        {tier === "starter" ? avatarInitial(me.name, me.email) : (
-          <img className="avatar-art" src={`/membership/${tier}.webp`} width={38} height={38} alt="" />
-        )}
+        {tier !== "starter" ? <img className="avatar-art" src={`/membership/${tier}-crown.webp`} width={30} height={17} alt="" /> : null}
+        <span>{avatarInitial(me.name, me.email)}</span>
       </button>
       {open && (
         <nav className="account-dropdown" id={menuId} aria-label="Account menu">

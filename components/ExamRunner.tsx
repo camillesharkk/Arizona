@@ -120,6 +120,7 @@ export function ExamRunner({
   const [explainOpen, setExplainOpen] = useState<Record<string, boolean>>({});
   const [marked, setMarked] = useState<string[]>([]);
   const [done, setDone] = useState(false);
+  useEffect(() => { if (done) window.dispatchEvent(new Event("notary-quiz-finished")); }, [done]);
   const [seconds, setSeconds] = useState(examMinutes * 60);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const recordedIds = useRef<string[]>([]);
@@ -1109,7 +1110,7 @@ export function ExamRunner({
   const prevLocked = idx === 0 || pastIndex != null || (layout === "compact" && submitting);
   const nextLocked = pastIndex != null || submitting || (layout === "compact" ? false : practice ? !selected : false);
   return (
-    <div className="home-exam">
+    <div className="home-exam" data-editorial-quiz-active="">
       <div className="row space">
         <span className="notice">
           Question {idx + 1} of {questions.length}

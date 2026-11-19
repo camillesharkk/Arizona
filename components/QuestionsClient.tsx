@@ -45,6 +45,7 @@ export function QuestionsClient({
   const [progress, setProgress] = useState(() => loadProgress(stateCode));
   const [resumed, setResumed] = useState(false);
   const [done, setDone] = useState(false);
+  useEffect(() => { if (done) window.dispatchEvent(new Event("notary-quiz-finished")); }, [done]);
   const [submitting, setSubmitting] = useState(false);
   const [confirmRestart, setConfirmRestart] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -394,7 +395,7 @@ export function QuestionsClient({
           </div>
         </div>
       ) : q ? (
-      <div className="home-exam">
+      <div className="home-exam" data-editorial-quiz-active="">
         <div className="row space">
           <span className="notice">Question {safeIdx + 1} of {active.length}{resumed ? " · Resumed" : ""}</span>
           <button className="btn btn-ghost" type="button" onClick={() => {

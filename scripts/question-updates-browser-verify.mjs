@@ -51,17 +51,18 @@ try {
   await login(second, "free-desktop");
   await login(unaffected, "free-mobile");
   await login(pro, "pro-mobile");
-  const proUrl = "/question-updates/ri-184-v2/";
+  const proUrl = "/api/question-updates/ri-184-v2/";
   const freeSurface = await unaffected.request.get(proUrl);
   const proSurface = await pro.request.get(proUrl);
-  assert.match(await freeSurface.text(), /requires Pro/);
-  assert.match(await proSurface.text(), /Answer and reasoning/);
-  assert.doesNotMatch(await freeSurface.text(), /Answer and reasoning/);
+  assert.equal((await json(freeSurface)).question, null);
+  assert.ok((await json(proSurface)).question.explanation);
   assert.equal((await json(await first.request.get(api))).receipts[eventId], undefined, "Seed fresh test data before running");
   const answer = (questionId, questionVersion, selected, attemptId) =>
     first.request.post("/api/progress/", { data: { questionId, state: "CA", questionVersion, selected, attemptId } });
-  assert.equal((await json(await answer("ca-054", 1, "A", "edit-old-ca054"))).correct, false);
-  assert.equal((await json(await answer("ca-079", 1, "B", "edit-old-ca079"))).correct, true);
+  const firstAnswer = await json(await answer("ca-054", 1, "A", "edit-old-ca054"));
+  assert.equal(firstAnswer.correct, undefined, "Untokened progress cannot reveal the key");
+  assert.equal(firstAnswer.stat.wrongCount, 1);
+  assert.equal((await json(await answer("ca-079", 1, "B", "edit-old-ca079"))).stat.rightCount, 1);
   await json(await first.request.post("/api/mistakes/", { data: { questionId: "ca-054", favorited: true } }));
   await json(await answer("ca-054", 99, "A", "edit-unknown-ca054"), 409);
 
@@ -81,7 +82,8 @@ try {
   if (process.env.QUESTION_UPDATES_SCREENSHOTS) await page.screenshot({ path: ".tools/editorial-dialog-mobile.png" });
   await dialog.getByRole("button", { name: "Later" }).click();
   await dialog.waitFor({ state: "hidden" });
-  await page.getByRole("link", { name: "Question updates (2 unread)" }).waitFor();
+  await page.getByRole("button", { name: "More", exact: true }).click();
+  await page.getByRole("button", { name: "Question updates", exact: true }).waitFor();
   assert.equal(Boolean((await json(await second.request.get(api))).receipts[eventId]?.shown), false);
   await page.unroute("**/api/question-updates/");
   const delivered = page.waitForResponse(response => response.url().endsWith(api) && response.request().method() === "POST" && response.request().postDataJSON().receipts);
@@ -90,23 +92,67 @@ try {
 
   const desktop = await second.newPage();
   await desktop.goto(surface);
-  await desktop.getByRole("link", { name: "Question updates (2 unread)" }).click();
-  await desktop.getByRole("heading", { name: "Question updates" }).waitFor();
+  await desktop.getByRole("button", { name: "More", exact: true }).click();
+  await desktop.getByRole("button", { name: "Question updates", exact: true }).click();
+  const desktopDialog = desktop.getByRole("dialog");
+  await desktopDialog.getByRole("heading", { name: "Question updates" }).waitFor();
+  assert.equal(new URL(desktop.url()).pathname, surface);
   if (process.env.QUESTION_UPDATES_SCREENSHOTS) await desktop.screenshot({ path: ".tools/editorial-updates-desktop.png" });
-  assert.equal(await desktop.getByRole("dialog").count(), 0);
-  const updated = desktop.getByRole("article").filter({ hasText: "CA-054" });
-  await updated.getByRole("link", { name: "View updated question" }).click();
-  await desktop.waitForURL("**/question-updates/ca-054-v2/");
+  await desktopDialog.getByRole("button", { name: /CA-054/ }).click();
+  await desktopDialog.getByRole("heading", { name: "Answer and reasoning" }).waitFor();
+  assert.equal(new URL(desktop.url()).pathname, surface);
+  await desktopDialog.getByRole("button", { name: "Back to updates" }).click();
+  await desktop.keyboard.press("Escape");
+  await desktopDialog.waitFor({state: "hidden"});
+  assert.equal(await desktop.evaluate(() => document.activeElement.textContent), "More");
+  const proPage = await pro.newPage();
+  for (const width of [320, 390, 1024, 1120, 1440, 1536]) {
+    await proPage.setViewportSize({width, height: 880});
+    await proPage.goto("/arizona/");
+    await proPage.locator(".avatar-pro .avatar-art").waitFor();
+    const header = await proPage.locator(".header-inner").evaluate(inner => {
+      const scroll = inner.querySelector(".nav-scroll");
+      const more = inner.querySelector(".more-btn");
+      const right = inner.querySelector(".header-right");
+      return {
+        fits: scroll.getBoundingClientRect().right <= more.getBoundingClientRect().left &&
+          right.getBoundingClientRect().right <= inner.getBoundingClientRect().right + 1 &&
+          (scroll.scrollWidth <= scroll.clientWidth || getComputedStyle(scroll).overflowX === "auto"),
+        crown: inner.querySelector(".avatar-pro .avatar-art").getAttribute("src"),
+        initial: inner.querySelector(".avatar-pro").textContent.trim(),
+      };
+    });
+    assert.ok(header.fits, `Header controls overlap at ${width}px`);
+    assert.match(header.crown, /pro-crown\.webp$/);
+    assert.match(header.initial, /\p{L}/u);
+    await proPage.waitForFunction(() => document.querySelector(".avatar-pro .avatar-art")?.naturalWidth > 0);
+  }
+  if (process.env.QUESTION_UPDATES_SCREENSHOTS) await proPage.locator(".site-header").screenshot({ path: ".tools/crown-header-desktop.png" });
+  await proPage.route("**/api/auth/me/", async route => {
+    const response = await route.fetch();
+    const session = await response.json();
+    await route.fulfill({ response, json: { ...session, user: { ...session.user, lifetimePro: true } } });
+  });
+  await proPage.reload();
+  await proPage.waitForFunction(() => document.querySelector(".avatar-lifetime .avatar-art")?.naturalWidth > 0);
+  assert.match(await proPage.locator(".avatar-lifetime .avatar-art").getAttribute("src"), /lifetime-crown\.webp$/);
+  assert.equal(await proPage.locator(".avatar-lifetime span").innerText(), "P");
+  if (process.env.QUESTION_UPDATES_SCREENSHOTS) await proPage.locator(".site-header").screenshot({ path: ".tools/lifetime-crown-header.png" });
+  await proPage.goto("/question-updates/ri-184-v2/");
+  await proPage.getByRole("dialog").getByRole("heading", { name: "Answer and reasoning" }).waitFor();
+  assert.equal(new URL(proPage.url()).pathname, "/");
   const after = await json(await second.request.get(api));
   assert.equal(after.receipts[eventId].shown, true);
   assert.equal(after.receipts[eventId].read, true);
   const saved = await json(await second.request.get("/api/mistakes/?state=CA"));
   assert.equal(saved.favorites.some(stat => stat.questionId === "ca-054"), true);
   const masteredVersion = await json(await answer("ca-054", 2, "C", "edit-new-ca054"));
-  assert.equal(masteredVersion.correct, true);
+  assert.equal(masteredVersion.stat.rightCount, 1);
+  assert.equal(masteredVersion.stat.questionVersion, 2);
   const retry = await json(await answer("ca-054", 1, "A", "edit-old-ca054"));
-  assert.equal(retry.correct, false);
   assert.deepEqual(retry.stat, masteredVersion.stat);
+  const progress = await json(await first.request.get("/api/progress/?state=CA"));
+  assert.deepEqual(progress.stats.find(row => row.questionId === "ca-054"), masteredVersion.stat);
 
   const clean = await unaffected.newPage();
   await clean.goto(surface);
@@ -117,7 +163,6 @@ try {
   await clean.goto("/california/practice/?mode=quick");
   const quiz = clean.locator("[data-editorial-quiz-active]");
   await quiz.waitFor();
-  await clean.getByRole("link", { name: "Question updates (1 unread)" }).waitFor();
   assert.equal(await clean.getByRole("dialog").count(), 0, "An active sitting must stay unobstructed");
   await clean.locator(".q-jump button").last().click();
   await clean.getByRole("group", { name: "Answer choices" }).getByRole("button").first().click();

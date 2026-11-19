@@ -1,6 +1,5 @@
-export const metadata = { title: "Question updates", robots: { index: false, follow: false } };
+import { redirect } from "next/navigation";
 
 export default function QuestionUpdatesPage() {
-  // The shared update view also handles guest records kept on this device.
-  return null;
+  redirect("/?question-update=list");
 }

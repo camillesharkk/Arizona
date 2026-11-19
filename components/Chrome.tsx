@@ -22,6 +22,7 @@ import { AccountMenu, accountTier, type HeaderUser } from "@/components/AccountM
 import { SiteAnnouncementDialog } from "@/components/SiteAnnouncements";
 import { StateMenu } from "@/components/StateMenu";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
+import { openQuestionUpdates } from "@/lib/open-question-updates";
 
 type AuthStatus = "loading" | "signed-in" | "signed-out";
 
@@ -193,6 +194,15 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
             </Link>
           </li>
         ))}
+        <li>
+          <button type="button" aria-haspopup="dialog" onClick={() => {
+            setOpenMore(false);
+            moreButton.current?.focus();
+            openQuestionUpdates();
+          }}>
+            Question updates
+          </button>
+        </li>
         <li>
           <button type="button" aria-haspopup="dialog" onClick={() => {
             setOpenMore(false);

@@ -9,11 +9,12 @@ function outsideDialog(event: PointerEvent<HTMLDialogElement>) {
     event.clientY < bounds.top || event.clientY > bounds.bottom;
 }
 
-export function MessageDialog({ title, onClose, onShown, children }: {
+export function MessageDialog({ title, onClose, onShown, children, className }: {
   title: string;
   onClose: (result: string) => void;
   onShown?: () => void;
   children: ReactNode;
+  className?: string;
 }) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -33,7 +34,7 @@ export function MessageDialog({ title, onClose, onShown, children }: {
   return (
     <dialog
       ref={dialogRef}
-      className="card message-dialog"
+      className={`card message-dialog${className ? ` ${className}` : ""}`}
       aria-labelledby={titleId}
       {...{ closedby: "any" }}
       onClose={(event) => {
