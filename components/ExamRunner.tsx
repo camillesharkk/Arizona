@@ -32,6 +32,8 @@ import {
 } from "@/lib/quiz";
 import { recordAnswer, saveProgress, loadProgress } from "@/lib/storage";
 import { currentQuestionVersion } from '@/lib/question-revisions';
+import { resolveQuestionVersion, savedQuestionVersion } from '@/lib/question-version';
+import { editorialUpdateByQuestion } from '@/data/question-editorial-events';
 import { AccountInvite } from "@/components/AccountInvite";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { AnswerResult } from "@/components/AnswerResult";
@@ -122,17 +124,18 @@ export function ExamRunner({
   const [activeSeed, setActiveSeed] = useState<number | null>(null);
   const [presentationVersion, setPresentationVersion] = useState(2);
   const [lockedIds, setLockedIds] = useState<string[] | null>(null);
+  const [lockedVersions, setLockedVersions] = useState<Record<string, number> | null>(null);
   const [restored, setRestored] = useState(false);
   const questions = useMemo(() => {
     if (activeSeed == null || !lockedIds?.length) return [];
     const list = lockedIds.flatMap((id) => {
-      const question = byId.get(id);
+      const question = lockedVersions ? resolveQuestionVersion(byId.get(id), savedQuestionVersion(lockedVersions, id)) : byId.get(id);
       return question ? [question] : [];
     });
     const { questions: out, maps } = presentExamQuestions(list, activeSeed, presentationVersion);
     toOriginalRef.current = maps;
     return out;
-  }, [activeSeed, lockedIds, byId, presentationVersion]);
+  }, [activeSeed, lockedIds, byId, presentationVersion, lockedVersions]);
 
   useEffect(() => {
     if (reportStart !== "answer" || poolLocked.current) return;
@@ -145,6 +148,7 @@ export function ExamRunner({
   const [explainOpen, setExplainOpen] = useState<Record<string, boolean>>({});
   const [marked, setMarked] = useState<string[]>([]);
   const [done, setDone] = useState(false);
+  useEffect(() => { if (done) window.dispatchEvent(new Event("notary-quiz-finished")); }, [done]);
   const [seconds, setSeconds] = useState(examMinutes * 60);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const recordedIds = useRef<string[]>([]);
@@ -248,7 +252,7 @@ export function ExamRunner({
       mode: modeKey,
       seed: activeSeed,
       questionIds: lockedIds,
-      questionVersions: Object.fromEntries(lockedIds.map(id => [id, currentQuestionVersion(id)])),
+      questionVersions: lockedVersions ?? Object.fromEntries(lockedIds.map(id => [id, currentQuestionVersion(id)])),
       presentationVersion,
       idx,
       answers,
@@ -286,6 +290,7 @@ export function ExamRunner({
     setOwner(null);
     setActiveSeed(null);
     setLockedIds(null);
+    setLockedVersions(null);
     setRestored(false);
     setDone(false);
     setUnansweredToConfirm(0);
@@ -327,7 +332,7 @@ export function ExamRunner({
           Object.keys(existing.answers).length === 0 && existing.recordedIds.length === 0 &&
           existing.questionIds?.some((id) => {
             const question = inBank?.find((item) => item.question_id === id) ?? byId.get(id);
-            return question && !isActiveQuestion(question);
+            return question && (!isActiveQuestion(question) || question.version !== savedQuestionVersion(existing?.questionVersions, id));
           })) {
           clearSitting(sessionStorage, nextOwner, modeKey, stateCode);
           existing = null;
@@ -361,6 +366,7 @@ export function ExamRunner({
             setPresentationVersion(archived.presentationVersion ?? 1);
             unscoredRef.current = archived.unscoredIds || [];
             setLockedIds(archived.questionIds);
+            setLockedVersions(archived.questionVersions ?? {});
             initializedScope.current = modeKey;
             setAnswers(archived.answers);
             answersRef.current = archived.answers;
@@ -378,10 +384,12 @@ export function ExamRunner({
         viewOnly.current = false;
         let seed = existing?.seed ?? Math.floor(Math.random() * 1_000_000_000);
         let serverIds: string[] | undefined;
+        let serverVersions: Record<string, number> | undefined;
         if (stateCode === "IN" && mode === "full" && !existing?.done) {
           const sitting = await startIndianaPractice(nextOwner, existing?.examId || undefined);
           if (cancel) return;
           seed = sitting.seed; serverIds = sitting.questionIds; examSaveId.current = sitting.examId;
+          serverVersions = sitting.questionVersions;
           if (sitting.questions) setAuthorizedQuestions(sitting.questions);
         }
         if (existing?.unscoredIds?.length) unscoredRef.current = existing.unscoredIds;
@@ -401,6 +409,7 @@ export function ExamRunner({
         setActiveSeed(seed);
         setPresentationVersion(existing ? existing.presentationVersion ?? 1 : 2);
         setLockedIds(ids);
+        setLockedVersions(serverVersions || (existing ? existing.questionVersions ?? {} : null));
         initializedScope.current = modeKey;
         if (!existing) return;
         setIdx(Math.min(existing.idx, Math.max(0, ids.length - 1)));
@@ -468,7 +477,7 @@ export function ExamRunner({
       questionIds: lockedIds,
       answers: answersNow,
       originalAnswers,
-      questionVersions: Object.fromEntries(lockedIds.map(id => [id, currentQuestionVersion(id)])),
+      questionVersions: Object.fromEntries(questions.map(question => [question.question_id, question.version])),
       presentationVersion,
       unscoredIds: mode === "full" ? [...unscoredRef.current] : [],
       attemptIds: { ...attemptIds.current },
@@ -634,7 +643,7 @@ export function ExamRunner({
     answersRef.current = nextAnswers;
     setAnswers(nextAnswers);
     if (practice) {
-      recordAnswer(q.question_id, letter === q.correct_option, stateCode);
+      recordAnswer(q.question_id, letter === q.correct_option, stateCode, q.version);
       fetch("/api/progress/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -699,7 +708,7 @@ export function ExamRunner({
     if (!localSaved.current) {
       localSaved.current = true;
       if (!practice) results.forEach((r) => {
-        if (!pack || current[r.question.question_id]) recordAnswer(r.question.question_id, r.correct, stateCode);
+        if (!pack || current[r.question.question_id]) recordAnswer(r.question.question_id, r.correct, stateCode, r.question.version);
       });
       const prev = loadProgress(stateCode);
       saveProgress({
@@ -874,6 +883,13 @@ export function ExamRunner({
     return (
       <div className="grid">
         <div className="card result-summary" ref={resultRef}>
+          {questions.filter(question => {
+            const event = editorialUpdateByQuestion.get(question.question_id);
+            return event && (question.version < event.version || event.replacementId);
+          }).map(question => <p className="notice" key={question.question_id}>
+            {question.question_id.toUpperCase()} was corrected after this version. Your result uses the version you answered.{" "}
+            <Link href={`/question-updates/${editorialUpdateByQuestion.get(question.question_id)!.id}/`}>View the updated question</Link>
+          </p>)}
           <span className="kicker">Result</span>
           {isFreeState(stateCode) ? (
             <><h2>{correct} of {questions.length} correct</h2><FreeStateResultNext code={stateCode} attemptId={examSaveId.current || ""} /></>
@@ -1128,6 +1144,7 @@ export function ExamRunner({
     setActiveSeed(seed);
     setPresentationVersion(2);
     setLockedIds(ids);
+    setLockedVersions(null);
     setIdx(0);
     setAnswers({});
     answersRef.current = {};
@@ -1158,7 +1175,7 @@ export function ExamRunner({
   const prevLocked = idx === 0 || pastIndex != null || (layout === "compact" && submitting);
   const nextLocked = pastIndex != null || submitting || (layout === "compact" ? false : practice ? !selected : false);
   return (
-    <div className="home-exam">
+    <div className="home-exam" data-editorial-quiz-active="">
       <div className="row space">
         <span className="notice">
           Question {idx + 1} of {questions.length}

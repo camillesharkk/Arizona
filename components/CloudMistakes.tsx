@@ -33,6 +33,11 @@ import { savedInNotebook } from "@/lib/review-save";
 import { syncCaAttempts } from "@/lib/ca-sync";
 import type { Question, StateCode } from "@/lib/types";
 import type { QuestionStat } from "@/lib/store/types";
+import { editorialUpdateByQuestion } from "@/data/question-editorial-events";
+import { needsUpdatedReview } from "@/lib/editorial-updates";
+import { isActiveQuestion } from "@/lib/question-status";
+import { resolveQuestionVersion } from "@/lib/question-version";
+import { optionText } from "@/lib/answer-sequence";
 
 function dueNow(stat: QuestionStat) {
   return Boolean(stat.nextReviewAt) && Date.parse(stat.nextReviewAt as string) <= Date.now();
@@ -483,11 +488,21 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         {actionMessage}
       </p>
       {filtered.map((s) => {
+        const update = editorialUpdateByQuestion.get(s.questionId);
+        const needsReview = update && needsUpdatedReview(update, s);
         const q = questionPool.find((x) => x.question_id === s.questionId);
         if (!q) return isFreeState(stateCode) && !pack?.freeLaunch ? <article className="card" key={s.questionId} style={{ marginTop: 12 }}>
           <h3>Pro question · {s.questionId}</h3><p>Your progress for this question is saved. Pro opens its question and explanation.</p>
+          {needsReview ? <p className="notice">Updated — review again.{" "}<Link href={`/question-updates/${update.id}/`}>See what changed</Link></p> : null}
           <p>{s.wrongCount} missed · {s.rightCount} correct</p>{pack?.purchaseEnabled !== false ? <Link className="btn btn-primary" href={site.pricing}>Open Pro access</Link> : <Link href={`${site.practice}?mode=quick`}><MemberCopy member={<>Start Member Practice</>}>Start Free Practice</MemberCopy></Link>}
         </article> : null;
+        const earlier = s.revisionHistory?.at(-1) ?? s;
+        const oldQuestion = update?.previousVersion || update?.replacementId
+          ? resolveQuestionVersion(q, earlier.questionVersion ?? 1)
+          : null;
+        const choice = earlier.lastSelected;
+        const oldChoice = oldQuestion && (choice === "A" || choice === "B" || choice === "C" || choice === "D")
+          ? optionText(oldQuestion, choice) : null;
         return (
           <article className="card" key={s.questionId} style={{ marginTop: 12 }}>
             <span className="kicker">
@@ -495,7 +510,11 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
               {s.wrongCount > 0 ? " · Incorrect" : ""}
               {savedInNotebook(s) ? " · Saved" : ""}
             </span>
-            <h3>{q.question_text}</h3>
+            <h3>{update?.replacementId ? s.questionId.toUpperCase() : q.question_text}</h3>
+            {needsReview ? <p className="notice">Updated — review again.{" "}
+              <Link href={`/question-updates/${update.id}/`}>{update.replacementId ? "View replacement" : "View updated question"}</Link>
+            </p> : !isActiveQuestion(q) ? <p className="notice">This question is retired from new practice.</p> : null}
+            {needsReview && oldChoice ? <p>Your earlier answer was “{oldChoice}” on version {oldQuestion?.version}.</p> : null}
             <p>
               {s.wrongCount > 0 ? `Wrong ${s.wrongCount} ${s.wrongCount === 1 ? "time" : "times"}` : "Saved for review"}
               {s.nextReviewAt ? ` · Next review ${new Date(s.nextReviewAt).toLocaleString("en-US")}` : ""}

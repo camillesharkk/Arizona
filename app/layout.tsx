@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { QuestionUpdates } from "@/components/QuestionUpdates";
 import { Suspense } from "react";
 import { cookies, headers } from "next/headers";
 import "./globals.css";
@@ -76,6 +77,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <MemberCopyProvider>
             <SiteHeader savedState={saved} indianaPreview={process.env.VERCEL_ENV !== "production" && process.env.STATE_PREVIEW === "1"} />
             <PaddleCheckoutResume successOrigin={siteUrl()} />
+            <QuestionUpdates />
             {children}
             <SiteFooter savedState={saved} />
           </MemberCopyProvider>

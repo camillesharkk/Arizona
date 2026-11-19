@@ -3,6 +3,12 @@ import type { FreeStateCode } from './free-state-catalog';
 import type { Question } from './types';
 import { questionReviewDate } from '../data/question-review-dates';
 import { questionDrawHold } from '../data/question-draw-holds';
+import { serverQuestionEdits } from '../data/question-edits-server';
+import { publishQuestionEdits } from './question-version';
+
+export function versionedStateQuestions(questions: Question[]) {
+  return publishQuestionEdits(questions, serverQuestionEdits);
+}
 
 export function stateQuestion(code: FreeStateCode, question: FreeStateContent['questions'][number], free: boolean): Question {
   return {

@@ -21,19 +21,28 @@ const ledger = readRows(ledgerPath);
 const staleEvidence = [];
 const states = new Map();
 const nextPendingId = {};
-const emptyCounts = () => ({ total: 0, verifiedUnchanged: 0, revisedRechecked: 0, pending: 0, held: 0 });
+const emptyCounts = () => ({ total: 0, verifiedUnchanged: 0, revisedRechecked: 0, pending: 0, held: 0, replaced: 0 });
 const total = emptyCounts();
 for (const [id, row] of inventory) {
   const evidence = ledger.get(id);
   const currentEvidence = evidence?.contentSha256 === row.contentSha256 && evidence?.version === row.version;
   if (evidence && !currentEvidence) staleEvidence.push(id);
+  if (row.replacesQuestionId) {
+    assert.equal(ledger.get(row.replacesQuestionId)?.replacementId, id, `Missing replacement relationship: ${id}`);
+    assert.ok(currentEvidence && evidence.status === "revised_rechecked" && row.reviewedAt === evidence.reviewedAt &&
+      !row.publishedWindowEnd && evidence.checkedSources?.length, `Missing review for replacement: ${id}`);
+    continue;
+  }
   const byState = states.get(row.state) ?? emptyCounts();
   states.set(row.state, byState);
   let status = "pending";
   if (row.publishedWindowEnd) {
-    assert.equal(evidence?.status, "held", `Held item missing its disposition: ${id}`);
+    assert.ok(["held", "replaced"].includes(evidence?.status), `Held item missing its disposition: ${id}`);
     assert.ok(currentEvidence && evidence.checkedSources?.length, `Stale or missing held-item evidence: ${id}`);
-    status = "held";
+    if (evidence.status === "replaced") {
+      assert.equal(inventory.get(evidence.replacementId)?.replacesQuestionId, id, `Invalid replacement: ${id}`);
+      status = "replaced";
+    } else status = "held";
   } else if (currentEvidence && ["verified_unchanged", "revised_rechecked"].includes(evidence.status)) {
     assert.equal(row.reviewedAt, evidence.reviewedAt, `Review timestamp mismatch: ${id}`);
     assert.ok(evidence.checkedSources?.length, `Missing governing evidence: ${id}`);

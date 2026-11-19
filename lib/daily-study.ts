@@ -9,6 +9,8 @@ import { activeCaQuestions, publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { historicalAzQuestions, publishedQuestions } from "@/data/questions";
 import { questionDrawHold } from "@/data/question-draw-holds";
+import { editorialUpdateByQuestion } from "@/data/question-editorial-events";
+import { needsUpdatedReview } from "@/lib/editorial-updates";
 import { topics } from "@/data/exam-config";
 import { optionText } from "@/lib/answer-sequence";
 import { localDate } from "@/lib/calendar";
@@ -175,6 +177,12 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   }
   const stats = await store.listStats(userId);
   const stateStats = stats.filter((item) => item.state === state).map((stat) => {
+    const updated = editorialUpdateByQuestion.get(stat.questionId);
+    if (updated && !updated.replacementId && needsUpdatedReview(updated, stat) &&
+      (stat.firstAt || stat.lastAt || stat.favorited || stat.savedForReview)) {
+      // Project a due review while leaving the old mastery and answer history in storage.
+      return { ...stat, mastered: false, nextReviewAt: stat.nextReviewAt && stat.nextReviewAt < now ? stat.nextReviewAt : now };
+    }
     if (stat.mastered || (stat.wrongCount <= 0 && !stat.savedForReview) || stat.nextReviewAt) return stat;
     const lastRevision = stat.revisionHistory?.at(-1);
     const since = stat.lastWrongAt || stat.lastAt || stat.firstAt || lastRevision?.lastAt;

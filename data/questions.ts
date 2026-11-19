@@ -5,6 +5,8 @@ import { scenarioDrafts } from "./scenario-questions.ts";
 import { wave2Drafts } from "./question-bank-wave2.ts";
 import { questionReviewDate } from "./question-review-dates.ts";
 import { questionDrawHold } from "./question-draw-holds.ts";
+import { publishQuestionEdits } from "../lib/question-version.ts";
+import { azQuestionEdits } from "./question-edits-az.ts";
 
 type Draft = Omit<
   Question,
@@ -20,7 +22,7 @@ type Draft = Omit<
 };
 
 function publish(drafts: Draft[]): Question[] {
-  return drafts.map((q) => ({
+  return publishQuestionEdits(drafts.map((q) => ({
     ...q,
     state: "AZ",
     status: "published",
@@ -28,7 +30,7 @@ function publish(drafts: Draft[]): Question[] {
     effective_from: q.effective_from ?? "2024-01-01",
     effective_to: questionDrawHold(q.question_id),
     last_verified_at: questionReviewDate(q.question_id, q.last_verified_at ?? "2026-08-01"),
-  }));
+  })), azQuestionEdits);
 }
 
 const drafts: Draft[] = [

@@ -293,10 +293,10 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
     {
       "id": "ar-card-027",
       "study": "seals-fees",
-      "title": "Reasonable fees",
-      "front": "What governs a charged Arkansas notarial fee?",
+      "title": "Reasonable traditional fees",
+      "front": "What governs a charged fee for a traditional Arkansas notarization?",
       "rule": "The fee must be reasonable, disclosed and agreed in advance.",
-      "boundary": "A notary may provide a free service.",
+      "boundary": "A notary may provide the traditional service for free. Check the separate electronic-notary sources before applying this rule to an electronic act.",
       "mixup": "Advance agreement alone does not remove reasonableness.",
       "source": "Arkansas Notary Public & eNotary Handbook, p. 18",
       "sourceUrl": "https://www.sos.arkansas.gov/uploads/bcs/NotaryHandbook2025.pdf"
@@ -526,11 +526,11 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "electronic-ron",
       "title": "Recording retention",
       "front": "Who retains the remote act recording and for how long?",
-      "rule": "The solution provider retains it for five years.",
-      "boundary": "Check the provider's actual storage arrangement.",
+      "rule": "Maintain the electronic record, including the recording, for at least five years.",
+      "boundary": "Confirm the provider’s retention arrangement and continued access.",
       "mixup": "The two-year training interval is a different period.",
-      "source": "Secretary of State eNotary and RON instructions, Recording retention",
-      "sourceUrl": "https://sos.arkansas.gov/business-commercial-services-bcs/enotary/"
+      "source": "A.C.A. § 21-14-310, enacted by Act 1047 of 2021",
+      "sourceUrl": "https://www.arkleg.state.ar.us/Acts/Document?type=pdf&act=1047&ddBienniumSession=2021%2F2021R"
     },
     {
       "id": "ar-card-049",
@@ -648,12 +648,12 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "id": "co-card-009",
       "study": "identification",
       "title": "Ordinary ID features",
-      "front": "Which ordinary documentary features are listed?",
-      "rule": "Government ID has a photograph or signature and is current or expired one year or less.",
-      "boundary": "Remote identification has separate requirements.",
-      "mixup": "Do not import the remote both-feature rule into every paper act.",
-      "source": "Colorado powers and duties FAQs, Q6",
-      "sourceUrl": "https://www.coloradosos.gov/pubs/notary/FAQ/duties.html"
+      "front": "What does another form of government ID need for an in-person act?",
+      "rule": "A government-issued credential outside the passport, driver’s license, or government-issued nondriver ID card category must contain the signer’s signature or photograph and be satisfactory to the notary.",
+      "boundary": "Both statutory ID categories allow a current ID or one expired no more than one year. Remote notarization has separate identification rules.",
+      "mixup": "The statute adds the signature-or-photograph requirement to the other government ID category.",
+      "source": "C.R.S. § 24-21-507(2)(a)(I)–(II), (3)",
+      "sourceUrl": "https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf#page=4"
     },
     {
       "id": "co-card-010",
@@ -824,12 +824,12 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "id": "co-card-025",
       "study": "acknowledgments",
       "title": "Relative interests",
-      "front": "Which relatives are included in conflict screening?",
-      "rule": "The FAQ lists spouse/civil-union partner, ancestors, descendants and siblings including half/step siblings.",
-      "boundary": "Apply the stated record-interest conditions.",
-      "mixup": "Certifying only another party's signature does not necessarily remove the conflict.",
-      "source": "Colorado powers and duties FAQs, Q18",
-      "sourceUrl": "https://www.coloradosos.gov/pubs/notary/FAQ/duties.html"
+      "front": "When does a Colorado notary have a disqualifying interest?",
+      "rule": "Decline when the notary, spouse, civil-union partner, ancestor, descendant or sibling is a party to or named in the record.",
+      "boundary": "A separate conflict exists when the notary, spouse or civil-union partner would receive a direct benefit that exceeds the proper fee.",
+      "mixup": "Check who is named in or a party to the record, even when their signature is not the one being notarized.",
+      "source": "C.R.S. § 24-21-504(2)(a)–(b)",
+      "sourceUrl": "https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf#page=2"
     },
     {
       "id": "co-card-026",
@@ -1388,7 +1388,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "journals",
       "title": "Law-firm retained copies",
       "front": "When may office document copies support the special exception?",
-      "rule": "A notary employed by an attorney or law firm need not journal employment notarizations if the employer maintains copies of the notarized documents.",
+      "rule": "The administrative rule describes an exception for employment notarizations when the attorney or law firm keeps copies. The Act says employer records do not relieve the notary’s journal duties.",
       "boundary": "Outside-employment acts do not automatically share the exception.",
       "mixup": "The rule is more specific than an ordinary employer's recordkeeping policy.",
       "source": "Illinois Register, January 10, 2025, adopted notary amendments — §176.900(f)",
@@ -1677,7 +1677,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "First-commission examination",
       "front": "Who faces the statutory examination requirement?",
       "rule": "An applicant without a current Maine commission must pass the Secretary-administered or approved examination based on the official course.",
-      "boundary": "The verified materials do not establish a current first-exam question count, clock or passing percentage.",
+      "boundary": "The current paper application includes a specific initial examination. Maine uses a separate online renewal exam. The paper form does not establish the renewal exam’s questions, a timer, or a passing percentage.",
       "mixup": "A practice-bank score is not the state's required examination result.",
       "source": "Maine Revised Statutes, Title 4 §1923 — §1923",
       "sourceUrl": "https://legislature.maine.gov/statutes/4/title4sec1923.html"
@@ -7373,7 +7373,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Unknown credible individual",
       "front": "Can a witness unknown to the notary ever be used?",
       "rule": "The current code permits the specified route using the witness's qualifying identification and oath concerning the principal.",
-      "boundary": "Remote use adds the applicable secondary authentication.",
+      "boundary": "In the applicable remote witness route, the unfamiliar witness also undergoes secondary authentication. Check the remote signer’s separate documentation requirement.",
       "mixup": "Merely introducing a stranger does not complete the route.",
       "source": "Utah 46-1-2(25)(a)(i)(D)",
       "sourceUrl": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf"
@@ -7526,7 +7526,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "journal",
       "title": "ID data minimization",
       "front": "Which identification number detail is required in the new entry?",
-      "rule": "Record the last four digits together with type, issuer, issue date and expiration date.",
+      "rule": "For a commission received on or after May 6, 2026, record the last four digits together with type, issuer, issue date and expiration date when the identity method requires it.",
       "boundary": "The rule does not call for writing the complete number in this field.",
       "mixup": "A bare note saying 'ID checked' omits required details.",
       "source": "Utah 46-1-14.1(2)(b)(iv)",
@@ -7538,7 +7538,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Grouped entry boundary",
       "front": "When can multiple acts share one entry?",
       "rule": "The acts must involve the same individual at the same time on one record or similar records.",
-      "boundary": "Different individuals do not satisfy the grouped-entry rule.",
+      "boundary": "This grouping rule applies to commissions received on or after May 6, 2026. Different individuals do not qualify.",
       "mixup": "A shared employer alone does not authorize grouping unrelated appointments.",
       "source": "Utah 46-1-14.1(4)(a)",
       "sourceUrl": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf"
@@ -7549,7 +7549,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Coworker signature exception",
       "front": "What conditions support the limited repeated-signature exception?",
       "rule": "The prior act within 180 days, personal knowledge, employer-or-coworker role, ordinary business transaction and required notation must all be present.",
-      "boundary": "This is an exception to the journal signature requirement.",
+      "boundary": "This journal-signature exception applies to a commission received on or after May 6, 2026.",
       "mixup": "One condition by itself does not remove the entry requirements.",
       "source": "Utah 46-1-14.1(4)(b)(i)",
       "sourceUrl": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf"
@@ -7560,7 +7560,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Refusal record",
       "front": "What should the journal preserve after a refusal?",
       "rule": "Record obtainable required information and describe the reason for refusing or not completing the act.",
-      "boundary": "An uncompleted act can still require an entry.",
+      "boundary": "The refusal-entry requirement applies to a commission received on or after May 6, 2026.",
       "mixup": "Deleting the appointment is not the required journal response.",
       "source": "Utah 46-1-14.1(5)",
       "sourceUrl": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf"
@@ -7647,8 +7647,8 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "remote",
       "title": "Secondary identity",
       "front": "What additional authentication accompanies applicable remote evidence?",
-      "rule": "Use the statutory secondary-authentication requirement, including its application to the unknown credible-witness route.",
-      "boundary": "Knowledge-based or biometric methods must meet the statutory definitions and applicable rules.",
+      "rule": "In the statutory remote witness route, an unfamiliar credible witness undergoes secondary authentication.",
+      "boundary": "Section 46-1-3.6 separately specifies a qualifying ID image for an unfamiliar remote signer. Check both rules.",
       "mixup": "Passing identity authentication does not administer a jurat oath.",
       "source": "Utah 46-1-2(25)-(26)",
       "sourceUrl": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf"

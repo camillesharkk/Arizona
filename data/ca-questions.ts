@@ -2,6 +2,8 @@ import type { Difficulty, ExamArea, Question, TopicId } from "@/lib/types";
 import { extraCaRows } from "./ca-extra";
 import { questionReviewDate } from "./question-review-dates";
 import { questionDrawHold } from "./question-draw-holds";
+import { publishQuestionEdits } from "../lib/question-version";
+import { caQuestionEdits } from "./question-edits-ca";
 import { isActiveQuestion } from "../lib/question-status";
 
 const VERIFIED = "2026-11-05";
@@ -865,7 +867,7 @@ function publish(row: Row): Question {
   };
 }
 
-const questions = [...rows, ...extraCaRows].map(publish);
+const questions = publishQuestionEdits([...rows, ...extraCaRows].map(publish), caQuestionEdits);
 
 export function publishedCaQuestions(): Question[] {
   return questions.filter((question) => question.status === "published" && question.state === "CA");

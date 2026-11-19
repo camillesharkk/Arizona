@@ -2,6 +2,7 @@ import type { Difficulty, ExamArea, Question, TopicId } from "@/lib/types";
 import { shuffle } from "../lib/answer-sequence.ts";
 import { paAdditionalQuestions } from "./pa-question-additions.ts";
 import { paAdditionalCards } from "./pa-card-additions.ts";
+import { questionReviewDate } from "./question-review-dates.ts";
 
 /** Statute, current regulations and March 2026 Pearson bulletin read 2026-11-12. */
 export const PA_CHECKED = "2026-11-12";
@@ -441,7 +442,9 @@ function publish(row: Row): Question {
   };
 }
 
-const questions = [...rows.map(publish), ...paAdditionalQuestions];
+const questions = [...rows.map(publish), ...paAdditionalQuestions].map(question => ({
+  ...question, last_verified_at: questionReviewDate(question.question_id, question.last_verified_at),
+}));
 
 export function publishedPaQuestions() {
   return questions.filter((question) => question.status === "published" && question.state === "PA");

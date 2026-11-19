@@ -27,7 +27,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 13, Record and submit oaths",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -55,7 +55,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 11, Required documents",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -83,7 +83,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 16, Renewal required documents",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -111,7 +111,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "What qualifies as proper identification?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -139,7 +139,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Copied and notarized birth certificate FAQ",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -167,7 +167,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 8, Notary register or journal",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -195,7 +195,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 7, Seal of office",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -223,7 +223,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON Act 1047 at a glance",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -251,7 +251,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "eNotary Registration, Step 1",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -279,7 +279,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Can I notarize my own signature?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -307,7 +307,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 1, Qualification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -335,7 +335,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 3, Complete the application",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -363,7 +363,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 1, Qualification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -391,7 +391,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 1, Qualification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -419,7 +419,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 1, Qualification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -447,7 +447,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 3, Complete the application",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -475,7 +475,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 3, County of commission",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -503,7 +503,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 1, Nonresident military-spouse qualification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -531,7 +531,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 9, Identification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -559,7 +559,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 9, Identification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -587,7 +587,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 9, Identification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -615,7 +615,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 9, Identification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -643,7 +643,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 1 and pp. 13–14, Appearance",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -671,7 +671,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "ar-ron, Ordinary physical-presence requirement",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -699,7 +699,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 13, Before notarizing",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -727,7 +727,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 8, Register or journal",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -755,7 +755,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 8, Recalling past acts",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -783,7 +783,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 8, Records as evidence",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -811,7 +811,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 8, Suggested format item 1",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -839,7 +839,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 8, Suggested format item 2",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -867,7 +867,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 8, Suggested format item 3",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -895,7 +895,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 8, Suggested format item 4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -923,7 +923,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 7, Seal elements",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -951,7 +951,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 7, Seal elements",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -979,7 +979,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 7, County on seal",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1007,7 +1007,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 7, Seal wording",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1035,7 +1035,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 7, Expiration on seal",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1063,7 +1063,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "pp. 7–8, Seal ink",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1091,7 +1091,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 7, Embosser reproduction",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1119,7 +1119,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 12, Photocopies",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1147,7 +1147,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 12, Original presented",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1175,7 +1175,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 12, Vital records",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1203,7 +1203,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 12, Public records",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1231,7 +1231,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 12, Public record examples",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1259,7 +1259,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 12, Court orders",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1287,7 +1287,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 12, Passport exception",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1315,7 +1315,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 1, Impartiality",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1343,7 +1343,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 1, Financial benefit",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1371,7 +1371,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 18, Corporate acts",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1399,7 +1399,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 18, Corporate representation",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1427,7 +1427,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 18, Corporate transaction conflict",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1455,7 +1455,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 1, Indirect financial benefit",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1483,7 +1483,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 17, Notario publico",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1511,7 +1511,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "eNotary registration, Step 1",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1539,7 +1539,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "eNotary registration, Step 2",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1567,7 +1567,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "eNotary registration, training provider",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1595,7 +1595,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 20, Electronic term",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1623,7 +1623,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "21 CAR §20-105(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1651,7 +1651,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "21 CAR §20-105(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1679,7 +1679,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "p. 21, Refresher training",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1709,7 +1709,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Rule 2.1.3",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1737,7 +1737,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Rule 2.1.4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1765,7 +1765,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q1, Who can become a notary public?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1793,7 +1793,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q3, Acknowledgment",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1821,7 +1821,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q6, Satisfactory evidence",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1849,7 +1849,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4, Acceptable stamps",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1877,7 +1877,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q7–Q8, Journal requirement",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1905,7 +1905,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q1, Fees",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1933,7 +1933,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q1–Q2, Remote approval",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1961,7 +1961,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q6, Previously taped recordings",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -1989,7 +1989,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q1",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2017,7 +2017,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q1",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2045,7 +2045,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q1",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2073,7 +2073,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q1",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2101,7 +2101,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Rule 2.1.1",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2129,7 +2129,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Rule 2.1.2",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2157,7 +2157,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q2; Rule 2.1.3",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2185,7 +2185,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Rule 2.1.5",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2213,7 +2213,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "State eLearning",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2224,27 +2224,57 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "topic": "identification",
       "study_topic": "identification",
       "difficulty": "medium",
-      "question_text": "A Colorado signer shows current government identification with a photograph but no signature. Which ordinary ID condition applies?",
-      "option_a": "Both photograph and signature are always mandatory",
-      "option_b": "A photograph or signature can meet the listed feature requirement",
-      "option_c": "Only a passport works",
-      "option_d": "Only notarized ID copies work",
+      "question_text": "For an in-person Colorado notarization, a signer presents another form of government-issued identification rather than a passport, driver’s license, or government-issued nondriver ID card. The credential is current and has the signer’s photograph but no signature. Does it meet the statutory photo-or-signature requirement?",
+      "option_a": "No. The credential must show both a photograph and a signature.",
+      "option_b": "Yes. A photograph or a signature is enough for that requirement.",
+      "option_c": "No. Only a passport can meet the requirement.",
+      "option_d": "Yes, but only if a copy of the credential has been notarized.",
       "correct_option": "B",
-      "explanation": "The ordinary Colorado FAQ accepts the required government ID with either photograph or signature.",
+      "explanation": "For this category of government-issued ID, either a photograph or a signature satisfies the feature requirement. The notary still has to be satisfied that the credential identifies the signer.",
       "option_feedback": {
-        "A": "That states a stricter feature rule than the ordinary FAQ.",
-        "B": "Correct. Check the other requirements.",
-        "C": "Other government ID can qualify.",
-        "D": "The FAQ does not require notarized copies."
+        "A": "The statute requires either feature for this category.",
+        "B": "The photograph satisfies the feature requirement. The notary must still establish identity.",
+        "C": "Colorado law also allows other qualifying government-issued identification.",
+        "D": "A notarized copy is not the statutory test for the credential’s features."
       },
-      "source_id": "co-duties",
-      "source_reference": "Q6",
+      "source_id": "co-rulona",
+      "source_reference": "C.R.S. § 24-21-507(2)(a)(II), (3). https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
-      "version": 1,
+      "last_verified_at": "2026-11-19",
+      "version": 2,
       "is_free": true,
-      "status": "published"
+      "status": "published",
+      "previous_versions": [
+        {
+          "question_id": "co-046",
+          "state": "CO",
+          "topic": "identification",
+          "study_topic": "identification",
+          "difficulty": "medium",
+          "question_text": "A Colorado signer shows current government identification with a photograph but no signature. Which ordinary ID condition applies?",
+          "option_a": "Both photograph and signature are always mandatory",
+          "option_b": "A photograph or signature can meet the listed feature requirement",
+          "option_c": "Only a passport works",
+          "option_d": "Only notarized ID copies work",
+          "correct_option": "B",
+          "explanation": "The ordinary Colorado FAQ accepts the required government ID with either photograph or signature.",
+          "option_feedback": {
+            "A": "That states a stricter feature rule than the ordinary FAQ.",
+            "B": "Correct. Check the other requirements.",
+            "C": "Other government ID can qualify.",
+            "D": "The FAQ does not require notarized copies."
+          },
+          "source_id": "co-duties",
+          "source_reference": "Q6",
+          "effective_from": "2026-11-14",
+          "effective_to": null,
+          "last_verified_at": "2026-11-14",
+          "version": 1,
+          "is_free": true,
+          "status": "published"
+        }
+      ]
     },
     {
       "question_id": "co-047",
@@ -2252,27 +2282,57 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "topic": "identification",
       "study_topic": "identification",
       "difficulty": "medium",
-      "question_text": "A Colorado signer has government identification with a signature but no photograph. What does the ordinary FAQ allow?",
-      "option_a": "Either listed feature can qualify under the ordinary rule",
-      "option_b": "No signature-only government ID may ever qualify",
-      "option_c": "Only remote acts accept signatures",
-      "option_d": "A fee receipt replaces ID",
+      "question_text": "At an in-person Colorado notarization, a signer presents current government-issued identification that is neither a passport, driver’s license, nor government-issued nondriver ID card. It shows the signer’s signature but no photograph. Which statement is correct?",
+      "option_a": "The signature meets the feature requirement for this type of identification.",
+      "option_b": "This type of identification must always include a photograph.",
+      "option_c": "A signature can count only at a remote notarization.",
+      "option_d": "A receipt for the notarial fee can serve as identification instead.",
       "correct_option": "A",
-      "explanation": "Ordinary ID may contain either the signature or photograph.",
+      "explanation": "Another form of government-issued identification can meet the feature requirement with a signature or a photograph. The notary must still determine that the credential identifies the person presenting it.",
       "option_feedback": {
-        "A": "Correct. Verify the actual credential and person.",
-        "B": "The ordinary FAQ permits either feature.",
-        "C": "Remote identification has different requirements.",
-        "D": "Payment does not establish identity."
+        "A": "Either feature can satisfy this requirement for alternate government-issued ID.",
+        "B": "A signature can satisfy the requirement without a photograph.",
+        "C": "Colorado’s in-person rule also allows a signature as the qualifying feature.",
+        "D": "A fee receipt does not establish the signer’s identity."
       },
-      "source_id": "co-duties",
-      "source_reference": "Q6",
+      "source_id": "co-rulona",
+      "source_reference": "C.R.S. § 24-21-507(2)(a)(II), (3). https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
-      "version": 1,
+      "last_verified_at": "2026-11-19",
+      "version": 2,
       "is_free": true,
-      "status": "published"
+      "status": "published",
+      "previous_versions": [
+        {
+          "question_id": "co-047",
+          "state": "CO",
+          "topic": "identification",
+          "study_topic": "identification",
+          "difficulty": "medium",
+          "question_text": "A Colorado signer has government identification with a signature but no photograph. What does the ordinary FAQ allow?",
+          "option_a": "Either listed feature can qualify under the ordinary rule",
+          "option_b": "No signature-only government ID may ever qualify",
+          "option_c": "Only remote acts accept signatures",
+          "option_d": "A fee receipt replaces ID",
+          "correct_option": "A",
+          "explanation": "Ordinary ID may contain either the signature or photograph.",
+          "option_feedback": {
+            "A": "Correct. Verify the actual credential and person.",
+            "B": "The ordinary FAQ permits either feature.",
+            "C": "Remote identification has different requirements.",
+            "D": "Payment does not establish identity."
+          },
+          "source_id": "co-duties",
+          "source_reference": "Q6",
+          "effective_from": "2026-11-14",
+          "effective_to": null,
+          "last_verified_at": "2026-11-14",
+          "version": 1,
+          "is_free": true,
+          "status": "published"
+        }
+      ]
     },
     {
       "question_id": "co-048",
@@ -2297,7 +2357,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q6",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2325,7 +2385,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q6",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2353,7 +2413,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q6",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2381,7 +2441,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q6",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2409,7 +2469,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q6",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2437,7 +2497,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q6",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2465,7 +2525,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q6",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2493,7 +2553,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q3",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2521,7 +2581,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2549,7 +2609,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Complete certificate and verification procedure",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2577,7 +2637,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q2",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2605,7 +2665,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Incomplete or incorrect certificate",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2633,7 +2693,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q8",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2661,7 +2721,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q8",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2689,7 +2749,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q8",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2717,7 +2777,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q7",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2745,7 +2805,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q7",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2773,7 +2833,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q8",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2801,7 +2861,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q8(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2829,7 +2889,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q8(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2857,7 +2917,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q8(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2885,7 +2945,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q8(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2913,7 +2973,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q8(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2941,7 +3001,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2969,7 +3029,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -2997,7 +3057,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3025,7 +3085,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3053,7 +3113,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3081,7 +3141,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q3–Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3109,7 +3169,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3137,7 +3197,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3165,7 +3225,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q1–Q2",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3193,7 +3253,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Rule 5.2.1(d)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3221,7 +3281,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Rule 5.2.1(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3249,7 +3309,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4–Q5",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3277,7 +3337,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3305,7 +3365,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q12–Q13",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3333,7 +3393,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q13",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3361,7 +3421,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q13–Q14",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3391,7 +3451,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.205(e), adopted effective January 1, 2025",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3419,7 +3479,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.205(e)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3447,7 +3507,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Resident online filing instructions",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3475,7 +3535,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "When can I start notarizing documents?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3503,7 +3563,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-102(d)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3531,7 +3591,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-101(c) and §6-102(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3559,7 +3619,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "5 ILCS 312/3-107(d)–(e); 14 Ill. Adm. Code 176.900(f)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3587,7 +3647,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§3-107(f)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3615,7 +3675,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "FAQ, own signature as corporate officer",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3643,7 +3703,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "To Add an Electronic Notary to Your Commission",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3671,7 +3731,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.205(a)-(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3699,7 +3759,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.225(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3727,7 +3787,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§§176.225(a),176.235(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3755,7 +3815,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.235(c)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3783,7 +3843,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.235(c)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3811,7 +3871,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.235(c)(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3839,7 +3899,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.235(c)(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3864,10 +3924,10 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
         "D": "Correct. Three failures mean the course has been failed."
       },
       "source_id": "il-rules",
-      "source_reference": "§176.235(c)(5)",
+      "source_reference": "§176.235(c)(4), printed p. 8678 https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3891,11 +3951,11 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
         "C": "An employer statement does not renew a first applicant's result.",
         "D": "A seal purchase cannot extend an examination result."
       },
-      "source_id": "il-rules",
-      "source_reference": "§176.205(b)",
+      "source_id": "il-2025",
+      "source_reference": "§176.205(a), printed p. 593 https://www.ilsos.gov/content/dam/departments/index/register/volume49/register_volume49_2.pdf",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3923,7 +3983,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-102(d)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3951,7 +4011,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-102(d)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -3979,7 +4039,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-102(d)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4007,7 +4067,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-102(d)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4035,7 +4095,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-102(d)(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4063,7 +4123,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-102(d)(2); handbook basic rules",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4087,11 +4147,11 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
         "C": "Paying a fee does not qualify the witness.",
         "D": "Correct. The specified personal knowledge is required."
       },
-      "source_id": "il-handbook",
-      "source_reference": "§6-102(d)(2)",
+      "source_id": "il-in-person-identity-statute",
+      "source_reference": "5 ILCS 312/6-102(d)(2) https://www.ilga.gov/documents/legislation/ilcs/documents/000503120K6-102.htm",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4119,7 +4179,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-102(a)-(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4147,7 +4207,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-102(e)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4175,7 +4235,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-105(a), practice note",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4203,7 +4263,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-105(c), practice note",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4231,7 +4291,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§§6-101(c),6-105(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4259,7 +4319,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-101(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4287,7 +4347,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-105(d), practice note",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4315,7 +4375,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-103(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4343,7 +4403,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-103(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4371,7 +4431,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-103(a),(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4399,7 +4459,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.900(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4410,27 +4470,57 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "topic": "journals",
       "study_topic": "journals",
       "difficulty": "medium",
-      "question_text": "A notary employed by a law firm notarizes a document during that employment, and the firm keeps a copy. What journal exception applies?",
-      "option_a": "All lawyers' friends are exempt from journals",
-      "option_b": "The specified employment notarization need not be journaled",
-      "option_c": "Every notarization outside work is also exempt",
-      "option_d": "No Illinois notary ever needs a journal",
+      "question_text": "An Illinois law firm keeps copies of documents its employee notarizes at work. Which statement accurately describes the two official journal provisions?",
+      "option_a": "The Act exempts every employee whose employer keeps a copy.",
+      "option_b": "The administrative rule describes a law-firm exception, while the Act says an employer’s records do not relieve the notary’s journal duties.",
+      "option_c": "The administrative rule exempts the employee’s unrelated weekend notarizations.",
+      "option_d": "The Act requires only electronic notaries to keep a journal.",
       "correct_option": "B",
-      "explanation": "The law-firm exception applies to employment notarizations when the employing attorney or firm maintains document copies.",
+      "explanation": "Rule 176.900(f) describes an exception for notarizations performed during employment by an attorney or law firm that keeps copies. Section 3-107 separately requires notarial journals and says an employer’s records do not relieve the notary’s statutory duties. Apply the statute and seek the Secretary of State’s guidance before omitting an entry solely because the firm kept a copy.",
       "option_feedback": {
-        "A": "The exception depends on employment and retained copies.",
-        "B": "Correct. The stated facts satisfy the specific exception.",
-        "C": "Outside work does not gain this employment-based exception.",
-        "D": "Other nonexempt acts retain the general journal requirement."
+        "A": "The Act expressly says the employer’s records do not relieve the statutory duties.",
+        "B": "This describes both official texts and the difference in their wording.",
+        "C": "The administrative language concerns notarizations performed during qualifying employment.",
+        "D": "The statutory duty applies to ordinary and electronic notaries."
       },
       "source_id": "il-2025",
-      "source_reference": "§176.900(f)",
+      "source_reference": "14 Ill. Adm. Code § 176.900(f), 49 Ill. Reg. 608–609; 5 ILCS 312/3-107(a), (d). https://www.ilsos.gov/content/dam/departments/index/register/volume49/register_volume49_2.pdf",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
-      "version": 1,
+      "last_verified_at": "2026-11-19",
+      "version": 2,
       "is_free": true,
-      "status": "published"
+      "status": "published",
+      "previous_versions": [
+        {
+          "question_id": "il-110",
+          "state": "IL",
+          "topic": "journals",
+          "study_topic": "journals",
+          "difficulty": "medium",
+          "question_text": "A notary employed by a law firm notarizes a document during that employment, and the firm keeps a copy. What journal exception applies?",
+          "option_a": "All lawyers' friends are exempt from journals",
+          "option_b": "The specified employment notarization need not be journaled",
+          "option_c": "Every notarization outside work is also exempt",
+          "option_d": "No Illinois notary ever needs a journal",
+          "correct_option": "B",
+          "explanation": "The law-firm exception applies to employment notarizations when the employing attorney or firm maintains document copies.",
+          "option_feedback": {
+            "A": "The exception depends on employment and retained copies.",
+            "B": "Correct. The stated facts satisfy the specific exception.",
+            "C": "Outside work does not gain this employment-based exception.",
+            "D": "Other nonexempt acts retain the general journal requirement."
+          },
+          "source_id": "il-2025",
+          "source_reference": "§176.900(f)",
+          "effective_from": "2026-11-14",
+          "effective_to": null,
+          "last_verified_at": "2026-11-14",
+          "version": 1,
+          "is_free": true,
+          "status": "published"
+        }
+      ]
     },
     {
       "question_id": "il-111",
@@ -4455,7 +4545,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.900(a),(f)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4466,27 +4556,57 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "topic": "journals",
       "study_topic": "journals",
       "difficulty": "medium",
-      "question_text": "A journal contains only notarizations performed within the notary's employment by a law firm. Who owns that journal under the special rule?",
-      "option_a": "Every client jointly",
-      "option_b": "The stamp seller",
-      "option_c": "The county recorder",
-      "option_d": "The employing attorney or law firm",
+      "question_text": "An Illinois notary is leaving a law firm. A journal contains only notarizations the notary performed in that job. Which statement reflects both Illinois provisions?",
+      "option_a": "The journal automatically belongs to the firm’s clients.",
+      "option_b": "The stamp vendor owns the journal after the notary leaves.",
+      "option_c": "The law expressly requires the county recorder to take this journal.",
+      "option_d": "The rule describes firm ownership of work-only journals, but the Act bars surrender to or retention by the employer when employment ends.",
       "correct_option": "D",
-      "explanation": "The law-firm rule makes journals solely of employment notarizations the property of the employing attorney or firm.",
+      "explanation": "Rule 176.900(f) describes a journal kept solely for the law-firm job as the firm’s property. Section 3-107(d) separately states that a notary must not surrender the journal to the employer and that the employer must not retain it when employment ends. The ownership language alone does not authorize a handover after employment.",
       "option_feedback": {
-        "A": "Clients do not jointly own the journal under this rule.",
-        "B": "The seller does not own official records.",
-        "C": "The rule does not assign this journal to the recorder.",
-        "D": "Correct. The specific law-firm ownership provision applies."
+        "A": "Neither provision assigns ownership to clients.",
+        "B": "Neither provision gives the seal seller control of the journal.",
+        "C": "There is no county-recorder handover under either cited provision.",
+        "D": "The rule addresses ownership and the Act governs the stated custody restriction at departure."
       },
       "source_id": "il-2025",
-      "source_reference": "§176.900(f)",
+      "source_reference": "14 Ill. Adm. Code § 176.900(f), 49 Ill. Reg. 608–609; 5 ILCS 312/3-107(d). https://www.ilsos.gov/content/dam/departments/index/register/volume49/register_volume49_2.pdf",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
-      "version": 1,
+      "last_verified_at": "2026-11-19",
+      "version": 2,
       "is_free": true,
-      "status": "published"
+      "status": "published",
+      "previous_versions": [
+        {
+          "question_id": "il-112",
+          "state": "IL",
+          "topic": "journals",
+          "study_topic": "journals",
+          "difficulty": "medium",
+          "question_text": "A journal contains only notarizations performed within the notary's employment by a law firm. Who owns that journal under the special rule?",
+          "option_a": "Every client jointly",
+          "option_b": "The stamp seller",
+          "option_c": "The county recorder",
+          "option_d": "The employing attorney or law firm",
+          "correct_option": "D",
+          "explanation": "The law-firm rule makes journals solely of employment notarizations the property of the employing attorney or firm.",
+          "option_feedback": {
+            "A": "Clients do not jointly own the journal under this rule.",
+            "B": "The seller does not own official records.",
+            "C": "The rule does not assign this journal to the recorder.",
+            "D": "Correct. The specific law-firm ownership provision applies."
+          },
+          "source_id": "il-2025",
+          "source_reference": "§176.900(f)",
+          "effective_from": "2026-11-14",
+          "effective_to": null,
+          "last_verified_at": "2026-11-14",
+          "version": 1,
+          "is_free": true,
+          "status": "published"
+        }
+      ]
     },
     {
       "question_id": "il-113",
@@ -4511,7 +4631,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.900(f)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4539,7 +4659,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.900(g)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4567,7 +4687,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.900(h)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4595,7 +4715,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.900(g)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4623,7 +4743,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "FAQ, May I notarize my own signature?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4651,7 +4771,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-104(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4679,7 +4799,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-104(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4707,7 +4827,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-104(g)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4735,7 +4855,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-104(h)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4763,7 +4883,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-104(j)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4791,7 +4911,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-104(l)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4819,7 +4939,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6-104(k)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4847,7 +4967,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§176.800; §§6A-101,6A-103",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4875,7 +4995,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6A-104(e)-(f)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4903,7 +5023,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6A-104(f)(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4931,7 +5051,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§3-105(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4959,7 +5079,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6A-104(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -4987,7 +5107,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6A-104(d)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5015,7 +5135,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6A-104(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5043,7 +5163,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§6A-103(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5073,7 +5193,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1923(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5101,7 +5221,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1922(2)(B)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5129,7 +5249,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q5, Certificate of Qualification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5157,7 +5277,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1904(3)(A)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5185,7 +5305,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1904(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5213,7 +5333,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1920(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5241,7 +5361,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1920(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5269,7 +5389,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1907(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5297,7 +5417,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1905(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5325,7 +5445,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q13–16, Remote approval and training",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5353,7 +5473,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1922(2)(A)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5381,7 +5501,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1922(2)(B)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5409,7 +5529,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1922(2)(C)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5437,7 +5557,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1923(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5465,7 +5585,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1923(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5493,7 +5613,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "New commission instructions",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5521,7 +5641,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5549,7 +5669,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "§1922(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -5577,7 +5697,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Q5",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20211,7 +20331,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Tutorial, Education & the Test — Do I have to take the notary training?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20239,7 +20359,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Tutorial, Education & the Test — approved providers",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20267,7 +20387,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "What's Next — oath of office and processing fee",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20295,7 +20415,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Notary Best Practices — May I choose a certificate for a customer?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20323,7 +20443,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "The Notary Journal — Is my journal a public record?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20351,7 +20471,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "The Notary Journal — leaving an employer",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20379,7 +20499,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "List of Qualifications — residency, employment or practice",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20407,7 +20527,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Understanding the Process — notary location",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20435,7 +20555,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Getting your Commission — bonds and E&O insurance",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20463,7 +20583,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Education and Exam, pp. 15–16",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20491,7 +20611,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, pp. 14–16",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20519,7 +20639,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 14",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20547,7 +20667,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 14",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20575,7 +20695,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, pp. 14–15",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20603,7 +20723,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 14",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20631,7 +20751,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, pp. 15–16",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20659,7 +20779,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 16",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20687,7 +20807,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 16",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20715,7 +20835,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, pp. 16–17",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20743,7 +20863,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 17",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20771,7 +20891,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 17",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20799,7 +20919,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 17",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20827,7 +20947,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 18",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20855,7 +20975,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 18",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20883,7 +21003,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 18",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20911,7 +21031,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 18",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20939,7 +21059,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, pp. 18–19",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20967,7 +21087,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 27",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -20995,7 +21115,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 27",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21023,7 +21143,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 31",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21051,7 +21171,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, pp. 31–32",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21079,7 +21199,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 31",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21107,7 +21227,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, pp. 31–32",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21135,7 +21255,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 31",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21163,7 +21283,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, pp. 31–32",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21191,7 +21311,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 32",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21202,27 +21322,57 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "topic": "identification",
       "study_topic": "certificates",
       "difficulty": "medium",
-      "question_text": "An Oregon signer offers only a U.S. passport card. Why does the guide reject that card by itself?",
-      "option_a": "Only Oregon-issued passports qualify",
-      "option_b": "It lacks the required signature",
-      "option_c": "It was issued by the wrong country",
-      "option_d": "Its color is not blue",
+      "question_text": "For a traditional Oregon notarization, a signer presents a clearly legible U.S. passport book that expired three years and one month ago. The notary does not know the signer, and there is no credible witness. What should the notary do?",
+      "option_a": "Accept the passport book because it has a legible photograph.",
+      "option_b": "Ask for another qualifying credential because the book is outside the three-year expiration limit.",
+      "option_c": "Accept the passport book if the customer signs an additional statement.",
+      "option_d": "Treat the passport book as current if the document being signed is less than three years old.",
       "correct_option": "B",
-      "explanation": "The guide requires both photograph and signature for this documentary route.",
+      "explanation": "Oregon allows a U.S. passport book as identification when it is current or expired no more than three years before the notarial act. This passport falls outside that window, so the notary needs another qualifying form of identity evidence before proceeding.",
       "option_feedback": {
-        "A": "Oregon does not issue passports.",
-        "B": "Correct. The guide requires both photograph and signature for this documentary route.",
-        "C": "A U.S. issuer is not the identified problem.",
-        "D": "Color is not the stated test."
+        "A": "A clear photograph does not extend the time window.",
+        "B": "Correct. The passport expired more than three years before the act, and the signer needs another permitted credential.",
+        "C": "The signer’s additional statement does not make the expired credential eligible or supply the missing independent evidence.",
+        "D": "The relevant date is the date of the notarial act, independent of the document’s age."
       },
       "source_id": "or-guide",
-      "source_reference": "Oregon Notary Public Guide, p. 32",
+      "source_reference": "ORS 194.240(2)(a)(A) and (3), 2025 Oregon Revised Statutes. https://www.oregonlegislature.gov/bills_laws/ors/ors194.html?ID=17795",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
-      "version": 1,
+      "last_verified_at": "2026-11-19",
+      "version": 2,
       "is_free": true,
-      "status": "published"
+      "status": "published",
+      "previous_versions": [
+        {
+          "question_id": "or-059",
+          "state": "OR",
+          "topic": "identification",
+          "study_topic": "certificates",
+          "difficulty": "medium",
+          "question_text": "An Oregon signer offers only a U.S. passport card. Why does the guide reject that card by itself?",
+          "option_a": "Only Oregon-issued passports qualify",
+          "option_b": "It lacks the required signature",
+          "option_c": "It was issued by the wrong country",
+          "option_d": "Its color is not blue",
+          "correct_option": "B",
+          "explanation": "The guide requires both photograph and signature for this documentary route.",
+          "option_feedback": {
+            "A": "Oregon does not issue passports.",
+            "B": "Correct. The guide requires both photograph and signature for this documentary route.",
+            "C": "A U.S. issuer is not the identified problem.",
+            "D": "Color is not the stated test."
+          },
+          "source_id": "or-guide",
+          "source_reference": "Oregon Notary Public Guide, p. 32",
+          "effective_from": "2026-11-14",
+          "effective_to": null,
+          "last_verified_at": "2026-11-14",
+          "version": 1,
+          "is_free": true,
+          "status": "published"
+        }
+      ]
     },
     {
       "question_id": "or-060",
@@ -21247,7 +21397,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 32",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21275,7 +21425,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, pp. 32–33",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21303,7 +21453,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, pp. 32–33",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21331,7 +21481,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 33",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21359,7 +21509,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 34",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21387,7 +21537,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 34",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21415,7 +21565,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 34",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21443,7 +21593,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 35",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21471,7 +21621,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 35",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21499,7 +21649,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 35",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21527,7 +21677,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Oregon Notary Public Guide, p. 35",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21555,7 +21705,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Understanding the Process",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21583,7 +21733,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Find a Vendor",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21611,7 +21761,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Submit the Remote Online Notarization Notice Form",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21639,7 +21789,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Submit the Remote Online Notarization Notice Form",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21667,7 +21817,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Things to Remember",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21695,7 +21845,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Things to Remember",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21723,7 +21873,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON — standard videoconferencing",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21751,7 +21901,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON — platform costs",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21779,7 +21929,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON — journal requirements",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21807,7 +21957,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON — journal requirements",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21835,7 +21985,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON — journal requirements",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21863,7 +22013,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON — authorization directory",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21893,7 +22043,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Required Information Checklist, steps 4–8",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21921,7 +22071,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Notarial Acts & Definitions — What is a Jurat?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21949,7 +22099,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(4), definition of copy certification",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -21977,7 +22127,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Items 1–2; Notary Journals Required Beginning May 6, 2026",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22005,7 +22155,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "6 Things to Know, item 3",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22033,7 +22183,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "6 Things to Know, item 5",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22061,7 +22211,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3.6(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22089,7 +22239,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-10, Testimonials prohibited",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22117,7 +22267,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Notarial Acts & Definitions — What is an Acknowledgement?",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22145,7 +22295,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Taking the Test, p. 4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22173,7 +22323,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3(2)(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22201,7 +22351,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3(2)(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22229,7 +22379,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3(2)(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22257,7 +22407,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3(2)(d)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22285,7 +22435,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3(2)(d)(iii)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22313,7 +22463,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3(2)(e)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22341,7 +22491,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3(7)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22369,7 +22519,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3(5)(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22397,7 +22547,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3(5)(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22425,7 +22575,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22453,7 +22603,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-16(6)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22481,7 +22631,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-12(1)(a)(ii)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22509,7 +22659,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-12(1)(a)(iv)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22537,7 +22687,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-9(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22565,7 +22715,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-9(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22593,7 +22743,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-13(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22621,7 +22771,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-13(1)-(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22649,7 +22799,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-13(2)(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22677,7 +22827,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-13(2)(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22705,7 +22855,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-13(3)(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22733,7 +22883,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-13(3)(d)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22761,7 +22911,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-13(4)(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22789,7 +22939,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-13(4)(d)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22817,7 +22967,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-13(4)(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22845,7 +22995,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-13(4)(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22873,7 +23023,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(22)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22901,7 +23051,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(25)(a)(i)(A)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22929,7 +23079,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(25)(a)(i)(A)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22957,7 +23107,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(25)(a)(i)(B)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -22985,7 +23135,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(25)(b)(i)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23013,7 +23163,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(25)(a)(i)(C)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23041,7 +23191,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23069,7 +23219,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-6.5(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23097,7 +23247,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23125,7 +23275,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-6.5(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23153,7 +23303,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23181,7 +23331,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-6(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23209,7 +23359,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-12(1)(a)(ii)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23237,7 +23387,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-6.5(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23265,7 +23415,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-2(4), 46-1-6.5(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23293,7 +23443,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON application process, prerequisite",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23321,7 +23471,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON application process, find a vendor",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23349,7 +23499,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON application process, increase bond",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23377,7 +23527,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON application process, bond option 2",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23405,7 +23555,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON application process, electronic seal/signature",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23433,7 +23583,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON application process, submit application",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23461,7 +23611,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON application process, fee and confirmation",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23489,7 +23639,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "RON application process, renewal",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23517,7 +23667,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3.6(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -23545,7 +23695,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "46-1-3.6(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -29159,6 +29309,35 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "status": "published"
     },
     {
+      "question_id": "ri-204",
+      "state": "RI",
+      "topic": "identification",
+      "study_topic": "identity",
+      "difficulty": "medium",
+      "question_text": "A signer presents another type of current government ID with both a photo and a signature. The photo does not look like the signer. What may the Rhode Island notary do?",
+      "option_a": "Ask for additional identification to resolve the mismatch",
+      "option_b": "Accept the ID because the two printed features settle identity",
+      "option_c": "Compare the customer’s signature to the fee receipt instead",
+      "option_d": "Ask the document recipient to waive the identity check",
+      "correct_option": "A",
+      "explanation": "The notary must be satisfied that the ID identifies the person who appears. Rhode Island law allows the notary to request more information or identification when the first credential leaves reasonable doubt.",
+      "option_feedback": {
+        "A": "Additional evidence can resolve the mismatch before the notary proceeds.",
+        "B": "A photo and signature do not make an unexplained mismatch acceptable.",
+        "C": "A fee receipt does not resolve who is presenting the credential.",
+        "D": "Recipient consent cannot waive the notary’s identity determination."
+      },
+      "source_id": "ri-law-6",
+      "source_reference": "R.I. Gen. Laws § 42-30.1-6(b)(1)(ii), (c). Rhode Island Notary Public Manual, p. 19. https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-6.htm",
+      "effective_from": "2026-11-14",
+      "effective_to": null,
+      "last_verified_at": "2026-11-19",
+      "version": 1,
+      "is_free": true,
+      "status": "published",
+      "replaces_question_id": "ri-039"
+    },
+    {
       "question_id": "ri-059",
       "state": "RI",
       "topic": "acknowledgments",
@@ -29556,27 +29735,57 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "topic": "copy-certification",
       "study_topic": "copies",
       "difficulty": "medium",
-      "question_text": "A customer supplies an eligible original and a photocopy made at home. What must the notary do before certifying?",
-      "option_a": "Rely only on the customer's assurance",
-      "option_b": "Certify without seeing the original",
-      "option_c": "Compare and determine accuracy and completeness under the applicable procedure",
-      "option_d": "Use the customer's receipt as the original",
+      "question_text": "A customer brings an eligible private document and a photocopy made at home. Which procedure follows the Rhode Island Secretary of State’s published copy-certification instructions?",
+      "option_a": "Certify the home copy after the customer promises every page is present",
+      "option_b": "Certify a copy based on its matching page numbers",
+      "option_c": "Make or supervise a fresh copy, then compare it with the original for accuracy and completeness",
+      "option_d": "Use the customer’s receipt as proof the copy matches",
       "correct_option": "C",
-      "explanation": "The Standards require copying, supervision or comparison and a determination that the copy is accurate and complete.",
+      "explanation": "The Secretary of State’s published procedure calls for the notary to make or supervise the copy and compare it with the original. The notary must determine that the reproduction is full, true, and accurate.",
       "option_feedback": {
-        "A": "The notary must make the copy determination.",
-        "B": "The required comparison cannot be based on an unseen record.",
-        "C": "The Standards require copying, supervision or comparison and a determination that the copy is accurate and complete.",
-        "D": "A receipt does not replace the record being copied."
+        "A": "The notary must make an independent copy determination.",
+        "B": "Page numbers alone cannot establish the accuracy of the contents.",
+        "C": "Making or supervising the copy and checking it against the original follows the published procedure.",
+        "D": "A receipt does not show that the copy reproduces the original."
       },
       "source_id": "ri-standards",
-      "source_reference": "Sections 2(c), 3(f)(iv), and 4(a)(1)",
+      "source_reference": "R.I. Gen. Laws § 42-30.1-4(d). Standards of Conduct § 2(c)(2)–(4). Rhode Island Notary Public Manual, p. 14. SOS Quick Reference Guide, PDF p. 7. https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-4.htm",
       "effective_from": "2026-11-14",
-      "effective_to": "2026-11-19",
-      "last_verified_at": "2026-11-14",
-      "version": 1,
+      "effective_to": null,
+      "last_verified_at": "2026-11-19",
+      "version": 2,
       "is_free": true,
-      "status": "published"
+      "status": "published",
+      "previous_versions": [
+        {
+          "question_id": "ri-106",
+          "state": "RI",
+          "topic": "copy-certification",
+          "study_topic": "copies",
+          "difficulty": "medium",
+          "question_text": "A customer supplies an eligible original and a photocopy made at home. What must the notary do before certifying?",
+          "option_a": "Rely only on the customer's assurance",
+          "option_b": "Certify without seeing the original",
+          "option_c": "Compare and determine accuracy and completeness under the applicable procedure",
+          "option_d": "Use the customer's receipt as the original",
+          "correct_option": "C",
+          "explanation": "The Standards require copying, supervision or comparison and a determination that the copy is accurate and complete.",
+          "option_feedback": {
+            "A": "The notary must make the copy determination.",
+            "B": "The required comparison cannot be based on an unseen record.",
+            "C": "The Standards require copying, supervision or comparison and a determination that the copy is accurate and complete.",
+            "D": "A receipt does not replace the record being copied."
+          },
+          "source_id": "ri-standards",
+          "source_reference": "Sections 2(c), 3(f)(iv), and 4(a)(1)",
+          "effective_from": "2026-11-14",
+          "effective_to": "2026-11-19",
+          "last_verified_at": "2026-11-14",
+          "version": 1,
+          "is_free": true,
+          "status": "published"
+        }
+      ]
     },
     {
       "question_id": "ri-119",
@@ -30387,7 +30596,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.004(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30415,7 +30624,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.016(a)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30442,11 +30651,40 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_id": "tx-gov",
       "source_reference": "406.014(g)",
       "effective_from": "2026-11-14",
-      "effective_to": null,
+      "effective_to": "2026-11-19",
       "last_verified_at": "2026-11-14",
       "version": 1,
       "is_free": true,
       "status": "published"
+    },
+    {
+      "question_id": "tx-206",
+      "state": "TX",
+      "topic": "journals",
+      "study_topic": "records",
+      "difficulty": "medium",
+      "question_text": "A Texas notary entered a no-fee paper acknowledgment in the journal. The entry is still within the applicable retention period. May the notary discard it because no fee was charged?",
+      "option_a": "Yes, if the same signer has other entries",
+      "option_b": "No. Keep it for the remainder of the applicable retention period",
+      "option_c": "Yes, if the signer no longer needs a copy",
+      "option_d": "Yes, if the notary keeps only the date of the act",
+      "correct_option": "B",
+      "explanation": "An ordinary paper acknowledgment must be recorded even when the notary charges no fee. Preserve the complete entry while its applicable retention period continues.",
+      "option_feedback": {
+        "A": "Other acts involving the same signer do not replace this record.",
+        "B": "A waived fee does not shorten the retention obligation for the entry.",
+        "C": "Retention does not depend on a signer’s later need for a copy.",
+        "D": "Keeping only the date does not preserve the required entry."
+      },
+      "source_id": "tx-gov",
+      "source_reference": "Tex. Gov’t Code § 406.014(a), (g). Texas SOS Notary Public Educational Information, Record Book and Public Records. https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "effective_from": "2026-11-14",
+      "effective_to": null,
+      "last_verified_at": "2026-11-19",
+      "version": 1,
+      "is_free": true,
+      "status": "published",
+      "replaces_question_id": "tx-006"
     },
     {
       "question_id": "tx-007",
@@ -30471,7 +30709,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.013(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30499,7 +30737,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "FAQ 9, same-certificate versus separate-certificate examples; Government Code 406.024(a)(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30527,7 +30765,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.017(a)(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30555,7 +30793,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.110(b)(2), selected direct-credential branch; 1 TAC 87.41(d)(2)-(3), credible-witness alternative",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30723,7 +30961,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.004(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30751,7 +30989,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.004(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30779,7 +31017,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.002",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30807,7 +31045,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.003",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30835,7 +31073,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.005(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31003,7 +31241,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.004(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31031,7 +31269,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.004(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31059,7 +31297,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.006(b)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31087,7 +31325,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.006(b)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31115,7 +31353,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.006(b)(4)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31143,7 +31381,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Definitions and sample jurat; Government Code §406.016(a)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31171,7 +31409,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Definitions: Affirmation; sample forms",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31199,7 +31437,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.016(a)(3);406.008(b)(3)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31227,7 +31465,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.0165(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31255,7 +31493,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.0165(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31317,6 +31555,35 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "status": "published"
     },
     {
+      "question_id": "tx-204",
+      "state": "TX",
+      "topic": "journals",
+      "study_topic": "records",
+      "difficulty": "medium",
+      "question_text": "A Texas notary’s journal entry properly records the signer’s address and identification method for a paper acknowledgment. Which name must the same entry include?",
+      "option_a": "The document courier’s name",
+      "option_b": "The name of the person whose signature is acknowledged",
+      "option_c": "The name of the notary’s employer",
+      "option_d": "The name of the equipment vendor",
+      "correct_option": "B",
+      "explanation": "The journal must identify the signer, grantor, or maker. Recording the signer’s address and identification method does not replace the signer’s name.",
+      "option_feedback": {
+        "A": "The courier’s name does not identify the person whose signature was acknowledged.",
+        "B": "The signer’s name is a separate entry required by § 406.014(a)(3).",
+        "C": "The employer does not substitute for the signer in this field.",
+        "D": "The equipment vendor has no part in this identification entry."
+      },
+      "source_id": "tx-gov",
+      "source_reference": "Tex. Gov’t Code § 406.014(a)(3)–(5). https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "effective_from": "2026-11-14",
+      "effective_to": null,
+      "last_verified_at": "2026-11-19",
+      "version": 1,
+      "is_free": true,
+      "status": "published",
+      "replaces_question_id": "tx-102"
+    },
+    {
       "question_id": "tx-103",
       "state": "TX",
       "topic": "journals",
@@ -31350,27 +31617,57 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "topic": "journals",
       "study_topic": "records",
       "difficulty": "medium",
-      "question_text": "A person is introduced to the notary for an act. Which introducer details does the record provision list?",
-      "option_a": "Only the introducer's initials",
-      "option_b": "The introducer's credit-card security code",
-      "option_c": "Only the introducer's job title",
-      "option_d": "The introducer's name and mailing address",
+      "question_text": "A credible witness swears to a signer’s identity in a Texas paper acknowledgment. The journal identifies the introduction method and includes the witness’s required address. What additional detail about the witness must the notary record?",
+      "option_a": "The witness’s initials only",
+      "option_b": "The witness’s credit card number",
+      "option_c": "The witness’s job title",
+      "option_d": "The name of the witness who introduced the signer",
       "correct_option": "D",
-      "explanation": "Section 406.014(a)(5) expressly requests both.",
+      "explanation": "When the signer is introduced to the notary, the record must identify the person who made the introduction. The witness’s address alone does not provide the required name.",
       "option_feedback": {
-        "A": "Initials do not supply the listed details.",
-        "B": "That is unrelated and sensitive.",
-        "C": "A job title does not replace name and address.",
-        "D": "Section 406.014(a)(5) expressly requests both."
+        "A": "Initials alone do not record the witness’s name.",
+        "B": "A credit card number is not the required name field.",
+        "C": "An occupation does not identify the person who introduced the signer.",
+        "D": "Enter the introducing witness’s name in addition to the other required information."
       },
       "source_id": "tx-gov",
-      "source_reference": "406.014(a)(5)",
+      "source_reference": "Tex. Gov’t Code § 406.014(a)(5). https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
       "effective_from": "2026-11-14",
-      "effective_to": "2026-11-19",
-      "last_verified_at": "2026-11-14",
-      "version": 1,
+      "effective_to": null,
+      "last_verified_at": "2026-11-19",
+      "version": 2,
       "is_free": true,
-      "status": "published"
+      "status": "published",
+      "previous_versions": [
+        {
+          "question_id": "tx-104",
+          "state": "TX",
+          "topic": "journals",
+          "study_topic": "records",
+          "difficulty": "medium",
+          "question_text": "A person is introduced to the notary for an act. Which introducer details does the record provision list?",
+          "option_a": "Only the introducer's initials",
+          "option_b": "The introducer's credit-card security code",
+          "option_c": "Only the introducer's job title",
+          "option_d": "The introducer's name and mailing address",
+          "correct_option": "D",
+          "explanation": "Section 406.014(a)(5) expressly requests both.",
+          "option_feedback": {
+            "A": "Initials do not supply the listed details.",
+            "B": "That is unrelated and sensitive.",
+            "C": "A job title does not replace name and address.",
+            "D": "Section 406.014(a)(5) expressly requests both."
+          },
+          "source_id": "tx-gov",
+          "source_reference": "406.014(a)(5)",
+          "effective_from": "2026-11-14",
+          "effective_to": "2026-11-19",
+          "last_verified_at": "2026-11-14",
+          "version": 1,
+          "is_free": true,
+          "status": "published"
+        }
+      ]
     },
     {
       "question_id": "tx-105",
@@ -31378,27 +31675,57 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "topic": "journals",
       "study_topic": "records",
       "difficulty": "medium",
-      "question_text": "An instrument is proved by a witness. What additional record information is expressly relevant?",
-      "option_a": "The witness mailing address and how the witness was known or introduced",
-      "option_b": "Only the number of pages in the office calendar",
-      "option_c": "No witness information because the principal did not acknowledge",
-      "option_d": "A promise to remember the witness later",
+      "question_text": "A witness proves a written instrument before a Texas notary. The journal already contains the required names and addresses. What must the notary record about how the witness was identified?",
+      "option_a": "Whether the notary personally knew the witness or the witness was introduced",
+      "option_b": "Whether the notary had previously notarized a different instrument for the grantor",
+      "option_c": "Whether the witness is related to the document’s recipient",
+      "option_d": "Whether the principal sent the instrument by mail",
       "correct_option": "A",
-      "explanation": "Section 406.014(a)(6) lists witness and introducer information.",
+      "explanation": "When a witness proves the instrument, the statute calls for recording whether the notary personally knew the witness or the witness was introduced. The entry still has to contain the separately required participant details.",
       "option_feedback": {
-        "A": "Section 406.014(a)(6) lists witness and introducer information.",
-        "B": "That does not describe the proof witness.",
-        "C": "The statute expressly covers proof by witness.",
-        "D": "Memory does not supply the required record."
+        "A": "That documents how the notary knew or was introduced to the proof witness.",
+        "B": "Prior work for the grantor does not state how the proof witness was identified.",
+        "C": "A relationship to the recipient does not establish how the notary knew the witness.",
+        "D": "The delivery method does not identify the witness."
       },
       "source_id": "tx-gov",
-      "source_reference": "406.014(a)(6)",
+      "source_reference": "Tex. Gov’t Code § 406.014(a)(6). https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
       "effective_from": "2026-11-14",
-      "effective_to": "2026-11-19",
-      "last_verified_at": "2026-11-14",
-      "version": 1,
+      "effective_to": null,
+      "last_verified_at": "2026-11-19",
+      "version": 2,
       "is_free": true,
-      "status": "published"
+      "status": "published",
+      "previous_versions": [
+        {
+          "question_id": "tx-105",
+          "state": "TX",
+          "topic": "journals",
+          "study_topic": "records",
+          "difficulty": "medium",
+          "question_text": "An instrument is proved by a witness. What additional record information is expressly relevant?",
+          "option_a": "The witness mailing address and how the witness was known or introduced",
+          "option_b": "Only the number of pages in the office calendar",
+          "option_c": "No witness information because the principal did not acknowledge",
+          "option_d": "A promise to remember the witness later",
+          "correct_option": "A",
+          "explanation": "Section 406.014(a)(6) lists witness and introducer information.",
+          "option_feedback": {
+            "A": "Section 406.014(a)(6) lists witness and introducer information.",
+            "B": "That does not describe the proof witness.",
+            "C": "The statute expressly covers proof by witness.",
+            "D": "Memory does not supply the required record."
+          },
+          "source_id": "tx-gov",
+          "source_reference": "406.014(a)(6)",
+          "effective_from": "2026-11-14",
+          "effective_to": "2026-11-19",
+          "last_verified_at": "2026-11-14",
+          "version": 1,
+          "is_free": true,
+          "status": "published"
+        }
+      ]
     },
     {
       "question_id": "tx-126",
@@ -31602,27 +31929,57 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "topic": "seals-fees",
       "study_topic": "fees",
       "difficulty": "medium",
-      "question_text": "A deed has a second signature acknowledged on the same instrument. What incremental amount does the schedule permit for that additional signature?",
+      "question_text": "At an in-person notarization, one acknowledgment certificate covers two signatures on the same deed. After the fee for the first signature, how much more may the Texas notary charge for the second signature?",
       "option_a": "$25",
-      "option_b": "No statutory limit",
+      "option_b": "Any amount disclosed before the act",
       "option_c": "$1",
       "option_d": "$10",
       "correct_option": "C",
-      "explanation": "The provision permits one dollar for each additional signature.",
+      "explanation": "When one acknowledgment certificate covers both signatures, the maximum is $10 for the first signature and $1 for the additional signature. The listed fees include the certificate and seal.",
       "option_feedback": {
-        "A": "That is the maximum separate online supplement.",
-        "B": "The schedule specifies the amount.",
-        "C": "The provision permits one dollar for each additional signature.",
-        "D": "Ten dollars is the first-signature amount."
+        "A": "$25 is the separate maximum supplement for an online notarization, which is outside this in-person scenario.",
+        "B": "Disclosure does not remove the statutory limit.",
+        "C": "The additional signature on this one certificate adds a maximum of $1.",
+        "D": "$10 is the maximum for the first signature on the certificate."
       },
       "source_id": "tx-gov",
-      "source_reference": "406.024(a)(5)",
+      "source_reference": "Tex. Gov’t Code § 406.024(a)(5), (b), and § 406.111. Texas SOS Online Notary Public Educational Information, FAQ 9. https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
       "effective_from": "2026-11-14",
-      "effective_to": "2026-11-19",
-      "last_verified_at": "2026-11-14",
-      "version": 1,
+      "effective_to": null,
+      "last_verified_at": "2026-11-19",
+      "version": 2,
       "is_free": true,
-      "status": "published"
+      "status": "published",
+      "previous_versions": [
+        {
+          "question_id": "tx-143",
+          "state": "TX",
+          "topic": "seals-fees",
+          "study_topic": "fees",
+          "difficulty": "medium",
+          "question_text": "A deed has a second signature acknowledged on the same instrument. What incremental amount does the schedule permit for that additional signature?",
+          "option_a": "$25",
+          "option_b": "No statutory limit",
+          "option_c": "$1",
+          "option_d": "$10",
+          "correct_option": "C",
+          "explanation": "The provision permits one dollar for each additional signature.",
+          "option_feedback": {
+            "A": "That is the maximum separate online supplement.",
+            "B": "The schedule specifies the amount.",
+            "C": "The provision permits one dollar for each additional signature.",
+            "D": "Ten dollars is the first-signature amount."
+          },
+          "source_id": "tx-gov",
+          "source_reference": "406.024(a)(5)",
+          "effective_from": "2026-11-14",
+          "effective_to": "2026-11-19",
+          "last_verified_at": "2026-11-14",
+          "version": 1,
+          "is_free": true,
+          "status": "published"
+        }
+      ]
     },
     {
       "question_id": "tx-144",
@@ -31703,7 +32060,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.016(a)(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31731,7 +32088,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.016(a)(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31759,7 +32116,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.016(a)(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31787,7 +32144,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.016(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31815,7 +32172,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.016(d)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31842,11 +32199,40 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_id": "tx-gov",
       "source_reference": "406.105(a),(b)",
       "effective_from": "2026-11-14",
-      "effective_to": null,
+      "effective_to": "2026-11-19",
       "last_verified_at": "2026-11-14",
       "version": 1,
       "is_free": true,
       "status": "published"
+    },
+    {
+      "question_id": "tx-207",
+      "state": "TX",
+      "topic": "electronic-ron",
+      "study_topic": "online",
+      "difficulty": "medium",
+      "question_text": "A commissioned traditional Texas notary applies for appointment as an online notary. Which requirement still applies when qualifying for the online appointment?",
+      "option_a": "Permission from a private video platform in place of state appointment",
+      "option_b": "A study certificate in place of meeting the state’s qualifications",
+      "option_c": "A waiver of the ordinary notary qualifications because the act is remote",
+      "option_d": "Satisfying the requirements for appointment as a traditional Texas notary",
+      "correct_option": "D",
+      "explanation": "The online commission does not replace the ordinary threshold qualifications. The applicant must satisfy the traditional appointment requirements, along with the separate online requirements.",
+      "option_feedback": {
+        "A": "A provider cannot supply state appointment or replace its requirements.",
+        "B": "A private certificate does not substitute for statutory qualifications.",
+        "C": "The online provision expressly incorporates Subchapter A qualifications.",
+        "D": "The traditional qualifications remain part of online eligibility."
+      },
+      "source_id": "tx-gov",
+      "source_reference": "Tex. Gov’t Code § 406.105(b)(1)–(3). 1 Tex. Admin. Code §§ 87.11, 87.14(a)(1). Texas SOS Online Notary Application Guide, p. 2. https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "effective_from": "2026-11-14",
+      "effective_to": null,
+      "last_verified_at": "2026-11-19",
+      "version": 1,
+      "is_free": true,
+      "status": "published",
+      "replaces_question_id": "tx-176"
     },
     {
       "question_id": "tx-177",
@@ -31871,7 +32257,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Before you apply",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31899,7 +32285,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Reminder; renewal order",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31927,7 +32313,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Reminder; commission term",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31955,7 +32341,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.101(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"

@@ -55,7 +55,7 @@ export function loadProgress(state: import("@/lib/types").StateCode = "AZ", owne
     const raw = localStorage.getItem(progressKey(owner, state));
     if (!raw) return { ...empty };
     const progress: SavedProgress = { ...empty, ...JSON.parse(raw) };
-    if (state === 'NY') {
+    if (progress.answeredIds.length || progress.wrongIds.length) {
       const replaced = [...new Set([...progress.answeredIds, ...progress.wrongIds])].filter(id => (progress.questionVersions?.[id] ?? 1) < currentQuestionVersion(id));
       if (replaced.length) {
         progress.revisionHistory = [...(progress.revisionHistory ?? []), ...replaced.map(id => ({ questionId: id, version: progress.questionVersions?.[id] ?? 1, answered: progress.answeredIds.includes(id), wrong: progress.wrongIds.includes(id) }))];
@@ -88,8 +88,13 @@ export function removeWrong(id: string) {
   saveProgress({ wrongIds: p.wrongIds.filter((x) => x !== id) });
 }
 
-export function recordAnswer(id: string, correct: boolean, state: import("@/lib/types").StateCode = "AZ") {
+export function recordAnswer(id: string, correct: boolean, state: import("@/lib/types").StateCode = "AZ", version = currentQuestionVersion(id)) {
   const p = loadProgress(state);
+  if (version < currentQuestionVersion(id)) {
+    const history = (p.revisionHistory ?? []).filter(item => item.questionId !== id || item.version !== version);
+    saveProgress({ revisionHistory: [...history, { questionId: id, version, answered: true, wrong: !correct }] }, state);
+    return;
+  }
   const answeredIds = p.answeredIds.includes(id) ? p.answeredIds : [...p.answeredIds, id];
   const wrongIds = correct ? p.wrongIds.filter((x) => x !== id) : p.wrongIds.includes(id) ? p.wrongIds : [...p.wrongIds, id];
   saveProgress({ answeredIds, wrongIds, lastQuestionId: id, questionVersions: { ...p.questionVersions, [id]: currentQuestionVersion(id) } }, state);
@@ -113,6 +118,9 @@ export function mergeGuestIntoAccount(email: string) {
 
   const union = (a: string[], b: string[]) => [...new Set([...a, ...b])];
   const merged: SavedProgress = {
+    questionVersions: Object.fromEntries([...new Set([...Object.keys(account.questionVersions ?? {}), ...Object.keys(guest.questionVersions ?? {})])].map(id =>
+      [id, Math.max(account.questionVersions?.[id] ?? 1, guest.questionVersions?.[id] ?? 1)])),
+    revisionHistory: [...new Map([...(guest.revisionHistory ?? []), ...(account.revisionHistory ?? [])].map(item => [`${item.questionId}:${item.version}`, item])).values()],
     wrongIds: union(account.wrongIds, guest.wrongIds),
     flaggedIds: union(account.flaggedIds, guest.flaggedIds),
     answeredIds: union(account.answeredIds, guest.answeredIds),

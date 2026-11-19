@@ -15,7 +15,9 @@ assert.equal(JSON.stringify(freeModule.inFreeQuestions), JSON.stringify(question
 const active = questions.filter(q => isActiveQuestion(q));
 const activeFree = active.filter(q => q.is_free).length;
 for(const [key,value] of Object.entries({candidate:203,draft:0,published:active.length,free:activeFree,pro:active.length-activeFree})) assert.equal(summary.inBankCounts[key],value);
-assert.equal(questions.find(q => q.question_id === 'in-059')?.version, 1, 'Held question remains readable at its original version');
+const revisedId = questions.find(q => q.question_id === 'in-059');
+assert.equal(revisedId?.version, 2, 'The corrected Indiana ID question is active as version 2');
+assert.equal(revisedId?.previous_versions?.[0]?.version, 1, 'The original remains readable at its original version');
 assert.ok(!/from\s+["'][^"']*(?:in-questions|in-question-items)/.test(fs.readFileSync('data/in-free-questions.ts','utf8')), 'Public bank must not import full paid bank');
 assert.ok(freeModule.inFreeQuestions.every(q=>q.status==='published' && q.is_free));
 assert.equal(bank.inQuestions.length,203,'203 original Indiana candidates');

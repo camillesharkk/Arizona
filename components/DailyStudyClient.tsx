@@ -19,6 +19,8 @@ import { syncCaAttempts } from "@/lib/ca-sync";
 import { paths } from "@/lib/paths";
 import { isFreeState } from "@/lib/free-state-catalog";
 import { packFor } from "@/lib/prep-pack";
+import { readSitting } from "@/lib/sitting";
+import { isActiveQuestion } from "@/lib/question-status";
 import type { Question, StateCode } from "@/lib/types";
 import "@/app/daily-study-galleries.css";
 
@@ -229,6 +231,16 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
     const question = questionsById.get(id);
     return question && pendingReviews.has(`question:${id}`) ? [question] : [];
   });
+  const { accountId, today } = view;
+  function hasStartedRetiredQuestions(kind: "practice" | "review") {
+    try {
+      const saved = readSitting(sessionStorage, accountId, `daily-${kind}-${today}`, stateCode);
+      return saved?.startedAt != null && !saved.done && saved.questionIds?.some(id => {
+        const question = questionsById.get(id);
+        return question && !isActiveQuestion(question);
+      });
+    } catch { return false; }
+  }
   const studySettingsHref = `${paths.studySettings}?state=${stateCode}`;
   const scheduledById = new Map(view.scheduled?.map((item) => [item.questionId, item]));
   const entitlement = view.entitlementExpiresAt ? view.entitlementExpiresAt.slice(0, 10) : null;
@@ -338,12 +350,12 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
             </>
           ) : null}
         </section>
-        {practiceQuestions.length ? (
+        {practiceQuestions.length || hasStartedRetiredQuestions("practice") ? (
           <div className="daily-practice-quiz">
             <ExamRunner mode="practice" practice isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={practiceQuestions} questionReason={() => "You haven’t answered this question yet. It counts toward today’s practice goal."} onRecorded={load} sittingMode={`daily-practice-${view.today}`} stateCode={stateCode} />
           </div>
         ) : null}
-        {reviewQuestions.length ? (
+        {reviewQuestions.length || hasStartedRetiredQuestions("review") ? (
           <div className="daily-review-quiz">
             <ExamRunner mode="weak" practice review isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={reviewQuestions} questionReason={(id) => {
               const item = scheduledById.get(id);

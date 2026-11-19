@@ -472,30 +472,63 @@ export const inFreeQuestions: Question[] = [
     "study_topic": "identification",
     "topic": "identification",
     "difficulty": "medium",
-    "question_text": "The guide allows listed identification credentials that are current or expired for no more than what period?",
-    "option_a": "Three years",
-    "option_b": "Three days",
-    "option_c": "Any period if the photo is clear",
-    "option_d": "Ten years",
+    "question_text": "For an in-person Indiana notarization, a signer you do not know presents an otherwise satisfactory state-issued driver’s license. Under the Indiana Secretary of State’s guide, how long may that license have been expired?",
+    "option_a": "No more than three years.",
+    "option_b": "No more than three days.",
+    "option_c": "Any length of time if the photo is clear.",
+    "option_d": "No more than ten years.",
     "correct_option": "A",
-    "explanation": "The guide's identification section uses a current-or-not-more-than-three-years-expired standard for the listed credentials.",
+    "explanation": "The Indiana Secretary of State’s guide lists a state-issued driver’s license as eligible when current or expired for no more than three years. The guide separately describes an additional category of government-issued photo documents as current. The question concerns a driver’s license presented in person.",
     "option_feedback": {
-      "A": "The guide's identification section uses a current-or-not-more-than-three-years-expired standard for the listed credentials.",
-      "B": "The guide does not use a three-day expiration limit.",
-      "C": "A clear photograph does not erase the expiration limit.",
-      "D": "Ten years exceeds the guide's stated period."
+      "A": "Correct. The guide’s limit for this credential is three years after expiration.",
+      "B": "The guide gives the limit in years, not days.",
+      "C": "A clear photo does not extend the expiration limit described in the guide.",
+      "D": "Ten years exceeds the guide’s three-year limit for a state-issued driver’s license."
     },
     "source_id": "in-guide-2024",
-    "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Identification; Indiana Code Article 33-42; https://iga.in.gov/laws/2026/ic/titles/33#33-42; IC 33-42-9-4; Official indexed Guide passages pp. 20; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
+    "source_reference": "Indiana Secretary of State, Indiana Notary Public Guide, revised May 20, 2024, printed p. 20, Identification Documents (official state-hosted indexed passage). https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf#page=20",
     "concept_ids": [
       "in-card-015"
     ],
     "effective_from": "2026-11-13",
-    "effective_to": "2026-11-19",
-    "last_verified_at": "2026-11-13",
-    "version": 1,
+    "effective_to": null,
+    "last_verified_at": "2026-11-19",
+    "version": 2,
     "is_free": true,
-    "status": "published"
+    "status": "published",
+    "previous_versions": [
+      {
+        "question_id": "in-059",
+        "state": "IN",
+        "study_topic": "identification",
+        "topic": "identification",
+        "difficulty": "medium",
+        "question_text": "The guide allows listed identification credentials that are current or expired for no more than what period?",
+        "option_a": "Three years",
+        "option_b": "Three days",
+        "option_c": "Any period if the photo is clear",
+        "option_d": "Ten years",
+        "correct_option": "A",
+        "explanation": "The guide's identification section uses a current-or-not-more-than-three-years-expired standard for the listed credentials.",
+        "option_feedback": {
+          "A": "The guide's identification section uses a current-or-not-more-than-three-years-expired standard for the listed credentials.",
+          "B": "The guide does not use a three-day expiration limit.",
+          "C": "A clear photograph does not erase the expiration limit.",
+          "D": "Ten years exceeds the guide's stated period."
+        },
+        "source_id": "in-guide-2024",
+        "source_reference": "Indiana Secretary of State, Notary Public Guide, revised May 20, 2024; https://inbiz.in.gov/Assets/NotaryGuide.pdf; Identification; Indiana Code Article 33-42; https://iga.in.gov/laws/2026/ic/titles/33#33-42; IC 33-42-9-4; Official indexed Guide passages pp. 20; https://inbizqa.soi.in.gov/Assets/NotaryGuide.pdf. Code links are cross-references, not a claim that the 2026 Code body was opened.",
+        "concept_ids": [
+          "in-card-015"
+        ],
+        "effective_from": "2026-11-13",
+        "effective_to": "2026-11-19",
+        "last_verified_at": "2026-11-13",
+        "version": 1,
+        "is_free": true,
+        "status": "published"
+      }
+    ]
   },
   {
     "question_id": "in-062",

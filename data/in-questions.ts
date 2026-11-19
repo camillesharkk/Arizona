@@ -140,8 +140,11 @@ export const inQuestionReview = inQuestions.map(q=>{
   return {question_id:q.question_id,concept_id:q.concept_ids![0],status:q.status,reason:draftConcepts.get(card) ?? draftItems.get(`${group.card}:${index}`) ?? "Supported by the cited actually read official passage",source_reference:q.source_reference};
 });
 
+import { publishQuestionEdit } from "../lib/question-version";
+import { inQuestionEdits } from "./question-edits-in";
+
 export function publishedInQuestions(): Question[] {
-  return inQuestions.filter(q=>q.status === "published" && q.state === "IN");
+  return inQuestions.filter(q=>q.status === "published" && q.state === "IN").map(q => publishQuestionEdit(q, inQuestionEdits[q.question_id]));
 }
 export function inQuestionCounts() {
   const published = publishedInQuestions().filter(q=>isActiveQuestion(q));

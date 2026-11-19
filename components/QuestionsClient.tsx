@@ -7,7 +7,7 @@ import { fetchAccount } from "@/lib/client-account";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import type { Difficulty } from "@/lib/types";
 import { QuestionBlock } from "@/components/ExamRunner";
@@ -25,6 +25,7 @@ import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
 import { packFor } from "@/lib/prep-pack";
 import { isActiveQuestion } from "@/lib/question-status";
+import { resolveQuestionVersion, savedQuestionVersion } from "@/lib/question-version";
 import type { Question, StateCode } from "@/lib/types";
 
 export function QuestionsClient({
@@ -48,6 +49,7 @@ export function QuestionsClient({
   const [progress, setProgress] = useState(() => loadProgress(stateCode));
   const [resumed, setResumed] = useState(false);
   const [done, setDone] = useState(false);
+  useEffect(() => { if (done) window.dispatchEvent(new Event("notary-quiz-finished")); }, [done]);
   const [submitting, setSubmitting] = useState(false);
   const [confirmRestart, setConfirmRestart] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -57,6 +59,7 @@ export function QuestionsClient({
   const [owner, setOwner] = useState("guest");
   const [seed, setSeed] = useState<number | null>(null);
   const [order, setOrder] = useState<string[] | null>(null);
+  const [lockedVersions, setLockedVersions] = useState<Record<string, number> | null>(null);
   const [marked, setMarked] = useState<string[]>([]);
   const [explainOpen, setExplainOpen] = useState<Record<string, boolean>>({});
   const [loadedKey, setLoadedKey] = useState<string | null>(null);
@@ -91,6 +94,8 @@ export function QuestionsClient({
         setIsPro(pro);
         setSeed(existing?.seed ?? Math.floor(Math.random() * 1_000_000_000));
         setOrder(existing?.questionIds ?? null);
+        setLockedVersions(existing && (existing.done || Object.keys(existing.answers).length > 0) ?
+          Object.fromEntries(existing.questionIds.map(id => [id, savedQuestionVersion(existing.questionVersions, id)])) : null);
         if (existing) {
           setIdx(existing.idx);
           setAnswers(existing.answers);
@@ -121,7 +126,12 @@ export function QuestionsClient({
   }, [modeKey, bootTry, stateCode]);
 
   const rawPool = useMemo(() => {
-    let list = (questions ?? pack?.questions() ?? publishedQuestions()).filter((q) => isActiveQuestion(q) && (q.is_free || isPro));
+    let list = (questions ?? pack?.questions() ?? historicalAzQuestions()).flatMap((current) => {
+      if (!current.is_free && !isPro) return [];
+      const version = lockedVersions?.[current.question_id];
+      const q = version ? resolveQuestionVersion(current, version) : isActiveQuestion(current) ? current : null;
+      return q ? [q] : [];
+    });
     if (topic) list = list.filter((q) => q.study_topic === topic || q.topic === topic);
     else if (filter !== "all" && filter !== "wrong" && filter !== "unanswered") {
       list = list.filter((q) => q.study_topic === filter || q.topic === filter);
@@ -130,7 +140,7 @@ export function QuestionsClient({
     if (filter === "unanswered") list = list.filter((q) => !progress.answeredIds.includes(q.question_id));
     if (difficulty !== "all") list = list.filter((q) => q.difficulty === difficulty);
     return list;
-  }, [questions, pack, filter, difficulty, topic, progress.wrongIds, progress.answeredIds, isPro]);
+  }, [questions, pack, filter, difficulty, topic, progress.wrongIds, progress.answeredIds, isPro, lockedVersions]);
 
   const pool = useMemo(() => {
     const maps: Record<string, Record<Letter, Letter>> = {};
@@ -171,6 +181,7 @@ export function QuestionsClient({
         mode: modeKey,
         seed,
         questionIds: order,
+        questionVersions: Object.fromEntries(orderedPool.map(question => [question.question_id, question.version])),
         idx,
         answers,
         explainOpen,
@@ -186,7 +197,7 @@ export function QuestionsClient({
     } catch {
       /* storage can be blocked */
     }
-  }, [authReady, loadedKey, modeKey, seed, order, idx, answers, explainOpen, marked, done, owner, stateCode]);
+  }, [authReady, loadedKey, modeKey, seed, order, idx, answers, explainOpen, marked, done, owner, stateCode, orderedPool]);
 
   const active = orderedPool;
   const safeIdx = Math.min(idx, Math.max(0, active.length - 1));
@@ -258,7 +269,7 @@ export function QuestionsClient({
   const selectedTopic: string | null =
     topic ?? (filter !== "all" && filter !== "wrong" && filter !== "unanswered" ? filter : null);
   const topicQuestions = selectedTopic
-    ? (questions ?? pack?.questions() ?? publishedQuestions()).filter((item) => (item.study_topic === selectedTopic || item.topic === selectedTopic) && isActiveQuestion(item))
+    ? (questions ?? pack?.questions() ?? historicalAzQuestions()).filter((item) => (item.study_topic === selectedTopic || item.topic === selectedTopic) && isActiveQuestion(item))
     : [];
   const topicFreeCount = topicQuestions.filter((item) => item.is_free).length;
   const proOnlyTopic = Boolean(selectedTopic && !isPro && topicFreeCount === 0 && topicQuestions.length > 0);
@@ -279,7 +290,7 @@ export function QuestionsClient({
   }
 
   return (
-    <div>
+    <div data-editorial-quiz-active={done ? undefined : ""}>
       <div className="tool-row">
         {!topic &&
           (["all", "wrong", "unanswered", ...topicList.map((t) => t.id)]).map((id) => (
@@ -413,7 +424,7 @@ export function QuestionsClient({
                 choiceLock.current = q.question_id;
                 recordedIds.current = [...recordedIds.current, q.question_id];
                 setAnswers((a) => ({ ...a, [q.question_id]: l }));
-                recordAnswer(q.question_id, l === q.correct_option, stateCode);
+                recordAnswer(q.question_id, l === q.correct_option, stateCode, q.version);
                 saveProgress({ lastQuestionId: q.question_id }, stateCode);
                 pendingSaves.current.push(fetch("/api/progress/", {
                   method: "POST",

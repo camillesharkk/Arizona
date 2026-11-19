@@ -71,6 +71,8 @@ export type Question = {
   effective_to: string | null;
   last_verified_at: string;
   version: number;
+  previous_versions?: Omit<Question, "previous_versions">[];
+  replaces_question_id?: string;
   is_free: boolean;
   status: QuestionStatus;
 };

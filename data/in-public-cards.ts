@@ -159,8 +159,8 @@ export const inPublicCards = [
     "study": "identification",
     "title": "Check the type of ID",
     "front": "Does the Indiana guide treat every government photo ID the same way?",
-    "rule": "The May 2024 Indiana guide discusses a three-year expiration window and separately describes other government-issued photo ID as current.",
-    "boundary": "The current text of IC 33-42-9-4(b)(1) still needs verification. Check the credential type before relying on an expired document.",
+    "rule": "The Indiana guide includes an otherwise satisfactory state-issued driver's license that expired no more than three years ago.",
+    "boundary": "The guide separately describes other government-issued photo ID as current. Check the category before relying on an expired credential.",
     "mixup": "A private membership card is not government identification.",
     "source": "Indiana SOS Guide (May 2024), p. 20",
     "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"

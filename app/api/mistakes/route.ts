@@ -13,6 +13,8 @@ import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { productionStateBlocked } from "@/lib/state-release";
 import type { QuestionStat } from "@/lib/store/types";
+import { editorialUpdateByQuestion } from "@/data/question-editorial-events";
+import { needsUpdatedReview } from "@/lib/editorial-updates";
 
 export async function POST(req: Request) {
   const session = await getSession();
@@ -90,7 +92,8 @@ export async function GET(req: Request) {
   const stats = (await store.listStats(session.id)).filter(stat => stat.state === state);
   const now = Date.now();
   const mistakes = stats
-    .filter((s) => s.bank === bank && !s.mastered && (s.wrongCount > 0 || savedInNotebook(s)))
+    .filter((s) => s.bank === bank && ((!s.mastered && (s.wrongCount > 0 || savedInNotebook(s))) ||
+      ((s.wrongCount > 0 || savedInNotebook(s) || s.favorited) && needsReview(s))))
     .sort((a, b) => compareMistakes(a, b, now));
   return NextResponse.json({
     state,
@@ -107,4 +110,9 @@ export async function GET(req: Request) {
 function toClientStat(s: QuestionStat) {
   const { userId: _owner, ...rest } = s;
   return isFreeState(s.state) ? { ...rest, chapter: questionById(s.questionId)?.study_topic || s.chapter } : rest;
+}
+
+function needsReview(stat: QuestionStat) {
+  const event = editorialUpdateByQuestion.get(stat.questionId);
+  return Boolean(event && needsUpdatedReview(event, stat));
 }

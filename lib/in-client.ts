@@ -1,4 +1,4 @@
-type IndianaStart = { examId: string; seed: number; questionIds: string[]; questions?: import("@/lib/types").Question[] };
+type IndianaStart = { examId: string; seed: number; questionIds: string[]; questionVersions: Record<string, number>; questions?: import("@/lib/types").Question[] };
 const pending = new Map<string, Promise<IndianaStart>>();
 /** Keep the cookie-bearing request alive across Strict Mode effect cancellation. */
 export function startIndianaPractice(owner: string, examId?: string): Promise<IndianaStart> {

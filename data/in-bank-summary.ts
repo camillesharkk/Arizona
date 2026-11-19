@@ -7,5 +7,5 @@ export const inTopics = [
   { id: "conflicts-refusal", label: "Conflicts and refusal" },
 ] as const;
 // Candidate target: 203. Unverified clauses remain outside every public pool.
-export const inBankCounts = {"candidate":203,"draft":0,"published":202,"free":59,"pro":143};
+export const inBankCounts = {"candidate":203,"draft":0,"published":203,"free":60,"pro":143};
 export const inBankSummary = inBankCounts;

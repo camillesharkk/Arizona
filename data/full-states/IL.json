@@ -4529,7 +4529,7 @@
       "study": "journals",
       "title": "Law-firm retained copies",
       "front": "When may office document copies support the special exception?",
-      "rule": "A notary employed by an attorney or law firm need not journal employment notarizations if the employer maintains copies of the notarized documents.",
+      "rule": "The administrative rule describes an exception for employment notarizations when the attorney or law firm keeps copies. The Act says employer records do not relieve the notary’s journal duties.",
       "boundary": "Outside-employment acts do not automatically share the exception.",
       "mixup": "The rule is more specific than an ordinary employer's recordkeeping policy.",
       "source": "Illinois Register, January 10, 2025, adopted notary amendments — §176.900(f)",
@@ -4813,6 +4813,10 @@
           "body": "Residents ordinarily apply online with the specified identification, certificate and bond records. Approved hardship cases may use paper, and qualifying nonresidents use the nonresident paper route. The ordinary bond is $5,000. Remote/electronic work requires the applicable additional coverage. Approval and the official seal precede acting. Resident terms generally last four years and qualifying nonresident terms one year."
         },
         {
+          "heading": "Check application fees and eligibility",
+          "body": "The traditional commission application costs $15. Public Act 104-0621 temporarily waived the separate $25 electronic commission application fee, so an electronic-only addition carries no state filing fee during the waiver. The Act took effect July 24, 2026, and the Secretary of State reports implementing it July 27. The waiver is scheduled to end July 24, 2028. Training and bond requirements still apply. The present felony eligibility rule applies through December 31, 2026. Starting January 1, 2027, an applicant with a felony conviction may apply after completing all requirements of all felony sentences and waiting ten years after that completion."
+        },
+        {
           "heading": "Read renewal exceptions and conflicting windows carefully",
           "body": "The 2025 rule provides a documented education/exam exception for specified qualifying renewal applicants associated with the legal profession or courts. It is not a blanket first-applicant exception. Online instructions advertise renewal 90 days before expiration, while published Rule 176.350 says 60 days. Confirm the current filing opportunity through the official portal or office. A pending renewal does not extend expired authority."
         }
@@ -4878,11 +4882,11 @@
       ]
     },
     "journals": {
-      "summary": "Contemporaneous journal recording is the default. Illinois has specific law-firm and candidate nomination-document exceptions that must remain visible.",
+      "summary": "Record acts contemporaneously. Read the statutory duties alongside the administrative provisions for law-firm work and candidate nomination documents.",
       "sections": [
         {
           "heading": "Identify the default and actual exception",
-          "body": "Record each nonexempt act at notarization. A notary employed by an attorney or law firm has the specific employment-act exception when the employer maintains copies. Journals solely of those employment notarizations belong to the employing attorney or firm, and the rule preserves attorney-client privilege. Specified candidate nomination documents also have a journal exemption. An unrelated commercial instrument does not qualify merely because its signer is a candidate."
+          "body": "Record each required act at notarization. Rule 176.900(f) describes an exception for law-firm employment notarizations when the firm keeps copies. Section 3-107 separately states that employer records do not relieve the notary’s journal duties and bars the employer from retaining the journal after employment ends. The rule preserves attorney-client privilege and separately addresses specified candidate nomination documents."
         },
         {
           "heading": "Preserve usable records without prohibited identifiers",
@@ -4891,14 +4895,14 @@
       ],
       "example": {
         "heading": "Law-office and private work",
-        "body": "A firm's employed notary notarizes a retained-copy client instrument during work and later performs a neighbor's private act. The first may fit the law-firm exception. The private act needs the normal journal entry. A journal solely of firm employment acts has the special ownership treatment, so the notary should not collapse both situations into a universal employer-custody rule."
+        "body": "A law firm's notary completes a client act at work and a private act for a neighbor. Rule 176.900(f) addresses only qualifying employment acts with retained copies. The Act sets the underlying journal and custody duties for the notary."
       },
       "keyFacts": [
-        "The law-firm exception depends on employment acts and retained document copies.",
+        "Compare the law-firm rule with the Act’s journal and custody duties.",
         "Specified candidate nomination papers have the separate journal exemption.",
         "Government ID numbers and biometric identifiers are prohibited journal entries.",
         "Record no charge explicitly and itemize clerical charges separately.",
-        "Notify the Secretary within 10 business days after discovering a lost, stolen or compromised journal."
+        "Report a lost or stolen journal to the Secretary in writing or electronically by the next business day after discovery under Rule 176.940(b)."
       ]
     },
     "prohibited-acts": {
@@ -4910,7 +4914,7 @@
         },
         {
           "heading": "Keep services, advertising and records within authority",
-          "body": "The Act restricts preparing legal instruments and explaining or certifying contents, while preserving its stated attorney-notary provisions. Covered non-English advertising requires the prescribed bilingual nonattorney notice, posting and signed acknowledgment procedures. Itemize charged services and keep records. Protect notarial records from unauthorized third-party disclosure or commercial sale. The limited redacted-line-item request procedure does not make the entire journal a marketing resource."
+          "body": "The Act restricts preparing legal instruments and explaining or certifying contents, while preserving its stated attorney-notary provisions. Covered non-English advertising requires the prescribed bilingual nonattorney notice, posting and signed acknowledgment procedures. Do not charge for notarizing the Illinois Secretary of State’s Driver Services Homeless Status Certification form. Itemize charged services and keep records. Protect notarial records from unauthorized third-party disclosure or commercial sale."
         }
       ],
       "example": {
@@ -4967,7 +4971,7 @@
       "sections": [
         {
           "heading": "Start with the actual employment act",
-          "body": "Rule 176.900(f) addresses a notary employed by an attorney or law firm and notarizations performed during that employment. It requires the attorney or firm to maintain copies of the notarized documents. Consider a litigation assistant notarizing a client's retained-copy affidavit during assigned office work. Those facts support the specific exception. Merely working in the same building as a lawyer would not establish the required employment relationship or copy retention."
+          "body": "Rule 176.900(f) addresses an attorney or law firm’s employee when the employer keeps copies of documents notarized during employment. The rule describes a journal exception. The Act separately says employer records do not relieve the notary of statutory journal duties. Ask the Secretary of State before relying on the rule to omit an entry."
         },
         {
           "heading": "Keep outside appointments in view",
@@ -4989,7 +4993,7 @@
         },
         {
           "q": "Who owns a journal solely of those employment acts?",
-          "a": "Rule 176.900(f) makes it the property of the employing attorney or law firm."
+          "a": "Rule 176.900(f) assigns ownership of a journal used exclusively for qualifying employment acts to the employing attorney or firm. Section 3-107 also bars employer retention of the notary’s journal when employment ends."
         }
       ],
       "sources": [
@@ -5429,6 +5433,34 @@
     }
   ],
   "sources": [
+    {
+      "id": "il-in-person-identity-statute",
+      "title": "Illinois Notary Public Act, ordinary identification",
+      "url": "https://www.ilga.gov/documents/legislation/ilcs/documents/000503120K6-102.htm",
+      "reference": "5 ILCS 312/6-102(d)(2), personal knowledge of credible witness",
+      "checkedAt": "2026-11-19"
+    },
+    {
+      "id": "il-electronic-fee-waiver",
+      "title": "Illinois Public Act 104-0621",
+      "url": "https://www.ilga.gov/legislation/PublicActs/View/104-0621",
+      "reference": "Section 2-103(b-5), electronic commission application fee waiver effective July 24, 2026",
+      "checkedAt": "2026-11-19"
+    },
+    {
+      "id": "il-fee-exempt-form",
+      "title": "Illinois Public Act 104-0083",
+      "url": "https://www.ilga.gov/Documents/Legislation/PublicActs/104/PDF/104-0083.pdf",
+      "reference": "Sections 3-104(f) and 6-104(p), no fees for the designated form, effective January 1, 2026",
+      "checkedAt": "2026-11-19"
+    },
+    {
+      "id": "il-eligibility-2027",
+      "title": "Illinois Public Act 104-0486",
+      "url": "https://my.ilga.gov/Documents/Legislation/PublicActs/104/PDF/104-0486.pdf",
+      "reference": "PDF p. 2, section 2-102(a)(11), effective January 1, 2027",
+      "checkedAt": "2026-11-19"
+    },
     {
       "id": "il-rules",
       "title": "Illinois Register, June 16, 2023, adopted Part 176 rules",

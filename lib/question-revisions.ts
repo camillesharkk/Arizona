@@ -1,4 +1,6 @@
 import type { QuestionStat } from './store/types.ts';
+import { editorialUpdateByQuestion } from '../data/question-editorial-events.ts';
+import { savedQuestionVersion } from './question-version.ts';
 
 // IDs stay stable. An absent stored version means the original published item.
 export const NY_REVISIONS: Record<string, number> = {
@@ -7,7 +9,13 @@ export const NY_REVISIONS: Record<string, number> = {
 };
 export const PA_REVISIONS: Record<string, number> = { 'pa-014': 2, 'pa-040': 2 };
 export function currentQuestionVersion(id: string) {
-  return NY_REVISIONS[id] ?? PA_REVISIONS[id] ?? 1;
+  return editorialUpdateByQuestion.get(id)?.version ?? NY_REVISIONS[id] ?? PA_REVISIONS[id] ?? 1;
+}
+
+export function hasSavedQuestionVersion(id: string, versions?: Record<string, number>) {
+  const saved = savedQuestionVersion(versions, id);
+  const event = editorialUpdateByQuestion.get(id);
+  return saved === currentQuestionVersion(id) || saved === event?.previousVersion;
 }
 
 /** Non-destructive projection: retain the prior record before resetting current mastery. */

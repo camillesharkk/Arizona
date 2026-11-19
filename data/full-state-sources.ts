@@ -56,6 +56,24 @@ export const fullStateSources: Record<string, Source> = {
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
   },
+  "co-rulona": {
+    "source_id": "co-rulona",
+    "source_type": "SOS",
+    "title": "Colorado Revised Uniform Law on Notarial Acts",
+    "reference": "C.R.S. title 24, article 21, part 5, December 2025 consolidation",
+    "url": "https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "co-apply-checklist": {
+    "source_id": "co-apply-checklist",
+    "source_type": "SOS",
+    "title": "Colorado Notary Public Registration or Renewal Checklist",
+    "reference": "p. 1, identification and other required materials, June 2025",
+    "url": "https://www.coloradosos.gov/pubs/notary/files/PrintableAttachmentInfo.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
   "co-rules": {
     "source_id": "co-rules",
     "source_type": "SOS",
@@ -145,6 +163,42 @@ export const fullStateSources: Record<string, Source> = {
     "url": "https://www.coloradosos.gov/pubs/notary/FAQ/admonishments.html",
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
+  },
+  "il-in-person-identity-statute": {
+    "source_id": "il-in-person-identity-statute",
+    "source_type": "SOS",
+    "title": "Illinois Notary Public Act, ordinary identification",
+    "reference": "5 ILCS 312/6-102(d)(2), personal knowledge of credible witness",
+    "url": "https://www.ilga.gov/documents/legislation/ilcs/documents/000503120K6-102.htm",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "il-electronic-fee-waiver": {
+    "source_id": "il-electronic-fee-waiver",
+    "source_type": "SOS",
+    "title": "Illinois Public Act 104-0621",
+    "reference": "Section 2-103(b-5), electronic commission application fee waiver effective July 24, 2026",
+    "url": "https://www.ilga.gov/legislation/PublicActs/View/104-0621",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "il-fee-exempt-form": {
+    "source_id": "il-fee-exempt-form",
+    "source_type": "SOS",
+    "title": "Illinois Public Act 104-0083",
+    "reference": "Sections 3-104(f) and 6-104(p), no fees for the designated form, effective January 1, 2026",
+    "url": "https://www.ilga.gov/Documents/Legislation/PublicActs/104/PDF/104-0083.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "il-eligibility-2027": {
+    "source_id": "il-eligibility-2027",
+    "source_type": "SOS",
+    "title": "Illinois Public Act 104-0486",
+    "reference": "PDF p. 2, section 2-102(a)(11), effective January 1, 2027",
+    "url": "https://my.ilga.gov/Documents/Legislation/PublicActs/104/PDF/104-0486.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
   },
   "il-rules": {
     "source_id": "il-rules",

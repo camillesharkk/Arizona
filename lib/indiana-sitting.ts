@@ -3,6 +3,7 @@ import { randomInt, randomUUID } from "node:crypto";
 import { pickInFullExam, publishedInQuestions } from "@/data/in-questions";
 import { indianaEntitlement } from "@/lib/entitlements";
 import type { Store } from "@/lib/store/types";
+import { resolveQuestionVersion } from "@/lib/question-version";
 
 // Keep reservations separate from the normalizable Daily Study document.
 export const IN_SITTING_STATE = "IN_FULL";
@@ -29,8 +30,8 @@ export function newIndianaSitting(pro: boolean, examId: string = randomUUID(), s
 export function indianaSittingQuestions(sitting: IndianaSitting) {
   const bank = new Map(publishedInQuestions().map(question => [question.question_id, question]));
   return sitting.questionIds.map(id => {
-    const question = bank.get(id);
-    if (!question || question.state !== "IN" || question.version !== sitting.questionVersions[id]) throw new Error("question_updated");
+    const question = resolveQuestionVersion(bank.get(id), sitting.questionVersions[id]);
+    if (!question || question.state !== "IN") throw new Error("question_updated");
     if (!sitting.pro && !question.is_free) throw new Error("pro_required");
     return question;
   });

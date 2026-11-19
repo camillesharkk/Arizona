@@ -5,6 +5,7 @@ import { packFor } from "@/lib/prep-pack";
 import { presentExamQuestions } from "@/lib/answer-sequence";
 import { saveCaQuickAttempt } from "@/lib/ca-attempts";
 import type { Sitting } from "@/lib/sitting";
+import { resolveQuestionVersion, savedQuestionVersion } from "@/lib/question-version";
 
 /** Older AZ Quick10 results predate the durable quick-attempt archive. */
 export function archiveGuestArizonaQuick(sitting: Sitting) {
@@ -17,7 +18,7 @@ export function archiveGuestSitting(sitting: Sitting) {
   if (!sitting.done || !sitting.examId || !["quick", "home-quick", "full", "home-full"].includes(sitting.mode)) return;
   const bank = packFor(sitting.state)?.questions() || (sitting.state === "CA" ? publishedCaQuestions() : sitting.state === "HI" ? publishedHiQuestions() : historicalAzQuestions());
   const byId = new Map(bank.map(question => [question.question_id, question]));
-  const questions = sitting.questionIds.flatMap(id => byId.get(id) || []);
+  const questions = sitting.questionIds.flatMap(id => resolveQuestionVersion(byId.get(id), savedQuestionVersion(sitting.questionVersions, id)) || []);
   if (questions.length !== sitting.questionIds.length) return;
   const { maps } = presentExamQuestions(questions, sitting.seed, sitting.presentationVersion ?? 1);
   const originalAnswers = Object.fromEntries(Object.entries(sitting.answers).map(([id, selected]) => [id, maps[id]?.[selected] ?? selected]));

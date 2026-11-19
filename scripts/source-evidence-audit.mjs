@@ -21,11 +21,15 @@ for (const [file, name] of banks) questions.push(...(await import(`../data/${fil
 const { freeStateCatalog } = await import("../lib/free-state-catalog.ts");
 const { freeStateContent } = await import("../data/free-state-content.ts");
 const { fullStateSummary } = await import("../data/full-state-summary.ts");
-const { stateQuestion } = await import("../lib/state-question.ts");
+const { stateQuestion, versionedStateQuestions } = await import("../lib/state-question.ts");
+const authoredJsonFingerprints = new Map();
 for (const [code] of freeStateCatalog) {
   const full = JSON.parse(readFileSync(path.join(root, "data/full-states", `${code}.json`), "utf8"));
   const freeIds = new Set(fullStateSummary[code]?.freeQuestionIds ?? freeStateContent[code].questions.map(question => question.id));
-  questions.push(...[...freeStateContent[code].questions, ...full.questions].map(question => stateQuestion(code, question, freeIds.has(question.id))));
+  for (const raw of [...freeStateContent[code].questions, ...full.questions]) {
+    authoredJsonFingerprints.set(raw.id, createHash("sha256").update(JSON.stringify(raw)).digest("hex"));
+  }
+  questions.push(...versionedStateQuestions([...freeStateContent[code].questions, ...full.questions].map(question => stateQuestion(code, question, freeIds.has(question.id)))));
 }
 const byState = {};
 const missing = [];
@@ -75,8 +79,16 @@ for (const question of questions) {
     state: question.state, id: question.question_id, tier: question.is_free ? "free" : "pro",
     topic: question.study_topic ?? question.topic, version: question.version,
     publishedWindowEnd: question.effective_to,
+    replacesQuestionId: question.replaces_question_id,
     sourceId: question.source_id, citation: question.source_reference, evidenceUrls,
     sourceVersion: source?.version ?? null, displayedVerificationDate: question.last_verified_at,
+    authoredJsonFingerprint: authoredJsonFingerprints.get(question.question_id),
+    editorialFingerprint: createHash("sha256").update(JSON.stringify([
+      question.question_id, question.state, question.version, question.question_text, question.option_a,
+      question.option_b, question.option_c, question.option_d, question.correct_option, question.explanation,
+      Object.fromEntries(Object.entries(question.option_feedback ?? {}).sort()), question.source_id,
+      question.source_reference, question.effective_from, question.effective_to,
+    ])).digest("hex"),
     contentSha256: createHash("sha256").update(JSON.stringify([
       question.state, question.question_id, question.version, question.question_text, question.scenario_text,
       ...["A", "B", "C", "D"].map(letter => [question[`option_${letter.toLowerCase()}`], question.option_feedback?.[letter]]),

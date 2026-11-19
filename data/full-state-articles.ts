@@ -498,7 +498,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Treat electronic services with the same attention",
-          "body": "The handbook's electronic chapter also requires a reasonable amount agreed before the act when an electronic fee is charged. Provider subscription costs and available technology do not themselves establish the customer agreement. Explain the actual proposed service accurately. Do not imply that buying an electronic platform removes the ordinary notary's duties toward the signer."
+          "body": "Consult the official handbook and 21 CAR §20-109 separately before setting an electronic-notary service charge. The handbook describes a reasonable charge agreed before the act, while the published administrative rule still lists fixed amounts for specified electronic acts. Keep the traditional service-fee rule separate from electronic appointment and training fees."
         },
         {
           "heading": "Record what actually happened",
@@ -1208,7 +1208,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Identify the correct participant",
-          "body": "The common-mistakes page warns against inserting the notary's name where the certificate identifies the appearing customer. Read each field's role. The notary's official name and signature have their own places. The certificate also needs the actual venue, act type, stamp, title and exact commission expiration information."
+          "body": "Enter the appearing customer’s name in the signer field. Use the notary’s official name and signature in their own fields. Since September 1, 2023, Colorado no longer requires a separate commission expiration date in the certificate text. The official paper stamp and the signature used for in-person electronic notarization still include the commission expiration date."
         },
         {
           "heading": "Separate correction authority",
@@ -1730,7 +1730,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Start with the actual employment act",
-          "body": "Rule 176.900(f) addresses a notary employed by an attorney or law firm and notarizations performed during that employment. It requires the attorney or firm to maintain copies of the notarized documents. Consider a litigation assistant notarizing a client's retained-copy affidavit during assigned office work. Those facts support the specific exception. Merely working in the same building as a lawyer would not establish the required employment relationship or copy retention."
+          "body": "Rule 176.900(f) addresses an attorney or law firm’s employee when the employer keeps copies of documents notarized during employment. The rule describes a journal exception. The Act separately says employer records do not relieve the notary of statutory journal duties. Ask the Secretary of State before relying on the rule to omit an entry."
         },
         {
           "heading": "Keep outside appointments in view",
@@ -1772,7 +1772,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "q": "Who owns a journal solely of those employment acts?",
-          "a": "Rule 176.900(f) makes it the property of the employing attorney or law firm."
+          "a": "Rule 176.900(f) assigns ownership of a journal used exclusively for qualifying employment acts to the employing attorney or firm. Section 3-107 also bars employer retention of the notary’s journal when employment ends."
         }
       ],
       "id": "il-law-firm-journal-exception",
@@ -12003,7 +12003,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Apply the remote additions and record",
-          "body": "For the applicable remote route, the unknown credible individual also undergoes secondary authentication. The new-cohort journal specifies the oath indication, signature, witness name and address, with the relevant identification details for the unknown-witness route. Completing one identity component does not administer the principal's jurat oath or replace the other requirements of the requested act."
+          "body": "In the applicable remote witness route, an unfamiliar credible individual undergoes secondary authentication. Section 46-1-3.6(2)(b) separately specifies a qualifying ID image for an unfamiliar remote signer. For a commission received on or after May 6, 2026, the journal entries include the applicable oath indication, signatures and witness details."
         },
         {
           "heading": "Utah Code 46-1-2(22), (25)-(26); 46-1-14.1(2)",
