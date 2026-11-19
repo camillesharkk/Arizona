@@ -10,7 +10,7 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-education", study: "education-exam", title: "Six hours, then three",
-    front: "Which course is required before a first California commission?", rule: "An approved six-hour course.", boundary: "A three-hour refresher works only for reappointment after a six-hour course was already completed.",
+    front: "Which course is required before a first California commission?", rule: "An approved six-hour course.", boundary: "An approved three-hour refresher applies to reappointment while the California commission is current, if the approved six-hour course was already completed.",
     mixup: "A course from another state, or a three-hour class taken first, does not satisfy section 8201.", source: "Gov. Code \u00a7 8201; 2026 handbook", sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf",
   },
   {
@@ -35,8 +35,8 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-seal", study: "seal", title: "Destroy the seal",
-    front: "What happens to the seal when the commission ends?", rule: "Destroy it. Do not give it to an employer.", boundary: "The title and the seal are used only for notarial acts.",
-    mixup: "An embosser does not replace the photographically reproducible stamp.", source: "Gov. Code \u00a7 8207", sourceUrl: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8207",
+    front: "What happens to the seal when the commission ends?", rule: "Destroy or deface it. Keep it out of the employer’s custody.", boundary: "The title and the seal are used only for notarial acts.",
+    mixup: "A seal impression must reproduce legibly by photographic methods. A conventional raised impression alone may fail that test.", source: "Gov. Code \u00a7 8207", sourceUrl: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8207",
   },
   {
     id: "ca-card-language", study: "advertising-immigration", title: "Notario is prohibited",
@@ -45,7 +45,7 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-ron", study: "electronic-ron", title: "Video is not appearance yet",
-    front: "Can a California notary perform remote online notarization today?", rule: "Not yet. Performance duties wait until the Secretary of State finishes the technology project or January 1, 2030, whichever is earlier.", boundary: "A signer who is physically present may still notarize an electronic document if the ordinary rules are met.",
+    front: "Can a California notary perform remote online notarization today?", rule: "Not yet. The performance provisions begin on the project completion date announced by the Secretary of State or January 1, 2030, whichever is earlier, subject to the statutory written-notice condition.", boundary: "A notary may still notarize an electronic document in person if the ordinary rules are met.",
     mixup: "A vendor's claim that a platform is approved does not start the remote-online duties.", source: "2026 handbook, January 2026 edition", sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf",
   },
   {
@@ -190,7 +190,7 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-notice", study: "advertising-immigration", title: "The posted notice",
-    front: "What does a non-English advertisement need?", rule: "A notice, in English and the other language, that the notary is not an attorney and cannot give legal advice, plus the statutory fees.", boundary: "The Secretary of State prescribes the printing and posting. A single English desk plaque is the exception.",
+    front: "What does a non-English advertisement need?", rule: "An applicable advertisement must carry the statutory notice in English and the other language, including the statutory fees.", boundary: "Section 8219.5 excludes a single desk plaque. For covered written advertising, follow the prescribed size and placement.",
     mixup: "The notice does not authorize the word notario.", source: "Gov. Code \u00a7 8219.5", sourceUrl: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8219.5",
   },
   {
@@ -221,11 +221,11 @@ export const caCards: CaCard[] = [
   {
     id: "ca-card-copy", study: "journal-thumbprint", title: "A request for one line",
     front: "How fast is a journal copy provided?", rule: "Within 15 business days after a written request that names the parties, the document type, and the month and year.", boundary: "The charge is not more than $0.30 a page. The response is a copy of the line or a statement that no line exists.",
-    mixup: "This is not the $15 power-of-attorney copy certification.", source: "Gov. Code \u00a7 8206(c)", sourceUrl: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8206",
+    mixup: "This is not the $15 power-of-attorney copy certification.", source: "Gov. Code §§ 8206(c), 8206.5", sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf#page=33",
   },
   {
     id: "ca-card-officer", study: "journal-thumbprint", title: "A peace officer's request",
-    front: "When does the journal leave the notary's hands?", rule: "Immediately, to a peace officer investigating a crime who has reasonable suspicion the journal contains evidence. If it is not present, surrender it as soon as possible.", boundary: "The employer does not receive it as a middle step.",
+    front: "When does the journal leave the notary's hands?", rule: "Surrender it on request to a peace officer acting within official authority who is investigating a crime and reasonably suspects the journal holds evidence. If the journal is elsewhere, surrender it as soon as possible.", boundary: "A seizure requires probable cause. Obtain a receipt, notify the Secretary of State within 10 days, and obtain a new sequential journal.",
     mixup: "County-clerk delivery at the end of the commission is a different duty.", source: "Gov. Code \u00a7 8206", sourceUrl: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8206",
   },
   {
@@ -245,7 +245,7 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-false", study: "misconduct", title: "A known false line",
-    front: "What is a willfully false certificate?", rule: "Stating a material fact the notary knows is false, such as a fake appearance date.", boundary: "The handbook describes a civil penalty not exceeding $10,000, plus criminal and administrative consequences.",
+    front: "What is a willfully false acknowledgment certificate?", rule: "Stating a material fact the notary knows is false, such as a fake appearance date.", boundary: "Civil Code section 1189 provides for a civil penalty of up to $10,000. Criminal and administrative consequences may also apply.",
     mixup: "A hurry is not an exception to the certificate wording.", source: "2026 handbook", sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf",
   },
   {
@@ -275,8 +275,8 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-felony", study: "qualification", title: "Recommended denial windows",
-    front: "How do prior crimes affect a recommendation?", rule: "A felony is a recommended denial where less than 10 years have passed since probation ended. A listed misdemeanor uses a five-year window.", boundary: "The list of common disqualifying convictions is not complete. The facts of a case can still warrant denial.",
-    mixup: "The applicant can appeal a recommended denial.", source: "Secretary of State qualifications page", sourceUrl: "https://www.sos.ca.gov/notary/qualifications",
+    front: "How can time since a prior conviction affect a denial recommendation?", rule: "The guidelines recommend denial for a felony or a disqualifying lesser offense. They consider exceptions after at least 10 or five years, respectively.", boundary: "Count from completion of probation or parole, or release if neither was ordered. The timing alone does not guarantee approval.",
+    mixup: "The applicant can appeal a recommended denial.", source: "California Notary Public Disciplinary Guidelines (2012), p. 10", sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-guidelines-2012.pdf",
   },
   {
     id: "ca-card-oath-file", study: "bond-oath", title: "Where the papers go",
@@ -285,7 +285,7 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-anywhere", study: "authority-conflict", title: "Anywhere in the state",
-    front: "Does the county on the seal limit where the notary works?", rule: "No. After commissioning, the notary may act anywhere in California.", boundary: "The county on the seal is the principal place of business.",
+    front: "Does the county on the seal limit where the notary works?", rule: "No. An ordinary California commission is statewide.", boundary: "The county on the seal is the county where the oath and bond are on file.",
     mixup: "A new-county filing is permissive, not a border.", source: "Gov. Code \u00a7 8213; 2026 handbook", sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf",
   },
   {
@@ -295,7 +295,7 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-platform", study: "electronic-ron", title: "What is already operative",
-    front: "Has any part of the 2023 online act started?", rule: "Yes. Recognition statutes and Civil Code sections 1182 and 1183 were operative January 1, 2024. Security rules in section 8231.18 were operative January 1, 2025.", boundary: "Those sections do not let a California notary perform remote notarizations before the project date or January 1, 2030.",
+    front: "Has any part of the 2023 online act started?", rule: "Yes. Recognition statutes and Civil Code sections 1182 and 1183 were operative January 1, 2024. Security rules in section 8231.18 were operative January 1, 2025.", boundary: "Performance has a separate operative date tied to the state project or January 1, 2030, and the statutory written-notice condition.",
     mixup: "Do not read 'the act was signed' as 'remote acts are open.'", source: "2026 handbook, pages 1\u20132", sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf",
   },
   {

@@ -14,11 +14,15 @@ assert.equal(new Set(questions.map(q => q.question_id)).size, 203);
 assert.equal(new Set(questions.map(q => q.question_text.toLowerCase())).size, 203);
 assert.equal(new Set(pack.cards.map(c => c.front.toLowerCase())).size, pack.cards.length);
 const { findSource } = load('data/sources.ts');
+const { questionReviewDate } = load('data/question-review-dates.ts');
+const { resolveQuestionVersion } = load('lib/question-version.ts');
 for (const q of questions) {
   assert.equal(q.state, 'CT');
   assert.match(q.question_id, /^ct-\d{3}$/);
   assert.ok(findSource(q.source_id)?.url, q.question_id + ' source');
-  assert.ok(q.source_reference && q.last_verified_at === '2026-11-13');
+  assert.ok(q.source_reference);
+  assert.equal(q.last_verified_at, questionReviewDate(q.question_id, '2026-11-13'), q.question_id);
+  if (q.version > 1) assert.equal(resolveQuestionVersion(q, 1)?.question_id, q.question_id);
   assert.ok(q.concept_ids.length && q.concept_ids.every(id => pack.cards.some(c => c.id === id)));
   for (const letter of ['A', 'B', 'C', 'D']) assert.ok(q.option_feedback[letter].length > 12);
   assert.equal(new Set([q.option_a, q.option_b, q.option_c, q.option_d]).size, 4);

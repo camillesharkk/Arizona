@@ -3,6 +3,10 @@ import { isActiveQuestion } from "../lib/question-status.ts";
 import { expansionDrafts } from "./question-bank-expansion.ts";
 import { scenarioDrafts } from "./scenario-questions.ts";
 import { wave2Drafts } from "./question-bank-wave2.ts";
+import { questionReviewDate } from "./question-review-dates.ts";
+import { questionDrawHold } from "./question-draw-holds.ts";
+import { publishQuestionEdits } from "../lib/question-version.ts";
+import { azQuestionEdits } from "./question-edits-az.ts";
 
 type Draft = Omit<
   Question,
@@ -18,15 +22,15 @@ type Draft = Omit<
 };
 
 function publish(drafts: Draft[]): Question[] {
-  return drafts.map((q) => ({
+  return publishQuestionEdits(drafts.map((q) => ({
     ...q,
     state: "AZ",
     status: "published",
     version: 1,
     effective_from: q.effective_from ?? "2024-01-01",
-    effective_to: null,
-    last_verified_at: q.last_verified_at ?? "2026-08-01",
-  }));
+    effective_to: questionDrawHold(q.question_id),
+    last_verified_at: questionReviewDate(q.question_id, q.last_verified_at ?? "2026-08-01"),
+  })), azQuestionEdits);
 }
 
 const drafts: Draft[] = [
@@ -210,7 +214,7 @@ const drafts: Draft[] = [
     option_d: "Ask the signer to describe what the ID used to look like",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-255 does not use the words 'damaged ID.' Section 41-255(B)(1) lists credentials that must be unexpired (and otherwise meet the statutory description). If a photograph and expiration date cannot be read, the officer cannot determine that those requirements are met from that card. Section 41-255(D) allows the officer to require additional information or credentials to be assured of identity. Other permitted methods include personal knowledge (§ 41-255(A)) or a credible witness (§ 41-255(B)(2)). The statute does not create a damaged-ID exception, a temporary exception, or an expired-document grace period.",
+      "A.R.S. § 41-255(B)(1)(a)–(c) requires the listed ordinary credentials to be unexpired. If damage prevents you from checking the applicable requirements or confirming identity, use another allowed method. Section 41-255(D) lets the officer ask for additional information or credentials. Personal knowledge and a qualifying credible witness are separate routes. The custody-specific cards in § 41-255(B)(1)(d)–(e) have their own conditions.",
     option_feedback: {
       A: "That the card was once a government ID does not establish the unexpired listed credential in § 41-255(B).",
       B: "Correct. An unreadable photograph and expiration date cannot satisfy the listed credential; use another statutory method if available.",
@@ -301,7 +305,7 @@ const drafts: Draft[] = [
     question_text: "In an acknowledgment, the individual is declaring before the notarial officer that:",
     option_a: "The document contents are true under oath",
     option_b:
-      "The individual has signed the record for the purpose stated in the record and, if signing in a representative capacity, signed with proper authority",
+      "They signed the record for its stated purpose and, if acting as a representative, signed with proper authority on behalf of the identified person or entity",
     option_c: "The notary drafted the document",
     option_d: "The document has been recorded",
     correct_option: "B",
@@ -309,7 +313,7 @@ const drafts: Draft[] = [
       "A.R.S. § 41-251(1) defines acknowledgment as a declaration before a notarial officer that the individual has signed the record for the purpose stated in the record and, if signed in a representative capacity, signed with proper authority as the act of the person or entity identified. 'Voluntarily' is not the statutory definition. A.R.S. § 41-256(A)(2) separately allows a notarial officer to refuse if not satisfied that the signature is knowingly and voluntarily made. An acknowledgment is not a verification that the record's statements are true (§ 41-251(16)).",
     option_feedback: {
       A: "That describes a verification on oath or affirmation (§ 41-251(16)), not an acknowledgment.",
-      B: "Correct. A.R.S. § 41-251(1) is signed-for-the-purpose-stated (and representative authority if applicable), not a 'voluntary' definition.",
+      B: "Correct. The declaration covers the stated purpose and the signer’s authority when acting as a representative.",
       C: "Drafting the document is not the acknowledgment declaration.",
       D: "Recording is a separate process, not the acknowledgment definition.",
     },
@@ -330,15 +334,15 @@ const drafts: Draft[] = [
     option_d: "Backdate the certificate to yesterday",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-251(1) is a declaration that the individual has signed the record; it does not require the signature to be made in the officer's presence. A.R.S. § 41-254(A) requires personal appearance. A.R.S. § 41-253(A) requires identity from personal knowledge or satisfactory evidence and a determination that the signature on the record is the individual's. The certificate must be executed contemporaneously with the act (§ 41-264(A)(1)); do not backdate. This is not a verification on oath or affirmation.",
+      "A signer may acknowledge an existing signature. Verify the identity of the person who appears and that the signature is theirs under A.R.S. §§ 41-251(1), 41-253(A) and 41-254(A). For an in-person deed acknowledgment, record the required thumbprint or applicable statutory substitute unless an exception applies under § 41-254(C)–(D). Date the certificate when you perform the acknowledgment under § 41-264(A)(1).",
     option_feedback: {
       A: "In-presence signing is not the acknowledgment definition in § 41-251(1). Appearance and acknowledgment of the existing signature are required.",
-      B: "Correct. Pre-signed records may be acknowledged if § 41-254(A) and § 41-253(A) are met.",
+      B: "Correct. The earlier signing date does not bar the acknowledgment. Apply the identity, personal appearance and deed journal requirements.",
       C: "A substitute signer is not authorized.",
       D: "Backdating contradicts contemporaneous execution under § 41-264(A)(1).",
     },
     source_id: "ars_41_251",
-    source_reference: "A.R.S. § 41-251(1); A.R.S. § 41-253(A); A.R.S. § 41-254(A); A.R.S. § 41-264(A)(1)",
+    source_reference: "A.R.S. §§ 41-251(1), 41-253(A), 41-254(A), (C)–(D), and 41-264(A)(1)",
     last_verified_at: "2026-09-01",
     is_free: true,
   },
@@ -401,7 +405,7 @@ const drafts: Draft[] = [
     option_d: "Provide two extra copies of the document",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-251(16) defines verification on oath or affirmation as a declaration, on oath or affirmation before a notarial officer, that a statement in a record is true. It does not, by itself, use the words 'must sign in the notary's presence.' A.R.S. § 41-253(B) requires the individual to appear and make the verification, and a determination that the signature on the statement is that individual's. A.R.S. § 41-265(3) supplies a sufficient short form: 'Signed and sworn to (or affirmed) before me.' An acknowledgment under § 41-251(1) is a different act.",
+      "In a jurat, the signer swears or affirms before the notarial officer that the statement is true. The Arizona Secretary of State's checklist directs the officer to administer the oath or affirmation and then watch the signer sign. Under A.R.S. § 41-253(B), the officer confirms identity and signature and determines that the record is complete to the best of their knowledge.",
     option_feedback: {
       A: "That is an acknowledgment (§ 41-251(1)), not a verification on oath or affirmation.",
       B: "Correct. Section 41-251(16) is the oath/affirmation declaration; § 41-265(3) is the 'signed and sworn to (or affirmed) before me' short form.",
@@ -409,7 +413,7 @@ const drafts: Draft[] = [
       D: "Extra copies are not a verification requirement.",
     },
     source_id: "ars_41_251",
-    source_reference: "A.R.S. § 41-251(16); A.R.S. § 41-253(B); A.R.S. § 41-265(3)",
+    source_reference: "A.R.S. §§ 41-251(16), 41-253(B), and 41-265(3). Arizona SOS Reference Manual, October 2026, pp. 27–28.",
     last_verified_at: "2026-09-01",
     is_free: true,
   },
@@ -759,15 +763,15 @@ const drafts: Draft[] = [
     option_d: "May notarize a blank signature line for later",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-256(A) allows a notarial officer to refuse if not satisfied that the individual executing the record is competent or has capacity, or that the signature is knowingly and voluntarily made. Looking confused is not, by itself, a statutory finding of incompetence. A relative may not sign as the individual. A blank signature line is not a completed notarial act under § 41-264.",
+      "A.R.S. § 41-256(A) allows the officer to refuse if they are unsure whether the signer has capacity or is signing knowingly and voluntarily. Confusion alone does not establish incompetence. The directed-signature rule in § 41-257 applies when a signer is physically unable to sign and personally directs someone other than the officer to sign for them. It does not cure concerns about capacity or willingness.",
     option_feedback: {
       A: "Pressure is not a reason to skip the § 41-256(A) satisfaction standard.",
       B: "Correct. A.R.S. § 41-256(A) is a may-refuse standard, not an automatic incompetence rule.",
-      C: "Another person cannot execute the record as the signer.",
+      C: "A relative cannot substitute for the signer’s capacity or willingness. A.R.S. § 41-257 has a separate procedure when a signer is physically unable to sign.",
       D: "A blank signature line is not a completed notarial act.",
     },
     source_id: "ars_41_256",
-    source_reference: "A.R.S. § 41-256(A)",
+    source_reference: "A.R.S. §§ 41-256(A), 41-257, and 41-264(E).",
     last_verified_at: "2026-09-01",
     is_free: true,
   },
@@ -829,11 +833,11 @@ const drafts: Draft[] = [
     option_d: "Ask the customer which version of the statute to follow",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-269(E) sets a four-year commission term; it does not freeze the rest of Title 41 for that term. A.R.S. § 1-241 provides that an act that by its terms takes effect on a specified day takes effect at noon on that day unless the act provides otherwise. A.R.S. § 1-244 provides that no statute is retroactive unless expressly declared. Example: Laws 2026, Chapter 31 (SB 1479) was approved April 9, 2026, and took effect September 12, 2026. For a notarial act on or after that date, the Chapter 31 amendments (including the § 41-254 journal-thumbprint rules) are current law. For an act performed before September 12, 2026, those amendments did not yet apply. A last-verified date on a study item is not a statute's effective date.",
+      "A four-year commission does not freeze the law that applies to your notarial acts. Check the enacted text for a special effective date and verify the Legislature’s general effective date. Arizona’s 2026 deed and power-of-attorney thumbprint amendment was signed April 9 and took effect September 12, the session’s general effective date. A.R.S. § 1-244 bars retroactive application unless the law expressly provides for it.",
     option_feedback: {
       A: "The four-year term in A.R.S. § 41-269(E) does not freeze later amendments.",
-      B: "Correct. Apply the law in force on the date of the notarial act; watch the statutory effective date (A.R.S. § 1-241).",
-      C: "A signed act is not current before its effective date. SB 1479 / Laws 2026, Ch. 31 became current at noon on September 12, 2026.",
+      B: "Correct. Apply the law in force when the notarial act takes place.",
+      C: "Signing and taking effect can occur on different dates. SB 1479 was signed April 9 and took effect September 12, 2026.",
       D: "Customers do not choose the governing statute.",
     },
     source_id: "ars_1_241",
@@ -879,9 +883,9 @@ const drafts: Draft[] = [
     option_d: "A practice bank's effective_from field is the legal effective date of the statute",
     correct_option: "B",
     explanation:
-      "A.R.S. § 1-241 controls when an act that specifies a day takes effect (noon on that day unless otherwise provided). A.R.S. § 1-244 forbids treating a statute as retroactive unless the statute expressly so declares. Signing date, publication date, a study last-verified date, and a question-bank effective_from field are not substitutes for the act's effective date. Illustration: Laws 2026, Chapter 31 (SB 1479) was approved April 9, 2026 and took effect September 12, 2026. An act performed before that date did not use the Chapter 31 thumbprint/journal amendments; an act performed on or after September 12, 2026, must apply those current rules.",
+      "Apply the law in effect when the notarial act occurs. For a law with a date written into it, A.R.S. § 1-241 distinguishes wording that makes it effective 'on' a day from wording that makes it effective 'from and after' that day. Under § 1-244, retroactive application requires an express provision. The dates a bill was signed, published, or cited in a study question serve different purposes.",
     option_feedback: {
-      A: "The governor's signature is not the same as the statutory effective date. SB 1479 / Laws 2026, Ch. 31 became current on September 12, 2026.",
+      A: "The governor’s signature does not bring a law with a future effective date into force early.",
       B: "Correct. A future effective date is not current before that date; apply the law in force on the date of the act (A.R.S. § 1-241, § 1-244).",
       C: "last_verified_at records when a study item was checked; it is not a statute's effective date.",
       D: "A question-bank effective_from field is not Arizona's statutory effective date.",
@@ -944,11 +948,11 @@ const drafts: Draft[] = [
     question_id: "az-039",
     topic: "acknowledgments",
     difficulty: "easy",
-    question_text: "The notary public's signature on the notarial certificate must:",
-    option_a: "Be signed and dated in the same manner as on file with the Secretary of State",
-    option_b: "Be a nickname the clients prefer",
-    option_c: "Be omitted if the official stamp is dark enough",
-    option_d: "Be signed by the office receptionist",
+    question_text: "How must an Arizona notary public sign and date the notarial certificate?",
+    option_a: "Date the certificate and sign in the same manner as on file with the Secretary of State",
+    option_b: "Use a nickname that clients prefer",
+    option_c: "Omit the signature if the official stamp is clear",
+    option_d: "Have the office receptionist sign for the notary",
     correct_option: "A",
     explanation:
       "A.R.S. § 41-264(A)(2) requires the certificate to be signed and dated by the notarial officer and, if the officer is a notary public, signed in the same manner as on file with the secretary of state. The statute does not say the wet signature must be a letter-for-letter duplicate of the printed name on the official stamp. For a tangible record, a notary public must also affix an official stamp (§ 41-264(B)); the stamp does not replace the signature. A notarial officer may not sign the certificate until the act has been performed (§ 41-264(E)).",
@@ -974,15 +978,15 @@ const drafts: Draft[] = [
     option_d: "Signed in pencil so it can be changed",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-251(16) defines the verification as a declaration on oath or affirmation before the officer that a statement in the record is true; that subsection does not itself say 'must sign in the notary's presence.' A.R.S. § 41-253(B) requires the individual to appear and make the verification. A.R.S. § 41-265(3) states the sufficient short form: 'Signed and sworn to (or affirmed) before me.' An acknowledgment under § 41-251(1) may concern a signature already on the record. Pencil, or the notary signing for the individual, is not authorized.",
+      "A.R.S. § 41-265(3) gives the sufficient jurat short form: 'Signed and sworn to (or affirmed) before me.' The Arizona Secretary of State directs the notary to administer the oath or affirmation and then witness the signing. An acknowledgment can cover a prior signature, but the signer still has to appear. If a signer is physically unable to sign, § 41-257 allows them to direct another person, other than the notarial officer, to sign.",
     option_feedback: {
       A: "No appearance would violate § 41-254(A) and is not a verification under § 41-251(16).",
       B: "Correct. The statutory short form in § 41-265(3) is 'signed and sworn to (or affirmed) before me,' together with appearance under § 41-253(B).",
       C: "The notary does not sign the record for the individual.",
-      D: "An alterable signature is not the statutory verification process.",
+      D: "That wording does not record a signature and oath or affirmation before the notarial officer.",
     },
     source_id: "ars_41_265",
-    source_reference: "A.R.S. § 41-265(3); A.R.S. § 41-253(B); A.R.S. § 41-251(16) (definition of the declaration, not a standalone in-presence signing rule)",
+    source_reference: "A.R.S. §§ 41-265(3), 41-257, and 41-253(B). Arizona SOS Reference Manual, October 2026, pp. 26–28.",
     last_verified_at: "2026-09-01",
     is_free: true,
   },
@@ -1069,11 +1073,11 @@ const drafts: Draft[] = [
     option_d: "Wait until a signer complains before checking the official text",
     correct_option: "B",
     explanation:
-      "Legal text and effective dates come from the Arizona Legislature (current A.R.S. and session laws). A.R.S. § 1-241 and § 1-244 control timing and non-retroactivity. SOS notary pages may describe filing, exam, and name/address operations, and some still display recodified/old section numbers; those pages do not replace the current Legislature numbering. Illustration: Laws 2026, Chapter 31 (SB 1479) took effect September 12, 2026, so its § 41-254 journal-thumbprint amendments are current law for acts on or after that date. The online A.R.S. compilation may lag a session; use the chaptered session law until the compilation is updated.",
+      "Read the chaptered session law and check when it takes effect before applying a change. The online A.R.S. compilation can lag a change or reflect the law for a later date. Use the Secretary of State’s notary instructions for procedures and confirm statutory requirements against the law in effect when you perform the act.",
     option_feedback: {
       A: "Unofficial recaps are not the official text or effective date.",
-      B: "Correct. Current A.R.S. + stated effective date; SOS pages are operational only; apply law in force on the act date.",
-      C: "A chaptered session law waits for its effective date (§ 1-241). After that date it is current. SB 1479 became current on September 12, 2026.",
+      B: "Correct. Confirm the enacted language and effective date, then apply the law in force when the act occurs.",
+      C: "A chapter number identifies an enacted law. Its effective date determines when it applies.",
       D: "A complaint is not how a notary determines current law.",
     },
     source_id: "az_sb_1479_2026",
@@ -1184,6 +1188,10 @@ const drafts: Draft[] = [
 ];
 
 export const questions: Question[] = publish([...drafts, ...expansionDrafts, ...wave2Drafts, ...scenarioDrafts]);
+
+export function historicalAzQuestions(): Question[] {
+  return questions.filter((q) => q.status === "published");
+}
 
 export function publishedQuestions(): Question[] {
   return questions.filter((q) => isActiveQuestion(q));

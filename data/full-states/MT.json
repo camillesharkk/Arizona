@@ -4585,9 +4585,9 @@
       "title": "A solemn participant's act",
       "front": "What makes an oath or affirmation more than a signature?",
       "rule": "The person knowingly and willingly makes the statement with intent to be bound, and the officer establishes the person's identity.",
-      "boundary": "The person must participate through the authorized appearance method.",
+      "boundary": "A verification on oath or affirmation also involves signing the record.",
       "mixup": "A silent stamp does not administer a solemn declaration.",
-      "source": "MCA 1-5-603(7), (9)",
+      "source": "MCA 1-5-603(7)",
       "sourceUrl": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0050/part_0060/section_0030/0010-0050-0060-0030.html"
     },
     {
@@ -4698,7 +4698,7 @@
       "boundary": "Check current agency instructions for the actual transaction.",
       "mixup": "A remaining blank stamp box on an old form does not itself prove a current requirement.",
       "source": "SOS Vehicle Title Transfer Updates",
-      "sourceUrl": "https://sosmt.gov/notary/"
+      "sourceUrl": "https://sosmt.gov/notary/MVTitles/"
     },
     {
       "id": "mt-card-042",
@@ -4742,7 +4742,7 @@
       "boundary": "Use the current statutory duties and agency instructions for the transfer involved.",
       "mixup": "A notary commission does not guarantee the agency will approve a client's transfer paperwork.",
       "source": "SOS Vehicle Title Transfer Updates — agency referral",
-      "sourceUrl": "https://sosmt.gov/notary/"
+      "sourceUrl": "https://sosmt.gov/notary/MVTitles/"
     },
     {
       "id": "mt-card-046",
@@ -4938,7 +4938,7 @@
       "sections": [
         {
           "heading": "Obtain a meaningful declaration",
-          "body": "MCA 1-5-603(2) and (7) require the identified participant's knowing and willing statement with intent to be bound. A verification involves the appearing person signing and making the verification. A certificate or silent stamp cannot supply the participant's missing solemn declaration. The officer must also apply the mandatory refusal rule when the required capacity or voluntariness is unresolved."
+          "body": "For a stand-alone oral oath or affirmation, MCA 1-5-603(7) requires the officer to establish the person's identity and determine that the person knowingly and willingly makes the statement with intent to be bound. A verification on oath or affirmation under MCA 1-5-603(2) also involves the appearing person signing the record and making the verification. When a person is executing a record, MCA 1-5-622(1) requires refusal if the officer cannot establish the required capacity or knowing and voluntary execution."
         },
         {
           "heading": "Accommodate execution without changing roles",
@@ -5517,7 +5517,7 @@
         },
         {
           "title": "Montana Secretary of State — Notary Public, vehicle title update",
-          "url": "https://sosmt.gov/notary/"
+          "url": "https://sosmt.gov/notary/MVTitles/"
         }
       ],
       "faqs": [
@@ -5529,7 +5529,8 @@
           "q": "Can any private notary copy-certify an official vehicle title?",
           "a": "Check the official-record restriction and its exception for employment by the issuing or original-holding public entity."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     }
   ],
   "sources": [

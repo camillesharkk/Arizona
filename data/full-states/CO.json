@@ -4341,12 +4341,12 @@
       "id": "co-card-009",
       "study": "identification",
       "title": "Ordinary ID features",
-      "front": "Which ordinary documentary features are listed?",
-      "rule": "Government ID has a photograph or signature and is current or expired one year or less.",
-      "boundary": "Remote identification has separate requirements.",
-      "mixup": "Do not import the remote both-feature rule into every paper act.",
-      "source": "Colorado powers and duties FAQs, Q6",
-      "sourceUrl": "https://www.coloradosos.gov/pubs/notary/FAQ/duties.html"
+      "front": "What does another form of government ID need for an in-person act?",
+      "rule": "A government-issued credential outside the passport, driver’s license, or government-issued nondriver ID card category must contain the signer’s signature or photograph and be satisfactory to the notary.",
+      "boundary": "Both statutory ID categories allow a current ID or one expired no more than one year. Remote notarization has separate identification rules.",
+      "mixup": "The statute adds the signature-or-photograph requirement to the other government ID category.",
+      "source": "C.R.S. § 24-21-507(2)(a)(I)–(II), (3)",
+      "sourceUrl": "https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf#page=4"
     },
     {
       "id": "co-card-010",
@@ -4517,12 +4517,12 @@
       "id": "co-card-025",
       "study": "acknowledgments",
       "title": "Relative interests",
-      "front": "Which relatives are included in conflict screening?",
-      "rule": "The FAQ lists spouse/civil-union partner, ancestors, descendants and siblings including half/step siblings.",
-      "boundary": "Apply the stated record-interest conditions.",
-      "mixup": "Certifying only another party's signature does not necessarily remove the conflict.",
-      "source": "Colorado powers and duties FAQs, Q18",
-      "sourceUrl": "https://www.coloradosos.gov/pubs/notary/FAQ/duties.html"
+      "front": "When does a Colorado notary have a disqualifying interest?",
+      "rule": "Decline when the notary, spouse, civil-union partner, ancestor, descendant or sibling is a party to or named in the record.",
+      "boundary": "A separate conflict exists when the notary, spouse or civil-union partner would receive a direct benefit that exceeds the proper fee.",
+      "mixup": "Check who is named in or a party to the record, even when their signature is not the one being notarized.",
+      "source": "C.R.S. § 24-21-504(2)(a)–(b)",
+      "sourceUrl": "https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf#page=2"
     },
     {
       "id": "co-card-026",
@@ -4828,7 +4828,7 @@
       "sections": [
         {
           "heading": "Ordinary evidence and witnesses",
-          "body": "The powers FAQ describes ordinary government ID that is current or expired one year or less and contains a photograph or signature. The credible-witness route requires a personally appearing witness who personally knows the signer and provides the sworn written verification. The notary either knows the witness or identifies the witness through sufficient ID. Record the actual identity method. Remote identification follows separate conditions and should not be assembled from whichever ordinary rules seem convenient."
+          "body": "A passport, driver’s license, or government-issued nondriver ID card may be current or expired no more than one year. Another form of government-issued ID must meet that timing rule, contain the signer’s signature or photograph, and satisfy the notary. A credible witness must personally appear, know the signer, and provide a sworn written verification. The notary either knows the witness or identifies the witness with a qualifying passport, driver’s license, or government-issued nondriver ID card. Record how you identified the signer. Remote notarization has separate identification rules."
         },
         {
           "heading": "Communication and interpreter safeguards",
@@ -4854,7 +4854,7 @@
         },
         {
           "heading": "Screen the record and conflicts",
-          "body": "The powers FAQ prohibits pre- and post-dating and assigns document changes to the signer and certificate corrections to the notary. Resolve unfilled blanks using the stated signer-completion process. An undated document without a date blank can be distinguished in the journal. Screen self and specified-relative interests and the special copy-certification exclusions for Colorado public-custodian records. An admonishment identifies incorrect practice that should be reviewed and corrected, and repeated warnings may prompt investigation."
+          "body": "Date the certificate on the day of the act. The signer makes document changes, and the notary makes certificate corrections. Decline when the notary, the notary’s spouse, civil-union partner, ancestor, descendant or sibling is a party to or named in the record. A separate rule bars an act that directly benefits the notary, spouse or civil-union partner beyond a proper fee. Check the separate restrictions for certifying copies of public records."
         }
       ],
       "example": {
@@ -5129,6 +5129,7 @@
     },
     {
       "slug": "colorado-certificate-date-and-corrections",
+      "updated": "2026-11-19",
       "keyword": "Colorado notary certificate correction date",
       "intent": "Complete actual dates and apply the proper correction roles",
       "title": "Correct the Colorado certificate you actually performed",
@@ -5143,7 +5144,7 @@
         },
         {
           "heading": "Identify the correct participant",
-          "body": "The common-mistakes page warns against inserting the notary's name where the certificate identifies the appearing customer. Read each field's role. The notary's official name and signature have their own places. The certificate also needs the actual venue, act type, stamp, title and exact commission expiration information."
+          "body": "Enter the appearing customer’s name in the signer field. Use the notary’s official name and signature in their own fields. Since September 1, 2023, Colorado no longer requires a separate commission expiration date in the certificate text. The official paper stamp and the signature used for in-person electronic notarization still include the commission expiration date."
         },
         {
           "heading": "Separate correction authority",
@@ -5413,6 +5414,20 @@
     }
   ],
   "sources": [
+    {
+      "id": "co-rulona",
+      "title": "Colorado Revised Uniform Law on Notarial Acts",
+      "url": "https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf",
+      "reference": "C.R.S. title 24, article 21, part 5, December 2025 consolidation",
+      "checkedAt": "2026-11-19"
+    },
+    {
+      "id": "co-apply-checklist",
+      "title": "Colorado Notary Public Registration or Renewal Checklist",
+      "url": "https://www.coloradosos.gov/pubs/notary/files/PrintableAttachmentInfo.pdf",
+      "reference": "p. 1, identification and other required materials, June 2025",
+      "checkedAt": "2026-11-19"
+    },
     {
       "id": "co-rules",
       "title": "Colorado Notary Program Rules, 8 CCR 1505-11",

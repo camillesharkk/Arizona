@@ -4342,11 +4342,11 @@
       "study": "commission",
       "title": "Information amendments",
       "front": "What changes need prompt reporting?",
-      "rule": "The FAQ requires the stated ten-day signed notices for address and legal-name changes, with old/new details and required fees/evidence.",
-      "boundary": "Address/name changes also require written surety notice. A name change includes an amended bond and new confirmed-name seal.",
+      "rule": "Send the Secretary a signed notice within ten days after a covered address change or a legal name change. Include the old and new information and required supporting documents.",
+      "boundary": "After a regular workplace or business move, wait to notarize until you send the notice, receive state confirmation, and notify the surety in writing. For a name change, follow the separate seal, surety and amended-bond requirements.",
       "mixup": "Updating an employer's file does not update the state and surety records.",
-      "source": "Missouri Secretary of State notary FAQs — Q16–18",
-      "sourceUrl": "https://s1.sos.mo.gov/business/notary/notary_faq"
+      "source": "RSMo §§486.780 and 486.785; Missouri SOS FAQ 16–18",
+      "sourceUrl": "https://revisor.mo.gov/main/OneSection.aspx?section=486.780"
     },
     {
       "id": "mo-card-010",
@@ -4463,8 +4463,8 @@
       "study": "journals",
       "title": "Death and representatives",
       "front": "Who handles the records after death?",
-      "rule": "The representative notifies the Secretary, forwards seals as soon as reasonably practicable and forwards journal/notarial records within 30 days.",
-      "boundary": "Use the death-specific instructions in §486.800.",
+      "rule": "The personal representative notifies the Secretary of State in writing and sends the journal and notarial records within 30 days.",
+      "boundary": "Confirm paper-seal disposition separately. The forwarding and destruction provisions differ.",
       "mixup": "Official records do not become disposable personal stationery.",
       "source": "Missouri Revised Statutes §486.800 — §486.800",
       "sourceUrl": "https://revisor.mo.gov/main/OneSection.aspx?section=486.800"
@@ -4497,7 +4497,7 @@
       "title": "One or two credible witnesses",
       "front": "How are the ordinary witness routes structured?",
       "rule": "Use one disinterested witness personally known to the notary who knows the principal, or two disinterested witnesses who each know the principal and present qualifying ID.",
-      "boundary": "The witness takes the oath or affirmation identifying the principal.",
+      "boundary": "Each participating witness takes an oath or affirmation to vouch for the principal’s identity.",
       "mixup": "One unknown unsworn companion does not satisfy either route.",
       "source": "Missouri Revised Statutes §486.600 — §486.600(7),(21)(b)",
       "sourceUrl": "https://revisor.mo.gov/main/OneSection.aspx?section=486.600"
@@ -4660,10 +4660,10 @@
       "id": "mo-card-038",
       "study": "seals-fees",
       "title": "Seal event handling",
-      "front": "What follows seal damage or termination?",
-      "rule": "Report listed loss/theft/damage/illegibility within ten days, with theft/vandalism law-enforcement information. Follow the specific disposal route for the cessation event.",
-      "boundary": "Revocation calls for forwarding the seal to the Secretary. Death has the specific representative instructions in §486.800.",
-      "mixup": "A broad destroy-seal summary should not erase a specific statutory forwarding duty.",
+      "front": "What does Missouri require after loss, damage or illegibility of a paper seal?",
+      "rule": "Notify the Secretary in a receipt-producing manner within ten days. For theft or vandalism, also notify law enforcement.",
+      "boundary": "The paper-seal disposal provisions differ for revocation and death. Keep the seal secure and confirm the instructions that apply before disposing of it.",
+      "mixup": "A reporting deadline and a disposal method address different duties.",
       "source": "Missouri Revised Statutes §486.725 — §486.725.4-6; §486.800",
       "sourceUrl": "https://revisor.mo.gov/main/OneSection.aspx?section=486.725"
     },
@@ -4814,7 +4814,7 @@
         },
         {
           "heading": "Reapply and amend through the official route",
-          "body": "A term lasts four years. Current and former notaries comply anew for a new commission, with new bond, qualification and updated seal. Address and legal-name changes have the stated ten-day notices and surety updates. Name changes include official evidence, amended bond and a new confirmed-name seal. Loss of the qualifying Missouri connection requires resignation. Another state's commission does not transfer automatically."
+          "body": "A term lasts four years. Applicants for a new term need a new bond, qualification and updated seal. Send the Secretary a signed notice within ten days of a covered address or legal name change. For a regular workplace or business move, send the notice, wait for state confirmation and inform the surety in writing before performing another act. For a legal name change, follow the separate rules for evidence, written surety notice, an amended bond and a new confirmed-name seal. An out-of-state commission does not transfer automatically."
         }
       ],
       "example": {
@@ -4842,7 +4842,7 @@
         },
         {
           "heading": "Handle loss and the end of office",
-          "body": "Report listed theft, loss, damage, destruction or unreadability within ten days through a receipt-producing means, with theft/vandalism law-enforcement reporting. The bound record has a ten-year last-entry period and is delivered under the cessation/death provisions. Ordinary cessation disposition is within 30 days. The specified pending-recommission expiration case extends to three months unless recommissioned. Section 486.800 gives the representative's death-specific notice, seal-forwarding and 30-day record duties."
+          "body": "Report listed theft, loss, damage, destruction or unreadability within ten days through a receipt-producing means, with theft/vandalism law-enforcement reporting. The bound record has a ten-year last-entry period and is delivered under the cessation/death provisions. Ordinary cessation disposition is within 30 days. The specified pending-recommission expiration case extends to three months unless recommissioned. Section 486.800 gives the representative's death-specific written notice and 30-day record duties. The sections addressing the paper seal use different disposal instructions. Keep it secure and confirm the applicable procedure."
         }
       ],
       "example": {
@@ -4862,7 +4862,7 @@
       "sections": [
         {
           "heading": "Identify and communicate under Missouri's standard",
-          "body": "Personal knowledge comes from sufficient interactions over time. Ordinary documentary evidence is a current qualifying federal/state/tribal document in an understood language with facial photograph, signature and physical description, or the stated passport exception. Credible witnesses are disinterested and use the one-person personally-known or two-person credential-identified arrangement. The principal also understands the transaction, acts freely, signs in understood language/characters and directly communicates in a shared language."
+          "body": "Personal knowledge comes from sufficient interactions over time. Ordinary documentary evidence is a current qualifying federal, state or tribal document in an understood language with a facial photograph, signature and physical description, subject to the passport exception. Each disinterested witness personally knows the principal and vouches under oath or affirmation. A single witness must be personally known to the notary. On the two-witness route, each witness presents qualifying identification. The principal also understands the transaction, acts freely, signs in understood language or characters and communicates directly in a language the notary understands."
         },
         {
           "heading": "Screen relationships and special execution",
@@ -4894,7 +4894,7 @@
         },
         {
           "heading": "Keep official identity and seal control",
-          "body": "The seal contains exact commissioned name, number, required wording and expiration, with the stated border. Keep it off document text and use the FAQ's permitted legibility remedies. A nonreproducible embossing supplements the official seal. The seal is personal, secure and used only for acts. Report listed loss/damage within ten days. Follow event-specific disposition, including state forwarding for revocation and the representative's death duties."
+          "body": "The seal contains exact commissioned name, number, required wording and expiration, with the stated border. Keep it off document text and use the FAQ's permitted legibility remedies. A nonreproducible embossing supplements the official seal. The seal is personal, secure and used only for acts. Report listed loss/damage within ten days. For a revoked or deceased notary’s paper seal, §§486.725, 486.795 and 486.800 give different forwarding and destruction procedures. Keep the seal secure while confirming the applicable procedure with the Secretary of State."
         },
         {
           "heading": "Attach and correct certificates as prescribed",
@@ -4997,6 +4997,7 @@
     },
     {
       "slug": "ordinary-credible-witness-routes",
+      "updated": "2026-11-19",
       "keyword": "Missouri credible witness one two identification",
       "intent": "Apply the ordinary identity-witness alternatives",
       "title": "One Known Witness or Two Identified Witnesses in Missouri",
@@ -5015,7 +5016,7 @@
         },
         {
           "heading": "Apply the two-identified-witness alternative",
-          "body": "The same provision offers a route with two disinterested witnesses who each personally know the principal and show the notary qualifying documentary identification. This differs from assuming any one unknown companion will suffice. The ordinary credential definition specifies a current federal, state or tribal document in an understood language with the required features and its passport exception. The notary applies that actual credential standard to the witnesses."
+          "body": "Two disinterested witnesses may identify the principal. Each witness personally knows the principal, presents qualifying documentary identification and vouches for the principal under oath or affirmation. Apply the ordinary credential requirements to each witness, including the statutory passport exception."
         },
         {
           "heading": "Preserve the method in the journal",
@@ -5231,7 +5232,7 @@
         },
         {
           "heading": "Apply the death-specific responsibilities",
-          "body": "Section 486.800 requires the personal representative to notify the Secretary in writing, forward seals as soon as reasonably practicable and forward the journal and records within thirty days. These specific forwarding instructions should remain visible alongside general seal-misuse prevention rules. The representative should preserve receipt evidence through the statutory delivery method. Official records and usable official tools require deliberate legal disposition rather than ordinary office cleanout treatment."
+          "body": "Section 486.800 requires written notice of death and delivery of the journal and notarial records within 30 days. The paper-seal forwarding and destruction provisions differ. Keep the seal secure and confirm the applicable disposal procedure with the Secretary of State. Keep receipt evidence for records transmitted to the state."
         }
       ],
       "sources": [
@@ -5261,7 +5262,8 @@
           "q": "Does the three-month exception extend practice authority?",
           "a": "It concerns record disposition for the stated pending-recommission case."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     },
     {
       "slug": "remote-two-journals-and-recording",

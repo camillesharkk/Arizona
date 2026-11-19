@@ -9,9 +9,12 @@ import { nyBatch7 } from "./ny-batch7";
 import { nyBatch8 } from "./ny-batch8";
 import { nyBatch9 } from "./ny-batch9";
 import { nyCardsMore } from "./ny-cards-more";
-import { currentQuestionVersion } from "../lib/question-revisions";
+import { NY_REVISIONS } from "../lib/question-revisions";
 import { nyRevisedRows } from './ny-revisions';
 import { nyReviewedSources } from './ny-source-review';
+import { questionReviewDate } from './question-review-dates';
+import { questionDrawHold } from './question-draw-holds';
+import { isActiveQuestion } from '../lib/question-status';
 
 export const NY_CHECKED = "2026-11-09";
 
@@ -96,26 +99,29 @@ const rows: Row[] = [...nyBatch9, ...nyBatch8, ...nyBatch7, ...nyBatch6, ...nyBa
     miss: ["Ten dollars is not the stated fee.", "Correct. The FAQ states $2.", "The FAQ treats the certificate of authenticity as a notarial act.", "Fifteen dollars is the exam fee, not this charge."], source: FAQ },
 ]);
 
+import { publishQuestionEdit } from "../lib/question-version";
+import { nyQuestionEdits } from "./question-edits-ny";
+
 const letters = ["A", "B", "C", "D"] as const;
 export function publishedNyQuestions(): Question[] {
-  return rows.map((original) => nyRevisedRows.find(row => row.id === original.id) ?? original).map((row) => ({
+  return rows.map((original) => nyRevisedRows.find(row => row.id === original.id) ?? original).map((row) => publishQuestionEdit({
     question_id: row.id, state: "NY" as const, study_topic: row.study, topic: row.topic, difficulty: row.difficulty,
     question_text: row.text, option_a: row.options[0], option_b: row.options[1], option_c: row.options[2], option_d: row.options[3],
     correct_option: letters[row.correct], explanation: row.why,
     option_feedback: { A: row.miss[0], B: row.miss[1], C: row.miss[2], D: row.miss[3] },
-    source_id: "ny-official", source_reference: nyReviewedSources[row.id] ?? row.source, effective_from: "2023-01-25", effective_to: null,
-    last_verified_at: row.verified ?? NY_CHECKED, version: currentQuestionVersion(row.id), is_free: row.free, status: "published" as const,
-  }));
+    source_id: "ny-official", source_reference: nyReviewedSources[row.id] ?? row.source, effective_from: "2023-01-25", effective_to: questionDrawHold(row.id),
+    last_verified_at: questionReviewDate(row.id, row.verified ?? NY_CHECKED), version: NY_REVISIONS[row.id] ?? 1, is_free: row.free, status: "published" as const,
+  }, nyQuestionEdits[row.id]));
 }
 export function pickNyFullExam(seed: number) {
-  const bank = publishedNyQuestions();
+  const bank = publishedNyQuestions().filter((q) => isActiveQuestion(q));
   const unique = [...new Map(bank.map((question) => [question.question_id, question])).values()];
   if (unique.length < 40) return null;
   return { questions: shuffle(unique, seed).slice(0, 40), unscoredIds: [] as string[] };
 }
 
 export function nyQuestionCounts() {
-  const published = publishedNyQuestions();
+  const published = publishedNyQuestions().filter((q) => isActiveQuestion(q));
   return { published: published.length, free: published.filter((q) => q.is_free).length, pro: published.filter((q) => !q.is_free).length };
 }
 

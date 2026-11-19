@@ -9,8 +9,8 @@ const gov = (section: string) =>
 const civ = (section: string) =>
   `https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CIV&sectionNum=${section}.`;
 
-function item(slug: string, article: Omit<StateArticle, "state" | "slug" | "path" | "updated">): StateArticle {
-  return { ...article, state: "CA", slug, path: `/california/${slug}/`, updated: "2026-11-07" };
+function item(slug: string, article: Omit<StateArticle, "state" | "slug" | "path" | "updated">, updated = "2026-11-07"): StateArticle {
+  return { ...article, state: "CA", slug, path: `/california/${slug}/`, updated };
 }
 
 export const caArticles: StateArticle[] = [
@@ -22,13 +22,13 @@ export const caArticles: StateArticle[] = [
     description: "A failed California notary exam can be retaken in a later calendar month. A second score in the same month is invalid and the fee is forfeited.",
     h1: "Failed the California Notary Exam? Retake Rules and Next Steps",
     kicker: "Retake",
-    lede: "You may apply and test again after a failing result. CPS HR allows only one valid sitting in a calendar month. A second score in that same month is invalid, and the fee for that sitting is forfeited. The fail notice comes by mail. Results are not given over the phone.",
-    checked: "CPS HR notary exam information, read November 7, 2026. Results timing, the once-a-month rule, the mailed fail notice, and the $30 rescore were on that page.",
+    lede: "You may apply and test again after a failing result. CPS HR allows only one valid sitting in a calendar month. A second score in that same month is invalid, and the fee for that sitting is forfeited. CPS HR sends results after the exam and does not give them by phone.",
+    checked: "CPS HR notary exam information, accessed November 19, 2026. It covers results timing, the once-a-month rule and the $30 rescore.",
     ledeCta: { href: `${caPaths.questions}?topic=education-exam`, label: "Practice the exam-rule questions", placement: "lede", targetMode: "topic" },
     sections: [
       {
         heading: "What the fail notice does and does not do",
-        body: "Candidates who do not pass are mailed a fail notice. Passing candidates are forwarded to the Secretary of State. A fail notice is not a commission denial by itself, and it does not waive the six-hour course, the fingerprints, or the later oath and bond. Results take about 15 to 20 business days after the exam date.",
+        body: "Check your CPS HR account for results and look for the notice sent by CPS HR. Passing results are forwarded to the Secretary of State. Failing the exam does not itself deny a commission. Results take about 15 to 20 business days after the exam date.",
         points: [
           "One valid exam per calendar month. March 2 and March 20 would make the later score invalid.",
           "The next valid month is the following calendar month, not 30 days later.",
@@ -53,9 +53,9 @@ export const caArticles: StateArticle[] = [
     ],
     faqs: [
       { q: "Can I test again the same month if I failed?", a: "No. CPS HR says a candidate may test only once in a calendar month. A second score that month is invalid and the fee is forfeited." },
-      { q: "Will CPS HR tell me the result by phone?", a: "No. The exam page says result information is not discussed over the phone. Expect the mailed result in about 15 to 20 business days." },
+      { q: "Will CPS HR tell me the result by phone?", a: "No. CPS HR typically sends the result about 15 to 20 business days after the exam and does not discuss it by phone." },
     ],
-  }),
+  }, "2026-11-19"),
   item("open-book", {
     id: "ca-open-book",
     keyword: "is the california notary exam open book",
@@ -293,7 +293,7 @@ export const caArticles: StateArticle[] = [
     h1: "California Notary Fees: Allowed Charges and Examples",
     kicker: "Fees",
     lede: "Government Code section 8211 sets maximums, not a required price. An acknowledgment or proof is at most $15 per signature, including the seal and certificate. An oath and jurat is at most $15. Charging less, or nothing, is allowed.",
-    checked: "Government Code section 8211, read November 7, 2026. Amended by Stats. 2016, ch. 133, effective January 1, 2017. The journal practice is the January 2026 handbook treatment of section 8206.",
+    checked: "Government Code section 8211 as printed in the January 2026 handbook, page 36. The Secretary of State’s November 2026 newsletter, page 1, explains the January 2027 fee change.",
     ledeCta: { href: `${caPaths.questions}?topic=fees`, label: "Practice fee questions", placement: "lede", targetMode: "topic" },
     sections: [
       {
@@ -313,6 +313,11 @@ export const caArticles: StateArticle[] = [
         body: "Three people each acknowledge the same deed. The maximum is $15 for each signature, $45, not $15 for the document. A neighbor’s acknowledgment at no charge is lawful. The journal line says “no fee” or “0”. It does not say $15 was charged. A military-reservation notary under section 8203.6, and a public-agency notary whose fees must be remitted, follow those separate limits.",
         link: { href: `${caPaths.study}#fees`, label: "Fee chapter", placement: "section", targetMode: "guide" },
       },
+      {
+        heading: "Fee limits beginning January 1, 2027",
+        body: "AB 1597 raises the maximum for an acknowledgment or proof to $20 per signature, for a one-person oath or affirmation and jurat to $20, and for certifying a copy of a qualifying power of attorney to $20. The deposition limits become $35 for services, plus $12 for the witness oath and $12 for the certificate. Use the current limits above for acts through December 31, 2026.",
+        link: { href: "https://notary.cdn.sos.ca.gov/forms/notary-newsletter-november-2026.pdf#page=1", label: "Secretary of State fee-change notice (PDF)", placement: "section", targetMode: "official" },
+      },
     ],
     endCta: { href: `${caPaths.questions}?topic=fees`, label: "Work the fee situations", placement: "end", targetMode: "topic" },
     related: [
@@ -320,7 +325,7 @@ export const caArticles: StateArticle[] = [
       { href: gov("8211"), label: "Section 8211" },
       { href: caPaths.laws, label: "Source list" },
     ],
-  }),
+  }, "2026-11-19"),
   item("bond-vs-insurance", {
     id: "ca-bond",
     keyword: "california notary bond vs eo insurance",

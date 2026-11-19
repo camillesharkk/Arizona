@@ -1,0 +1,2024 @@
+import "server-only";
+import type { QuestionEdit } from "../lib/question-version.ts";
+
+export const serverQuestionEdits: Readonly<Partial<Record<string, QuestionEdit>>> = {
+  "ri-039": {
+    "version": 1,
+    "replacementId": "ri-204",
+    "fields": {
+      "question_text": "A signer presents another type of current government ID with both a photo and a signature. The photo does not look like the signer. What may the Rhode Island notary do?",
+      "option_a": "Ask for additional identification to resolve the mismatch",
+      "option_b": "Accept the ID because the two printed features settle identity",
+      "option_c": "Compare the customer’s signature to the fee receipt instead",
+      "option_d": "Ask the document recipient to waive the identity check",
+      "correct_option": "A",
+      "explanation": "The notary must be satisfied that the ID identifies the person who appears. Rhode Island law allows the notary to request more information or identification when the first credential leaves reasonable doubt.",
+      "option_feedback": {
+        "A": "Additional evidence can resolve the mismatch before the notary proceeds.",
+        "B": "A photo and signature do not make an unexplained mismatch acceptable.",
+        "C": "A fee receipt does not resolve who is presenting the credential.",
+        "D": "Recipient consent cannot waive the notary’s identity determination."
+      },
+      "source_reference": "R.I. Gen. Laws § 42-30.1-6(b)(1)(ii), (c). Rhode Island Notary Public Manual, p. 19. https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-6.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ri-106": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A customer brings an eligible private document and a photocopy made at home. Which procedure follows the Rhode Island Secretary of State’s published copy-certification instructions?",
+      "option_a": "Certify the home copy after the customer promises every page is present",
+      "option_b": "Certify a copy based on its matching page numbers",
+      "option_c": "Make or supervise a fresh copy, then compare it with the original for accuracy and completeness",
+      "option_d": "Use the customer’s receipt as proof the copy matches",
+      "correct_option": "C",
+      "explanation": "The Secretary of State’s published procedure calls for the notary to make or supervise the copy and compare it with the original. The notary must determine that the reproduction is full, true, and accurate.",
+      "option_feedback": {
+        "A": "The notary must make an independent copy determination.",
+        "B": "Page numbers alone cannot establish the accuracy of the contents.",
+        "C": "Making or supervising the copy and checking it against the original follows the published procedure.",
+        "D": "A receipt does not show that the copy reproduces the original."
+      },
+      "source_reference": "R.I. Gen. Laws § 42-30.1-4(d). Standards of Conduct § 2(c)(2)–(4). Rhode Island Notary Public Manual, p. 14. SOS Quick Reference Guide, PDF p. 7. https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-4.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ri-183": {
+    "version": 1,
+    "replacementId": "ri-205",
+    "fields": {
+      "question_text": "A person is physically unable to sign and needs someone to sign on their behalf. Before anyone signs under Rhode Island’s directed-signature procedure, whose instruction must authorize the signing?",
+      "option_a": "The document recipient’s instruction",
+      "option_b": "The instruction of the person who is unable to sign",
+      "option_c": "The proposed signer’s independent decision",
+      "option_d": "The notary’s independent decision",
+      "correct_option": "B",
+      "explanation": "The direction must come from the person who is physically unable to sign. The remaining rules determine who may sign and what the notary must record.",
+      "option_feedback": {
+        "A": "Receiving the document does not make someone the principal.",
+        "B": "The principal must direct the signing on their behalf.",
+        "C": "The person doing the signing needs the principal’s direction.",
+        "D": "The notary cannot substitute their decision for the principal’s direction."
+      },
+      "source_reference": "R.I. Gen. Laws § 42-30.1-8. Standards of Conduct § 3(h)(1). Rhode Island Notary Public Manual, p. 15. https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-8.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ri-184": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A person who is physically unable to sign directs someone else to sign the person’s name. The applicable assisted-signing procedure requires a note on the record. What fact must the note accurately reflect?",
+      "option_a": "The principal personally wrote the signature",
+      "option_b": "The signature was only witnessed and no one signed for the principal",
+      "option_c": "The signature was affixed on the principal’s behalf",
+      "option_d": "The identity of the person signing can be replaced with the fee amount",
+      "correct_option": "C",
+      "explanation": "The required note documents that the signature was affixed for the principal. Follow the wording and details required by the applicable procedure, and do not describe the signature as the principal’s unaided act.",
+      "option_feedback": {
+        "A": "That wording would misstate who physically affixed the signature.",
+        "B": "Witnessing by itself does not describe someone else signing for the principal.",
+        "C": "The note must truthfully record the assisted signing.",
+        "D": "The amount charged does not explain how the signature was affixed."
+      },
+      "source_reference": "R.I. Gen. Laws § 42-30.1-8. Standards of Conduct § 3(h)(6). Rhode Island Notary Public Manual, p. 15. https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-8.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ri-200": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A signer in another country asks a Rhode Island notary for an online notarization. Which fact satisfies the required U.S. connection for the record, assuming all other conditions are met?",
+      "option_a": "The signer has selected an English-language video interface",
+      "option_b": "The signer previously held a U.S. mailing address",
+      "option_c": "The record concerns property located in the United States",
+      "option_d": "The customer pays through a U.S. payment processor",
+      "correct_option": "C",
+      "explanation": "A record involving property in the United States meets the U.S.-connection condition. Other conditions still apply to the remote act.",
+      "option_feedback": {
+        "A": "The language of the software does not connect the record to the United States.",
+        "B": "The signer’s former address does not establish the required connection for the record.",
+        "C": "Property in the United States supplies the specified connection.",
+        "D": "Payment processing is not a U.S. connection for the record."
+      },
+      "source_reference": "R.I. Gen. Laws § 42-30.1-12.1(b)(4)(i)(B). Standards of Conduct § 8(a)(2)(iii)(a). https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-12.1.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-056": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A homeowner appears for a paper acknowledgment of a deed that transfers their home to a buyer. What does Texas law allow the notary to use to establish the homeowner’s identity?",
+      "option_a": "A photocopy of an expired foreign passport",
+      "option_b": "An employee badge issued by a private company",
+      "option_c": "An oral statement from the buyer who has not sworn to the seller’s identity",
+      "option_d": "The homeowner’s current passport issued by a foreign country",
+      "correct_option": "D",
+      "explanation": "Texas law lists a current foreign passport as satisfactory identity evidence for a deed relating to a residential real estate transaction. This deed transfers the homeowner’s residence, and the homeowner must still complete the acknowledgment.",
+      "option_feedback": {
+        "A": "The passport in this route must be current.",
+        "B": "A private badge does not qualify as the listed government-issued credential.",
+        "C": "An unsworn statement does not satisfy the credible-witness route.",
+        "D": "The current foreign passport fits the residential transfer in the question."
+      },
+      "source_reference": "Tex. Civ. Prac. & Rem. Code § 121.005(a)(1)–(3). 1 Tex. Admin. Code § 87.1(1). https://tcss.legis.texas.gov/resources/CP/htm/CP.121.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-102": {
+    "version": 1,
+    "replacementId": "tx-204",
+    "fields": {
+      "question_text": "A Texas notary’s journal entry properly records the signer’s address and identification method for a paper acknowledgment. Which name must the same entry include?",
+      "option_a": "The document courier’s name",
+      "option_b": "The name of the person whose signature is acknowledged",
+      "option_c": "The name of the notary’s employer",
+      "option_d": "The name of the equipment vendor",
+      "correct_option": "B",
+      "explanation": "The journal must identify the signer, grantor, or maker. Recording the signer’s address and identification method does not replace the signer’s name.",
+      "option_feedback": {
+        "A": "The courier’s name does not identify the person whose signature was acknowledged.",
+        "B": "The signer’s name is a separate entry required by § 406.014(a)(3).",
+        "C": "The employer does not substitute for the signer in this field.",
+        "D": "The equipment vendor has no part in this identification entry."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.014(a)(3)–(5). https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-104": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A credible witness swears to a signer’s identity in a Texas paper acknowledgment. The journal identifies the introduction method and includes the witness’s required address. What additional detail about the witness must the notary record?",
+      "option_a": "The witness’s initials only",
+      "option_b": "The witness’s credit card number",
+      "option_c": "The witness’s job title",
+      "option_d": "The name of the witness who introduced the signer",
+      "correct_option": "D",
+      "explanation": "When the signer is introduced to the notary, the record must identify the person who made the introduction. The witness’s address alone does not provide the required name.",
+      "option_feedback": {
+        "A": "Initials alone do not record the witness’s name.",
+        "B": "A credit card number is not the required name field.",
+        "C": "An occupation does not identify the person who introduced the signer.",
+        "D": "Enter the introducing witness’s name in addition to the other required information."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.014(a)(5). https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-105": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A witness proves a written instrument before a Texas notary. The journal already contains the required names and addresses. What must the notary record about how the witness was identified?",
+      "option_a": "Whether the notary personally knew the witness or the witness was introduced",
+      "option_b": "Whether the notary had previously notarized a different instrument for the grantor",
+      "option_c": "Whether the witness is related to the document’s recipient",
+      "option_d": "Whether the principal sent the instrument by mail",
+      "correct_option": "A",
+      "explanation": "When a witness proves the instrument, the statute calls for recording whether the notary personally knew the witness or the witness was introduced. The entry still has to contain the separately required participant details.",
+      "option_feedback": {
+        "A": "That documents how the notary knew or was introduced to the proof witness.",
+        "B": "Prior work for the grantor does not state how the proof witness was identified.",
+        "C": "A relationship to the recipient does not establish how the notary knew the witness.",
+        "D": "The delivery method does not identify the witness."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.014(a)(6). https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-106": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Texas notary records an acknowledgment for a deed conveying land. The journal includes the grantor’s name, the required addresses, and the county where the land is located. Whose name must also appear as the person receiving the interest conveyed?",
+      "option_a": "The person who delivered the deed",
+      "option_b": "The grantee",
+      "option_c": "The buyer’s mortgage broker",
+      "option_d": "The grantor’s real estate agent",
+      "correct_option": "B",
+      "explanation": "The journal must name the grantee. For an instrument conveying or charging land, the statute also calls for the name of the original grantee and the county where the land is located.",
+      "option_feedback": {
+        "A": "Delivering the deed does not make a person the grantee.",
+        "B": "The grantee is the person receiving the interest conveyed.",
+        "C": "A broker does not substitute for the person named as grantee.",
+        "D": "The agent’s role does not make the agent the grantee."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.014(a)(7)–(8). https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-119": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Texas notary renews their commission and opens a new journal. What should they do with paper-notarization records from the prior term that are still within the applicable retention period?",
+      "option_a": "Move the records to the new journal and replace each act date with the renewal date",
+      "option_b": "Keep only the cover page of the old journal",
+      "option_c": "Keep the records and their original entries for the remainder of the applicable retention period",
+      "option_d": "Destroy the records on the renewal date",
+      "correct_option": "C",
+      "explanation": "Renewing a commission does not erase the obligation to keep records that are still within the retention period. Preserve the actual entries and their dates.",
+      "option_feedback": {
+        "A": "A renewal date does not replace the date of an earlier notarization.",
+        "B": "The cover page does not preserve the notarial records.",
+        "C": "Retention continues for each record as required even when the notary opens a new journal.",
+        "D": "The renewal date does not end the required retention period."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.014(a)(2), (g). 1 Tex. Admin. Code § 87.54(a). https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-143": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "At an in-person notarization, one acknowledgment certificate covers two signatures on the same deed. After the fee for the first signature, how much more may the Texas notary charge for the second signature?",
+      "option_a": "$25",
+      "option_b": "Any amount disclosed before the act",
+      "option_c": "$1",
+      "option_d": "$10",
+      "correct_option": "C",
+      "explanation": "When one acknowledgment certificate covers both signatures, the maximum is $10 for the first signature and $1 for the additional signature. The listed fees include the certificate and seal.",
+      "option_feedback": {
+        "A": "$25 is the separate maximum supplement for an online notarization, which is outside this in-person scenario.",
+        "B": "Disclosure does not remove the statutory limit.",
+        "C": "The additional signature on this one certificate adds a maximum of $1.",
+        "D": "$10 is the maximum for the first signature on the certificate."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.024(a)(5), (b), and § 406.111. Texas SOS Online Notary Public Educational Information, FAQ 9. https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-190": {
+    "version": 1,
+    "replacementId": "tx-205",
+    "fields": {
+      "question_text": "A Texas online notary backs up the electronic record. The storage system still lets someone alter the original record without detection. What additional duty should the notary address?",
+      "option_a": "Keep only the name of the storage provider",
+      "option_b": "Take reasonable steps to protect the integrity, security, and authenticity of the electronic record",
+      "option_c": "Assume the backup makes untracked changes to the original acceptable",
+      "option_d": "Let the signer approve changes to the record after the session",
+      "correct_option": "B",
+      "explanation": "Backup protection is one duty. Texas law also requires reasonable steps to ensure the integrity, security, and authenticity of online notarizations. An electronic record that can be silently changed calls for additional protection.",
+      "option_feedback": {
+        "A": "The provider’s name does not protect the electronic record.",
+        "B": "The notary must address the integrity, security, and authenticity of the online notarization.",
+        "C": "A backup does not excuse allowing undetectable changes to the original.",
+        "D": "The signer’s permission does not replace the statutory protection."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.108(a), (b)(1)–(3), and § 406.109(b). Texas SOS Record-Keeping Requirements for Online Notaries. https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-006": {
+    "version": 1,
+    "replacementId": "tx-206",
+    "fields": {
+      "question_text": "A Texas notary entered a no-fee paper acknowledgment in the journal. The entry is still within the applicable retention period. May the notary discard it because no fee was charged?",
+      "option_a": "Yes, if the same signer has other entries",
+      "option_b": "No. Keep it for the remainder of the applicable retention period",
+      "option_c": "Yes, if the signer no longer needs a copy",
+      "option_d": "Yes, if the notary keeps only the date of the act",
+      "correct_option": "B",
+      "explanation": "An ordinary paper acknowledgment must be recorded even when the notary charges no fee. Preserve the complete entry while its applicable retention period continues.",
+      "option_feedback": {
+        "A": "Other acts involving the same signer do not replace this record.",
+        "B": "A waived fee does not shorten the retention obligation for the entry.",
+        "C": "Retention does not depend on a signer’s later need for a copy.",
+        "D": "Keeping only the date does not preserve the required entry."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.014(a), (g). Texas SOS Notary Public Educational Information, Record Book and Public Records. https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-036": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Texas notary applicant has filled out the application form. Which constitutional statement must the applicant also execute to qualify?",
+      "option_a": "A waiver of the duties of public office",
+      "option_b": "A declaration that the employer will supervise every notarization",
+      "option_c": "A statement from the applicant’s first customer",
+      "option_d": "The Statement of Officer",
+      "correct_option": "D",
+      "explanation": "In addition to completing the form, an applicant must execute the Statement of Officer required by the Texas Constitution. The statement is a separate qualification step.",
+      "option_feedback": {
+        "A": "Applicants do not waive their public duties through the qualification process.",
+        "B": "Employer supervision is not the constitutional statement required for appointment.",
+        "C": "The applicant, rather than a customer, must execute the statement.",
+        "D": "The Statement of Officer is the constitutional statement required by § 406.005(b)."
+      },
+      "source_reference": "Tex. Gov’t Code §§ 406.005(a)–(b), 406.006(1)–(2). Tex. Const. art. XVI, § 1. Texas SOS Traditional Notary Application Guide, printed p. 7. https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ar-035": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Your Arkansas notary commission expired ten days ago. You can see your expired record in the state’s online portal. What should you do if you want to renew?",
+      "option_a": "Open the renewal amendment for your record and wait until the renewed commission is active before notarizing.",
+      "option_b": "Keep notarizing for sixty days after expiration while you complete the renewal.",
+      "option_c": "Start a new application solely because your commission already expired.",
+      "option_d": "Begin notarizing immediately after you pay the renewal fee.",
+      "correct_option": "A",
+      "explanation": "The Secretary of State’s portal guide lists an online renewal route for an expired record. Ten days after expiration also falls within the renewal window described in the office’s FAQ. Find your existing record and choose the renewal amendment. The office must receive and process your recorded oath before the renewed commission is active.",
+      "option_feedback": {
+        "A": "Correct. Apply through the renewal amendment and wait for the state to activate the commission.",
+        "B": "The filing window does not extend the expired commission.",
+        "C": "Both instructions allow renewal at ten days after expiration.",
+        "D": "Payment does not activate the commission. The state must process the recorded oath."
+      },
+      "source_reference": "Arkansas SOS BCS Online Filing Portal User Guide (July 2026), pp. 14, 18, Web-Filed Notary Renewal; Arkansas SOS Notary FAQ, How early may I submit my renewal application? https://www.sos.arkansas.gov/uploads/bcs/NOTARYAPOSTILLECustomerManual_%28July_2026%29.pdf#page=14",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ar-117": {
+    "version": 1,
+    "replacementId": "ar-204",
+    "fields": {
+      "question_text": "You are applying for your first Arkansas electronic notary commission. Before any online convenience fee, what is the state application fee?",
+      "option_a": "$5",
+      "option_b": "$25",
+      "option_c": "$30",
+      "option_d": "$20",
+      "correct_option": "D",
+      "explanation": "21 CAR § 20-109(c) sets the electronic notary application fee at $20. The Secretary of State’s eNotary registration page lists a $25 online payment because it includes a $5 convenience fee. The designated training and exam are billed separately.",
+      "option_feedback": {
+        "A": "Five dollars is the online convenience fee listed by the Secretary of State.",
+        "B": "Twenty-five dollars includes the online convenience fee.",
+        "C": "Thirty dollars is the separately listed training and exam cost.",
+        "D": "Correct. The base state application fee is twenty dollars."
+      },
+      "source_reference": "21 CAR § 20-109(c); Arkansas Secretary of State, eNotary Registration, steps 1 and 2. https://codeofarrules.arkansas.gov/Rules/Rule?chapterID=137&levelType=section&partID=591&sectionID=28297&subChapterID=179&subPartID=4490&titleID=21",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ar-203": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "During an Arkansas remote online notarization, the signer says, “I’m in a rush. Can we just use the video recording instead of checking my identity or completing the certificate?” What should the notary do?",
+      "option_a": "Use the recording as the only evidence needed for the act.",
+      "option_b": "Verify the signer’s identity through an allowed method and complete the electronic certificate with the required online notarization notation.",
+      "option_c": "Create the recording and complete the certificate, but skip identification.",
+      "option_d": "Check identity and send a receipt instead of a notarial certificate.",
+      "correct_option": "B",
+      "explanation": "Arkansas requires the online notary to verify the signer’s identity under A.C.A. § 21-14-309(b). The electronic notarial certificate must indicate that the notarization was performed online. The audiovisual recording is a separate requirement and cannot replace either step.",
+      "option_feedback": {
+        "A": "Recording the act does not establish identity by itself or complete the certificate.",
+        "B": "Correct. Use an authorized identity method and complete the electronic certificate with the online notation.",
+        "C": "The recording and certificate do not replace identity verification.",
+        "D": "A receipt is not the electronic notarial certificate."
+      },
+      "source_reference": "A.C.A. § 21-14-309(a)(2)(C), (b), and (d); Arkansas Act 1047 of 2021, §7, pp. 6–7. https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2021R%2FPublic%2FACT1047.pdf#page=6",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ar-189": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "The Arkansas Secretary of State revokes an eNotary’s traditional notary commission. Which fact gives the Secretary grounds to revoke the electronic commission under 21 CAR § 20-111?",
+      "option_a": "The eNotary’s annual software subscription is about to end.",
+      "option_b": "The eNotary wants to change approved solution providers.",
+      "option_c": "A customer asks the eNotary about a scheduled appointment.",
+      "option_d": "The eNotary’s traditional Arkansas notary commission was revoked.",
+      "correct_option": "D",
+      "explanation": "21 CAR § 20-111(a)(3) lists revocation of the traditional commission as a ground for the Secretary of State to revoke the electronic commission. A platform subscription does not confer notarial authority. The rule describes the Secretary’s authority; the question does not ask when a provider will cut off access.",
+      "option_feedback": {
+        "A": "The software subscription does not establish the status of either commission.",
+        "B": "Changing approved providers is different from losing the traditional commission.",
+        "C": "A customer’s scheduling inquiry is unrelated to this ground.",
+        "D": "Correct. Revocation of the traditional commission is an express ground for electronic commission revocation."
+      },
+      "source_reference": "21 CAR § 20-111(a)(3), Denial or Revocation of Electronic Notary Public Commission. https://codeofarrules.arkansas.gov/Rules/Rule?chapterID=137&levelType=section&partID=591&sectionID=28299&subChapterID=179&subPartID=4490&titleID=21",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-140": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-19",
+    "fields": {
+      "question_text": "A Texas notary completes an online notarization of an electronic document that the signer signed electronically. What should the notarial certificate indicate about the act and signature?",
+      "option_a": "Only that the signer’s electronic signature appears on the document",
+      "option_b": "Only that the signer used a private device",
+      "option_c": "That the signer appeared in person and signed in ink",
+      "option_d": "That the notarization was online and the signer used an electronic signature",
+      "correct_option": "D",
+      "explanation": "The certificate must say that the act was an online notarization and identify the form of signature actually used. That was an electronic signature in this scenario.",
+      "option_feedback": {
+        "A": "The certificate must also identify the online act.",
+        "B": "Device ownership does not supply the required information.",
+        "C": "That would misstate both the appearance method and the signature.",
+        "D": "Both statements accurately describe the online act in this scenario."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.110(d). Texas SOS How to Perform an Online Notarization, 8:42–9:11. https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-176": {
+    "version": 1,
+    "replacementId": "tx-207",
+    "fields": {
+      "question_text": "A commissioned traditional Texas notary applies for appointment as an online notary. Which requirement still applies when qualifying for the online appointment?",
+      "option_a": "Permission from a private video platform in place of state appointment",
+      "option_b": "A study certificate in place of meeting the state’s qualifications",
+      "option_c": "A waiver of the ordinary notary qualifications because the act is remote",
+      "option_d": "Satisfying the requirements for appointment as a traditional Texas notary",
+      "correct_option": "D",
+      "explanation": "The online commission does not replace the ordinary threshold qualifications. The applicant must satisfy the traditional appointment requirements, along with the separate online requirements.",
+      "option_feedback": {
+        "A": "A provider cannot supply state appointment or replace its requirements.",
+        "B": "A private certificate does not substitute for statutory qualifications.",
+        "C": "The online provision expressly incorporates Subchapter A qualifications.",
+        "D": "The traditional qualifications remain part of online eligibility."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.105(b)(1)–(3). 1 Tex. Admin. Code §§ 87.11, 87.14(a)(1). Texas SOS Online Notary Application Guide, p. 2. https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-194": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Texas online notary attaches an electronic signature and seal to the certificate for an electronic document. A recipient cannot verify the attachment independently or tell whether the document changed. What standard does the attachment need to meet?",
+      "option_a": "A written promise that nobody will edit the document",
+      "option_b": "Independent verification and the ability to detect any later change to the electronic document",
+      "option_c": "A signature image with no verification method",
+      "option_d": "A hidden text box that can be edited after the act",
+      "correct_option": "B",
+      "explanation": "For this online act, the attachment must be capable of independent verification and must make any later change to the electronic document evident.",
+      "option_feedback": {
+        "A": "A promise does not make the attachment independently verifiable or show later changes.",
+        "B": "Both independent verification and evidence of later changes are required.",
+        "C": "An image alone does not provide the required protections.",
+        "D": "A hidden editable box is not a method to detect changes."
+      },
+      "source_reference": "Tex. Gov’t Code §§ 406.102, 406.109(d). 1 Tex. Admin. Code § 87.41(j). https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "tx-197": {
+    "version": 1,
+    "replacementId": "tx-208",
+    "fields": {
+      "question_text": "A Texas online notary is authenticating an online notarization of a document that was signed and notarized electronically. Which seal does § 406.109(f) require for this document?",
+      "option_a": "The online notary’s electronic seal",
+      "option_b": "A seal press applied only to a separate printout",
+      "option_c": "The signer’s business seal",
+      "option_d": "No seal if the online session was recorded",
+      "correct_option": "A",
+      "explanation": "The online notary must use the electronic seal to authenticate an online notarization of an electronic document. The recording fulfills a separate duty.",
+      "option_feedback": {
+        "A": "The statute expressly requires the electronic seal for this electronic document.",
+        "B": "A paper printout’s stamp does not authenticate the electronic original.",
+        "C": "The required seal belongs to the online notary, not the signer.",
+        "D": "Recording the session does not remove the duty to authenticate the online act."
+      },
+      "source_reference": "Tex. Gov’t Code § 406.109(d), (f)(1). Texas SOS Online Notary Public Educational Information, Electronic Notary Seal. https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "or-059": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "For a traditional Oregon notarization, a signer presents a clearly legible U.S. passport book that expired three years and one month ago. The notary does not know the signer, and there is no credible witness. What should the notary do?",
+      "option_a": "Accept the passport book because it has a legible photograph.",
+      "option_b": "Ask for another qualifying credential because the book is outside the three-year expiration limit.",
+      "option_c": "Accept the passport book if the customer signs an additional statement.",
+      "option_d": "Treat the passport book as current if the document being signed is less than three years old.",
+      "correct_option": "B",
+      "explanation": "Oregon allows a U.S. passport book as identification when it is current or expired no more than three years before the notarial act. This passport falls outside that window, so the notary needs another qualifying form of identity evidence before proceeding.",
+      "option_feedback": {
+        "A": "A clear photograph does not extend the time window.",
+        "B": "Correct. The passport expired more than three years before the act, and the signer needs another permitted credential.",
+        "C": "The signer’s additional statement does not make the expired credential eligible or supply the missing independent evidence.",
+        "D": "The relevant date is the date of the notarial act, independent of the document’s age."
+      },
+      "source_reference": "ORS 194.240(2)(a)(A) and (3), 2025 Oregon Revised Statutes. https://www.oregonlegislature.gov/bills_laws/ors/ors194.html?ID=17795",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "or-166": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "An Oregon notary resigns two years after recording the last act in a journal. There is no employer retention agreement. What is the minimum retention period for that journal?",
+      "option_a": "Two years from the day the notary resigned.",
+      "option_b": "Ten years from the day the notary purchased it.",
+      "option_c": "Ten years from the date of the last recorded notarial act.",
+      "option_d": "Only until the state accepts the resignation.",
+      "correct_option": "C",
+      "explanation": "ORS 194.300 requires keeping the journal for ten years after its last recorded act. Resignation does not restart or shorten that period.",
+      "option_feedback": {
+        "A": "Resignation does not start a two-year period.",
+        "B": "Purchase is not the event that starts the retention period.",
+        "C": "Correct. The last recorded act starts the ten-year clock.",
+        "D": "Acceptance of the resignation leaves the retention duty in place."
+      },
+      "source_reference": "ORS 194.300(1), (6); OAR 160-100-0310(2). https://www.oregonlegislature.gov/bills_laws/ors/ors194.html?ID=17795",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "or-183": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "An Oregon RON signer is relying on the platform’s credential-based identity-proofing workflow. The signer asks to use only a social media profile instead. What should the notary do?",
+      "option_a": "Accept the profile if the transaction is time-sensitive.",
+      "option_b": "Follow the platform’s required credential analysis and knowledge-based authentication, including visual comparison with the live signer.",
+      "option_c": "Treat a high follower count as proof of identity.",
+      "option_d": "Let the recipient waive the identity check.",
+      "correct_option": "B",
+      "explanation": "Under OAR 160-100-0805, the credential-based workflow uses credential analysis and knowledge-based authentication. The notary compares the identification with the live signer. Some platforms also use biometrics. A social profile alone does not satisfy this workflow.",
+      "option_feedback": {
+        "A": "Urgency does not change the prescribed identification method.",
+        "B": "Correct. Follow the vendor’s compliant workflow and make the live comparison.",
+        "C": "Follower counts do not establish identity under the credential-based procedure.",
+        "D": "A recipient may not waive the notary’s identification duty."
+      },
+      "source_reference": "OAR 160-100-0805(2)–(4); ORS 194.277(3)(a). https://secure.sos.state.or.us/oard/viewSingleRule.action?ruleVrsnRsn=276236",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "co-029": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A lawful permanent resident is applying for a Colorado notary commission using a valid permanent resident card. What does the state’s registration checklist tell the applicant to upload?",
+      "option_a": "A scan of the front of the card only",
+      "option_b": "The applicant’s Social Security card",
+      "option_c": "Clear scans of both sides of the permanent resident card",
+      "option_d": "A new visa in place of the permanent resident card",
+      "correct_option": "C",
+      "explanation": "The Colorado Secretary of State’s checklist accepts a permanent resident card for this filing. When you use that card, upload legible scans of both sides.",
+      "option_feedback": {
+        "A": "The checklist asks for both sides of the card.",
+        "B": "A Social Security card does not satisfy the application’s ID requirement.",
+        "C": "Both sides are required when using a permanent resident card.",
+        "D": "The permanent resident card is an accepted credential for this applicant."
+      },
+      "source_id": "co-apply-checklist",
+      "source_reference": "Colorado SOS Notary Public Registration or Renewal Checklist, p. 1, non-U.S. citizens. C.R.S. § 24-21-521(4)(a)(VII). https://www.coloradosos.gov/pubs/notary/files/PrintableAttachmentInfo.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "co-046": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "For an in-person Colorado notarization, a signer presents another form of government-issued identification rather than a passport, driver’s license, or government-issued nondriver ID card. The credential is current and has the signer’s photograph but no signature. Does it meet the statutory photo-or-signature requirement?",
+      "option_a": "No. The credential must show both a photograph and a signature.",
+      "option_b": "Yes. A photograph or a signature is enough for that requirement.",
+      "option_c": "No. Only a passport can meet the requirement.",
+      "option_d": "Yes, but only if a copy of the credential has been notarized.",
+      "correct_option": "B",
+      "explanation": "For this category of government-issued ID, either a photograph or a signature satisfies the feature requirement. The notary still has to be satisfied that the credential identifies the signer.",
+      "option_feedback": {
+        "A": "The statute requires either feature for this category.",
+        "B": "The photograph satisfies the feature requirement. The notary must still establish identity.",
+        "C": "Colorado law also allows other qualifying government-issued identification.",
+        "D": "A notarized copy is not the statutory test for the credential’s features."
+      },
+      "source_id": "co-rulona",
+      "source_reference": "C.R.S. § 24-21-507(2)(a)(II), (3). https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "co-047": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "At an in-person Colorado notarization, a signer presents current government-issued identification that is neither a passport, driver’s license, nor government-issued nondriver ID card. It shows the signer’s signature but no photograph. Which statement is correct?",
+      "option_a": "The signature meets the feature requirement for this type of identification.",
+      "option_b": "This type of identification must always include a photograph.",
+      "option_c": "A signature can count only at a remote notarization.",
+      "option_d": "A receipt for the notarial fee can serve as identification instead.",
+      "correct_option": "A",
+      "explanation": "Another form of government-issued identification can meet the feature requirement with a signature or a photograph. The notary must still determine that the credential identifies the person presenting it.",
+      "option_feedback": {
+        "A": "Either feature can satisfy this requirement for alternate government-issued ID.",
+        "B": "A signature can satisfy the requirement without a photograph.",
+        "C": "Colorado’s in-person rule also allows a signature as the qualifying feature.",
+        "D": "A fee receipt does not establish the signer’s identity."
+      },
+      "source_id": "co-rulona",
+      "source_reference": "C.R.S. § 24-21-507(2)(a)(II), (3). https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "co-058": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "At an in-person Colorado notarization, a signer presents another form of government-issued identification, outside the statute’s passport, driver’s license, and government-issued nondriver ID card category. The credential has neither a photograph nor a signature. What requirement does it fail?",
+      "option_a": "It must show either the signer’s photograph or signature.",
+      "option_b": "It must include a gold seal.",
+      "option_c": "It must state the signer’s bank balance.",
+      "option_d": "It must show that the signer lives in the county.",
+      "correct_option": "A",
+      "explanation": "For this category of government identification, the credential must show either the signer’s photograph or signature. With neither feature, the notary needs another satisfactory way to establish identity.",
+      "option_feedback": {
+        "A": "A photograph or signature is required for this category of government-issued credential.",
+        "B": "Colorado law does not require a gold seal for this category.",
+        "C": "A balance is unrelated to this identity rule.",
+        "D": "County residence is not a credential requirement under this provision."
+      },
+      "source_id": "co-rulona",
+      "source_reference": "C.R.S. § 24-21-507(2)(a)(I)–(II), (3). https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "co-103": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Colorado notary is asked to notarize a record that names the notary’s grandmother as a beneficiary. The signature to be notarized belongs to someone else. What does Colorado law require?",
+      "option_a": "Proceed because the grandmother’s signature is not being notarized.",
+      "option_b": "Proceed if the notary waives the fee.",
+      "option_c": "Decline because the record names the notary’s ancestor.",
+      "option_d": "Decline only if the notary also receives a direct financial benefit.",
+      "correct_option": "C",
+      "explanation": "A Colorado notary cannot perform an act on a record that names the notary’s ancestor or makes that ancestor a party. The grandmother is named, so the restriction applies regardless of whose signature is being notarized.",
+      "option_feedback": {
+        "A": "The statute looks at who is named in or a party to the record.",
+        "B": "Waiving the fee does not remove the conflict.",
+        "C": "A grandmother is an ancestor, and the record names her.",
+        "D": "A personal financial benefit is unnecessary when an ancestor is already named."
+      },
+      "source_id": "co-rulona",
+      "source_reference": "C.R.S. § 24-21-504(2)(a)–(b). https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mt-170": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A person appearing before a Montana notarial officer for a stand-alone oral oath says they are repeating the words without understanding them or intending to be bound. What should the officer do?",
+      "option_a": "Ask a supervisor to waive the concern.",
+      "option_b": "Complete a certificate without obtaining the declaration.",
+      "option_c": "Decline to administer the oath while the concern remains.",
+      "option_d": "Accept repetition of the words as enough to complete the oath.",
+      "correct_option": "C",
+      "explanation": "For an oral oath or affirmation, the officer must determine that the person is knowingly and willingly making the statement with the intent to be bound by it. The person’s own statement prevents that determination, so the officer should decline to proceed.",
+      "option_feedback": {
+        "A": "A supervisor cannot make the required determination for the notarial officer.",
+        "B": "A certificate cannot substitute for a knowingly and willingly made statement.",
+        "C": "Correct. The officer cannot determine that the person understands the statement and intends to be bound by it.",
+        "D": "Reciting the words alone does not establish knowing and willing participation or an intent to be bound."
+      },
+      "source_id": "mt-mca-603",
+      "source_reference": "MCA 1-5-603(7) https://mca.legmt.gov/bills/mca/title_0010/chapter_0050/part_0060/section_0030/0010-0050-0060-0030.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nm-035": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A first-time New Mexico notary applicant is preparing for the approved ordinary notary exam. What format does the Secretary of State’s approved provider publish?",
+      "option_a": "25 questions in 30 minutes, with a passing score of 70%",
+      "option_b": "50 questions in 60 minutes, with a passing score of at least 80%",
+      "option_c": "At least five questions in two minutes, with a passing score of at least 80%",
+      "option_d": "100 questions in 60 minutes, with a passing score of at least 90%",
+      "correct_option": "B",
+      "explanation": "The National Notary Association, the provider listed by the New Mexico Secretary of State, gives applicants 60 minutes to answer 50 questions in a single sitting. New Mexico’s rule requires a score of at least 80%.",
+      "option_feedback": {
+        "A": "The approved provider publishes 50 questions in 60 minutes, and a score of 70% is below the state requirement.",
+        "B": "The approved provider publishes 50 questions in 60 minutes, with a passing score of at least 80%.",
+        "C": "The two-minute knowledge-based quiz concerns a remote signer’s identity. It is separate from the ordinary notary exam.",
+        "D": "The approved provider publishes 50 questions, and the passing threshold is 80%."
+      },
+      "source_reference": "New Mexico SOS Training Resources; NNA New Mexico State-Required Training and Exam, Exam Instructions; 12.9.3.10(C) NMAC https://www.sos.nm.gov/notary-and-apostille/notary-commissions/training-resources/",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nm-190": {
+    "version": 1,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A remote principal takes the prescribed KBA quiz. Which success standard applies to that identity quiz?",
+      "option_a": "100% correct without a time limit",
+      "option_b": "The 60-minute time limit used for the approved notary examination",
+      "option_c": "At least 80% correct with all answers completed within two minutes",
+      "option_d": "Any correct answer within ten minutes",
+      "correct_option": "C",
+      "explanation": "The identity quiz requires at least 80% correct and completion within two minutes. These are identity-proofing specifications.",
+      "option_feedback": {
+        "A": "The rule supplies an 80% threshold and a two-minute limit.",
+        "B": "The approved provider gives notary applicants 60 minutes. The remote signer’s identity quiz has its own two-minute limit.",
+        "C": "Correct. The identity quiz requires at least 80% correct and completion within two minutes. These are identity-proofing specifications.",
+        "D": "One correct answer does not meet the percentage threshold."
+      },
+      "source_reference": "12.9.4.11(B)(3)–(4) NMAC; NNA Exam Instructions for the separate approved notary examinations https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ne-101": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Nebraska resident still holds a valid notary commission after changing jobs. The former employer kept the commission certificate and official seal. What can the notary do?",
+      "option_a": "Apply for a new commission because every job change ends the current one.",
+      "option_b": "Wait for the former employer to approve a new appointment.",
+      "option_c": "Borrow a coworker's seal until the current commission expires.",
+      "option_d": "Request a replacement commission certificate and buy a new seal for the current commission.",
+      "correct_option": "D",
+      "explanation": "Nebraska's Secretary of State says a notary whose commission remains active can request a replacement commission certificate and buy a new seal. The employer's earlier purchase does not require the notary to start over.",
+      "option_feedback": {
+        "A": "This resident's commission is still valid.",
+        "B": "The former employer does not issue or renew the commission.",
+        "C": "A seal belongs to the commissioned notary identified on it.",
+        "D": "Correct. Replace the certificate and seal for the still-active commission."
+      },
+      "source_id": "ne-faq",
+      "source_reference": "Nebraska Secretary of State Notary FAQ, Q12; Steps to Update your Notary Public Record, p. 3 https://sos.nebraska.gov/notary-frequently-asked-questions",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ne-102": {
+    "version": 1,
+    "replacementId": "ne-204",
+    "fields": {
+      "question_text": "A Nebraska notary needs a duplicate of an active commission certificate. It is not available in My Records. Which online filing should the notary select after finding the notary record?",
+      "option_a": "Notary Public Renewal Application",
+      "option_b": "Add/Remove Solution Provider",
+      "option_c": "File an Amendment, then Request Certificate",
+      "option_d": "Notary Public Resignation",
+      "correct_option": "C",
+      "explanation": "The Secretary of State directs a notary to find the commission in the portal's notary search, open its record and use File an Amendment to select Request Certificate when a copy is unavailable in My Records.",
+      "option_feedback": {
+        "A": "Renewal is for a new term.",
+        "B": "The solution-provider filing changes electronic or online technology records.",
+        "C": "Correct. Request Certificate is the duplicate-certificate filing.",
+        "D": "Resignation ends the commission rather than supplying a duplicate."
+      },
+      "source_id": "ne-update",
+      "source_reference": "Nebraska Secretary of State, Steps to Update your Notary Public Record, p. 3, Duplicate Certificate Request https://sos.nebraska.gov/notary-frequently-asked-questions",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ne-154": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Nebraska online notary completed the statutory identity verification and wants to record that verification in the secure electronic record. Which entry provides evidence of identity?",
+      "option_a": "Only the color of the credential",
+      "option_b": "A blank checkbox next to the principal's name",
+      "option_c": "The record of the identity verification performed under § 64-411",
+      "option_d": "Only the payment receipt",
+      "correct_option": "C",
+      "explanation": "The secure online record must include evidence of each principal's identity. Nebraska law allows the record of the identity verification under § 64-411 as one form of that evidence. A notation of the identification document type is another listed form.",
+      "option_feedback": {
+        "A": "A color does not document the statutory verification.",
+        "B": "A blank checkbox does not document which verification occurred.",
+        "C": "Correct. The completed verification record is a stated form of evidence.",
+        "D": "A receipt documents a payment rather than an identity verification."
+      },
+      "source_id": "ne-stat-64-409",
+      "source_reference": "Neb. Rev. Stat. § 64-409(1)(e)(iii); § 64-411(2)(b) https://nebraskalegislature.gov/laws/statutes.php?statute=64-409",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ne-177": {
+    "version": 1,
+    "replacementId": "ne-205",
+    "fields": {
+      "question_text": "A Nebraska notary submits an online-notary registration application but has not yet been registered. What must happen before the notary performs a first online act?",
+      "option_a": "A private course provider must issue a badge.",
+      "option_b": "The vendor must promise access for the rest of the commission term.",
+      "option_c": "A technology vendor must transfer its own commission to the notary.",
+      "option_d": "The notary must be registered as an online notary public with the Secretary of State.",
+      "correct_option": "D",
+      "explanation": "A valid underlying Nebraska notary commission is a prerequisite. The notary must also register with the Secretary of State before performing any online notarial act. Submitting an application does not itself confer online authority.",
+      "option_feedback": {
+        "A": "A private badge is not a state registration.",
+        "B": "Vendor access cannot substitute for Nebraska registration.",
+        "C": "A vendor cannot transfer a notary commission to an applicant.",
+        "D": "Correct. Nebraska requires completed online registration before a first online act."
+      },
+      "source_id": "ne-stat-64-406",
+      "source_reference": "Neb. Rev. Stat. §§ 64-403(1), 64-406(1) https://sos.nebraska.gov/sites/default/files/doc/business-services/Notary/StepstoBecomeanOnlineNotary.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ne-179": {
+    "version": 1,
+    "replacementId": "ne-206",
+    "fields": {
+      "question_text": "An approved Nebraska online-notary solution provider needs to verify that a notary may perform online notarial acts. Where does the provider confirm the notary's authorization?",
+      "option_a": "With the notary's first customer",
+      "option_b": "Through the Secretary of State or the Secretary's online listing, if available",
+      "option_c": "Through a private practice-test dashboard",
+      "option_d": "With the notary's employer only",
+      "correct_option": "B",
+      "explanation": "The Nebraska rules direct the approved provider to confirm the notary's online authority through the Secretary of State or the Secretary's website if an online listing is available. Registration with the Secretary is required before performing online acts.",
+      "option_feedback": {
+        "A": "A customer's statement does not establish state authorization.",
+        "B": "Correct. The Secretary or the official listing confirms online authority.",
+        "C": "A practice score does not establish state registration.",
+        "D": "An employer cannot confirm state registration on the Secretary's behalf."
+      },
+      "source_id": "ne-stat-64-406",
+      "source_reference": "433 NAC ch. 8, § 010.01(F), p. 6; Neb. Rev. Stat. § 64-406(1) https://sos.nebraska.gov/sites/default/files/doc/business-services/Notary/StepstoBecomeanOnlineNotary.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ut-080": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Utah notary commissioned on June 1, 2026 identifies a signer through the sworn testimony of a credible individual the notary personally knows. Which statement about the witness belongs in the journal?",
+      "option_a": "That the notary personally knows the credible individual",
+      "option_b": "That every office employee knows the signer",
+      "option_c": "That the notary knows the document recipient",
+      "option_d": "That the witness knows only the employer",
+      "correct_option": "A",
+      "explanation": "The post-May-6 journal rule requires a statement that the notary personally knows the credible individual. It separately requires the oath or affirmation, the witness’s signature, printed name and address.",
+      "option_feedback": {
+        "A": "Correct. The post-May-6 journal rule requires a statement that the notary personally knows the credible individual. It separately requires the oath or affirmation, the witness’s signature, printed name and address.",
+        "B": "That is not the required connection.",
+        "C": "The recipient is a different role.",
+        "D": "That does not establish the route."
+      },
+      "source_reference": "Utah Code § 46-1-14.1(2)(b)(v)(B). https://le.utah.gov/xcode/Title46/C46_2018050820190101.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ut-082": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Utah notary commissioned on June 1, 2026 relies on a credible witness who knows the signer but whom the notary has never met. The witness gives sworn testimony and presents qualifying identification. What additional identification information must the journal contain?",
+      "option_a": "Only the principal's phone number",
+      "option_b": "A copy of the witness's employment contract",
+      "option_c": "The prescribed credential description including last four digits and dates",
+      "option_d": "Nothing because the witness took an oath",
+      "correct_option": "C",
+      "explanation": "The journal must describe the witness’s identification, including its type, issuer, number’s last four digits, date issued and expiration date.",
+      "option_feedback": {
+        "A": "That does not identify the witness credential.",
+        "B": "That is not the specified credential description.",
+        "C": "Correct. The journal must describe the witness’s identification, including its type, issuer, number’s last four digits, date issued and expiration date.",
+        "D": "The oath does not eliminate credential detail."
+      },
+      "source_reference": "Utah Code § 46-1-14.1(2)(b)(vi)(C). https://le.utah.gov/xcode/Title46/C46_2018050820190101.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ut-083": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Utah remote notary commissioned in June 2026 verifies an unfamiliar signer through qualifying ID and secondary authentication. What must the electronic journal include beyond the usual identification details?",
+      "option_a": "The vendor's marketing slogan",
+      "option_b": "The record of secondary authentication used for the remote act",
+      "option_c": "A travel mileage estimate",
+      "option_d": "A second paper stamp",
+      "correct_option": "B",
+      "explanation": "The post-May-6 journal rule separately calls for recording the secondary authentication of identity used in this remote act.",
+      "option_feedback": {
+        "A": "Marketing is not the authentication record.",
+        "B": "Correct. The post-May-6 journal rule separately calls for recording the secondary authentication of identity used in this remote act.",
+        "C": "Mileage does not document authentication.",
+        "D": "A stamp does not record the proofing method."
+      },
+      "source_reference": "Utah Code § 46-1-14.1(2)(b)(vii). https://le.utah.gov/xcode/Title46/C46_2018050820190101.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ut-084": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Utah notary commissioned in June 2026 administers an affirmation for a jurat. The journal entry already contains the identity details and signature. What additional notation is required?",
+      "option_a": "The fact that the oath or affirmation was administered",
+      "option_b": "A statement that no ceremony was needed",
+      "option_c": "Only the payment method",
+      "option_d": "Only the recipient's name",
+      "correct_option": "A",
+      "explanation": "The post-May-6 journal rule requires the notary to indicate that an oath or affirmation was administered when one was given.",
+      "option_feedback": {
+        "A": "Correct. The post-May-6 journal rule requires the notary to indicate that an oath or affirmation was administered when one was given.",
+        "B": "That misstates a jurat.",
+        "C": "Payment does not establish the oath.",
+        "D": "That does not document the administered oath."
+      },
+      "source_reference": "Utah Code § 46-1-14.1(2)(b)(viii). https://le.utah.gov/xcode/Title46/C46_2018050820190101.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ut-177": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Utah nonattorney notary advertises notarial services on a Spanish-language radio station. How may the required nonattorney warning be presented in the ad?",
+      "option_a": "Omit the warning because the ad is on the radio.",
+      "option_b": "Give only a website address where listeners can find the warning.",
+      "option_c": "Say the notary can give immigration advice if asked.",
+      "option_d": "Use wording suited to radio that conveys substantially the same warning.",
+      "correct_option": "D",
+      "explanation": "Utah requires notice for a nonattorney's non-English notarial advertisement. Radio and television wording may be modified when it conveys substantially the same message. The notice requirements also cover language and the applicable notarial fees.",
+      "option_feedback": {
+        "A": "The broadcast medium does not remove the warning requirement.",
+        "B": "A bare website address does not communicate the required message.",
+        "C": "A nonattorney notary cannot offer immigration legal advice.",
+        "D": "Correct. The law permits wording suited to broadcast when it conveys substantially the same warning."
+      },
+      "source_reference": "Utah Code § 46-1-11(2)(a)–(b). https://le.utah.gov/xcode/Title46/C46_2018050820190101.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ut-167": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Utah notary is reviewing the remote identity definition in Utah Code § 46-1-2. If a credible witness whom the notary does not personally know is the signer’s identity witness under that definition, whose identity must receive secondary authentication for this route?",
+      "option_a": "Only the document recipient’s identity.",
+      "option_b": "The credible witness’s identity.",
+      "option_c": "The platform salesperson’s identity.",
+      "option_d": "No one’s identity, because the testimony is sworn.",
+      "correct_option": "B",
+      "explanation": "The definition requires secondary authentication of the unfamiliar credible witness for this route. Utah’s separate remote procedure provision also specifies an identity-image requirement for an unfamiliar signer, so do not treat this rule as permission to skip the rest of the required process.",
+      "option_feedback": {
+        "A": "The recipient does not supply the witness’s secondary authentication.",
+        "B": "Correct. The definition assigns this authentication to the unfamiliar credible witness.",
+        "C": "The salesperson is not the credible witness.",
+        "D": "The oath does not replace secondary authentication."
+      },
+      "source_reference": "46-1-2(25)(a)(i)(D), (ii)(B); 46-1-3.6(2)(b) https://le.utah.gov/xcode/Title46/Chapter1/C46-1-S2_2026050620260506.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ut-173": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Utah remote notary’s commission expires. The former notary destroys the credentials that enabled use of the electronic signature and seal. What written step must follow within ten days after expiration?",
+      "option_a": "Send the account password to every customer.",
+      "option_b": "Renew the vendor advertisement.",
+      "option_c": "Wait for the first customer complaint.",
+      "option_d": "Certify the destruction in writing to the lieutenant governor.",
+      "correct_option": "D",
+      "explanation": "The former remote notary must certify in writing to the lieutenant governor within ten days after expiration that the enabling credentials were destroyed. The same deadline applies after resignation or revocation.",
+      "option_feedback": {
+        "A": "Do not distribute former credentials. The state requires written certification of destruction.",
+        "B": "A vendor advertisement does not satisfy the state requirement.",
+        "C": "The deadline runs from the end of authority regardless of customer contact.",
+        "D": "Correct. Certify destruction of the electronic signing and sealing credentials to the lieutenant governor."
+      },
+      "source_reference": "46-1-16(9)(a)(ii), (b) https://le.utah.gov/xcode/Title46/Chapter1/C46-1-S16_2026050620260506.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "il-110": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "An Illinois law firm keeps copies of documents its employee notarizes at work. Which statement accurately describes the two official journal provisions?",
+      "option_a": "The Act exempts every employee whose employer keeps a copy.",
+      "option_b": "The administrative rule describes a law-firm exception, while the Act says an employer’s records do not relieve the notary’s journal duties.",
+      "option_c": "The administrative rule exempts the employee’s unrelated weekend notarizations.",
+      "option_d": "The Act requires only electronic notaries to keep a journal.",
+      "correct_option": "B",
+      "explanation": "Rule 176.900(f) describes an exception for notarizations performed during employment by an attorney or law firm that keeps copies. Section 3-107 separately requires notarial journals and says an employer’s records do not relieve the notary’s statutory duties. Apply the statute and seek the Secretary of State’s guidance before omitting an entry solely because the firm kept a copy.",
+      "option_feedback": {
+        "A": "The Act expressly says the employer’s records do not relieve the statutory duties.",
+        "B": "This describes both official texts and the difference in their wording.",
+        "C": "The administrative language concerns notarizations performed during qualifying employment.",
+        "D": "The statutory duty applies to ordinary and electronic notaries."
+      },
+      "source_id": "il-2025",
+      "source_reference": "14 Ill. Adm. Code § 176.900(f), 49 Ill. Reg. 608–609; 5 ILCS 312/3-107(a), (d). https://www.ilsos.gov/content/dam/departments/index/register/volume49/register_volume49_2.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "il-112": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "An Illinois notary is leaving a law firm. A journal contains only notarizations the notary performed in that job. Which statement reflects both Illinois provisions?",
+      "option_a": "The journal automatically belongs to the firm’s clients.",
+      "option_b": "The stamp vendor owns the journal after the notary leaves.",
+      "option_c": "The law expressly requires the county recorder to take this journal.",
+      "option_d": "The rule describes firm ownership of work-only journals, but the Act bars surrender to or retention by the employer when employment ends.",
+      "correct_option": "D",
+      "explanation": "Rule 176.900(f) describes a journal kept solely for the law-firm job as the firm’s property. Section 3-107(d) separately states that a notary must not surrender the journal to the employer and that the employer must not retain it when employment ends. The ownership language alone does not authorize a handover after employment.",
+      "option_feedback": {
+        "A": "Neither provision assigns ownership to clients.",
+        "B": "Neither provision gives the seal seller control of the journal.",
+        "C": "There is no county-recorder handover under either cited provision.",
+        "D": "The rule addresses ownership and the Act governs the stated custody restriction at departure."
+      },
+      "source_id": "il-2025",
+      "source_reference": "14 Ill. Adm. Code § 176.900(f), 49 Ill. Reg. 608–609; 5 ILCS 312/3-107(d). https://www.ilsos.gov/content/dam/departments/index/register/volume49/register_volume49_2.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "il-139": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "An Illinois notary discovers a journal was stolen. When should the notary file the written or electronic notice to meet both the administrative rule and the statute?",
+      "option_a": "At the next commission renewal",
+      "option_b": "At any time within one year",
+      "option_c": "By the next business day after discovery",
+      "option_d": "On the tenth business day after discovery",
+      "correct_option": "C",
+      "explanation": "Rule 176.940(b) calls for written or electronic notice the next business day after discovery. This complies with the Act’s outside limit of ten business days. Waiting until the tenth business day misses the earlier reporting requirement.",
+      "option_feedback": {
+        "A": "Renewal appointment timing does not set the notification deadline.",
+        "B": "A year would miss both deadlines.",
+        "C": "Reporting by the next business day satisfies the rule and the statutory limit.",
+        "D": "This is the statutory outside limit, but it does not satisfy the earlier administrative rule."
+      },
+      "source_id": "il-rules",
+      "source_reference": "14 Ill. Adm. Code § 176.940(b), 47 Ill. Reg. 8731; 5 ILCS 312/3-107(e). https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "me-036": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A first-time Maine notary applicant wants to find the examination included in the state’s current paper application. Where should the applicant look?",
+      "option_a": "In the commission profile update screen",
+      "option_b": "In the Secretary of State’s Application for a Notary Public Commission",
+      "option_c": "In the marriage officiant license surrender form",
+      "option_d": "In the state’s Notary Public and Dedimus Justice search directory",
+      "correct_option": "B",
+      "explanation": "The Maine Secretary of State links the current Application for a Notary Public Commission on its Apply/Renew a Notary page. The application contains the initial Notary Public Examination. The separate online examination is for commission renewal.",
+      "option_feedback": {
+        "A": "The profile update screen is for existing commission information. The initial examination is in the new-commission application.",
+        "B": "Correct. The application includes the initial Notary Public Examination.",
+        "C": "The surrender form serves a separate marriage officiant license process.",
+        "D": "The directory lists notaries and Dedimus Justices. It is not the new-commission application."
+      },
+      "source_reference": "4 M.R.S. § 1923(1); Maine Secretary of State, Application for a Notary Public Commission, pp. 2–4 https://legislature.maine.gov/statutes/4/title4ch39.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "me-187": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Maine notary uses an approved platform for a remote act involving an electronic record. What fact must the notary reasonably confirm about the file before completing the act?",
+      "option_a": "That the file name includes the notary’s commission number",
+      "option_b": "That the signer has saved a separate unsigned version",
+      "option_c": "That the record before the notary is the same record the signer signed",
+      "option_d": "That the file was created on the date of the remote session",
+      "correct_option": "C",
+      "explanation": "Maine requires the notary to reasonably confirm that the record before them is the same one the remote signer signed. File names, other copies, and the file creation date cannot establish that by themselves.",
+      "option_feedback": {
+        "A": "The filename does not establish which record was signed.",
+        "B": "A separate unsigned version does not identify the signed record.",
+        "C": "Correct. Confirm that the record before you is the one the signer signed.",
+        "D": "The law does not require the record to have been created on the date of the session."
+      },
+      "source_reference": "4 M.R.S. § 1915(3)(B), p. 9 https://legislature.maine.gov/statutes/4/title4ch39.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "me-196": {
+    "version": 1,
+    "replacementId": "me-204",
+    "fields": {
+      "question_text": "A Maine notary is setting up the official electronic stamp for approved remote notarizations on electronic records. Which detail must the stamp include?",
+      "option_a": "The signer’s county of residence",
+      "option_b": "The technology provider’s mailing address",
+      "option_c": "The notary’s appointment date",
+      "option_d": "The notary’s commission expiration date",
+      "correct_option": "D",
+      "explanation": "Maine’s official stamp must include the notary’s name as it appears on the commission, the words “Notary Public” and “State of Maine” or “Maine,” and the commission expiration date. It must also be capable of being copied with the associated record.",
+      "option_feedback": {
+        "A": "The signer’s county of residence is not a required stamp element.",
+        "B": "The provider’s mailing address is not a required stamp element.",
+        "C": "The appointment date and the expiration date are different. Maine requires the expiration date on the stamp.",
+        "D": "Correct. The official stamp must show the commission expiration date."
+      },
+      "source_reference": "4 M.R.S. § 1918(1)–(2), p. 16; Maine Chapter 700, § 7, p. 24 https://legislature.maine.gov/statutes/4/title4ch39.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "me-067": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "For an ordinary in-person paper act, what does the official course say about using a stamp?",
+      "option_a": "Always prohibited",
+      "option_b": "Always required by the journal statute",
+      "option_c": "It replaces the certificate",
+      "option_d": "Optional under this rule, with use strongly suggested unless prohibited",
+      "correct_option": "D",
+      "explanation": "For an ordinary in-person notarization on paper, Maine law permits an official stamp, and the Secretary of State recommends using one unless its use is prohibited. The notarial certificate is required whether or not the notary uses a stamp.",
+      "option_feedback": {
+        "A": "The Secretary of State recommends stamp use for this paper act unless its use is prohibited.",
+        "B": "The journal statute does not require a stamp for this paper act.",
+        "C": "A stamp does not replace the notarial certificate.",
+        "D": "Correct. A stamp is optional for this ordinary in-person paper act, while the certificate is required."
+      },
+      "source_reference": "4 M.R.S. § 1916(1)–(2); Maine Secretary of State notary FAQ, Q23 https://legislature.maine.gov/statutes/4/title4ch39.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "md-102": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Maryland court adjudicates a former notary incompetent. The former notary’s guardian knowingly has the notarial journal. What does Maryland law require the guardian to do?",
+      "option_a": "Discard the journal after the former notary’s last appointment.",
+      "option_b": "Sell the journal with the former notary’s office equipment.",
+      "option_c": "Make the journal’s entries publicly available.",
+      "option_d": "Send it to a repository approved by the Secretary of State, or store it as required or approved by regulation.",
+      "correct_option": "D",
+      "explanation": "After the death or adjudication of incompetency of a current or former Maryland notary, a personal representative, guardian, or other person who knowingly possesses the journal must transfer it to a repository approved by the Secretary of State or store it under the Secretary’s regulations.",
+      "option_feedback": {
+        "A": "The statute requires an authorized disposition of the journal.",
+        "B": "Selling the journal with equipment does not satisfy either statutory route.",
+        "C": "The statute calls for approved transfer or storage, not public posting.",
+        "D": "These are the two disposition routes the statute provides."
+      },
+      "source_id": "md-journal",
+      "source_reference": "Maryland State Government § 18-219(g)(1)–(2). https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&enactments=false&section=18-219",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "md-137": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "How do Maryland’s general electronic-record stamp provision and its rule for a Maryland notary public fit together?",
+      "option_a": "The general provision requires every notarial officer to use an official stamp on every electronic record.",
+      "option_b": "Maryland bars official stamps on electronic records.",
+      "option_c": "The general provision permits an official stamp. A Maryland notary public must associate the official stamp and electronic signature with the electronic record using a qualifying digital certificate.",
+      "option_d": "A Maryland notary public can omit both the electronic signature and official stamp if the signer consents.",
+      "correct_option": "C",
+      "explanation": "Section 18-215(b)(3) permits a notarial officer to attach or logically associate an official stamp with an electronic-record certificate. Section 18-223(f)(1) specifically requires a Maryland notary public to attach or logically associate both the official stamp and electronic signature with the electronic record using a qualifying digital certificate.",
+      "option_feedback": {
+        "A": "The general provision permits use of a stamp. The mandatory requirement cited here applies to a notary public under §18-223(f)(1).",
+        "B": "Maryland permits electronic official stamps and sets standards for their use by a notary public.",
+        "C": "This applies both provisions and accounts for the rule specific to a Maryland notary public.",
+        "D": "Signer consent does not waive the electronic signature and official stamp requirements."
+      },
+      "source_id": "md-electronic",
+      "source_reference": "Maryland State Government §§ 18-215(b)(3), 18-223(f)(1). https://mgaleg.maryland.gov/2026RS/Statute_Web/gsg/18-215.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-003": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A former New Jersey notary who is not licensed as an attorney in New Jersey let her commission expire 45 days ago. Which application path does the state’s exam portal direct her to follow?",
+      "option_a": "Renew automatically without taking the exam",
+      "option_b": "Wait for the expired commission to become active again",
+      "option_c": "Replace her stamp before continuing under the old commission",
+      "option_d": "Apply as a new applicant and take the notary exam",
+      "correct_option": "D",
+      "explanation": "The New Jersey exam portal treats a commission that expired more than 30 days ago as a new application. Because this applicant is not a New Jersey-licensed attorney, she must take the state notary exam as part of that process.",
+      "option_feedback": {
+        "A": "A 45-day lapse is beyond the exam portal’s 30-day threshold for the renewal route.",
+        "B": "An expired commission does not automatically become active again.",
+        "C": "Replacing a stamp does not restore a commission.",
+        "D": "Correct. Follow the new-applicant route and complete the required examination."
+      },
+      "source_id": "nj-portal",
+      "source_reference": "New Jersey DORES Notary Public Exam portal, expiration guidance; N.J.S.A. 52:7-10.3(a)–(b) https://www.njportal.com/DOR/NotaryExam/",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-020": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A first-time New Jersey applicant who is not a New Jersey-licensed attorney has watched only the first training video. What does the official exam portal direct applicants to do before starting the exam process?",
+      "option_a": "Review the New Jersey Notary Public Manual and watch the entire training video series",
+      "option_b": "Watch any one training clip",
+      "option_c": "Buy a private study subscription",
+      "option_d": "Open the registration page without reviewing the materials",
+      "correct_option": "A",
+      "explanation": "The first step on the official exam portal is to review the New Jersey Notary Public Manual and watch the entire training video series. Watching one video does not complete that step.",
+      "option_feedback": {
+        "A": "Correct. The portal lists both activities in its first step.",
+        "B": "One clip does not complete the full series.",
+        "C": "A private subscription does not complete the official study step.",
+        "D": "Opening the registration page does not complete the manual or video review."
+      },
+      "source_id": "nj-portal",
+      "source_reference": "New Jersey DORES Notary Public Exam portal, New Notary Applicant Process, step 1 https://www.njportal.com/DOR/NotaryExam/",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-026": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A New Jersey notary applicant who is not a New Jersey-licensed attorney was found culpable in a disciplinary proceeding involving another professional license regulated by the state. How can the State Treasurer treat that finding?",
+      "option_a": "Disregard it if the applicant creates a new email address",
+      "option_b": "Consider it only if the proceeding led to a criminal conviction",
+      "option_c": "Consider it among the grounds for an adverse decision on the notary commission",
+      "option_d": "Disregard it because professional discipline is unrelated to notary eligibility",
+      "correct_option": "C",
+      "explanation": "New Jersey lists a finding of culpability in a disciplinary or other administrative action involving a state-regulated professional license among the grounds that may affect a non-attorney applicant’s notary commission.",
+      "option_feedback": {
+        "A": "Changing contact information does not affect the disciplinary finding.",
+        "B": "The specific ground does not require a criminal conviction.",
+        "C": "Correct. The finding is among the circumstances the Treasurer may consider.",
+        "D": "The statute expressly lists this kind of professional discipline."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.4(a)(7)(d); September 2026 NJ Notary Public Manual, Chapter 5, p. 10 https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-053": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A New Jersey notary is identifying a remote signer through the identity-proofing route in N.J.S.A. 52:7-10.10(d)(1)(c), without relying on personal knowledge or a credible witness. What minimum does that statutory route specify?",
+      "option_a": "One answer supplied by the signer’s employer",
+      "option_b": "One file name matching the signer’s name",
+      "option_c": "One type of identity proofing",
+      "option_d": "At least two different types of identity proofing",
+      "correct_option": "D",
+      "explanation": "The statute’s identity-proofing route requires at least two different types of proofing. It also lists personal knowledge and sworn or affirmed verification by a qualifying credible witness as separate identity routes. The administrative rule supplies its own remote identification procedures.",
+      "option_feedback": {
+        "A": "A statement from an employer does not meet this statutory identity-proofing minimum.",
+        "B": "A matching file name does not prove the signer’s identity.",
+        "C": "The specified statute requires at least two different types.",
+        "D": "Correct. This is the minimum in the named statutory route."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.10(d)(1)(a)–(c); N.J.A.C. 17:50-1.14(g)(3) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-054": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A remote identity service gives a signer the expected answers before a dynamic knowledge-based authentication challenge. Which New Jersey requirement did the service violate?",
+      "option_a": "The challenge must be limited to questions about payments.",
+      "option_b": "The challenge must use questions from the notary commissioning exam.",
+      "option_c": "The challenge uses questions based on personal history from public or private data sources without giving the signer the answers in advance.",
+      "option_d": "The challenge must use questions about the notary’s family.",
+      "correct_option": "C",
+      "explanation": "Dynamic knowledge-based authentication uses questions about the person’s history from public or private data sources. The service may not give the person the answers in advance.",
+      "option_feedback": {
+        "A": "The definition does not limit the questions to payments.",
+        "B": "This is an identity challenge, separate from the notary commissioning exam.",
+        "C": "Correct. Giving the answers beforehand violates the definition.",
+        "D": "The questions concern the person being identified."
+      },
+      "source_id": "nj-manual",
+      "source_reference": "New Jersey Notary Public Manual, September 14, 2026, Chapter 8, p. 18; N.J.A.C. 17:50-1.14(d) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-071": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A New Jersey notary resigns and chooses to keep the journal instead of transferring it. What does state law require of the former notary?",
+      "option_a": "Keep the front cover and discard the entries.",
+      "option_b": "Retain the journal for 10 years after its last notarial act and tell the State Treasurer where it is kept.",
+      "option_c": "Destroy the journal immediately after resigning.",
+      "option_d": "Give the journal to the last customer and take no further action.",
+      "correct_option": "B",
+      "explanation": "A former notary who keeps the journal after resignation retains it for 10 years after the last act recorded in it and informs the State Treasurer of its location. The law also permits transfer to the Division of Revenue and Enterprise Services or a repository approved by the Treasurer.",
+      "option_feedback": {
+        "A": "The journal entries are part of the record the former notary must retain.",
+        "B": "Correct. The law requires both retention and notice of the journal’s location.",
+        "C": "Resignation does not end the retention duty.",
+        "D": "The last customer is not an authorized recipient by virtue of being the last customer."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.18(d)–(e) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-072": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Someone knowingly holds a journal after a New Jersey notary dies. Which recipient does state law authorize for the required journal transfer?",
+      "option_a": "The Division of Revenue and Enterprise Services or a repository approved by the State Treasurer",
+      "option_b": "Any storage company the family chooses",
+      "option_c": "Any of the deceased notary’s last customers",
+      "option_d": "The first new notary willing to use the journal",
+      "correct_option": "A",
+      "explanation": "State law directs the person holding the journal after the notary’s death to transmit it to the Division of Revenue and Enterprise Services or a repository approved by the State Treasurer within 45 days. The administrative rule and manual direct the holder to contact the Treasurer for secure transmission instructions.",
+      "option_feedback": {
+        "A": "Correct. The law identifies these recipients.",
+        "B": "A private repository must have the State Treasurer’s approval.",
+        "C": "Receiving service from the former notary does not authorize custody.",
+        "D": "A new notary does not inherit a predecessor’s journal for use in their own work."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.18(f); N.J.A.C. 17:50-1.11(f) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-162": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A New Jersey notary’s commission is suspended. What may the notary do with the existing journal?",
+      "option_a": "Give it to any customer who agrees to store it.",
+      "option_b": "Leave it at the office without telling the State Treasurer where it is.",
+      "option_c": "Retain it for the required period and tell the State Treasurer where it is, or transfer it to an authorized recipient.",
+      "option_d": "Delete the journal as soon as the suspension begins.",
+      "correct_option": "C",
+      "explanation": "Suspension does not end the record duty. The notary can keep the journal for 10 years after the last recorded act and tell the State Treasurer where it is kept. Alternatively, the notary can transfer it to the Division of Revenue and Enterprise Services or a repository approved by the Treasurer.",
+      "option_feedback": {
+        "A": "A customer is not a designated statutory recipient simply because they offer to store it.",
+        "B": "If the notary keeps the journal, the law requires notice of its location.",
+        "C": "Correct. Use the retention-and-notice or authorized-transfer route.",
+        "D": "Suspension does not authorize destruction."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.18(d)–(e) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-174": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A commissioned New Jersey notary takes an acknowledgment on a paper document. The notary says aloud that the act is complete but writes nothing on or with the document. What is still required?",
+      "option_a": "Only a fee receipt",
+      "option_b": "Only a reminder of the appointment",
+      "option_c": "A notarial certificate and a clear official stamp near the notary’s signature",
+      "option_d": "Only an oral promise to confirm the act later",
+      "correct_option": "C",
+      "explanation": "The acknowledgment must be evidenced by a signed and dated notarial certificate. For a paper act performed by a New Jersey notary public, the official stamp is placed near the notary’s signature so it is clear and readable.",
+      "option_feedback": {
+        "A": "A receipt records payment. It does not document the acknowledgment.",
+        "B": "A reminder does not record the completed act.",
+        "C": "Correct. A paper acknowledgment by a commissioned notary requires the certificate and official stamp.",
+        "D": "An oral promise cannot replace the written certificate or stamp."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-19(a), (e); N.J.S.A. 52:7-10.5(b) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-203": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A New Jersey notarial officer was authorized to act but omitted a required step. Under N.J.S.A. 52:7-10.19(a), what is the general effect of that omission on the notarization?",
+      "option_a": "It grants retroactive notarial authority to anyone who acted without it.",
+      "option_b": "The omission does not by itself invalidate the act, subject to the statute’s express exception for the provision on commission actions.",
+      "option_c": "It automatically makes every term in the underlying record enforceable.",
+      "option_d": "It prevents an aggrieved party from seeking other remedies.",
+      "correct_option": "B",
+      "explanation": "Section 52:7-10.19(a) generally preserves an authorized officer’s notarial act despite a missed duty or requirement, except as otherwise provided in § 52:7-10.4. The surrounding provisions preserve challenges to the underlying record and do not validate actions by someone without authority. The separate prohibition on acting when the officer or a specified partner has a conflict remains applicable.",
+      "option_feedback": {
+        "A": "The statute expressly excludes purported acts by someone without authority.",
+        "B": "Correct. The express cross-reference is to § 52:7-10.4, which addresses grounds for commission actions.",
+        "C": "The rule concerns validity of the notarial act. It does not decide enforceability of every term.",
+        "D": "The statute preserves available challenges and remedies."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.19(a)–(c), 52:7-10.4, and 52:7-10.7(b) https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-012": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "The Nevada Secretary of State has authority to approve a vendor to provide mandatory notary education. What do the agency’s current public instructions say new and renewing applicants should use for traditional training?",
+      "option_a": "The Nevada Secretary of State’s official training site.",
+      "option_b": "Any company that has registered to do business in Nevada.",
+      "option_c": "Any course website that looks professional.",
+      "option_d": "Any course the applicant personally approves.",
+      "correct_option": "A",
+      "explanation": "The statute permits instruction by the Secretary of State or an approved vendor. For a traditional appointment or renewal, the agency’s current instructions direct applicants to its own training website.",
+      "option_feedback": {
+        "A": "The agency’s published instructions identify its official training site.",
+        "B": "A business registration does not satisfy the training instructions.",
+        "C": "A website’s design does not establish approval.",
+        "D": "An applicant cannot approve a vendor for the program."
+      },
+      "source_reference": "Nevada Secretary of State, Training and Exam Requirements. NRS 240.018(1)(a)(2). https://nvsos.gov/index.aspx?page=165",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-023": {
+    "version": 1,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Nevada applicant earned a traditional notary training certificate more than 90 days ago. How long is that certificate valid under Nevada’s rule?",
+      "option_a": "Until the county clerk decides it has expired.",
+      "option_b": "For 90 days after the date it was issued.",
+      "option_c": "Indefinitely.",
+      "option_d": "Until the applicant’s first stamp expires.",
+      "correct_option": "B",
+      "explanation": "The successful-completion certificate is valid for 90 days after its date of issuance. The applicant should check the current course and filing instructions before applying with expired proof.",
+      "option_feedback": {
+        "A": "The rule identifies the period and gives the county clerk no extension authority.",
+        "B": "The rule measures the 90 days from issuance.",
+        "C": "The regulation specifies a limited validity period.",
+        "D": "Stamp expiration does not determine training certificate validity."
+      },
+      "source_reference": "NAC 240.270(2). https://www.leg.state.nv.us/NAC/NAC-240.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-030": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Nevada law requires at least three hours of instruction and an examination in its mandatory notary course. What does NRS 240.018(1)(a)(1) tell an applicant about the exam’s time limit?",
+      "option_a": "The exam has unlimited time.",
+      "option_b": "The exam must take exactly ten minutes.",
+      "option_c": "The provision requires an exam but does not set its duration.",
+      "option_d": "The exam itself must last at least three hours.",
+      "correct_option": "C",
+      "explanation": "The three-hour minimum applies to the instruction. This provision requires an examination and leaves its timing unstated. Check the state training site for the exam’s current instructions.",
+      "option_feedback": {
+        "A": "The statute’s silence does not establish unlimited time.",
+        "B": "The provision gives no ten-minute requirement.",
+        "C": "The provision sets a minimum for instruction and requires an examination.",
+        "D": "The minimum applies to instruction, not the exam."
+      },
+      "source_reference": "NRS 240.018(1)(a)(1). https://www.leg.state.nv.us/NRS/NRS-240.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-095": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "While acting within the scope of employment, a Nevada notary commits misconduct that the employer consented to. What employer liability can NRS 240.150(2) impose?",
+      "option_a": "Liability only for the notary’s training vendor.",
+      "option_b": "Liability for damages proximately caused by the misconduct and a possible state civil penalty for the specified violations.",
+      "option_c": "Automatic immunity for the employer.",
+      "option_d": "Responsibility only for the customer.",
+      "correct_option": "B",
+      "explanation": "When the notary acted within the scope of employment and the employer consented to the misconduct, the employer is liable for the damages proximately caused by it. The Secretary of State may assess a civil penalty of up to $2,000 per specified violation.",
+      "option_feedback": {
+        "A": "The provision concerns the consenting employer.",
+        "B": "Those are the damage and civil-penalty consequences in the statute.",
+        "C": "The statute expressly allows both kinds of exposure.",
+        "D": "The listed conditions apply to the notary and employer."
+      },
+      "source_reference": "NRS 240.150(2)(a)–(b). https://www.leg.state.nv.us/NRS/NRS-240.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-116": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A person incarcerated in a Nevada state prison cannot use any of the ordinary identity methods and has no qualifying inmate ID card. Which other method does the statute list?",
+      "option_a": "A declaration attesting to identity that the person signs under penalty of perjury as provided in NRS 208.165.",
+      "option_b": "An unsigned note giving the person's name.",
+      "option_c": "An unsworn assurance from a visitor.",
+      "option_d": "A receipt for the person's stored property.",
+      "correct_option": "A",
+      "explanation": "NRS 240.1655(4)(g)(2) allows a signed declaration attesting to identity under penalty of perjury. Under NRS 208.165, the qualifying signature following that declaration has the same legal effect as an acknowledgment or oath before an authorized person.",
+      "option_feedback": {
+        "A": "This is the statutory alternative to the qualifying inmate card.",
+        "B": "The alternative requires a signed declaration under penalty of perjury.",
+        "C": "A visitor’s unsworn statement is not the principal’s declaration.",
+        "D": "The provision does not identify a property receipt as proof of identity."
+      },
+      "source_reference": "NRS 240.1655(4)(g)(2) and 208.165. https://www.leg.state.nv.us/NRS/NRS-240.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-178": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Nevada electronic notary and the platform provider discover that anyone with a public link can open a remote notarization recording. What duty does NAC 240.682 assign to both?",
+      "option_a": "Reduce the subscription price.",
+      "option_b": "Put a warning on the public link and leave access unchanged.",
+      "option_c": "Protect the recording and the identifying information disclosed during the act from unauthorized access.",
+      "option_d": "Rename the recording and keep it public.",
+      "correct_option": "C",
+      "explanation": "NAC 240.682 requires the electronic notary and the provider to protect the recording and identifying information from unauthorized access. A separate rule requires the electronic notary to take reasonable steps to keep a secure backup of each recording.",
+      "option_feedback": {
+        "A": "Pricing does not control access to the recording.",
+        "B": "A warning alone does not prevent unauthorized access.",
+        "C": "The shared duty covers recordings and the identifying information disclosed during the act.",
+        "D": "Renaming a public file does not secure it."
+      },
+      "source_reference": "NAC 240.682 and 240.665(3). https://www.leg.state.nv.us/NAC/NAC-240.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "vt-171": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "How much approved continuing education must a nonexempt Vermont notary complete during the preceding two-year period to renew an ordinary commission only?",
+      "option_a": "Ten hours",
+      "option_b": "At least one hour",
+      "option_c": "At least two hours",
+      "option_d": "No continuing education",
+      "correct_option": "B",
+      "explanation": "A nonexempt Vermont notary must complete at least one hour of approved continuing education during the preceding two-year period to renew an ordinary commission. Renewing a special endorsement requires a separate, additional hour on electronic or remote notarization.",
+      "option_feedback": {
+        "A": "Ten hours is more than the regular renewal rule requires.",
+        "B": "Correct. The ordinary commission renewal requires at least one approved hour.",
+        "C": "One hour satisfies ordinary renewal. The additional hour applies when renewing a special endorsement.",
+        "D": "This notary is nonexempt and must complete the ordinary continuing education requirement."
+      },
+      "source_id": "vt-renewal",
+      "source_reference": "Vermont OPR Renewal Instructions (Feb. 2026), p. 1, Steps to Renew; Administrative Rules 9-1(a)–(b), p. 21 https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-003": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Missouri has issued Leah's notary commission, but she has not taken her oath of office. Which county qualification step must she complete?",
+      "option_a": "Present her surety bond and take the oath before the county clerk or designee within 60 days of the commission issue date.",
+      "option_b": "Announce her commission publicly within 60 days.",
+      "option_c": "Start notarizing immediately and take the oath at her first reappointment.",
+      "option_d": "Obtain a commission from another state before taking the Missouri oath.",
+      "correct_option": "A",
+      "explanation": "Present the surety bond and take the oath before the county clerk or designee within 60 days of the commission issue date. Then mail the oath and bond to the Secretary of State with a postmark no more than seven days after the date of the oath. The Secretary updates the commissioned status after reviewing and approving those papers.",
+      "option_feedback": {
+        "A": "Correct. The commission issue date starts the 60-day oath window.",
+        "B": "A public announcement does not satisfy the county qualification requirement.",
+        "C": "State issuance does not replace the oath and bond process.",
+        "D": "Another state's commission does not satisfy Missouri's county qualification requirement."
+      },
+      "source_id": "mo-qualify",
+      "source_reference": "Mo. Rev. Stat. § 486.620(2)(1)–(4), (3)–(4); Missouri Notary Handbook, pp. 69–70 https://revisor.mo.gov/main/OneSection.aspx?section=486.620",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-039": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Missouri notary moves their regular place of work to a new address. The Secretary of State has confirmed the reported address change. Who else must the notary notify in writing before performing another act?",
+      "option_a": "The surety for the notary's bond",
+      "option_b": "The first customer at the new office",
+      "option_c": "The vendor that supplied the notary's stamp",
+      "option_d": "The person receiving the next notarized document",
+      "correct_option": "A",
+      "explanation": "After a change to the regular place of work or business, Missouri requires the notary to send the signed notice, receive confirmation from the Secretary of State, and notify the surety in writing before performing a notarial act.",
+      "option_feedback": {
+        "A": "Correct. Notify the surety for the notary bond in writing.",
+        "B": "A customer's awareness does not update the bond.",
+        "C": "A stamp vendor does not replace the surety.",
+        "D": "The recipient of the next record is not the surety."
+      },
+      "source_id": "mo-faq",
+      "source_reference": "Mo. Rev. Stat. § 486.780(2)(1)–(3); Missouri Secretary of State FAQ, Q16 https://revisor.mo.gov/main/OneSection.aspx?section=486.780",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-097": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Missouri notary does not personally know a principal or either proposed identity witness. Which arrangement can provide satisfactory evidence of the principal's identity?",
+      "option_a": "One stranger gives an unsworn introduction.",
+      "option_b": "Two disinterested credible witnesses who personally know the principal show qualifying identification and each vouch for the principal under oath or affirmation.",
+      "option_c": "One anonymous caller vouches for the principal.",
+      "option_d": "The principal's employer sends an email identifying the principal.",
+      "correct_option": "B",
+      "explanation": "This route requires two credible witnesses who are disinterested in the document or transaction. Each must personally know the principal, show a qualifying identification document, and vouch for the principal's identity under oath or affirmation.",
+      "option_feedback": {
+        "A": "One unknown, unsworn witness does not meet either witness route.",
+        "B": "Correct. The two-witness route requires both qualifying identification and sworn or affirmed identity verification.",
+        "C": "An anonymous caller cannot establish the required witness identity and sworn proof.",
+        "D": "An employer's email does not supply two properly identified witnesses and their oaths or affirmations."
+      },
+      "source_id": "mo-definitions",
+      "source_reference": "Mo. Rev. Stat. § 486.600(7), (21)(b) https://revisor.mo.gov/main/OneSection.aspx?section=486.600",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-100": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Missouri notary's grandchild asks the notary to perform a jurat. What should the notary do?",
+      "option_a": "Decline because the notary is the principal's ancestor.",
+      "option_b": "Proceed because the family rule applies only to spouses.",
+      "option_c": "Proceed because the affidavit does not concern real estate.",
+      "option_d": "Proceed if the notary waives the fee.",
+      "correct_option": "A",
+      "explanation": "Missouri disqualifies a notary who is the principal's ancestor, including a grandparent. The principal should use a different authorized notary.",
+      "option_feedback": {
+        "A": "Correct. A grandparent is an ancestor of the principal.",
+        "B": "The rule also covers ancestors and other listed relationships.",
+        "C": "The family rule is not limited to real-estate documents.",
+        "D": "Waiving the fee does not remove a family disqualification."
+      },
+      "source_id": "mo-acts",
+      "source_reference": "Mo. Rev. Stat. § 486.645(3)(3) https://revisor.mo.gov/main/OneSection.aspx?section=486.645",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-126": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Missouri notary signs a contract as one of its parties and considers notarizing their own signature. Which rule applies?",
+      "option_a": "The notary can proceed if no travel fee is charged.",
+      "option_b": "The notary can proceed if a witness gives an address.",
+      "option_c": "The notary is disqualified because the notary is a party to the contract.",
+      "option_d": "The notary can proceed if the contract fits on one sheet.",
+      "correct_option": "C",
+      "explanation": "Missouri disqualifies a notary who is a party to or named in the document to be notarized. Another authorized notary should perform the act.",
+      "option_feedback": {
+        "A": "The disqualification applies whether or not the notary charges travel fees.",
+        "B": "A witness address does not remove the notary's stake in the contract.",
+        "C": "Correct. The notary is a party to the contract.",
+        "D": "Paper size does not change who is a party to the document."
+      },
+      "source_id": "mo-acts",
+      "source_reference": "Mo. Rev. Stat. § 486.645(3)(1) https://revisor.mo.gov/main/OneSection.aspx?section=486.645",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-157": {
+    "version": 1,
+    "replacementId": "mo-204",
+    "fields": {
+      "question_text": "A Missouri notary leaves a job. A coworker asks to hold and use the notary's official paper seal after the notary leaves. What should the notary do?",
+      "option_a": "Leave it with the coworker because both worked at the same office.",
+      "option_b": "Give it to a manager if the employer paid for it.",
+      "option_c": "Keep the seal secure and accessible only to the notary.",
+      "option_d": "Leave it available for coworkers to use on documents they already received.",
+      "correct_option": "C",
+      "explanation": "The official paper seal belongs exclusively to the notary. The notary must keep it secure and accessible only to them, and it must not be surrendered to an employer at termination.",
+      "option_feedback": {
+        "A": "A coworker cannot affix the notary's seal.",
+        "B": "Employer payment does not authorize taking control of the seal.",
+        "C": "Correct. Access and use remain with the commissioned notary.",
+        "D": "An earlier request does not authorize a coworker to use the seal."
+      },
+      "source_id": "mo-seal",
+      "source_reference": "Mo. Rev. Stat. § 486.725(3)(1)–(4) https://revisor.mo.gov/main/OneSection.aspx?section=486.725",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-158": {
+    "version": 1,
+    "replacementId": "mo-205",
+    "fields": {
+      "question_text": "A Missouri notary dies while their commission is active. How must the personal representative notify the Secretary of State of the death?",
+      "option_a": "Wait for the commission to expire before giving notice.",
+      "option_b": "Leave an oral message with the notary's last employer.",
+      "option_c": "Report the death only if a customer asks about an old notarization.",
+      "option_d": "Notify the Secretary of State in writing.",
+      "correct_option": "D",
+      "explanation": "A deceased Missouri notary's personal representative must notify the Secretary of State of the death in writing. This notice is a distinct responsibility from delivering the journal and notarial records.",
+      "option_feedback": {
+        "A": "The representative's notice duty applies when the notary dies during the term.",
+        "B": "The Secretary of State is the statutory recipient of the written notice.",
+        "C": "The duty does not depend on a customer's request.",
+        "D": "Correct. The personal representative sends written notice to the Secretary of State."
+      },
+      "source_id": "mo-death",
+      "source_reference": "Mo. Rev. Stat. § 486.800(1) https://revisor.mo.gov/main/OneSection.aspx?section=486.725",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wy-005": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A customer asks a Wyoming notary in a private shipping store to certify a photocopy of a birth certificate. The notary does not work for the public entity that issued or holds the original. What should the notary do?",
+      "option_a": "Certify it if the photocopy is legible.",
+      "option_b": "Certify it in the presence of two witnesses.",
+      "option_c": "Direct the customer to the public entity that issued or holds the original.",
+      "option_d": "Certify it after charging a technology fee.",
+      "correct_option": "C",
+      "explanation": "A Wyoming notarial officer may certify a copy of this official record only if the officer works for the public entity that issued or holds the original. Refer this customer to that entity for an official copy.",
+      "option_feedback": {
+        "A": "Legibility does not qualify a private notary to certify an official birth record.",
+        "B": "Witnesses do not replace the statutory employment condition.",
+        "C": "The public entity is the proper route on these facts.",
+        "D": "Paying a technology fee does not affect authority."
+      },
+      "source_reference": "W.S. 32-3-123(a)(iv); Secretary of State education presentation, slide 14. https://wyoleg.gov/statutes/compress/title32.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wy-029": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Wyoming notary whose commission is still active seeks renewal but fails to meet the examination and education requirements. What action does W.S. 32-3-122(a)(i) expressly authorize?",
+      "option_a": "Grant automatic immunity after paying the application fee.",
+      "option_b": "Require only a warning from the stamp supplier.",
+      "option_c": "Automatically extend the current commission.",
+      "option_d": "Suspend or impose conditions on a commission.",
+      "correct_option": "D",
+      "explanation": "The Secretary of State may suspend or impose conditions on a commission for failure to meet the examination and education requirements. Meeting those requirements is also a condition of renewal.",
+      "option_feedback": {
+        "A": "Paying a fee does not grant immunity or waive education.",
+        "B": "The statute gives authority to the Secretary of State.",
+        "C": "Noncompliance does not automatically extend the term.",
+        "D": "These actions are expressly listed in subsection (a)."
+      },
+      "source_reference": "W.S. 32-3-122(a)(i) and 32-3-120(b). https://wyoleg.gov/statutes/compress/title32.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wy-200": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Two Wyoming customers prepaid lawful travel fees. The notary cancels one appointment without completing the act. The other customer cancels six hours before the scheduled act. How does the rule treat those cancellations?",
+      "option_a": "Refund the fee for the notary’s cancellation. The notary may keep the travel fee for the customer’s short-notice cancellation.",
+      "option_b": "Treat both cancellations the same in every case.",
+      "option_c": "Charge every customer a new mandatory cancellation fee.",
+      "option_d": "Use the refund to decide whether the notary’s commission remains active.",
+      "correct_option": "A",
+      "explanation": "Chapter 6 requires a travel-fee refund if the notary cancels and does not complete the act. It allows the notary to retain a compliant prepaid travel fee if the principal cancels the act with less than 24 hours’ notice.",
+      "option_feedback": {
+        "A": "The rule distinguishes the officer’s cancellation from the principal’s short-notice cancellation.",
+        "B": "The rule provides separate treatment.",
+        "C": "The rule does not authorize a new universal fee.",
+        "D": "The refund concerns the travel charge. It does not decide commission status."
+      },
+      "source_reference": "Wyoming Notary Rules, Chapter 6 § 6(a)(ii), (b), printed pp. 6-1–6-2. https://sos.wyo.gov/Services/Docs/Notary-Rules_current.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-056": {
+    "version": 1,
+    "replacementId": "wi-204",
+    "fields": {
+      "question_text": "A Wisconsin notary is preparing to renew a four-year commission online. Which filing route does the Department of Financial Institutions currently direct them to use?",
+      "option_a": "Use the Wisconsin Integrated Management System linked from DFI’s Notary File Online page.",
+      "option_b": "Enter the renewal application in the notary tutorial’s final exam.",
+      "option_c": "Ask the surety company to renew the commission automatically.",
+      "option_d": "Wait for a private notary training provider to file the renewal.",
+      "correct_option": "A",
+      "explanation": "DFI directs four-year renewal applicants to the Wisconsin Integrated Management System (WIMS), linked from its Notary File Online page. Follow the current DFI filing instructions and meet the separate exam, oath and bond requirements.",
+      "option_feedback": {
+        "A": "WIMS is the online filing portal identified by DFI.",
+        "B": "DFI provides the examination separately from the renewal filing process.",
+        "C": "A surety company supplies the bond. DFI handles renewal filings.",
+        "D": "DFI directs the notary to use its filing portal."
+      },
+      "source_id": "wi-file",
+      "source_reference": "Wisconsin DFI Notary File Online, four-year application or renewal steps, and DFI FAQ, “How do I renew my commission?” https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-127": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Under Wisconsin Administrative Code DFI-CCS 25.04(4)(c), who must promptly inform DFI when a technology provider newly authorizes a Wisconsin notary to use its platform for remote notarizations?",
+      "option_a": "The notary, as a substitute for the provider’s report.",
+      "option_b": "The approved technology provider.",
+      "option_c": "The first customer to use the platform with that notary.",
+      "option_d": "The manufacturer of the notary’s stamp.",
+      "correct_option": "B",
+      "explanation": "The approved technology provider must report Wisconsin notaries it newly authorizes to use its platform. The notary separately notifies DFI of the technology they intend to use and follows DFI’s registration and approval instructions before using the platform.",
+      "option_feedback": {
+        "A": "The notary’s own registration is a separate step. The rule assigns this authorization report to the provider.",
+        "B": "The approved provider reports the notaries it newly authorizes.",
+        "C": "The customer has no role in the provider’s report.",
+        "D": "The stamp manufacturer does not authorize platform use or report it."
+      },
+      "source_id": "wi-remote-registration",
+      "source_reference": "Wisconsin Admin. Code DFI-CCS 25.04(4)(c), Wis. Stat. §§ 140.145(7) and 140.20(2), and DFI Remote Online Notary registration. https://www.wisbar.org/wssfc/2024/PublishingImages/Pages/Resources/TECH6_ESignatureTechnology.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-128": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Wisconsin notary has sent DFI the platform information, digital seal and signature for ordinary remote online notarization. DFI has yet to approve the registration. How should the notary handle the first remote appointment on that platform?",
+      "option_a": "Wait for DFI approval before performing the appointment on the platform.",
+      "option_b": "Treat the upload receipt as approval and perform the appointment.",
+      "option_c": "Go ahead if the customer consents in writing.",
+      "option_d": "Ask the platform to waive DFI review.",
+      "correct_option": "A",
+      "explanation": "DFI says it reviews a notary’s remote registration and that the notary may start using the platform after approval. Uploading the materials begins that review.",
+      "option_feedback": {
+        "A": "DFI approval must be in place before using the platform for the act.",
+        "B": "An upload receipt confirms submission. DFI still needs to review the registration.",
+        "C": "Customer consent does not confer DFI approval.",
+        "D": "The provider cannot waive a DFI registration review."
+      },
+      "source_id": "wi-remote-registration",
+      "source_reference": "Wisconsin DFI, Remote Online Notary registration instructions, approval and public record notice. https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-133": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "What does DFI’s current recertification form require a Wisconsin remote online notarization technology provider to do when a notary gains or loses authorization to use its platform?",
+      "option_a": "Wait until the next annual recertification to report the change.",
+      "option_b": "Report the change only if a customer complains.",
+      "option_c": "Keep the change only in the provider’s internal records.",
+      "option_d": "Promptly update DFI through its dedicated technology-provider portal.",
+      "correct_option": "D",
+      "explanation": "Condition 2 of DFI’s current recertification form requires approved providers to promptly report both new and ended authorizations through the provider portal.",
+      "option_feedback": {
+        "A": "Annual recertification is a separate obligation.",
+        "B": "The change itself calls for a prompt update.",
+        "C": "Keeping internal records does not submit the required DFI update.",
+        "D": "Prompt reporting through the dedicated provider portal covers both kinds of changes."
+      },
+      "source_id": "wi-ron-recertification",
+      "source_reference": "Wisconsin DFI Form NOT107, revised August 2025, p. 1, condition 2. https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-135": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Wisconsin remote online notarization technology provider has a breach involving its notarial services that triggers a legal duty to notify Wisconsin residents. What additional notification does DFI’s current recertification form require?",
+      "option_a": "Send a copy of the promotional terms to the affected customers.",
+      "option_b": "Notify DFI of the breach and its scope.",
+      "option_c": "Wait and mention the breach only in the next annual recertification.",
+      "option_d": "Report only to the provider’s internal marketing department.",
+      "correct_option": "B",
+      "explanation": "Condition 5 of DFI’s current recertification form requires the provider to notify DFI of the breach and its scope when it concerns remote notarial services or technology and requires notice to one or more Wisconsin residents under Wis. Stat. §134.98 or other applicable law.",
+      "option_feedback": {
+        "A": "Marketing materials do not provide DFI with the required breach notice.",
+        "B": "The notice to DFI is additional to the legally required resident notice.",
+        "C": "Annual recertification is separate from the breach notice.",
+        "D": "Internal reporting does not notify DFI."
+      },
+      "source_id": "wi-ron-recertification",
+      "source_reference": "Wisconsin DFI Form NOT107, revised August 2025, p. 1, condition 5. https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-158": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Under Wisconsin’s signed-copy procedure for remote estate notarization, who sends a legible copy of the entire signed document directly to the notary by fax or electronic means?",
+      "option_a": "The notary’s technology provider.",
+      "option_b": "Any person with a copy, regardless of the signer’s direction.",
+      "option_c": "The remotely located signer or someone acting at the signer’s direction.",
+      "option_d": "Only the supervising attorney, even when the signer has not directed the attorney to send it.",
+      "correct_option": "C",
+      "explanation": "Under Wis. Stat. § 140.147(3)(j)2, the signer or a person acting at the signer’s direction sends the legible signed copy directly to the notary by fax or electronic means within a reasonable time. They separately send the entire signed original to the supervising attorney through the delivery methods the statute specifies.",
+      "option_feedback": {
+        "A": "The statute assigns the sending step to the signer or a directed person.",
+        "B": "A person other than the signer must act at the signer’s direction.",
+        "C": "This is the statutory sender for the signed-copy procedure.",
+        "D": "The supervising attorney receives the signed original. Their role on its own does not authorize them to send the separate signed copy on behalf of the signer."
+      },
+      "source_id": "wi-estate-act",
+      "source_reference": "Wisconsin 2023 Act 130 § 1, Wis. Stat. § 140.147(3)(j)2. https://www.wisbar.org/wssfc/2024/PublishingImages/Pages/Resources/SUB4_EstatePlanningLaws.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "il-157": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "An Illinois notary is neither an attorney nor an accredited immigration representative. The notary advertises notarial services in Spanish in an online ad. What must the ad include?",
+      "option_a": "Only a link to the notary’s website",
+      "option_b": "The required conspicuous nonattorney notice in English and Spanish",
+      "option_c": "A promise to provide immigration legal advice",
+      "option_d": "A statement that the notary is a government lawyer",
+      "correct_option": "B",
+      "explanation": "A covered online ad in Spanish must display the prescribed nonattorney notice conspicuously in English and Spanish.",
+      "option_feedback": {
+        "A": "A link does not display the required notice in the ad.",
+        "B": "The notice must appear in English and in the language used in the ad.",
+        "C": "The notice explains the limits on legal advice and services.",
+        "D": "The advertisement must not falsely imply that the notary is a lawyer."
+      },
+      "source_id": "il-handbook",
+      "source_reference": "5 ILCS 312/3-103(a), Illinois Notary Public Handbook p. 11. https://www.ilga.gov/legislation/ILCS/details?ActID=107&ActName=Illinois+Notary+Public+Act.&ChapAct=5+ILCS+312%2F&Chapter=GENERAL+PROVISIONS&ChapterID=2&MajorTopic=GOVERNMENT&Print=True&SeqEnd=2850000&SeqStart=2000000",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "il-199": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "An Illinois electronic notary’s electronic seal is compromised today, and the notary learns about it that day. What notice does the Act require?",
+      "option_a": "Notify appropriate law enforcement, the technology vendor, and the Secretary of State no later than the next business day",
+      "option_b": "Wait until the next commission renewal to notify the Secretary of State",
+      "option_c": "Notify only the technology vendor within three years",
+      "option_d": "Notify someone only if a customer complains",
+      "correct_option": "A",
+      "explanation": "The Act requires notice to appropriate law enforcement, the electronic-notary technology vendor, and the Secretary of State no later than the next business day after theft, compromise, or vandalism of the electronic signature or seal.",
+      "option_feedback": {
+        "A": "These are the three required recipients and the statutory deadline.",
+        "B": "Renewal does not set this reporting deadline.",
+        "C": "The notice goes to all three recipients by the next business day.",
+        "D": "The duty arises from the security incident, regardless of customer complaints."
+      },
+      "source_id": "il-handbook",
+      "source_reference": "5 ILCS 312/3-101(d)(2). https://www.ilga.gov/legislation/ILCS/details?ActID=107&ActName=Illinois+Notary+Public+Act.&ChapAct=5+ILCS+312%2F&Chapter=GENERAL+PROVISIONS&ChapterID=2&MajorTopic=GOVERNMENT&Print=True&SeqEnd=2850000&SeqStart=2000000",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "il-018": {
+    "version": 1,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "After three unsuccessful final examinations, a candidate asks to keep buying unlimited retests under the same completed course. What applies?",
+      "option_a": "Unlimited attempts are guaranteed",
+      "option_b": "The Secretary must issue a commission",
+      "option_c": "The surety can certify competence",
+      "option_d": "Three failures constitute failure of the course",
+      "correct_option": "D",
+      "explanation": "Failure to pass the final after three attempts constitutes failure of the course.",
+      "option_feedback": {
+        "A": "The rule limits unsuccessful attempts under that course.",
+        "B": "A failed course does not qualify the applicant.",
+        "C": "The surety does not certify course completion.",
+        "D": "Correct. Three failures mean the course has been failed."
+      },
+      "source_id": "il-rules",
+      "source_reference": "§176.235(c)(4), printed p. 8678 https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "il-019": {
+    "version": 1,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A first applicant completed the certified examination more than two years ago and never applied. What should the applicant do?",
+      "option_a": "Obtain current qualifying completion before applying",
+      "option_b": "Reuse the old result indefinitely",
+      "option_c": "File an employer statement instead",
+      "option_d": "Assume a purchased seal extends the result",
+      "correct_option": "A",
+      "explanation": "The application must be submitted within two years after passing the examination.",
+      "option_feedback": {
+        "A": "Correct. The old result falls outside the application period.",
+        "B": "Examination results do not remain usable indefinitely.",
+        "C": "An employer statement does not renew a first applicant's result.",
+        "D": "A seal purchase cannot extend an examination result."
+      },
+      "source_id": "il-2025",
+      "source_reference": "§176.205(a), printed p. 593 https://www.ilsos.gov/content/dam/departments/index/register/volume49/register_volume49_2.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "il-052": {
+    "version": 1,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "For an ordinary paper act, a signer brings a witness whom the notary has never met. The parties want to rely solely on that witness's oath. What does §6-102(d)(2) require?",
+      "option_a": "Any witness accepted by the signer",
+      "option_b": "A witness with a large professional following",
+      "option_c": "A witness who pays the fee",
+      "option_d": "A credible witness personally known to the notary",
+      "correct_option": "D",
+      "explanation": "The ordinary statutory credible-witness route requires a witness personally known to the notary.",
+      "option_feedback": {
+        "A": "The signer's preference does not establish the statutory connection.",
+        "B": "Popularity does not meet the personal-knowledge requirement.",
+        "C": "Paying a fee does not qualify the witness.",
+        "D": "Correct. The specified personal knowledge is required."
+      },
+      "source_id": "il-in-person-identity-statute",
+      "source_reference": "5 ILCS 312/6-102(d)(2) https://www.ilga.gov/documents/legislation/ilcs/documents/000503120K6-102.htm",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "il-174": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A regular private employer asks for the notary's journal at termination. The journal contains ordinary business and private acts and no special law-firm exception applies. What is required?",
+      "option_a": "Leave it with payroll because the employer paid",
+      "option_b": "Give it to whichever employee requests it",
+      "option_c": "Do not surrender the journal to the employer on termination",
+      "option_d": "Destroy it so neither party holds it",
+      "correct_option": "C",
+      "explanation": "Section 3-107(d) tells the notary not to surrender the journal to the employer when employment ends. The employer cannot retain it. These facts concern an ordinary journal that includes business and private notarizations.",
+      "option_feedback": {
+        "A": "Payment does not transfer ordinary journal custody.",
+        "B": "An employee's request does not authorize transfer.",
+        "C": "Correct. Apply the ordinary custody rule to these facts.",
+        "D": "Termination does not authorize destruction."
+      },
+      "source_reference": "5 ILCS 312/3-107(d) https://www.ilga.gov/legislation/ILCS/details?ActID=107&ActName=Illinois+Notary+Public+Act.&ChapAct=5+ILCS+312%2F&Chapter=GENERAL+PROVISIONS&ChapterID=2&MajorTopic=GOVERNMENT&Print=True&SeqEnd=2850000&SeqStart=2000000",
+      "last_verified_at": "2026-11-19"
+    }
+  }
+};

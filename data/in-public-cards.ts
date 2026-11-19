@@ -157,12 +157,12 @@ export const inPublicCards = [
   {
     "id": "in-card-015",
     "study": "identification",
-    "title": "The three-year ID boundary",
-    "front": "Must every identification credential be unexpired?",
-    "rule": "The statutory credential route includes passports, driver's licenses, government ID cards, and other government photographic credentials; expiration may be no more than three years ago.",
-    "boundary": "Inspect the credential and resolve identity concerns.",
+    "title": "Check the type of ID",
+    "front": "Does the Indiana guide treat every government photo ID the same way?",
+    "rule": "The Indiana guide includes an otherwise satisfactory state-issued driver's license that expired no more than three years ago.",
+    "boundary": "The guide separately describes other government-issued photo ID as current. Check the category before relying on an expired credential.",
     "mixup": "A private membership card is not government identification.",
-    "source": "IC 33-42-9-4(b)(1); Indiana SOS Guide (May 2024), p. 20",
+    "source": "Indiana SOS Guide (May 2024), p. 20",
     "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {
@@ -382,8 +382,8 @@ export const inPublicCards = [
     "rule": "The official seal must be capable of being copied together with its record.",
     "boundary": "A faint or incomplete impression can defeat legibility.",
     "mixup": "A visible mark on the original is not enough if essential details disappear in copying.",
-    "source": "IC 33-42-10-2(b)",
-    "sourceUrl": "https://secure.in.gov/counties/shelby/recorder/recorder-fee-schedule/"
+    "source": "Indiana SOS Guide (May 2024), p. 16",
+    "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {
     "id": "in-card-036",

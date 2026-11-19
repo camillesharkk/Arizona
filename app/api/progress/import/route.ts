@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { serverQuestionById as questionById } from "@/lib/server-questions";
@@ -8,6 +8,7 @@ import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { productionStateBlocked } from "@/lib/state-release";
 import { recordQuestionAnswers } from "@/lib/progress";
+import { resolveQuestionVersion } from "@/lib/question-version";
 
 const schema = z.object({
   accountId: z.string().min(1),
@@ -31,12 +32,15 @@ export async function POST(request: Request) {
   const input = parsed.data;
   if (input.accountId !== session.id) return NextResponse.json({ error: "Account changed" }, { status: 409 });
   if (productionStateBlocked(input.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  const bank = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()];
-  const questions = input.questions.map(answer => ({ answer, question: bank.find(question => question.question_id === answer.questionId) ?? questionById(answer.questionId) }));
-  if (new Set(input.questions.map(answer => answer.questionId)).size !== questions.length || questions.some(({ question, answer }) => !question || question.state !== input.state || !question.is_free || (answer.selected && !question[`option_${answer.selected.toLowerCase()}` as "option_a" | "option_b" | "option_c" | "option_d"]))) {
+  const bank = [...historicalAzQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()];
+  const questions = input.questions.map(answer => {
+    const current = bank.find(question => question.question_id === answer.questionId) ?? questionById(answer.questionId);
+    return { answer, current, question: resolveQuestionVersion(current, answer.questionVersion) };
+  });
+  if (new Set(input.questions.map(answer => answer.questionId)).size !== questions.length || questions.some(({ current, question, answer }) => !current || current.state !== input.state || !current.is_free || (question && answer.selected && !question[`option_${answer.selected.toLowerCase()}` as "option_a" | "option_b" | "option_c" | "option_d"]))) {
     return NextResponse.json({ error: "Invalid practice questions" }, { status: 400 });
   }
-  if (questions.some(({ question, answer }) => question!.version !== answer.questionVersion)) {
+  if (questions.some(({ question }) => !question)) {
     return NextResponse.json({ error: "Earlier question version remains saved on this device", code: "question_updated" }, { status: 409 });
   }
   const store = await getStore();
@@ -45,7 +49,7 @@ export async function POST(request: Request) {
     if (existing) return { ok: true, duplicate: true, exam: existing };
     const plan = await transaction.getStudyPlan(session.id, input.state);
     const answered = questions.flatMap(({ question, answer }) => answer.selected ? [{
-      questionId: answer.questionId, selected: answer.selected, correct: answer.selected === question!.correct_option,
+      questionId: answer.questionId, questionVersion: answer.questionVersion, selected: answer.selected, correct: answer.selected === question!.correct_option,
       attemptId: answer.attemptId || `${input.examId}:${answer.questionId}`,
     }] : []);
     await recordQuestionAnswers({ store: transaction, userId: session.id, state: input.state, answers: answered, plan, timeZone: input.timeZone });
@@ -54,7 +58,8 @@ export async function POST(request: Request) {
     const document = (plan?.document || {}) as Record<string, unknown>;
     const checks = (document.checks || {}) as Record<string, unknown>;
     await transaction.saveStudyPlan({ userId: session.id, state: input.state, document: {
-      ...document, checks: { ...checks, [input.examId]: { wrongIds, wrong: wrongIds.length, skipped: questions.length - answered.length } },
+      ...document, checks: { ...checks, [input.examId]: { wrongIds, wrong: wrongIds.length, skipped: questions.length - answered.length,
+        questionVersions: Object.fromEntries(questions.map(({ answer }) => [answer.questionId, answer.questionVersion])) } },
     } });
     const exam = {
       id: input.examId, userId: session.id, mode: input.state === "AZ" ? "quick" : `${input.state.toLowerCase()}-quick`,

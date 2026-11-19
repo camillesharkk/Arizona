@@ -6,6 +6,7 @@ import { questions, publishedQuestions } from "../data/questions.ts";
 import { sources } from "../data/sources.ts";
 import { examConfig, topics } from "../data/exam-config.ts";
 import { chapters } from "../data/study-guide.ts";
+import { questionReviewTimestamps } from "../data/question-review-dates.ts";
 import { isActiveQuestion } from "../lib/question-status.ts";
 
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -178,9 +179,10 @@ for (const q of genericRef) {
 }
 
 const sameVerify = new Set(published.map((q) => q.last_verified_at));
-if (sameVerify.size === 1) {
+const withoutReviewTimestamp = published.filter((q) => !questionReviewTimestamps.has(q.question_id));
+if (sameVerify.size === 1 && withoutReviewTimestamp.length) {
   warn(
-    `All published questions share last_verified_at=${[...sameVerify][0]}. This is a batch stamp from publish(), not per-item legal review.`
+    `Published questions display the same verification date, and ${withoutReviewTimestamp.length} have no recorded editorial timestamp.`
   );
 }
 

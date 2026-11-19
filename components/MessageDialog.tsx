@@ -9,21 +9,25 @@ function outsideDialog(event: PointerEvent<HTMLDialogElement>) {
     event.clientY < bounds.top || event.clientY > bounds.bottom;
 }
 
-export function MessageDialog({ title, onClose, children }: {
+export function MessageDialog({ title, onClose, onShown, children }: {
   title: string;
   onClose: (result: string) => void;
+  onShown?: () => void;
   children: ReactNode;
 }) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const pressedOutside = useRef(false);
+  const shownCallback = useRef(onShown);
+  shownCallback.current = onShown;
 
   useLayoutEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
     dialog.querySelector("[data-dialog-autofocus]")?.setAttribute("autofocus", "");
     dialog.showModal();
-    return () => dialog.close();
+    const frame = requestAnimationFrame(() => { if (dialog.open) shownCallback.current?.(); });
+    return () => { cancelAnimationFrame(frame); dialog.close(); };
   }, []);
 
   return (

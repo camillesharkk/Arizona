@@ -7,6 +7,9 @@ import { ncFeeSealRows } from "./nc-fees-seals";
 import { ncRecordRows } from "./nc-records";
 export { ncCards } from "./nc-cards";
 import { ncConceptCardIds } from "./nc-cards";
+import { publishQuestionEdits } from "../lib/question-version.ts";
+import { ncQuestionEdits } from "./question-edits-nc.ts";
+import { questionReviewDate } from "./question-review-dates.ts";
 
 export const NC_CHECKED = "2026-11-13";
 export const ncTopics = [
@@ -69,7 +72,7 @@ const foundationConcepts = new Set([
   "nc-card-traditional-journal", "nc-card-five-year-term", "nc-card-application-fee",
 ]);
 export function publishedNcQuestions(): Question[] {
-  return rows.map((row, index) => {
+  const original = rows.map((row, index): Question => {
     const choices = [[row.answer, row.explanation], ...row.wrong];
     const offset = index % 4;
     const ordered = [...choices.slice(4 - offset), ...choices.slice(0, 4 - offset)];
@@ -82,10 +85,11 @@ export function publishedNcQuestions(): Question[] {
       option_feedback: { A: ordered[0][1], B: ordered[1][1], C: ordered[2][1], D: ordered[3][1] },
       source_id: row.reference.startsWith("SOS") ? "nc-sos-manual" : statute ? `nc-10b-${statute[1]}` : "nc-rules",
       source_reference: row.reference, concept_ids: [ncConceptCardIds[row.concept]],
-      effective_from: "2026-11-13", effective_to: null, last_verified_at: NC_CHECKED,
+      effective_from: "2026-11-13", effective_to: null, last_verified_at: questionReviewDate(row.id, NC_CHECKED),
       version: 1, is_free: freeIds.has(row.id), status: "published",
     };
   });
+  return publishQuestionEdits(original, ncQuestionEdits);
 }
 
 export function ncQuestionCounts() {

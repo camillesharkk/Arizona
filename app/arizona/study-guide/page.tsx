@@ -2,6 +2,7 @@ import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { chapters } from "@/data/study-guide";
 import { getSource } from "@/data/sources";
+import { examConfig } from "@/data/exam-config";
 import { StudyGuide } from "@/components/StudyGuide";
 import { paths } from "@/lib/paths";
 import { eligibleExamPool } from "@/lib/quiz";
@@ -31,8 +32,7 @@ export default function StudyGuidePage() {
     title={<MemberCopy member="Arizona Notary Study Guide 2026 — Rules, Examples & Topic Practice">Free Arizona Notary Study Guide 2026 — Rules, Examples & Topic Practice</MemberCopy>}
     lede={<>Learn what to do when an ID is damaged, a signer refuses an oath, or a document involves a conflict of interest. Every chapter includes a worked scenario, an official source and topic practice. <MemberCopy member="The core guide is included in your study tools.">The core guide is free and requires no login.</MemberCopy></>}
     introduction={<p>
-      Use this guide alongside the <a href={getSource("sos_manual_2026_08").url}>official SOS Reference Manual</a>.
-      The current SOS download is named “Notary-Manual-Aug-2026.pdf”; its cover says January 2025.
+      Use this guide alongside the <a href={examConfig.officialManualUrl}>Arizona Secretary of State’s October 2026 Notary Public Reference Manual (PDF)</a>.
       For later changes, use the <Link href={paths.laws}>verified Arizona law updates</Link> and chaptered statutes.
     </p>}
     sitePaths={paths}

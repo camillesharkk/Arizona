@@ -22,7 +22,7 @@ export default function Page() {
             <li key={quota.area}>{quota.label}: {quota.count} scored items</li>
           ))}
         </ul>
-        <p>The exam is closed book. A candidate may test once in a calendar month. A second score in the same month is invalid and the fee is forfeited. Failing candidates receive a mailed notice. Results are not given by phone.</p>
+        <p>The exam is closed book. A candidate may test once in a calendar month. A second score in the same month is invalid and the fee is forfeited. CPS HR sends results after the exam. Results are not given by phone.</p>
         <p>Passing the official exam requires a scaled score of at least 70. That score is not the number correct divided by 45 or by 40. This site does not issue a scaled score or an official pass.</p>
         <p><MemberCopy member={<>Quick 10 shows the explanation after each question. One full practice exam is available to all learners. The published questions are available to all learners. Pro does not unlock a hidden California bank. It removes the one-exam limit for 60 days in every available state.</>}>Free Quick 10 shows the explanation after each question. One full practice exam is free. The published questions are free. Pro does not unlock a hidden California bank. It removes the one-exam limit for 60 days in every available state.</MemberCopy></p>
         <p><a href="/california/open-book/">Closed-book rule</a>{" · "}<a href="/california/exam-retake/">Retake rules</a>{" · "}<a href="/california/how-hard/">Readiness</a></p>

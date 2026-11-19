@@ -241,10 +241,6 @@
     font-size: .875rem;
   }
 
-  .community-guest-header .logo-mark {
-    flex: none;
-  }
-
   .community-insight-post {
     column-gap: .65rem;
   }
@@ -256,7 +252,7 @@
 }
 
 @media (max-width: 365px) {
-  .community-guest-header .logo-mark {
+  .community-guest-header .logo-label {
     display: none;
   }
 }

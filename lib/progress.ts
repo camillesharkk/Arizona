@@ -1,10 +1,11 @@
 import { isFreeState } from "@/lib/free-state-catalog";
 import { randomUUID } from "crypto";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { serverQuestionById as questionById } from "@/lib/server-questions";
 import { currentQuestionVersion, currentRevisionStat } from "@/lib/question-revisions";
+import { resolveQuestionVersion } from "@/lib/question-version";
 import { applyReviewAnswer, DEFAULT_STUDY_TIME_ZONE, migrateReviewFields } from "@/lib/review-schedule";
 import { getStore } from "@/lib/store";
 import type { QuestionStat, Store } from "@/lib/store/types";
@@ -16,7 +17,7 @@ export async function recordQuestionAnswers(opts: {
   store: Store;
   userId: string;
   state: StateCode;
-  answers: { questionId: string; selected: "A" | "B" | "C" | "D"; correct: boolean; attemptId: string }[];
+  answers: { questionId: string; questionVersion?: number; selected: "A" | "B" | "C" | "D"; correct: boolean; attemptId: string }[];
   plan: Awaited<ReturnType<Store["getStudyPlan"]>>;
   timeZone?: string;
 }) {
@@ -67,6 +68,7 @@ export function applyStreak(user: UserRow): Partial<UserRow> {
 export async function recordQuestionAnswer(opts: {
   userId: string;
   questionId: string;
+  questionVersion?: number;
   selected: "A" | "B" | "C" | "D";
   correct: boolean;
   review?: boolean;
@@ -75,7 +77,8 @@ export async function recordQuestionAnswer(opts: {
   store?: Store;
 }): Promise<QuestionStat | null> {
   const store = opts.store || await getStore();
-  const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId) ?? questionById(opts.questionId);
+  const current = [...historicalAzQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId) ?? questionById(opts.questionId);
+  const q = resolveQuestionVersion(current, opts.questionVersion ?? current?.version ?? 1);
   if (!q) throw new Error("unknown_question");
   if (!opts.store) {
     return store.learningTransaction(opts.userId, transaction => recordQuestionAnswer({ ...opts, store: transaction }));
@@ -85,7 +88,10 @@ export async function recordQuestionAnswer(opts: {
     if (!fresh) return (await store.getStat(opts.userId, opts.questionId)) ?? null;
   }
   const stored = await store.getStat(opts.userId, opts.questionId);
-  const prev = stored ? currentRevisionStat(stored) : null;
+  const historical = q.version < currentQuestionVersion(opts.questionId);
+  const storedVersion = stored?.questionVersion ?? 1;
+  const previousForVersion = storedVersion === q.version ? stored : stored?.revisionHistory?.find(item => item.questionVersion === q.version);
+  const prev = historical ? previousForVersion : stored ? currentRevisionStat(stored) : null;
   const now = new Date().toISOString();
   const state = q.state;
   const savedPlan = await store.getStudyPlan(opts.userId, state);
@@ -94,8 +100,8 @@ export async function recordQuestionAnswer(opts: {
   const migrated = prev ? migrateReviewFields(prev, now, timeZone) : null;
   const review = applyReviewAnswer(migrated, { correct: opts.correct, review: Boolean(opts.review), now, timeZone });
   const next: QuestionStat = {
-    questionVersion: currentQuestionVersion(opts.questionId),
-    revisionHistory: prev?.revisionHistory,
+    questionVersion: q.version,
+    revisionHistory: stored?.revisionHistory && historical ? stored.revisionHistory : stored && !historical ? currentRevisionStat(stored).revisionHistory : undefined,
     userId: opts.userId,
     questionId: opts.questionId,
     topic: q.topic,
@@ -114,6 +120,12 @@ export async function recordQuestionAnswer(opts: {
     savedForReview: prev?.savedForReview ?? false,
     dailyStudyOnly: prev?.dailyStudyOnly ?? false,
   };
+  if (historical && stored && storedVersion > q.version) {
+    const { revisionHistory: _history, ...snapshot } = next;
+    const saved = { ...stored, revisionHistory: [...(stored.revisionHistory ?? []).filter(item => item.questionVersion !== q.version), snapshot] };
+    await store.upsertStat(saved);
+    return saved;
+  }
   await store.upsertStat(next);
   const user = await store.getUserById(opts.userId);
   if (user) await store.updateUser(opts.userId, applyStreak(user));

@@ -2,7 +2,7 @@ import { serverStateQuestions } from '../data/full-state-server';
 import { isFreeState } from './free-state-catalog';
 import { shuffle } from './answer-sequence';
 import { packFor } from "./prep-pack";
-import { publishedQuestions } from "../data/questions";
+import { historicalAzQuestions } from "../data/questions";
 import { publishedCaQuestions } from "../data/ca-questions";
 import { publishedHiQuestions } from "../data/hi-questions";
 import { examConfig } from "../data/exam-config";
@@ -21,6 +21,9 @@ import type { ProUsageContext } from "./commerce/usage";
 import { applyStreak, recordQuestionAnswer } from "./progress";
 import { FREE_FULL_EXAMS } from "./product";
 import { pickFullExam, scorePercent } from "./quiz";
+import { resolveQuestionVersion } from "./question-version";
+import { isActiveQuestion } from "./question-status";
+import { editorialUpdateByQuestion } from "../data/question-editorial-events";
 import type { QuestionStat, Store } from "./store/types";
 
 type UsageReceipt = ProUsageContext & { featureCode: "full_exam_extra" | "pro_question" };
@@ -79,29 +82,35 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     if (input.questions.length !== expectedCount || new Set(input.questions.map(answer => answer.questionId)).size !== expectedCount) throw new Error("invalid_exam");
     if (state === "IN") await requireIndianaSitting(transaction, userId, input.examId, input.questions, pro, input.guestSitting);
     let draw: { questions: Question[]; unscoredIds: string[] } | null = null;
+    const validPool = (pool: Question[]) => pool.length >= expectedCount &&
+      shuffle(pool, input.seed!).slice(0, expectedCount).every((question, index) => question.question_id === input.questions[index]?.questionId);
+    let matchesStateDraw = false;
     if (state !== "IN" && state !== "NY" && Number.isSafeInteger(input.seed)) {
       if (isFreeState(state)) {
-        const accessible = serverStateQuestions(state).filter(question => pro || question.is_free);
-        draw = { questions: shuffle(accessible, input.seed!).slice(0, expectedCount), unscoredIds: [] };
+        const bank = serverStateQuestions(state);
+        const active = bank.filter(question => isActiveQuestion(question));
+        const previous = bank.filter(question => !question.replaces_question_id && (
+          isActiveQuestion(question.previous_versions?.at(-1) ?? question) ||
+          editorialUpdateByQuestion.get(question.question_id)?.wasActiveBefore));
+        matchesStateDraw = [active, previous].some(pool => validPool(pool.filter(question => pro || question.is_free)) ||
+          (pro && validPool(pool.filter(question => question.is_free))));
       } else {
         draw = pack ? pack.pickFull(input.seed!, pro) : classic[state as keyof typeof classic].pickFull(input.seed!);
       }
     }
     const matchesCurrentDraw = Boolean(draw && draw.questions.every((question, index) => question.question_id === input.questions[index]?.questionId));
-    const matchesFreeDraw = isFreeState(state) && pro && Number.isSafeInteger(input.seed) &&
-      shuffle(serverStateQuestions(state).filter(question => question.is_free), input.seed!).slice(0, expectedCount)
-        .every((question, index) => question.question_id === input.questions[index]?.questionId);
-    const matchesDraw = matchesCurrentDraw || matchesFreeDraw;
+    const matchesDraw = matchesCurrentDraw || matchesStateDraw;
     if ((state === "LA" || state === "CT" || isFreeState(state)) && !matchesDraw) throw new Error("invalid_exam");
     // A bank expansion must not redraw a saved PA sitting. A legacy sitting may
     // supply its persisted unscored identities, but every quota is checked here.
     const splitScore = state === "PA" || state === "CA";
     const unscored = new Set(splitScore ? (matchesDraw ? draw?.unscoredIds || [] : input.unscoredIds || []) : []);
-    const classicBank = new Map([...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].map(question => [question.question_id, question]));
+    const classicBank = new Map([...historicalAzQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].map(question => [question.question_id, question]));
     const questions = input.questions.map(answer => {
-      const question = classicBank.get(answer.questionId) ?? questionById(answer.questionId);
-      if (!question || question.state !== state) throw new Error("invalid_exam");
-      if (question.version !== answer.questionVersion) throw new Error("question_updated");
+      const current = classicBank.get(answer.questionId) ?? questionById(answer.questionId);
+      if (!current || current.state !== state) throw new Error("invalid_exam");
+      const question = resolveQuestionVersion(current, answer.questionVersion);
+      if (!question) throw new Error("question_updated");
       if (answer.selected && !question[`option_${answer.selected.toLowerCase()}` as "option_a" | "option_b" | "option_c" | "option_d"]) throw new Error("invalid_exam");
       if (existing && answer.selected && !answer.attemptId) throw new Error("legacy_attempts_required");
       return { question, selected: answer.selected, attemptId: answer.attemptId || `${input.examId}:${question.question_id}` };
@@ -178,7 +187,7 @@ export async function savePackFullSubmission(store: Store, userId: string, input
       if (correct) { if (!unscored.has(question.question_id)) correctCount += 1; }
       else wrongIds.push(question.question_id);
       await recordQuestionAnswer({
-        userId, questionId: question.question_id, selected, correct,
+        userId, questionId: question.question_id, questionVersion: question.version, selected, correct,
         attemptId, timeZone: input.timeZone, store: answerStore,
       });
     }
@@ -194,7 +203,9 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     const document = (plan?.document || {}) as Record<string, unknown>;
     const checks = (document.checks || {}) as Record<string, unknown>;
     await transaction.saveStudyPlan({ userId, state, document: {
-      ...document, checks: { ...checks, [input.examId]: { wrong: wrongIds.length, skipped, wrongIds, unscoredIds: [...unscored], submissionVersion: 1, ...(proUsage ? { proUsage } : {}) } },
+      ...document, checks: { ...checks, [input.examId]: { wrong: wrongIds.length, skipped, wrongIds, unscoredIds: [...unscored],
+        questionVersions: Object.fromEntries(questions.map(({ question }) => [question.question_id, question.version])),
+        submissionVersion: 1, ...(proUsage ? { proUsage } : {}) } },
     } });
     const exam = existing || { id: input.examId, userId, mode, score, correctCount, total, at: input.finishedAt || now.toISOString() };
     if (!existing && !await transaction.addExam(exam)) throw new Error("exam_conflict");

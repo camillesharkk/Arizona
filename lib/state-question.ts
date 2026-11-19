@@ -1,6 +1,14 @@
 import type { FreeStateContent } from './free-state-content';
 import type { FreeStateCode } from './free-state-catalog';
 import type { Question } from './types';
+import { questionReviewDate } from '../data/question-review-dates';
+import { questionDrawHold } from '../data/question-draw-holds';
+import { serverQuestionEdits } from '../data/question-edits-server';
+import { publishQuestionEdits } from './question-version';
+
+export function versionedStateQuestions(questions: Question[]) {
+  return publishQuestionEdits(questions, serverQuestionEdits);
+}
 
 export function stateQuestion(code: FreeStateCode, question: FreeStateContent['questions'][number], free: boolean): Question {
   return {
@@ -10,7 +18,7 @@ export function stateQuestion(code: FreeStateCode, question: FreeStateContent['q
     correct_option: question.answer, explanation: question.explanation,
     option_feedback: { A: question.feedback[0], B: question.feedback[1], C: question.feedback[2], D: question.feedback[3] },
     source_id: question.sourceId, source_reference: question.reference,
-    effective_from: '2026-11-14', effective_to: null, last_verified_at: '2026-11-14',
+    effective_from: '2026-11-14', effective_to: questionDrawHold(question.id), last_verified_at: questionReviewDate(question.id, '2026-11-14'),
     version: 1, is_free: free, status: 'published',
   };
 }

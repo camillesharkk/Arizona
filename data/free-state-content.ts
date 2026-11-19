@@ -3065,7 +3065,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
     "processKind": "Approved course",
     "summary": "Ordinary first-time New Mexico applicants complete the state-required approved course and examination before applying.",
     "training": "Complete the Notary Education Course and examination from the SOS-approved provider. The training page identifies the National Notary Association as the approved provider. Automatic notarial officers also have education requirements.",
-    "assessment": "Pass the approved course examination with at least 80% and include the completion certificate with the application. The opened official materials do not establish a fixed question count or examination duration.",
+    "assessment": "The Secretary of State’s approved provider gives ordinary applicants 60 minutes to answer 50 questions in one sitting. Score at least 80% and include the issued completion certificate with your application. The provider publishes the same format for the separate RON exam.",
     "steps": [
       "Check eligibility and complete the approved education and exam.",
       "Obtain the $10,000 bond and have the required applicant signature and oath notarized by another authorized officer.",
@@ -3077,7 +3077,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
       "Automatic notarial officers have a distinct office/registration basis of authority and still have training and stamp duties. The historical 2023 training grace period is not a current new-applicant exemption."
     ],
     "renewal": "The commission term is four years. Renew online. For the renewed commission, file the stamp copy within 45 days of receipt and before its first act. Under 12.9.3.8(A)(1) NMAC, a recorded prior examination pass can excuse retraining and retesting, unless the commission expired more than one year ago or the Secretary of State determines that substantial legal or rule changes since the last application require them.",
-    "ron": "A commissioned notary or qualifying automatic notarial officer completes separate RON education and examination and files the RON application as an amendment. The authorized officer must be physically in New Mexico during remote acts and must comply with separate electronic-stamp, technology, recording and journal requirements. The Secretary of State must receive the electronic-stamp copy within 45 days of RON authorization and before the first remote act.",
+    "ron": "Complete the separate approved RON course and exam. The Secretary of State’s portal instructions describe filing a RON amendment to an existing record. State rules also allow a simultaneous ordinary and RON application. The authorized officer must be physically in New Mexico for each remote act and follow the technology, recording, and journal rules. The Secretary of State must receive the electronic stamp copy within 45 days of authorization and before the first remote act.",
     "officialNext": {
       "label": "New Mexico official approved training and exam",
       "url": "https://www.sos.nm.gov/notary-and-apostille/notary-commissions/training-resources/"
@@ -3152,11 +3152,25 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
         "url": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
         "reference": "12.9.4.8(C) and 12.9.4.13(A), electronic stamp receipt before remote work",
         "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "nm-ordinary-provider-specs",
+        "title": "National Notary Association — Approved New Mexico Notary Exam",
+        "url": "https://www.nationalnotary.org/new-mexico-state-required-training-and-exam",
+        "reference": "Exam Instructions, ordinary exam format",
+        "checkedAt": "2026-11-19"
+      },
+      {
+        "id": "nm-ron-provider-specs",
+        "title": "National Notary Association — Approved New Mexico RON Exam",
+        "url": "https://www.nationalnotary.org/new-mexico-state-required-remote-online-notary-training-and-exam",
+        "reference": "Exam Instructions, separate RON exam format",
+        "checkedAt": "2026-11-19"
       }
     ],
     "specs": {
-      "questions": null,
-      "minutes": null,
+      "questions": 50,
+      "minutes": 60,
       "passing": "80%",
       "credential": "Certificate of Completion of Notary Education Course and exam"
     },
@@ -3434,7 +3448,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
     "processKind": "Approved course",
     "summary": "Nevada requires its traditional-notary course and course examination before appointment.",
     "training": "Complete the state’s traditional Commission Course. NRS 240.018 calls for at least three instructional hours plus an examination. The official LMS requires separate enrollment and completion of the course and exam.",
-    "assessment": "Pass the Commission Exam and save completion evidence. The official LMS states that training, examinations and payment must be completed within 90 days for validity. The question count, exam duration and numerical passing threshold were not confirmed in the official pages opened.",
+    "assessment": "Pass the Commission Exam and save completion evidence. The official LMS states that training, examinations and payment must be completed within 90 days for validity. The Nevada Secretary of State lists a passing score of at least 80% for the traditional exam. The official public instructions reviewed do not give its question count or duration.",
     "steps": [
       "Check eligibility and complete the Commission Course and Commission Exam.",
       "Obtain the $10,000 bond and take the oath.",
@@ -3765,7 +3779,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
     "exceptions": [
       "Ohio attorneys applying after September 20, 2019 take the education but are exempt from the initial test. Attorneys commissioned before that date have the statutory education/test exemption.",
       "Attorneys and peace officers have a statutory BCI-report exemption.",
-      "A separate statutory route exists for qualifying notaries from other states under Chapter 4796."
+      "R.C. 147.01(F) refers to Chapter 4796 for certain out-of-state commissions. Confirm the applicable process with the Secretary of State before relying on an out-of-state commission."
     ],
     "renewal": "Ordinary non-attorney renewal requires one hour of authorized education and no test. A non-attorney commission ordinarily lasts five years. An attorney commission continues while statutory residence/practice and good-standing conditions hold.",
     "ron": "Obtain an Ohio commission first, then complete two hours of approved RON education and testing and apply separately for online authorization. RON renewal requires one hour and no test under the SOS table.",
@@ -5117,10 +5131,10 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
     "exceptions": [
       "Wisconsin-licensed attorneys in good standing may apply for a permanent commission through a separate route with a recent certificate of good standing. Permanent commissions do not require the ordinary four-year bond.",
       "The general tutorial readings and chapter quizzes may be skipped by a prepared applicant, but the ordinary four-year final examination remains required.",
-      "The official application page announces a new online system for November 16, 2026 at 7 a.m. Central Time. Follow that page for the current filing route."
+      "DFI directs applicants and renewing notaries to the Wisconsin Integrated Management System (WIMS). Open it from the Notary File Online page."
     ],
-    "renewal": "Four-year renewals also require a passing examination of at least 90%, taken no more than one year before the commission or renewal date. Renew the application and required bond and oath materials through DFI.",
-    "ron": "Wisconsin notaries use DFI-approved communication technology providers and must be trained and authorized for the chosen system. The notary remains physically in Wisconsin. Follow the current provider requirements before offering remote acts.",
+    "renewal": "Four-year renewals require a passing exam score of at least 90%, plus a bond and oath. DFI’s exam tutorial counts back one year from the commission or renewal date. Its application materials refer to one year before filing. Follow the current instructions when filing.",
+    "ron": "For ordinary remote online notarization, train on a DFI-approved platform, notify DFI of the platforms you intend to use, and upload your digital seal and signature. Wait for DFI approval before using the platform. The notary remains physically in Wisconsin. Separate rules apply to certain estate-planning documents.",
     "officialNext": {
       "label": "Wisconsin DFI commissioning steps",
       "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx"
@@ -5130,8 +5144,8 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
         "id": "wi-file",
         "title": "DFI Notary File Online",
         "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx",
-        "reference": "4-year Notary; Permanent Notary; November 16, 2026 system notice",
-        "checkedAt": "2026-11-14"
+        "reference": "Four-year Notary, Permanent Notary, and current WIMS filing link",
+        "checkedAt": "2026-11-19"
       },
       {
         "id": "wi-intro",

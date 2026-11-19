@@ -480,6 +480,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "arkansas-reasonable-notary-fees",
+      "updated": "2026-11-19",
       "keyword": "Arkansas notary reasonable fees",
       "intent": "Apply reasonableness, disclosure and agreement in service pricing",
       "title": "Agree on Arkansas notarial fees before the act",
@@ -498,7 +499,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Treat electronic services with the same attention",
-          "body": "The handbook's electronic chapter also requires a reasonable amount agreed before the act when an electronic fee is charged. Provider subscription costs and available technology do not themselves establish the customer agreement. Explain the actual proposed service accurately. Do not imply that buying an electronic platform removes the ordinary notary's duties toward the signer."
+          "body": "Consult the official handbook and 21 CAR §20-109 separately before setting an electronic-notary service charge. The handbook describes a reasonable charge agreed before the act, while the published administrative rule still lists fixed amounts for specified electronic acts. Keep the traditional service-fee rule separate from electronic appointment and training fees."
         },
         {
           "heading": "Record what actually happened",
@@ -529,7 +530,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "AR",
       "path": "/arkansas/guides/arkansas-reasonable-notary-fees/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/arkansas/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -1194,6 +1194,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "colorado-certificate-date-and-corrections",
+      "updated": "2026-11-19",
       "keyword": "Colorado notary certificate correction date",
       "intent": "Complete actual dates and apply the proper correction roles",
       "title": "Correct the Colorado certificate you actually performed",
@@ -1208,7 +1209,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Identify the correct participant",
-          "body": "The common-mistakes page warns against inserting the notary's name where the certificate identifies the appearing customer. Read each field's role. The notary's official name and signature have their own places. The certificate also needs the actual venue, act type, stamp, title and exact commission expiration information."
+          "body": "Enter the appearing customer’s name in the signer field. Use the notary’s official name and signature in their own fields. Since September 1, 2023, Colorado no longer requires a separate commission expiration date in the certificate text. The official paper stamp and the signature used for in-person electronic notarization still include the commission expiration date."
         },
         {
           "heading": "Separate correction authority",
@@ -1253,7 +1254,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "CO",
       "path": "/colorado/guides/colorado-certificate-date-and-corrections/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/colorado/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -1720,6 +1720,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
   "IL": [
     {
       "slug": "law-firm-journal-exception",
+      "updated": "2026-11-19",
       "keyword": "Illinois law firm notary journal exception",
       "intent": "Understand the employment journal exception",
       "title": "Illinois Law-Firm Journals and Retained Document Copies",
@@ -1730,7 +1731,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Start with the actual employment act",
-          "body": "Rule 176.900(f) addresses a notary employed by an attorney or law firm and notarizations performed during that employment. It requires the attorney or firm to maintain copies of the notarized documents. Consider a litigation assistant notarizing a client's retained-copy affidavit during assigned office work. Those facts support the specific exception. Merely working in the same building as a lawyer would not establish the required employment relationship or copy retention."
+          "body": "Rule 176.900(f) addresses an attorney or law firm’s employee when the employer keeps copies of documents notarized during employment. The rule describes a journal exception. The Act separately says employer records do not relieve the notary of statutory journal duties. Ask the Secretary of State before relying on the rule to omit an entry."
         },
         {
           "heading": "Keep outside appointments in view",
@@ -1772,14 +1773,13 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "q": "Who owns a journal solely of those employment acts?",
-          "a": "Rule 176.900(f) makes it the property of the employing attorney or law firm."
+          "a": "Rule 176.900(f) assigns ownership of a journal used exclusively for qualifying employment acts to the employing attorney or firm. Section 3-107 also bars employer retention of the notary’s journal when employment ends."
         }
       ],
       "id": "il-law-firm-journal-exception",
       "state": "IL",
       "path": "/illinois/guides/law-firm-journal-exception/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/illinois/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -2780,6 +2780,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "remote-tangible-declaration-method",
+      "updated": "2026-11-19",
       "keyword": "Maine remote notarization tangible record declaration",
       "intent": "Follow the statutory absent-paper-record method",
       "title": "Connecting a Maine Remote Tangible Record",
@@ -2802,7 +2803,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Keep this method within its statutory scope",
-          "body": "Subsection 7 preserves another procedure that satisfies subsection 3(B)'s same-record requirement. The declaration method therefore should not be described as the only conceivable procedure. Any alternative still needs to satisfy the applicable law and approval standards. The officer also needs identity evidence, an audiovisual recording, the required journal and technology notation, and must check the excluded remote acts before using any remote paper workflow."
+          "body": "Subsection 7 preserves other procedures satisfying the same-record requirement. Chapter 700 specifically instructs use of the declaration method for a remote acknowledgment when the paper is outside the officer’s possession. Follow the rule for that scenario. Identity evidence, the audiovisual recording and the required journal and certificate details still apply."
         },
         {
           "heading": "Maine Revised Statutes, Title 4 §1915",
@@ -2839,7 +2840,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "ME",
       "path": "/maine/guides/remote-tangible-declaration-method/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/maine/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -3344,6 +3344,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "certificate-facts-and-paper-stamp",
+      "updated": "2026-11-19",
       "keyword": "Maine notarial certificate stamp optional paper",
       "intent": "Keep certificate duties distinct from stamp guidance",
       "title": "Maine Paper Certificates Need More Than a Stamp",
@@ -3366,7 +3367,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Apply the stamp guidance to the right category",
-          "body": "The official course and FAQ make stamp use optional for ordinary in-person paper acts while strongly suggesting it unless prohibited. They require stamps for electronic and remote acts. A kept official stamp contains the specified commissioned name, Maine jurisdiction and expiration information and is reproducible with the record. The stamp's presence does not prove that appearance, identity or the verbal ceremony actually occurred, and it does not replace the officer's certificate."
+          "body": "Maine law requires an official stamp for an electronic-record act and permits a stamp on a tangible record. The Secretary of State’s FAQ gives stricter stamp instructions for remote acts. An official stamp includes the commissioned name, Maine jurisdiction and expiration information. Complete the required appearance, identification and certificate for the act."
         },
         {
           "heading": "Maine Revised Statutes, Title 4 §1916",
@@ -3423,7 +3424,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "ME",
       "path": "/maine/guides/certificate-facts-and-paper-stamp/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/maine/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -3453,6 +3453,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "electronic-format-versus-remote-presence",
+      "updated": "2026-11-19",
       "keyword": "Maine electronic notarization versus remote appearance",
       "intent": "Classify format and location correctly",
       "title": "Electronic Records and Remote Presence in Maine",
@@ -3463,7 +3464,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Classify the appointment before selecting tools",
-          "body": "The FAQ describes in-person electronic notarization using an electronic record and signature while the signer is physically with the officer. It describes remote notarization using an approved technology provider for simultaneous sight-and-sound communication with a distant signer. A keypad used at the officer's desk does not itself make the transaction remote. A distant person's paper instrument can still create remote duties, including the journal and stamp requirements in the official guidance."
+          "body": "In-person electronic notarization uses an electronic record with the signer physically present. A remote act uses approved technology for simultaneous sight and sound and carries its own journal obligations, even for a tangible record. Section 1916 requires an official stamp for electronic records. For tangible records it permits a stamp, while the remote FAQ gives stricter instructions."
         },
         {
           "heading": "Finish the approval process first",
@@ -3522,7 +3523,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "ME",
       "path": "/maine/guides/electronic-format-versus-remote-presence/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/maine/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -4685,6 +4685,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "ordinary-credible-witness-routes",
+      "updated": "2026-11-19",
       "keyword": "Missouri credible witness one two identification",
       "intent": "Apply the ordinary identity-witness alternatives",
       "title": "One Known Witness or Two Identified Witnesses in Missouri",
@@ -4703,7 +4704,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Apply the two-identified-witness alternative",
-          "body": "The same provision offers a route with two disinterested witnesses who each personally know the principal and show the notary qualifying documentary identification. This differs from assuming any one unknown companion will suffice. The ordinary credential definition specifies a current federal, state or tribal document in an understood language with the required features and its passport exception. The notary applies that actual credential standard to the witnesses."
+          "body": "Two disinterested witnesses may identify the principal. Each witness personally knows the principal, presents qualifying documentary identification and vouches for the principal under oath or affirmation. Apply the ordinary credential requirements to each witness, including the statutory passport exception."
         },
         {
           "heading": "Preserve the method in the journal",
@@ -4754,7 +4755,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "MO",
       "path": "/missouri/guides/ordinary-credible-witness-routes/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/missouri/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -5113,7 +5113,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Apply the death-specific responsibilities",
-          "body": "Section 486.800 requires the personal representative to notify the Secretary in writing, forward seals as soon as reasonably practicable and forward the journal and records within thirty days. These specific forwarding instructions should remain visible alongside general seal-misuse prevention rules. The representative should preserve receipt evidence through the statutory delivery method. Official records and usable official tools require deliberate legal disposition rather than ordinary office cleanout treatment."
+          "body": "Section 486.800 requires written notice of death and delivery of the journal and notarial records within 30 days. The paper-seal forwarding and destruction provisions differ. Keep the seal secure and confirm the applicable disposal procedure with the Secretary of State. Keep receipt evidence for records transmitted to the state."
         },
         {
           "heading": "Missouri Secretary of State notary FAQs",
@@ -5166,11 +5166,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "It concerns record disposition for the stated pending-recommission case."
         }
       ],
+      "updated": "2026-11-19",
       "id": "mo-journal-cessation-and-recommission",
       "state": "MO",
       "path": "/missouri/guides/journal-cessation-and-recommission/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/missouri/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -6547,7 +6547,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "heading": "Montana Secretary of State — Notary Public, vehicle title update",
           "body": "Official source checked November 14, 2026.",
           "link": {
-            "href": "https://sosmt.gov/notary/",
+            "href": "https://sosmt.gov/notary/MVTitles/",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"
@@ -6564,11 +6564,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "Check the official-record restriction and its exception for employment by the issuing or original-holding public entity."
         }
       ],
+      "updated": "2026-11-19",
       "id": "mt-vehicle-title-change-and-service-boundaries",
       "state": "MT",
       "path": "/montana/guides/vehicle-title-change-and-service-boundaries/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/montana/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -7233,6 +7233,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "leaving-an-employer-and-replacing-supplies",
+      "updated": "2026-11-19",
       "keyword": "leaving a nebraska employer and replacing notarial supplies",
       "intent": "Apply Nebraska notary law to a specific work scenario",
       "title": "Leaving a Nebraska Employer and Replacing Notarial Supplies",
@@ -7243,11 +7244,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Check whether the commission remains current",
-          "body": "A notary leaves a private employer that keeps the stamp and certificate it purchased. FAQ 12 addresses that circumstance and says recommissioning is unnecessary. The notary can obtain a replacement commission certificate and purchase a new seal. The employee should first identify the existing current record. Starting an unrelated new commissioning process simply because the office retained the supplies overlooks the specified replacement route."
+          "body": "A Nebraska resident whose commission remains valid can request a replacement certificate and purchase a new seal when a former employer keeps the original supplies. First locate the current record. If you live in a bordering state, confirm you still meet Nebraska’s employment requirement before you perform another act."
         },
         {
           "heading": "Obtain the official copy",
-          "body": "The FAQ lists a ten-dollar replacement-copy fee and points to the notary portal. The update instructions describe access through My Records for recent online filings and a Request Certificate amendment for the other described situations. The available route depends on the person's existing portal record. A former employer's photocopy or a vendor receipt does not independently amend the official commissioned name or term."
+          "body": "Check My Records in the Secretary of State’s portal. If the copy is unavailable there, use the notary search to open your commission record. Choose File an Amendment, then Request Certificate. Use the name and expiration shown on the commission when ordering the new seal."
         },
         {
           "heading": "Recreate compliant authentication",
@@ -7288,6 +7289,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           }
         },
         {
+          "heading": "Nebraska Legislature — 64-101(8)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-101",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
           "heading": "Nebraska Legislature — 64-410",
           "body": "Official source checked November 14, 2026.",
           "link": {
@@ -7301,7 +7312,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "faqs": [
         {
           "q": "Does employer retention force another examination and initial commission?",
-          "a": "FAQ 12 says the notary need not be recommissioned solely for that situation and provides a replacement route."
+          "a": "FAQ 12 gives a replacement route when the notary’s commission remains valid. A Nebraska resident in that situation can request a certificate and buy a new seal under the existing commission."
         },
         {
           "q": "Can a coworker's stamp serve as the replacement?",
@@ -7312,7 +7323,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "NE",
       "path": "/nebraska/guides/leaving-an-employer-and-replacing-supplies/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/nebraska/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -8511,7 +8521,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Use the right retention trigger",
-          "body": "The manual measures journal retention as ten years after the last act chronicled in that journal, with a Treasury secure-transmission instruction alternative. It also describes duties on resignation, revocation or suspension. A change of employer alone does not establish that the journal's period has ended. Identify the actual last entry and the continuing custody arrangement when the workplace transition is planned."
+          "body": "The manual measures journal retention as ten years after the last act chronicled in that journal, with a Treasury secure-transmission instruction alternative. On resignation, revocation or suspension, a notary who chooses to keep the journal must notify the State Treasurer of its location. A change of employer alone does not establish that the journal's period has ended. Identify the actual last entry and the continuing custody arrangement when the workplace transition is planned."
         },
         {
           "heading": "Protect related credentials",
@@ -8536,6 +8546,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
             "placement": "section",
             "targetMode": "official"
           }
+        },
+        {
+          "heading": "N.J.S.A. 52:7-10.18(d)–(f), journal retention and transfer",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
         }
       ],
       "faqs": [
@@ -8548,11 +8568,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "The manual uses the last notarial act chronicled in the journal."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nj-journal-custody-after-employer-departure",
       "state": "NJ",
       "path": "/new-jersey/guides/journal-custody-after-employer-departure/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-jersey/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -9331,10 +9351,10 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Use the actual act date and the certificate appropriate to what occurred. For an ordinary tangible transaction, the principal appears physically before the officer. The principal's requested result does not permit backdating an acknowledgment or recording an oath that was never administered. If the record is incomplete or the principal has not decided what act is required, resolve the missing instructions within the officer's lawful role before completing the certificate."
         },
         {
-          "heading": "2023 enacted RULONA amendments, Sections4 and8",
+          "heading": "NMSA 1978 §§ 14-14A-4 and 14-14A-8 (2021 SB 12)",
           "body": "Official source checked November 14, 2026.",
           "link": {
-            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
+            "href": "https://www.nmlegis.gov/Sessions/21%20Regular/final/SB0012.PDF",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"
@@ -9345,6 +9365,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "NMSA 1978 §§ 14-14A-2(A), (S) and 14-14A-5 (2023 SB 246)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"
@@ -9361,11 +9391,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. The directed signer must be someone other than the notarial officer."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-acknowledgment-verification-and-witnessing",
       "state": "NM",
       "path": "/new-mexico/guides/acknowledgment-verification-and-witnessing/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -9502,14 +9532,14 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Keep custody after employment ends",
-          "body": "The journal remains under the officer's secure control. Statutory permission for a former employer to receive clearly marked copies of relevant entries does not give the employer the original journal. When an employee leaves, plan lawful retention or transfer and document the custody location. The required ten-year retention period continues after the officer changes jobs or stops working as a notary."
+          "body": "The journal remains under the officer’s secure control. A former employer may retain a clearly marked copy under 12.9.3.15(D) NMAC. The employer does not acquire the original. When leaving a job, arrange lawful retention or transfer and document where the journal is kept. The ten-year retention period runs from the last recorded notarial act."
         },
         {
           "heading": "Protect credentials and fee limits",
           "body": "A RON employer must not allow another worker to use the officer's electronic signature or stamp. Keep those credentials under the officer's sole control and access. Employers also remain subject to the applicable maximum notarial fees. For travel compensation, agree in advance and disclose that the charge is separate and is not mandated by law. A company's internal invoice policy does not override those requirements."
         },
         {
-          "heading": "2023 enacted RULONA, Sections3,7,18 and28",
+          "heading": "NMSA 1978 §§ 14-14A-3, 14-14A-7, 14-14A-18 and 14-14A-28 (2023 SB 246)",
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
@@ -9537,6 +9567,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
             "placement": "section",
             "targetMode": "official"
           }
+        },
+        {
+          "heading": "12.9.3.15(B)–(D) NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0003.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
         }
       ],
       "faqs": [
@@ -9549,11 +9589,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. The signature and official stamp remain under the officer's sole control and access."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-workplace-custody-and-impartiality",
       "state": "NM",
       "path": "/new-mexico/guides/workplace-custody-and-impartiality/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -9605,7 +9645,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Apply the copy fee formula",
-          "body": "The ordinary copy-certification provision uses fifty cents per page with a minimum total charge of five dollars. A small eligible copy therefore does not require charging only a fraction of a dollar, while a larger copy uses the page formula. Do not convert that provision into five dollars for every page. Other notarial acts and any separately agreed travel charge have their own rules, so make the invoice describe what was actually performed."
+          "body": "The ordinary copy-certification provision uses fifty cents per page with a minimum total charge of five dollars. A small eligible copy therefore does not require charging only a fraction of a dollar, while a larger copy uses the page formula. Do not convert that provision into five dollars for every page. Other notarial acts and any separately agreed travel charge have their own rules, so make the invoice describe what was actually performed. A notarial officer can charge less than the scheduled amount or waive the fee."
         },
         {
           "heading": "12.9.3.12(E) NMAC",
@@ -9618,7 +9658,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           }
         },
         {
-          "heading": "2023 enacted RULONA, Section3",
+          "heading": "NMSA 1978 §§ 14-14A-3(C), 14-14A-15(E) and 14-14A-28(A), (C)(4) (2023 SB 246)",
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
@@ -9658,11 +9698,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "The remote rule requires a certified tangible copy and the appropriate copy certificate."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-copy-certification-and-electronic-printouts",
       "state": "NM",
       "path": "/new-mexico/guides/copy-certification-and-electronic-printouts/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -9717,7 +9757,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "A RON journal includes the name of the remote system provider used for each act in addition to the statutory fields. That entry is separate from saving the audiovisual recording. Keep the journal secure under the officer's control and preserve permitted employer copies as clearly marked copies. Retention continues for ten years after the last recorded act, so everyday format decisions also affect long-term access."
         },
         {
-          "heading": "2023 enacted RULONA, Section18",
+          "heading": "NMSA 1978 § 14-14A-18 (2023 SB 246, § 16)",
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
@@ -9757,11 +9797,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. The journal requires its own entry, including the provider name."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-contemporaneous-journals-and-electronic-recovery",
       "state": "NM",
       "path": "/new-mexico/guides/contemporaneous-journals-and-electronic-recovery/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -9816,7 +9856,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "A personal representative, guardian, or other person knowingly possessing the journal has statutory disposition duties after death or adjudicated incompetence. Use the authorized recipient route rather than discarding the journal with ordinary office papers. RON recordings have their own rule permitting retention, repository transfer, or delivery to SOS in an accessible open format. Written custody instructions should distinguish journals, stamping devices, and recordings."
         },
         {
-          "heading": "2023 enacted RULONA, Sections17-18",
+          "heading": "NMSA 1978 §§ 14-14A-17 and 14-14A-18 (2023 SB 246, §§ 15–16)",
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
@@ -9856,11 +9896,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. Electronic journal recovery and availability requirements concern the records themselves."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-loss-resignation-and-record-disposition",
       "state": "NM",
       "path": "/new-mexico/guides/loss-resignation-and-record-disposition/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -10172,7 +10212,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Automatic authority for traditional acts does not itself authorize RON. A noncommissioned notarial officer who wants remote authority follows the SOS authorization application procedure and, after approval, complies with the remote rules and applicable statutes. The officer still needs a compliant system, electronic-stamp submission, required learning, secure credentials, and compliant record preservation. The role supplies the source of ordinary authority without removing the remote safeguards."
         },
         {
-          "heading": "2023 enacted RULONA, Sections9 and16",
+          "heading": "NMSA 1978 §§ 14-14A-2(B), 14-14A-9, 14-14A-16 and 14-14A-21 (2023 SB 246)",
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
@@ -10222,11 +10262,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. The historical transition does not remove the current training and stamp requirements."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-automatic-officers-role-and-stamp-boundaries",
       "state": "NM",
       "path": "/new-mexico/guides/automatic-officers-role-and-stamp-boundaries/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -11981,6 +12021,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "utah-credible-individuals-and-remote-identity",
+      "updated": "2026-11-19",
       "keyword": "Using a credible individual in Utah",
       "intent": "Resolve Utah workplace notarization situations",
       "title": "Using a credible individual in Utah",
@@ -12003,7 +12044,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Apply the remote additions and record",
-          "body": "For the applicable remote route, the unknown credible individual also undergoes secondary authentication. The new-cohort journal specifies the oath indication, signature, witness name and address, with the relevant identification details for the unknown-witness route. Completing one identity component does not administer the principal's jurat oath or replace the other requirements of the requested act."
+          "body": "In the applicable remote witness route, an unfamiliar credible individual undergoes secondary authentication. Section 46-1-3.6(2)(b) separately specifies a qualifying ID image for an unfamiliar remote signer. For a commission received on or after May 6, 2026, the journal entries include the applicable oath indication, signatures and witness details."
         },
         {
           "heading": "Utah Code 46-1-2(22), (25)-(26); 46-1-14.1(2)",
@@ -12030,7 +12071,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "UT",
       "path": "/utah/guides/utah-credible-individuals-and-remote-identity/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/utah/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -13386,7 +13426,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Use the current credit structure",
-          "body": "A Vermont notary renews ordinary authority and the remote and electronic endorsement. Current Rule 9-1 and the February 2026 instructions use one approved ordinary hour unless exempt and one additional relevant endorsement hour. The current examination packet still contains an older ordinary-hours item, so the actual renewal rules and current operational instructions control this study content."
+          "body": "A Vermont notary renews ordinary authority and the remote and electronic endorsement. Current Rule 9-1 and the February 2026 instructions use one approved ordinary hour unless exempt and one additional relevant endorsement hour. The current examination packet omits the one-hour choice in an ordinary-renewal item, so the actual renewal rules and current operational instructions control this study content."
         },
         {
           "heading": "Count actual learning time",
@@ -13431,11 +13471,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. They count only for the commission period being audited."
         }
       ],
+      "updated": "2026-11-19",
       "id": "vt-vermont-continuing-education-evidence-and-audits",
       "state": "VT",
       "path": "/vermont/guides/vermont-continuing-education-evidence-and-audits/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/vermont/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -14068,7 +14108,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Train on the new provider",
-          "body": "Wisconsin permits changing providers and using multiple approved providers at the same time. Each provider used requires its own onboarding and training. Familiarity with the former interface does not establish competence on a new system's identity proofing, record confirmation and execution tools. The provider also supplies the authorization notification used for DFI's public database update."
+          "body": "Wisconsin permits changing providers and using multiple approved providers at the same time. Each provider used requires its own onboarding and training. Familiarity with the former interface does not establish competence on a new system's identity proofing, record confirmation and execution tools. Notify DFI of the new platform, upload your digital seal and signature, and wait for approval before using it. The approved provider must also report newly authorized users to DFI."
         },
         {
           "heading": "Keep confidentiality during transfer",
@@ -14079,6 +14119,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Wisconsin DFI Remote Online Notary registration",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"
@@ -14095,11 +14145,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "Complete onboarding and training for each provider used."
         }
       ],
+      "updated": "2026-11-19",
       "id": "wi-wisconsin-changing-ron-provider-and-archives",
       "state": "WI",
       "path": "/wisconsin/guides/wisconsin-changing-ron-provider-and-archives/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/wisconsin/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -14297,7 +14347,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Select a listed material route",
-          "body": "After the special Wisconsin estate communication, the guide permits notarizing an identical copy of the original unsigned record, a signed copy forwarded by the individual or attorney, or the original signed document forwarded by the supervising attorney. These are particular options in the special procedure. The notary checks which version arrived and how it corresponds to the record actually used in the signing."
+          "body": "Wisconsin Stat. § 140.147(3)(j) provides three ways to complete this estate notarization. In the signed-copy procedure, the signer or someone acting at the signer’s direction sends a legible copy of the entire signed document directly to the notary by fax or electronic means within a reasonable time. They separately send the complete signed original to the supervising attorney by the delivery method specified in the statute."
         },
         {
           "heading": "Return it to the attorney",
@@ -14332,11 +14382,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. The permitted combination includes the information required by both provisions."
         }
       ],
+      "updated": "2026-11-19",
       "id": "wi-wisconsin-estate-counterparts-and-compliance-affidavit",
       "state": "WI",
       "path": "/wisconsin/guides/wisconsin-estate-counterparts-and-compliance-affidavit/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/wisconsin/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -15594,7 +15644,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Verify every relevant part of an eligible original",
-          "body": "For an eligible private record, determine that the reproduction is full, true and accurate under section 42-30.1-4(d). Compare pages, relevant reverse sides and attachments. A scanner can clip signatures, omit a schedule or rearrange pages while keeping a convincing file name. The notary must perform the applicable copying, supervision or comparison and make the determination, rather than simply repeat the customer's unsupported assurance."
+          "body": "For an eligible private record, determine that the reproduction is full, true and accurate under section 42-30.1-4(d). Compare pages, relevant reverse sides and attachments. A scanner can clip signatures, omit a schedule or rearrange pages while keeping a convincing file name. Standards § 2(c) lists comparison as an alternative to making or supervising the copy. The SOS Manual (p. 14) and Quick Reference Guide (p. 7) call for the notary to make or supervise the copy, then compare it. If someone brings a copy made elsewhere, make a fresh copy or supervise the copying and verify it against the original before certifying."
         },
         {
           "heading": "Handle an electronic source",
@@ -15643,6 +15693,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
             "placement": "section",
             "targetMode": "official"
           }
+        },
+        {
+          "heading": "Quick Reference Guide for RI Notaries Public, p. 7",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/ReferenceGuideforRINotaries.pdf#page=7",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
         }
       ],
       "faqs": [
@@ -15685,6 +15745,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "language-and-reading-access-at-notarization",
+      "updated": "2026-11-19",
       "keyword": "Rhode Island notary interpreter deaf blind signer",
       "intent": "Provide accessible communication within notarial scope",
       "title": "Reading, Translation and Written Communication for Rhode Island Signers",
@@ -15707,7 +15768,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Assess the individual circumstances",
-          "body": "Standards section 4(b) prohibits refusal solely on listed grounds such as advanced age, national origin, health or disability. Section 42-30.1-7 allows refusal where the officer is unsatisfied about capacity or knowingly and voluntarily made signing. These standards require attention to the individual. Neither a disability stereotype nor an unexplained nod resolves the principal's comprehension. Use effective communication to evaluate the actual act."
+          "body": "Standards section 4(b) prohibits refusal solely on listed grounds such as advanced age, national origin, health or disability. Section 42-30.1-7 allows refusal where the officer is unsatisfied about capacity or knowingly and voluntarily made signing. These standards require attention to the individual. Neither a disability stereotype nor an unexplained nod resolves the principal's comprehension. Use effective communication to evaluate the actual act. Since June 10, 2026, a notarial officer may refuse if the signer provides too little information for identity proofing under § 42-30.1-6 or § 42-30.1-12.1, or does not agree to pay for it."
         },
         {
           "heading": "Rhode Island Notary Public Manual, revised July 2024",
@@ -15738,6 +15799,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
             "placement": "section",
             "targetMode": "official"
           }
+        },
+        {
+          "heading": "Rhode Island Public Laws 2026, chapter 54, section 2",
+          "body": "Official source checked 2026-11-19.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/PublicLaws/law26/law26054.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
         }
       ],
       "faqs": [
@@ -15754,7 +15825,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "RI",
       "path": "/rhode-island/guides/language-and-reading-access-at-notarization/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/rhode-island/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -16702,7 +16772,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Keep the transactions distinct",
-          "body": "Section 406.014 lists the date of the instrument and the date of notarization separately. It also includes the signer name and mailing address, actual identity or introducer details, and instrument description. Applicable grantee, proof-witness and land information must be addressed. Daily totals and a vague appointment label cannot reconstruct these transaction-specific details. No-fee acts remain within the ordinary rule unless a specific exception applies."
+          "body": "Section 406.014 lists the date of the instrument and the date of notarization separately. It also includes the signer name and mailing address, actual identity or introducer details, and instrument description. Applicable grantee, proof-witness and land information must be addressed. The SOS educational page still uses residence addresses. The current statute uses mailing addresses for the applicable fields. Daily totals and a vague appointment label cannot reconstruct these transaction-specific details. No-fee acts remain within the ordinary rule unless a specific exception applies."
         },
         {
           "heading": "Use only lawful personal-information fields",
@@ -16710,7 +16780,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Measure retention from the act",
-          "body": "Current §406.014(g) requires retention of its subsection (a) records until the tenth anniversary of notarization. It was added by SB693 effective September 1, 2025. Commission expiration and renewal do not supply a deletion date. Online electronic records have the separate at-least-five-year provision in §406.108(c), and other applicable record duties continue. Preserve records through software migrations and changes in workplace."
+          "body": "Current §406.014(g) requires retention of its subsection (a) records until the tenth anniversary of notarization. SB 693 took effect September 1, 2025. The SOS FAQ and its published Rule §87.54 still give the earlier, shorter period. Commission expiration and renewal do not supply a deletion date. Online electronic records have the separate at-least-five-year provision in §406.108(c), and other applicable record duties continue. Preserve records through software migrations and changes in workplace."
         },
         {
           "heading": "Plan access and custody",
@@ -16731,6 +16801,36 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.sos.texas.gov/statdoc/1-87.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS Notary Public Educational Information",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/statdoc/edinfo.shtml",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS Notary Public FAQ",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/statdoc/faqs2300.shtml",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas Senate Bill 693, Section 5",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://capitol.texas.gov/tlodocs/89R/billtext/html/SB00693F.htm",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"

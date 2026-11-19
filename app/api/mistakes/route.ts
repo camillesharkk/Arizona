@@ -2,7 +2,7 @@ import { isFreeState } from "@/lib/free-state-catalog";
 import { canAccessQuestion } from "@/lib/entitlements";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { serverQuestionById as questionById } from "@/lib/server-questions";
@@ -15,6 +15,8 @@ import { productionStateBlocked } from "@/lib/state-release";
 import { signPractice } from "@/lib/practice-token";
 import { questionByBankId } from "@/lib/practice-draw";
 import type { QuestionStat } from "@/lib/store/types";
+import { editorialUpdateByQuestion } from "@/data/question-editorial-events";
+import { needsUpdatedReview } from "@/lib/editorial-updates";
 
 export async function POST(req: Request) {
   const session = await getSession();
@@ -36,7 +38,7 @@ export async function POST(req: Request) {
   const store = await getStore();
   const update = async () => {
     if (typeof body.data.saveForReview === "boolean") {
-      const question = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(body.data.questionId)].find((item) => item && item.question_id === body.data.questionId);
+      const question = [...historicalAzQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(body.data.questionId)].find((item) => item && item.question_id === body.data.questionId);
       if (!question) return NextResponse.json({ error: "Not found" }, { status: 404 });
       if (question.state === "IN" && !await canAccessQuestion(session.id, question)) return NextResponse.json({ error: "Indiana Pro required" }, { status: 402 });
       const stat = await store.getStat(session.id, body.data.questionId);
@@ -92,7 +94,8 @@ export async function GET(req: Request) {
   const stats = (await store.listStats(session.id)).filter(stat => stat.state === state);
   const now = Date.now();
   const mistakes = stats
-    .filter((s) => s.bank === bank && !s.mastered && (s.wrongCount > 0 || savedInNotebook(s)))
+    .filter((s) => s.bank === bank && ((!s.mastered && (s.wrongCount > 0 || savedInNotebook(s))) ||
+      ((s.wrongCount > 0 || savedInNotebook(s) || s.favorited) && needsReview(s))))
     .sort((a, b) => compareMistakes(a, b, now));
   const prompts = mistakes.slice(0, 80).flatMap((stat) => {
     const question = questionByBankId(stat.questionId);
@@ -127,4 +130,9 @@ export async function GET(req: Request) {
 function toClientStat(s: QuestionStat) {
   const { userId: _owner, ...rest } = s;
   return isFreeState(s.state) ? { ...rest, chapter: questionById(s.questionId)?.study_topic || s.chapter } : rest;
+}
+
+function needsReview(stat: QuestionStat) {
+  const event = editorialUpdateByQuestion.get(stat.questionId);
+  return Boolean(event && needsUpdatedReview(event, stat));
 }

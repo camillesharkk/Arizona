@@ -4517,7 +4517,7 @@
       "id": "md-card-025",
       "study": "journals",
       "title": "Successor custody",
-      "front": "Who acts after death or incompetency?",
+      "front": "Who handles the journal after death or adjudication of incompetency?",
       "rule": "The representative, guardian or knowing possessor follows the approved repository/storage disposition in §18-219(g).",
       "boundary": "The separate recording-successor notice rule may also apply to remote records.",
       "mixup": "An arbitrary storage company is not automatically an approved repository.",
@@ -4585,7 +4585,7 @@
       "title": "Paper stamp duty",
       "front": "Which ordinary paper act requires an official impression?",
       "rule": "A notary public performing an act on a tangible record affixes or embosses the official stamp on the certificate.",
-      "boundary": "The statute separately uses may for an electronic-record officer's stamp association, with other standards applicable.",
+      "boundary": "For an electronic record, §18-223(f)(1) requires a Maryland notary public to attach or logically associate the electronic signature and official stamp using a qualifying digital certificate.",
       "mixup": "Do not import another state's optional ordinary-paper stamp rule.",
       "source": "Maryland State Government §18-215 — §18-215(b)",
       "sourceUrl": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-215&enactments=false"
@@ -4607,7 +4607,7 @@
       "title": "Device exit and loss",
       "front": "What ends a device's usable life?",
       "rule": "On the statutory resignation, revocation, commission/device expiration events, render it unusable. Promptly report loss or theft.",
-      "boundary": "A responsible possessor has disabling duties after death or incompetency.",
+      "boundary": "A responsible possessor has disabling duties after death or adjudication of incompetency.",
       "mixup": "Simply hiding a still-usable stamp does not necessarily achieve disabling.",
       "source": "Maryland State Government §18-218 — §18-218",
       "sourceUrl": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-218&enactments=false"
@@ -4771,7 +4771,7 @@
       "study": "electronic-ron",
       "title": "Vendor and renewal changes",
       "front": "What keeps remote authorization current?",
-      "rule": "Notify a new vendor within ten business days, promptly report a vendor compliance concern, and submit a new remote notification on renewal.",
+      "rule": "Notify the Secretary of State in writing within ten business days after switching to a new authorized vendor. Promptly report reasonable vendor compliance concerns to the Secretary in writing. Submit a new remote notification on renewal.",
       "boundary": "Remote authority expires with the ordinary commission and may be canceled by written notice.",
       "mixup": "An active vendor subscription does not extend an expired commission.",
       "source": "COMAR 01.02.08.07 Remote Notary Obligations — .07A(2),B-D",
@@ -4870,7 +4870,7 @@
         },
         {
           "heading": "Retain and locate records after office",
-          "body": "Retention runs ten years after the journal's last act. Promptly report loss or theft. On resignation, revocation or suspension, retain and inform the Secretary of location, subject to transfer to an approved repository or approved regulatory storage. The representative, guardian or knowing possessor follows the statutory disposition after death or incompetency. Actual approval of the storage route matters."
+          "body": "Retention runs ten years after the journal's last act. Promptly report loss or theft. On resignation, revocation or suspension, retain the journal and tell the Secretary where it is held, or use an approved repository or regulatory storage. After death or adjudication of incompetency, the responsible person follows the statutory journal disposition."
         }
       ],
       "example": {
@@ -4898,7 +4898,7 @@
         },
         {
           "heading": "Protect the device through its lifecycle",
-          "body": "The notary remains responsible for security and cannot allow another person's use. Employer payment does not transfer the stamp's personal ownership or custody. On the statutory resignation, revocation and expiration events, disable the device so it is unusable. Promptly notify the Secretary after loss or theft. The responsible possessor has disabling duties following death or incompetency."
+          "body": "The notary keeps the stamp under personal control even when the employer pays. On the statutory resignation, revocation and expiration events, disable the device so it is unusable. Promptly notify the Secretary after loss or theft. The responsible person has disabling duties after death or adjudication of incompetency."
         }
       ],
       "example": {
@@ -4946,7 +4946,7 @@
       "sections": [
         {
           "heading": "Authorize the intended route",
-          "body": "The online form permits selecting electronic-record RON using an authorized vendor and/or other-technology remote acts. The route without credential analysis/identity proofing requires the personal-knowledge or qualifying credible-witness foundation in COMAR.07 A(3). For the documentary route, §18-214 combines credential presentation, analysis and identity proofing. Vendor changes have ten-business-day notice;renewal requires a new remote notification."
+          "body": "The online form identifies the authorized vendor or the applicable other technology. Under COMAR 01.02.08.07, a route without credential analysis and identity proofing requires personal knowledge or a qualifying credible witness. A documentary route uses presentation, analysis and identity proofing. Notify the Secretary of State in writing within ten business days of switching to a new authorized vendor and submit a new remote notification on renewal."
         },
         {
           "heading": "Control the session and location",

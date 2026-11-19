@@ -4351,12 +4351,12 @@
     {
       "id": "wi-card-010",
       "study": "commission",
-      "title": "Transition calendar",
-      "front": "How is the November 2026 system notice used?",
-      "rule": "The opened page schedules the new system for November 16 at 7 a.m. Central.",
-      "boundary": "On the November 14 check date this is a future transition notice.",
-      "mixup": "A scheduled system change does not itself waive examination or revoke commissions.",
-      "source": "Wisconsin DFI Notary File Online",
+      "title": "Wisconsin online filing",
+      "front": "Where does DFI direct four-year applicants and renewals to file online?",
+      "rule": "Use the Wisconsin Integrated Management System (WIMS) linked from DFI’s Notary File Online page.",
+      "boundary": "The DFI tutorial exam is separate. Save the passing certificate as directed.",
+      "mixup": "Using WIMS does not waive the examination, oath or bond.",
+      "source": "DFI Notary File Online",
       "sourceUrl": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx"
     },
     {
@@ -4705,11 +4705,11 @@
       "study": "remote",
       "title": "Provider authority",
       "front": "What makes an ordinary RON system usable?",
-      "rule": "It is approved for Wisconsin use and the notary completes its training and authorization.",
-      "boundary": "Multiple platforms require onboarding with each.",
+      "rule": "Complete training on a Wisconsin-approved platform. Notify DFI of the platform, upload your digital seal and signature, and wait for DFI approval.",
+      "boundary": "Each platform needs onboarding. The provider has its own separate duty to report users it authorizes.",
       "mixup": "A generic meeting subscription is not approval.",
-      "source": "Wisconsin DFI Remote guide 2B",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "source": "Wisconsin DFI Remote Online Notary",
+      "sourceUrl": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx"
     },
     {
       "id": "wi-card-043",
@@ -4810,7 +4810,7 @@
         },
         {
           "heading": "Wait for issued authority",
-          "body": "Follow the current filing page for the online information, executed oath, specific bond and active seal/signature samples. Notice that the commission has issued precedes performing acts. Permanent attorney applicants have separate good-standing evidence and no ordinary bond, but must still apply and receive issuance. On the November 14 verification date, the filing page schedules a new system for November 16, 2026 at 7 a.m. Central, so consult the official entry when actually filing."
+          "body": "Follow the current filing page for the online information, executed oath, specific bond and active seal/signature samples. Notice that the commission has issued precedes performing acts. Permanent attorney applicants have separate good-standing evidence and no ordinary bond, but must still apply and receive issuance. Use Wisconsin’s Integrated Management System (WIMS), linked on the DFI filing page, to file or renew online."
         }
       ],
       "example": {
@@ -4898,7 +4898,7 @@
       "sections": [
         {
           "heading": "Arrange ordinary RON safeguards",
-          "body": "A commissioned notary obtains authorization and training with a suitable approved provider, then checks provider notification and the public database. Confirm identity through the prescribed route, the same record, tamper evidence and the communication-technology certificate statement. Preserve the audiovisual performance for at least seven years through a retrievable arrangement. The notary remains physically in Wisconsin and ultimately responsible for preservation and confidentiality."
+          "body": "A commissioned notary completes an approved provider’s training, notifies DFI of the platform, uploads the digital seal and signature, and waits for agency approval before use. The provider also reports its newly authorized users to DFI. Confirm identity through the prescribed route, the same record, tamper evidence and the communication-technology certificate statement. Preserve the audiovisual performance for at least seven years through a retrievable arrangement. The notary remains physically in Wisconsin and ultimately responsible for preservation and confidentiality."
         },
         {
           "heading": "Route estate planning correctly",
@@ -5210,7 +5210,7 @@
         },
         {
           "heading": "Train on the new provider",
-          "body": "Wisconsin permits changing providers and using multiple approved providers at the same time. Each provider used requires its own onboarding and training. Familiarity with the former interface does not establish competence on a new system's identity proofing, record confirmation and execution tools. The provider also supplies the authorization notification used for DFI's public database update."
+          "body": "Wisconsin permits changing providers and using multiple approved providers at the same time. Each provider used requires its own onboarding and training. Familiarity with the former interface does not establish competence on a new system's identity proofing, record confirmation and execution tools. Notify DFI of the new platform, upload your digital seal and signature, and wait for approval before using it. The approved provider must also report newly authorized users to DFI."
         },
         {
           "heading": "Keep confidentiality during transfer",
@@ -5221,6 +5221,10 @@
         {
           "title": "Wisconsin DFI Remote guide 2A.6-2A.7 and 2B.3-2B.6",
           "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+        },
+        {
+          "title": "Wisconsin DFI Remote Online Notary registration",
+          "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx"
         }
       ],
       "faqs": [
@@ -5232,7 +5236,8 @@
           "q": "Does training transfer automatically to every platform?",
           "a": "Complete onboarding and training for each provider used."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     },
     {
       "slug": "wisconsin-known-remote-signers-and-recording",
@@ -5334,7 +5339,7 @@
       "sections": [
         {
           "heading": "Select a listed material route",
-          "body": "After the special Wisconsin estate communication, the guide permits notarizing an identical copy of the original unsigned record, a signed copy forwarded by the individual or attorney, or the original signed document forwarded by the supervising attorney. These are particular options in the special procedure. The notary checks which version arrived and how it corresponds to the record actually used in the signing."
+          "body": "Wisconsin Stat. § 140.147(3)(j) provides three ways to complete this estate notarization. In the signed-copy procedure, the signer or someone acting at the signer’s direction sends a legible copy of the entire signed document directly to the notary by fax or electronic means within a reasonable time. They separately send the complete signed original to the supervising attorney by the delivery method specified in the statute."
         },
         {
           "heading": "Return it to the attorney",
@@ -5364,7 +5369,8 @@
           "q": "Can a combined affidavit omit information required by another applicable provision?",
           "a": "No. The permitted combination includes the information required by both provisions."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     }
   ],
   "sources": [
@@ -5372,8 +5378,8 @@
       "id": "wi-file",
       "title": "DFI Notary File Online",
       "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx",
-      "reference": "4-year Notary; Permanent Notary; November 16, 2026 system notice",
-      "checkedAt": "2026-11-14"
+      "reference": "Four-year Notary, Permanent Notary, and current WIMS filing link",
+      "checkedAt": "2026-11-19"
     },
     {
       "id": "wi-intro",
@@ -5430,6 +5436,27 @@
       "url": "https://apps.dfi.wi.gov/apps/notarytutorialexam/Chapter6.aspx",
       "reference": "Authentications and Apostilles",
       "checkedAt": "2026-11-14"
+    },
+    {
+      "id": "wi-remote-registration",
+      "title": "Wisconsin DFI Remote Online Notary registration",
+      "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx",
+      "reference": "Approved platforms, notary notification and upload, DFI review and approval",
+      "checkedAt": "2026-11-19"
+    },
+    {
+      "id": "wi-ron-recertification",
+      "title": "Wisconsin DFI remote provider recertification form",
+      "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf",
+      "reference": "NOT107, revised August 2025, p. 1, provider recertification conditions",
+      "checkedAt": "2026-11-19"
+    },
+    {
+      "id": "wi-estate-act",
+      "title": "Wisconsin 2023 Act 130, enacted text",
+      "url": "https://docs.legis.wisconsin.gov/2023/related/acts/130.pdf",
+      "reference": "Section 1, p. 2, Wis. Stat. § 140.147(3)(j)2. Enrolled law also reproduced in State Bar exhibit B.",
+      "checkedAt": "2026-11-19"
     }
   ]
 }

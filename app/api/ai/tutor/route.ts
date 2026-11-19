@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/session";
 import { aiDailyLimit, canAccessQuestion, hasStatePro } from "@/lib/entitlements";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { getStore } from "@/lib/store";
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     })
     .safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-  const stored = publishedQuestions().find((x) => x.question_id === body.data.questionId)
+  const stored = historicalAzQuestions().find((x) => x.question_id === body.data.questionId)
     || publishedCaQuestions().find((x) => x.question_id === body.data.questionId)
     || publishedHiQuestions().find((x) => x.question_id === body.data.questionId)
     || questionById(body.data.questionId);

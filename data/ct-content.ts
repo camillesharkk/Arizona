@@ -1,10 +1,26 @@
 import type { Question, TopicId } from '../lib/types';
 import { shuffle } from '../lib/answer-sequence';
-import { ctCards } from './ct-rules';
+import { ctCards as originalCards } from './ct-rules';
 import { ctSeeds } from './ct-seeds';
 import { ctExam, CT_CHECKED_ON } from '../lib/ct-site';
+import { publishQuestionEdits } from '../lib/question-version.ts';
+import { questionDrawHold } from './question-draw-holds.ts';
+import { questionReviewDate } from './question-review-dates.ts';
+import { ctQuestionEdits } from './question-edits-ct.ts';
 
-export { ctCards };
+export const ctCards = originalCards.map(card => {
+  if (card.key === 'id-documents') return { ...card,
+    rule: 'Use at least two current IDs. One is issued by a federal or state government and has a signature and photo or physical description. The second is issued by an institution, business, or federal or state government and has a signature.',
+  };
+  if (card.key === 'mark') return { ...card, rule: 'A competent signer who cannot write may sign by a mark. The Secretary of State recommends having two witnesses, other than the notary, sign beside the mark.' };
+  if (card.key === 'application') return { ...card, boundary: 'An expired commission can be renewed within 90 days. After that, contact the Secretary for reinstatement. Wait for a current commission before acting.' };
+  if (card.key === 'changes') return { ...card,
+    rule: 'Report a name change within 30 days. Report changes to a resident’s Connecticut home address or a nonresident’s principal Connecticut business address within 30 days.',
+    boundary: 'Use the new name and matching seal, if used, once the replacement certificate is issued. If an applicable address change moves you to a new town, record the replacement in that town within 30 days after issuance.',
+  };
+  if (card.key === 'custodian-statement') return { ...card, boundary: 'Use a sworn statement for an appropriate private copy. Refer requests for certified vital records to the official custodian.' };
+  return card;
+});
 export const ctTopics = [
   { id: 'commission', label: 'First application and appointment' },
   { id: 'identity', label: 'Identity, appearance and willingness' },
@@ -21,8 +37,8 @@ const topicIds: Record<string, TopicId> = { commission: 'commission', identity: 
 const topicCounts: Record<string, number> = {};
 const letters = ['A', 'B', 'C', 'D'] as const;
 
-const questions: Question[] = ctSeeds.map(([id, ruleKey, text, answer, reason, ...wrong]) => {
-  const card = ctCards.find(item => item.key === ruleKey)!;
+const questions = publishQuestionEdits(ctSeeds.map(([id, ruleKey, text, answer, reason, ...wrong]): Question => {
+  const card = originalCards.find(item => item.key === ruleKey)!;
   const topic = card.study;
   topicCounts[topic] = (topicCounts[topic] || 0) + 1;
   const ordinal = Number(id.slice(3)) - 1;
@@ -38,10 +54,10 @@ const questions: Question[] = ctSeeds.map(([id, ruleKey, text, answer, reason, .
     correct_option: letters[correctIndex], explanation: `${reason} ${card.rule}`,
     option_feedback: { A: choices[0][1], B: choices[1][1], C: choices[2][1], D: choices[3][1] },
     source_id: sourceId, source_reference: card.source, concept_ids: [card.id],
-    effective_from: ruleKey === 'fees' ? '2026-07-01' : '2026-11-13', effective_to: null,
-    last_verified_at: CT_CHECKED_ON, version: 1, is_free: (topicCounts[topic] - 1) % 4 === 0 || ((topicCounts[topic] - 1) % 4 === 1 && Math.floor((topicCounts[topic] - 1) / 4) < freeQuotas[topic] - ctCards.filter(item => item.study === topic).length), status: 'published',
+    effective_from: ruleKey === 'fees' ? '2026-07-01' : '2026-11-13', effective_to: questionDrawHold(id),
+    last_verified_at: questionReviewDate(id, CT_CHECKED_ON), version: 1, is_free: (topicCounts[topic] - 1) % 4 === 0 || ((topicCounts[topic] - 1) % 4 === 1 && Math.floor((topicCounts[topic] - 1) / 4) < freeQuotas[topic] - originalCards.filter(item => item.study === topic).length), status: 'published',
   };
-});
+}), ctQuestionEdits);
 
 export function publishedCtQuestions() { return questions; }
 export function ctQuestionCounts() {

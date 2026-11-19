@@ -68,7 +68,7 @@ export const scenarioDrafts: ExpansionDraft[] = [
     option_d: "Refuse every deed whenever the right thumb is unavailable.",
     correct_option: "B",
     explanation:
-      "Still take a print. For a deed, if the right thumb is not available, use the left thumb or any finger the signer can provide, and write that down in the journal. Someone else's print does not stand in for the signer.",
+      "For a deed covered by A.R.S. § 41-254(C), use the signer’s left thumb or another available finger and note which print you used. If no print is physically possible, record that fact and explain the condition. Section 41-254(D) separately lists documents and remote acts that qualify for an exemption.",
     option_feedback: {
       A: "The statute tells you what to use when the right thumb is unavailable. It does not say to skip the print.",
       B: "Correct. A.R.S. § 41-254(C): left thumb or any available finger, and indicate that in the journal.",
@@ -143,7 +143,7 @@ export const scenarioDrafts: ExpansionDraft[] = [
     option_d: "Skip it if the signing platform's policy says remote deeds do not need a print.",
     correct_option: "C",
     explanation:
-      "Do not skip the print on those facts. A remote deed skips the thumbprint only when both things are true: the journal includes the ID credential number, and you keep the recording for at least seven years. Five years without that number misses both. A vendor policy is not the statute.",
+      "For a deed covered by A.R.S. § 41-254(C), the remote exemption requires compliance with § 41-263, the signer’s identification credential number in the journal, and at least seven years of recording retention. Both the journal and retention conditions fail here. Section 41-254(D)(1)–(2) lists separate exceptions for certain foreclosure and reconveyance deeds.",
     option_feedback: {
       A: "Remote, by itself, is not the exemption.",
       B: "Five years is the usual recording period. The thumbprint exemption asks for seven years, and it also asks for the credential number.",
@@ -176,7 +176,7 @@ export const scenarioDrafts: ExpansionDraft[] = [
       D: "A bank tip policy is not the fee rule.",
     },
     source_id: "ars_41_316",
-    source_reference: "A.R.S. § 41-316(C), read on azleg.gov 2026-10-19. Dollar caps in the fee rule were not reconfirmed from the official code host that day.",
+    source_reference: "A.R.S. § 41-316(C), https://www.azleg.gov/ars/41/00316.htm; A.A.C. R2-12-1102, Supp. 22-1, p. 9, https://apps.azsos.gov/public_services/Title_02/2-12.pdf#page=11",
     last_verified_at: checked,
   },
 ];

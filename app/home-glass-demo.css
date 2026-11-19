@@ -149,11 +149,6 @@ body:has(.glass-home-demo) .national-header {
     backdrop-filter: blur(20px);
   }
 }
-body:has(.glass-home-demo) .national-header .logo-mark {
-  background: linear-gradient(135deg, #ffffffd9, #dfebf4);
-  color: #3d6079;
-  box-shadow: inset 1px 1px 0 #ffffff, 0 5px 12px rgb(80 115 144 / 0.12);
-}
 body:has(.glass-home-demo) :is(.national-header a, .footer a) { color: #35566f; }
 body:has(.glass-home-demo) .footer { background: #ffffff; border-color: #e0e9f0; }
 @media (prefers-reduced-motion: no-preference) {

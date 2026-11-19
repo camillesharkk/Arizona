@@ -56,6 +56,24 @@ export const fullStateSources: Record<string, Source> = {
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
   },
+  "co-rulona": {
+    "source_id": "co-rulona",
+    "source_type": "SOS",
+    "title": "Colorado Revised Uniform Law on Notarial Acts",
+    "reference": "C.R.S. title 24, article 21, part 5, December 2025 consolidation",
+    "url": "https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "co-apply-checklist": {
+    "source_id": "co-apply-checklist",
+    "source_type": "SOS",
+    "title": "Colorado Notary Public Registration or Renewal Checklist",
+    "reference": "p. 1, identification and other required materials, June 2025",
+    "url": "https://www.coloradosos.gov/pubs/notary/files/PrintableAttachmentInfo.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
   "co-rules": {
     "source_id": "co-rules",
     "source_type": "SOS",
@@ -145,6 +163,42 @@ export const fullStateSources: Record<string, Source> = {
     "url": "https://www.coloradosos.gov/pubs/notary/FAQ/admonishments.html",
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
+  },
+  "il-in-person-identity-statute": {
+    "source_id": "il-in-person-identity-statute",
+    "source_type": "SOS",
+    "title": "Illinois Notary Public Act, ordinary identification",
+    "reference": "5 ILCS 312/6-102(d)(2), personal knowledge of credible witness",
+    "url": "https://www.ilga.gov/documents/legislation/ilcs/documents/000503120K6-102.htm",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "il-electronic-fee-waiver": {
+    "source_id": "il-electronic-fee-waiver",
+    "source_type": "SOS",
+    "title": "Illinois Public Act 104-0621",
+    "reference": "Section 2-103(b-5), electronic commission application fee waiver effective July 24, 2026",
+    "url": "https://www.ilga.gov/legislation/PublicActs/View/104-0621",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "il-fee-exempt-form": {
+    "source_id": "il-fee-exempt-form",
+    "source_type": "SOS",
+    "title": "Illinois Public Act 104-0083",
+    "reference": "Sections 3-104(f) and 6-104(p), no fees for the designated form, effective January 1, 2026",
+    "url": "https://www.ilga.gov/Documents/Legislation/PublicActs/104/PDF/104-0083.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "il-eligibility-2027": {
+    "source_id": "il-eligibility-2027",
+    "source_type": "SOS",
+    "title": "Illinois Public Act 104-0486",
+    "reference": "PDF p. 2, section 2-102(a)(11), effective January 1, 2027",
+    "url": "https://my.ilga.gov/Documents/Legislation/PublicActs/104/PDF/104-0486.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
   },
   "il-rules": {
     "source_id": "il-rules",
@@ -1559,6 +1613,24 @@ export const fullStateSources: Record<string, Source> = {
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
   },
+  "nv-sos-commission": {
+    "source_id": "nv-sos-commission",
+    "source_type": "SOS",
+    "title": "Nevada Secretary of State — Notary",
+    "reference": "Training and Exam Requirements and Application Requirements",
+    "url": "https://nvsos.gov/index.aspx?page=165",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "nj-education-report-2026": {
+    "source_id": "nj-education-report-2026",
+    "source_type": "SOS",
+    "title": "New Jersey FY2026 Notary Education Report",
+    "reference": "p. 4, September 14 manual revision and September 24 official examination question update",
+    "url": "https://www.nj.gov/treasury/revenue/pdf/2026NotaryPublicEdcuationProgramReport.pdf#page=4",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
   "nj-law-2021": {
     "source_id": "nj-law-2021",
     "source_type": "SOS",
@@ -1923,10 +1995,10 @@ export const fullStateSources: Record<string, Source> = {
     "source_id": "wi-file",
     "source_type": "SOS",
     "title": "DFI Notary File Online",
-    "reference": "4-year Notary; Permanent Notary; November 16, 2026 system notice",
+    "reference": "Four-year Notary, Permanent Notary, and current WIMS filing link",
     "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx",
-    "last_verified_at": "2026-11-14",
-    "last_checked_at": "2026-11-14"
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
   },
   "wi-intro": {
     "source_id": "wi-intro",
@@ -1999,6 +2071,33 @@ export const fullStateSources: Record<string, Source> = {
     "url": "https://apps.dfi.wi.gov/apps/notarytutorialexam/Chapter6.aspx",
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
+  },
+  "wi-remote-registration": {
+    "source_id": "wi-remote-registration",
+    "source_type": "SOS",
+    "title": "Wisconsin DFI Remote Online Notary registration",
+    "reference": "Approved platforms, notary notification and upload, DFI review and approval",
+    "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "wi-ron-recertification": {
+    "source_id": "wi-ron-recertification",
+    "source_type": "SOS",
+    "title": "Wisconsin DFI remote provider recertification form",
+    "reference": "NOT107, revised August 2025, p. 1, provider recertification conditions",
+    "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "wi-estate-act": {
+    "source_id": "wi-estate-act",
+    "source_type": "SOS",
+    "title": "Wisconsin 2023 Act 130, enacted text",
+    "reference": "Section 1, p. 2, Wis. Stat. § 140.147(3)(j)2. Enrolled law also reproduced in State Bar exhibit B.",
+    "url": "https://docs.legis.wisconsin.gov/2023/related/acts/130.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
   },
   "wy-home": {
     "source_id": "wy-home",

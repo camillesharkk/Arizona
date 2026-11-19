@@ -6,7 +6,8 @@ import { testLoader } from './pack-test-utils.mjs';
 const load = testLoader();
 const { freeStateCatalog, freeStateFeatures } = load('lib/free-state-catalog.ts');
 const { freeStateContent } = load('data/free-state-content.ts');
-const { stateQuestion } = load('lib/state-question.ts');
+const { stateQuestion, versionedStateQuestions } = load('lib/state-question.ts');
+const { isActiveQuestion } = load('lib/question-status.ts');
 const canonicalTopics = new Set(load('data/exam-config.ts').topics.map(topic => topic.id));
 const root = path.resolve('data/full-states');
 fs.mkdirSync(root, { recursive: true });
@@ -94,24 +95,27 @@ for (const [code, name, slug] of freeStateCatalog) {
     assert.ok(article.faqs.length >= 2);
   }
   const freeIds = selectFree(bank, base.topics);
-  const publicQuestions = bank.filter(question => freeIds.has(question.id)).map(question => stateQuestion(code, question, true));
-  questions[code] = publicQuestions;
-  summaries[code] = { published: bank.length, free: freeIds.size, pro: bank.length - freeIds.size, cards: content.cards.length, articles: content.articles.length, ready: true, freeQuestionIds: [...freeIds] };
+  const versioned = versionedStateQuestions(bank.map(question => stateQuestion(code, question, freeIds.has(question.id))));
+  questions[code] = versioned.filter(question => question.is_free);
+  const active = versioned.filter(question => isActiveQuestion(question));
+  const free = active.filter(question => question.is_free).length;
+  summaries[code] = { published: active.length, free, pro: active.length - free, cards: content.cards.length, articles: content.articles.length, ready: true, freeQuestionIds: [...freeIds] };
   cards[code] = content.cards;
   guides[code] = content.guideTopics;
   articles[code] = content.articles.map(({ sources: articleSources, ...article }) => ({
     ...article, title: article.title.includes(name) ? article.title : `${article.title} | ${name}`,
     id: `${code.toLowerCase()}-${article.slug}`, state: code, path: `/${slug}/guides/${article.slug}/`,
-    checked: '2026-11-14', updated: '2026-11-14',
+    checked: '2026-11-14', updated: article.updated ?? '2026-11-14',
     ledeCta: { href: `/${slug}/practice/?mode=quick`, label: 'Start Free Quick 10', placement: 'lede', targetMode: 'quick' },
     endCta: freeStateFeatures[code]?.fullPractice === false
       ? { href: `/${slug}/practice/?mode=quick`, label: 'Start Free Practice', placement: 'end', targetMode: 'quick' }
       : { href: `/${slug}/practice/?mode=full`, label: 'Start Comprehensive Practice', placement: 'end', targetMode: 'full' },
     related: [{ href: `/${slug}/study-guide/`, label: `${name} Study Guide` }, { href: `/${slug}/study-cards/`, label: 'Study Cards' }, ...(freeStateFeatures[code]?.purchase !== false ? [{ href: `/${slug}/pricing/`, label: '60-Day Pro' }] : [])],
-    sections: [...article.sections, ...articleSources.map(source => ({ heading: source.title, body: 'Official source checked November 14, 2026.', link: { href: source.url, label: 'Open official source', placement: 'section', targetMode: 'official' } }))],
+    sections: [...article.sections, ...articleSources.map(source => ({ heading: source.title, body: source.checkedAt ? `Official source checked ${source.checkedAt}.` : 'Official source checked November 14, 2026.', link: { href: source.url, label: 'Open official source', placement: 'section', targetMode: 'official' } }))],
   }));
   for (const source of content.sources) {
-    assert.ok(source.url.startsWith('https://') && source.checkedAt === '2026-11-14');
+    assert.ok(source.url.startsWith('https://') && /^\d{4}-\d{2}-\d{2}$/.test(source.checkedAt) &&
+      new Date(source.checkedAt).toISOString().slice(0, 10) === source.checkedAt, source.id);
     sources[source.id] = { source_id: source.id, source_type: 'SOS', title: source.title, reference: source.reference, url: source.url, last_verified_at: source.checkedAt, last_checked_at: source.checkedAt };
   }
   completed.push(code);
@@ -128,5 +132,5 @@ write('data/full-state-guides.ts', `${codeImport}\nimport type { PrepGuideTopic 
 write('data/full-state-articles.ts', `${codeImport}\nimport type { StateArticle } from '../lib/state-articles';`, 'export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>>', articles);
 write('data/full-state-sources.ts', "import type { Source } from '../lib/types';", 'export const fullStateSources: Record<string, Source>', sources);
 const imports = completed.map(code => `import ${code.toLowerCase()} from './full-states/${code}.json';`).join('\n');
-fs.writeFileSync('data/full-state-server.ts', `import 'server-only';\nimport type { FreeStateCode } from '../lib/free-state-catalog';\nimport type { FullStateLearning } from '../lib/full-state-learning';\nimport { stateQuestion } from '../lib/state-question';\nimport { freeStateContent } from './free-state-content';\nimport { fullStateSummary } from './full-state-summary';\n${imports}\n\nconst content: Partial<Record<FreeStateCode, FullStateLearning>> = {${completed.map(code => `${code}: ${code.toLowerCase()} as FullStateLearning`).join(', ')}};\n\nexport function serverStateQuestions(code: FreeStateCode) {\n  const extra = content[code]?.questions || [];\n  const baseQuestions = freeStateContent[code]?.questions || [];\n  const free = new Set(fullStateSummary[code]?.freeQuestionIds || baseQuestions.map(question => question.id));\n  return [...baseQuestions, ...extra].map(question => stateQuestion(code, question, free.has(question.id)));\n}\n`);
+fs.writeFileSync('data/full-state-server.ts', `import 'server-only';\nimport type { FreeStateCode } from '../lib/free-state-catalog';\nimport type { FullStateLearning } from '../lib/full-state-learning';\nimport { stateQuestion, versionedStateQuestions } from '../lib/state-question';\nimport { freeStateContent } from './free-state-content';\nimport { fullStateSummary } from './full-state-summary';\n${imports}\n\nconst content: Partial<Record<FreeStateCode, FullStateLearning>> = {${completed.map(code => `${code}: ${code.toLowerCase()} as FullStateLearning`).join(', ')}};\n\nexport function serverStateQuestions(code: FreeStateCode) {\n  const extra = content[code]?.questions || [];\n  const baseQuestions = freeStateContent[code]?.questions || [];\n  const free = new Set(fullStateSummary[code]?.freeQuestionIds || baseQuestions.map(question => question.id));\n  return versionedStateQuestions([...baseQuestions, ...extra].map(question => stateQuestion(code, question, free.has(question.id))));\n}\n`);
 console.log(JSON.stringify({ completeStates: completed, questions: completed.length * 203, independentCards: completed.reduce((sum, code) => sum + summaries[code].cards, 0), articles: completed.length * 10 }));

@@ -9,7 +9,7 @@ let hook=0,pageUrl='http://localhost/',state;
 const jsx=(type,props,key)=>({type,props:props||{},key});
 function Runner(){}
 const load=testLoader({
-  react:{useState(initial){const slot=hook++;if(!(slot in hooks))hooks[slot]=initial;return[hooks[slot],value=>{hooks[slot]=typeof value==='function'?value(hooks[slot]):value;}];},useRef(initial){const slot=hook++;if(!(slot in hooks))hooks[slot]={current:initial};return hooks[slot];},useEffect(fn){effects.push(fn);}},
+  react:{createContext(value){return {value};},useContext(context){return context.value;},useState(initial){const slot=hook++;if(!(slot in hooks))hooks[slot]=initial;return[hooks[slot],value=>{hooks[slot]=typeof value==='function'?value(hooks[slot]):value;}];},useRef(initial){const slot=hook++;if(!(slot in hooks))hooks[slot]={current:initial};return hooks[slot];},useEffect(fn){effects.push(fn);}},
   'react/jsx-runtime':{jsx,jsxs:jsx,Fragment:'fragment'},'next/link':{__esModule:true,default:'a'},
   'next/navigation':{useSearchParams:()=>new URL(pageUrl).searchParams},
   '@/components/ExamRunner':{ExamRunner:Runner},

@@ -1,12 +1,16 @@
 import { serverStateQuestions } from '../data/full-state-server';
 import { isFreeState } from './free-state-catalog';
+import { isActiveQuestion } from './question-status';
 import { ctProCovers } from "@/lib/account-pro";
 import { isDeepStrictEqual } from "node:util";
 import { caCards } from "@/data/ca-cards";
 import { hiCards } from "@/data/hi-cards";
-import { publishedCaQuestions } from "@/data/ca-questions";
+import { activeCaQuestions, publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions, publishedQuestions } from "@/data/questions";
+import { questionDrawHold } from "@/data/question-draw-holds";
+import { editorialUpdateByQuestion } from "@/data/question-editorial-events";
+import { needsUpdatedReview } from "@/lib/editorial-updates";
 import { topics } from "@/data/exam-config";
 import { optionText } from "@/lib/answer-sequence";
 import { localDate } from "@/lib/calendar";
@@ -57,7 +61,8 @@ function isPack(state: StudyState) {
 function pool(state: StudyState, isPro: boolean) {
   if (isPack(state)) {
     const pack = packFor(state as StateCode);
-    const questions = (state === "IN" ? publishedInQuestions() : isFreeState(state) ? serverStateQuestions(state) : pack?.questions() || []).filter((question) => isPro || question.is_free);
+    const bank = state === "IN" ? publishedInQuestions() : isFreeState(state) ? serverStateQuestions(state) : pack?.questions() || [];
+    const questions = bank.filter((question) => (isPro || question.is_free) && isActiveQuestion(question));
     const practice = pack?.paths.practice || "/";
     const cards = (pack?.cards || []).map((card) => ({
       id: card.id,
@@ -87,7 +92,7 @@ function pool(state: StudyState, isPro: boolean) {
     return { questions, cards, cardsByQuestion };
   }
   if (state === "CA" || state === "HI") {
-    const questions = state === "HI" ? publishedHiQuestions() : publishedCaQuestions();
+    const questions = state === "HI" ? publishedHiQuestions() : activeCaQuestions();
     const sourceCards = state === "HI" ? hiCards : caCards;
     const practice = state === "HI" ? hiPaths.practice : caPaths.practice;
     const cards = sourceCards.map((card) => ({
@@ -163,8 +168,21 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   const timeZone = doc.settings.timeZone || DEFAULT_STUDY_TIME_ZONE;
   const today = localDate(now, timeZone);
   const { questions, cards, cardsByQuestion } = pool(state, pro);
+  const existingDay = doc.days[today];
+  if (existingDay) {
+    const activeIds = new Set(questions.map((question) => question.question_id));
+    const tasks = existingDay.tasks.filter((task) => task.status !== "pending" || !task.key.startsWith("question:") ||
+      activeIds.has(task.key.slice(9)) || !(state === "CA" || questionDrawHold(task.key.slice(9))));
+    if (tasks.length !== existingDay.tasks.length) doc = { ...doc, days: { ...doc.days, [today]: { ...existingDay, tasks } } };
+  }
   const stats = await store.listStats(userId);
   const stateStats = stats.filter((item) => item.state === state).map((stat) => {
+    const updated = editorialUpdateByQuestion.get(stat.questionId);
+    if (updated && !updated.replacementId && needsUpdatedReview(updated, stat) &&
+      (stat.firstAt || stat.lastAt || stat.favorited || stat.savedForReview)) {
+      // Project a due review while leaving the old mastery and answer history in storage.
+      return { ...stat, mastered: false, nextReviewAt: stat.nextReviewAt && stat.nextReviewAt < now ? stat.nextReviewAt : now };
+    }
     if (stat.mastered || (stat.wrongCount <= 0 && !stat.savedForReview) || stat.nextReviewAt) return stat;
     const lastRevision = stat.revisionHistory?.at(-1);
     const since = stat.lastWrongAt || stat.lastAt || stat.firstAt || lastRevision?.lastAt;
@@ -266,8 +284,18 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     unmappedQuestionIds: built.unmappedQuestionIds,
     nextReviewAt: nextReview,
     taskStatus: built.tasks,
-    ...reviewHistory(questions, stateStats, await store.listExams(userId), checks, state, now),
+    ...reviewHistory(reviewBank(state, pro, questions), stateStats, await store.listExams(userId), checks, state, now),
   };
+}
+
+function reviewBank(state: StudyState, pro: boolean, active: Question[]): Question[] {
+  if (state === "CA") return publishedCaQuestions();
+  const bank = state === "AZ" ? historicalAzQuestions() : state === "NY" ? packFor(state)?.questions() :
+    state === "IN" ? publishedInQuestions() :
+    isFreeState(state) ? serverStateQuestions(state) : undefined;
+  if (!bank) return active;
+  const statsVisible = new Set(active.map((q) => q.question_id));
+  return bank.filter((q) => statsVisible.has(q.question_id) || (questionDrawHold(q.question_id) && (pro || q.is_free)));
 }
 
 function reviewHistory(
@@ -296,7 +324,7 @@ function reviewHistory(
         previousWrongCount: previousWrongCount(stat),
         saved: Boolean(stat.savedForReview),
         mastered: stat.mastered,
-        due: Boolean(question && !stat.mastered && stat.nextReviewAt && stat.nextReviewAt <= now),
+        due: Boolean(question && isActiveQuestion(question, new Date(now)) && !stat.mastered && stat.nextReviewAt && stat.nextReviewAt <= now),
       };
     })
     .sort((a, b) => (a.nextReviewAt || "9").localeCompare(b.nextReviewAt || "9"));

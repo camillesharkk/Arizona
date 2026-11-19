@@ -116,5 +116,5 @@ Google 可信识别：`lib/googlebot.ts` 只接受反向 DNS 以 `.googlebot.com
 
 回滚：预览环境设 `PRACTICE_LIMITS=off` 可停用共享限额，鉴权保持。代码回滚使用分支 `security/content-boundary`，不要把它直接合进未授权的生产发布。删除部署文件不能撤回已经公开过的历史响应或仓库历史。
 
-生产迁移清单（本轮不执行）：先备份 Neon 或确认可恢复的时间点。在生产部署新代码之前或同时执行 `023_rate_buckets.sql`。新代码遇到缺表会降级并打 `missing_table`，旧代码不读这张表。部署后用两条不同实例的练习请求确认同一 `bucket_key` 的 `hits` 连续增加，再确认过期行会被删除。回滚代码时保留该表即可；若要停限额，设 `PRACTICE_LIMITS=off` 并重新部署，不要删表。正式域名的 Search Console 检查要等生产部署后做，预览不能代替。生产响应里已经有平台下发的 `Strict-Transport-Security: max-age=63072000`，应用代码不要再重复设置。
+生产迁移清单：2026-11-19 已在 Neon 项目 Arizona-notary 的默认分支 `production`（`br-raspy-fog-a76oj2y2`）执行 `023_rate_buckets.sql`，并写入 `schema_migrations`。执行前确认缺失的迁移只有 023。恢复点是同项目分支 `pre-023-restore-20261119`（`br-gentle-mountain-a7mi1qwm`，父 LSN `0/670C5B0`）。恢复方式是用该分支的数据恢复生产分支，或把应用暂时指向该分支；不要为了前端故障整库回滚。代码回滚时保留 `rate_buckets`。隔离分支 `security-rate-023-20261119` 上用两个独立连接完成 30 次并发计数，结果连续且无重复。`PRACTICE_LIMITS=off` 仍只停限额，改环境变量后需要重新部署。
 

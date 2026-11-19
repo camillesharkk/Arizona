@@ -3,7 +3,7 @@ import { z } from "zod";
 import { getSession } from "@/lib/session";
 import { canAccessQuestion, getArizonaEntitlement, indianaEntitlement } from "@/lib/entitlements";
 import { recordProUsage } from "@/lib/commerce/usage";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { ctProCovers, accountProExpiry, hasLifetimePro } from "@/lib/account-pro";
@@ -13,6 +13,7 @@ import { serverQuestionById as questionById } from "@/lib/server-questions";
 import { hiFullExamCount, packFullExamCounts } from "@/lib/entitlements";
 import { saveCaExamCheck } from "@/lib/ca-daily";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
+import { resolveQuestionVersion } from "@/lib/question-version";
 import { getStore } from "@/lib/store";
 import { productionStateBlocked } from "@/lib/state-release";
 import { readPractice } from "@/lib/practice-token";
@@ -113,22 +114,22 @@ export async function POST(req: Request) {
   }
   const parsed = answerSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid answer" }, { status: 400 });
-  const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(parsed.data.questionId)].find((x) => x && x.question_id === parsed.data.questionId);
-  if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
-  if (productionStateBlocked(q.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  if ((isFreeState(q.state) || q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT" || q.state === "NC" || q.state === "IN") && (parsed.data.questionVersion ?? 1) !== q.version) {
-    return NextResponse.json({ error: "Question updated; reload before answering", code: "question_updated" }, { status: 409 });
-  }
-  if (parsed.data.state ? parsed.data.state !== q.state : q.state !== "AZ") {
+  const current = [...historicalAzQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(parsed.data.questionId)].find((x) => x && x.question_id === parsed.data.questionId);
+  if (!current) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
+  if (productionStateBlocked(current.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
+  if (parsed.data.state ? parsed.data.state !== current.state : current.state !== "AZ") {
     return NextResponse.json({ error: "Question is not in this state" }, { status: 400 });
   }
-  if (!(await canAccessQuestion(session.id, q))) return NextResponse.json({ error: "Pro required" }, { status: 402 });
+  if (!(await canAccessQuestion(session.id, current))) return NextResponse.json({ error: "Pro required" }, { status: 402 });
+  const q = resolveQuestionVersion(current, parsed.data.questionVersion ?? 1);
+  if (!q) return NextResponse.json({ error: "This question version is unavailable. Your earlier answers remain saved.", code: "question_updated" }, { status: 409 });
   const correct = parsed.data.selected === q.correct_option;
   const claims = parsed.data.token ? await readPractice(parsed.data.token) : null;
   const covered = Boolean(claims && claims.purpose === "sitting" && claims.sub === session.id && claims.ids.includes(q.question_id));
   const stat = await recordQuestionAnswer({
     userId: session.id,
     questionId: q.question_id,
+    questionVersion: q.version,
     selected: parsed.data.selected,
     correct,
     review: parsed.data.review,

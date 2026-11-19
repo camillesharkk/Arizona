@@ -24,6 +24,9 @@ const proUsageRoute = load('app/api/billing/pro-usage/route.ts');
 const mistakes = load('app/api/mistakes/route.ts');
 const authMe = load('app/api/auth/me/route.ts');
 const { serverStateQuestions } = load('data/full-state-server.ts');
+const { serverQuestionById } = load('lib/server-questions.ts');
+const { isActiveQuestion } = load('lib/question-status.ts');
+const { packFor } = load('lib/prep-pack.ts');
 const { shuffle } = load('lib/answer-sequence.ts');
 const { packFullExamCounts } = load('lib/entitlements.ts');
 let testIp = '192.0.2.1';
@@ -39,14 +42,25 @@ for (const code of codes) {
   assert.equal(payload.customData.source_state, code);
   assert.equal(payload.customData.product_code, 'az_exam_pro_60d');
   const bank = serverStateQuestions(code);
-  const free = bank.filter(question => question.is_free);
+  const current = bank.filter(question => isActiveQuestion(question));
+  const held = new Set(bank.filter(q => !isActiveQuestion(q)).map(q => q.question_id));
+  if (held.size) {
+    for (const id of held) assert.equal(serverQuestionById(id)?.version, 1, 'Old item must be readable');
+    for (let seed = 0; seed < 64; seed++) {
+      const quick = packFor(code).pickQuick(seed);
+      assert.equal(quick.length, 10);
+      assert.ok(quick.every(q => !held.has(q.question_id)), 'New Quick draws exclude held questions');
+    }
+  }
+  const free = current.filter(question => question.is_free);
+  const historicalFree = bank.filter(question => question.is_free);
   const paid = bank.find(question => !question.is_free);
-  assert.equal(bank.length, 203, code);
+  assert.equal(bank.filter(q => !q.replaces_question_id).length, 203, code);
   session = null;
   let response = await bankRoute.GET(request(`/api/state/questions/?state=${code}`));
   assert.equal(response.status, 200);
   assert.equal(response.headers.get('Cache-Control'), 'private, no-store');
-  assert.equal((await response.json()).questions.length, 60);
+  assert.equal((await response.json()).questions.length, historicalFree.length);
   const freeUser = await store.createUser({ email: `${code}-free@example.invalid`, passwordHash: 'isolated', name: null });
   const proUser = await store.createUser({ email: `${code}-pro@example.invalid`, passwordHash: 'isolated', name: null });
   const expiredUser = await store.createUser({ email: `${code}-expired@example.invalid`, passwordHash: 'isolated', name: null });
@@ -55,11 +69,20 @@ for (const code of codes) {
       startsAt: new Date(Date.now() - 172800000).toISOString(), expiresAt: new Date(Date.now() + (active ? 86400000 : -86400000)).toISOString(),
       provider: 'mock', providerOrderId: randomUUID(), providerCustomerId: null });
   }
-  for (const [user, accessible, isPro] of [[freeUser, 60, false], [proUser, 203, true], [expiredUser, 60, false]]) {
+  for (const [user, accessible, isPro] of [[freeUser, historicalFree.length, false], [proUser, bank.length, true], [expiredUser, historicalFree.length, false]]) {
     session = { id: user.id };
     const result = await (await bankRoute.GET(request(`/api/state/questions/?state=${code}`))).json();
     assert.equal(result.questions.length, accessible, `${code} bank ${accessible}`);
     assert.equal(result.pro, isPro);
+    for (const question of bank.filter(q => !isActiveQuestion(q))) {
+      const historical = result.questions.find(q => q.question_id === question.question_id);
+      if (question.is_free || isPro) {
+        assert.equal(historical?.version, question.version, `${code} preserves held version`);
+        assert.equal(historical?.correct_option, question.correct_option, `${code} preserves held answer`);
+      } else {
+        assert.equal(historical, undefined, `${code} held Pro item remains private`);
+      }
+    }
     if (isPro) {
       assert.equal((await proUsageRoute.POST(request('/api/billing/pro-usage/', { featureCode: 'advanced_analytics', state: code }))).status, 200);
       assert.equal(usage.at(-1)[3], code);
@@ -72,8 +95,8 @@ for (const code of codes) {
     response = await tutor.POST(request('/api/ai/tutor/', { state: code, questionId: paid.question_id, questionVersion: paid.version, mode: 'explain' }));
     assert.equal(response.status, isPro ? 200 : 402, `${code} paid Tutor authorization`);
     const plan = await (await daily.GET(request(`/api/daily-study/?state=${code}`))).json();
-    assert.equal(plan.questionCount, 203, `${code} Daily Study full pool`);
-    assert.equal(plan.freeQuestionCount, 60);
+    assert.equal(plan.questionCount, current.length, `${code} Daily Study full pool`);
+    assert.equal(plan.freeQuestionCount, current.filter(q => q.is_free).length);
     assert.equal(plan.cardCount, 50);
     assert.equal(plan.freeOnly, !isPro);
   }
@@ -106,7 +129,7 @@ for (const code of codes) {
     continue;
   }
   session = { id: freeUser.id };
-  assert.equal((await postProgress(full(bank, 28))).status, 400, `${code} free rejects premium draw`);
+  assert.equal((await postProgress(full(current, 28))).status, 400, `${code} free rejects premium draw`);
   const sitting = full(free, 42);
   const results = await Promise.all([postProgress(sitting), postProgress(sitting)]);
   assert.ok(results.every(result => result.status === 200));
@@ -128,11 +151,11 @@ for (const code of codes) {
   assert.equal(wrong.mistakes.length, 4);
   assert.ok(wrong.mistakes.every(stat => stat.state === code));
   session = { id: proUser.id };
-  for (const seed of [91, 92]) assert.equal((await postProgress(full(bank, seed))).status, 200, `${code} repeated Pro full practice`);
+  for (const seed of [91, 92]) assert.equal((await postProgress(full(current, seed))).status, 200, `${code} repeated Pro full practice`);
   // A visitor can finish a free sitting and then sign into an existing Pro account.
   assert.equal((await postProgress(full(free, 93))).status, 200, `${code} guest free draw retained by Pro account`);
   assert.equal((await packFullExamCounts(proUser.id))[code], 3);
-  const invalidState = full(bank, 94);
+  const invalidState = full(current, 94);
   invalidState.questions[0].questionId = code === 'AR' ? 'co-001' : 'ar-001';
   assert.equal((await postProgress(invalidState)).status, 400, `${code} cross-state injection rejected`);
   console.log(`${code} actual handlers passed guest/free/Pro/expired banks, paid authorization, Tutor, Daily Study, full grading, concurrent retry, trial limit and state isolation`);

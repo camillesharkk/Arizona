@@ -13,7 +13,7 @@ export const examConfig = {
   lastVerifiedAt: "2026-10-19",
   officialExamUrl: "https://azsos.gov/business/notary-public/new-notary",
   officialFilingUrl: "https://azsos.gov/business/notary",
-  officialManualUrl: "https://azsos.gov/sites/default/files/docs/Notary-Manual-Aug-2026.pdf",
+  officialManualUrl: "https://azsos.gov/sites/default/files/docs/Notary-Manual-Oct-2026.pdf",
   commissionTermYears: 4,
   bondAmountUsd: 5000,
   applicationFeeUsd: 43,

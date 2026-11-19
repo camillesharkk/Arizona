@@ -25,6 +25,20 @@ import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 
 type AuthStatus = "loading" | "signed-in" | "signed-out";
 
+function BrandMark({ size, lazy = false }: { size: 26 | 36; lazy?: boolean }) {
+  return (
+    <img
+      className="logo-mark"
+      src="/images/brand/notary-study-emblem-36.webp"
+      srcSet="/images/brand/notary-study-emblem-36.webp 1x, /images/brand/notary-study-emblem-72.webp 2x"
+      width={size}
+      height={size}
+      alt=""
+      loading={lazy ? "lazy" : undefined}
+    />
+  );
+}
+
 function active(pathname: string, href: string) {
   if (href === "/arizona-notary-exam/" || href === "/arizona/" || href === "/california/" || href === "/hawaii/") {
     return pathname === href || pathname === "/arizona" || pathname === "/arizona/" || pathname === "/california" || pathname === "/california/" || pathname === "/hawaii" || pathname === "/hawaii/";
@@ -162,6 +176,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const links = state ? primaryLinks(nav) : [];
   const extra = state ? moreLinks(nav, state).filter(item => !isFreeState(state) || fullStateReady[state] || item.label !== "Study cards") : [];
   const isNationalHome = pathname === "/";
+  const brandLabel = isFreeState(state) ? stateByCode(state)?.name : state === "IN" ? "Indiana" : state === "NC" ? "North Carolina" : state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep";
   const moreInNav = links.length > 0 && !isNationalHome;
   const moreMenu = (
     <div className="more-menu">
@@ -194,9 +209,9 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
     <header className={`site-header${pathname === "/" ? " national-header" : !state && active(pathname, paths.community) ? " community-guest-header" : ""}`}>
       <div className="wrap header-inner">
         <div className="header-left">
-          <Link href={state ? nav.home : "/"} className="logo">
-            <span className="logo-mark">{state === "IN" ? "I" : state === "CT" ? "C" : state === "CA" ? "C" : state === "HI" ? "H" : state === "NY" ? "Y" : state === "PA" ? "P" : state === "LA" ? "L" : state === "AZ" ? "A" : "N"}</span>
-            <span className="logo-label">{isFreeState(state) ? stateByCode(state)?.name : state === "IN" ? "Indiana" : state === "NC" ? "North Carolina" : state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}</span>
+          <Link href={state ? nav.home : "/"} className="logo" aria-label={brandLabel}>
+            <BrandMark size={36} />
+            <span className="logo-label">{brandLabel}</span>
           </Link>
           {pathname !== "/" ? <StateMenu pathname={pathname} current={state} indianaPreview={indianaPreview} /> : null}
         </div>
@@ -258,7 +273,7 @@ export function SiteFooter({ savedState }: { savedState: LiveCode | null }) {
   return (
     <footer className="footer">
       <div className="wrap footer-bar">
-        <p className="footer-brand">{state === "CA" ? "California Exam. Independent practice." : state === "HI" ? "Hawaii Exam. Independent practice." : state === "AZ" ? "Arizona Exam. Independent practice." : "Notary Exam Prep. Independent practice."}</p>
+        <p className="footer-brand"><BrandMark size={26} lazy />{state === "CA" ? "California Exam. Independent practice." : state === "HI" ? "Hawaii Exam. Independent practice." : state === "AZ" ? "Arizona Exam. Independent practice." : "Notary Exam Prep. Independent practice."}</p>
         <nav className="footer-links" aria-label="Help and legal">
           {state ? (
             <>

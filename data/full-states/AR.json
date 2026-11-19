@@ -4538,10 +4538,10 @@
     {
       "id": "ar-card-027",
       "study": "seals-fees",
-      "title": "Reasonable fees",
-      "front": "What governs a charged Arkansas notarial fee?",
+      "title": "Reasonable traditional fees",
+      "front": "What governs a charged fee for a traditional Arkansas notarization?",
       "rule": "The fee must be reasonable, disclosed and agreed in advance.",
-      "boundary": "A notary may provide a free service.",
+      "boundary": "A notary may provide the traditional service for free. Check the separate electronic-notary sources before applying this rule to an electronic act.",
       "mixup": "Advance agreement alone does not remove reasonableness.",
       "source": "Arkansas Notary Public & eNotary Handbook, p. 18",
       "sourceUrl": "https://www.sos.arkansas.gov/uploads/bcs/NotaryHandbook2025.pdf"
@@ -4771,11 +4771,11 @@
       "study": "electronic-ron",
       "title": "Recording retention",
       "front": "Who retains the remote act recording and for how long?",
-      "rule": "The solution provider retains it for five years.",
-      "boundary": "Check the provider's actual storage arrangement.",
+      "rule": "Maintain the electronic record, including the recording, for at least five years.",
+      "boundary": "Confirm the provider’s retention arrangement and continued access.",
       "mixup": "The two-year training interval is a different period.",
-      "source": "Secretary of State eNotary and RON instructions, Recording retention",
-      "sourceUrl": "https://sos.arkansas.gov/business-commercial-services-bcs/enotary/"
+      "source": "A.C.A. § 21-14-310, enacted by Act 1047 of 2021",
+      "sourceUrl": "https://www.arkleg.state.ar.us/Acts/Document?type=pdf&act=1047&ddBienniumSession=2021%2F2021R"
     },
     {
       "id": "ar-card-049",
@@ -4854,7 +4854,7 @@
         },
         {
           "heading": "Custody and electronic evidence",
-          "body": "An employer's payment for notarial materials does not transfer the individual's public commission or entitle the employer to keep the notarial materials when the worker leaves. Electronic providers may offer different journaling functions, including automatic entries or optional features. Understand what the selected provider records. A journal entry supplements the performed act and certificate. It cannot create a missing appearance, cure a false certificate or replace the independent RON recording requirement."
+          "body": "An employer’s payment for notarial materials does not transfer the commission. Electronic providers may offer optional journal features. Arkansas separately requires an electronic record of each remote online act, including its recording, with at least five years of retention under section 21-14-310. Verify that your provider arrangement keeps that record available."
         }
       ],
       "example": {
@@ -4938,11 +4938,11 @@
       "sections": [
         {
           "heading": "Qualification and continuing conditions",
-          "body": "An Arkansas electronic applicant first holds traditional good standing, submits the electronic application, completes the required electronic training and exam and selects an approved solution. The electronic term ends with the traditional commission. Approved refresher training recurs every two years under 21 CAR §20-105. Track changes in state and provider records, including required contact details. Revocation of the traditional commission also removes the dependent electronic authority."
+          "body": "An Arkansas electronic applicant must hold a traditional commission in good standing, submit the electronic application, complete the required training and exam, and select an approved solution. The electronic term ends with the traditional commission. Approved refresher training recurs every two years under 21 CAR § 20-105. Revocation of the traditional commission is grounds for the Secretary of State to revoke the electronic commission under 21 CAR § 20-111(a)(3)."
         },
         {
           "heading": "The remote session",
-          "body": "In-person electronic notarization retains physical proximity unless the approved RON route is used. During RON, the notary remains physically in Arkansas, and the signer may be outside the state. Use approved secure simultaneous communication, identity proofing and credential analysis. The provider retains the recording for five years under the dedicated state page. An electronic signature alone is insufficient, and the proper certificate and identity procedure remain necessary. Keep the notary's signing system under sole control."
+          "body": "In-person electronic notarization requires physical proximity. For a remote act, the notary remains in Arkansas and uses approved secure simultaneous communication and the applicable identity procedures. Keep the electronic record, including the recording, for at least five years. Confirm the provider’s retention arrangement and keep the notary’s signing system under sole control."
         }
       ],
       "example": {
@@ -5223,6 +5223,7 @@
     },
     {
       "slug": "arkansas-reasonable-notary-fees",
+      "updated": "2026-11-19",
       "keyword": "Arkansas notary reasonable fees",
       "intent": "Apply reasonableness, disclosure and agreement in service pricing",
       "title": "Agree on Arkansas notarial fees before the act",
@@ -5241,7 +5242,7 @@
         },
         {
           "heading": "Treat electronic services with the same attention",
-          "body": "The handbook's electronic chapter also requires a reasonable amount agreed before the act when an electronic fee is charged. Provider subscription costs and available technology do not themselves establish the customer agreement. Explain the actual proposed service accurately. Do not imply that buying an electronic platform removes the ordinary notary's duties toward the signer."
+          "body": "Consult the official handbook and 21 CAR §20-109 separately before setting an electronic-notary service charge. The handbook describes a reasonable charge agreed before the act, while the published administrative rule still lists fixed amounts for specified electronic acts. Keep the traditional service-fee rule separate from electronic appointment and training fees."
         },
         {
           "heading": "Record what actually happened",

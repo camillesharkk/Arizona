@@ -1,4 +1,5 @@
 import { registerHooks } from "node:module";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
@@ -13,15 +14,22 @@ registerHooks({ resolve(specifier, context, nextResolve) {
 const { sources } = await import("../data/sources.ts");
 const { resolveAnswerEvidence } = await import("../lib/answer-evidence.ts");
 const { availableStates } = await import("../lib/states.ts");
-const banks = [["questions", "publishedQuestions"], ["ca-questions", "publishedCaQuestions"], ["hi-questions", "publishedHiQuestions"], ["in-questions", "publishedInQuestions"], ...["pa", "ny", "la", "ct", "nc"].map(code => [`${code}-content`, `published${code[0].toUpperCase()}${code[1]}Questions`])];
+const { questionReviewTimestamps } = await import("../data/question-review-dates.ts");
+const banks = [["questions", "historicalAzQuestions"], ["ca-questions", "publishedCaQuestions"], ["hi-questions", "publishedHiQuestions"], ["in-questions", "publishedInQuestions"], ...["pa", "ny", "la", "ct", "nc"].map(code => [`${code}-content`, `published${code[0].toUpperCase()}${code[1]}Questions`])];
 const questions = [];
 for (const [file, name] of banks) questions.push(...(await import(`../data/${file}.ts`))[name]());
 const { freeStateCatalog } = await import("../lib/free-state-catalog.ts");
 const { freeStateContent } = await import("../data/free-state-content.ts");
-const { stateQuestion } = await import("../lib/state-question.ts");
+const { fullStateSummary } = await import("../data/full-state-summary.ts");
+const { stateQuestion, versionedStateQuestions } = await import("../lib/state-question.ts");
+const authoredJsonFingerprints = new Map();
 for (const [code] of freeStateCatalog) {
   const full = JSON.parse(readFileSync(path.join(root, "data/full-states", `${code}.json`), "utf8"));
-  questions.push(...[...freeStateContent[code].questions, ...full.questions].map(question => stateQuestion(code, question, true)));
+  const freeIds = new Set(fullStateSummary[code]?.freeQuestionIds ?? freeStateContent[code].questions.map(question => question.id));
+  for (const raw of [...freeStateContent[code].questions, ...full.questions]) {
+    authoredJsonFingerprints.set(raw.id, createHash("sha256").update(JSON.stringify(raw)).digest("hex"));
+  }
+  questions.push(...versionedStateQuestions([...freeStateContent[code].questions, ...full.questions].map(question => stateQuestion(code, question, freeIds.has(question.id)))));
 }
 const byState = {};
 const missing = [];
@@ -30,6 +38,7 @@ const byResolution = {};
 const urls = new Map();
 const questionKeys = new Set();
 const usedSources = new Set();
+const inventory = [];
 for (const question of questions) {
   if (!publishedStates.has(question.state)) continue;
   const key = `${question.state}:${question.question_id}`;
@@ -42,10 +51,15 @@ for (const question of questions) {
   state.oldestQuestionVerification = [state.oldestQuestionVerification, question.last_verified_at].sort()[0];
   state.newestQuestionVerification = [state.newestQuestionVerification, question.last_verified_at].sort().at(-1);
   const evidence = resolveAnswerEvidence(question);
+  const evidenceUrls = [evidence.href, ...evidence.additional].filter(Boolean);
   const issues = [];
   if (!source) issues.push("source ID is absent from registry");
   if (!evidence.href) issues.push("official URL unavailable");
   if (!question.source_reference?.trim()) issues.push("question citation unavailable");
+  const letters = ["A", "B", "C", "D"].filter(letter => question[`option_${letter.toLowerCase()}`]?.trim());
+  if (!letters.includes(question.correct_option)) issues.push("key does not name an available option");
+  if (!question.question_text?.trim() || !question.explanation?.trim()) issues.push("stem or explanation unavailable");
+  if (letters.some(letter => !question.option_feedback?.[letter]?.trim())) issues.push("option feedback unavailable");
   const date = new Date(question.last_verified_at);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(question.last_verified_at || "") ||
       !Number.isFinite(date.valueOf()) || date.toISOString().slice(0, 10) !== question.last_verified_at) {
@@ -56,11 +70,33 @@ for (const question of questions) {
     missing.push({ questionId: question.question_id, sourceId: question.source_id, issues });
   }
   byResolution[evidence.resolution] = (byResolution[evidence.resolution] || 0) + 1;
-  for (const url of [evidence.href, ...evidence.additional].filter(Boolean)) {
+  for (const url of evidenceUrls) {
     const list = urls.get(url) || [];
     list.push(question.question_id);
     urls.set(url, list);
   }
+  inventory.push({
+    state: question.state, id: question.question_id, tier: question.is_free ? "free" : "pro",
+    topic: question.study_topic ?? question.topic, version: question.version,
+    publishedWindowEnd: question.effective_to,
+    replacesQuestionId: question.replaces_question_id,
+    sourceId: question.source_id, citation: question.source_reference, evidenceUrls,
+    sourceVersion: source?.version ?? null, displayedVerificationDate: question.last_verified_at,
+    authoredJsonFingerprint: authoredJsonFingerprints.get(question.question_id),
+    editorialFingerprint: createHash("sha256").update(JSON.stringify([
+      question.question_id, question.state, question.version, question.question_text, question.option_a,
+      question.option_b, question.option_c, question.option_d, question.correct_option, question.explanation,
+      Object.fromEntries(Object.entries(question.option_feedback ?? {}).sort()), question.source_id,
+      question.source_reference, question.effective_from, question.effective_to,
+    ])).digest("hex"),
+    contentSha256: createHash("sha256").update(JSON.stringify([
+      question.state, question.question_id, question.version, question.question_text, question.scenario_text,
+      ...["A", "B", "C", "D"].map(letter => [question[`option_${letter.toLowerCase()}`], question.option_feedback?.[letter]]),
+      question.correct_option, question.explanation, question.source_id, question.source_reference,
+      question.effective_from, question.topic, question.study_topic, question.is_free,
+    ])).digest("hex"),
+    reviewedAt: questionReviewTimestamps.get(question.question_id) ?? null, structuralIssues: issues,
+  });
 }
 const report = {
   states: Object.keys(byState).length,
@@ -72,5 +108,6 @@ const report = {
   byResolution,
 };
 if (process.argv[2]) writeFileSync(process.argv[2], JSON.stringify([...urls], null, 2));
+if (process.argv[3]) writeFileSync(process.argv[3], inventory.map(row => JSON.stringify(row)).join("\n") + "\n");
 console.log(JSON.stringify(report, null, 2));
 if (missing.length || report.states !== publishedStates.size) process.exitCode = 1;

@@ -12,8 +12,9 @@ export type FullStateLearning = {
   articles: {
     slug: string; keyword: string; intent: string; title: string; description: string;
     h1: string; kicker: string; lede: string;
+    updated?: string;
     sections: { heading: string; body: string; points?: string[] }[];
-    sources: { title: string; url: string }[];
+    sources: { title: string; url: string; checkedAt?: string }[];
     faqs: { q: string; a: string }[];
   }[];
   sources: FreeStateContent['sources'];

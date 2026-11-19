@@ -1,7 +1,7 @@
 import 'server-only';
 import type { FreeStateCode } from '../lib/free-state-catalog';
 import type { FullStateLearning } from '../lib/full-state-learning';
-import { stateQuestion } from '../lib/state-question';
+import { stateQuestion, versionedStateQuestions } from '../lib/state-question';
 import { freeStateContent } from './free-state-content';
 import { fullStateSummary } from './full-state-summary';
 import ar from './full-states/AR.json';
@@ -30,5 +30,5 @@ export function serverStateQuestions(code: FreeStateCode) {
   const extra = content[code]?.questions || [];
   const baseQuestions = freeStateContent[code]?.questions || [];
   const free = new Set(fullStateSummary[code]?.freeQuestionIds || baseQuestions.map(question => question.id));
-  return [...baseQuestions, ...extra].map(question => stateQuestion(code, question, free.has(question.id)));
+  return versionedStateQuestions([...baseQuestions, ...extra].map(question => stateQuestion(code, question, free.has(question.id))));
 }

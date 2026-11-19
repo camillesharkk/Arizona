@@ -110,14 +110,14 @@ export const nyBatch8: NyRow[] = [
       "Only a list of future clients"
     ],
     "correct": 0,
-    "why": "Section 131(1) requires an oath executed before an authorized officer together with the applicant's signature.",
+    "why": "Section 131(1)(a) requires an oath executed before an authorized person together with the applicant's signature.",
     "miss": [
-      "Correct. Section 131(1) requires an oath executed before an authorized officer together with the applicant's signature.",
+      "Correct. Section 131(1)(a) requires the applicant's signature and an oath executed before a person authorized to administer it.",
       "A vendor cannot replace the oath.",
       "Buying a seal is not taking the oath.",
       "A client list does not meet the application requirement."
     ],
-    "source": "New York DOS, Notary Public License Law (September 2026), Executive Law 131(1), p.6; https://dos.ny.gov/notary-public-license-law-0; verified 2026-11-09",
+    "source": "New York Executive Law § 131(1)(a); https://www.nysenate.gov/legislation/laws/EXC/131",
     "verified": "2026-11-09"
   },
   {
@@ -150,7 +150,7 @@ export const nyBatch8: NyRow[] = [
     "topic": "commission",
     "difficulty": "medium",
     "free": false,
-    "text": "A commission is issued this month. Under section 131(5), by what date must the Secretary transmit the commission records and apportioned fee to the county clerk?",
+    "text": "A new commission is issued this month. Under section 131(1)(e), by what date must the Secretary transmit the commission records and apportioned fee to the county clerk?",
     "options": [
       "Exactly ten years later",
       "Only after the notary performs the first act",
@@ -165,7 +165,7 @@ export const nyBatch8: NyRow[] = [
       "Correct. The statutory transmission deadline is the tenth day of the next month.",
       "The records are sent near appointment, not expiration."
     ],
-    "source": "New York DOS, Notary Public License Law (September 2026), Executive Law 131(5), p.6; https://dos.ny.gov/notary-public-license-law-0; verified 2026-11-09",
+    "source": "New York Executive Law § 131(1)(e); https://www.nysenate.gov/legislation/laws/EXC/131",
     "verified": "2026-11-09"
   },
   {
@@ -189,7 +189,7 @@ export const nyBatch8: NyRow[] = [
       "Advertising records are not the official commission record.",
       "The client's employer does not hold the public appointment record by this rule."
     ],
-    "source": "New York DOS, Notary Public License Law (September 2026), Introduction, p.2; Executive Law 131(6), p.6; https://dos.ny.gov/notary-public-license-law-0; verified 2026-11-09",
+    "source": "New York Executive Law § 131(1)(e), (f); https://www.nysenate.gov/legislation/laws/EXC/131",
     "verified": "2026-11-09"
   },
   {
@@ -198,7 +198,7 @@ export const nyBatch8: NyRow[] = [
     "topic": "seals-fees",
     "difficulty": "medium",
     "free": false,
-    "text": "A notary updates an address as part of the reappointment application. Does section 131(12) impose the separate mid-term $10 address-change fee on that change?",
+    "text": "A notary updates an address as part of the reappointment application. Does section 131(4)(a) impose the separate $10 address-change fee on that change?",
     "options": [
       "No; changes made in the reappointment application are excepted",
       "Yes; the $10 fee always applies in addition",
@@ -206,14 +206,14 @@ export const nyBatch8: NyRow[] = [
       "Yes; the fee doubles at reappointment"
     ],
     "correct": 0,
-    "why": "Section 131(12) excludes changes made in the reappointment application from this separate change fee.",
+    "why": "Section 131(4)(a) excludes changes made in the reappointment application from this separate change fee.",
     "miss": [
-      "Correct. Section 131(12) excludes changes made in the reappointment application from this separate change fee.",
+      "Correct. Section 131(4)(a) excludes changes made in the reappointment application from this separate change fee.",
       "The statute states an exception.",
       "The separate $60 reappointment fee remains.",
       "The statute does not double the change fee."
     ],
-    "source": "New York DOS, Notary Public License Law (September 2026), Executive Law 131(9),(12), p.6; https://dos.ny.gov/notary-public-license-law-0; verified 2026-11-09",
+    "source": "New York Executive Law § 131(2)(c), (4)(a); https://www.nysenate.gov/legislation/laws/EXC/131",
     "verified": "2026-11-09"
   },
   {

@@ -44,7 +44,7 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "Satisfactory evidence",
-        body: "A.R.S. § 41-255 separates personal knowledge from satisfactory evidence. Listed credentials include an unexpired passport, driver license or government-issued nondriver ID; other listed government identification must carry a signature or photograph and be satisfactory to the officer. A credible witness must make an oath or affirmation and be personally known to the officer or identified with a listed credential. Check the statute’s special rules for real-estate conveyances; do not assume every foreign credential works for every act.",
+        body: "A.R.S. § 41-255 separates personal knowledge from satisfactory evidence. The statute lists unexpired U.S. passports, state driver licenses and nonoperating IDs, U.S. military IDs, and other qualifying credentials. An ID in the other-government-ID category must be unexpired and satisfactory to the officer and have a signature or both a photo and a physical description. A credible witness personally knows the signer, appears before the notary, and verifies identity under oath or affirmation. The notary must personally know the witness or identify them using a listed credential. Real estate conveyances and financing have additional credential options.",
       },
       {
         heading: "Communication",
@@ -59,7 +59,7 @@ export const chapters: StudyChapter[] = [
     source_id: "ars_41_255",
     example: {
       heading: "Worked example: unreadable ID",
-      body: "A signer hands you a government card so damaged that the photograph and expiration date cannot be read. A.R.S. § 41-255(B) lists credentials that must be unexpired and otherwise match the statute. If you cannot read those facts, that card is not the listed credential. Use another method the statute allows—personal knowledge under § 41-255(A), a credible witness under § 41-255(B)(2), or additional credentials under § 41-255(D)—or stop. A journal note that says “ID damaged” does not create satisfactory evidence.",
+      body: "A signer hands you a driver's license with an unreadable photo and expiration date. If you cannot confirm the license is current or use it to identify the signer, ask for another qualifying credential or use personal knowledge or a credible witness under A.R.S. § 41-255. Stop if you cannot establish identity.",
     },
   },
   {
@@ -70,7 +70,7 @@ export const chapters: StudyChapter[] = [
     sections: [
       {
         heading: "What you are certifying",
-        body: "You are not swearing that the deed is valid or that the price is fair. You are certifying identity, appearance, and a voluntary acknowledgment of the signature.",
+        body: "The signer declares that they signed for the purpose stated in the record. Confirm the appearing signer’s identity and that the signature is theirs. You may refuse if you are not satisfied that they signed knowingly and voluntarily.",
       },
       {
         heading: "Prior signatures",
@@ -84,12 +84,12 @@ export const chapters: StudyChapter[] = [
     keyFacts: [
       "Acknowledgment ≠ oath that the document is true.",
       "Complete the venue for the place the act occurs.",
-      "Loose certificates are for space, not for missing signers.",
+      "Securely attach a separate paper certificate and describe the record as required by A.R.S. § 41-264(F).",
     ],
     source_id: "ars_41_253",
     example: {
       heading: "Worked example: two names, one person",
-      body: "The deed names two owners. Only one appears. A.R.S. § 41-254(A) requires the individual whose signature is the subject of the act to appear. Complete the acknowledgment only for the person in front of you, and write a certificate that names only who appeared. Do not claim the absent owner appeared, and do not sign that person’s name. Executing a certificate certifies compliance with the act actually performed (A.R.S. § 41-264(D)).",
+      body: "The deed names two owners. Only one appears. Complete the acknowledgment for that signer and identify only that signer in the certificate. Apply the deed thumbprint rule and its exceptions in A.R.S. § 41-254(C)–(D). Keep the absent owner off the certificate under §§ 41-254(A) and 41-264(D).",
     },
   },
   {
@@ -107,12 +107,11 @@ export const chapters: StudyChapter[] = [
         body: "An affirmation is a solemn, legally binding promise without required religious language. Offer it when a signer objects to an oath.",
       },
       {
-        heading: "Presence",
-        body: "The signature on a jurat is made in your presence as part of the act. That is a common exam trap versus acknowledgments.",
+        heading: "Completeness and signing",
+        body: "Under A.R.S. § 41-253(B), identify the signer by personal knowledge or satisfactory evidence and determine that the record is complete to the best of your knowledge. The Secretary of State’s October 2026 manual, page 28, directs you to give the oath or affirmation and then witness the signer sign.",
       },
     ],
     keyFacts: [
-      "Use certificate wording that accurately records the act performed.",
       "Oath/affirmation is personal to the signer.",
       "Match the certificate to the act actually performed.",
     ],
@@ -140,6 +139,10 @@ export const chapters: StudyChapter[] = [
         heading: "Privacy and access",
         body: "Separate public-record entries from entries that must remain confidential. Section 41-319 addresses a written request identifying the person, type of document and month/year for a certified copy of a public journal entry. Do not expose unrelated entries while fulfilling that request.",
       },
+      {
+        heading: "Journal delivery and retention",
+        body: "A.R.S. § 41-317(B) directs delivery of journals and other specified materials to the Secretary of State within three months of the listed commission-ending events. Subsection (C) sets a five-year minimum retention period for journals. The Secretary of State’s October 2026 manual, page 11, describes an exception to delivery for journals with no entries from the past five years. The statute does not expressly state that exception. Confirm the applicable SOS instructions before handling a journal with only older entries.",
+      },
     ],
     keyFacts: [
       "Contemporaneous sequential entries.",
@@ -156,7 +159,7 @@ export const chapters: StudyChapter[] = [
     id: "seals-fees",
     title: "Seal, Stamp & Fees",
     topic: "seals-fees",
-    summary: "The seal authenticates the certificate. Fees are capped by statute.",
+    summary: "The seal authenticates the certificate. An Arizona administrative rule sets notarial fee limits.",
     sections: [
       {
         heading: "Control of the seal",
@@ -168,7 +171,7 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "Fees vs. bond vs. E&O",
-        body: "Statutory fees are a ceiling. The surety bond protects the public. E&O insurance, if purchased, protects you. They are not the same product.",
+        body: "R2-12-1102 allows up to $10 per notary public signature for an acknowledgment or jurat, per page certified for a copy certification, and per act for an oath or affirmation. A notary may provide the service for free. The surety bond protects the public. Optional errors and omissions insurance covers the notary subject to the terms of the policy.",
       },
     ],
     keyFacts: [
@@ -198,12 +201,12 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "False certificates",
-        body: "Backdating, claiming an absent signer appeared, or notarizing a blank signature line is fraud, not customer service.",
+        body: "Date the certificate when you perform the act. Certify only who appeared and what you did. If a signature is required and missing, have the signer complete it before you certify the act.",
       },
     ],
     keyFacts: [
       "No notarizing your own signature.",
-      "Capacity and willingness are required.",
+      "You may refuse if you are unsure of the signer’s capacity or whether the signature is knowing and voluntary.",
       "Industry pressure is not a legal defense.",
     ],
     source_id: "ars_41_273",
@@ -224,7 +227,7 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "How to study a change",
-        body: "Read the chaptered session law and the effective date, then drill the new-laws question set. A.R.S. § 1-241 and § 1-244 control timing and non-retroactivity. A commission term does not freeze older handbook language.",
+        body: "Read the chaptered session law. Check for a special effective date in the act and verify the Legislature’s general effective date. A.R.S. § 1-241 distinguishes two ways a law may specify its effective day. Section 1-244 bars retroactive application unless the act expressly provides for it.",
       },
     ],
     keyFacts: [
@@ -245,11 +248,11 @@ export const chapters: StudyChapter[] = [
     sections: [
       {
         heading: "What the officer must determine",
-        body: "A.R.S. § 41-253(D) requires the officer who certifies or attests a copy to determine that the copy is a full, true, and accurate transcription or reproduction of the record or item. Guessing from memory is not that determination.",
+        body: "A.R.S. § 41-253(D) requires the officer to determine that the copy fully and accurately reproduces the record or item. For paper records, the Secretary of State’s October 2026 checklist, page 29, directs the notary to verify the original and make the copy themselves.",
       },
       {
         heading: "Arizona public records",
-        body: "Except as required under A.R.S. § 41-319, a notarial officer may not certify or attest a copy of a public record of this state. Journal public-record entries are the statutory exception when a certified copy of the journal is requested.",
+        body: "A.R.S. § 41-253(D) bars copy certification of Arizona public records except as § 41-319 requires for public journal entries. A written journal request identifies the month and year, whose signature was notarized, and the type of record or transaction. Direct requests for certified copies of other Arizona public records to their custodians.",
       },
       {
         heading: "Electronic records on paper",
@@ -283,13 +286,13 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "Before the first remote act",
-        body: "A.R.S. § 41-263(F) requires the notary to notify the Secretary of State before the first such act and to identify the technologies the notary intends to use. A casual video app is not a substitute for that notice and the statutory recording and identification rules.",
+        body: "Before the first remote act, notify the Secretary of State and identify the technology under A.R.S. § 41-263(F). Follow the prescribed application process and receive written authorization under R2-12-1302 and R2-12-1304. Use technology that satisfies the identification and recording rules.",
       },
     ],
     keyFacts: [
       "The notary must be located in Arizona for a remote act under § 41-263(B).",
       "RON identity may use personal knowledge, a credible witness, or at least two types of identity proofing.",
-      "The usual statutory recording floor is five years; the SB 1479 thumbprint exception requires seven years and the journal credential number.",
+      "The usual statutory recording minimum is five years. A.R.S. § 41-254(D)(3) makes a journal credential number and at least seven years of recording retention conditions of the remote thumbprint exception. A.A.C. R2-12-1309(A)(5) excludes the credential's serial or identification number from the journal description when credential analysis and identity proofing are used. The application of those provisions together is under review.",
     ],
     source_id: "ars_41_263",
     example: {

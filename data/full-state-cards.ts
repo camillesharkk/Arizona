@@ -293,10 +293,10 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
     {
       "id": "ar-card-027",
       "study": "seals-fees",
-      "title": "Reasonable fees",
-      "front": "What governs a charged Arkansas notarial fee?",
+      "title": "Reasonable traditional fees",
+      "front": "What governs a charged fee for a traditional Arkansas notarization?",
       "rule": "The fee must be reasonable, disclosed and agreed in advance.",
-      "boundary": "A notary may provide a free service.",
+      "boundary": "A notary may provide the traditional service for free. Check the separate electronic-notary sources before applying this rule to an electronic act.",
       "mixup": "Advance agreement alone does not remove reasonableness.",
       "source": "Arkansas Notary Public & eNotary Handbook, p. 18",
       "sourceUrl": "https://www.sos.arkansas.gov/uploads/bcs/NotaryHandbook2025.pdf"
@@ -526,11 +526,11 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "electronic-ron",
       "title": "Recording retention",
       "front": "Who retains the remote act recording and for how long?",
-      "rule": "The solution provider retains it for five years.",
-      "boundary": "Check the provider's actual storage arrangement.",
+      "rule": "Maintain the electronic record, including the recording, for at least five years.",
+      "boundary": "Confirm the provider’s retention arrangement and continued access.",
       "mixup": "The two-year training interval is a different period.",
-      "source": "Secretary of State eNotary and RON instructions, Recording retention",
-      "sourceUrl": "https://sos.arkansas.gov/business-commercial-services-bcs/enotary/"
+      "source": "A.C.A. § 21-14-310, enacted by Act 1047 of 2021",
+      "sourceUrl": "https://www.arkleg.state.ar.us/Acts/Document?type=pdf&act=1047&ddBienniumSession=2021%2F2021R"
     },
     {
       "id": "ar-card-049",
@@ -648,12 +648,12 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "id": "co-card-009",
       "study": "identification",
       "title": "Ordinary ID features",
-      "front": "Which ordinary documentary features are listed?",
-      "rule": "Government ID has a photograph or signature and is current or expired one year or less.",
-      "boundary": "Remote identification has separate requirements.",
-      "mixup": "Do not import the remote both-feature rule into every paper act.",
-      "source": "Colorado powers and duties FAQs, Q6",
-      "sourceUrl": "https://www.coloradosos.gov/pubs/notary/FAQ/duties.html"
+      "front": "What does another form of government ID need for an in-person act?",
+      "rule": "A government-issued credential outside the passport, driver’s license, or government-issued nondriver ID card category must contain the signer’s signature or photograph and be satisfactory to the notary.",
+      "boundary": "Both statutory ID categories allow a current ID or one expired no more than one year. Remote notarization has separate identification rules.",
+      "mixup": "The statute adds the signature-or-photograph requirement to the other government ID category.",
+      "source": "C.R.S. § 24-21-507(2)(a)(I)–(II), (3)",
+      "sourceUrl": "https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf#page=4"
     },
     {
       "id": "co-card-010",
@@ -824,12 +824,12 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "id": "co-card-025",
       "study": "acknowledgments",
       "title": "Relative interests",
-      "front": "Which relatives are included in conflict screening?",
-      "rule": "The FAQ lists spouse/civil-union partner, ancestors, descendants and siblings including half/step siblings.",
-      "boundary": "Apply the stated record-interest conditions.",
-      "mixup": "Certifying only another party's signature does not necessarily remove the conflict.",
-      "source": "Colorado powers and duties FAQs, Q18",
-      "sourceUrl": "https://www.coloradosos.gov/pubs/notary/FAQ/duties.html"
+      "front": "When does a Colorado notary have a disqualifying interest?",
+      "rule": "Decline when the notary, spouse, civil-union partner, ancestor, descendant or sibling is a party to or named in the record.",
+      "boundary": "A separate conflict exists when the notary, spouse or civil-union partner would receive a direct benefit that exceeds the proper fee.",
+      "mixup": "Check who is named in or a party to the record, even when their signature is not the one being notarized.",
+      "source": "C.R.S. § 24-21-504(2)(a)–(b)",
+      "sourceUrl": "https://www.coloradosos.gov/pubs/info_center/laws/RULONA.pdf#page=2"
     },
     {
       "id": "co-card-026",
@@ -1388,7 +1388,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "journals",
       "title": "Law-firm retained copies",
       "front": "When may office document copies support the special exception?",
-      "rule": "A notary employed by an attorney or law firm need not journal employment notarizations if the employer maintains copies of the notarized documents.",
+      "rule": "The administrative rule describes an exception for employment notarizations when the attorney or law firm keeps copies. The Act says employer records do not relieve the notary’s journal duties.",
       "boundary": "Outside-employment acts do not automatically share the exception.",
       "mixup": "The rule is more specific than an ordinary employer's recordkeeping policy.",
       "source": "Illinois Register, January 10, 2025, adopted notary amendments — §176.900(f)",
@@ -1400,8 +1400,8 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Law-firm ownership and privilege",
       "front": "Which special protections accompany law-firm journals?",
       "rule": "A journal solely of notarizations within that employment belongs to the employing attorney or firm. The rule preserves attorney-client privilege against required violation through inspection.",
-      "boundary": "Apply the provision to its stated employment facts.",
-      "mixup": "A general employer rule should not erase this specific exception.",
+      "boundary": "The Act bars employer retention of the notary’s journal after employment ends.",
+      "mixup": "Read the rule’s limited ownership language alongside the Act’s separate custody requirement.",
       "source": "Illinois Register, January 10, 2025, adopted notary amendments — §176.900(f)",
       "sourceUrl": "https://www.ilsos.gov/content/dam/departments/index/register/volume49/register_volume49_2.pdf"
     },
@@ -1477,7 +1477,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Ordinary custody",
       "front": "Who controls a nonexempt ordinary journal?",
       "rule": "The notary keeps custody and secure exclusive access during the commission. The ordinary termination rule bars surrender to the employer.",
-      "boundary": "The special attorney/law-firm provision must be considered where applicable.",
+      "boundary": "The Act bars employer retention on termination. Rule 176.900(f) separately describes journals used exclusively for qualifying law-firm work.",
       "mixup": "Employer payment alone does not transfer ordinary custody.",
       "source": "Illinois Register, June 16, 2023, adopted Part 176 rules — §176.940(a); §3-107(d); §176.900(f)",
       "sourceUrl": "https://www.ilsos.gov/content/dam/departments/index/register/volume47/register_volume47_24.pdf"
@@ -1532,7 +1532,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Non-English advertising",
       "front": "Which disclosures accompany covered advertising?",
       "rule": "The covered nonattorney notary supplies the required conspicuous notice in English and the advertising language, and follows the related fee posting and acknowledgment rules.",
-      "boundary": "The Act has specified qualifications and exceptions that must be checked.",
+      "boundary": "The notice requirement described here exempts attorneys and accredited immigration representatives.",
       "mixup": "Translating a title to imply attorney status does not expand authority.",
       "source": "Illinois Notary Public Handbook — §3-103(a)-(c-5)",
       "sourceUrl": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf"
@@ -1554,7 +1554,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Itemized fee evidence",
       "front": "What records accompany charged services?",
       "rule": "Provide itemized receipts and keep fee records. Show notarial fees separately from other charges.",
-      "boundary": "Ordinary and electronic act ceilings still apply.",
+      "boundary": "Ordinary and electronic act ceilings still apply. Do not charge for notarizing the Driver Services Homeless Status Certification form.",
       "mixup": "A single unlabeled total obscures the statutory fee evidence.",
       "source": "Illinois Notary Public Handbook — §3-104(e)",
       "sourceUrl": "https://www.ilsos.gov/publications/pdf_publications/ipub16.pdf"
@@ -1629,8 +1629,8 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "id": "il-card-048",
       "study": "electronic-ron",
       "title": "Compromised electronic seal",
-      "front": "What follows discovery of compromise?",
-      "rule": "Notify appropriate law enforcement, the technology vendor and the Secretary no later than the next business day. Keep seal access under exclusive control.",
+      "front": "What notice follows theft, compromise, or vandalism of an electronic signature or seal?",
+      "rule": "Notify appropriate law enforcement, the technology vendor and the Secretary no later than the next business day after the incident. Keep the electronic seal under your exclusive control.",
       "boundary": "An ineffective or insecure device requires stopping electronic acts until the statutory replacement steps are met.",
       "mixup": "A coworker's trusted status does not authorize password sharing.",
       "source": "Illinois Notary Public Handbook — §3-101(c)-(d)",
@@ -1677,7 +1677,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "First-commission examination",
       "front": "Who faces the statutory examination requirement?",
       "rule": "An applicant without a current Maine commission must pass the Secretary-administered or approved examination based on the official course.",
-      "boundary": "The verified materials do not establish a current first-exam question count, clock or passing percentage.",
+      "boundary": "The current paper application includes a specific initial examination. Maine uses a separate online renewal exam. The paper form does not establish the renewal exam’s questions, a timer, or a passing percentage.",
       "mixup": "A practice-bank score is not the state's required examination result.",
       "source": "Maine Revised Statutes, Title 4 §1923 — §1923",
       "sourceUrl": "https://legislature.maine.gov/statutes/4/title4sec1923.html"
@@ -2172,7 +2172,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Absent tangible declaration method",
       "front": "How does the statutory paper declaration procedure connect the records?",
       "rule": "The principal signs the record and attached/integrated declaration during recording, sends both within four days, and the officer completes the stated certificate after receipt.",
-      "boundary": "A compliant act is effective on the declaration-signing date. The statute preserves other qualifying same-record procedures.",
+      "boundary": "A compliant act is effective on the declaration-signing date. Section 1915(7) preserves other qualifying same-record procedures. For a remote acknowledgment where the paper is outside the officer’s possession, Chapter 700 specifically describes the declaration method.",
       "mixup": "This defined method should not be reduced to emailing a signature page.",
       "source": "Maine Revised Statutes, Title 4 §1915 — §1915(5)-(7)",
       "sourceUrl": "https://legislature.maine.gov/statutes/4/title4sec1915.html"
@@ -2205,7 +2205,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Electronic presence distinction",
       "front": "How do format and physical distance differ?",
       "rule": "The FAQ's in-person electronic procedure uses electronic records/signatures with the signer present. Remote work uses approved simultaneous sight-and-sound communication.",
-      "boundary": "The official guidance requires stamps and journals for electronic and remote acts.",
+      "boundary": "The statute requires a stamp for an electronic-record act. For a tangible record, the statute permits a stamp while the remote FAQ gives stricter guidance. Check the record format and the current official instructions.",
       "mixup": "An electronic record is not automatically a remote transaction.",
       "source": "Maine Secretary of State notary FAQs — Q10–14,Q23",
       "sourceUrl": "https://www.maine.gov/sos/cec/notary/faqnp.pdf"
@@ -2480,7 +2480,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "id": "md-card-025",
       "study": "journals",
       "title": "Successor custody",
-      "front": "Who acts after death or incompetency?",
+      "front": "Who handles the journal after death or adjudication of incompetency?",
       "rule": "The representative, guardian or knowing possessor follows the approved repository/storage disposition in §18-219(g).",
       "boundary": "The separate recording-successor notice rule may also apply to remote records.",
       "mixup": "An arbitrary storage company is not automatically an approved repository.",
@@ -2548,7 +2548,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Paper stamp duty",
       "front": "Which ordinary paper act requires an official impression?",
       "rule": "A notary public performing an act on a tangible record affixes or embosses the official stamp on the certificate.",
-      "boundary": "The statute separately uses may for an electronic-record officer's stamp association, with other standards applicable.",
+      "boundary": "For an electronic record, §18-223(f)(1) requires a Maryland notary public to attach or logically associate the electronic signature and official stamp using a qualifying digital certificate.",
       "mixup": "Do not import another state's optional ordinary-paper stamp rule.",
       "source": "Maryland State Government §18-215 — §18-215(b)",
       "sourceUrl": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-215&enactments=false"
@@ -2570,7 +2570,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Device exit and loss",
       "front": "What ends a device's usable life?",
       "rule": "On the statutory resignation, revocation, commission/device expiration events, render it unusable. Promptly report loss or theft.",
-      "boundary": "A responsible possessor has disabling duties after death or incompetency.",
+      "boundary": "A responsible possessor has disabling duties after death or adjudication of incompetency.",
       "mixup": "Simply hiding a still-usable stamp does not necessarily achieve disabling.",
       "source": "Maryland State Government §18-218 — §18-218",
       "sourceUrl": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gsg&section=18-218&enactments=false"
@@ -2734,7 +2734,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "electronic-ron",
       "title": "Vendor and renewal changes",
       "front": "What keeps remote authorization current?",
-      "rule": "Notify a new vendor within ten business days, promptly report a vendor compliance concern, and submit a new remote notification on renewal.",
+      "rule": "Notify the Secretary of State in writing within ten business days after switching to a new authorized vendor. Promptly report reasonable vendor compliance concerns to the Secretary in writing. Submit a new remote notification on renewal.",
       "boundary": "Remote authority expires with the ordinary commission and may be canceled by written notice.",
       "mixup": "An active vendor subscription does not extend an expired commission.",
       "source": "COMAR 01.02.08.07 Remote Notary Obligations — .07A(2),B-D",
@@ -2857,11 +2857,11 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "commission",
       "title": "Information amendments",
       "front": "What changes need prompt reporting?",
-      "rule": "The FAQ requires the stated ten-day signed notices for address and legal-name changes, with old/new details and required fees/evidence.",
-      "boundary": "Address/name changes also require written surety notice. A name change includes an amended bond and new confirmed-name seal.",
+      "rule": "Send the Secretary a signed notice within ten days after a covered address change or a legal name change. Include the old and new information and required supporting documents.",
+      "boundary": "After a regular workplace or business move, wait to notarize until you send the notice, receive state confirmation, and notify the surety in writing. For a name change, follow the separate seal, surety and amended-bond requirements.",
       "mixup": "Updating an employer's file does not update the state and surety records.",
-      "source": "Missouri Secretary of State notary FAQs — Q16–18",
-      "sourceUrl": "https://s1.sos.mo.gov/business/notary/notary_faq"
+      "source": "RSMo §§486.780 and 486.785; Missouri SOS FAQ 16–18",
+      "sourceUrl": "https://revisor.mo.gov/main/OneSection.aspx?section=486.780"
     },
     {
       "id": "mo-card-010",
@@ -2978,8 +2978,8 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "journals",
       "title": "Death and representatives",
       "front": "Who handles the records after death?",
-      "rule": "The representative notifies the Secretary, forwards seals as soon as reasonably practicable and forwards journal/notarial records within 30 days.",
-      "boundary": "Use the death-specific instructions in §486.800.",
+      "rule": "The personal representative notifies the Secretary of State in writing and sends the journal and notarial records within 30 days.",
+      "boundary": "Confirm paper-seal disposition separately. The forwarding and destruction provisions differ.",
       "mixup": "Official records do not become disposable personal stationery.",
       "source": "Missouri Revised Statutes §486.800 — §486.800",
       "sourceUrl": "https://revisor.mo.gov/main/OneSection.aspx?section=486.800"
@@ -3012,7 +3012,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "One or two credible witnesses",
       "front": "How are the ordinary witness routes structured?",
       "rule": "Use one disinterested witness personally known to the notary who knows the principal, or two disinterested witnesses who each know the principal and present qualifying ID.",
-      "boundary": "The witness takes the oath or affirmation identifying the principal.",
+      "boundary": "Each participating witness takes an oath or affirmation to vouch for the principal’s identity.",
       "mixup": "One unknown unsworn companion does not satisfy either route.",
       "source": "Missouri Revised Statutes §486.600 — §486.600(7),(21)(b)",
       "sourceUrl": "https://revisor.mo.gov/main/OneSection.aspx?section=486.600"
@@ -3175,10 +3175,10 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "id": "mo-card-038",
       "study": "seals-fees",
       "title": "Seal event handling",
-      "front": "What follows seal damage or termination?",
-      "rule": "Report listed loss/theft/damage/illegibility within ten days, with theft/vandalism law-enforcement information. Follow the specific disposal route for the cessation event.",
-      "boundary": "Revocation calls for forwarding the seal to the Secretary. Death has the specific representative instructions in §486.800.",
-      "mixup": "A broad destroy-seal summary should not erase a specific statutory forwarding duty.",
+      "front": "What does Missouri require after loss, damage or illegibility of a paper seal?",
+      "rule": "Notify the Secretary in a receipt-producing manner within ten days. For theft or vandalism, also notify law enforcement.",
+      "boundary": "The paper-seal disposal provisions differ for revocation and death. Keep the seal secure and confirm the instructions that apply before disposing of it.",
+      "mixup": "A reporting deadline and a disposal method address different duties.",
       "source": "Missouri Revised Statutes §486.725 — §486.725.4-6; §486.800",
       "sourceUrl": "https://revisor.mo.gov/main/OneSection.aspx?section=486.725"
     },
@@ -3652,9 +3652,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "A solemn participant's act",
       "front": "What makes an oath or affirmation more than a signature?",
       "rule": "The person knowingly and willingly makes the statement with intent to be bound, and the officer establishes the person's identity.",
-      "boundary": "The person must participate through the authorized appearance method.",
+      "boundary": "A verification on oath or affirmation also involves signing the record.",
       "mixup": "A silent stamp does not administer a solemn declaration.",
-      "source": "MCA 1-5-603(7), (9)",
+      "source": "MCA 1-5-603(7)",
       "sourceUrl": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0050/part_0060/section_0030/0010-0050-0060-0030.html"
     },
     {
@@ -3765,7 +3765,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Check current agency instructions for the actual transaction.",
       "mixup": "A remaining blank stamp box on an old form does not itself prove a current requirement.",
       "source": "SOS Vehicle Title Transfer Updates",
-      "sourceUrl": "https://sosmt.gov/notary/"
+      "sourceUrl": "https://sosmt.gov/notary/MVTitles/"
     },
     {
       "id": "mt-card-042",
@@ -3809,7 +3809,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Use the current statutory duties and agency instructions for the transfer involved.",
       "mixup": "A notary commission does not guarantee the agency will approve a client's transfer paperwork.",
       "source": "SOS Vehicle Title Transfer Updates — agency referral",
-      "sourceUrl": "https://sosmt.gov/notary/"
+      "sourceUrl": "https://sosmt.gov/notary/MVTitles/"
     },
     {
       "id": "mt-card-046",
@@ -4426,7 +4426,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Instruction minimum",
       "front": "What is the ordinary mandatory course's statutory minimum?",
       "rule": "At least three hours of instruction and an examination.",
-      "boundary": "The course may be provided by SOS or an approved vendor.",
+      "boundary": "The statute permits approved vendors. Current agency instructions direct traditional applicants to the Secretary of State’s training site.",
       "mixup": "Instructional hours do not establish examination duration.",
       "source": "NRS 240.018(1)",
       "sourceUrl": "https://www.leg.state.nv.us/NRS/NRS-240.html"
@@ -4896,13 +4896,13 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
     {
       "id": "nv-card-044",
       "study": "course-validity",
-      "title": "Unverified test metrics",
-      "front": "What ordinary examination metrics remain unconfirmed in the opened sources?",
-      "rule": "Question count, duration and numerical passing threshold.",
-      "boundary": "The principal's remote KBA has separately stated metrics.",
-      "mixup": "KBA's eighty percent is not proof of a Commission Exam passing score.",
-      "source": "NAC 240.697; LMS Commission Exam requirements",
-      "sourceUrl": "https://www.leg.state.nv.us/NAC/NAC-240.html"
+      "title": "Traditional examination score",
+      "front": "What passing score does the Nevada Secretary of State list for the traditional exam?",
+      "rule": "At least 80%.",
+      "boundary": "The public instructions reviewed do not specify the question count or duration.",
+      "mixup": "The remote signer’s KBA identity test is separate even though its passing percentage is also 80%.",
+      "source": "Nevada Secretary of State — Training and Exam Requirements",
+      "sourceUrl": "https://nvsos.gov/index.aspx?page=165"
     },
     {
       "id": "nv-card-045",
@@ -4989,7 +4989,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Initial prerequisites",
       "front": "What proof does the nonattorney initial applicant supply?",
       "rule": "Successful completion of the Treasurer's required course and prescribed examination.",
-      "boundary": "The portal directs manual reading, full video-series viewing and attestation.",
+      "boundary": "The portal directs applicants to read the manual and watch the full training-video series. The law requires acknowledgment of reading and understanding the manual and completion of required education.",
       "mixup": "Buying study access is different from official completion.",
       "source": "2026 Manual, Chapter 4; official exam portal",
       "sourceUrl": "https://www.njportal.com/DOR/NotaryExam/"
@@ -5099,7 +5099,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Longer lapse",
       "front": "What lapse triggers new-applicant exam treatment in the portal?",
       "rule": "Expiration more than thirty days earlier triggers the stated new-applicant treatment.",
-      "boundary": "Do not infer continuing authority from application classification.",
+      "boundary": "The exam requirement applies to nonattorney applicants. Application classification does not extend acting authority.",
       "mixup": "A lapse rule is different from an extension of the old commission.",
       "source": "Official Notary Exam Portal",
       "sourceUrl": "https://www.njportal.com/DOR/NotaryExam/"
@@ -5131,11 +5131,11 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "lapsed-commission",
       "title": "Post-service records",
       "front": "What continues after resignation or suspension?",
-      "rule": "Journal retention or the prescribed secure-transmission route continues.",
-      "boundary": "The record period is measured from the last chronicled act.",
+      "rule": "Keep the journal for the required period and notify the State Treasurer where it is stored, or transmit it under the prescribed instructions.",
+      "boundary": "The location notice applies if the former notary keeps the journal after resignation, revocation or suspension.",
       "mixup": "Ending current service does not erase historical evidence.",
-      "source": "2026 Manual, Chapter 6",
-      "sourceUrl": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf"
+      "source": "N.J.S.A. 52:7-10.18(d)–(e)",
+      "sourceUrl": "https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM"
     },
     {
       "id": "nj-card-016",
@@ -5295,12 +5295,12 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "id": "nj-card-030",
       "study": "identity",
       "title": "Remote proofing",
-      "front": "What does the manual add to visual remote ID verification?",
-      "rule": "Use a specified dynamic KBA, biometric or trusted-certificate proofing method under its stated standards.",
-      "boundary": "Visual display and identity proofing are distinct components.",
-      "mixup": "A camera image alone does not establish the complete manual workflow.",
-      "source": "2026 Manual, Chapter 8",
-      "sourceUrl": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf"
+      "front": "Which remote identity routes does New Jersey law recognize?",
+      "rule": "New Jersey law recognizes personal knowledge, a qualifying credible witness, or at least two different types of identity proofing.",
+      "boundary": "The statutes and adopted rules govern the available routes. Review the current standards before using credentials or proofing services.",
+      "mixup": "Do not assume that seeing an ID alone establishes the technology-based route.",
+      "source": "N.J.S.A. 52:7-10.10(d)(1)",
+      "sourceUrl": "https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM"
     },
     {
       "id": "nj-card-031",
@@ -5585,9 +5585,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Ordinary examination threshold",
       "front": "What score establishes passage of the ordinary required examination?",
       "rule": "An applicant must provide proof of passing the approved examination with a score of at least eighty percent.",
-      "boundary": "The reviewed official materials do not establish an examination question count or time allowance.",
+      "boundary": "The Secretary of State’s approved provider gives ordinary applicants 60 minutes to answer 50 questions in one sitting.",
       "mixup": "An identity-proofing quiz's two-minute limit is a different specification.",
-      "source": "12.9.3.10(C) NMAC",
+      "source": "12.9.3.10(C) NMAC; NNA Ordinary Exam Instructions",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
     },
     {
@@ -5629,9 +5629,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "RON examination is separate",
       "front": "What examination accompanies RON qualification?",
       "rule": "RON authorization requires the approved remote-notarization course and examination, with proof of a score of at least eighty percent.",
-      "boundary": "The RON training fee is separate from the RON application fee.",
+      "boundary": "The exam and course fee is separate from the RON application fee. The approved provider gives applicants 60 minutes to answer 50 questions in one sitting.",
       "mixup": "Passing ordinary training does not automatically grant remote authority.",
-      "source": "12.9.4.8(A)(4); 12.9.4.9 NMAC",
+      "source": "12.9.4.9 NMAC; NNA RON Exam Instructions",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0004.html"
     },
     {
@@ -5695,7 +5695,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Commissioned stamp identity",
       "front": "Which identifying details belong on a commissioned notary's stamp?",
       "rule": "The stamp includes the commissioned legal name, commission number, expiration date, and required New Mexico designation and official seal.",
-      "boundary": "The name must match the commission.",
+      "boundary": "The name must match the commission. A stamp registered before the 2023 change may be used until that commission expires.",
       "mixup": "A company logo does not replace the official identifiers.",
       "source": "14-14A-16, amended2023; 12.9.3.14 NMAC",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
@@ -5873,7 +5873,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "rule": "The individual declares execution for the record's stated purpose and, in a representative capacity, proper authority and execution as the represented person's act.",
       "boundary": "Identify the individual appearing.",
       "mixup": "A representative acknowledgment does not establish the underlying facts as sworn testimony.",
-      "source": "14-14A-2(1); 14-14A-4(A), amended2023",
+      "source": "NMSA 1978 §§ 14-14A-2(A)(1)–(2) and 14-14A-4(A)",
       "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
     },
     {
@@ -5895,8 +5895,8 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "rule": "The principal may direct someone other than the notarial officer to sign, and the officer records the required directed-signature notation.",
       "boundary": "The principal's direction remains essential.",
       "mixup": "The officer cannot become the directed signer in the officer's own act.",
-      "source": "14-14A-8, amended2023",
-      "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
+      "source": "NMSA 1978 § 14-14A-8 (2021 SB 12, § 8, p. 13)",
+      "sourceUrl": "https://www.nmlegis.gov/Sessions/21%20Regular/final/SB0012.PDF"
     },
     {
       "id": "nm-card-035",
@@ -5937,10 +5937,10 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Copy fee minimum",
       "front": "How is the ordinary copy-certification fee ceiling calculated?",
       "rule": "The maximum is fifty cents per page with a minimum total charge of five dollars.",
-      "boundary": "Apply the special copy provision to the page count.",
+      "boundary": "An officer may charge less than the scheduled amount or waive the fee.",
       "mixup": "A separate five-dollar charge for every page is not the stated copy-fee formula.",
-      "source": "14-14A-28(C); SOS Handbook, Fees",
-      "sourceUrl": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf"
+      "source": "NMSA 1978 § 14-14A-28(A), (C)(4)",
+      "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
     },
     {
       "id": "nm-card-039",
@@ -5959,9 +5959,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Certified tangible original",
       "front": "How does the remote rule treat a certified tangible copy of an electronic record?",
       "rule": "A certified tangible copy with the required copy certificate is considered an original record under the rule.",
-      "boundary": "The short form for copy certification remains required.",
+      "boundary": "The certificate must substantially follow the statutory short form for certifying a copy.",
       "mixup": "An uncertified printout does not acquire that status merely by coming from a RON platform.",
-      "source": "12.9.4.16(B) NMAC",
+      "source": "12.9.4.16(B) NMAC; NMSA 1978 § 14-14A-15(E)",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0004.html"
     },
     {
@@ -6047,10 +6047,10 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Sole custody",
       "front": "Who controls the journal while the officer works for an employer?",
       "rule": "The officer keeps the journal secure under the officer's control.",
-      "boundary": "The employer may receive clearly marked copies of relevant entries as allowed by the statute.",
+      "boundary": "A former employer may retain a clearly marked copy under the rule.",
       "mixup": "Employment does not transfer the original journal to the employer.",
-      "source": "12.9.3.15(B)-(D) NMAC",
-      "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
+      "source": "12.9.3.15(B)–(D) NMAC",
+      "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
     },
     {
       "id": "nm-card-049",
@@ -7373,7 +7373,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Unknown credible individual",
       "front": "Can a witness unknown to the notary ever be used?",
       "rule": "The current code permits the specified route using the witness's qualifying identification and oath concerning the principal.",
-      "boundary": "Remote use adds the applicable secondary authentication.",
+      "boundary": "In the applicable remote witness route, the unfamiliar witness also undergoes secondary authentication. Check the remote signer’s separate documentation requirement.",
       "mixup": "Merely introducing a stranger does not complete the route.",
       "source": "Utah 46-1-2(25)(a)(i)(D)",
       "sourceUrl": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf"
@@ -7526,7 +7526,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "journal",
       "title": "ID data minimization",
       "front": "Which identification number detail is required in the new entry?",
-      "rule": "Record the last four digits together with type, issuer, issue date and expiration date.",
+      "rule": "For a commission received on or after May 6, 2026, record the last four digits together with type, issuer, issue date and expiration date when the identity method requires it.",
       "boundary": "The rule does not call for writing the complete number in this field.",
       "mixup": "A bare note saying 'ID checked' omits required details.",
       "source": "Utah 46-1-14.1(2)(b)(iv)",
@@ -7538,7 +7538,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Grouped entry boundary",
       "front": "When can multiple acts share one entry?",
       "rule": "The acts must involve the same individual at the same time on one record or similar records.",
-      "boundary": "Different individuals do not satisfy the grouped-entry rule.",
+      "boundary": "This grouping rule applies to commissions received on or after May 6, 2026. Different individuals do not qualify.",
       "mixup": "A shared employer alone does not authorize grouping unrelated appointments.",
       "source": "Utah 46-1-14.1(4)(a)",
       "sourceUrl": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf"
@@ -7549,7 +7549,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Coworker signature exception",
       "front": "What conditions support the limited repeated-signature exception?",
       "rule": "The prior act within 180 days, personal knowledge, employer-or-coworker role, ordinary business transaction and required notation must all be present.",
-      "boundary": "This is an exception to the journal signature requirement.",
+      "boundary": "This journal-signature exception applies to a commission received on or after May 6, 2026.",
       "mixup": "One condition by itself does not remove the entry requirements.",
       "source": "Utah 46-1-14.1(4)(b)(i)",
       "sourceUrl": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf"
@@ -7560,7 +7560,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Refusal record",
       "front": "What should the journal preserve after a refusal?",
       "rule": "Record obtainable required information and describe the reason for refusing or not completing the act.",
-      "boundary": "An uncompleted act can still require an entry.",
+      "boundary": "The refusal-entry requirement applies to a commission received on or after May 6, 2026.",
       "mixup": "Deleting the appointment is not the required journal response.",
       "source": "Utah 46-1-14.1(5)",
       "sourceUrl": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf"
@@ -7647,8 +7647,8 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "remote",
       "title": "Secondary identity",
       "front": "What additional authentication accompanies applicable remote evidence?",
-      "rule": "Use the statutory secondary-authentication requirement, including its application to the unknown credible-witness route.",
-      "boundary": "Knowledge-based or biometric methods must meet the statutory definitions and applicable rules.",
+      "rule": "In the statutory remote witness route, an unfamiliar credible witness undergoes secondary authentication.",
+      "boundary": "Section 46-1-3.6 separately specifies a qualifying ID image for an unfamiliar remote signer. Check both rules.",
       "mixup": "Passing identity authentication does not administer a jurat oath.",
       "source": "Utah 46-1-2(25)-(26)",
       "sourceUrl": "https://le.utah.gov/xcode/Title46/Chapter1/C46-1_1800010118000101.pdf"
@@ -8168,7 +8168,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "front": "What current ordinary renewal minimum applies?",
       "rule": "One approved hour in the preceding biennial period unless exempt.",
       "boundary": "The endorsement adds a relevant hour.",
-      "mixup": "An older exam question listing two hours does not change the current rules.",
+      "mixup": "Use the current renewal rule. The public May 2026 exam form omits the one-hour choice in its ordinary-renewal item.",
       "source": "Vermont Rule 9-1; February 2026 renewal instructions",
       "sourceUrl": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf"
     },
@@ -8386,12 +8386,12 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
     {
       "id": "wi-card-010",
       "study": "commission",
-      "title": "Transition calendar",
-      "front": "How is the November 2026 system notice used?",
-      "rule": "The opened page schedules the new system for November 16 at 7 a.m. Central.",
-      "boundary": "On the November 14 check date this is a future transition notice.",
-      "mixup": "A scheduled system change does not itself waive examination or revoke commissions.",
-      "source": "Wisconsin DFI Notary File Online",
+      "title": "Wisconsin online filing",
+      "front": "Where does DFI direct four-year applicants and renewals to file online?",
+      "rule": "Use the Wisconsin Integrated Management System (WIMS) linked from DFI’s Notary File Online page.",
+      "boundary": "The DFI tutorial exam is separate. Save the passing certificate as directed.",
+      "mixup": "Using WIMS does not waive the examination, oath or bond.",
+      "source": "DFI Notary File Online",
       "sourceUrl": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx"
     },
     {
@@ -8740,11 +8740,11 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "remote",
       "title": "Provider authority",
       "front": "What makes an ordinary RON system usable?",
-      "rule": "It is approved for Wisconsin use and the notary completes its training and authorization.",
-      "boundary": "Multiple platforms require onboarding with each.",
+      "rule": "Complete training on a Wisconsin-approved platform. Notify DFI of the platform, upload your digital seal and signature, and wait for DFI approval.",
+      "boundary": "Each platform needs onboarding. The provider has its own separate duty to report users it authorizes.",
       "mixup": "A generic meeting subscription is not approval.",
-      "source": "Wisconsin DFI Remote guide 2B",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "source": "Wisconsin DFI Remote Online Notary",
+      "sourceUrl": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx"
     },
     {
       "id": "wi-card-043",
@@ -9635,11 +9635,11 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "copies",
       "title": "Comparison procedure",
       "front": "Make the required copy determination personally.",
-      "rule": "Copy certification involves copying, supervising the copying or comparing the original and copy and determining accuracy and completeness.",
-      "boundary": "The notary's certificate must accurately describe the procedure performed.",
+      "rule": "Before certifying an eligible copy, verify that it is complete and accurate. The Standards list comparison with the original as an alternative to making or supervising the copy.",
+      "boundary": "The SOS Manual and Quick Reference instructions say to make or supervise the copy, then compare it with the original. If a customer brings a copy made elsewhere, make a fresh copy or supervise the copying and compare it before certifying.",
       "mixup": "The customer's unsupported assurance does not replace the notary's determination.",
-      "source": "Section 2(c)",
-      "sourceUrl": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf"
+      "source": "Standards § 2(c)(2)–(4) and Notary Public Manual, p. 14",
+      "sourceUrl": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf#page=14"
     },
     {
       "id": "ri-card-024",
@@ -9746,7 +9746,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Nonlawyer advertising",
       "front": "Use the statutory disclosure across advertisement languages.",
       "rule": "A non-RI-attorney advertising notarial services must include the prominent statutory or authorized alternative disclaimer in each language used.",
-      "boundary": "The statute also restricts notario titles for non-RI-attorney notaries.",
+      "boundary": "The statute restricts notario titles. If an ad outside broadcast media, print media, and the internet is too small for the disclaimer, display it prominently or provide it at the place of performance before the act.",
       "mixup": "A disclaimer cannot authorize the legal or immigration services the commission does not grant.",
       "source": "Section 42-30.1-18(b)-(d)",
       "sourceUrl": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-18.htm"
@@ -9834,10 +9834,10 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Capacity assessment",
       "front": "Assess the individual rather than relying on a stereotype.",
       "rule": "A notarial officer may refuse if unsatisfied about capacity or a knowingly and voluntarily made signature.",
-      "boundary": "The Standards prohibit refusal solely on listed grounds such as advanced age or disability.",
+      "boundary": "The Standards prohibit refusal solely on listed grounds such as advanced age or disability. Since June 10, 2026, a notarial officer may refuse if the signer provides too little information for identity proofing under § 42-30.1-6 or § 42-30.1-12.1, or does not agree to pay for it.",
       "mixup": "A disability does not automatically establish incapacity.",
-      "source": "Section 42-30.1-7(a)",
-      "sourceUrl": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-7.htm"
+      "source": "R.I. Gen. Laws § 42-30.1-7(a)–(b); P.L. 2026, ch. 54, § 2",
+      "sourceUrl": "https://webserver.rilegislature.gov/PublicLaws/law26/law26054.htm"
     },
     {
       "id": "ri-card-042",
@@ -10232,9 +10232,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Record content beyond identity",
       "front": "Capture the statutory instrument, participant and land details.",
       "rule": "Section 406.014 lists signer and grantee information, identification or introducer details, description and applicable land or proof-witness information.",
-      "boundary": "Apply the specific fields to the actual instrument and procedure.",
+      "boundary": "For the applicable address fields, the statute says mailing address. The SOS educational page still uses the earlier residence wording.",
       "mixup": "A daily transaction count cannot replace the required entries.",
-      "source": "Texas Government Code Chapter 406 — §406.014(a)",
+      "source": "Texas Government Code Chapter 406 — §406.014(a)(4)–(7)",
       "sourceUrl": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm"
     },
     {
@@ -10265,9 +10265,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Ten-year ordinary retention",
       "front": "Measure the current ordinary record period from each act.",
       "rule": "Section 406.014(g) requires retaining its subsection (a) records until the tenth anniversary of notarization.",
-      "boundary": "Online electronic records have an additional five-year provision under §406.108(c).",
+      "boundary": "The SOS still publishes an older Rule §87.54 with a shorter period. Online electronic records have a separate five-year minimum under §406.108(c).",
       "mixup": "Do not use commission expiration as the deletion date or assume one period cancels the other.",
-      "source": "Texas Government Code Chapter 406 — §406.014(g);§406.108(c)",
+      "source": "Texas Government Code Chapter 406 — §§406.014(g) and 406.108(c)",
       "sourceUrl": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm"
     },
     {

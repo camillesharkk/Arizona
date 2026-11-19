@@ -1,5 +1,10 @@
 import type { Difficulty, ExamArea, Question, TopicId } from "@/lib/types";
 import { extraCaRows } from "./ca-extra";
+import { questionReviewDate } from "./question-review-dates";
+import { questionDrawHold } from "./question-draw-holds";
+import { publishQuestionEdits } from "../lib/question-version";
+import { caQuestionEdits } from "./question-edits-ca";
+import { isActiveQuestion } from "../lib/question-status";
 
 const VERIFIED = "2026-11-05";
 
@@ -83,8 +88,8 @@ const rows: Row[] = [
       "Age 18 or older and a $15,000 bond only",
     ],
     correct: 0,
-    why: "Government Code section 8201 requires age 18 or older, legal California residence, an approved course, the written exam, and a background check. The Secretary of State qualifications page lists the same items.",
-    source: "Gov. Code § 8201; https://www.sos.ca.gov/notary/qualifications",
+    why: "Government Code section 8201 sets the age, residency, course, and exam requirements. Section 8201.1 requires the fingerprint-based background review before appointment.",
+    source: "Gov. Code §§ 8201, 8201.1; https://www.sos.ca.gov/notary/qualifications",
   },
   {
     id: "ca-002",
@@ -112,7 +117,7 @@ const rows: Row[] = [
       "A course approved by any other state's secretary of state",
     ],
     correct: 2,
-    why: "The 2026 handbook states that applicants take an approved six-hour course. A three-hour refresher is only for a later reappointment after a six-hour course was already completed.",
+    why: "Take a California-approved six-hour course for an initial appointment. The three-hour refresher is for reappointment while a California commission is still current, after completing the approved six-hour course at least once.",
     source: "2026 California Notary Public Handbook; Gov. Code § 8201(a)(3), (b)",
   },
   {
@@ -393,7 +398,7 @@ const rows: Row[] = [
       "Only if the notary has known the signer for one year",
     ],
     correct: 1,
-    why: "Civil Code section 1185 treats specified identification documents, including a California driver license with the required elements, as satisfactory evidence when the notary has no information that the person is not who they claim to be.",
+    why: "A current California DMV driver license is a listed credential under Civil Code section 1185(b)(3). The notary may reasonably rely on it if there is no reason to doubt the claimed identity. The four-feature test in section 1185(b)(4) applies to a different group of credentials.",
     source: "Civ. Code § 1185(b); 2026 California Notary Public Handbook",
   },
   {
@@ -410,7 +415,7 @@ const rows: Row[] = [
       "No. Personal knowledge of the signer by the notary replaces all identification",
     ],
     correct: 1,
-    why: "The handbook describes satisfactory evidence as identification documents, the oath of one credible witness personally known to the notary, or the oaths of two credible witnesses.",
+    why: "One credible witness may establish the signer's identity under section 1185(b)(1). The notary must personally know the witness and verify the witness's identity using a qualifying document. The witness must swear or affirm all five statutory facts, including that the witness knows the signer, the signer lacks a qualifying ID and would have great difficulty obtaining one, and the witness is neither named in the document nor financially interested in it.",
     source: "Civ. Code § 1185; 2026 California Notary Public Handbook",
   },
   {
@@ -419,7 +424,7 @@ const rows: Row[] = [
     topic: "identification",
     difficulty: "medium",
     free: true,
-    text: "Two credible witnesses identify a signer. Neither witness is personally known to the notary. What must the journal include about those witnesses?",
+    text: "Two credible witnesses identify a signer. Neither witness is personally known to the notary. What identifying-document details must the journal include?",
     options: [
       "Nothing about the witnesses",
       "The type of identification, identifying numbers, and issuance or expiration dates for the documents that identified the witnesses",
@@ -427,7 +432,7 @@ const rows: Row[] = [
       "A copy of the notarized document in place of witness identification",
     ],
     correct: 1,
-    why: "Government Code section 8206 requires the journal to record the type of documents, identifying numbers, and issuance or expiration dates when two credible witnesses are identified by satisfactory-evidence documents.",
+    why: "Government Code section 8206(a)(2)(E) requires the type, identifying number, and issue or expiration date of each witness's identification. The Secretary of State handbook also directs both witnesses to sign the journal.",
     source: "Gov. Code § 8206(a)(2)(E)",
   },
   {
@@ -436,7 +441,7 @@ const rows: Row[] = [
     topic: "identification",
     difficulty: "hard",
     free: true,
-    text: "The signer presents a driver license from another state. It has a photograph, description, signature, and an identifying number. There is no reason to doubt identity. What does the handbook allow?",
+    text: "The signer presents a current driver license from another state. It has a photograph, description, signature, and an identifying number. There is no reason to doubt identity. What does the handbook allow?",
     options: [
       "Reject it. Only California driver licenses count",
       "Accept reasonable reliance on that license as satisfactory evidence",
@@ -444,7 +449,7 @@ const rows: Row[] = [
       "Accept it only for jurats, not acknowledgments",
     ],
     correct: 1,
-    why: "The handbook lists a driver license issued by another state, when it also contains a photograph, description, signature, and identifying number, among documents on which a notary may reasonably rely.",
+    why: "Under Civil Code section 1185(b)(4), an out-of-state driver license must be current or have been issued within five years. It must have a photo, physical description, signature, and identifying number. Reasonable reliance also requires no reason to doubt the claimed identity.",
     source: "Civ. Code § 1185(b)(4); 2026 California Notary Public Handbook",
   },
   {
@@ -621,7 +626,7 @@ const rows: Row[] = [
       "Fingerprints of the credible witnesses instead of the signer",
     ],
     correct: 1,
-    why: "Section 8206(a)(2)(G) requires a right thumbprint for a deed, quitclaim deed, deed of trust, other document affecting real property, or a power of attorney. Another finger may be used if the right thumb is unavailable, and the journal must indicate that.",
+    why: "A deed of trust requires the signer's right thumbprint under section 8206(a)(2)(G). If it is unavailable, use the left thumb or another available finger and note it. If the signer cannot physically provide any print, note and explain the condition. A foreclosure trustee's deed and a deed of reconveyance are exempt.",
     source: "Gov. Code § 8206(a)(2)(G)",
   },
   {
@@ -769,7 +774,7 @@ const rows: Row[] = [
       "Stop notifying the Secretary of State",
     ],
     correct: 1,
-    why: "Section 8206(d) requires the notary to obtain a receipt and notify the Secretary of State within 10 days, including the journal period, commission number, expiration, and a copy of the receipt.",
+    why: "Under section 8206(d), obtain a receipt, notify the Secretary of State within 10 days by certified mail or other receipted physical delivery, and obtain a new sequential journal. Include the journal period, commission number, expiration date, and a copy of the receipt. A qualifying officer can request surrender on reasonable suspicion. A seizure requires probable cause.",
     source: "Gov. Code § 8206(d)",
   },
   {
@@ -853,22 +858,27 @@ function publish(row: Row): Question {
     source_id: "ca-official",
     source_reference: row.source,
     effective_from: "2026-01-01",
-    effective_to: null,
-    last_verified_at: VERIFIED,
+    // Existing sittings and notebooks can still resolve the original question.
+    effective_to: row.id === "ca-079" ? "2026-11-19" : questionDrawHold(row.id),
+    last_verified_at: questionReviewDate(row.id, VERIFIED),
     version: 1,
     is_free: row.free,
     status: "published",
   };
 }
 
-const questions = [...rows, ...extraCaRows].map(publish);
+const questions = publishQuestionEdits([...rows, ...extraCaRows].map(publish), caQuestionEdits);
 
 export function publishedCaQuestions(): Question[] {
   return questions.filter((question) => question.status === "published" && question.state === "CA");
 }
 
+export function activeCaQuestions(): Question[] {
+  return publishedCaQuestions().filter((question) => isActiveQuestion(question));
+}
+
 export function caQuestionCounts() {
-  const published = publishedCaQuestions();
+  const published = activeCaQuestions();
   const areas = {
     administration: 0,
     acts: 0,

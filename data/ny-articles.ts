@@ -6,8 +6,8 @@ const law = "https://dos.ny.gov/system/files/documents/2026/09/notary-public-lic
 const practice = "/new-york/practice/?mode=full";
 const quick = "/new-york/practice/?mode=quick";
 
-function item(slug: string, article: Omit<StateArticle, "state" | "slug" | "path" | "updated">): StateArticle {
-  return { ...article, state: "NY", slug, path: `/new-york/guides/${slug}/`, updated: "2026-11-08" };
+function item(slug: string, article: Omit<StateArticle, "state" | "slug" | "path" | "updated">, updated = "2026-11-08"): StateArticle {
+  return { ...article, state: "NY", slug, path: `/new-york/guides/${slug}/`, updated };
 }
 
 export const nyArticles: StateArticle[] = [
@@ -23,12 +23,12 @@ export const nyArticles: StateArticle[] = [
     checked: "Department of State written-examination information, updated November 3, 2026, and the Notary Public FAQ, checked November 8, 2026.",
     ledeCta: { href: quick, label: "Start the free 10-question check", placement: "lede", targetMode: "quick" },
     sections: [
-      { heading: "What to bring and how to pay", body: "The fee is $15, nonrefundable, by check or money order payable to the Department of State, or by MasterCard or Visa. Cash is not accepted. A returned check adds $20. Bring two number 2 pencils. Books, dictionaries, and phones are not allowed. Spanish, Haitian Creole, Italian, Korean, Russian, and Chinese are available if you tell the proctor.", points: ["Most sites are walk-in, first come.", "New York City seating is requested by email to exams@dos.ny.gov."] },
+      { heading: "What to bring and how to pay", body: "The fee is $15, nonrefundable, by check or money order payable to the Department of State, or by MasterCard or Visa. Cash is not accepted. A returned check adds $20. Bring two number 2 pencils. Books, dictionaries, and other reference materials are prohibited. Turn off phones and other electronic devices during the exam. Spanish, Haitian Creole, Italian, Korean, Russian, and Chinese are available if you tell the proctor.", points: ["Most sites are walk-in, first come.", "New York City seating is requested by email to exams@dos.ny.gov."] },
       { heading: "How this site's practice differs", body: "The 40-question, 60-minute practice on this site is a study setting. It is not the official form. A count of correct answers is not the Department's pass or fail letter. A pass slip from the real exam is valid for two years." },
     ],
     endCta: { href: practice, label: "Open the 40-question practice", placement: "end", targetMode: "full" },
     related: [{ href: "/new-york/exam-guide/", label: "Exam guide" }, { href: "/new-york/guides/who-skips-the-exam/", label: "Who skips the exam" }],
-  }),
+  }, "2026-11-19"),
   item("who-skips-the-exam", {
     id: "ny-skip-exam",
     keyword: "new york notary exam exemption",
@@ -149,7 +149,7 @@ export const nyArticles: StateArticle[] = [
     checked: "Executive Law §130, September 2026 booklet, checked November 8, 2026.",
     ledeCta: { href: "/new-york/questions/", label: "Practice the residence questions", placement: "lede", targetMode: "topic" },
     sections: [
-      { heading: "Reappointment", body: "Reappointment is another $60 application and another oath. The Secretary may waive the qualifying requirements if the application arrives before expiration or within six months afterward. That waiver is discretionary, and a longer military rule is stated separately in §130." },
+      { heading: "Reappointment", body: "Reappointment requires another $60 application and another oath. The Department's rule provides a 90-day window after expiration to apply for reappointment if you still qualify. Executive Law §130(1) separately permits the Secretary to waive qualifying requirements when an applicant files before expiration or within six months afterward. The statute also provides a separate waiver window for certain military-service delays.", link: { href: "https://dos.ny.gov/system/files/documents/2026/09/notary-public-license-law_09.2026.pdf#page=18", label: "Department of State reappointment rule (PDF)", placement: "section", targetMode: "official" } },
       { heading: "Where the signature lives", body: "The Secretary sends the commission, the oath, and the official signature to the county clerk by the 10th day of the following month, with $20 of the application fee. The public can compare a signature at that office." },
     ],
     endCta: { href: quick, label: "Check the residence rules", placement: "end", targetMode: "quick" },

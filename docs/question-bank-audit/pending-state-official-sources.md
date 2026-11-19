@@ -1,0 +1,26 @@
+# 待逐题审核州的官方资料入口
+
+访问日期为 2026-11-19（Asia/Shanghai）。以下是开展下一轮逐题审核时可用的主管机关入口。逐条法规、PDF 适用页、历史版本、官方考试题库开放性和题目正确性仍需完成核验。
+
+- **AR** 旧入口 404。另找到主管部门官方考试 FAQ。 [Arkansas Secretary of State handbook, printed p. 2](https://www.sos.arkansas.gov/uploads/bcs/NotaryHandbook2025.pdf#page=2)
+- **CO** 主管机关入口已定位。 [Colorado Secretary of State notary portal](https://www.sos.state.co.us/pubs/notary/home.html)
+- **CT** 主管机关入口已定位。 [Connecticut Secretary of the State licensing](https://portal.ct.gov/sots/business-services/notary/notary-public-licensing)
+- **HI** 主管机关入口已定位。 [Hawaii Attorney General notarial documents](https://ag.hawaii.gov/notaries-public/notaries-public-documents/)
+- **IL** 主管机关入口已定位。 [Illinois Secretary of State Notary Services](https://www.ilsos.gov/departments/index/notary.html)
+- **LA** 主管机关入口已定位。 [Louisiana Secretary of State notary FAQ and exam navigation](https://www.sos.la.gov/notary/frequently-asked-questions)
+- **MD** 主管机关入口已定位。 [Maryland Secretary of State Notary Division](https://sos.maryland.gov/Notary/Pages/default.aspx)
+- **ME** 旧入口 403，新入口可读。 [Maine Secretary of State Notary Public Resources](https://www.maine.gov/sos/corporations-commissions/commissions/notaries-public-and-dedimus-justice/notary-public-resources)
+- **MO** 旧入口不可访问，新申请说明可读。 [Missouri Secretary of State commissioning steps](https://s1.sos.mo.gov/business/notary/newnotary)
+- **MT** 主管机关入口已定位。 [Montana Secretary of State Certification & Notary Services](https://sosmt.gov/notary/)
+- **NC** 主管部门说明新手册替代 2016 版，书店发行。全文逐页复核仍待开展。 [2026 North Carolina Notary Manual availability](https://www.sosnc.gov/online_services/notary_external/notary_manual_home)
+- **NE** 主管机关入口已定位。 [Nebraska Secretary of State Notary Public](https://sos.nebraska.gov/business-services/notary-public)
+- **NJ** 目录标记 2026-09-18 更新。2026 手册已定位。 [New Jersey Department of Treasury manual index](https://www.nj.gov/treasury/revenue/dcr/geninfo/notarymanual.shtml)
+- **NM** 主管机关入口已定位。 [New Mexico Secretary of State Notary Commissions](https://www.sos.nm.gov/notary-and-apostille/notary-commissions/)
+- **NV** 旧入口返回 iframe，新入口有考试和保证金说明。 [Nevada Secretary of State notary training and exam](https://nvsos.gov/index.aspx?page=165)
+- **OH** 主管机关入口已定位。 [Ohio Secretary of State Notary](https://www.ohiosos.gov/notary)
+- **OR** 主管机关入口已定位。 [Oregon Secretary of State Notary](https://sos.oregon.gov/business/notary/pages/default.aspx)
+- **PA** 主管机关入口已定位。 [Pennsylvania Department of State notaries portal](https://www.pa.gov/agencies/dos/programs/notaries)
+- **UT** 主管机关入口已定位。 [Utah official notary portal](https://notary.utah.gov/)
+- **VT** 列出现行行政规则的生效日 2025-02-26。 [Vermont Secretary of State Notary Statutes, Rules & Resources](https://sos.vermont.gov/notaries-public/statutes-rules-resources)
+- **WI** 已定位 NOT70P 手册，封面标明 2024 年 9 月修订。 [Wisconsin DFI online application and exam](https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx)
+- **WY** 主管机关入口已定位。 [Wyoming Secretary of State Notaries](https://sos.wyo.gov/Services/Notaries.aspx)

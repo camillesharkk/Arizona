@@ -1,5 +1,5 @@
 import type { StateCode } from "./types.ts";
-import { currentQuestionVersion } from './question-revisions.ts';
+import { hasSavedQuestionVersion } from './question-revisions.ts';
 
 export type Letter = "A" | "B" | "C" | "D";
 
@@ -82,7 +82,7 @@ export function parseSitting(raw: unknown, owner: string, mode: string, state: S
   if (row.version !== 1 || row.owner !== owner || row.state !== state || row.mode !== mode) return null;
   if (typeof row.seed !== "number" || !Array.isArray(row.questionIds) || !row.questionIds.length) return null;
   // Leave the raw saved sitting intact, but never regrade old letters against replacement content.
-  if (['NY','PA','LA','CT','NC','IN','AR','CO','IL','ME','MD','MO','MT','NE','NV','NJ','NM','OH','OR','UT','VT','WI','WY','RI','TX'].includes(state) && row.questionIds.some(id => (row.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) return null;
+  if (row.questionIds.some(id => !hasSavedQuestionVersion(id, row.questionVersions))) return null;
   return {
     version: 1,
     owner,
@@ -114,7 +114,7 @@ export function readSitting(storage: Pick<Storage, "getItem"> & Partial<Pick<Sto
     const raw = storage.getItem(key);
     const parsed = raw ? JSON.parse(raw) : null;
     const result = parseSitting(parsed, owner, mode, state);
-    if (!result && parsed?.owner === owner && parsed?.state === state && ['NY','PA','LA','CT','NC','IN','AR','CO','IL','ME','MD','MO','MT','NE','NV','NJ','NM','OH','OR','UT','VT','WI','WY','RI','TX'].includes(state) && parsed?.mode === mode && Array.isArray(parsed.questionIds) && parsed.questionIds.some((id: string) => (parsed.questionVersions?.[id] ?? 1) !== currentQuestionVersion(id))) {
+    if (!result && parsed?.owner === owner && parsed?.state === state && parsed?.mode === mode && Array.isArray(parsed.questionIds) && parsed.questionIds.some((id: string) => !hasSavedQuestionVersion(id, parsed.questionVersions))) {
       storage.setItem?.(`${key}:history:${parsed.examId || parsed.seed}:v${Math.max(...Object.values(parsed.questionVersions || { legacy: 1 }) as number[])}`, raw!);
     }
     return result;

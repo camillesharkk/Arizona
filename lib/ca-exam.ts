@@ -1,11 +1,11 @@
 import type { ExamArea, Question } from "@/lib/types";
-import { publishedCaQuestions } from "../data/ca-questions.ts";
+import { activeCaQuestions } from "../data/ca-questions.ts";
 import { shuffle } from "./answer-sequence.ts";
 import { CA_EXAM } from "./ca-site.ts";
 export { weakestCaArea } from "./ca-result.ts";
 
 export function caPool(freeOnly = false) {
-  return publishedCaQuestions().filter((question) => !freeOnly || question.is_free);
+  return activeCaQuestions().filter((question) => !freeOnly || question.is_free);
 }
 
 export function pickCaQuickExam(seed: number, pool = caPool(true)): Question[] {

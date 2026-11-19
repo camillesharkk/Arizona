@@ -9,7 +9,7 @@ const guides: Guide[] = [
     ['Apply and check', 'Choose an answer based on the scenario’s actual facts. After submitting, compare every option with the cited rule. Save the missed rule and practice another situation that requires the same decision.', 'Manual §§4.2–4.18'],
   ]],
   ['in-person-identity', 'Preparing for an In-Person Identity Check', 'Identity evidence is evaluated for the person appearing before the notary. Prepare for the authorized route you will actually use.', [
-    ['Documentary evidence', 'For an unfamiliar in-person signer, the documentary route calls for at least two documents with the individual’s signature. At least one must also contain a photograph or physical description. The manual excludes Social Security cards and birth certificates as identification.', 'Manual §4.4; C.G.S. §3-94a(10)'],
+    ['Documentary evidence', 'For in-person documentary identification, use at least two current documents bearing the signer’s signature. One must be issued by the federal or a state government and include a photograph or physical description. The other must be issued by a federal or state government, an institution, or a business. The manual excludes Social Security cards and birth certificates.', 'Manual §4.4 and Appendix B, C.G.S. §3-94a(10)'],
     ['Personal knowledge and witnesses', 'Genuine personal knowledge can establish identity. The ordinary in-person credible witness must personally know the signer and be personally known to the notary, and must take an oath or affirmation. A new introduction does not establish those relationships.', 'Manual §§4.4–4.5'],
     ['Keep the ceremony', 'A strong identity basis does not remove appearance, voluntary acknowledgment or an oath required by the act. Document the identity method in the journal if you maintain one. Resolve deficiencies before certifying the act.', 'Manual §§4.2, 4.9, 4.18'],
   ]],
@@ -26,12 +26,12 @@ const guides: Guide[] = [
   ['copies-and-records', 'Handling a Request to Certify a Copy', 'A customer’s request for an “official copy” first requires an authority check. Determine what document is presented and what the recipient requires.', [
     ['Check exclusions', 'Connecticut excludes vital records, documents required to be recorded by governmental officials and specified federally restricted documents from notarial copy certification. Direct customers to the official custodian when an official certified record is required.', 'Manual §4.11; C.G.S. §3-94a(2)'],
     ['Compare an eligible original', 'For an eligible document, the notary makes or supervises the copy and compares it with the original. A missing page or paragraph prevents a truthful complete-copy certificate. Comparing two photocopies does not supply the original.', 'Manual §4.11'],
-    ['Identify a different sworn act', 'A custodian may make a sworn copy-accuracy statement using the manual’s attestation procedure. The notary executes a jurat for that person’s statement. The receiving agency decides whether that statement meets its filing requirements.', 'Manual §4.11.1'],
+    ['Identify a different sworn act', 'For an appropriate private copy, a custodian may make a sworn copy-accuracy statement. The notary performs a jurat for the statement. Refer requests for certified vital records to the official custodian.', 'Manual §§4.11–4.11.1'],
   ]],
   ['journal-and-seal', 'Building a Connecticut Journal and Seal Routine', 'Connecticut’s manual strongly recommends a journal and permits an ordinary notary to choose whether to use a seal. Each safeguard has a defined role.', [
     ['Useful records', 'A recommended bound journal records the act date and time, type, document description, signer details and signature, identity method, fee and place. Contemporary entries can help explain proper procedure months later.', 'Manual §4.18'],
     ['Optional equipment', 'If using a seal, match the appointment name and required wording. Place the impression near the signature without covering it. Supply commission-expiration information in the permitted form. Complete the certificate and original signature for every act requiring them.', 'Manual §§4.12–4.13; C.G.S. §3-94k'],
-    ['Personal control', 'The seal remains the named notary’s property even when an employer pays. Coworkers cannot use it. Follow the manual’s reporting process for loss or theft, and destroy or deface the seal when the appointment ends as the law directs.', 'Manual §4.14; C.G.S. §3-94j'],
+    ['Personal control', 'Keep the seal when you leave a job with your commission still active. Under section 3-94j(b), immediately destroy it when the commission lapses, expires or is revoked, or when you resign. For loss or theft, the manual recommends notifying the police and the Secretary of the State, and giving written notice to the DMV Dealers, Repairers & Emissions Division.', 'Manual §4.14 and Appendix B, C.G.S. §3-94j'],
   ]],
   ['current-fees', 'Applying Connecticut’s 2026 Fee Amendment', 'Use the law effective for the act date. The current licensing page and updated manual reflect the July 1, 2026 fee change.', [
     ['Act fee', 'P.A. 26-81 section 13 raises the maximum ordinary notarial-act fee to $10. The maximum limits what can be charged. It does not require charging the maximum or charging every customer.', 'C.G.S. §3-95 as amended by P.A. 26-81 §13'],
@@ -50,15 +50,18 @@ const guides: Guide[] = [
   ]],
   ['maintaining-appointment', 'Maintaining a Connecticut Notary Appointment', 'The appointment, official name and qualifying Connecticut connection need attention throughout the term.', [
     ['Track authority', 'The ordinary term ends five years later on the last day of the appointment month, subject to earlier ending events. Stop acting during a lapse. A submitted renewal and a missing reminder do not extend authority.', 'Manual §§3.1, 3.4; C.G.S. §3-94c'],
-    ['Report changes', 'Use the current eLicense process to report name and address changes within the required period. A name transition follows issuance of the replacement certificate. Review applicable town-recording requirements and obtain matching equipment if using a seal.', 'Manual §3.5; C.G.S. §§3-94n–3-94o'],
+    ['Report changes', 'Report a name change within 30 days. Report a resident’s Connecticut home address change or a nonresident’s principal Connecticut business address change within 30 days. A name change takes effect when the replacement certificate is issued. If the applicable address change moves you to a new town, record the replacement there within 30 days after issuance.', 'Manual §3.5 and Appendix B, C.G.S. §§3-94n–3-94o'],
     ['Keep the Connecticut connection', 'A notary must maintain Connecticut residence or a principal Connecticut business. If neither continues, resign as the statute directs. Keep official correspondence and the appointment certificate accessible so dates and identity remain verifiable.', 'Manual §3.6; C.G.S. §3-94p'],
   ]],
 ];
 
+const revisedGuides = new Set(['in-person-identity', 'copies-and-records', 'journal-and-seal', 'maintaining-appointment']);
+
 export const ctArticles: StateArticle[] = guides.map(([slug, title, lede, sections]) => ({
   id: `ct-guide-${slug}`, state: 'CT', slug, path: `/connecticut/guides/${slug}/`, keyword: title,
   intent: lede, title, description: lede, h1: title, kicker: 'Connecticut handbook practice', lede,
-  checked: `Official sources checked ${CT_CHECKED_ON}. Manual Rev. 2026-1.`, updated: CT_CHECKED_ON,
+  checked: `Official sources checked ${revisedGuides.has(slug) ? '2026-11-19' : CT_CHECKED_ON}. Manual Rev. 2026-1.`,
+  updated: revisedGuides.has(slug) ? '2026-11-19' : CT_CHECKED_ON,
   ledeCta: { href: `${ctPaths.practice}?mode=quick`, label: 'Practice With the Handbook', placement: 'lede', targetMode: 'quick' },
   sections: sections.map(([heading, body, reference]) => ({ heading, body, link: { href: slug === 'current-fees' ? ctSources.feeAct : ctSources.manual, label: reference, placement: 'section', targetMode: 'official' } })),
   endCta: { href: ctPaths.studyCards, label: 'Review Connecticut Rule Cards', placement: 'end', targetMode: 'guide' },

@@ -14,6 +14,7 @@ import { paCards, paQuestionCounts, paTopics, pickPaFullExam, pickPaQuickExam, p
 import { ctCards, ctTopics, ctQuestionCounts, publishedCtQuestions, pickCtFullExam } from "@/data/ct-content";
 import { ctExam } from "@/lib/ct-site";
 import { shuffle } from "@/lib/answer-sequence";
+import { isActiveQuestion } from "@/lib/question-status";
 import type { Question, StateCode } from "@/lib/types";
 
 import { freeStateCatalog, freeStateFeatures, isFreeState, type FreeStateCode } from "./free-state-catalog";
@@ -49,7 +50,7 @@ export type PrepPack = {
 };
 
 function quickFrom(questions: Question[], seed: number) {
-  const free = questions.filter((question) => question.is_free);
+  const free = questions.filter((question) => question.is_free && isActiveQuestion(question));
   const topics = shuffle([...new Set(free.map((question) => question.study_topic || question.topic))], seed);
   const used = new Set<string>();
   const picked: Question[] = [];
@@ -87,7 +88,7 @@ const freePacks = Object.fromEntries(freeStateCatalog.map(([code]) => {
     fullDetail: fullReady ? "40 original questions drawn from your accessible state question pool, with no time limit. The score describes this site's practice session. Follow the official application guide for state assessment requirements." : "Quick 10 and topic practice use original scenarios with explanations and official references. Follow the official application and training steps for your commission.",
     anonKey: `${code.toLowerCase()}-anon-full-started`,
     pickQuick: (seed: number) => quickFrom(questions(), seed),
-    pickFull: (seed: number) => fullReady ? { questions: shuffle(questions(), seed).slice(0, 40), unscoredIds: [] } : null,
+    pickFull: (seed: number) => fullReady ? { questions: shuffle(questions().filter((q) => isActiveQuestion(q)), seed).slice(0, 40), unscoredIds: [] } : null,
     fullReady, quickReady: questions().length >= 10,
     cards: fullStateCards[code] || [], purchaseEnabled: ready && features?.purchase !== false,
     handbookUrl: freeStateContent[code]?.sources.find(source => /manual|handbook/i.test(source.title))?.url,
@@ -133,7 +134,7 @@ export const prepPacks: Record<PrepCode, PrepPack> = {
     fullDetail: "Our mock exam uses 30 original questions, four choices per question, and no timer. These are site practice settings. Indiana’s official exam has 30 questions and requires 24 correct; this practice does not fulfill the official requirement.",
     anonKey: "in-anon-full-started",
     pickQuick: (seed) => quickFrom(inFreeQuestions, seed),
-    pickFull: (seed) => { const questions = shuffle(inFreeQuestions, seed).slice(0, 30); return questions.length === 30 ? { questions, unscoredIds: [] } : null; },
+    pickFull: (seed) => { const questions = shuffle(inFreeQuestions.filter(q => isActiveQuestion(q)), seed).slice(0, 30); return questions.length === 30 ? { questions, unscoredIds: [] } : null; },
     fullReady: inBankCounts.free >= 30,
     quickReady: inBankCounts.free >= 10,
     cards: inCards, purchaseEnabled: true,
