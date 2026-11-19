@@ -9635,11 +9635,11 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "copies",
       "title": "Comparison procedure",
       "front": "Make the required copy determination personally.",
-      "rule": "Copy certification involves copying, supervising the copying or comparing the original and copy and determining accuracy and completeness.",
-      "boundary": "The notary's certificate must accurately describe the procedure performed.",
+      "rule": "Before certifying an eligible copy, verify that it is complete and accurate. The Standards list comparison with the original as an alternative to making or supervising the copy.",
+      "boundary": "The SOS Manual and Quick Reference instructions say to make or supervise the copy, then compare it with the original. If a customer brings a copy made elsewhere, make a fresh copy or supervise the copying and compare it before certifying.",
       "mixup": "The customer's unsupported assurance does not replace the notary's determination.",
-      "source": "Section 2(c)",
-      "sourceUrl": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf"
+      "source": "Standards § 2(c)(2)–(4) and Notary Public Manual, p. 14",
+      "sourceUrl": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf#page=14"
     },
     {
       "id": "ri-card-024",
@@ -9746,7 +9746,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Nonlawyer advertising",
       "front": "Use the statutory disclosure across advertisement languages.",
       "rule": "A non-RI-attorney advertising notarial services must include the prominent statutory or authorized alternative disclaimer in each language used.",
-      "boundary": "The statute also restricts notario titles for non-RI-attorney notaries.",
+      "boundary": "The statute restricts notario titles. If an ad outside broadcast media, print media, and the internet is too small for the disclaimer, display it prominently or provide it at the place of performance before the act.",
       "mixup": "A disclaimer cannot authorize the legal or immigration services the commission does not grant.",
       "source": "Section 42-30.1-18(b)-(d)",
       "sourceUrl": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-18.htm"

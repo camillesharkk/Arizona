@@ -1,10 +1,10 @@
 {
   "total": {
     "total": 5701,
-    "verifiedUnchanged": 529,
-    "revisedRechecked": 57,
-    "pending": 5096,
-    "held": 19
+    "verifiedUnchanged": 779,
+    "revisedRechecked": 84,
+    "pending": 4817,
+    "held": 21
   },
   "byState": {
     "AR": {
@@ -16,17 +16,17 @@
     },
     "AZ": {
       "total": 203,
-      "verifiedUnchanged": 106,
-      "revisedRechecked": 17,
-      "pending": 76,
+      "verifiedUnchanged": 167,
+      "revisedRechecked": 32,
+      "pending": 0,
       "held": 4
     },
     "CA": {
       "total": 203,
-      "verifiedUnchanged": 53,
-      "revisedRechecked": 19,
-      "pending": 130,
-      "held": 1
+      "verifiedUnchanged": 73,
+      "revisedRechecked": 28,
+      "pending": 100,
+      "held": 2
     },
     "CO": {
       "total": 203,
@@ -58,9 +58,9 @@
     },
     "IN": {
       "total": 203,
-      "verifiedUnchanged": 118,
+      "verifiedUnchanged": 202,
       "revisedRechecked": 0,
-      "pending": 84,
+      "pending": 0,
       "held": 1
     },
     "LA": {
@@ -163,10 +163,10 @@
     },
     "RI": {
       "total": 203,
-      "verifiedUnchanged": 105,
-      "revisedRechecked": 5,
-      "pending": 89,
-      "held": 4
+      "verifiedUnchanged": 190,
+      "revisedRechecked": 8,
+      "pending": 0,
+      "held": 5
     },
     "TX": {
       "total": 203,
@@ -206,13 +206,11 @@
   },
   "nextPendingId": {
     "AR": "ar-001",
-    "AZ": "az-016",
-    "CA": "ca-001",
+    "CA": "ca-007",
     "CO": "co-001",
     "CT": "ct-001",
     "HI": "hi-001",
     "IL": "il-001",
-    "IN": "in-120",
     "LA": "la-001",
     "MD": "md-001",
     "ME": "me-001",
@@ -227,7 +225,6 @@
     "OH": "oh-001",
     "OR": "or-001",
     "PA": "pa-001",
-    "RI": "ri-083",
     "TX": "tx-004",
     "UT": "ut-001",
     "VT": "vt-001",

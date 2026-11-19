@@ -1193,8 +1193,8 @@ export const fullStateSummary: Partial<Record<FreeStateCode, { published: number
     ]
   },
   "RI": {
-    "published": 199,
-    "free": 59,
+    "published": 198,
+    "free": 58,
     "pro": 140,
     "cards": 50,
     "articles": 10,

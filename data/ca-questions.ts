@@ -1,6 +1,7 @@
 import type { Difficulty, ExamArea, Question, TopicId } from "@/lib/types";
 import { extraCaRows } from "./ca-extra";
 import { questionReviewDate } from "./question-review-dates";
+import { questionDrawHold } from "./question-draw-holds";
 import { isActiveQuestion } from "../lib/question-status";
 
 const VERIFIED = "2026-11-05";
@@ -85,8 +86,8 @@ const rows: Row[] = [
       "Age 18 or older and a $15,000 bond only",
     ],
     correct: 0,
-    why: "Government Code section 8201 requires age 18 or older, legal California residence, an approved course, the written exam, and a background check. The Secretary of State qualifications page lists the same items.",
-    source: "Gov. Code § 8201; https://www.sos.ca.gov/notary/qualifications",
+    why: "Government Code section 8201 sets the age, residency, course, and exam requirements. Section 8201.1 requires the fingerprint-based background review before appointment.",
+    source: "Gov. Code §§ 8201, 8201.1; https://www.sos.ca.gov/notary/qualifications",
   },
   {
     id: "ca-002",
@@ -114,7 +115,7 @@ const rows: Row[] = [
       "A course approved by any other state's secretary of state",
     ],
     correct: 2,
-    why: "The 2026 handbook states that applicants take an approved six-hour course. A three-hour refresher is only for a later reappointment after a six-hour course was already completed.",
+    why: "Take a California-approved six-hour course for an initial appointment. The three-hour refresher is for reappointment while a California commission is still current, after completing the approved six-hour course at least once.",
     source: "2026 California Notary Public Handbook; Gov. Code § 8201(a)(3), (b)",
   },
   {
@@ -856,7 +857,7 @@ function publish(row: Row): Question {
     source_reference: row.source,
     effective_from: "2026-01-01",
     // Existing sittings and notebooks can still resolve the original question.
-    effective_to: row.id === "ca-079" ? "2026-11-19" : null,
+    effective_to: row.id === "ca-079" ? "2026-11-19" : questionDrawHold(row.id),
     last_verified_at: questionReviewDate(row.id, VERIFIED),
     version: 1,
     is_free: row.free,

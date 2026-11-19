@@ -976,7 +976,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "Only tell the surety company, not the Secretary of State",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-263(F) requires that notice to the secretary of state, including identification of the technologies, before the initial remote act. If the SOS has established standards for communication technology or identity proofing, those must be followed. Social-media notice, delaying until the tenth act, and telling only the surety are not that requirement.",
+      "A.R.S. § 41-263(F) requires notice to the Secretary of State and identification of the technology before the first remote act. Under R2-12-1302 and R2-12-1304, apply using the prescribed process and receive written authorization before performing remote online notarizations.",
     option_feedback: {
       A: "The statute requires SOS notice, not a social-media post.",
       B: "Correct. A.R.S. § 41-263(F): notify the SOS and identify the technologies before the first remote act.",
@@ -1000,7 +1000,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "The notary's assumption from the person's voice only",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-263(B)(1) lists (a) personal knowledge under § 41-255(A), (b) a credible witness appearing before and identified as provided, or (c) at least two different types of identity proofing. Identity proofing is defined in § 41-263(I)(3) as a third-person process or service verifying identity from public or private data sources. A single emailed selfie, a slogan, and voice-only assumption are not those methods. Traditional in-person credentials under § 41-255(B)(1) are the in-person path, not a substitute for the remote two-type proofing option.",
+      "A.R.S. § 41-263(B)(1) permits personal knowledge, a qualifying credible witness, or at least two different types of identity proofing. On the technology-based path, R2-12-1305 sets standards for remote presentation, credential analysis, and identity proofing. Merely seeing an identification card on video does not complete that path.",
     option_feedback: {
       A: "One emailed selfie is not 'at least two different types of identity proofing.'",
       B: "Correct. A.R.S. § 41-263(B)(1)(c): at least two different types of identity proofing.",

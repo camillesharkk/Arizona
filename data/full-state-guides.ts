@@ -2957,7 +2957,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Record category and faithful reproduction",
-          "body": "Standards sections 2(c) and 4(a)(1) exclude vital records and specified public or publicly recordable records available as certified copies from official sources. Direct a birth, marriage or death certificate request to the proper custodian. A customer's possession of the original does not change its official category. For an eligible record, the notary copies, supervises copying or compares the copy, then determines accuracy and completeness. Section 42-30.1-4(d) requires a full, true and accurate reproduction. Inspect reverse sides, attachments and page sequence."
+          "body": "Standards sections 2(c) and 4(a)(1) exclude vital records and specified public or publicly recordable records available as certified copies from official sources. Direct a birth, marriage or death certificate request to the proper custodian. A customer's possession of the original does not change its official category. Section 42-30.1-4(d) requires a full, true and accurate reproduction. Standards § 2(c) lists comparison as an alternative to making or supervising the copy. The SOS Manual (p. 14) and Quick Reference Guide (p. 7) instruct the notary to make or supervise the copy before comparing it. If the customer brings a copy made elsewhere, use that make-or-supervise procedure before certifying. Inspect reverse sides, attachments and page sequence."
         },
         {
           "heading": "Electronic sources and foreign-use authentication",

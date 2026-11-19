@@ -107,12 +107,11 @@ export const chapters: StudyChapter[] = [
         body: "An affirmation is a solemn, legally binding promise without required religious language. Offer it when a signer objects to an oath.",
       },
       {
-        heading: "Presence",
-        body: "The signature on a jurat is made in your presence as part of the act. That is a common exam trap versus acknowledgments.",
+        heading: "Completeness and signing",
+        body: "Under A.R.S. § 41-253(B), identify the signer by personal knowledge or satisfactory evidence and determine that the record is complete to the best of your knowledge. The Secretary of State’s October 2026 manual, page 28, directs you to give the oath or affirmation and then witness the signer sign.",
       },
     ],
     keyFacts: [
-      "Use certificate wording that accurately records the act performed.",
       "Oath/affirmation is personal to the signer.",
       "Match the certificate to the act actually performed.",
     ],
@@ -202,12 +201,12 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "False certificates",
-        body: "Backdating, claiming an absent signer appeared, or notarizing a blank signature line is fraud, not customer service.",
+        body: "Date the certificate when you perform the act. Certify only who appeared and what you did. If a signature is required and missing, have the signer complete it before you certify the act.",
       },
     ],
     keyFacts: [
       "No notarizing your own signature.",
-      "Capacity and willingness are required.",
+      "You may refuse if you are unsure of the signer’s capacity or whether the signature is knowing and voluntary.",
       "Industry pressure is not a legal defense.",
     ],
     source_id: "ars_41_273",
@@ -228,7 +227,7 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "How to study a change",
-        body: "Read the chaptered session law and the effective date, then drill the new-laws question set. A.R.S. § 1-241 and § 1-244 control timing and non-retroactivity. A commission term does not freeze older handbook language.",
+        body: "Read the chaptered session law. Check for a special effective date in the act and verify the Legislature’s general effective date. A.R.S. § 1-241 distinguishes two ways a law may specify its effective day. Section 1-244 bars retroactive application unless the act expressly provides for it.",
       },
     ],
     keyFacts: [
@@ -249,11 +248,11 @@ export const chapters: StudyChapter[] = [
     sections: [
       {
         heading: "What the officer must determine",
-        body: "A.R.S. § 41-253(D) requires the officer who certifies or attests a copy to determine that the copy is a full, true, and accurate transcription or reproduction of the record or item. Guessing from memory is not that determination.",
+        body: "A.R.S. § 41-253(D) requires the officer to determine that the copy fully and accurately reproduces the record or item. For paper records, the Secretary of State’s October 2026 checklist, page 29, directs the notary to verify the original and make the copy themselves.",
       },
       {
         heading: "Arizona public records",
-        body: "Except as required under A.R.S. § 41-319, a notarial officer may not certify or attest a copy of a public record of this state. Journal public-record entries are the statutory exception when a certified copy of the journal is requested.",
+        body: "A.R.S. § 41-253(D) bars copy certification of Arizona public records except as § 41-319 requires for public journal entries. A written journal request identifies the month and year, whose signature was notarized, and the type of record or transaction. Direct requests for certified copies of other Arizona public records to their custodians.",
       },
       {
         heading: "Electronic records on paper",
@@ -287,7 +286,7 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "Before the first remote act",
-        body: "A.R.S. § 41-263(F) requires the notary to notify the Secretary of State before the first such act and to identify the technologies the notary intends to use. A casual video app is not a substitute for that notice and the statutory recording and identification rules.",
+        body: "Before the first remote act, notify the Secretary of State and identify the technology under A.R.S. § 41-263(F). Follow the prescribed application process and receive written authorization under R2-12-1302 and R2-12-1304. Use technology that satisfies the identification and recording rules.",
       },
     ],
     keyFacts: [

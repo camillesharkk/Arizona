@@ -10,7 +10,7 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-education", study: "education-exam", title: "Six hours, then three",
-    front: "Which course is required before a first California commission?", rule: "An approved six-hour course.", boundary: "A three-hour refresher works only for reappointment after a six-hour course was already completed.",
+    front: "Which course is required before a first California commission?", rule: "An approved six-hour course.", boundary: "An approved three-hour refresher applies to reappointment while the California commission is current, if the approved six-hour course was already completed.",
     mixup: "A course from another state, or a three-hour class taken first, does not satisfy section 8201.", source: "Gov. Code \u00a7 8201; 2026 handbook", sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf",
   },
   {
@@ -275,8 +275,8 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-felony", study: "qualification", title: "Recommended denial windows",
-    front: "How do prior crimes affect a recommendation?", rule: "A felony is a recommended denial where less than 10 years have passed since probation ended. A listed misdemeanor uses a five-year window.", boundary: "The list of common disqualifying convictions is not complete. The facts of a case can still warrant denial.",
-    mixup: "The applicant can appeal a recommended denial.", source: "Secretary of State qualifications page", sourceUrl: "https://www.sos.ca.gov/notary/qualifications",
+    front: "How can time since a prior conviction affect a denial recommendation?", rule: "The guidelines recommend denial for a felony or a disqualifying lesser offense. They consider exceptions after at least 10 or five years, respectively.", boundary: "Count from completion of probation or parole, or release if neither was ordered. The timing alone does not guarantee approval.",
+    mixup: "The applicant can appeal a recommended denial.", source: "California Notary Public Disciplinary Guidelines (2012), p. 10", sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-guidelines-2012.pdf",
   },
   {
     id: "ca-card-oath-file", study: "bond-oath", title: "Where the papers go",

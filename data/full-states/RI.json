@@ -3013,7 +3013,7 @@
         "A stamp does not recommend the transaction."
       ],
       "sourceId": "ri-standards",
-      "reference": "Section 4(a)-(d), conflicts and truthful performance"
+      "reference": "Standards § 3(c), scope and description of duties"
     },
     {
       "id": "ri-148",
@@ -3071,9 +3071,9 @@
         "Read it only after collecting the fee"
       ],
       "answer": "A",
-      "explanation": "The size-related alternative applies to the specified nonbroadcast, nonprint and noninternet form.",
+      "explanation": "If an ad outside broadcast media, print media, and the internet is too small for the statement, display it prominently or provide it at the place of performance before the act.",
       "feedback": [
-        "The size-related alternative applies to the specified nonbroadcast, nonprint and noninternet form.",
+        "If an ad outside broadcast media, print media, and the internet is too small for the statement, display it prominently or provide it at the place of performance before the act.",
         "The statute provides an alternative disclosure route.",
         "That does not notify the service user.",
         "The alternative applies before the act."
@@ -3299,7 +3299,7 @@
         "A calendar alone does not preserve the recommended act details."
       ],
       "sourceId": "ri-standards",
-      "reference": "Sections 3(e), 5, 6, and 7"
+      "reference": "Standards §§ 2(f) and 3(e), definition and use of a journal"
     },
     {
       "id": "ri-161",
@@ -4496,11 +4496,11 @@
       "study": "copies",
       "title": "Comparison procedure",
       "front": "Make the required copy determination personally.",
-      "rule": "Copy certification involves copying, supervising the copying or comparing the original and copy and determining accuracy and completeness.",
-      "boundary": "The notary's certificate must accurately describe the procedure performed.",
+      "rule": "Before certifying an eligible copy, verify that it is complete and accurate. The Standards list comparison with the original as an alternative to making or supervising the copy.",
+      "boundary": "The SOS Manual and Quick Reference instructions say to make or supervise the copy, then compare it with the original. If a customer brings a copy made elsewhere, make a fresh copy or supervise the copying and compare it before certifying.",
       "mixup": "The customer's unsupported assurance does not replace the notary's determination.",
-      "source": "Section 2(c)",
-      "sourceUrl": "https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf"
+      "source": "Standards § 2(c)(2)–(4) and Notary Public Manual, p. 14",
+      "sourceUrl": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf#page=14"
     },
     {
       "id": "ri-card-024",
@@ -4607,7 +4607,7 @@
       "title": "Nonlawyer advertising",
       "front": "Use the statutory disclosure across advertisement languages.",
       "rule": "A non-RI-attorney advertising notarial services must include the prominent statutory or authorized alternative disclaimer in each language used.",
-      "boundary": "The statute also restricts notario titles for non-RI-attorney notaries.",
+      "boundary": "The statute restricts notario titles. If an ad outside broadcast media, print media, and the internet is too small for the disclaimer, display it prominently or provide it at the place of performance before the act.",
       "mixup": "A disclaimer cannot authorize the legal or immigration services the commission does not grant.",
       "source": "Section 42-30.1-18(b)-(d)",
       "sourceUrl": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-18.htm"
@@ -4894,7 +4894,7 @@
       "sections": [
         {
           "heading": "Record category and faithful reproduction",
-          "body": "Standards sections 2(c) and 4(a)(1) exclude vital records and specified public or publicly recordable records available as certified copies from official sources. Direct a birth, marriage or death certificate request to the proper custodian. A customer's possession of the original does not change its official category. For an eligible record, the notary copies, supervises copying or compares the copy, then determines accuracy and completeness. Section 42-30.1-4(d) requires a full, true and accurate reproduction. Inspect reverse sides, attachments and page sequence."
+          "body": "Standards sections 2(c) and 4(a)(1) exclude vital records and specified public or publicly recordable records available as certified copies from official sources. Direct a birth, marriage or death certificate request to the proper custodian. A customer's possession of the original does not change its official category. Section 42-30.1-4(d) requires a full, true and accurate reproduction. Standards § 2(c) lists comparison as an alternative to making or supervising the copy. The SOS Manual (p. 14) and Quick Reference Guide (p. 7) instruct the notary to make or supervise the copy before comparing it. If the customer brings a copy made elsewhere, use that make-or-supervise procedure before certifying. Inspect reverse sides, attachments and page sequence."
         },
         {
           "heading": "Electronic sources and foreign-use authentication",
@@ -5247,7 +5247,7 @@
         },
         {
           "heading": "Verify every relevant part of an eligible original",
-          "body": "For an eligible private record, determine that the reproduction is full, true and accurate under section 42-30.1-4(d). Compare pages, relevant reverse sides and attachments. A scanner can clip signatures, omit a schedule or rearrange pages while keeping a convincing file name. The notary must perform the applicable copying, supervision or comparison and make the determination, rather than simply repeat the customer's unsupported assurance."
+          "body": "For an eligible private record, determine that the reproduction is full, true and accurate under section 42-30.1-4(d). Compare pages, relevant reverse sides and attachments. A scanner can clip signatures, omit a schedule or rearrange pages while keeping a convincing file name. Standards § 2(c) lists comparison as an alternative to making or supervising the copy. The SOS Manual (p. 14) and Quick Reference Guide (p. 7) call for the notary to make or supervise the copy, then compare it. If someone brings a copy made elsewhere, make a fresh copy or supervise the copying and verify it against the original before certifying."
         },
         {
           "heading": "Handle an electronic source",
@@ -5284,6 +5284,10 @@
         {
           "title": "Rhode Island Notary Public Manual, revised July 2024",
           "url": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf"
+        },
+        {
+          "title": "Quick Reference Guide for RI Notaries Public, p. 7",
+          "url": "https://docs.sos.ri.gov/documents/BusinessServices/ReferenceGuideforRINotaries.pdf#page=7"
         }
       ]
     },

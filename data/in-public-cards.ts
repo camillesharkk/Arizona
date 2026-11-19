@@ -382,8 +382,8 @@ export const inPublicCards = [
     "rule": "The official seal must be capable of being copied together with its record.",
     "boundary": "A faint or incomplete impression can defeat legibility.",
     "mixup": "A visible mark on the original is not enough if essential details disappear in copying.",
-    "source": "IC 33-42-10-2(b)",
-    "sourceUrl": "https://secure.in.gov/counties/shelby/recorder/recorder-fee-schedule/"
+    "source": "Indiana SOS Guide (May 2024), p. 16",
+    "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {
     "id": "in-card-036",

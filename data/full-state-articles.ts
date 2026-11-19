@@ -15594,7 +15594,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Verify every relevant part of an eligible original",
-          "body": "For an eligible private record, determine that the reproduction is full, true and accurate under section 42-30.1-4(d). Compare pages, relevant reverse sides and attachments. A scanner can clip signatures, omit a schedule or rearrange pages while keeping a convincing file name. The notary must perform the applicable copying, supervision or comparison and make the determination, rather than simply repeat the customer's unsupported assurance."
+          "body": "For an eligible private record, determine that the reproduction is full, true and accurate under section 42-30.1-4(d). Compare pages, relevant reverse sides and attachments. A scanner can clip signatures, omit a schedule or rearrange pages while keeping a convincing file name. Standards § 2(c) lists comparison as an alternative to making or supervising the copy. The SOS Manual (p. 14) and Quick Reference Guide (p. 7) call for the notary to make or supervise the copy, then compare it. If someone brings a copy made elsewhere, make a fresh copy or supervise the copying and verify it against the original before certifying."
         },
         {
           "heading": "Handle an electronic source",
@@ -15639,6 +15639,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://docs.sos.ri.gov/documents/BusinessServices/Notary-Public-Manual.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Quick Reference Guide for RI Notaries Public, p. 7",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://docs.sos.ri.gov/documents/BusinessServices/ReferenceGuideforRINotaries.pdf#page=7",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"

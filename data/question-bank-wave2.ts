@@ -893,10 +893,10 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "May certify the document as an Arizona birth record",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-253(C) requires the officer who witnesses or attests a signature to determine, from personal knowledge or satisfactory evidence, that the individual signing has the identity claimed. The truth of statements in the record is the verification described in subsection B, a different act.",
+      "Under A.R.S. §§ 41-253(C) and 41-254(A), the individual appears and signs before the officer. The officer verifies their identity by personal knowledge or satisfactory evidence. Witnessing the signature does not require the signer to swear or affirm that the statements in the record are true.",
     option_feedback: {
       A: "The customer did not ask for a verification, and the officer should not swap acts.",
-      B: "Correct. Witnessing a signature is an identity-and-signature determination, not subsection B's truth verification.",
+      B: "Correct. Verify the identity of the person who signs before you. The verification in subsection B is a different act.",
       C: "The statute allows the act when its requirements are met.",
       D: "Witnessing a signature is not certifying a vital record.",
     },
@@ -1619,7 +1619,7 @@ export const wave2Drafts: ExpansionDraft[] = [
       A: "The journal is required by another section.",
       B: "Correct. False or deceptive advertising is prohibited.",
       C: "An authorized fee is not this subsection.",
-      D: "Signing after the act is the proper sequence under § 41-264(E).",
+      D: "Section 41-264 requires you to sign the certificate contemporaneously, once the act has been performed.",
     },
     source_id: "ars_41_273",
     source_reference: "A.R.S. § 41-273(B)",
@@ -1818,15 +1818,15 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Automatically receives a new four-year commission",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-271(B) says that if an individual's commission in this state is revoked, the individual may not submit a new application for one year after the date of revocation.",
+      "Under A.R.S. § 41-271(B), an individual generally may not submit a new application for one year after revocation of an Arizona commission. The end of that waiting period does not guarantee a new commission. Section 41-273(F) and (G) separately require permanent revocation for specified violations.",
     option_feedback: {
       A: "Same-day reapplication is what the one-year bar forbids.",
       B: "Correct. Wait one year after revocation before a new application.",
-      C: "The bar stated is one year, not a lifetime ban in this sentence.",
+      C: "Section 41-271(B) sets a one-year waiting period. Permanent revocation applies to specific violations under § 41-273.",
       D: "Revocation does not renew the commission.",
     },
     source_id: "ars_41_271",
-    source_reference: "A.R.S. § 41-271(B)",
+    source_reference: "A.R.S. §§ 41-271(B) and 41-273(F)–(G).",
   }),
   q({
     question_id: "az-174",
@@ -2054,7 +2054,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Shall determine the matters set forth in A.R.S. § 47-3505(B)",
     correct_option: "D",
     explanation:
-      "A.R.S. § 41-253(E) says a notarial officer who makes or notes a protest of a negotiable instrument shall determine the matters set forth in section 47-3505, subsection B.",
+      "A.R.S. §§ 41-253(E) and 47-3505(B) require a protest to identify the instrument, certify that it was presented or explain why it was not, and certify dishonor by nonacceptance or nonpayment. The officer may act on satisfactory information and may also certify that notice of dishonor was given to some or all parties.",
     option_feedback: {
       A: "The officer determines the matters the cited section sets forth, not homemade grounds.",
       B: "Noting a protest is a listed notarial act in § 41-251(6). The duty here is the determination in § 41-253(E).",
@@ -2077,7 +2077,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Shall post the entire journal online first",
     correct_option: "C",
     explanation:
-      "A.R.S. § 41-319(A) says the notary shall furnish, when requested, a certified copy of any public record in the notary's journal. Records that violate the attorney-client privilege or that are confidential under federal or state law are not a public record. It is not permission to certify a copy of some other Arizona public record under § 41-253(D).",
+      "A.R.S. § 41-319(A) requires the notary to furnish certified copies of public journal records on request. Attorney-client privileged and other legally confidential entries are excluded. For public access under subsection (F), a written request identifies the month and year, whose signature was notarized, and the type of record or transaction.",
     option_feedback: {
       A: "Public journal records are the records the sentence tells the notary to furnish.",
       B: "A court judgment is not a public record in the notary's journal.",
@@ -2365,7 +2365,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     difficulty: "hard",
     is_free: false,
     question_text:
-      "The signer is outside the United States. The record will not be filed with a United States court or agency, does not involve property in the United States, and is not substantially connected with the United States. The notary also knows the foreign state prohibits the act. Under A.R.S. § 41-263(B)(4):",
+      "The signer is outside the United States. The record has none of the connections to the United States listed in A.R.S. § 41-263(B)(4)(a). The notary also knows the foreign state prohibits signing this record there. What does § 41-263(B)(4) require?",
     option_a: "The act may proceed because the notary is in Arizona",
     option_b: "Both a United States nexus for the record and the absence of actual knowledge of a foreign prohibition are required, and neither is met here",
     option_c: "Only the notary's Arizona location matters for a signer abroad",
@@ -2389,16 +2389,16 @@ export const wave2Drafts: ExpansionDraft[] = [
     is_free: false,
     question_text:
       "The signer appears only by video. The notary does not have personal knowledge, no credible witness appears, and the notary does not use at least two different types of identity proofing. Under A.R.S. § 41-263(A) and (B)(1):",
-    option_a: "The video does not satisfy personal appearance, because subsection A works only when subsection B is met",
+    option_a: "The notary may not perform the act because the signer has not been identified under subsection B",
     option_b: "Any live video satisfies § 41-254",
     option_c: "Identity proofing may be skipped if the video is clear",
     option_d: "The signer may email a nickname after the call and cure the gap",
     correct_option: "A",
     explanation:
-      "A.R.S. § 41-263(A) says a remotely located individual may comply with § 41-254 by using communication technology to appear before a notary. Subsection B allows the act only if identification is by personal knowledge, a credible witness, or at least two different types of identity proofing, along with the other subsection B conditions. A video that misses paragraph 1 does not meet subsection B, so it does not complete the subsection A appearance. It is not the separate question of whether an electronic record with a person standing in the office is a remote act.",
+      "A.R.S. § 41-263(A) allows appearance by qualifying communication technology. Subsection (B)(1) separately requires personal knowledge, a qualifying credible witness, or at least two types of identity proofing. The remote connection alone does not let the notary perform the act.",
     option_feedback: {
-      A: "Correct. Remote appearance under subsection A still has to meet subsection B.",
-      B: "Live video without the identification methods is not enough.",
+      A: "Correct. The person may appear by qualifying technology, but the notary still has to verify identity.",
+      B: "A live connection alone does not satisfy the identification requirement for performing the act.",
       C: "Clear video is not a substitute for paragraph 1.",
       D: "A later nickname email is not one of the three identification methods.",
     },

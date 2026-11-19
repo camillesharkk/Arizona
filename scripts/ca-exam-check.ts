@@ -10,8 +10,11 @@ const pool = publishedCaQuestions();
 if (!pool.some((q) => q.question_id === "ca-079" && q.version === 1 && q.correct_option === "B")) {
   throw new Error("retired California question lost its original answer snapshot");
 }
+if (!pool.some((q) => q.question_id === "ca-054" && q.version === 1 && q.correct_option === "C")) {
+  throw new Error("Held California conviction item lost its historical version or key");
+}
 for (let seed = 0; seed < 100; seed++) {
-  if ([...pickCaQuickExam(seed), ...(pickCaFullExam(seed)?.questions ?? [])].some((q) => q.question_id === "ca-079")) {
+  if ([...pickCaQuickExam(seed), ...(pickCaFullExam(seed)?.questions ?? [])].some((q) => ["ca-054", "ca-079"].includes(q.question_id))) {
     throw new Error("retired California question entered a fresh draw");
   }
 }
@@ -36,7 +39,7 @@ const stems = new Set(pool.map((q) => q.question_text.toLowerCase().replace(/[^a
 if (stems.size !== pool.length) throw new Error("duplicate stem");
 const optionSets = new Set(pool.map((q) => [q.option_a, q.option_b, q.option_c, q.option_d].map((item) => item.toLowerCase()).sort().join("|")));
 if (optionSets.size !== pool.length) throw new Error(`duplicate option set ${pool.length - optionSets.size}`);
-if (pool.length !== 203 || counts.published !== 202) throw new Error(`historical ${pool.length}, active ${counts.published}`);
+if (pool.length !== 203 || counts.published !== 201) throw new Error(`historical ${pool.length}, active ${counts.published}`);
 if (pool.some((q) => !q.is_free)) throw new Error("CA paywall");
 const byStudy = new Map<string, number>();
 for (const question of pool) byStudy.set(question.study_topic || "", (byStudy.get(question.study_topic || "") || 0) + 1);

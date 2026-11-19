@@ -44,7 +44,7 @@ for (const code of codes) {
   const bank = serverStateQuestions(code);
   const current = bank.filter(question => isActiveQuestion(question));
   if (code === 'RI' || code === 'TX') {
-    const held = new Set(code === 'RI' ? ['ri-039', 'ri-183', 'ri-184', 'ri-200'] :
+    const held = new Set(code === 'RI' ? ['ri-039', 'ri-106', 'ri-183', 'ri-184', 'ri-200'] :
       ['tx-056', 'tx-102', 'tx-104', 'tx-105', 'tx-106', 'tx-119', 'tx-143', 'tx-190']);
     assert.deepEqual(Array.from(bank.filter(q => !isActiveQuestion(q)), q => q.question_id), [...held]);
     for (const id of held) assert.equal(serverQuestionById(id)?.version, 1, 'Old item must be readable');
