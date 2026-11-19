@@ -214,15 +214,14 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--brand); width:
 .field-error { display: block; color: var(--danger); font-size: 0.82rem; font-weight: 600; }
 .account-invite { margin-top: 16px; background: var(--bg-2); }
 .logo {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 8px;
   font-weight: 700; color: var(--ink); text-decoration: none;
+  border-radius: 8px;
 }
+.logo:focus-visible { outline-color: var(--brand-dark); }
 .logo-mark {
-  width: 34px; height: 34px; border-radius: 10px;
-  background: var(--glass-control);
-  color: var(--brand-dark); display: grid; place-items: center;
-  box-shadow: var(--glass-shadow);
-  font-family: var(--font); font-weight: 600;
+  display: block; flex: none; border-radius: 7px;
+  object-fit: contain;
 }
 .nav { display: flex; gap: 18px; align-items: center; flex-wrap: nowrap; min-width: 0; }
 .nav-scroll { display: flex; gap: 18px; align-items: center; min-width: 0; }
@@ -379,7 +378,7 @@ h2 { font-size: 1.5rem; }
   border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem;
 }
 .footer-bar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
-.footer-brand { margin: 0; color: var(--ink); }
+.footer-brand { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--ink); }
 .footer-links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 .footer-links a { display: inline-block; padding: 6px 0; line-height: 1.4; }
 @media (max-width: 640px) {
@@ -911,7 +910,7 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
   .nav-scroll::-webkit-scrollbar { display: none; }
   .state-menu-panel { left: auto; right: 0; }
   .logo { min-width: 0; white-space: nowrap; }
-  .logo-mark { flex: none; }
+  .logo .logo-mark { width: 30px; height: 30px; }
   .logo-label { overflow: hidden; text-overflow: ellipsis; }
   .guide-chapter, .quiz-stem, .study-face { scroll-margin-top: 7.5rem; }
   .hero-cta-row, .home-choice { flex-direction: column; align-items: stretch; width: 100%; }
