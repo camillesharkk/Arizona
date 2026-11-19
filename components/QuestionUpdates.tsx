@@ -1,21 +1,33 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { MessageDialog } from "@/components/MessageDialog";
 import { editorialUpdateByQuestion, editorialUpdates } from "@/data/question-editorial-events";
 import { listCaAttempts, localMistakeIds } from "@/lib/ca-attempts";
 import { loadProgress } from "@/lib/storage";
 import { stateByCode } from "@/lib/states";
+import { questionUpdatesEvent } from "@/lib/open-question-updates";
 import { addUpdateReference, mergeUpdateReceipt, needsUpdatedReview, relatedUpdates, type RelatedUpdate, type UpdateReceipts, type UpdateRelation } from "@/lib/editorial-updates";
 
-const page = "/question-updates/";
 const guestKey = "notary-editorial-guest";
 const guestAccountKey = "notary-editorial-guest-destination";
 const receiptsKey = (account: string | null) => account ? `notary-editorial-outbox:${account}` : guestKey;
 const states = [...new Set(editorialUpdates.map(event => event.state))];
 type View = { account: string | null; updates: RelatedUpdate[]; receipts: UpdateReceipts };
+type UpdateDialog = { kind: "notice"; rows: RelatedUpdate[] } | { kind: "list" } | { kind: "detail"; id: string };
+type Detail = {
+  questionId: string;
+  reason: string;
+  question: {
+    stem: string;
+    scenario?: string;
+    answer: string;
+    explanation: string;
+    options: { text: string; feedback: string }[];
+    evidence: string | null;
+  } | null;
+};
 
 function storedReceipts(key: string): UpdateReceipts {
   try { return JSON.parse(localStorage.getItem(key) || "{}"); } catch { return {}; }
@@ -74,18 +86,17 @@ function unionRows(server: RelatedUpdate[], local: RelatedUpdate[]) {
 
 export function QuestionUpdates() {
   const pathname = usePathname();
-  const router = useRouter();
-  const isList = pathname === "/question-updates" || pathname === page;
   const [view, setView] = useState<View | null>(null);
   const [unavailable, setUnavailable] = useState(false);
-  const [dialog, setDialog] = useState<RelatedUpdate[]>([]);
+  const [dialog, setDialog] = useState<UpdateDialog | null>(null);
+  const panelFocus = useRef<HTMLDivElement>(null);
   const inflight = useRef<AbortController | null>(null);
   const memoryReceipts = useRef<UpdateReceipts>({});
   const lastAccount = useRef<string | null | undefined>(undefined);
-  const isLearningPage = pathname === "/" || /account|practice|study|questions|wrong-answers|question-updates/.test(pathname);
+  const isLearningPage = pathname === "/" || /account|practice|study|questions|wrong-answers/.test(pathname);
 
-  const refresh = useCallback(async () => {
-    if (!isLearningPage || !editorialUpdates.length) return;
+  const refresh = useCallback(async (requested = false) => {
+    if ((!isLearningPage && !requested) || !editorialUpdates.length) return;
     inflight.current?.abort();
     const controller = new AbortController();
     inflight.current = controller;
@@ -96,7 +107,7 @@ export function QuestionUpdates() {
       if (controller.signal.aborted) return;
       if (lastAccount.current !== server.account) {
         memoryReceipts.current = {};
-        if (lastAccount.current !== undefined) setDialog([]);
+        if (lastAccount.current !== undefined) setDialog(null);
       }
       const guestDestination = localStorage.getItem(guestAccountKey);
       const fromGuest = server.account && (!guestDestination || guestDestination === server.account) ? storedReceipts(guestKey) : {};
@@ -137,7 +148,28 @@ export function QuestionUpdates() {
   }, [pathname, refresh]);
 
   useEffect(() => {
-    if (!isLearningPage || pathname.startsWith("/question-updates") || !view) return;
+    function open(id?: string) {
+      setDialog(id ? { kind: "detail", id } : { kind: "list" });
+      void refresh(true);
+    }
+    const requested = (event: Event) => open((event as CustomEvent<string | undefined>).detail);
+    window.addEventListener(questionUpdatesEvent, requested);
+    const url = new URL(window.location.href);
+    const legacy = url.searchParams.get("question-update");
+    if (legacy) {
+      url.searchParams.delete("question-update");
+      window.history.replaceState(null, "", url);
+      open(legacy === "list" ? undefined : legacy);
+    }
+    return () => window.removeEventListener(questionUpdatesEvent, requested);
+  }, [pathname, refresh]);
+
+  useEffect(() => {
+    if (dialog && dialog.kind !== "notice") panelFocus.current?.focus();
+  }, [dialog]);
+
+  useEffect(() => {
+    if (!isLearningPage || !view) return;
     const unseen = view.updates.filter(row => !view.receipts[row.id]?.shown);
     if (!unseen.length) return;
     let cancelled = false;
@@ -145,21 +177,23 @@ export function QuestionUpdates() {
     const safe = () => !document.querySelector("[data-editorial-quiz-active],dialog[open]");
     const offer = async () => {
       if (claiming || !safe()) return;
-      if (!view.account) { setDialog(unseen); return; }
+      if (!view.account) { setDialog(current => current ?? { kind: "notice", rows: unseen }); return; }
       claiming = true;
       try {
         const response = await fetch("/api/question-updates/", { method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ account: view.account, claim: unseen.map(row => row.id) }) });
         if (!response.ok || cancelled) return;
         const { claimed } = await response.json() as { claimed: string[] };
-        if (safe() && !cancelled && claimed.length) setDialog(unseen.filter(row => claimed.includes(row.id)));
+        if (safe() && !cancelled && claimed.length) {
+          setDialog(current => current ?? { kind: "notice", rows: unseen.filter(row => claimed.includes(row.id)) });
+        }
       } catch { /* The next successful refresh can retry the claim. */ }
       finally { claiming = false; }
     };
     if (!/practice|questions\//.test(pathname)) void offer();
     window.addEventListener("notary-quiz-finished", offer);
     return () => { cancelled = true; window.removeEventListener("notary-quiz-finished", offer); };
-  }, [view, isList, isLearningPage, pathname]);
+  }, [view, isLearningPage, pathname]);
 
   function acknowledge(rows: RelatedUpdate[], read: boolean) {
     if (!view || !rows.length) return;
@@ -174,52 +208,87 @@ export function QuestionUpdates() {
     }
     try { localStorage.setItem(key, JSON.stringify(stored)); } catch { /* Continue with this tab's receipt. */ }
     setView({ ...view, receipts });
-    if (view.account) void refresh();
+    if (view.account) void refresh(true);
   }
 
-  if (!isLearningPage) return null;
-  if (isList && !view) return <main className="container"><h1>Question updates</h1>
-    <p role="status">{unavailable ? "Updates are temporarily unavailable." : "Loading your question updates…"}</p>
-    {unavailable ? <button className="btn btn-ghost" type="button" onClick={() => void refresh()}>Retry</button> : null}
-  </main>;
-  if (!view) return null;
-  const unread = view.updates.filter(row => !view.receipts[row.id]?.read);
-  if (isList) return (
-    <main className="container">
-      <h1>Question updates</h1>
-      {view.updates.length === 0 ? <p>You have no related question updates.</p> : (
-        <>
-          {unread.length ? <button type="button" className="btn btn-ghost" onClick={() => acknowledge(unread, true)}>Mark updates as read</button> : null}
-          {[...grouped(view.updates)].map(([state, rows]) => <section key={state}>
-            <h2>{stateByCode(state)?.name ?? state}</h2>
-            {rows.map(row => <article className="card" key={row.id}>
-              <h3>{row.questionId.toUpperCase()} · {row.topic}</h3>
-              <p><time dateTime={row.date}>{row.date}</time> · {row.kind === "replacement" ? "Replacement" : row.kind === "rule_change" ? "Rule change" : "Correction"}</p>
-              <p>{row.reason}</p>
-              <p>Related to your {row.relations.join(", ")}.</p>
-              <Link href={`${page}${row.id}/`} onClick={() => acknowledge([row], true)}>View {row.kind === "replacement" ? "replacement" : "updated"} question</Link>
-            </article>)}
-          </section>)}
-        </>
-      )}
-    </main>
-  );
-  const kinds = [...new Set(dialog.flatMap(row => row.relations))];
-  const topics = [...new Set(dialog.map(row => row.kind === "rule_change" ? "new rules" : row.kind === "replacement" ? "replacement questions" : "corrections"))];
-  const count = new Set(dialog.map(row => row.questionId)).size;
-  const title = kinds.length === 1 && kinds[0] === "bookmarks" ? "Some of your saved questions have been updated" : "Some questions you’ve used have been updated";
+  if (!dialog) return null;
+  const notice = dialog.kind === "notice" ? dialog.rows : [];
+  const kinds = [...new Set(notice.flatMap(row => row.relations))];
+  const topics = [...new Set(notice.map(row => row.kind === "rule_change" ? "new rules" : row.kind === "replacement" ? "replacement questions" : "corrections"))];
+  const count = new Set(notice.map(row => row.questionId)).size;
+  const title = dialog.kind !== "notice" ? (dialog.kind === "detail" ? "Updated question" : "Question updates")
+    : kinds.length === 1 && kinds[0] === "bookmarks" ? "Some of your saved questions have been updated"
+      : "Some questions you’ve used have been updated";
+  const unread = view?.updates.filter(row => !view.receipts[row.id]?.read) ?? [];
+  const showList = () => setDialog({ kind: "list" });
   return (
-    <>
-      {unread.length ? <div className="container"><Link href={page}>Question updates ({new Set(unread.map(row => row.questionId)).size} unread)</Link></div> : null}
-      {dialog.length ? <MessageDialog title={title} onShown={() => acknowledge(dialog, false)} onClose={() => setDialog([])}>
+    <MessageDialog title={title} className="question-updates-dialog" onShown={() => acknowledge(notice, false)} onClose={() => setDialog(null)}>
+      {dialog.kind === "notice" ? <>
         <p>{count} updated {count === 1 ? "question affects" : "questions affect"} your {kinds.join(", ")}. This update includes {topics.join(", ")}. Review the current versions before practicing these topics again.</p>
-        <ul>{[...grouped(dialog)].map(([state, rows]) => <li key={state}>{stateByCode(state)?.name ?? state} · {rows.length}</li>)}</ul>
+        <ul>{[...grouped(notice)].map(([state, rows]) => <li key={state}>{stateByCode(state)?.name ?? state} · {rows.length}</li>)}</ul>
         <p>Your earlier attempts and bookmarks are preserved.</p>
         <div className="row">
-          <button type="button" className="btn btn-primary" data-dialog-autofocus onClick={() => { setDialog([]); router.push(page); }}>Review updates</button>
-          <button type="button" className="btn btn-ghost" onClick={() => setDialog([])}>Later</button>
+          <button type="button" className="btn btn-primary" data-dialog-autofocus onClick={showList}>Review updates</button>
+          <button type="button" className="btn btn-ghost" onClick={() => setDialog(null)}>Later</button>
         </div>
-      </MessageDialog> : null}
-    </>
+      </> : <div ref={panelFocus} className="question-updates-content" tabIndex={-1}>
+        {dialog.kind === "detail" ? <>
+          <button type="button" className="btn btn-ghost" onClick={showList}>Back to updates</button>
+          <UpdateDetail key={dialog.id} id={dialog.id} />
+        </> : !view ? <>
+          <p role="status">{unavailable ? "Updates are temporarily unavailable." : "Loading your question updates…"}</p>
+          {unavailable ? <button className="btn btn-ghost" type="button" onClick={() => void refresh(true)}>Retry</button> : null}
+        </> : !view.updates.length ? <p>You have no related question updates.</p> : <>
+          {unread.length ? <button type="button" className="btn btn-ghost" onClick={() => acknowledge(unread, true)}>Mark updates as read</button> : null}
+          {[...grouped(view.updates)].map(([state, rows]) => <section key={state}>
+            <h3>{stateByCode(state)?.name ?? state}</h3>
+            <ul className="question-update-list">
+              {rows.map(row => <li key={row.id}>
+                <button type="button" className="question-update-row" onClick={() => {
+                  acknowledge([row], true);
+                  setDialog({ kind: "detail", id: row.id });
+                }}>
+                  <strong>{row.questionId.toUpperCase()} · {row.topic.replaceAll("-", " ")}</strong>
+                  <time dateTime={row.date}>{row.date}</time>
+                  <span>{row.reason}</span>
+                </button>
+              </li>)}
+            </ul>
+          </section>)}
+        </>}
+      </div>}
+    </MessageDialog>
   );
+}
+
+function UpdateDetail({ id }: { id: string }) {
+  const [detail, setDetail] = useState<Detail | null>(null);
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(`/api/question-updates/${encodeURIComponent(id)}/`, { signal: controller.signal, cache: "no-store" })
+      .then(response => {
+        if (!response.ok) throw new Error("Update unavailable");
+        return response.json() as Promise<Detail>;
+      })
+      .then(value => setDetail(value))
+      .catch(() => { if (!controller.signal.aborted) setFailed(true); });
+    return () => controller.abort();
+  }, [id]);
+  if (!detail) return <p role="status">{failed ? "This update is unavailable right now." : "Loading the updated question…"}</p>;
+  const q = detail.question;
+  return <article>
+    <h3>{detail.questionId.toUpperCase()}</h3>
+    <p>{detail.reason}</p>
+    {q ? <>
+      <p><strong>{q.stem}</strong></p>
+      {q.scenario ? <p>{q.scenario}</p> : null}
+      <h4>Answer and reasoning</h4>
+      <p><strong>{q.answer}</strong></p>
+      <p>{q.explanation}</p>
+      <h4>Option feedback</h4>
+      <ul>{q.options.map(option => <li key={option.text}><strong>{option.text}</strong> {option.feedback}</li>)}</ul>
+      {q.evidence ? <p><a href={q.evidence}>Official evidence</a></p> : null}
+    </> : <p>This question requires Pro. Your earlier activity remains in your history.</p>}
+  </article>;
 }
