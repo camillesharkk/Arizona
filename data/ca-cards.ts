@@ -221,7 +221,7 @@ export const caCards: CaCard[] = [
   {
     id: "ca-card-copy", study: "journal-thumbprint", title: "A request for one line",
     front: "How fast is a journal copy provided?", rule: "Within 15 business days after a written request that names the parties, the document type, and the month and year.", boundary: "The charge is not more than $0.30 a page. The response is a copy of the line or a statement that no line exists.",
-    mixup: "This is not the $15 power-of-attorney copy certification.", source: "Gov. Code \u00a7 8206(c)", sourceUrl: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8206",
+    mixup: "This is not the $15 power-of-attorney copy certification.", source: "Gov. Code §§ 8206(c), 8206.5", sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf#page=33",
   },
   {
     id: "ca-card-officer", study: "journal-thumbprint", title: "A peace officer's request",

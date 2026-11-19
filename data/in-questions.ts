@@ -2,6 +2,7 @@ import type { Question, TopicId } from "@/lib/types";
 import { shuffle } from "../lib/answer-sequence.ts";
 import { inTopics } from "./in-bank-summary";
 import { inAdditionalGroups } from "./in-question-items";
+import { questionReviewDate } from "./question-review-dates";
 export { inTopics } from "./in-bank-summary";
 
 const VERIFIED = "2026-11-13";
@@ -106,17 +107,18 @@ const evidenceFor = (group: Group) => {
 let nextId = 0;
 export const inQuestions: Question[] = sortedGroups.flatMap(group => group.items.map((item, index) => {
   const id = ++nextId;
+  const questionId = `in-${String(id).padStart(3,"0")}`;
   const [text, answer, rule, ...wrong] = item;
   const draftReason = draftConcepts.get(group.card) ?? draftItems.get(`${group.card}:${index}`);
   const choices = shuffle([{text:answer,feedback:rule,correct:true},...wrong.map(([text,feedback])=>({text,feedback,correct:false}))], id * 7919);
   return {
-    question_id: `in-${String(id).padStart(3,"0")}`, state: "IN", study_topic:group.study, topic:group.topic,
+    question_id: questionId, state: "IN", study_topic:group.study, topic:group.topic,
     difficulty: index === 0 ? "easy" : index === 3 ? "hard" : "medium",
     question_text:text, option_a:choices[0].text, option_b:choices[1].text, option_c:choices[2].text, option_d:choices[3].text,
     correct_option:letters[choices.findIndex(c=>c.correct)], explanation:rule,
     option_feedback:{A:choices[0].feedback,B:choices[1].feedback,C:choices[2].feedback,D:choices[3].feedback},
     ...evidenceFor(group), concept_ids:[`in-card-${String(group.card).padStart(3,"0")}`],
-    effective_from:VERIFIED, effective_to:null, last_verified_at:draftReason ? "" : VERIFIED, version:1,
+    effective_from:VERIFIED, effective_to:null, last_verified_at:draftReason ? "" : questionReviewDate(questionId, VERIFIED), version:1,
     is_free:false, status:draftReason ? "draft" : "published",
   } satisfies Question;
 }));

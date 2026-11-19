@@ -12,6 +12,7 @@ import { nyCardsMore } from "./ny-cards-more";
 import { currentQuestionVersion } from "../lib/question-revisions";
 import { nyRevisedRows } from './ny-revisions';
 import { nyReviewedSources } from './ny-source-review';
+import { questionReviewDate } from './question-review-dates';
 
 export const NY_CHECKED = "2026-11-09";
 
@@ -104,7 +105,7 @@ export function publishedNyQuestions(): Question[] {
     correct_option: letters[row.correct], explanation: row.why,
     option_feedback: { A: row.miss[0], B: row.miss[1], C: row.miss[2], D: row.miss[3] },
     source_id: "ny-official", source_reference: nyReviewedSources[row.id] ?? row.source, effective_from: "2023-01-25", effective_to: null,
-    last_verified_at: row.verified ?? NY_CHECKED, version: currentQuestionVersion(row.id), is_free: row.free, status: "published" as const,
+    last_verified_at: questionReviewDate(row.id, row.verified ?? NY_CHECKED), version: currentQuestionVersion(row.id), is_free: row.free, status: "published" as const,
   }));
 }
 export function pickNyFullExam(seed: number) {

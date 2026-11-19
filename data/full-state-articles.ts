@@ -15685,6 +15685,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "language-and-reading-access-at-notarization",
+      "updated": "2026-11-19",
       "keyword": "Rhode Island notary interpreter deaf blind signer",
       "intent": "Provide accessible communication within notarial scope",
       "title": "Reading, Translation and Written Communication for Rhode Island Signers",
@@ -15707,7 +15708,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Assess the individual circumstances",
-          "body": "Standards section 4(b) prohibits refusal solely on listed grounds such as advanced age, national origin, health or disability. Section 42-30.1-7 allows refusal where the officer is unsatisfied about capacity or knowingly and voluntarily made signing. These standards require attention to the individual. Neither a disability stereotype nor an unexplained nod resolves the principal's comprehension. Use effective communication to evaluate the actual act."
+          "body": "Standards section 4(b) prohibits refusal solely on listed grounds such as advanced age, national origin, health or disability. Section 42-30.1-7 allows refusal where the officer is unsatisfied about capacity or knowingly and voluntarily made signing. These standards require attention to the individual. Neither a disability stereotype nor an unexplained nod resolves the principal's comprehension. Use effective communication to evaluate the actual act. Since June 10, 2026, a notarial officer may refuse if the signer provides too little information for identity proofing under § 42-30.1-6 or § 42-30.1-12.1, or does not agree to pay for it."
         },
         {
           "heading": "Rhode Island Notary Public Manual, revised July 2024",
@@ -15738,6 +15739,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
             "placement": "section",
             "targetMode": "official"
           }
+        },
+        {
+          "heading": "Rhode Island Public Laws 2026, chapter 54, section 2",
+          "body": "Official source checked 2026-11-19.",
+          "link": {
+            "href": "https://webserver.rilegislature.gov/PublicLaws/law26/law26054.htm",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
         }
       ],
       "faqs": [
@@ -15754,7 +15765,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "RI",
       "path": "/rhode-island/guides/language-and-reading-access-at-notarization/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/rhode-island/practice/?mode=quick",
         "label": "Start Free Quick 10",

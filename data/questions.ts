@@ -3,6 +3,7 @@ import { isActiveQuestion } from "../lib/question-status.ts";
 import { expansionDrafts } from "./question-bank-expansion.ts";
 import { scenarioDrafts } from "./scenario-questions.ts";
 import { wave2Drafts } from "./question-bank-wave2.ts";
+import { questionReviewDate } from "./question-review-dates.ts";
 
 type Draft = Omit<
   Question,
@@ -25,7 +26,7 @@ function publish(drafts: Draft[]): Question[] {
     version: 1,
     effective_from: q.effective_from ?? "2024-01-01",
     effective_to: null,
-    last_verified_at: q.last_verified_at ?? "2026-08-01",
+    last_verified_at: questionReviewDate(q.question_id, q.last_verified_at ?? "2026-08-01"),
   }));
 }
 

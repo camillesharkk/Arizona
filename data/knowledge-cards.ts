@@ -87,8 +87,8 @@ export const knowledgeCards: Flashcard[] = [
     kind: "compare",
     title: "Print, or the remote exception",
     front: "The deed is remote and the signer wants to skip the thumbprint. When is that actually allowed?",
-    back: "Only when the journal has the ID credential number and the recording is kept at least seven years.",
-    rule: "Five years is the usual recording period. Seven years plus the credential number is the thumbprint exception.",
+    back: "For a remote act that complies with A.R.S. § 41-263, record the signer's ID credential number in the journal and keep the audiovisual recording for at least seven years.",
+    rule: "The general recording minimum is five years. To qualify for the remote thumbprint exception, a compliant remote act needs the credential number in the journal and at least seven years of recording retention.",
     question_ids: ["az-206"],
     source_id: "ars_41_254",
     compare: {
@@ -96,12 +96,12 @@ export const knowledgeCards: Flashcard[] = [
       right: "Remote exception",
       shared: "The document is still a deed or other covered paper. \"Remote\" is not a magic word.",
       rows: [
-        { label: "Default", a: "Right thumbprint, with the left-thumb or other-finger backup", b: "Same print, unless both exception facts are true" },
+        { label: "Default", a: "Right thumbprint, with the left-thumb or other-finger backup", b: "For a compliant remote act, both the journal and retention conditions below must be met" },
         { label: "Recording", a: "Not what creates the print duty", b: "At least seven years, and the journal must include the ID credential number" },
         { label: "Five years, no ID number", a: "Does not remove the print", b: "Does not meet the exception" },
       ],
       mistake: "People remember \"remote recordings are kept five years\" and use that sentence to skip the print.",
-      twist: "Add the credential number and keep the recording seven years, and the exception can apply. Take either fact away, and the print comes back. Five years with no credential number is the version that still needs the print.",
+      twist: "For a remote act compliant with § 41-263, add the credential number to the journal and keep the recording at least seven years to qualify for the exception.",
     },
   },
   {

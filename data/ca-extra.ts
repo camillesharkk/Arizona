@@ -139,7 +139,7 @@ export const extraCaRows: ExtraRow[] = [
   {
     id: "ca-060", area: "administration", topic: topicFor["education-exam"], study: "education-exam", difficulty: "easy", free: true,
     text: "A candidate wants the exam result explained by telephone the next day. What is the stated process?",
-    options: ["Scores are posted the same evening", "Results are mailed about 15 to 20 business days later and are not discussed by phone", "The proctor announces the scaled score in the room", "The county clerk gives the score"],
+    options: ["Scores are posted the same evening", "CPS HR sends results about 15 to 20 business days later and does not discuss them by phone", "The proctor announces the scaled score in the room", "The county clerk gives the score"],
     correct: 1,
     why: "CPS HR says results are sent about 15 to 20 business days after the exam and will not be discussed by phone.",
     miss: ["\"Scores are posted the same evening\" is not the rule stated in the cited source. CPS HR says results are sent about 15 to 20 business days after the exam and will not be discussed by phone.", "CPS HR says results are sent about 15 to 20 business days after the exam and will not be discussed by phone.", "\"The proctor announces the scaled score in the room\" is not the rule stated in the cited source. CPS HR says results are sent about 15 to 20 business days after the exam and will not be discussed by phone.", "\"The county clerk gives the score\" is not the rule stated in the cited source. CPS HR says results are sent about 15 to 20 business days after the exam and will not be discussed by phone."],
@@ -1131,9 +1131,9 @@ export const extraCaRows: ExtraRow[] = [
     text: "A member of the public sends a written request with the parties' names, the document type, and the month and year. When must the notary respond?",
     options: ["Within 15 business days, with a copy of the line or a statement that no line exists, at no more than $0.30 a page", "Within 15 calendar days, at $15 a page", "Only if a court orders it", "Within one year"],
     correct: 0,
-    why: "Section 8206(c) requires a response within 15 business days to a request that includes the parties, document type, and month and year, at not more than $0.30 a page.",
-    miss: ["Section 8206(c) requires a response within 15 business days to a request that includes the parties, document type, and month and year, at not more than $0.30 a page.", "\"Within 15 calendar days, at $15 a page\" is not the rule stated in the cited source. Section 8206(c) requires a response within 15 business days to a request that includes the parties, document type, and month and year, at not more than $0.30 a page.", "\"Only if a court orders it\" is not the rule stated in the cited source. Section 8206(c) requires a response within 15 business days to a request that includes the parties, document type, and month and year, at not more than $0.30 a page.", "\"Within one year\" is not the rule stated in the cited source. Section 8206(c) requires a response within 15 business days to a request that includes the parties, document type, and month and year, at not more than $0.30 a page."],
-    source: "Gov. Code § 8206(c)",
+    why: "Government Code section 8206.5 requires a response within 15 business days after receipt. Provide a copy of the journal entry or say that no entry exists. Section 8206(c) sets the request details and the 30-cent-per-page cap.",
+    miss: ["Correct. Section 8206.5 sets the 15-business-day response deadline. Section 8206(c) caps the copy fee at 30 cents per page.", "The deadline is 15 business days. The copy fee is capped at 30 cents per page.", "A written request with the required details triggers the response duty under sections 8206(c) and 8206.5.", "The response is due within 15 business days after receipt."],
+    source: "Gov. Code §§ 8206(c), 8206.5; January 2026 Notary Public Handbook, p. 33; https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf#page=33",
   },
   {
     id: "ca-171", area: "violations", topic: topicFor["journal-thumbprint"], study: "journal-thumbprint", difficulty: "medium", free: true,

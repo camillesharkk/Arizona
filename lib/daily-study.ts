@@ -1,10 +1,11 @@
 import { serverStateQuestions } from '../data/full-state-server';
 import { isFreeState } from './free-state-catalog';
+import { isActiveQuestion } from './question-status';
 import { ctProCovers } from "@/lib/account-pro";
 import { isDeepStrictEqual } from "node:util";
 import { caCards } from "@/data/ca-cards";
 import { hiCards } from "@/data/hi-cards";
-import { publishedCaQuestions } from "@/data/ca-questions";
+import { activeCaQuestions, publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
@@ -87,7 +88,7 @@ function pool(state: StudyState, isPro: boolean) {
     return { questions, cards, cardsByQuestion };
   }
   if (state === "CA" || state === "HI") {
-    const questions = state === "HI" ? publishedHiQuestions() : publishedCaQuestions();
+    const questions = state === "HI" ? publishedHiQuestions() : activeCaQuestions();
     const sourceCards = state === "HI" ? hiCards : caCards;
     const practice = state === "HI" ? hiPaths.practice : caPaths.practice;
     const cards = sourceCards.map((card) => ({
@@ -163,6 +164,13 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   const timeZone = doc.settings.timeZone || DEFAULT_STUDY_TIME_ZONE;
   const today = localDate(now, timeZone);
   const { questions, cards, cardsByQuestion } = pool(state, pro);
+  const existingDay = doc.days[today];
+  if (state === "CA" && existingDay) {
+    const activeIds = new Set(questions.map((question) => question.question_id));
+    doc = { ...doc, days: { ...doc.days, [today]: { ...existingDay, tasks: existingDay.tasks.filter((task) =>
+      task.status !== "pending" || !task.key.startsWith("question:") || activeIds.has(task.key.slice(9)),
+    ) } } };
+  }
   const stats = await store.listStats(userId);
   const stateStats = stats.filter((item) => item.state === state).map((stat) => {
     if (stat.mastered || (stat.wrongCount <= 0 && !stat.savedForReview) || stat.nextReviewAt) return stat;
@@ -266,7 +274,7 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     unmappedQuestionIds: built.unmappedQuestionIds,
     nextReviewAt: nextReview,
     taskStatus: built.tasks,
-    ...reviewHistory(questions, stateStats, await store.listExams(userId), checks, state, now),
+    ...reviewHistory(state === "CA" ? publishedCaQuestions() : questions, stateStats, await store.listExams(userId), checks, state, now),
   };
 }
 
@@ -296,7 +304,7 @@ function reviewHistory(
         previousWrongCount: previousWrongCount(stat),
         saved: Boolean(stat.savedForReview),
         mastered: stat.mastered,
-        due: Boolean(question && !stat.mastered && stat.nextReviewAt && stat.nextReviewAt <= now),
+        due: Boolean(question && (state !== "CA" || isActiveQuestion(question, new Date(now))) && !stat.mastered && stat.nextReviewAt && stat.nextReviewAt <= now),
       };
     })
     .sort((a, b) => (a.nextReviewAt || "9").localeCompare(b.nextReviewAt || "9"));

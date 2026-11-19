@@ -1,12 +1,12 @@
 import type { ExamArea, Question } from "@/lib/types";
-import { publishedCaQuestions } from "../data/ca-questions.ts";
+import { activeCaQuestions } from "../data/ca-questions.ts";
 import { shuffle } from "./answer-sequence.ts";
 import { CA_EXAM, areaLabel } from "./ca-site.ts";
 
 const AREAS: ExamArea[] = ["administration", "acts", "identity", "immigration", "violations"];
 
 export function caPool(freeOnly = false) {
-  return publishedCaQuestions().filter((question) => !freeOnly || question.is_free);
+  return activeCaQuestions().filter((question) => !freeOnly || question.is_free);
 }
 
 export function pickCaQuickExam(seed: number, pool = caPool(true)): Question[] {

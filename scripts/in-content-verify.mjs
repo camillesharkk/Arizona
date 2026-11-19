@@ -6,6 +6,7 @@ import { testLoader } from './pack-test-utils.mjs';
 assert.ok(fs.existsSync('data/in-questions.ts'), 'Indiana question bank must exist');
 const load = testLoader();
 const bank = load('data/in-questions.ts');
+const { questionReviewDate } = load('data/question-review-dates.ts');
 const questions = bank.publishedInQuestions();
 const freeModule = load('data/in-free-questions.ts');
 const summary = load('data/in-bank-summary.ts');
@@ -24,7 +25,7 @@ for (let i = 0; i < bank.inQuestions.length; i++) {
   const q = bank.inQuestions[i];
   assert.equal(q.question_id, `in-${String(i + 1).padStart(3, '0')}`);
   assert.equal(q.state, 'IN');
-  assert.equal(q.last_verified_at, q.status === 'published' ? '2026-11-13' : '');
+  assert.equal(q.last_verified_at, q.status === 'published' ? questionReviewDate(q.question_id, '2026-11-13') : '');
   if(q.status === 'draft') assert.equal(q.is_free,false);
   assert.ok(bank.inTopics.some(t => t.id === q.study_topic));
   assert.ok(['in-faq','in-sos-2025','in-guide-2024','in-shelby-seal'].includes(q.source_id) && q.source_reference.includes('https://'));

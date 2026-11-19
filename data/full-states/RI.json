@@ -357,9 +357,9 @@
       "id": "ri-027",
       "topic": "commission",
       "studyTopic": "appointment",
-      "stem": "A physician adds 'Doctor' to the commissioned-name field. What does the application instruction prohibit?",
+      "stem": "A physician adds 'Doctor' to the notarial signature on the application. What does the form prohibit?",
       "options": [
-        "Prefixes or professional titles in that field",
+        "Prefixes or professional titles in the notarial signature",
         "All generational suffixes",
         "Every middle initial",
         "Use of the applicant's last name"
@@ -3335,7 +3335,7 @@
         "The circumstances for not completing the act"
       ],
       "answer": "D",
-      "explanation": "The Standards recommend recording circumstances for not completing a notarial act.",
+      "explanation": "The Standards recommend recording why the act was not completed. Since June 10, 2026, a notarial officer may refuse if the signer provides too little information for identity proofing under § 42-30.1-6 or § 42-30.1-12.1, or does not agree to pay for it.",
       "feedback": [
         "The record should accurately describe the refusal.",
         "Fabricated evidence undermines the record.",
@@ -3343,7 +3343,7 @@
         "The Standards recommend recording circumstances for not completing a notarial act."
       ],
       "sourceId": "ri-standards",
-      "reference": "Sections 3(e), 5, 6, and 7"
+      "reference": "Standards § 3(e)(6), https://docs.sos.ri.gov/documents/BusinessServices/notary-standards-of-conduct-for-notaries-amended.pdf#page=4; P.L. 2026, ch. 54, § 2 (R.I. Gen. Laws § 42-30.1-7(b)); https://webserver.rilegislature.gov/PublicLaws/law26/law26054.htm"
     },
     {
       "id": "ri-163",
@@ -4061,7 +4061,7 @@
         "At least two different types of identity proofing"
       ],
       "answer": "D",
-      "explanation": "Section 12.1(b)(1)(iii) requires at least two different types of identity proofing under that route.",
+      "explanation": "Section 12.1(b)(1)(iii) requires at least two different types of identity proofing under that route. Since June 10, 2026, a notarial officer may refuse if the signer provides too little information for identity proofing under § 42-30.1-6 or § 42-30.1-12.1, or does not agree to pay for it.",
       "feedback": [
         "That does not meet the stated alternative.",
         "That is not two types of identity proofing.",
@@ -4069,7 +4069,7 @@
         "Section 12.1(b)(1)(iii) requires at least two different types of identity proofing under that route."
       ],
       "sourceId": "ri-law-12.1",
-      "reference": "Section 42-30.1-12.1(b)-(f)"
+      "reference": "R.I. Gen. Laws § 42-30.1-12.1(b)(1)(iii), https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-12.1.htm; P.L. 2026, ch. 54, § 2 (R.I. Gen. Laws § 42-30.1-7(b)); https://webserver.rilegislature.gov/PublicLaws/law26/law26054.htm"
     },
     {
       "id": "ri-196",
@@ -4695,10 +4695,10 @@
       "title": "Capacity assessment",
       "front": "Assess the individual rather than relying on a stereotype.",
       "rule": "A notarial officer may refuse if unsatisfied about capacity or a knowingly and voluntarily made signature.",
-      "boundary": "The Standards prohibit refusal solely on listed grounds such as advanced age or disability.",
+      "boundary": "The Standards prohibit refusal solely on listed grounds such as advanced age or disability. Since June 10, 2026, a notarial officer may refuse if the signer provides too little information for identity proofing under § 42-30.1-6 or § 42-30.1-12.1, or does not agree to pay for it.",
       "mixup": "A disability does not automatically establish incapacity.",
-      "source": "Section 42-30.1-7(a)",
-      "sourceUrl": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-7.htm"
+      "source": "R.I. Gen. Laws § 42-30.1-7(a)–(b); P.L. 2026, ch. 54, § 2",
+      "sourceUrl": "https://webserver.rilegislature.gov/PublicLaws/law26/law26054.htm"
     },
     {
       "id": "ri-card-042",
@@ -4982,7 +4982,7 @@
       "sections": [
         {
           "heading": "Accessible communication and individual assessment",
-          "body": "The manual recommends reading the document to blind or illiterate signers, allowing rereading and documenting the assistance as described. A nonlawyer's reading does not become authority for legal advice. For a deaf signer, use competent sign language or the recommended written communication. For a signer who does not speak the notary's language, the manual permits an interpreter and oral translation, with a recommended accuracy oath and certificate notation. The notary must understand the certificate language and still assess identity, comprehension and free will. The Standards prohibit refusal solely on listed grounds such as disability or advanced age."
+          "body": "The manual recommends reading the document to blind or illiterate signers, allowing rereading and documenting the assistance as described. A nonlawyer's reading does not become authority for legal advice. For a deaf signer, use competent sign language or the recommended written communication. For a signer who does not speak the notary's language, the manual permits an interpreter and oral translation, with a recommended accuracy oath and certificate notation. The notary must understand the certificate language and still assess identity, comprehension and free will. The Standards prohibit refusal solely on listed grounds such as disability or advanced age. Since June 10, 2026, a notarial officer may refuse if the signer provides too little information for identity proofing under § 42-30.1-6 or § 42-30.1-12.1, or does not agree to pay for it."
         },
         {
           "heading": "Representative and directed-signature boundaries",
@@ -5008,7 +5008,7 @@
         },
         {
           "heading": "Remote identity, record integrity and retention",
-          "body": "Section 42-30.1-12.1 recognizes personal knowledge, a qualifying credible witness or at least two identity-proofing types. Confirm that the notary and signer refer to the same record, create an audiovisual recording and retain it for at least ten years under the statutory default. The remote certificate must indicate use of communication technology. A signer outside the United States triggers the statutory U.S.-connection and foreign-permission safeguards. The Standards and guide have broader outside-RI wording and legacy paper procedures, so uncertain edge cases require clarification. Official basis checked November 14, 2026, sections 12.1-14 and the SOS digital pages."
+          "body": "Section 42-30.1-12.1 recognizes personal knowledge, a qualifying credible witness or at least two identity-proofing types. Confirm that the notary and signer refer to the same record, create an audiovisual recording and retain it for at least ten years under the statutory default. The remote certificate must indicate use of communication technology. A signer outside the United States triggers the statutory U.S.-connection and foreign-permission safeguards. The Standards and guide have broader outside-RI wording and legacy paper procedures, so uncertain edge cases require clarification. Official basis checked November 14, 2026, sections 12.1-14 and the SOS digital pages. Since June 10, 2026, a notarial officer may refuse if the signer provides too little information for identity proofing under § 42-30.1-6 or § 42-30.1-12.1, or does not agree to pay for it."
         }
       ],
       "example": {
@@ -5289,6 +5289,7 @@
     },
     {
       "slug": "language-and-reading-access-at-notarization",
+      "updated": "2026-11-19",
       "keyword": "Rhode Island notary interpreter deaf blind signer",
       "intent": "Provide accessible communication within notarial scope",
       "title": "Reading, Translation and Written Communication for Rhode Island Signers",
@@ -5311,7 +5312,7 @@
         },
         {
           "heading": "Assess the individual circumstances",
-          "body": "Standards section 4(b) prohibits refusal solely on listed grounds such as advanced age, national origin, health or disability. Section 42-30.1-7 allows refusal where the officer is unsatisfied about capacity or knowingly and voluntarily made signing. These standards require attention to the individual. Neither a disability stereotype nor an unexplained nod resolves the principal's comprehension. Use effective communication to evaluate the actual act."
+          "body": "Standards section 4(b) prohibits refusal solely on listed grounds such as advanced age, national origin, health or disability. Section 42-30.1-7 allows refusal where the officer is unsatisfied about capacity or knowingly and voluntarily made signing. These standards require attention to the individual. Neither a disability stereotype nor an unexplained nod resolves the principal's comprehension. Use effective communication to evaluate the actual act. Since June 10, 2026, a notarial officer may refuse if the signer provides too little information for identity proofing under § 42-30.1-6 or § 42-30.1-12.1, or does not agree to pay for it."
         }
       ],
       "faqs": [
@@ -5336,6 +5337,11 @@
         {
           "title": "R.I. Gen. Laws 42-30.1-7",
           "url": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-7.htm"
+        },
+        {
+          "title": "Rhode Island Public Laws 2026, chapter 54, section 2",
+          "url": "https://webserver.rilegislature.gov/PublicLaws/law26/law26054.htm",
+          "checkedAt": "2026-11-19"
         }
       ]
     },

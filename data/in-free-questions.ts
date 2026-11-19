@@ -58,7 +58,7 @@ export const inFreeQuestions: Question[] = [
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
-    "last_verified_at": "2026-11-13",
+    "last_verified_at": "2026-11-19",
     "version": 1,
     "is_free": true,
     "status": "published"
@@ -120,7 +120,7 @@ export const inFreeQuestions: Question[] = [
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
-    "last_verified_at": "2026-11-13",
+    "last_verified_at": "2026-11-19",
     "version": 1,
     "is_free": true,
     "status": "published"
@@ -151,7 +151,7 @@ export const inFreeQuestions: Question[] = [
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
-    "last_verified_at": "2026-11-13",
+    "last_verified_at": "2026-11-19",
     "version": 1,
     "is_free": true,
     "status": "published"
@@ -182,7 +182,7 @@ export const inFreeQuestions: Question[] = [
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
-    "last_verified_at": "2026-11-13",
+    "last_verified_at": "2026-11-19",
     "version": 1,
     "is_free": true,
     "status": "published"
@@ -213,7 +213,7 @@ export const inFreeQuestions: Question[] = [
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
-    "last_verified_at": "2026-11-13",
+    "last_verified_at": "2026-11-19",
     "version": 1,
     "is_free": true,
     "status": "published"
@@ -244,7 +244,7 @@ export const inFreeQuestions: Question[] = [
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
-    "last_verified_at": "2026-11-13",
+    "last_verified_at": "2026-11-19",
     "version": 1,
     "is_free": true,
     "status": "published"
@@ -275,7 +275,7 @@ export const inFreeQuestions: Question[] = [
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
-    "last_verified_at": "2026-11-13",
+    "last_verified_at": "2026-11-19",
     "version": 1,
     "is_free": true,
     "status": "published"
@@ -306,7 +306,7 @@ export const inFreeQuestions: Question[] = [
     ],
     "effective_from": "2026-11-13",
     "effective_to": null,
-    "last_verified_at": "2026-11-13",
+    "last_verified_at": "2026-11-19",
     "version": 1,
     "is_free": true,
     "status": "published"

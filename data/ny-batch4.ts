@@ -60,7 +60,7 @@ export const nyBatch4: NyRow[] = [
   { id: "ny-065", study: "exam-day", topic: "commission", difficulty: "medium", free: false,
     text: "A candidate wants the exam in Korean and brings a dictionary. What does the exam sheet allow?",
     options: ["The dictionary is allowed if the proctor is told", "The listed languages include Korean if the candidate tells the proctor, and dictionaries are not allowed", "Korean is not on the list", "Any language is available without notice"],
-    correct: 1, why: "The sheet lists Korean among the languages when the candidate tells the proctor, and it forbids books, dictionaries, and phones.",
+    correct: 1, why: "Tell the proctor if you want the exam in Korean. Dictionaries and other reference materials are prohibited. Turn off your phone and other electronic devices during the exam.",
     miss: ["Telling the proctor does not authorize a dictionary.", "Correct. The language may be requested. The dictionary may not.", "Korean is on the list.", "The candidate has to tell the proctor, and the list is specific."], source: EXAM },
   { id: "ny-066", study: "electronic", topic: "electronic-ron", difficulty: "hard", free: false,
     text: "The signer is outside the United States. The record has no connection to a United States filing, property, or transaction. The notary is in Albany. May the notary use communication technology for this act?",

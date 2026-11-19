@@ -1,5 +1,7 @@
 import type { Difficulty, ExamArea, Question, TopicId } from "@/lib/types";
 import { extraCaRows } from "./ca-extra";
+import { questionReviewDate } from "./question-review-dates";
+import { isActiveQuestion } from "../lib/question-status";
 
 const VERIFIED = "2026-11-05";
 
@@ -853,8 +855,9 @@ function publish(row: Row): Question {
     source_id: "ca-official",
     source_reference: row.source,
     effective_from: "2026-01-01",
-    effective_to: null,
-    last_verified_at: VERIFIED,
+    // Existing sittings and notebooks can still resolve the original question.
+    effective_to: row.id === "ca-079" ? "2026-11-19" : null,
+    last_verified_at: questionReviewDate(row.id, VERIFIED),
     version: 1,
     is_free: row.free,
     status: "published",
@@ -867,8 +870,12 @@ export function publishedCaQuestions(): Question[] {
   return questions.filter((question) => question.status === "published" && question.state === "CA");
 }
 
+export function activeCaQuestions(): Question[] {
+  return publishedCaQuestions().filter((question) => isActiveQuestion(question));
+}
+
 export function caQuestionCounts() {
-  const published = publishedCaQuestions();
+  const published = activeCaQuestions();
   const areas = {
     administration: 0,
     acts: 0,

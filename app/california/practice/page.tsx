@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PracticeAfterword } from "@/components/PracticeAfterword";
 import { PracticeLaunch } from "@/components/PracticeLaunch";
-import { publishedCaQuestions, caQuestionCounts } from "@/data/ca-questions";
+import { activeCaQuestions, caQuestionCounts } from "@/data/ca-questions";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
 import { caStudyTopics } from "@/lib/ca-topics";
 import { canonicalUrl } from "@/lib/site";
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  const free = publishedCaQuestions().filter((q) => q.is_free);
+  const free = activeCaQuestions().filter((q) => q.is_free);
   const samples = caStudyTopics.slice(0, 6).flatMap((topic) => {
     const q = free.find((item) => item.study_topic === topic.id);
     if (!q) return [];

@@ -102,13 +102,13 @@ for (const [code, name, slug] of freeStateCatalog) {
   articles[code] = content.articles.map(({ sources: articleSources, ...article }) => ({
     ...article, title: article.title.includes(name) ? article.title : `${article.title} | ${name}`,
     id: `${code.toLowerCase()}-${article.slug}`, state: code, path: `/${slug}/guides/${article.slug}/`,
-    checked: '2026-11-14', updated: '2026-11-14',
+    checked: '2026-11-14', updated: article.updated ?? '2026-11-14',
     ledeCta: { href: `/${slug}/practice/?mode=quick`, label: 'Start Free Quick 10', placement: 'lede', targetMode: 'quick' },
     endCta: freeStateFeatures[code]?.fullPractice === false
       ? { href: `/${slug}/practice/?mode=quick`, label: 'Start Free Practice', placement: 'end', targetMode: 'quick' }
       : { href: `/${slug}/practice/?mode=full`, label: 'Start Comprehensive Practice', placement: 'end', targetMode: 'full' },
     related: [{ href: `/${slug}/study-guide/`, label: `${name} Study Guide` }, { href: `/${slug}/study-cards/`, label: 'Study Cards' }, ...(freeStateFeatures[code]?.purchase !== false ? [{ href: `/${slug}/pricing/`, label: '60-Day Pro' }] : [])],
-    sections: [...article.sections, ...articleSources.map(source => ({ heading: source.title, body: 'Official source checked November 14, 2026.', link: { href: source.url, label: 'Open official source', placement: 'section', targetMode: 'official' } }))],
+    sections: [...article.sections, ...articleSources.map(source => ({ heading: source.title, body: source.checkedAt ? `Official source checked ${source.checkedAt}.` : 'Official source checked November 14, 2026.', link: { href: source.url, label: 'Open official source', placement: 'section', targetMode: 'official' } }))],
   }));
   for (const source of content.sources) {
     assert.ok(source.url.startsWith('https://') && source.checkedAt === '2026-11-14');

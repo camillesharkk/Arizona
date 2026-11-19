@@ -289,7 +289,7 @@ export const chapters: StudyChapter[] = [
     keyFacts: [
       "The notary must be located in Arizona for a remote act under § 41-263(B).",
       "RON identity may use personal knowledge, a credible witness, or at least two types of identity proofing.",
-      "The usual statutory recording floor is five years; the SB 1479 thumbprint exception requires seven years and the journal credential number.",
+      "The usual statutory recording minimum is five years. The SB 1479 thumbprint exception requires compliance with A.R.S. § 41-263, the signer's credential number in the journal, and at least seven years of recording retention.",
     ],
     source_id: "ars_41_263",
     example: {

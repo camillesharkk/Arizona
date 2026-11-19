@@ -1865,7 +1865,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Is waived whenever the signer prefers a fingerprint",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-254(D)(2), read on the Arizona Legislature site on 2026-09-29, says subsection C does not apply to a deed of release and reconveyance. A covered deed that is not in that list is a different document.",
+      "A deed of release and reconveyance is exempt from the journal-thumbprint requirement under A.R.S. § 41-254(D)(2). The other exemptions are listed separately in § 41-254(D).",
     option_feedback: {
       A: "Subsection D lists documents to which the thumbprint does not apply.",
       B: "Correct. A deed of release and reconveyance is exempt from the subsection C thumbprint.",
@@ -1873,7 +1873,7 @@ export const wave2Drafts: ExpansionDraft[] = [
       D: "Signer preference is not the exception.",
     },
     source_id: "ars_41_254",
-    source_reference: "A.R.S. § 41-254(D)(2), read at azleg.gov on 2026-09-29",
+    source_reference: "A.R.S. § 41-254(D)(2)",
   }),
   q({
     question_id: "az-176",
@@ -1913,7 +1913,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "The thumbprint goes on the power of attorney instead of in the journal",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-254(C) covers a deed, quitclaim deed, deed of trust, other document that affects real property, or a power of attorney document. An in-person deed is the same subsection but a different document. The journal is where the thumbprint is placed.",
+      "A.R.S. § 41-254(C) requires the signer to put a right thumbprint in the journal for an in-person power of attorney. If the right thumb is unavailable, use the left thumb or any available finger and note it. If the signer physically cannot provide any print, note that and explain the condition in the journal.",
     option_feedback: {
       A: "A power of attorney document is named in subsection C.",
       B: "Correct. An in-person power of attorney is a subsection C document.",
@@ -1985,7 +1985,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Applies if the notary remembers the credential number",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-254(D)(3) exempts a remote act that complies with § 41-263 only if both of the following apply: the journal includes the individual's identification credential number, and the notary retains the audiovisual recording for at least seven years. Five years without the credential number does not meet both conditions. The general five-year recording rule in § 41-263(E) is a different retention period.",
+      "The exemption requires a remote act that complies with A.R.S. § 41-263, the signer's identification credential number in the journal, and at least seven years of recording retention. This scenario fails both journal and retention conditions. The general five-year statutory minimum in § 41-263(E) is subject to § 41-254 and applicable rules.",
     option_feedback: {
       A: "The exemption has two conditions. A remote act alone is not enough.",
       B: "Correct. Both the credential number and at least seven years of recording are required.",

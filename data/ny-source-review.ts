@@ -27,7 +27,7 @@ export const nyReviewedSources: Record<string, string> = {
   "ny-023": "New York DOS, September 2026 License Law, County Law 534, p.7; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",
   "ny-024": "New York DOS, September 2026 License Law, Executive Law 135-c(3)(a), p.9; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",
   "ny-025": "New York DOS, September 2026 License Law, Executive Law 135-c(4)(b), p.9; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",
-  "ny-026": "New York DOS, September 2026 License Law, Executive Law 135-c(2)(b), p.8; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",
+  "ny-026": "New York DOS, September 2026 License Law, Executive Law 135-c(2)(b), p.9; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",
   "ny-027": "New York DOS, September 2026 License Law, Executive Law 135-c(8), p.10; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",
   "ny-028": "New York DOS, September 2026 License Law, Executive Law 135 protest paragraph, p.8; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",
   "ny-029": "New York DOS, September 2026 License Law, Executive Law 135-b(2)-(4), p.8; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",
@@ -61,5 +61,5 @@ export const nyReviewedSources: Record<string, string> = {
   "ny-066": "New York DOS, September 2026 License Law, Executive Law 135-c(4)(a)(ii), p.9; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",
   "ny-067": "New York DOS, September 2026 License Law, Executive Law 137, p.10; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",
   "ny-059": "New York DOS, FAQ, Remote Notarization FAQs: What can an electronic notary charge? and What can an electronic notary charge for papering out?; https://dos.ny.gov/notary-public-frequently-asked-questions; reviewed 2026-11-09",
-  "ny-065": "New York DOS, July-December 2026 examination information, About the Exam and Exam Center Policies; https://dos.ny.gov/system/files/documents/2026/06/july-dec-2026-notary-written-exam-info-and-schedule_0.pdf; reviewed 2026-11-09"
+  "ny-065": "New York DOS, July–December 2026 examination information, revised November 3, pp. 3–4; https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule"
 };

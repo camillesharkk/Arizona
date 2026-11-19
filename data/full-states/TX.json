@@ -123,10 +123,10 @@
         "No more than three completions in a three-month period"
       ],
       "answer": "D",
-      "explanation": "Section 87.8(e) limits completions for fulfilling education.",
+      "explanation": "Section 87.8(e) limits applicants to three course completions in a three-month period for purposes of meeting the education requirement.",
       "feedback": [
         "That exceeds the stated limit.",
-        "The rule uses a rolling period rather than a lifetime bar.",
+        "The rule limits completions within a three-month period.",
         "Employer payment does not change the limit.",
         "Section 87.8(e) limits completions for fulfilling education."
       ],
@@ -379,7 +379,7 @@
       "id": "tx-028",
       "topic": "new-laws",
       "studyTopic": "education",
-      "stem": "An online applicant receives a confirmation email after the SOS assessment. What role does the guide give the email?",
+      "stem": "An online applicant receives a confirmation email after passing the SOS assessment. What role does the guide give the email?",
       "options": [
         "Immediate authority for every online notarization",
         "A substitute for the required electronic seal",

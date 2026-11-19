@@ -9,7 +9,8 @@ import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from "
 import Link from "next/link";
 import type { Question } from "@/lib/types";
 import { publishedQuestions } from "@/data/questions";
-import { publishedCaQuestions } from "@/data/ca-questions";
+import { activeCaQuestions, publishedCaQuestions } from "@/data/ca-questions";
+import { isActiveQuestion } from "@/lib/question-status";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { pickCaFullExam, pickCaQuickExam, weakestCaArea } from "@/lib/ca-exam";
 import { pickHiFullExam, pickHiQuickExam } from "@/lib/hi-exam";
@@ -172,7 +173,7 @@ export function ExamRunner({
 
   function drawQuestionIds(seed: number, inBank?: Question[]) {
     if (dailySet && preset) {
-      return preset.filter(item => item.state === stateCode).map(item => item.question_id);
+      return preset.filter(item => item.state === stateCode && (!onCa || isActiveQuestion(item))).map(item => item.question_id);
     }
     if (stateCode === "IN" && preset?.length) return preset.filter(item => item.state === "IN" && (item.is_free || isPro)).map(item => item.question_id);
     if (stateCode === "CT" && preset && mode !== "full") {
@@ -198,7 +199,7 @@ export function ExamRunner({
       return bank.filter((item) => missed.includes(item.question_id) && (stateCode !== "CT" || item.is_free || isPro)).slice(0, 10).map((item) => item.question_id);
     }
     if (onHi || onCa) {
-      const bank = onHi ? publishedHiQuestions() : publishedCaQuestions();
+      const bank = onHi ? publishedHiQuestions() : activeCaQuestions();
       if (focusArea) {
         const pool = bank.filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
         const open = pool.filter((item) => item.is_free || isPro);
@@ -324,7 +325,14 @@ export function ExamRunner({
         const savedQuestionIds = existing?.questionIds;
         if (dailySet && savedQuestionIds && preset && (savedQuestionIds.length !== preset.length ||
           preset.some(question => !savedQuestionIds.includes(question.question_id)))) {
-          existing = null;
+          const presetIds = new Set(preset.map((question) => question.question_id));
+          const removed = savedQuestionIds.filter((id) => !presetIds.has(id));
+          const resumingRetiredCaSet = onCa && !startFresh && existing?.startedAt != null && !existing.done &&
+            removed.length > 0 && removed.every((id) => {
+              const question = byId.get(id);
+              return question && !isActiveQuestion(question);
+            });
+          if (!resumingRetiredCaSet) existing = null;
         }
         if (startFresh && existing?.done) {
           clearSitting(sessionStorage, nextOwner, modeKey, stateCode);

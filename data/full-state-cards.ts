@@ -9834,10 +9834,10 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Capacity assessment",
       "front": "Assess the individual rather than relying on a stereotype.",
       "rule": "A notarial officer may refuse if unsatisfied about capacity or a knowingly and voluntarily made signature.",
-      "boundary": "The Standards prohibit refusal solely on listed grounds such as advanced age or disability.",
+      "boundary": "The Standards prohibit refusal solely on listed grounds such as advanced age or disability. Since June 10, 2026, a notarial officer may refuse if the signer provides too little information for identity proofing under § 42-30.1-6 or § 42-30.1-12.1, or does not agree to pay for it.",
       "mixup": "A disability does not automatically establish incapacity.",
-      "source": "Section 42-30.1-7(a)",
-      "sourceUrl": "https://webserver.rilegislature.gov/Statutes/TITLE42/42-30.1/42-30.1-7.htm"
+      "source": "R.I. Gen. Laws § 42-30.1-7(a)–(b); P.L. 2026, ch. 54, § 2",
+      "sourceUrl": "https://webserver.rilegislature.gov/PublicLaws/law26/law26054.htm"
     },
     {
       "id": "ri-card-042",

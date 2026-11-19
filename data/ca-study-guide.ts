@@ -202,8 +202,8 @@ export const caGuideChapters: CaGuideChapter[] = [
     exception: "A trustee’s deed resulting from foreclosure under Civil Code section 2924, and a deed of reconveyance, are excluded from the thumbprint requirement. A line-item copy for a member of the public is due within 15 business days, at no more than $0.30 a page, and the request must name the parties, the document type, and the month and year. A lost, stolen, or destroyed journal requires immediate notice to the Secretary of State by certified or registered mail or receipted delivery. A peace officer with reasonable suspicion receives the journal immediately, or as soon as possible if the notary is not present.",
     exampleTitle: "Example: the employer’s safe",
     example: "The employer wants the journal locked in the office safe over the weekend. Section 8206 keeps exclusive control with the notary. The employer’s safe is not a substitute for that control.",
-    sourceLabel: "Government Code section 8206",
-    sourceUrl: gov("8206"),
+    sourceLabel: "Government Code sections 8206 and 8206.5",
+    sourceUrl: "https://notary.cdn.sos.ca.gov/forms/notary-handbook-current.pdf#page=33",
   },
   {
     id: "seal",
