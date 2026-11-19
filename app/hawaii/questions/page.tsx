@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import type { Metadata } from "next";
 import { QuestionsClient } from "@/components/QuestionsClient";
 import { publishedHiQuestions, hiQuestionCounts } from "@/data/hi-questions";
@@ -19,7 +20,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
     <main className="wrap">
       <h1>Hawaii notary exam questions</h1>
       <div className="card">
-        <p>{counts.published} published questions. {counts.free} are free. Each item has an explanation and a source. Comprehensive Practice draws {HI_EXAM.practiceQuestionCount} unique questions. That count is this site's practice setting, not an official form. The official exam is closed book and requires 80 percent. Its length and time are not published.</p>
+        <p>{counts.published} published questions. {counts.free}<MemberCopy member={<> are available to all learners. Each item has an explanation and a source. Comprehensive Practice draws </>}> are free. Each item has an explanation and a source. Comprehensive Practice draws </MemberCopy>{HI_EXAM.practiceQuestionCount} unique questions. That count is this site's practice setting, not an official form. The official exam is closed book and requires 80 percent. Its length and time are not published.</p>
         <ul>
           {Object.entries(counts.topics).map(([id, count]) => (
             <li key={id}>{hiStudyLabel(id)}: {count} published</li>

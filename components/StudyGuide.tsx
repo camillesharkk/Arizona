@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { StateCode } from "@/lib/types";
@@ -23,8 +24,8 @@ export type GuideChapter = {
 
 export function StudyGuide({ stateCode, title, lede, introduction, chapters, sitePaths, fullExamLabel, fullPracticeEnabled = true, purchaseEnabled = true }: {
   stateCode: StateCode;
-  title: string;
-  lede: string;
+  title: ReactNode;
+  lede: ReactNode;
   introduction: ReactNode;
   chapters: GuideChapter[];
   sitePaths: { practice: string; study: string; studyCards: string; mistakes: string; pricing: string };
@@ -71,7 +72,7 @@ export function StudyGuide({ stateCode, title, lede, introduction, chapters, sit
           {chapter.afterSource}
           <div className="row" style={{ marginTop: 12 }}>
             <Link className="btn btn-primary" href={chapter.practiceHref}>Practice This Topic</Link>
-            {!chapter.hasFreePractice && <p>This topic’s practice questions are Pro-only.{" "}<Link href={chapter.practiceHref}>See the Pro explanation</Link>{" · "}<Link href={`${sitePaths.practice}?mode=quick`}>Start free Quick 10</Link></p>}
+            {!chapter.hasFreePractice && <p>This topic’s practice questions are Pro-only.{" "}<Link href={chapter.practiceHref}>See the Pro explanation</Link>{" · "}<Link href={`${sitePaths.practice}?mode=quick`}><MemberCopy member={<>Start Member Quick 10</>}>Start free Quick 10</MemberCopy></Link></p>}
             <Link className="btn btn-ghost" href={chapter.cardsHref}>Study this topic</Link>
             <Link className="btn btn-ghost" href={chapter.mistakesHref}>Review wrong answers</Link>
           </div>
@@ -80,7 +81,7 @@ export function StudyGuide({ stateCode, title, lede, introduction, chapters, sit
       <section className="study-pro" aria-labelledby="study-pro-heading">
         <h2 id="study-pro-heading">Put what you’ve learned into practice</h2>
         {purchaseEnabled ? <><p>Use Pro to practice more questions on the topics in this guide and prepare with full practice exams.</p>
-        <p><Link href={sitePaths.pricing}>Explore Pro</Link></p></> : <p><Link href={`${sitePaths.practice}?mode=quick`}>Start Free Practice</Link></p>}
+        <p><Link href={sitePaths.pricing}>Explore Pro</Link></p></> : <p><Link href={`${sitePaths.practice}?mode=quick`}><MemberCopy member={<>Start Member Practice</>}>Start Free Practice</MemberCopy></Link></p>}
       </section>
     </main></StudyProgressProvider>
   );

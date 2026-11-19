@@ -198,7 +198,7 @@ const existingGuides: SeoGuide[] = [
           `Filing fee on the SOS notary page: $${officialExam.applicationFeeUsd}. Bond amount in § 41-269(D): $${officialExam.bondUsd}. Those are not the exam fee.`,
           "Quick 10 shows the explanation immediately. Full 45 hides explanations until you submit.",
         ],
-        body: `About 80 seconds per item if you split an hour evenly. One free Full 45 in this browser can include Pro questions. Pro is a separate one-time 60-day purchase, not a subscription: the standard price is $22.21, and new members may pay $19.99 within 72 hours after verifying their email. Pro unlocks all ${practiceBank.length} practice questions, including the ${practiceBank.length - freeBankCount} that are Pro-only, and later full exams.`,
+        body: `About 80 seconds per item if you split an hour evenly. Your introductory Full 45 in this browser can include Pro questions. Pro is a separate one-time 60-day purchase, not a subscription: the standard price is $22.21, and new members may pay $19.99 within 72 hours after verifying their email. Pro unlocks all ${practiceBank.length} practice questions, including the ${practiceBank.length - freeBankCount} that are Pro-only, and later full exams.`,
         href: paths.passingScore,
         hrefLabel: "Why 80% is a practice target",
       },

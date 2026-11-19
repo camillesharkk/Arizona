@@ -16,6 +16,7 @@ import { AnalyticsIdentity } from "@/components/AnalyticsIdentity";
 import { AnalyticsFunnel } from "@/components/AnalyticsFunnel";
 import { MicrosoftClarity } from "@/components/MicrosoftClarity";
 import { PaddleCheckoutResume } from "@/components/PaddleCheckoutResume";
+import { MemberCopyProvider } from "@/components/MemberCopy";
 import { EntryMotion } from "@/components/EntryMotion";
 import "./entry-motion.css";
 
@@ -72,10 +73,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         </Suspense>
         <JsonLd data={defaultGraph()} />
         <SavedStateProvider value={saved}>
-          <SiteHeader savedState={saved} indianaPreview={process.env.VERCEL_ENV !== "production" && process.env.STATE_PREVIEW === "1"} />
-          <PaddleCheckoutResume successOrigin={siteUrl()} />
-          {children}
-          <SiteFooter savedState={saved} />
+          <MemberCopyProvider>
+            <SiteHeader savedState={saved} indianaPreview={process.env.VERCEL_ENV !== "production" && process.env.STATE_PREVIEW === "1"} />
+            <PaddleCheckoutResume successOrigin={siteUrl()} />
+            {children}
+            <SiteFooter savedState={saved} />
+          </MemberCopyProvider>
         </SavedStateProvider>
       </body>
     </html>

@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { NcCourseFinder } from "@/components/NcCourseFinder";
 import { ncQuestionCounts } from "@/data/nc-content";
@@ -17,7 +18,7 @@ export default function Page() {
         <Link className="btn btn-ghost" href={`${ncPaths.practice}?mode=quick&start=1`}>Try 10 Practice Questions</Link>
       </div>
       <p><Link href={ncPaths.become}>First-application checklist</Link></p>
-      <p>{counts.published} original questions, including {counts.free} free questions for Quick 10 and topic practice.</p>
+      <p>{counts.published} original questions, including {counts.free}<MemberCopy member={<> starter questions for Quick 10 and topic practice.</>}> free questions for Quick 10 and topic practice.</MemberCopy></p>
       <NcCourseFinder />
       <section className="card" style={{ marginTop: 20 }}>
         <h2>Review after your course</h2>

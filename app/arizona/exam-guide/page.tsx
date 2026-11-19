@@ -1,3 +1,5 @@
+import { MemberCopy } from "@/components/MemberCopy";
+import { memberActionLabel } from "@/lib/member-copy";
 import Link from "next/link";
 import { examConfig, officialExam } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
@@ -15,8 +17,8 @@ const steps = [
   { title: "Day 2: learn identification and appearance", time: "30–45 minutes", body: "Read the identification chapter, then work through its damaged-ID scenario. Explain which lawful identification route you would use and when you would stop. Follow the chapter’s practice link and read the source behind each missed answer.", href: `${paths.study}#identification`, label: "Study identification", goal: "Explain why an ID or credible witness does or does not satisfy the rule." },
   { title: "Day 3: distinguish the notarial acts", time: "30–45 minutes", body: "Study acknowledgments, jurats and copy certification. Compare what the signer declares, whether an oath or affirmation is needed, and what you certify. Practice each topic until you can explain the choice instead of recognizing an answer letter.", href: `${paths.study}#acknowledgments`, label: "Study acknowledgments and continue to jurats", goal: "Recognize the requested act and its required steps." },
   { title: "Day 4: work through journal, seal and conflict scenarios", time: "30–45 minutes", body: "Read the journal, seal and prohibited-acts chapters. Use their scenarios to decide what to record, where to place the stamp and when to decline. Include the current law-update page so an older manual does not become your only source.", href: `${paths.study}#journals`, label: "Study journals, then seals and prohibited acts", goal: "Describe a compliant response to each scenario and cite the rule." },
-  { title: "Day 5: finish the remaining topics and repair mistakes", time: "30–45 minutes", body: "Review commission requirements, electronic notarization and RON. Revisit your weakest chapters. For every missed question, write one sentence explaining the rule and one explaining why your first answer was wrong. Topic practice offers free items; some bank items are Pro.", href: `${paths.study}#electronic-ron`, label: "Study electronic notarization and RON", goal: "A corrected explanation for each recurring mistake." },
-  { title: "Day 6: take one timed practice exam", time: "60 minutes plus review", body: "Use Full 45 in one sitting. Work with the official manual on screen to practice finding rules. After submitting, inspect the score, topic accuracy and all explanations. One free Full 45 in this browser; another full exam in that same browser is Pro. Repeated questions can inflate a score, so explain the reasoning too.", href: `${paths.practice}?mode=full`, label: "Take Full 45", goal: "Finish within the time limit and identify what still needs review." },
+  { title: "Day 5: finish the remaining topics and repair mistakes", time: "30–45 minutes", body: "Review commission requirements, electronic notarization and RON. Revisit your weakest chapters. For every missed question, write one sentence explaining the rule and one explaining why your first answer was wrong. Topic practice includes starter and Pro items.", href: `${paths.study}#electronic-ron`, label: "Study electronic notarization and RON", goal: "A corrected explanation for each recurring mistake." },
+  { title: "Day 6: take one timed practice exam", time: "60 minutes plus review", body: "Use Full 45 in one sitting. Work with the official manual on screen to practice finding rules. After submitting, inspect the score, topic accuracy and all explanations. This browser includes one introductory Full 45. Additional full exams require Pro. Repeated questions can inflate a score, so explain the reasoning too.", href: `${paths.practice}?mode=full`, label: "Take Full 45", goal: "Finish within the time limit and identify what still needs review." },
   { title: "Day 7: review and verify your booking instructions", time: "30 minutes, or longer if needed", body: "Use the result’s weakest topics to choose a final chapter review. If you still guess at identification, oaths or conflicts, extend your study schedule. Check the official booking page for accepted ID, delivery options, fees and retake rules before paying or attending.", href: examConfig.officialExamUrl, label: "Check official SOS exam instructions", goal: "Know the remaining weak rules and the current instructions for your appointment." },
 ];
 
@@ -26,14 +28,14 @@ export default function ExamGuidePage() {
       <p className="kicker">Exam Prep · Plan your study</p>
       <h1>Arizona Notary Exam Prep: A 7-Step Plan</h1>
       <p className="lede">Start with a short diagnostic, learn the rules, then use a timed test to find what still needs work. Follow one step per day or spread the steps over a longer period.</p>
-      <p>This is a suggested study schedule, not an official course or a guarantee of passing. The <Link href={paths.study}>core Study Guide is free</Link>; <Link href={paths.practice}>Practice Test</Link> handles the questions and results.</p>
+      <p>This is a suggested study schedule, not an official course or a guarantee of passing. The <Link href={paths.study}><MemberCopy member={<>core Study Guide is available to all learners</>}>core Study Guide is free</MemberCopy></Link>; <Link href={paths.practice}>Practice Test</Link> handles the questions and results.</p>
       <PrepCtas />
       {steps.map((step, index) => <section key={step.title} className="card" style={{ marginTop: 18 }} id={`step-${index + 1}`}>
         <h2>{step.title}</h2>
         <p className="notice">Suggested time: {step.time}</p>
         <p>{step.body}</p>
         <p><strong>Before moving on:</strong> {step.goal}</p>
-        <Link className="btn btn-primary" href={step.href}>{step.label}</Link>
+        <Link className="btn btn-primary" href={step.href}><MemberCopy member={memberActionLabel(step.label)}>{step.label}</MemberCopy></Link>
       </section>)}
       <section className="card" style={{ marginTop: 18 }}>
         <h2>Use the official format to plan your time</h2>

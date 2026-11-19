@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { QuestionsClient } from "@/components/QuestionsClient";
 import { QuestionPageCtas } from "@/components/QuestionPageCtas";
@@ -30,11 +31,13 @@ export default function ExamQuestionsPage() {
         Practice one rule at a time. Every item cites an official source, not just a letter. Filter by topic or missed items below.
       </p>
       <p>
-        This page uses the practice bank: {pool.length} questions, of which {free.length} are free. Pro can use all {pool.length}.
+        This page uses the practice bank: {pool.length} questions, of which {free.length}<MemberCopy member={<> are available to all learners. Pro can use all </>}> are free. Pro can use all </MemberCopy>{pool.length}<MemberCopy member={<>.
+        Topics outside the starter set stay in the Pro bank. A.R.S. § 41-270 allows the Secretary of State to require an exam and does
+        not set the question count. The SOS notice checked on </>}>.
         Topics with no free questions stay in the Pro bank. A.R.S. § 41-270 allows the Secretary of State to require an exam and does
-        not set the question count. The SOS notice checked on {officialExam.checkedOn} says the official exam has {officialExam.questionCount} questions.
+        not set the question count. The SOS notice checked on </MemberCopy>{officialExam.checkedOn} says the official exam has {officialExam.questionCount} questions.
         Each Full 45 here draws {examConfig.questionCount} practice questions from this bank. Take a{" "}
-        <Link href={`${paths.practice}?mode=quick`}>free 10-question test</Link> or a{" "}
+        <Link href={`${paths.practice}?mode=quick`}><MemberCopy member={<>Member Quick 10</>}>free 10-question test</MemberCopy></Link> or a{" "}
         <Link href={`${paths.practice}?mode=full`}>timed Full 45</Link>.
       </p>
       <QuestionPageCtas />
@@ -43,7 +46,7 @@ export default function ExamQuestionsPage() {
       </div>
       <section aria-labelledby="sample-qa" style={{ marginTop: 28 }}>
         <h2 id="sample-qa">Sample questions with answers (no account required)</h2>
-        <p>These are live free-bank items.</p>
+        <p><MemberCopy member={<>These are live starter bank items.</>}>These are live free-bank items.</MemberCopy></p>
         {samples.map((q, i) => {
           const options = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
           return (
@@ -57,9 +60,11 @@ export default function ExamQuestionsPage() {
           );
         })}
       </section>
-      <p className="notice" style={{ marginTop: 24 }}>
+      <p className="notice" style={{ marginTop: 24 }}><MemberCopy member={<>
+        Progress is saved on this device. Create an account to keep the cloud notebook.
+      </>}>
         Progress is saved on this device. Create a free account to keep the cloud notebook.
-      </p>
+      </MemberCopy></p>
     </main>
   );
 }

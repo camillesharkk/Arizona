@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import { PrepStudyGuide } from '@/components/PrepStudyGuide';
 import { StudyCardsClient } from '@/components/StudyCardsClient';
 import { StateCheckout } from '@/components/StateCheckout';
@@ -51,8 +52,8 @@ export default async function Page({ params, searchParams }: {
   if (section === 'pricing' && pack.purchaseEnabled === false) notFound();
   if (section === 'study-guide' && full) return <PrepStudyGuide code={code} />;
   if (section === 'pricing') return <main className="wrap hero"><h1>{state[1]} Notary Pro</h1>
-    <div className="card"><p>{counts.free} of {counts.published} questions are free. Pro opens the complete bank, repeated Comprehensive Practice and the shared Pro Tutor allowance for 60 days across every available state.</p>
-    <p>Study Cards, the Study Guide and Quick 10 remain available free. Comprehensive Practice has 40 questions and no time limit. One full practice is included free.</p>
+    <div className="card"><p>{counts.free} of {counts.published}<MemberCopy member={<> questions are available to all learners. Pro opens the complete bank, repeated Comprehensive Practice and the shared Pro Tutor allowance for 60 days across every available state.</>}> questions are free. Pro opens the complete bank, repeated Comprehensive Practice and the shared Pro Tutor allowance for 60 days across every available state.</MemberCopy></p>
+    <p><MemberCopy member={<>Study Cards, the Study Guide and Quick 10 remain available. Comprehensive Practice has 40 questions and no time limit. One full practice is included.</>}>Study Cards, the Study Guide and Quick 10 remain available free. Comprehensive Practice has 40 questions and no time limit. One full practice is included free.</MemberCopy></p>
     <Link href={site.practice}>Try practice</Link></div><StateCheckout source={code} /></main>;
   if (section === 'study-cards') {
     const query = await searchParams;
@@ -69,8 +70,8 @@ export default async function Page({ params, searchParams }: {
       questions={serverStateQuestions(code).filter(question => pro || question.is_free)} /></main>;
   }
   if (section === 'practice') return <main className="wrap hero"><h1>{state[1]} Notary Practice</h1>
-    <p>Quick 10 gives ten free original questions with explanations and official sources.</p>
-    {full ? <><p>{counts.published} published questions · {counts.free} free · {counts.pro} Pro</p><p>{pack.fullDetail}</p>
+    <p><MemberCopy member={<>Quick 10 gives ten original questions with explanations and official sources.</>}>Quick 10 gives ten free original questions with explanations and official sources.</MemberCopy></p>
+    {full ? <><p>{counts.published} published questions · {counts.free}<MemberCopy member={<> starter · </>}> free · </MemberCopy>{counts.pro} Pro</p><p>{pack.fullDetail}</p>
       <div className="tool-row"><Link className="chip" href={site.study}>Study Guide</Link><Link className="chip" href={site.studyCards}>Study Cards</Link>{pack.purchaseEnabled !== false ? <Link className="chip" href={site.pricing}>60-Day Pro</Link> : null}</div></> : null}
     <Suspense fallback={<p role="status">Loading practice…</p>}><PracticeLaunch key={code} stateCode={code} /></Suspense>
   </main>;
@@ -81,7 +82,7 @@ export default async function Page({ params, searchParams }: {
   if (section === 'daily-study') return <main className="wrap hero"><h1>{state[1]} Daily Study</h1><DailyStudyClient key={code} stateCode={code} /></main>;
   if (section === 'resources' || section === 'laws') return <main className="wrap hero"><h1>{state[1]} Official Notary Resources</h1>
     <a className="btn btn-primary" href={content.officialNext.url}>{content.officialNext.label}</a>
-    <p><Link href={site.become}>Application guide</Link> · <Link href={site.practice}>Free Quick 10</Link></p>
+    <p><Link href={site.become}>Application guide</Link> · <Link href={site.practice}><MemberCopy member={<>Quick 10</>}>Free Quick 10</MemberCopy></Link></p>
     {full ? <section><h2>Learning guides</h2><ul>{fullStateArticles[code]?.map(article => <li key={article.id}><Link href={article.path}>{article.title}</Link><p>{article.description}</p></li>)}</ul></section> : null}
     <FreeStateSources code={code} /></main>;
   return <FreeStateGuide code={code} />;

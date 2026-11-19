@@ -34,6 +34,7 @@ export const paths = {
   verify: "/verify-email/",
   dashboard: "/dashboard/",
   account: "/account/",
+  studySettings: "/account/study-settings/",
   profile: "/account/profile/",
   referrals: "/account/referrals/",
   billing: "/account/billing/",

@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from 'next/link';
 import { ctPaths, ctSources } from '@/lib/ct-site';
 import { ctQuestionCounts, ctTopics, ctCards } from '@/data/ct-content';
@@ -14,13 +15,13 @@ export default function Page() {
         <Link className="btn btn-primary" href={`${ctPaths.practice}?mode=quick`}>Practice With the Handbook</Link>
         <a className="btn btn-ghost" href={ctSources.application} target="_blank" rel="noopener noreferrer">Open Official Application</a>
       </div>
-      <p>Start a free 10-question handbook practice. Open the official manual while you work.</p>
+      <p><MemberCopy member={<>Start a 10-question handbook practice. Open the official manual while you work.</>}>Start a free 10-question handbook practice. Open the official manual while you work.</MemberCopy></p>
       <section className="card" style={{ marginTop: 24 }}>
         <h2>Your first Connecticut application</h2>
         <p>Read the manual, prepare your Jurat and Writing Sample and Certificate of Character, then complete the eLicense application. After approval, take the oath of office and record your appointment.</p>
         <Link href={ctPaths.become}>First Application Checklist</Link>
       </section>
-      <p>{counts.published} original questions · {counts.free} free · {ctCards.length} independent study cards</p>
+      <p>{counts.published} original questions · {counts.free}<MemberCopy member={<> starter · </>}> free · </MemberCopy>{ctCards.length} independent study cards</p>
       <div className="grid grid-3">
         <section className="card"><h2>Handbook practice</h2><p>Quick 10, focused topic practice and an untimed comprehensive set.</p><Link href={ctPaths.practice}>Choose practice</Link></section>
         <section className="card"><h2>Study the rules</h2><p>Find the rule and compare its limits before your next practice.</p><Link href={ctPaths.study}>Study Guide</Link>{' · '}<Link href={ctPaths.studyCards}>Study Cards</Link></section>

@@ -1,9 +1,8 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { EnglishForm } from "@/components/EnglishForm";
-import { StudySettings } from "@/components/StudySettings";
 import { PERSONAL_USE_NOTICE } from "@/lib/pricing/copy";
 import { paths } from "@/lib/paths";
 
@@ -15,6 +14,12 @@ type Device = {
 };
 
 export function AccountSettings() {
+  useEffect(() => {
+    if (window.location.hash === "#study-settings") {
+      window.location.replace(paths.studySettings + window.location.search);
+    }
+  }, []);
+
   const [daily, setDaily] = useState(false);
   const [weekly, setWeekly] = useState(false);
   const [exam, setExam] = useState(false);
@@ -154,7 +159,6 @@ export function AccountSettings() {
         </section>
       </div>
     </div>
-      <Suspense fallback={<p>Loading study settings…</p>}><StudySettings /></Suspense>
     </>
   );
 }

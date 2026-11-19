@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import type { Metadata } from "next";
 import { StateSectionCrumb } from "@/components/Breadcrumb";
 import { CA_EXAM } from "@/lib/ca-site";
@@ -17,7 +18,7 @@ export default function Page() {
       <div className="card">
         <p>CPS HR says a scaled score of at least 70 is required. Scaled scores run from 0 to 100 so different exam forms can be compared. A scaled score is not calculated by dividing the number correct by the number of questions.</p>
         <p>On this site, 8 of 10 on the short check is only a study cutoff. A full practice result shows how many of the 40 scored items were correct. Neither number is an official pass.</p>
-        <p>Free practice can show whether you recall a rule. It cannot produce the scaled score. One full practice exam is free, and the published questions include explanations.</p>
+        <p><MemberCopy member={<>Starter practice can show whether you recall a rule. It cannot produce the scaled score. One full practice exam is available to all learners, and the published questions include explanations.</>}>Free practice can show whether you recall a rule. It cannot produce the scaled score. One full practice exam is free, and the published questions include explanations.</MemberCopy></p>
         <p>Checked {CA_EXAM.checkedOn}. <a href={CA_EXAM.sources.exam}>Official exam information</a>{" · "}<a href="/california/how-hard/">Readiness guide</a>{" · "}<a href="/california/exam-retake/">Retake rules</a></p>
       </div>
     </main>

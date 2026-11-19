@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { chapters } from "@/data/study-guide";
@@ -346,7 +347,7 @@ function DiagnosticResult({
                     </Link>
                   </>
                 ) : (
-                  <span> · Practice for this topic is part of Pro. The study chapter is free.</span>
+                  <span><MemberCopy member={<> · Practice for this topic is part of Pro. The study chapter is available to all learners.</>}> · Practice for this topic is part of Pro. The study chapter is free.</MemberCopy></span>
                 )}
               </li>
             );

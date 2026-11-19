@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { clientStatePro } from "@/lib/state-pro";
 
 import { fetchAccount } from "@/lib/client-account";
@@ -324,15 +325,19 @@ export function QuestionsClient({
         <div className="card">
           <h2>{topicList.find((t) => t.id === selectedTopic)?.label} is in the Pro bank</h2>
           <p>
-            This topic has {topicQuestions.length} practice questions and no free questions. Quick 10 still uses the free
+            This topic has {topicQuestions.length}<MemberCopy member={<> practice questions and no starter questions. Quick 10 still uses the starter
+            pool, and topics with starter questions can be practiced without Pro.
+          </>}> practice questions and no free questions. Quick 10 still uses the free
             pool, and topics with free questions can be practiced without Pro.
-          </p>
+          </MemberCopy></p>
           {pack?.purchaseEnabled !== false ? <Link className="btn btn-primary" href={sitePaths.pricing}>
             Unlock Pro
           </Link> : null}
-          <Link className="btn btn-ghost" href={`${sitePaths.practice}?mode=quick`} style={{ marginLeft: 8 }}>
+          <Link className="btn btn-ghost" href={`${sitePaths.practice}?mode=quick`} style={{ marginLeft: 8 }}><MemberCopy member={<>
+            Quick 10
+          </>}>
             Free Quick 10
-          </Link>
+          </MemberCopy></Link>
         </div>
       ) : done ? (
         <div className="card">

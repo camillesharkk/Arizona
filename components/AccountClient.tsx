@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { EnglishForm } from "@/components/EnglishForm";
@@ -51,7 +52,7 @@ export function AccountClient() {
     return (
       <div className="grid grid-2">
         <section className="card">
-          <p className="kicker">Free account</p>
+          <p className="kicker"><MemberCopy member="Study account">Free account</MemberCopy></p>
           <h2>{email}</h2>
           <p>Scores and the wrong-answer list stay in this browser.</p>
           <div className="row">
@@ -98,7 +99,7 @@ export function AccountClient() {
       <EnglishForm className="card" onSubmit={submit}>
         <div className="filter-row">
           <button className={`chip ${mode === "register" ? "on" : ""}`} type="button" onClick={() => setMode("register")}>
-            Create Free Account
+            <MemberCopy member="Create an account">Create Free Account</MemberCopy>
           </button>
           <button className={`chip ${mode === "login" ? "on" : ""}`} type="button" onClick={() => setMode("login")}>
             Sign in
@@ -127,11 +128,11 @@ export function AccountClient() {
         </label>
         {error && <p className="form-error">{error}</p>}
         <button className="btn btn-primary" type="submit" disabled={busy}>
-          {busy ? "Working…" : mode === "register" ? "Create Free Account" : "Sign in"}
+          {busy ? "Working…" : mode === "register" ? <MemberCopy member="Create an account">Create Free Account</MemberCopy> : "Sign in"}
         </button>
       </EnglishForm>
       <aside className="card">
-        <h3>What a free account keeps</h3>
+        <h3><MemberCopy member="What your account keeps">What a free account keeps</MemberCopy></h3>
         <ul>
           <li>Exam scores and last mode</li>
           <li>Wrong-answer notebook</li>

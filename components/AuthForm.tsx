@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { EnglishForm } from "@/components/EnglishForm";
@@ -281,7 +282,7 @@ export function AuthForm({
           ) : mode === "login" ? (
             "Sign in"
           ) : mode === "register" ? (
-            "Create Free Account"
+            <MemberCopy member="Create an account">Create Free Account</MemberCopy>
           ) : mode === "forgot" ? (
             "Send reset link"
           ) : (

@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { fetchAccount } from "@/lib/client-account";
 
 import Link from "next/link";
@@ -24,9 +25,11 @@ export function QuestionPageCtas() {
         Review Wrong Answers
       </Link>
       {!user && (
-        <Link className="btn btn-ghost" href={paths.register}>
+        <Link className="btn btn-ghost" href={paths.register}><MemberCopy member={<>
+          Create an account
+        </>}>
           Create Free Account
-        </Link>
+        </MemberCopy></Link>
       )}
     </div>
   );

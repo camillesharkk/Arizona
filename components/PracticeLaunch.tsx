@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { clientStatePro } from "@/lib/state-pro";
 import { fetchAccount } from "@/lib/client-account";
 
@@ -280,15 +281,25 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
   }
 
   if (mode === "full" && pack && !pack.fullReady) {
-    return <div className="card"><p>Choose a free practice below.</p><button className="btn btn-primary" onClick={() => enter("quick")}>Start Free Quick 10</button></div>;
+    return <div className="card"><p><MemberCopy member={<>Choose a starter practice below.</>}>Choose a free practice below.</MemberCopy></p><button className="btn btn-primary" onClick={() => enter("quick")}><MemberCopy member={<>Start Member Quick 10</>}>Start Free Quick 10</MemberCopy></button></div>;
   }
 
   if (mode === "full" && fullLocked) {
     return (
       <div className="card">
-        <h2>{pack ? `Free ${pack.fullTitle} already used` : onHi ? "Free Comprehensive Practice already used" : "Free Full 45 already used"}</h2>
+        <h2><MemberCopy member={pack ? `Introductory ${pack.fullTitle} already used` : onHi ? "Starter Comprehensive Practice already used" : "Starter Full 45 already used"}>{pack ? `Free ${pack.fullTitle} already used` : onHi ? "Free Comprehensive Practice already used" : "Free Full 45 already used"}</MemberCopy></h2>
         <p>
-          {pack ? `This ${signedIn ? "account" : "browser"} has used its free ${pack.fullTitle}. Pro includes more full practices.` : signedIn
+          <MemberCopy member={pack ? `This ${signedIn ? "account" : "browser"} has used its introductory ${pack.fullTitle}. Pro includes more full practices.` : signedIn
+            ? (onHi
+              ? "This account has used its starter Comprehensive Practice. Hawaii Pro includes more of them for 60 days."
+              : onCa
+                ? "This account has used its starter Full 45. California Pro includes more full exams for 60 days."
+                : "This account has used its starter Full 45. Pro includes more full exams.")
+            : (onHi
+              ? "This browser has used its starter Comprehensive Practice. Hawaii Pro includes more of them for 60 days."
+              : onCa
+                ? "This browser has used its starter Full 45. California Pro includes more full exams for 60 days."
+                : "This browser has used its starter Full 45. Pro includes more full exams.")}>{pack ? `This ${signedIn ? "account" : "browser"} has used its free ${pack.fullTitle}. Pro includes more full practices.` : signedIn
             ? (onHi
               ? "This account has used its free Comprehensive Practice. Hawaii Pro includes more of them for 60 days."
               : onCa
@@ -298,9 +309,9 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
               ? "This browser has used its free Comprehensive Practice. Hawaii Pro includes more of them for 60 days."
               : onCa
                 ? "This browser has used its free Full 45. California Pro includes more full exams for 60 days."
-                : "This browser has used its free Full 45. Pro includes more full exams.")}
+                : "This browser has used its free Full 45. Pro includes more full exams.")}</MemberCopy>
         </p>
-        {pack?.purchaseEnabled !== false ? <Link className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">Unlock Pro</Link> : <Link className="btn btn-primary" href={`${site.practice}?mode=quick`}>Start Free Quick 10</Link>}
+        {pack?.purchaseEnabled !== false ? <Link className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">Unlock Pro</Link> : <Link className="btn btn-primary" href={`${site.practice}?mode=quick`}><MemberCopy member={<>Start Member Quick 10</>}>Start Free Quick 10</MemberCopy></Link>}
         <button className="btn btn-ghost" type="button" onClick={leaveExam} style={{ marginLeft: 8 }}>
           Change mode
         </button>

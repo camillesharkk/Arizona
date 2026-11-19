@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { caArticles } from "@/lib/seo-article-catalog";
@@ -67,7 +68,7 @@ export default function Page() {
         <li>
           <Link href={`${caPaths.practice}?mode=full`}>Full 45 practice exam</Link>
           <span>This site</span>
-          <p>Forty scored items in the official area counts, plus five unscored items. One free full exam is available. Pro includes more full exams in every available state for 60 days.</p>
+          <p><MemberCopy member={<>Forty scored items in the official area counts, plus five unscored items. One starter full exam is available. Pro includes more full exams in every available state for 60 days.</>}>Forty scored items in the official area counts, plus five unscored items. One free full exam is available. Pro includes more full exams in every available state for 60 days.</MemberCopy></p>
         </li>
       </ul>
 

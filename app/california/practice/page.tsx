@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PracticeAfterword } from "@/components/PracticeAfterword";
@@ -35,13 +36,15 @@ export default function Page() {
   return (
     <main className="wrap hero">
       <p className="kicker">Practice Test</p>
-      <h1>California Notary Practice Test — Free Quick 10 & Full 45</h1>
+      <h1><MemberCopy member={<>California Notary Practice Test — Quick 10 & Full 45</>}>California Notary Practice Test — Free Quick 10 & Full 45</MemberCopy></h1>
       <p>
         <strong>
-          The practice bank has {counts.published} questions. {counts.free} are free. Each Full 45 draws {CA_EXAM.questionCount} questions, scores {CA_EXAM.scoredCount}, and allows {CA_EXAM.timeLimitMinutes} minutes.
-        </strong>{" "}
+          The practice bank has {counts.published} questions. {counts.free}<MemberCopy member={<> are available to all learners. Each Full 45 draws </>}> are free. Each Full 45 draws </MemberCopy>{CA_EXAM.questionCount} questions, scores {CA_EXAM.scoredCount}, and allows {CA_EXAM.timeLimitMinutes} minutes.
+        </strong>{" "}<MemberCopy member={<>
+        Quick 10 is available and shows each explanation immediately. The official exam is a separate closed-book CPS HR test. These questions are practice, not released exam items.
+      </>}>
         Quick 10 is free and shows each explanation immediately. The official exam is a separate closed-book CPS HR test. These questions are practice, not released exam items.
-      </p>
+      </MemberCopy></p>
       <Suspense fallback={<p className="notice">Loading exam…</p>}>
         <PracticeLaunch stateCode="CA" />
       </Suspense>

@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { fetchAccount } from "@/lib/client-account";
 
 import { useEffect, useMemo, useState } from "react";
@@ -105,7 +106,7 @@ export function FlashcardsClient() {
         <p>
           {isPro
             ? "Practice the related questions next, or read the study guide."
-            : <>This was the free preview of {deck.length} cards. The rest of the deck is part of Pro. The study guide stays free. <Link href={paths.pricing}>See Pro access</Link>.</>}
+            : <><MemberCopy member={<>This was the starter preview of </>}>This was the free preview of </MemberCopy>{deck.length}<MemberCopy member={<> cards. The rest of the deck is part of Pro. The study guide stays available to all learners. </>}> cards. The rest of the deck is part of Pro. The study guide stays free. </MemberCopy><Link href={paths.pricing}>See Pro access</Link>.</>}
         </p>
         <div className="row">
           <Link className="btn btn-primary" href={paths.study}>
@@ -167,7 +168,7 @@ export function FlashcardsClient() {
       <p className="notice">
         Mastered {known} · Review pile {p.reviewCards.length}
         {` · ${Math.min(i + 1, deck.length)} of ${deck.length} in this set`}
-        {!isPro ? ` · Free preview ${allowed.length} of ${flashcards.length} cards` : ""}
+        <MemberCopy member={!isPro ? ` · Starter preview ${allowed.length} of ${flashcards.length} cards` : ""}>{!isPro ? ` · Free preview ${allowed.length} of ${flashcards.length} cards` : ""}</MemberCopy>
       </p>
       <div
         className="card flash-card"

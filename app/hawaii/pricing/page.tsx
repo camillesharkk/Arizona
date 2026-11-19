@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import type { Metadata } from "next";
 import { StateCheckout } from "@/components/StateCheckout";
 import { hiCards } from "@/data/hi-cards";
@@ -18,7 +19,7 @@ export default function Page() {
     <main className="wrap">
       <h1>Hawaii Pro</h1>
       <div className="card">
-        <p>{counts.free} of {counts.published} published questions are free, and all {hiCards.length} study cards are free. One Comprehensive Practice is included. That set is 50 questions with no time limit, and that count is this site's practice setting.</p>
+        <p>{counts.free} of {counts.published}<MemberCopy member={<> published questions are available to all learners, and all </>}> published questions are free, and all </MemberCopy>{hiCards.length}<MemberCopy member={<> study cards are available to all learners. One Comprehensive Practice is included. That set is 50 questions with no time limit, and that count is this site's practice setting.</>}> study cards are free. One Comprehensive Practice is included. That set is 50 questions with no time limit, and that count is this site's practice setting.</MemberCopy></p>
         <p>The published Hawaii questions and study cards are included. Pro removes the one-practice limit and uses the account AI tutor allowance. One purchase covers all available states.</p>
         <a className="btn btn-ghost" href={`${hiPaths.practice}?mode=quick`}>Check My Knowledge — 10 Questions</a>
       </div>

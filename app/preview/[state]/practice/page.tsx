@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { prepPageEnabled } from "@/lib/state-release";
@@ -20,7 +21,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
       {!pack.available ? <p className="kicker">Practice preview</p> : null}
       <h1>{pack.name} practice</h1>
       <p>
-        <strong>{counts.published} published questions. {counts.free} are free and {counts.pro} are Pro.</strong> {pack.fullDetail}
+        <strong>{counts.published} published questions. {counts.free}<MemberCopy member={<> are in the starter set and </>}> are free and </MemberCopy>{counts.pro} are Pro.</strong> {pack.fullDetail}
       </p>
       <Suspense fallback={<p className="notice">Loading exam…</p>}>
         <PracticeLaunch stateCode={code} />

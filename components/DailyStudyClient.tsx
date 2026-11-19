@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { publishedCaQuestions } from "@/data/ca-questions";
@@ -228,7 +229,8 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
     const question = questionsById.get(id);
     return question && pendingReviews.has(`question:${id}`) ? [question] : [];
   });
-  const studySettingsHref = `${paths.account}${stateCode === "AZ" ? "" : `?state=${stateCode}`}#study-settings`;
+  const studySettingsHref = `${paths.studySettings}?state=${stateCode}`;
+  const scheduledById = new Map(view.scheduled?.map((item) => [item.questionId, item]));
   const entitlement = view.entitlementExpiresAt ? view.entitlementExpiresAt.slice(0, 10) : null;
   const progress = view.total ? Math.round(((view.introduced + view.reviewed) / (view.total * 2)) * 100) : 0;
 
@@ -259,8 +261,9 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         </MessageDialog>
       ) : null}
       {stateCode === "AZ" && view.freeOnly ? (
-        <p className="notice">
-          Today’s plan uses the free set: {view.freeQuestionCount} questions and {view.freeCardCount} study cards. Pro uses all {view.questionCount} questions and {view.cardCount} study cards.{" "}
+        <p className="notice"><MemberCopy member={<>
+          Today’s plan uses the starter set: </>}>
+          Today’s plan uses the free set: </MemberCopy>{view.freeQuestionCount} questions and {view.freeCardCount} study cards. Pro uses all {view.questionCount} questions and {view.cardCount} study cards.{" "}
           <Link href={paths.pricing}>View Pro</Link>
         </p>
       ) : stateCode === "AZ" ? (
@@ -274,10 +277,16 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
       <div className="daily-grid">
         <section className="card daily-practice-card" aria-label="Today’s Practice">
           <h2>Today’s Practice</h2>
+          <p>New cards and questions follow your daily goal. Adjust your pace in <Link href={studySettingsHref}>Study Settings</Link>.</p>
           {practiceCard ? (
             <>
-              <div ref={practiceFace} className="study-face" onClick={() => setFlipped(flipped === "practice" ? null : "practice")} role="button" tabIndex={0}>
+              <p className="notice">Why this card? It’s new to your study plan.</p>
+              <div ref={practiceFace} className="study-face" onClick={() => setFlipped(flipped === "practice" ? null : "practice")}>
                 <StudyCardBody card={practiceCard} flipped={flipped === "practice"} labelFor={stateCode === "HI" ? hiStudyLabel : undefined} />
+                <button className="btn btn-ghost" type="button" aria-expanded={flipped === "practice"} onClick={(event) => {
+                  event.stopPropagation();
+                  setFlipped(flipped === "practice" ? null : "practice");
+                }}>{flipped === "practice" ? "Show prompt" : "Show answer"}</button>
               </div>
               <div className="row" style={{ marginTop: 12 }}>
                 <button className="btn btn-primary" type="button" onClick={() => mark(practiceCard.id, "studied")}>Mark studied</button>
@@ -295,9 +304,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         </section>
         <section className="card daily-review-card" aria-label="Today’s Review">
           <h2>Today’s Review</h2>
-          {reviewCard || reviewQuestions.length || view.yesterdayWaiting.length ? (
-            <p>Reviews use questions you missed and questions you saved.</p>
-          ) : null}
+          <p>Missed or saved questions and studied cards return when due, using spaced repetition inspired by the forgetting curve. Retry a question or mark a card reviewed. Choose Need review to see a card again sooner.</p>
           {view.yesterdayWaiting.length ? (
             <p className="notice">
               {view.yesterdayWaiting.length} missed {view.yesterdayWaiting.length === 1 ? "question is" : "questions are"} not due until {new Date(view.yesterdayWaiting[0].nextReviewAt).toLocaleString("en-US")}.
@@ -308,8 +315,13 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
           ) : null}
           {reviewCard ? (
             <>
-              <div ref={reviewFace} className="study-face" onClick={() => setFlipped(flipped === "review" ? null : "review")} role="button" tabIndex={0}>
+              <p className="notice">Why this card? It has reached its scheduled review time.</p>
+              <div ref={reviewFace} className="study-face" onClick={() => setFlipped(flipped === "review" ? null : "review")}>
                 <StudyCardBody card={reviewCard} flipped={flipped === "review"} labelFor={stateCode === "HI" ? hiStudyLabel : undefined} />
+                <button className="btn btn-ghost" type="button" aria-expanded={flipped === "review"} onClick={(event) => {
+                  event.stopPropagation();
+                  setFlipped(flipped === "review" ? null : "review");
+                }}>{flipped === "review" ? "Show prompt" : "Show answer"}</button>
               </div>
               <div className="row" style={{ marginTop: 12 }}>
                 <button className="btn btn-primary" type="button" onClick={() => mark(reviewCard.id, "remembered")}>Mark reviewed</button>
@@ -328,12 +340,17 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         </section>
         {practiceQuestions.length ? (
           <div className="daily-practice-quiz">
-            <ExamRunner mode="practice" practice isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={practiceQuestions} onRecorded={load} sittingMode={`daily-practice-${view.today}`} stateCode={stateCode} />
+            <ExamRunner mode="practice" practice isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={practiceQuestions} questionReason={() => "You haven’t answered this question yet. It counts toward today’s practice goal."} onRecorded={load} sittingMode={`daily-practice-${view.today}`} stateCode={stateCode} />
           </div>
         ) : null}
         {reviewQuestions.length ? (
           <div className="daily-review-quiz">
-            <ExamRunner mode="weak" practice review isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={reviewQuestions} onRecorded={load} sittingMode={`daily-review-${view.today}`} stateCode={stateCode} />
+            <ExamRunner mode="weak" practice review isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={reviewQuestions} questionReason={(id) => {
+              const item = scheduledById.get(id);
+              if (item?.wrongCount) return "You previously missed this question, and it’s due for review.";
+              if (item?.saved) return "You added this question to Daily Study, and it’s due for review.";
+              return "This question has reached its scheduled review time.";
+            }} onRecorded={load} sittingMode={`daily-review-${view.today}`} stateCode={stateCode} />
           </div>
         ) : null}
       </div>

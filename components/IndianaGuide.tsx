@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { IN_OFFICIAL_EXAM, inPaths } from "@/lib/in-site";
@@ -41,6 +42,6 @@ export function IndianaGuide({ resources = false, study = false, children }: { r
    <li><a href="https://www.in.gov/sboa/files/Grosser_SOS-Business-Services-Division_Notary.pdf">SOS notary presentation</a> — supporting traditional-notary instruction.</li>
   </ul><h3>Older instructions and scope</h3><p>Some older official material directs applicants to an INBiz dashboard, uses a 30-day criminal-report window, or describes an older certificate workflow. This guide uses the May 2026 system-specific FAQ for those steps and its six-month report window. The 2024 fee figure is labeled with its publication date. We could not independently read the current IGA law text or the guide download during this check, so no proposed 2026 bill is presented as enacted law.</p><p>For application-specific instructions or conflicting portal messages, contact <a href="mailto:INBiz@sos.in.gov">INBiz@sos.in.gov</a>.</p></section> : null}
   {children}
-  <div className="row"><Link className="btn btn-primary" href={`${inPaths.practice}?mode=quick`}>Start Free Practice</Link><Link className="btn btn-ghost" href={resources ? inPaths.become : inPaths.resources}>{resources ? "Application Checklist" : "Official Resources"}</Link></div>
+  <div className="row"><Link className="btn btn-primary" href={`${inPaths.practice}?mode=quick`}><MemberCopy member={<>Start Member Practice</>}>Start Free Practice</MemberCopy></Link><Link className="btn btn-ghost" href={resources ? inPaths.become : inPaths.resources}>{resources ? "Application Checklist" : "Official Resources"}</Link></div>
  </main>;
 }

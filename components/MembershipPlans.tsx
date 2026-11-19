@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Image from "next/image";
 import Link from "next/link";
 import { NEWCOMER_HOURS, NEWCOMER_PRICE_CENTS, STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
@@ -85,7 +86,7 @@ export function MembershipPlans({ lifetimeAvailable }: { lifetimeAvailable: bool
             <thead>
               <tr>
                 <th scope="col">Benefit</th>
-                <th scope="col">Free</th>
+                <th scope="col"><MemberCopy member={<>Starter</>}>Free</MemberCopy></th>
                 <th scope="col">60-Day Pro</th>
                 <th scope="col">Lifetime Pro</th>
               </tr>

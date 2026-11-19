@@ -572,7 +572,29 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
   cursor: pointer; display: grid; place-items: center; line-height: 1;
 }
 .avatar-btn:hover { filter: brightness(1.05); }
-.avatar-btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.avatar-btn:focus-visible { outline: 3px solid #234c78; outline-offset: 3px; }
+.avatar-btn:is(.avatar-pro, .avatar-lifetime) {
+  border-color: transparent;
+  background: transparent;
+  filter: drop-shadow(0 2px 3px rgb(35 61 95 / 20%));
+}
+.avatar-btn:is(.avatar-pro, .avatar-lifetime):hover {
+  filter: brightness(1.08) drop-shadow(0 2px 3px rgb(35 61 95 / 25%));
+}
+.avatar-art { display: block; width: 100%; height: 100%; }
+.badge.account-tier-pro {
+  color: #233d67;
+  background: linear-gradient(140deg, #f9fcff, #e1edff 60%, #ebe5f6);
+  box-shadow: inset 0 1px #fff;
+}
+.badge.account-tier-lifetime {
+  color: #f5faff;
+  background: linear-gradient(140deg, #385570, #15263e);
+  box-shadow: inset 0 1px rgb(209 232 255 / 45%);
+}
+@media (forced-colors: active) {
+  .avatar-btn:focus-visible { outline-color: Highlight; }
+}
 .account-dropdown {
   position: absolute; right: 0; top: calc(100% + 8px);
   width: 264px; max-width: calc(100vw - 24px);
@@ -888,7 +910,9 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
   }
   .nav-scroll::-webkit-scrollbar { display: none; }
   .state-menu-panel { left: auto; right: 0; }
-  .logo { white-space: nowrap; }
+  .logo { min-width: 0; white-space: nowrap; }
+  .logo-mark { flex: none; }
+  .logo-label { overflow: hidden; text-overflow: ellipsis; }
   .guide-chapter, .quiz-stem, .study-face { scroll-margin-top: 7.5rem; }
   .hero-cta-row, .home-choice { flex-direction: column; align-items: stretch; width: 100%; }
   .hero-cta-row .btn, .home-choice .btn { width: 100%; }

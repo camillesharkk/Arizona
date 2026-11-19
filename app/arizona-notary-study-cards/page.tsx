@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
@@ -31,7 +32,7 @@ export default async function StudyCardsPage({
         <p className="notice">Pro is active. This deck includes the full set of {allCards} study cards.</p>
       ) : (
         <p className="notice">
-          {freeCards} study cards are free. Pro opens the rest of the {allCards}-card deck. <Link href={paths.pricing}>View Pro</Link>
+          {freeCards}<MemberCopy member={<> study cards are available to all learners. Pro opens the rest of the </>}> study cards are free. Pro opens the rest of the </MemberCopy>{allCards}-card deck. <Link href={paths.pricing}>View Pro</Link>
         </p>
       )}
       <StudyCardsClient initialCardId={card} cards={cards} initialTopic={isTopicSlug(topic) ? topic : "all"} />

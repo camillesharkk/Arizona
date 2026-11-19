@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import type { StateCode } from "@/lib/types";
 import { isFreeState } from '@/lib/free-state-catalog';
 import { prepNavigation } from '@/lib/prep-navigation';
@@ -424,7 +425,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
           <Link className="btn btn-primary pricing-cta" href={loginHref}>Sign in to buy Lifetime Pro</Link>
         ) : (
           <Link className="btn btn-primary pricing-cta" href={registerHref}>
-            {ctaLabel || "Create Free Account to Unlock Offer"}
+            <MemberCopy member={ctaLabel || "View Member Offer"}>{ctaLabel || "Create Free Account to Unlock Offer"}</MemberCopy>
           </Link>
         )
       ) : null}

@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
@@ -20,8 +21,8 @@ export default async function Page({ params }: { params: Promise<{ state: string
   const questions = pack.questions();
   return <StudyGuide
     stateCode={code}
-    title={`Free ${pack.name} Notary Study Guide 2026 — Rules, Examples & Topic Practice`}
-    lede={`Learn ${pack.name} notary rules through chapter explanations, worked scenarios and key facts. Follow the official sources, mark your reading progress and practice each topic. The core guide is free and requires no login.`}
+    title={<><MemberCopy member={null}>Free </MemberCopy>{pack.name} Notary Study Guide 2026 — Rules, Examples &amp; Topic Practice</>}
+    lede={<>Learn {pack.name} notary rules through chapter explanations, worked scenarios and key facts. Follow the official sources, mark your reading progress and practice each topic. <MemberCopy member="The core guide is included in your study tools.">The core guide is free and requires no login.</MemberCopy></>}
     introduction={<>
       <p>Use this guide alongside the <Link href={pack.paths.resources}>official state resources</Link> and <Link href={pack.paths.laws}>notary laws</Link>. The <Link href={pack.paths.examGuide}>exam guide</Link> covers preparation and admission. Chapter groups are this site's study outline.</p>
       <p>{pack.fullDetail}</p>

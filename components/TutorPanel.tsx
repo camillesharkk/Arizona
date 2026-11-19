@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -132,12 +133,14 @@ export function TutorPanel({ q, selected }: { q: Question; selected?: "A" | "B" 
         </p>
       )}
       <p className="notice">
-        Explanations stay free. Each delivered Tutor answer uses 1 request. Free accounts get {AI_LIMIT_FREE} a day; Pro gets {AI_LIMIT_PRO}.
+        <MemberCopy member={<>Explanations are included. Each delivered Tutor answer uses 1 request from your daily allowance.</>}>
+          Explanations stay free. Each delivered Tutor answer uses 1 request. Free accounts get {AI_LIMIT_FREE} a day; Pro gets {AI_LIMIT_PRO}.
+        </MemberCopy>
       </p>
       {!signedIn && <p><Link href={`${paths.login}?next=${encodeURIComponent(pathname)}`}>Sign in to use Tutor</Link></p>}
       {atLimit && usage?.plan === "free" && (
         <div className="ai-limit-notice">
-          <p>You&apos;ve used all {AI_LIMIT_FREE} free Tutor requests for today.</p>
+          <p>You&apos;ve used all {AI_LIMIT_FREE}<MemberCopy member={<> starter Tutor requests for today.</>}> free Tutor requests for today.</MemberCopy></p>
           <p>Upgrade to Pro for up to {AI_LIMIT_PRO} Tutor requests per day.</p>
           <Link className="btn btn-primary" href={packFor(q.state)?.paths.pricing || paths.pricing}>
             Unlock Pro — {AI_LIMIT_PRO}/day

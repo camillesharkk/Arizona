@@ -17,7 +17,8 @@ import { hiPaths } from "@/lib/hi-site";
 import { packNavigationFor } from "@/lib/prep-navigation";
 import { useResolvedState } from "@/components/SavedState";
 import type { LiveCode } from "@/lib/site-state";
-import { AccountMenu, type HeaderUser } from "@/components/AccountMenu";
+import { MemberCopy, useSetMemberCopy } from "@/components/MemberCopy";
+import { AccountMenu, accountTier, type HeaderUser } from "@/components/AccountMenu";
 import { SiteAnnouncementDialog } from "@/components/SiteAnnouncements";
 import { StateMenu } from "@/components/StateMenu";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
@@ -84,6 +85,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   const [announcementPath, setAnnouncementPath] = useState<string | null>(null);
   const morePanelId = useId();
   const moreButton = useRef<HTMLButtonElement>(null);
+  const setMemberCopy = useSetMemberCopy();
   const [me, setMe] = useState<(HeaderUser & { id: string }) | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("loading");
   const [returnTo, setReturnTo] = useState(pathname);
@@ -98,9 +100,11 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
           if (d.user) {
             void syncGuestProgress(d.user.id);
             setMe(d.user);
+            setMemberCopy(accountTier(d.user) !== "starter");
             setAuthStatus("signed-in");
           } else {
             setMe(null);
+            setMemberCopy(false);
             setAuthStatus("signed-out");
           }
         })
@@ -112,7 +116,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
       cancelled = true;
       window.clearTimeout(request);
     };
-  }, [pathname]);
+  }, [pathname, setMemberCopy]);
 
   useEffect(() => {
     setOpenMore(false);
@@ -148,6 +152,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
     invalidateAccountRead();
     void resetAnalyticsUser();
     setMe(null);
+    setMemberCopy(false);
     setAuthStatus("signed-out");
     window.location.href = state ? nav.home : "/";
   }
@@ -191,7 +196,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
         <div className="header-left">
           <Link href={state ? nav.home : "/"} className="logo">
             <span className="logo-mark">{state === "IN" ? "I" : state === "CT" ? "C" : state === "CA" ? "C" : state === "HI" ? "H" : state === "NY" ? "Y" : state === "PA" ? "P" : state === "LA" ? "L" : state === "AZ" ? "A" : "N"}</span>
-            {isFreeState(state) ? stateByCode(state)?.name : state === "IN" ? "Indiana" : state === "NC" ? "North Carolina" : state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}
+            <span className="logo-label">{isFreeState(state) ? stateByCode(state)?.name : state === "IN" ? "Indiana" : state === "NC" ? "North Carolina" : state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep"}</span>
           </Link>
           {pathname !== "/" ? <StateMenu pathname={pathname} current={state} indianaPreview={indianaPreview} /> : null}
         </div>
@@ -221,9 +226,11 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
             </Link>
           )}
           {state && !onHome && (
-            <Link className="btn btn-primary header-cta" href={state === "IN" ? `${nav.practice}?mode=quick` : nav.practice}>
+            <Link className="btn btn-primary header-cta" href={state === "IN" ? `${nav.practice}?mode=quick` : nav.practice}><MemberCopy member={<>
+              Start Member Practice
+            </>}>
               Start Free Test
-            </Link>
+            </MemberCopy></Link>
           )}
           {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} stateCode={state} />}
           {!isNationalHome && !moreInNav ? moreMenu : null}

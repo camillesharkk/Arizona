@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { affiliateLinks, affiliateOffers } from "@/data/affiliates";
 import { pageMeta } from "@/lib/seo";
@@ -32,10 +33,13 @@ export default function CoursesPage() {
       <p>
         <Link href={paths.affiliate}>Affiliate disclosure</Link>
       </p>
-      <p>
+      <p><MemberCopy member={<>
+        Our own pick for the exam itself is the starter practice test on this site, then Pro if you need the full bank. Outside courses
+        are compared below for people who want video, membership, or a bond quote.
+      </>}>
         Our own pick for the exam itself is the free practice test on this site, then Pro if you need the full bank. Outside courses
         are compared below for people who want video, membership, or a bond quote.
-      </p>
+      </MemberCopy></p>
       <div className="card" style={{ overflowX: "auto" }}>
         <table className="compare">
           <thead>

@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import { AccountClient } from "@/components/AccountClient";
 
 export const metadata = {
@@ -9,7 +10,7 @@ export default function AccountPage() {
   return (
     <main className="wrap hero">
       <p className="kicker">Account</p>
-      <h1>Create a free study account</h1>
+      <h1><MemberCopy member="Create a study account">Create a free study account</MemberCopy></h1>
       <p className="lede">
         Optional. Practice without an account, or create one to keep scores and the wrong-answer notebook.
       </p>

@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { inPaths, indianaReference, indianaWeakTopics } from "@/lib/in-site";
 
@@ -29,6 +30,6 @@ export function IndianaNext({ mode, correct, total, topics, fullHref, fullLocked
       <Link className="btn btn-ghost" href={inPaths.daily}>Open Daily Study</Link>
     </div>
     {!weak.length && !strong ? <p>Answer at least two questions in a topic before using its result to choose a weak area.</p> : null}
-    {mode === "quick" && fullLocked ? <p className="notice">Your free mock is already used. Continue free topic practice or open the official course and exam steps.</p> : null}
+    {mode === "quick" && fullLocked ? <p className="notice"><MemberCopy member={<>Your starter mock is already used. Continue starter topic practice or open the official course and exam steps.</>}>Your free mock is already used. Continue free topic practice or open the official course and exam steps.</MemberCopy></p> : null}
   </div>;
 }

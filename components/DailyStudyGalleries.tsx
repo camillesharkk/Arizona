@@ -17,6 +17,7 @@ export type ScheduledReviewItem = {
   nextReviewAt: string | null;
   wrongCount: number;
   previousWrongCount: number;
+  saved?: boolean;
   mastered: boolean;
   due: boolean;
 };

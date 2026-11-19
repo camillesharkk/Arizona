@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PracticeAfterword } from "@/components/PracticeAfterword";
@@ -35,13 +36,15 @@ export default function Page() {
   return (
     <main className="wrap hero">
       <p className="kicker">Practice Test</p>
-      <h1>Hawaii Notary Practice Test — Free Quick 10 & Comprehensive Practice</h1>
+      <h1><MemberCopy member={<>Hawaii Notary Practice Test — Quick 10 & Comprehensive Practice</>}>Hawaii Notary Practice Test — Free Quick 10 & Comprehensive Practice</MemberCopy></h1>
       <p>
         <strong>
-          The practice bank has {counts.published} questions. {counts.free} are free. Comprehensive Practice draws {HI_EXAM.practiceQuestionCount} distinct questions and has no time limit. That count is this site's practice setting.
-        </strong>{" "}
+          The practice bank has {counts.published} questions. {counts.free}<MemberCopy member={<> are available to all learners. Comprehensive Practice draws </>}> are free. Comprehensive Practice draws </MemberCopy>{HI_EXAM.practiceQuestionCount} distinct questions and has no time limit. That count is this site's practice setting.
+        </strong>{" "}<MemberCopy member={<>
+        Quick 10 is available and shows each explanation immediately. The official exam is a separate closed-book test. Its question count is not the 50 used here.
+      </>}>
         Quick 10 is free and shows each explanation immediately. The official exam is a separate closed-book test. Its question count is not the 50 used here.
-      </p>
+      </MemberCopy></p>
       <Suspense fallback={<p className="notice">Loading exam…</p>}>
         <PracticeLaunch stateCode="HI" />
       </Suspense>

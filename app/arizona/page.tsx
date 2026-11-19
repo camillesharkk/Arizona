@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import { flashcards } from "@/data/flashcards";
 import { examConfig } from "@/data/exam-config";
 import { getSource } from "@/data/sources";
@@ -53,14 +54,14 @@ export default function ArizonaHub() {
         <HomeStudy cards={previewCards} />
 
         <section className="home-block" aria-labelledby="free-pro-heading">
-          <h2 id="free-pro-heading">Free and Pro</h2>
+          <h2 id="free-pro-heading"><MemberCopy member={<>Starter and Pro</>}>Free and Pro</MemberCopy></h2>
           <div className="home-split">
             <div>
-              <h3>Free</h3>
+              <h3><MemberCopy member={<>Starter</>}>Free</MemberCopy></h3>
               <ul className="home-plain">
                 <li>{freeQuestionCount} practice questions</li>
                 <li>{FREE_FLASHCARD_PREVIEW} study cards to start</li>
-                <li>{FREE_FULL_EXAMS} full practice exam before sign-in, and {FREE_FULL_EXAMS} on a free account.</li>
+                <li>{FREE_FULL_EXAMS} full practice exam before sign-in, and {FREE_FULL_EXAMS}<MemberCopy member={<> on a starter account.</>}> on a free account.</MemberCopy></li>
               </ul>
             </div>
             <div>

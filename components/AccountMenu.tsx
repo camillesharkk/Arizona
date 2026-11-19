@@ -27,6 +27,11 @@ export type HeaderUser = {
   ncPlanExpiresAt?: string | null;
 };
 
+export function accountTier(me: HeaderUser) {
+  if (me.lifetimePro) return "lifetime";
+  return me.plan === "pro" || me.indianaPro || me.connecticutPro || me.ncPro ? "pro" : "starter";
+}
+
 export function avatarInitial(name: string | null, email: string): string {
   const source = (name && name.trim()) || email || "?";
   const match = source.match(/\p{L}|\p{N}/u);
@@ -37,15 +42,17 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
   const pathname = usePathname() || "";
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const menuId = "account-menu-dropdown";
   const isPro = Boolean(me.lifetimePro || (stateCode === "IN" ? me.indianaPro : stateCode === "NC" ? me.ncPro : stateCode === "CT" ? me.connecticutPro : me.plan === "pro"));
   const expiresAt = stateCode === "IN" ? me.indianaProExpiresAt : stateCode === "NC" ? me.ncPlanExpiresAt : stateCode === "CT" ? me.connecticutProExpiresAt : me.planExpiresAt;
   const pack = packNavigationFor(stateCode);
-  const settingsHref = `${paths.account}${stateCode && stateCode !== "AZ" ? `?state=${stateCode}` : ""}#study-settings`;
+  const settingsHref = paths.studySettings + (stateCode ? "?state=" + stateCode : "");
   const pricing = pack ? pack.paths.pricing : stateCode === "HI" ? hiPaths.pricing : stateCode === "CA" ? caPaths.pricing : paths.pricing;
   const mistakes = pack ? pack.paths.mistakes : stateCode === "HI" ? hiPaths.mistakes : stateCode === "CA" ? caPaths.mistakes : paths.mistakes;
   const pricingLabel = stateCode === "HI" ? "Hawaii access" : stateCode === "CA" ? "California access" : isPro ? "Pro Access" : "Upgrade to Pro";
-  const initial = avatarInitial(me.name, me.email);
+  const tier = accountTier(me);
+  const planLabel = tier === "lifetime" ? "Lifetime Pro" : tier === "pro" ? "Pro" : "Free plan";
 
   useEffect(() => {
     setOpen(false);
@@ -59,7 +66,9 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
       }
     }
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Escape") return;
+      if (rootRef.current?.contains(document.activeElement)) triggerRef.current?.focus();
+      setOpen(false);
     }
     document.addEventListener("pointerdown", onPointerDown);
     document.addEventListener("keydown", onKey);
@@ -72,23 +81,25 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
   return (
     <div className="account-menu" ref={rootRef}>
       <button
-        className="avatar-btn"
+        ref={triggerRef}
+        className={`avatar-btn avatar-${tier}`}
         type="button"
-        aria-label="Open account menu"
+        aria-label={`Open account menu (${planLabel})`}
         aria-expanded={open}
-        aria-haspopup="menu"
         aria-controls={menuId}
         onClick={() => setOpen((v) => !v)}
       >
-        {initial}
+        {tier === "starter" ? avatarInitial(me.name, me.email) : (
+          <img className="avatar-art" src={`/membership/${tier}.webp`} width={38} height={38} alt="" />
+        )}
       </button>
       {open && (
-        <div className="account-dropdown" id={menuId} role="menu" aria-label="Account menu">
+        <nav className="account-dropdown" id={menuId} aria-label="Account menu">
           <div className="account-dropdown-id">
             {me.name?.trim() ? <p className="account-menu-name">{me.name.trim()}</p> : null}
             <p className="account-dropdown-email">{me.email}</p>
             <p className="account-plan-row">
-              {isPro ? <span className="badge badge-pro">{me.lifetimePro ? "Lifetime Pro" : "Pro"}</span> : <span className="badge">Free plan</span>}
+              <span className={`badge account-tier-${tier}`}>{planLabel}</span>
             </p>
             {isPro && (me.lifetimePro || expiresAt) ? (
               <p className="notice" style={{ margin: "6px 0 0" }}>
@@ -97,33 +108,33 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
             ) : null}
           </div>
           <div className="account-menu-sep" role="separator" />
-          <Link role="menuitem" href={paths.dashboard} onClick={() => setOpen(false)}>
+          <Link href={paths.dashboard} onClick={() => setOpen(false)}>
             Dashboard
           </Link>
-          <Link role="menuitem" href={stateCode ? mistakes : "/"} onClick={() => setOpen(false)}>
+          <Link href={stateCode ? mistakes : "/"} onClick={() => setOpen(false)}>
             Wrong Answers
           </Link>
-          <Link role="menuitem" href={settingsHref} onClick={() => setOpen(false)}>
+          <Link href={settingsHref} onClick={() => setOpen(false)}>
             Study Settings
           </Link>
-          <Link role="menuitem" href={stateCode && stateCode !== "AZ" ? `${paths.account}?state=${stateCode}` : paths.account} onClick={() => setOpen(false)}>
+          <Link href={stateCode && stateCode !== "AZ" ? `${paths.account}?state=${stateCode}` : paths.account} onClick={() => setOpen(false)}>
             Account Settings
           </Link>
-          <Link role="menuitem" href={paths.referrals} onClick={() => setOpen(false)}>
+          <Link href={paths.referrals} onClick={() => setOpen(false)}>
             Invite & Credits
           </Link>
-          <Link role="menuitem" href={paths.billing} onClick={() => setOpen(false)}>
+          <Link href={paths.billing} onClick={() => setOpen(false)}>
             Billing & Access
           </Link>
-          {(!isFreeState(stateCode) || (fullStateSummary[stateCode]?.ready && freeStateFeatures[stateCode]?.purchase !== false)) ? <Link role="menuitem" href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>{pricingLabel}</Link> : null}
+          {(!isFreeState(stateCode) || (fullStateSummary[stateCode]?.ready && freeStateFeatures[stateCode]?.purchase !== false)) ? <Link href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>{pricingLabel}</Link> : null}
           <div className="account-menu-sep" role="separator" />
-          <button className="account-signout" type="button" role="menuitem" onClick={onLogout}>
+          <button className="account-signout" type="button" onClick={onLogout}>
             Sign out
           </button>
-          <Link role="menuitem" className="account-delete-link" href={paths.accountDelete} onClick={() => setOpen(false)}>
+          <Link className="account-delete-link" href={paths.accountDelete} onClick={() => setOpen(false)}>
             Delete Account
           </Link>
-        </div>
+        </nav>
       )}
     </div>
   );

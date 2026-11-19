@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { MemberCopy } from "@/components/MemberCopy";
 import { caPaths } from "@/lib/ca-site";
 import { quickNextBand, rankMissedTopics, type TopicMiss } from "@/lib/ca-next";
 import { caStudyLabel } from "@/lib/ca-topics";
@@ -19,7 +20,7 @@ export function CaQuickNext({
   fullName = "Full 45 Practice Exam",
   labelFor = caStudyLabel,
   dailyState = "CA",
-  limitNote = "The free Full 45 on this account or browser is already used. Pro includes more full exams in every available state for 60 days.",
+  limitNote = <MemberCopy member="The introductory Full 45 on this account or browser is already used.">The free Full 45 on this account or browser is already used. Pro includes more full exams in every available state for 60 days.</MemberCopy>,
 }: {
   correct: number;
   total: number;
@@ -34,7 +35,7 @@ export function CaQuickNext({
   fullName?: string;
   labelFor?: (id: string) => string;
   dailyState?: string;
-  limitNote?: string;
+  limitNote?: ReactNode;
 }) {
   const band = quickNextBand(correct, total);
   const topic = rankMissedTopics(misses, labelFor);

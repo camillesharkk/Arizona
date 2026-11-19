@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { paths } from "@/lib/paths";
+import { packNavigationFor } from "@/lib/prep-navigation";
+import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 import { useSearchParams } from "next/navigation";
 import { useResolvedState, useSavedState } from "@/components/SavedState";
 import { parseStateCookie } from '@/lib/site-state';
@@ -38,17 +43,37 @@ export function StudySettings() {
   const requested = useSearchParams().get("state");
   const state = parseStateCookie(requested) ?? savedState ?? 'AZ';
 
+  const site = packNavigationFor(state)?.paths ?? (state === "CA" ? caPaths : state === "HI" ? hiPaths : paths);
+  const [loadStatus, setLoadStatus] = useState<"loading" | "signed-out" | "error">("loading");
+
   useEffect(() => {
     let cancelled = false;
     setMessage("");
+    setLoadStatus("loading");
     fetch(`/api/study-settings/?timeZone=${encodeURIComponent(zone)}&state=${state}`)
-      .then(response => response.json())
-      .then(data => { if (!cancelled && !data.error) setPayload({ ...data, stateCode: state }); })
-      .catch(() => undefined);
+      .then(async (response) => {
+        if (response.status === 401) {
+          if (!cancelled) setLoadStatus("signed-out");
+          return;
+        }
+        if (!response.ok) throw new Error("Could not load study settings.");
+        const data = await response.json();
+        if (!cancelled) setPayload({ ...data, stateCode: state });
+      })
+      .catch(() => { if (!cancelled) setLoadStatus("error"); });
     return () => { cancelled = true; };
   }, [zone, state]);
 
-  if (!payload || payload.stateCode !== state) return <section id="study-settings" className="card"><h2>Study Settings</h2><p className="notice">Sign in to save a study plan.</p></section>;
+  if (!payload || payload.stateCode !== state) {
+    const returnTo = encodeURIComponent(`${paths.studySettings}?state=${state}`);
+    return (
+      <div className="card">
+        {loadStatus === "signed-out" ? <p><Link href={`${site.login}?next=${returnTo}`}>Sign in</Link> to manage your study plan.</p>
+          : loadStatus === "error" ? <p role="alert">Could not load your study settings. Refresh the page to try again.</p>
+          : <p>Loading study settings…</p>}
+      </div>
+    );
+  }
   const settings = payload.settings;
 
   async function save(next: Partial<Settings> & { restore?: boolean }) {
@@ -71,7 +96,8 @@ export function StudySettings() {
 
   return (
     <section id="study-settings" className="card">
-      <h2>Study Settings</h2>
+      <Link href={site.daily}>Back to Daily Study</Link>
+      <h2>Your study plan</h2>
       <p>{payload.introduced} cards introduced · {payload.reviewed} reviews finished.</p>
       <p className="notice">
         Recommended today: {payload.recommended.newCards} new cards, {payload.recommended.newQuestions} new questions, {payload.recommended.reviews} reviews.
@@ -80,15 +106,15 @@ export function StudySettings() {
       {payload.reason ? <p className="notice">{payload.reason}</p> : null}
       {payload.projectReason ? <p className="notice">{payload.projectReason}</p> : null}
       <div className="row">
-        <button className={`chip ${settings.mode === "recommended" ? "on" : ""}`} type="button" onClick={() => save({ mode: "recommended" })}>Recommended</button>
-        <button className={`chip ${settings.mode === "custom" ? "on" : ""}`} type="button" onClick={() => save({ mode: "custom", newCards: settings.newCards ?? payload.recommended.newCards, newQuestions: settings.newQuestions ?? payload.recommended.newQuestions, reviewTarget: settings.reviewTarget ?? payload.recommended.reviews })}>Custom</button>
+        <button className={`chip ${settings.mode === "recommended" ? "on" : ""}`} type="button" aria-pressed={settings.mode === "recommended"} onClick={() => save({ mode: "recommended" })}>Recommended</button>
+        <button className={`chip ${settings.mode === "custom" ? "on" : ""}`} type="button" aria-pressed={settings.mode === "custom"} onClick={() => save({ mode: "custom", newCards: settings.newCards ?? payload.recommended.newCards, newQuestions: settings.newQuestions ?? payload.recommended.newQuestions, reviewTarget: settings.reviewTarget ?? payload.recommended.reviews })}>Custom</button>
       </div>
       <label className="field">Target date
         <input type="date" value={settings.targetDate} onChange={(event) => save({ targetDate: event.target.value })} />
       </label>
       <div className="row">
         {DAYS.map((label, index) => (
-          <button key={label} className={`chip ${settings.weekdays.includes(index) ? "on" : ""}`} type="button" onClick={() => toggleDay(index)}>{label}</button>
+          <button key={label} className={`chip ${settings.weekdays.includes(index) ? "on" : ""}`} type="button" aria-pressed={settings.weekdays.includes(index)} onClick={() => toggleDay(index)}>{label}</button>
         ))}
       </div>
       {settings.mode === "custom" ? (
@@ -102,7 +128,7 @@ export function StudySettings() {
         <input value={settings.timeZone} onChange={(event) => save({ timeZone: event.target.value })} />
       </label>
       <button className="btn btn-ghost" type="button" onClick={() => save({ restore: true })}>Restore recommended amounts</button>
-      {message ? <p className="notice">{message}</p> : null}
+      <p className="notice" role="status">{message}</p>
     </section>
   );
 }

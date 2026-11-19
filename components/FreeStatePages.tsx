@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import { prepPacks } from '@/lib/prep-pack';
 import Link from 'next/link';
 import { AnswerExplain } from '@/components/AnswerExplain';
@@ -23,11 +24,11 @@ export function FreeStateHome({ code }: { code: FreeStateCode }) {
     <h1>{content.name} Notary Prep</h1>
     <p className="lede">{content.summary}</p>
     <div className="tool-row">
-      <Link className={officialFirst ? 'btn btn-ghost' : 'btn btn-primary'} href={`${site.practice}?mode=quick&start=1`}>{freeStateFeatures[code]?.practiceLabel || 'Start Free Quick 10'}</Link>
+      <Link className={officialFirst ? 'btn btn-ghost' : 'btn btn-primary'} href={`${site.practice}?mode=quick&start=1`}><MemberCopy member={officialFirst ? 'Start Member Practice' : 'Start Member Quick 10'}>{freeStateFeatures[code]?.practiceLabel || 'Start Free Quick 10'}</MemberCopy></Link>
       <a className={officialFirst ? 'btn btn-primary' : 'btn btn-ghost'} href={content.officialNext.url}>{content.officialNext.label}</a>
     </div>
     {officialFirst && handbook ? <p><a href={handbook.url}>Read the official handbook</a></p> : null}
-    <p>{pack.freeLaunch ? 'Ten free original questions with explanations and official references.' : `${counts.published} original questions with explanations and official references. ${counts.free} free questions and ${counts.pro} Pro questions.`}</p>
+    <p><MemberCopy member={pack.freeLaunch ? 'Ten original questions with explanations and official references.' : `${counts.published} original questions with explanations and official references. ${counts.free} starter questions and ${counts.pro} Pro questions.`}>{pack.freeLaunch ? 'Ten free original questions with explanations and official references.' : `${counts.published} original questions with explanations and official references. ${counts.free} free questions and ${counts.pro} Pro questions.`}</MemberCopy></p>
     {pack.fullReady ? <section className="card"><h2>{pack.fullTitle}</h2><p>{pack.fullDetail}</p><div className="tool-row">
       <Link className="btn btn-primary" href={`${site.practice}?mode=full`}>Start Comprehensive Practice</Link>
       {pack.purchaseEnabled !== false ? <Link className="btn btn-ghost" href={site.pricing}>Get 60-Day Pro</Link> : null}</div></section> : null}
@@ -57,7 +58,7 @@ export function FreeStateGuide({ code }: { code: FreeStateCode }) {
     <h1>{content.name} Notary Application and Study Guide</h1>
     <p className="lede">{content.summary}</p>
     <div className="tool-row"><a className="btn btn-primary" href={content.officialNext.url}>{content.officialNext.label}</a>
-      <Link className="btn btn-ghost" href={`${site.practice}?mode=quick&start=1`}>Start Free Quick 10</Link></div>
+      <Link className="btn btn-ghost" href={`${site.practice}?mode=quick&start=1`}><MemberCopy member={<>Start Member Quick 10</>}>Start Free Quick 10</MemberCopy></Link></div>
     <section><h2>Training and assessment for first-time applicants</h2><p>{content.training}</p><p>{content.assessment}</p>
       {specs.length ? <ul>{specs.map(spec => <li key={spec}>{spec}</li>)}</ul> : null}
     </section>

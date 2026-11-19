@@ -1,3 +1,5 @@
+import { MemberCopy } from "@/components/MemberCopy";
+import { memberActionLabel } from "@/lib/member-copy";
 import { arizonaHomeFaq } from "@/data/arizona-home-faq";
 import { paths } from "@/lib/paths";
 
@@ -15,15 +17,15 @@ export function ArizonaHomeFaq() {
         {arizonaHomeFaq.map((item) => (
           <details key={item.question}>
             <summary>
-              {item.question}
+              <MemberCopy member={item.question === "Is there a free Arizona notary practice test?" ? "How do I start Arizona notary practice?" : item.question}>{item.question}</MemberCopy>
               <span aria-hidden="true">⌄</span>
             </summary>
             <div>
-              <p>{item.answer}</p>
+              <p><MemberCopy member={item.question === "Is there a free Arizona notary practice test?" ? "Start with Quick 10, pick a topic, or take Full 45 with your membership." : item.answer}>{item.answer}</MemberCopy></p>
               <p className="home-faq-links">
                 {item.links.map((link) => (
                   <a key={link.href} href={link.href}>
-                    {link.label}
+                    <MemberCopy member={memberActionLabel(link.label)}>{link.label}</MemberCopy>
                   </a>
                 ))}
               </p>

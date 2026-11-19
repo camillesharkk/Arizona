@@ -3,6 +3,8 @@
 import type { StateCode } from "@/lib/types";
 
 import Link from "next/link";
+import { MemberCopy } from "@/components/MemberCopy";
+import { memberActionLabel } from "@/lib/member-copy";
 import { useEffect } from "react";
 import { rememberArticleEntry, trackAnalyticsEvent } from "@/lib/analytics";
 
@@ -36,7 +38,7 @@ export function ArticleLink({
         trackAnalyticsEvent("article_cta", entry);
       }}
     >
-      {label}
+      <MemberCopy member={memberActionLabel(label)}>{label}</MemberCopy>
     </Link>
   );
 }

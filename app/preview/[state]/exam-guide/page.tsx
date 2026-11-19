@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
@@ -14,7 +15,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
       <h1>{pack.name} exam guide</h1>
       <div className="card">
         <p>{pack.fullDetail}</p>
-        <p>Quick 10 is a free check. Eight or more correct is a study recommendation on this site. It is not an official passing score.</p>
+        <p><MemberCopy member={<>Quick 10 is a starter check. Eight or more correct is a study recommendation on this site. It is not an official passing score.</>}>Quick 10 is a free check. Eight or more correct is a study recommendation on this site. It is not an official passing score.</MemberCopy></p>
         <p><a href={pack.paths.practice}>Open practice</a>{" · "}<a href={pack.paths.resources}>Sources and articles</a>{" · "}<a href={pack.paths.passingScore}>Scores and retakes</a>{" · "}<a href={pack.paths.become}>Apply for a commission</a></p>
       </div>
     </main>

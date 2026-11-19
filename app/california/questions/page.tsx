@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import type { Metadata } from "next";
 import { QuestionsClient } from "@/components/QuestionsClient";
 import { publishedCaQuestions, caQuestionCounts } from "@/data/ca-questions";
@@ -19,7 +20,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
     <main className="wrap">
       <h1>California exam questions</h1>
       <div className="card">
-        <p>{counts.published} published questions. {counts.free} are free. Each item has one answer and an explanation tied to the official source. The full practice exam uses 40 scored items and 5 unscored items. The official exam is closed book, one hour, and uses a scaled score of 70 rather than a percent.</p>
+        <p>{counts.published} published questions. {counts.free}<MemberCopy member={<> are available to all learners. Each item has one answer and an explanation tied to the official source. The full practice exam uses 40 scored items and 5 unscored items. The official exam is closed book, one hour, and uses a scaled score of 70 rather than a percent.</>}> are free. Each item has one answer and an explanation tied to the official source. The full practice exam uses 40 scored items and 5 unscored items. The official exam is closed book, one hour, and uses a scaled score of 70 rather than a percent.</MemberCopy></p>
         <ul>
           {CA_EXAM.quotas.map((quota) => (
             <li key={quota.area}>{areaLabel(quota.area)}: {counts.areas[quota.area]} published, {quota.count} scored on a full exam</li>

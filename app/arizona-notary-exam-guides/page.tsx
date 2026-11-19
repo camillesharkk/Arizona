@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { examConfig } from "@/data/exam-config";
@@ -22,9 +23,11 @@ export default function GuidesIndexPage() {
         Guides for the exam format, fees, bond, remote notarization, retakes, and a study schedule.
       </p>
       <p>
-        <Link className="btn btn-primary" href={`${paths.practice}?mode=quick`}>
+        <Link className="btn btn-primary" href={`${paths.practice}?mode=quick`}><MemberCopy member={<>
+          Start Member Quick 10
+        </>}>
           Try 10 free questions
-        </Link>
+        </MemberCopy></Link>
       </p>
       <div className="grid grid-2" style={{ marginTop: 24 }}>
         {searchMatrix.map((item) => (

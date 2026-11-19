@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { Suspense } from "react";
 import { examConfig, officialExam } from "@/data/exam-config";
@@ -25,17 +26,19 @@ export default function PracticeTestPage() {
   return (
     <main className="wrap hero">
       <p className="kicker">Practice Test</p>
-      <h1>Arizona Notary Exam Practice Test — Free Quick 10 & Full 45</h1>
+      <h1><MemberCopy member={<>Arizona Notary Exam Practice Test — Quick 10 & Full 45</>}>Arizona Notary Exam Practice Test — Free Quick 10 & Full 45</MemberCopy></h1>
       <p>
         <strong>
-          The practice bank has {pool.length} questions. {free.length} are free. Pro can use all {pool.length}. Each Full 45
+          The practice bank has {pool.length} questions. {free.length}<MemberCopy member={<> are available to all learners. Pro can use all </>}> are free. Pro can use all </MemberCopy>{pool.length}. Each Full 45
           draws {examConfig.questionCount} distinct questions from that bank.
         </strong>
       </p>
       <p>
-        Quick 10 and topic practice without Pro use only the {free.length} free questions. The other {pool.length - free.length} are
+        Quick 10 and topic practice without Pro use only the {free.length}<MemberCopy member={<> starter questions. The other </>}> free questions. The other </MemberCopy>{pool.length - free.length}<MemberCopy member={<> are
+        Pro-only. One starter Full 45 in this browser can include Pro questions.
+      </>}> are
         Pro-only. One free Full 45 in this browser can include Pro questions.
-      </p>
+      </MemberCopy></p>
       <Suspense fallback={<p className="notice">Loading exam…</p>}>
         <PracticeLaunch />
       </Suspense>
@@ -49,7 +52,7 @@ export default function PracticeTestPage() {
       </section>
       <section aria-labelledby="sample-questions">
         <h2 id="sample-questions">Sample Arizona notary questions with answers and explanations</h2>
-        <p>These items are from the free set.</p>
+        <p><MemberCopy member={<>These items are from the starter set.</>}>These items are from the free set.</MemberCopy></p>
         {samples.map((q, i) => {
           const options = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
           return (

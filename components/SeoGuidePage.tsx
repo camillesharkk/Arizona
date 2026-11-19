@@ -1,3 +1,5 @@
+import { MemberCopy } from "@/components/MemberCopy";
+import { memberActionLabel } from "@/lib/member-copy";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { JsonLd, articleJson, faqJson } from "@/components/JsonLd";
@@ -57,7 +59,7 @@ export function SeoGuidePage({ id }: { id: string }) {
       {cta ? (
         <p>
           <Link className="btn btn-primary" href={cta.href}>
-            {cta.label}
+            <MemberCopy member={memberActionLabel(cta.label)}>{cta.label}</MemberCopy>
           </Link>
         </p>
       ) : null}
@@ -100,7 +102,7 @@ export function SeoGuidePage({ id }: { id: string }) {
         <ul>
           {guide.related.map((item) => (
             <li key={item.href}>
-              <Link href={item.href}>{item.label}</Link>
+              <Link href={item.href}><MemberCopy member={memberActionLabel(item.label)}>{item.label}</MemberCopy></Link>
             </li>
           ))}
           {supplementalArticles.AZ.map(article => <li key={article.path}><Link href={article.path}>{article.title}</Link></li>)}

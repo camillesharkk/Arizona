@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import {
   useEffect,
   useId,
@@ -370,7 +371,7 @@ export function StatePicker({
           </p>
         ) : null}
         <button className="home-primary" type="submit">
-          {selected ? stateEntry(selected).label : "Start Free Practice"}
+          <MemberCopy member={selected ? stateEntry(selected).label : "Start Member Practice"}>{selected ? stateEntry(selected).label : "Start Free Practice"}</MemberCopy>
           <span aria-hidden="true">→</span>
         </button>
         <div className="home-location">

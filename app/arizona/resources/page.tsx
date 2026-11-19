@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { officialExam, topics } from "@/data/exam-config";
 import { pageMeta } from "@/lib/seo";
@@ -15,9 +16,11 @@ export default function ResourcesPage() {
   return (
     <main className="wrap hero resource-page">
       <h1>Study resources</h1>
-      <p className="lede">
+      <p className="lede"><MemberCopy member={<>
+        Quick 10, the study guide, and the links below are available to all learners. Pro opens the rest of the question bank and study cards.
+      </>}>
         Quick 10, the study guide, and the links below are free. Pro opens the rest of the question bank and study cards.
-      </p>
+      </MemberCopy></p>
       <p>
         <Link href={paths.home}>Back to practice</Link>
       </p>
@@ -32,7 +35,7 @@ export default function ResourcesPage() {
         <li><Link href={paths.questions}>Questions and explanations</Link></li>
         <li><Link href={paths.become}>How to become a notary</Link></li>
         <li><Link href={paths.laws}>2026 law updates</Link></li>
-        <li><Link href={paths.pricing}>Free and Pro access</Link></li>
+        <li><Link href={paths.pricing}><MemberCopy member={<>Membership access</>}>Free and Pro access</MemberCopy></Link></li>
       </ul>
 
       <h2>Practice by topic</h2>

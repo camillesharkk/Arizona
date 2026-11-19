@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
 
@@ -11,9 +12,11 @@ export function PrepCtas({ studyCards = false, guide = true, pro = true, fullPra
 }) {
   return (
     <div className="row" style={{ margin: "16px 0 24px" }}>
-      <Link className="btn btn-primary" href={`${sitePaths.practice}?mode=quick`}>
+      <Link className="btn btn-primary" href={`${sitePaths.practice}?mode=quick`}><MemberCopy member={<>
+        Member Quick 10
+      </>}>
         Free 10-question test
-      </Link>
+      </MemberCopy></Link>
       {fullPractice ? <Link className="btn btn-ghost" href={`${sitePaths.practice}?mode=full`}>
         {fullExamLabel}
       </Link> : null}

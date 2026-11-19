@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { AnswerExplain } from "@/components/AnswerExplain";
 
@@ -28,7 +29,7 @@ export function PracticeAfterword({
       </section>
       <section aria-labelledby="sample-questions">
         <h2 id="sample-questions">Sample questions with answers and explanations</h2>
-        <p>These items are from the published free set.</p>
+        <p><MemberCopy member={<>These items are from the published starter set.</>}>These items are from the published free set.</MemberCopy></p>
         {samples.map((q, i) => (
           <article key={q.question_id} className="card" style={{ marginTop: 16 }}>
             <h3>{i + 1}. {q.question_text}</h3>

@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { isFreeState } from "@/lib/free-state-catalog";
 import { FreeStateResultNext } from "@/components/FreeStateResultNext";
 import { fetchAccount } from "@/lib/client-account";
@@ -66,6 +67,7 @@ export function ExamRunner({
   onRecorded,
   stateCode = "AZ",
   focusArea,
+  questionReason,
 }: {
   mode: Mode;
   practice?: boolean;
@@ -81,6 +83,7 @@ export function ExamRunner({
   onRecorded?: (fullExamCount?: number) => void;
   stateCode?: SittingState;
   focusArea?: string;
+  questionReason?: (id: string) => string;
 }) {
   const baseModeKey = sittingMode || mode;
   const dailySet = Boolean(practice && preset && sittingMode?.startsWith("daily-"));
@@ -896,7 +899,7 @@ export function ExamRunner({
                   fullName={pack ? pack.fullTitle : onHi ? "Comprehensive Practice" : "Full 45 Practice Exam"}
                   labelFor={onHi ? hiStudyLabel : undefined}
                   dailyState={pack ? pack.code : onHi ? "HI" : "CA"}
-                  limitNote={pack ? `The free ${pack.fullTitle} on this account or browser is already used.` : onHi ? "The free Comprehensive Practice on this account or browser is already used." : undefined}
+                  limitNote={pack || onHi ? <MemberCopy member={`The introductory ${pack?.fullTitle ?? "Comprehensive Practice"} on this account or browser is already used.`}>{`The free ${pack?.fullTitle ?? "Comprehensive Practice"} on this account or browser is already used.`}</MemberCopy> : undefined}
                 />
               ) : (
                 <>
@@ -924,9 +927,11 @@ export function ExamRunner({
                 ) : null}
                 {correct >= 8 && fullLocked ? (
                   <p className="notice">
-                    {signedIn
+                    <MemberCopy member={signedIn
+                      ? "This account has used its starter Full 45. Pro includes more full exams."
+                      : "This browser has used its starter Full 45. Pro includes more full exams."}>{signedIn
                       ? "This account has used its free Full 45. Pro includes more full exams."
-                      : "This browser has used its free Full 45. Pro includes more full exams."}
+                      : "This browser has used its free Full 45. Pro includes more full exams."}</MemberCopy>
                   </p>
                 ) : null}
                 {correct < 8 && !recommend ? (
@@ -974,9 +979,11 @@ export function ExamRunner({
                   ) : null}
                   <a className={recommend ? "btn btn-ghost" : "btn btn-primary"} href={dailyHref}>Open Daily Study</a>
                   <p className="notice">
-                    {signedIn
+                    <MemberCopy member={signedIn
                       ? "Missed questions stay on your review schedule. Daily Study shows a question when it is due."
-                      : "Sign in to sync this practice and open Daily Study. If your account has used its free full practice for this state, Pro access is required."}
+                      : "Sign in to sync this practice and open Daily Study. If your account has used its starter full practice for this state, Pro access is required."}>{signedIn
+                      ? "Missed questions stay on your review schedule. Daily Study shows a question when it is due."
+                      : "Sign in to sync this practice and open Daily Study. If your account has used its free full practice for this state, Pro access is required."}</MemberCopy>
                   </p>
                 </div>
               ) : null}
@@ -998,7 +1005,7 @@ export function ExamRunner({
                   <li key={w.topic}>{w.label}</li>
                 ))}
               </ul>
-              <p>Review those chapters in the free study guide, then drill the missed items.</p>
+              <p><MemberCopy member={<>Review those chapters in the starter study guide, then drill the missed items.</>}>Review those chapters in the free study guide, then drill the missed items.</MemberCopy></p>
             </div>
           )}
           <h3>Official sources</h3>
@@ -1031,15 +1038,16 @@ export function ExamRunner({
           )}
           {mode === "quick" && (!onCa || !guided) && <p><Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link></p>}
           <AccountInvite />
-          {isFreeState(stateCode) ? null : stateCode === "CT" ? <p className="notice">Free learning uses the Connecticut free question pool.</p> : onCa ? (
+          {isFreeState(stateCode) ? null : stateCode === "CT" ? <p className="notice"><MemberCopy member={<>Topic practice is available in the Connecticut question bank.</>}>Free learning uses the Connecticut free question pool.</MemberCopy></p> : onCa ? (
             <p className="notice">This is study feedback for California. Forty items are scored. This raw count is not an official scaled score.</p>
           ) : onHi ? (
             <p className="notice">This is study feedback for Hawaii. This score is this site's practice result, not an official exam result.</p>
-          ) : stateCode === "IN" ? <p className="notice">{isPro ? "Indiana Pro is active for this account." : "Free practice uses 60 Indiana questions. Pro opens all 203 questions across every available state for 60 days."}</p> : isPro ? (
+          ) : stateCode === "IN" ? <p className="notice"><MemberCopy member={isPro ? "Indiana Pro is active for this account." : "Starter practice uses 60 Indiana questions. Pro opens all 203 questions across every available state for 60 days."}>{isPro ? "Indiana Pro is active for this account." : "Free practice uses 60 Indiana questions. Pro opens all 203 questions across every available state for 60 days."}</MemberCopy></p> : isPro ? (
             <p className="notice">Pro is active. Keep practicing the topics you missed.</p>
           ) : (
-            <p className="notice">
-              Free practice uses the free question pool. Pro opens the rest of the bank and more full exams.{" "}
+            <p className="notice"><MemberCopy member={<>
+              Starter practice uses the starter question pool. Pro opens the rest of the bank and more full exams.</>}>
+              Free practice uses the free question pool. Pro opens the rest of the bank and more full exams.</MemberCopy>{" "}
               <Link href={site.pricing} data-upgrade-source="exam_results">View Pro</Link>
             </p>
           )}
@@ -1158,6 +1166,7 @@ export function ExamRunner({
       {previousAnswer}
       <QuestionBlock
         q={view}
+        reason={past ? undefined : questionReason?.(view.question_id)}
         index={viewIndex}
         selected={viewSelected}
         reveal={Boolean((practice && viewSelected) || past)}
@@ -1244,6 +1253,7 @@ export function QuestionBlock({
   explainOpen,
   onToggleExplain,
   tutor = false,
+  reason,
 }: {
   q: Question;
   index: number;
@@ -1263,6 +1273,7 @@ export function QuestionBlock({
   explainOpen?: boolean;
   onToggleExplain?: () => void;
   tutor?: boolean;
+  reason?: string;
 }) {
   const map = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
   const letters = (["A", "B", "C", "D"] as const).filter((letter) => map[letter]);
@@ -1285,6 +1296,7 @@ export function QuestionBlock({
         </div>
       </div>
       {q.state === "CT" ? <p><a href={ctSources.manual} target="_blank" rel="noopener noreferrer">Open Official Handbook</a></p> : null}
+      {reason ? <p className="notice">Why this question? {reason}</p> : null}
       {q.scenario_text ? <p className="notice">{q.scenario_text}</p> : null}
       <h3 className="quiz-heading quiz-stem" ref={headingRef} tabIndex={-1}>
         {marked ? <span className="flagged-note"><FlagIcon /> Flagged</span> : null}
@@ -1293,9 +1305,9 @@ export function QuestionBlock({
       {locked ? (
         <div className="explain">
           <strong>Pro question</strong>
-          <p>{packFor(q.state)?.purchaseEnabled === false ? 'Continue reviewing with the free question pool and official sources.' : 'This item is in the full question bank. Unlock Pro to turn weak topics into passing scores.'}</p>
+          <p><MemberCopy member={packFor(q.state)?.purchaseEnabled === false ? 'Continue reviewing with the starter question pool and official sources.' : 'This item is in the full question bank. Unlock Pro to turn weak topics into passing scores.'}>{packFor(q.state)?.purchaseEnabled === false ? 'Continue reviewing with the free question pool and official sources.' : 'This item is in the full question bank. Unlock Pro to turn weak topics into passing scores.'}</MemberCopy></p>
           <Link className="btn btn-primary" href={packFor(q.state)?.purchaseEnabled === false ? `${packFor(q.state)!.paths.practice}?mode=quick` : q.state === "CT" ? "/connecticut/practice/?mode=quick" : paths.pricing} data-upgrade-source="locked_question">
-            {packFor(q.state)?.purchaseEnabled === false ? "Start Free Practice" : q.state === "CT" ? "Start Free Quick 10" : "Unlock Pro"}
+            <MemberCopy member={packFor(q.state)?.purchaseEnabled === false ? "Start Member Practice" : q.state === "CT" ? "Start Member Quick 10" : "Unlock Pro"}>{packFor(q.state)?.purchaseEnabled === false ? "Start Free Practice" : q.state === "CT" ? "Start Free Quick 10" : "Unlock Pro"}</MemberCopy>
           </Link>
         </div>
       ) : null}

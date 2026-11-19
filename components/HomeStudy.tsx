@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { clientStatePro } from "@/lib/state-pro";
 
 import { fetchAccount } from "@/lib/client-account";
@@ -173,22 +174,24 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
         <h1>{stateCode === "IN" ? "Indiana Notary Exam Prep" : pack ? `${pack.name} Prep` : onHi ? "Hawaii Notary Exam Prep" : onCa ? "California Notary Exam Prep" : "Arizona Notary Exam Prep"}</h1>
       </section>
       <div className="home-copy">
-        <p className="home-lead">{pack ? pack.fullDetail : onHi ? "Practice Hawaii notary questions and study cards. Quick 10 suggests what to study next. It is not an official score." : onCa ? "Practice the California notary exam with published questions and study cards. The check uses your answers to suggest a next step. It is not an official score." : "Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams."}</p>
-        <p className="home-diagnostic">{pack ? "Quick 10 is this site's free check. A result of 8 or more is a study recommendation, not an official passing score." : onHi ? "Quick 10 is free. Comprehensive Practice is 50 questions with no time limit. That count is this site's practice setting. The official written exam requires at least 80%." : onCa ? "A full practice exam is 45 questions and 60 minutes. Forty items are scored. Five are unscored. The official exam needs a scaled score of at least 70, which is not a percent." : "Answer 10 free questions and find out what to study next."}</p>
+        <p className="home-lead"><MemberCopy member={pack ? pack.fullDetail : onHi ? "Practice Hawaii notary questions and study cards. Quick 10 suggests what to study next. It is not an official score." : onCa ? "Practice the California notary exam with published questions and study cards. The check uses your answers to suggest a next step. It is not an official score." : "Use your Pro question bank, study cards, and full practice exams to practice and review mistakes."}>{pack ? pack.fullDetail : onHi ? "Practice Hawaii notary questions and study cards. Quick 10 suggests what to study next. It is not an official score." : onCa ? "Practice the California notary exam with published questions and study cards. The check uses your answers to suggest a next step. It is not an official score." : "Learn the rules. Practice with scenarios. Review your mistakes. Start free. Pro opens the rest of the practice bank, study cards, and full exams."}</MemberCopy></p>
+        <p className="home-diagnostic"><MemberCopy member={pack ? "Quick 10 is this site's starter check. A result of 8 or more is a study recommendation, not an official passing score." : onHi ? "Quick 10 is available to all learners. Comprehensive Practice is 50 questions with no time limit. That count is this site's practice setting. The official written exam requires at least 80%." : onCa ? "A full practice exam is 45 questions and 60 minutes. Forty items are scored. Five are unscored. The official exam needs a scaled score of at least 70, which is not a percent." : "Answer 10 starter questions and find out what to study next."}>{pack ? "Quick 10 is this site's free check. A result of 8 or more is a study recommendation, not an official passing score." : onHi ? "Quick 10 is free. Comprehensive Practice is 50 questions with no time limit. That count is this site's practice setting. The official written exam requires at least 80%." : onCa ? "A full practice exam is 45 questions and 60 minutes. Forty items are scored. Five are unscored. The official exam needs a scaled score of at least 70, which is not a percent." : "Answer 10 free questions and find out what to study next."}</MemberCopy></p>
       </div>
       <section className="home-welcome home-welcome-actions" aria-label="Start">
         <div className="home-actions-row">
           <a className="btn btn-primary" href={`${site.practice}?mode=quick`}>
-            {stateCode === "IN" ? "Start Free Practice" : "Check My Knowledge — 10 Questions"}
+            <MemberCopy member={stateCode === "IN" ? "Start Member Practice" : "Check My Knowledge — 10 Questions"}>{stateCode === "IN" ? "Start Free Practice" : "Check My Knowledge — 10 Questions"}</MemberCopy>
           </a>
           {stateCode === "IN" ? <a className="btn btn-ghost" href={`${site.become}#course-exam`}>Official Course &amp; Exam</a> : fullAction}
         </div>
         {quickOpen ? <p className="notice">You have an unfinished 10-question check. This continues it.</p> : null}
         {fullLocked && authReady && gateReady ? (
           <p className="notice">
-            {pack ? `This ${signedIn ? "account" : "browser"} has used its free ${pack.fullTitle}. Pro includes more full practices.` : signedIn
+            <MemberCopy member={pack ? `This ${signedIn ? "account" : "browser"} has used its introductory ${pack.fullTitle}. Pro includes more full practices.` : signedIn
+              ? (onHi ? "This account has used its starter Comprehensive Practice. Pro includes more of them in every available state for 60 days." : onCa ? "This account has used its full practice exam. Pro includes more full exams in every available state for 60 days." : "This account has used its starter Full 45. Pro includes more full exams.")
+              : (onHi ? "This browser has used its starter Comprehensive Practice. Pro includes more of them in every available state for 60 days." : onCa ? "This browser has used its full practice exam. Pro includes more full exams in every available state for 60 days." : "This browser has used its starter Full 45. Pro includes more full exams.")}>{pack ? `This ${signedIn ? "account" : "browser"} has used its free ${pack.fullTitle}. Pro includes more full practices.` : signedIn
               ? (onHi ? "This account has used its free Comprehensive Practice. Pro includes more of them in every available state for 60 days." : onCa ? "This account has used its full practice exam. Pro includes more full exams in every available state for 60 days." : "This account has used its free Full 45. Pro includes more full exams.")
-              : (onHi ? "This browser has used its free Comprehensive Practice. Pro includes more of them in every available state for 60 days." : onCa ? "This browser has used its full practice exam. Pro includes more full exams in every available state for 60 days." : "This browser has used its free Full 45. Pro includes more full exams.")}
+              : (onHi ? "This browser has used its free Comprehensive Practice. Pro includes more of them in every available state for 60 days." : onCa ? "This browser has used its full practice exam. Pro includes more full exams in every available state for 60 days." : "This browser has used its free Full 45. Pro includes more full exams.")}</MemberCopy>
           </p>
         ) : null}
         {homeQuickOpen ? (
@@ -203,9 +206,9 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
         ) : null}
       </section>
       {stateCode === "IN" ? <section className="card" aria-label="30-Question Mock Exam">
-        <h2>30-Question Mock Exam</h2><p>30 original questions. No timer. One free mock per account or guest browser identity; IN Pro includes more sets.</p>
+        <h2>30-Question Mock Exam</h2><p><MemberCopy member={<>30 original questions. No timer. One starter mock per account or guest browser identity; IN Pro includes more sets.</>}>30 original questions. No timer. One free mock per account or guest browser identity; IN Pro includes more sets.</MemberCopy></p>
         <Link className="btn btn-primary" href={fullHref}>Start 30-Question Mock Exam</Link>
-        <p className="notice">{pack?.counts().published} published questions · {pack?.counts().free} free · {pack?.counts().pro} Pro · {pack?.cards.length} independent study cards.</p>
+        <p className="notice">{pack?.counts().published} published questions · {pack?.counts().free}<MemberCopy member={<> starter · </>}> free · </MemberCopy>{pack?.counts().pro} Pro · {pack?.cards.length} independent study cards.</p>
       </section> : null}
     <div className="study-stack">
 

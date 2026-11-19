@@ -1,5 +1,6 @@
 "use client";
 
+import { MemberCopy } from "@/components/MemberCopy";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { paths } from "@/lib/paths";
@@ -322,7 +323,7 @@ export function DashboardClient() {
         <h2>{state === "IN" ? "Indiana practice history" : `${fullState ? "Practice readiness" : "Exam readiness"} ${showAsPro ? `${ready}%` : ""}`}</h2>
         <p>Best score {bestScore ?? "—"}% · Tests taken {exams.length} · Last study {lastStudy?.slice(0, 10) || "—"}</p>
         {state === "AZ" && !showAsPro && !hideFreePlan && (
-          <p>Free practice uses the free question pool. Pro adds the rest of the bank, the full study-card deck, more full exams, and the exam readiness score.</p>
+          <p><MemberCopy member={<>Starter practice uses the starter question pool. Pro adds the rest of the bank, the full study-card deck, more full exams, and the exam readiness score.</>}>Free practice uses the free question pool. Pro adds the rest of the bank, the full study-card deck, more full exams, and the exam readiness score.</MemberCopy></p>
         )}
         {state === "AZ" && !showAsPro && !hideFreePlan && (
           <Link className="btn btn-primary" href={paths.pricing}>

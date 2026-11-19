@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import Link from "next/link";
 import { examConfig, officialExam } from "@/data/exam-config";
 import { PrepCtas } from "@/components/PrepCtas";
@@ -77,7 +78,7 @@ export default function BecomePage() {
           also cites A.R.S. § 41-312(E) in one block; the qualification text used here is the current § 41-269(B).
         </p>
         <p>
-          <Link href={`${paths.practice}?mode=quick`}>Try 10 free questions</Link>
+          <Link href={`${paths.practice}?mode=quick`}><MemberCopy member={<>Start Member Quick 10</>}>Try 10 free questions</MemberCopy></Link>
           {" before you buy a stamp. "}
           <Link href={paths.bond}>Bond requirements</Link>
           {" and the "}
@@ -93,9 +94,11 @@ export default function BecomePage() {
             <h2>{s.t}</h2>
             <p>{s.d}</p>
             {i === 2 && (
-              <Link className="btn btn-primary" href={`${paths.practice}?mode=quick`}>
+              <Link className="btn btn-primary" href={`${paths.practice}?mode=quick`}><MemberCopy member={<>
+                Member Quick 10
+              </>}>
                 Free 10-question test
-              </Link>
+              </MemberCopy></Link>
             )}
             {i === 3 && (
               <p>

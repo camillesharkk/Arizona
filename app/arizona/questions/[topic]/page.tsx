@@ -1,3 +1,4 @@
+import { MemberCopy } from "@/components/MemberCopy";
 import { notFound } from "next/navigation";
 import { topics } from "@/data/exam-config";
 import { QuestionsClient } from "@/components/QuestionsClient";
@@ -30,9 +31,11 @@ export default async function TopicPage({ params }: { params: Promise<{ topic: s
       <p className="kicker">Topic Practice</p>
       <h1>{t.label}</h1>
       <p className="lede">
-        {freeCount > 0
+        <MemberCopy member={freeCount > 0
+          ? `${freeCount} of ${allCount} questions in this topic are available to all learners. Explanations show as soon as you answer. The rest are Pro.`
+          : `All ${allCount} questions in this topic are Pro-only. Quick 10 and topics that have starter questions stay available.`}>{freeCount > 0
           ? `${freeCount} of ${allCount} questions in this topic are free. Explanations show as soon as you answer. The rest are Pro.`
-          : `All ${allCount} questions in this topic are Pro-only. Free Quick 10 and topics that have free questions stay available.`}
+          : `All ${allCount} questions in this topic are Pro-only. Free Quick 10 and topics that have free questions stay available.`}</MemberCopy>
       </p>
       <QuestionsClient topic={topicId} />
     </main>
