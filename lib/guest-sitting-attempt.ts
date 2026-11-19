@@ -1,4 +1,4 @@
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { packFor } from "@/lib/prep-pack";
@@ -15,7 +15,7 @@ export function archiveGuestArizonaQuick(sitting: Sitting) {
 /** Retain completed sittings made before durable full-practice archives existed. */
 export function archiveGuestSitting(sitting: Sitting) {
   if (!sitting.done || !sitting.examId || !["quick", "home-quick", "full", "home-full"].includes(sitting.mode)) return;
-  const bank = packFor(sitting.state)?.questions() || (sitting.state === "CA" ? publishedCaQuestions() : sitting.state === "HI" ? publishedHiQuestions() : publishedQuestions());
+  const bank = packFor(sitting.state)?.questions() || (sitting.state === "CA" ? publishedCaQuestions() : sitting.state === "HI" ? publishedHiQuestions() : historicalAzQuestions());
   const byId = new Map(bank.map(question => [question.question_id, question]));
   const questions = sitting.questionIds.flatMap(id => byId.get(id) || []);
   if (questions.length !== sitting.questionIds.length) return;

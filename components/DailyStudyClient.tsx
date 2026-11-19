@@ -4,7 +4,7 @@ import { MemberCopy } from "@/components/MemberCopy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { publishedCaQuestions } from "@/data/ca-questions";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { MissedStateGallery, ScheduledReviewGallery, type MissedState, type ScheduledReviewItem } from "@/components/DailyStudyGalleries";
 import { ExamRunner } from "@/components/ExamRunner";
 import { MessageDialog } from "@/components/MessageDialog";
@@ -221,7 +221,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
   const reviewCards = view.reviewCards.filter((card) => pending("review-card").has(`card:${card.id}`));
   const practiceCard = practiceCards[Math.min(practiceIndex, Math.max(practiceCards.length - 1, 0))];
   const reviewCard = reviewCards[Math.min(reviewIndex, Math.max(reviewCards.length - 1, 0))];
-  const bank = authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : stateCode === "HI" ? publishedHiQuestions() : stateCode === "CA" ? publishedCaQuestions() : publishedQuestions();
+  const bank = authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : stateCode === "HI" ? publishedHiQuestions() : stateCode === "CA" ? publishedCaQuestions() : historicalAzQuestions();
   const practiceQuestions = bank.filter((question) => pending("new-question").has(`question:${question.question_id}`));
   const questionsById = new Map(bank.map((question) => [question.question_id, question]));
   const pendingReviews = pending("review-question");

@@ -149,7 +149,7 @@ export const nyArticles: StateArticle[] = [
     checked: "Executive Law §130, September 2026 booklet, checked November 8, 2026.",
     ledeCta: { href: "/new-york/questions/", label: "Practice the residence questions", placement: "lede", targetMode: "topic" },
     sections: [
-      { heading: "Reappointment", body: "Reappointment is another $60 application and another oath. The Secretary may waive the qualifying requirements if the application arrives before expiration or within six months afterward. That waiver is discretionary, and a longer military rule is stated separately in §130." },
+      { heading: "Reappointment", body: "Reappointment requires another $60 application and another oath. The Department's rule provides a 90-day window after expiration to apply for reappointment if you still qualify. Executive Law §130(1) separately permits the Secretary to waive qualifying requirements when an applicant files before expiration or within six months afterward. The statute also provides a separate waiver window for certain military-service delays.", link: { href: "https://dos.ny.gov/system/files/documents/2026/09/notary-public-license-law_09.2026.pdf#page=18", label: "Department of State reappointment rule (PDF)", placement: "section", targetMode: "official" } },
       { heading: "Where the signature lives", body: "The Secretary sends the commission, the oath, and the official signature to the county clerk by the 10th day of the following month, with $20 of the application fee. The public can compare a signature at that office." },
     ],
     endCta: { href: quick, label: "Check the residence rules", placement: "end", targetMode: "quick" },

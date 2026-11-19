@@ -176,7 +176,7 @@ export const scenarioDrafts: ExpansionDraft[] = [
       D: "A bank tip policy is not the fee rule.",
     },
     source_id: "ars_41_316",
-    source_reference: "A.R.S. § 41-316(C), read on azleg.gov 2026-10-19. Dollar caps in the fee rule were not reconfirmed from the official code host that day.",
+    source_reference: "A.R.S. § 41-316(C), https://www.azleg.gov/ars/41/00316.htm; A.A.C. R2-12-1102, Supp. 22-1, p. 9, https://apps.azsos.gov/public_services/Title_02/2-12.pdf#page=11",
     last_verified_at: checked,
   },
 ];

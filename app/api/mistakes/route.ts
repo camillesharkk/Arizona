@@ -2,7 +2,7 @@ import { isFreeState } from "@/lib/free-state-catalog";
 import { canAccessQuestion } from "@/lib/entitlements";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { serverQuestionById as questionById } from "@/lib/server-questions";
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
   const store = await getStore();
   const update = async () => {
     if (typeof body.data.saveForReview === "boolean") {
-      const question = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(body.data.questionId)].find((item) => item && item.question_id === body.data.questionId);
+      const question = [...historicalAzQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(body.data.questionId)].find((item) => item && item.question_id === body.data.questionId);
       if (!question) return NextResponse.json({ error: "Not found" }, { status: 404 });
       if (question.state === "IN" && !await canAccessQuestion(session.id, question)) return NextResponse.json({ error: "Indiana Pro required" }, { status: 402 });
       const stat = await store.getStat(session.id, body.data.questionId);

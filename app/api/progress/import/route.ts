@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { serverQuestionById as questionById } from "@/lib/server-questions";
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
   const input = parsed.data;
   if (input.accountId !== session.id) return NextResponse.json({ error: "Account changed" }, { status: 409 });
   if (productionStateBlocked(input.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  const bank = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()];
+  const bank = [...historicalAzQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()];
   const questions = input.questions.map(answer => ({ answer, question: bank.find(question => question.question_id === answer.questionId) ?? questionById(answer.questionId) }));
   if (new Set(input.questions.map(answer => answer.questionId)).size !== questions.length || questions.some(({ question, answer }) => !question || question.state !== input.state || !question.is_free || (answer.selected && !question[`option_${answer.selected.toLowerCase()}` as "option_a" | "option_b" | "option_c" | "option_d"]))) {
     return NextResponse.json({ error: "Invalid practice questions" }, { status: 400 });

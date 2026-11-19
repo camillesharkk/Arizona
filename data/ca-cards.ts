@@ -225,7 +225,7 @@ export const caCards: CaCard[] = [
   },
   {
     id: "ca-card-officer", study: "journal-thumbprint", title: "A peace officer's request",
-    front: "When does the journal leave the notary's hands?", rule: "Immediately, to a peace officer investigating a crime who has reasonable suspicion the journal contains evidence. If it is not present, surrender it as soon as possible.", boundary: "The employer does not receive it as a middle step.",
+    front: "When does the journal leave the notary's hands?", rule: "Surrender it on request to a peace officer acting within official authority who is investigating a crime and reasonably suspects the journal holds evidence. If the journal is elsewhere, surrender it as soon as possible.", boundary: "A seizure requires probable cause. Obtain a receipt, notify the Secretary of State within 10 days, and obtain a new sequential journal.",
     mixup: "County-clerk delivery at the end of the commission is a different duty.", source: "Gov. Code \u00a7 8206", sourceUrl: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8206",
   },
   {

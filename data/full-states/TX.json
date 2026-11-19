@@ -4541,9 +4541,9 @@
       "title": "Record content beyond identity",
       "front": "Capture the statutory instrument, participant and land details.",
       "rule": "Section 406.014 lists signer and grantee information, identification or introducer details, description and applicable land or proof-witness information.",
-      "boundary": "Apply the specific fields to the actual instrument and procedure.",
+      "boundary": "For the applicable address fields, the statute says mailing address. The SOS educational page still uses the earlier residence wording.",
       "mixup": "A daily transaction count cannot replace the required entries.",
-      "source": "Texas Government Code Chapter 406 — §406.014(a)",
+      "source": "Texas Government Code Chapter 406 — §406.014(a)(4)–(7)",
       "sourceUrl": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm"
     },
     {
@@ -4574,9 +4574,9 @@
       "title": "Ten-year ordinary retention",
       "front": "Measure the current ordinary record period from each act.",
       "rule": "Section 406.014(g) requires retaining its subsection (a) records until the tenth anniversary of notarization.",
-      "boundary": "Online electronic records have an additional five-year provision under §406.108(c).",
+      "boundary": "The SOS still publishes an older Rule §87.54 with a shorter period. Online electronic records have a separate five-year minimum under §406.108(c).",
       "mixup": "Do not use commission expiration as the deletion date or assume one period cancels the other.",
-      "source": "Texas Government Code Chapter 406 — §406.014(g);§406.108(c)",
+      "source": "Texas Government Code Chapter 406 — §§406.014(g) and 406.108(c)",
       "sourceUrl": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm"
     },
     {
@@ -4922,11 +4922,11 @@
       "sections": [
         {
           "heading": "Collect the listed transaction information",
-          "body": "Government Code §406.014 lists instrument and notarization dates separately, the signer name and mailing address, the actual identity or introduction method, and applicable witness, grantee and land details. A brief instrument description is included. Capture the facts of each instrument rather than keeping only daily totals. A no-fee act remains subject to the ordinary record obligation unless a specific statutory exception applies. The statute permits electronic storage, and book entries are public information. Any requester who pays all required fees may request a certified copy of an official-act entry."
+          "body": "Government Code §406.014 lists instrument and notarization dates separately, the signer name and mailing address, the actual identity or introduction method, and applicable witness, grantee and land details. A brief instrument description is included. The SOS educational page still lists residence addresses. Current statutory fields in §406.014(a)(4)–(7) use mailing addresses. Capture the facts of each instrument rather than keeping only daily totals. A no-fee act remains subject to the ordinary record obligation unless a specific statutory exception applies. The statute permits electronic storage, and book entries are public information. Any requester who pays all required fees may request a certified copy of an official-act entry."
         },
         {
           "heading": "Sensitive data and duration",
-          "body": "The published §87.50 rule prohibits governmental identification numbers, other identifying numbers and biometrics in the notary record book while preserving mailing-address numbers. It excepts the required online recording. Section 406.014(f) allows recording the presented identification expiration date. Current §406.014(g), added by SB693 effective September 1, 2025, requires keeping its subsection (a) records until the tenth anniversary of notarization. The separate online electronic-record rule states at least five years under §406.108(c). Apply each applicable duty without assuming one cancels another. Source check November 14, 2026."
+          "body": "The published §87.50 rule prohibits governmental identification numbers, other identifying numbers and biometrics in the notary record book while preserving mailing-address numbers. It excepts the required online recording. Section 406.014(f) allows recording the presented identification expiration date. Current §406.014(g), added by SB693 effective September 1, 2025, requires keeping its subsection (a) records until the tenth anniversary of notarization. The SOS FAQ and its published Rule §87.54 still give the earlier period of the commission term or three years from notarization, whichever is longer. The separate online electronic-record rule sets a five-year minimum under §406.108(c). Apply each applicable statutory duty."
         }
       ],
       "example": {
@@ -5350,7 +5350,7 @@
       "sections": [
         {
           "heading": "Keep the transactions distinct",
-          "body": "Section 406.014 lists the date of the instrument and the date of notarization separately. It also includes the signer name and mailing address, actual identity or introducer details, and instrument description. Applicable grantee, proof-witness and land information must be addressed. Daily totals and a vague appointment label cannot reconstruct these transaction-specific details. No-fee acts remain within the ordinary rule unless a specific exception applies."
+          "body": "Section 406.014 lists the date of the instrument and the date of notarization separately. It also includes the signer name and mailing address, actual identity or introducer details, and instrument description. Applicable grantee, proof-witness and land information must be addressed. The SOS educational page still uses residence addresses. The current statute uses mailing addresses for the applicable fields. Daily totals and a vague appointment label cannot reconstruct these transaction-specific details. No-fee acts remain within the ordinary rule unless a specific exception applies."
         },
         {
           "heading": "Use only lawful personal-information fields",
@@ -5358,7 +5358,7 @@
         },
         {
           "heading": "Measure retention from the act",
-          "body": "Current §406.014(g) requires retention of its subsection (a) records until the tenth anniversary of notarization. It was added by SB693 effective September 1, 2025. Commission expiration and renewal do not supply a deletion date. Online electronic records have the separate at-least-five-year provision in §406.108(c), and other applicable record duties continue. Preserve records through software migrations and changes in workplace."
+          "body": "Current §406.014(g) requires retention of its subsection (a) records until the tenth anniversary of notarization. SB 693 took effect September 1, 2025. The SOS FAQ and its published Rule §87.54 still give the earlier, shorter period. Commission expiration and renewal do not supply a deletion date. Online electronic records have the separate at-least-five-year provision in §406.108(c), and other applicable record duties continue. Preserve records through software migrations and changes in workplace."
         },
         {
           "heading": "Plan access and custody",
@@ -5373,6 +5373,18 @@
         {
           "title": "Texas SOS published Chapter 87 rules",
           "url": "https://www.sos.texas.gov/statdoc/1-87.pdf"
+        },
+        {
+          "title": "Texas SOS Notary Public Educational Information",
+          "url": "https://www.sos.texas.gov/statdoc/edinfo.shtml"
+        },
+        {
+          "title": "Texas SOS Notary Public FAQ",
+          "url": "https://www.sos.texas.gov/statdoc/faqs2300.shtml"
+        },
+        {
+          "title": "Texas Senate Bill 693, Section 5",
+          "url": "https://capitol.texas.gov/tlodocs/89R/billtext/html/SB00693F.htm"
         }
       ],
       "faqs": [

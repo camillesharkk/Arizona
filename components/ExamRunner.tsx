@@ -8,7 +8,7 @@ import { fetchAccount } from "@/lib/client-account";
 import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { activeCaQuestions, publishedCaQuestions } from "@/data/ca-questions";
 import { isActiveQuestion } from "@/lib/question-status";
 import { publishedHiQuestions } from "@/data/hi-questions";
@@ -109,7 +109,7 @@ export function ExamRunner({
   const count = mode === "quick" ? 10 : mode === "full" ? fullSize : 10;
   const [authorizedQuestions, setAuthorizedQuestions] = useState<Question[] | null>(null);
   const byId = useMemo(
-    () => new Map((authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
+    () => new Map((authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : historicalAzQuestions()).map((item) => [item.question_id, item])),
     [stateCode, authorizedQuestions]
   );
   const [owner, setOwner] = useState<string | null>(null);
@@ -173,14 +173,15 @@ export function ExamRunner({
 
   function drawQuestionIds(seed: number, inBank?: Question[]) {
     if (dailySet && preset) {
-      return preset.filter(item => item.state === stateCode && (!onCa || isActiveQuestion(item))).map(item => item.question_id);
+      return preset.filter(item => item.state === stateCode && isActiveQuestion(item)).map(item => item.question_id);
     }
-    if (stateCode === "IN" && preset?.length) return preset.filter(item => item.state === "IN" && (item.is_free || isPro)).map(item => item.question_id);
+    if (stateCode === "IN" && preset?.length) return preset.filter(item => item.state === "IN" && isActiveQuestion(item) && (item.is_free || isPro)).map(item => item.question_id);
     if (stateCode === "CT" && preset && mode !== "full") {
       return preset.filter(item => item.state === "CT" && (item.is_free || isPro)).map(item => item.question_id);
     }
     if (pack) {
-      const bank = (inBank ?? pack.questions()).filter(item => (stateCode !== "NC" && !isFreeState(stateCode)) || isPro || item.is_free);
+      const bank = (inBank ?? pack.questions()).filter(item => isActiveQuestion(item) &&
+        ((stateCode !== "NC" && !isFreeState(stateCode)) || isPro || item.is_free));
       if ((stateCode === "NC" || isFreeState(stateCode)) && preset?.length) return preset.filter(item => bank.some(question => question.question_id === item.question_id)).map(item => item.question_id);
       if (focusArea) {
         const pool = bank.filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
@@ -224,7 +225,7 @@ export function ExamRunner({
       const picked = buildQuickExam({ isPro: reportStart === "answer" ? poolIsPro : isPro, seed, stale: preset });
       return picked.length === 10 ? picked.map((item) => item.question_id) : [];
     }
-    if (preset?.length) return preset.map((item) => item.question_id);
+    if (preset?.length) return preset.filter(item => isActiveQuestion(item)).map((item) => item.question_id);
     if (mode === "full") {
       const picked = pickFullExam(seed);
       return picked.length === examConfig.questionCount ? picked.map((item) => item.question_id) : [];
@@ -322,17 +323,26 @@ export function ExamRunner({
         const params = new URLSearchParams(window.location.search);
         const startFresh = params.get("start") === "1";
         let existing = readSitting(sessionStorage, nextOwner, modeKey, stateCode);
+        if (existing && !existing.done && existing.startedAt == null &&
+          Object.keys(existing.answers).length === 0 && existing.recordedIds.length === 0 &&
+          existing.questionIds?.some((id) => {
+            const question = inBank?.find((item) => item.question_id === id) ?? byId.get(id);
+            return question && !isActiveQuestion(question);
+          })) {
+          clearSitting(sessionStorage, nextOwner, modeKey, stateCode);
+          existing = null;
+        }
         const savedQuestionIds = existing?.questionIds;
         if (dailySet && savedQuestionIds && preset && (savedQuestionIds.length !== preset.length ||
           preset.some(question => !savedQuestionIds.includes(question.question_id)))) {
           const presetIds = new Set(preset.map((question) => question.question_id));
           const removed = savedQuestionIds.filter((id) => !presetIds.has(id));
-          const resumingRetiredCaSet = onCa && !startFresh && existing?.startedAt != null && !existing.done &&
+          const resumingHeldSet = !startFresh && existing?.startedAt != null && !existing.done &&
             removed.length > 0 && removed.every((id) => {
-              const question = byId.get(id);
+              const question = inBank?.find((item) => item.question_id === id) ?? byId.get(id);
               return question && !isActiveQuestion(question);
             });
-          if (!resumingRetiredCaSet) existing = null;
+          if (!resumingHeldSet) existing = null;
         }
         if (startFresh && existing?.done) {
           clearSitting(sessionStorage, nextOwner, modeKey, stateCode);

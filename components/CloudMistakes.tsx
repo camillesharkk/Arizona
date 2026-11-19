@@ -10,7 +10,7 @@ import { fetchAccount } from "@/lib/client-account";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { topics } from "@/data/exam-config";
@@ -54,7 +54,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
   const practiceState = stateCode;
   const site = pack ? pack.paths : onHi ? hiPaths : onCa ? caPaths : paths;
   const [authorizedQuestions, setAuthorizedQuestions] = useState<Question[] | null>(null);
-  const questionPool = authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions();
+  const questionPool = authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : historicalAzQuestions();
   const topicChoices = pack
     ? pack.topics.map((item) => ({ id: item.id, short: item.label }))
     : topicPractice

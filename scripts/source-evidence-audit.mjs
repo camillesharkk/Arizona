@@ -1,4 +1,5 @@
 import { registerHooks } from "node:module";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
@@ -14,7 +15,7 @@ const { sources } = await import("../data/sources.ts");
 const { resolveAnswerEvidence } = await import("../lib/answer-evidence.ts");
 const { availableStates } = await import("../lib/states.ts");
 const { questionReviewTimestamps } = await import("../data/question-review-dates.ts");
-const banks = [["questions", "publishedQuestions"], ["ca-questions", "publishedCaQuestions"], ["hi-questions", "publishedHiQuestions"], ["in-questions", "publishedInQuestions"], ...["pa", "ny", "la", "ct", "nc"].map(code => [`${code}-content`, `published${code[0].toUpperCase()}${code[1]}Questions`])];
+const banks = [["questions", "historicalAzQuestions"], ["ca-questions", "publishedCaQuestions"], ["hi-questions", "publishedHiQuestions"], ["in-questions", "publishedInQuestions"], ...["pa", "ny", "la", "ct", "nc"].map(code => [`${code}-content`, `published${code[0].toUpperCase()}${code[1]}Questions`])];
 const questions = [];
 for (const [file, name] of banks) questions.push(...(await import(`../data/${file}.ts`))[name]());
 const { freeStateCatalog } = await import("../lib/free-state-catalog.ts");
@@ -76,6 +77,12 @@ for (const question of questions) {
     publishedWindowEnd: question.effective_to,
     sourceId: question.source_id, citation: question.source_reference, evidenceUrls,
     sourceVersion: source?.version ?? null, displayedVerificationDate: question.last_verified_at,
+    contentSha256: createHash("sha256").update(JSON.stringify([
+      question.state, question.question_id, question.version, question.question_text, question.scenario_text,
+      ...["A", "B", "C", "D"].map(letter => [question[`option_${letter.toLowerCase()}`], question.option_feedback?.[letter]]),
+      question.correct_option, question.explanation, question.source_id, question.source_reference,
+      question.effective_from, question.topic, question.study_topic, question.is_free,
+    ])).digest("hex"),
     reviewedAt: questionReviewTimestamps.get(question.question_id) ?? null, structuralIssues: issues,
   });
 }

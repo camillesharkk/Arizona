@@ -121,7 +121,7 @@ export function QuestionsClient({
   }, [modeKey, bootTry, stateCode]);
 
   const rawPool = useMemo(() => {
-    let list = (questions ?? pack?.questions() ?? publishedQuestions()).filter((q) => q.is_free || isPro);
+    let list = (questions ?? pack?.questions() ?? publishedQuestions()).filter((q) => isActiveQuestion(q) && (q.is_free || isPro));
     if (topic) list = list.filter((q) => q.study_topic === topic || q.topic === topic);
     else if (filter !== "all" && filter !== "wrong" && filter !== "unanswered") {
       list = list.filter((q) => q.study_topic === filter || q.topic === filter);

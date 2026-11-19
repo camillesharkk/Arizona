@@ -157,12 +157,12 @@ export const inPublicCards = [
   {
     "id": "in-card-015",
     "study": "identification",
-    "title": "The three-year ID boundary",
-    "front": "Must every identification credential be unexpired?",
-    "rule": "The statutory credential route includes passports, driver's licenses, government ID cards, and other government photographic credentials; expiration may be no more than three years ago.",
-    "boundary": "Inspect the credential and resolve identity concerns.",
+    "title": "Check the type of ID",
+    "front": "Does the Indiana guide treat every government photo ID the same way?",
+    "rule": "The May 2024 Indiana guide discusses a three-year expiration window and separately describes other government-issued photo ID as current.",
+    "boundary": "The current text of IC 33-42-9-4(b)(1) still needs verification. Check the credential type before relying on an expired document.",
     "mixup": "A private membership card is not government identification.",
-    "source": "IC 33-42-9-4(b)(1); Indiana SOS Guide (May 2024), p. 20",
+    "source": "Indiana SOS Guide (May 2024), p. 20",
     "sourceUrl": "https://inbiz.in.gov/Assets/NotaryGuide.pdf"
   },
   {

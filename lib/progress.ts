@@ -1,6 +1,6 @@
 import { isFreeState } from "@/lib/free-state-catalog";
 import { randomUUID } from "crypto";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { serverQuestionById as questionById } from "@/lib/server-questions";
@@ -75,7 +75,7 @@ export async function recordQuestionAnswer(opts: {
   store?: Store;
 }): Promise<QuestionStat | null> {
   const store = opts.store || await getStore();
-  const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId) ?? questionById(opts.questionId);
+  const q = [...historicalAzQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].find((x) => x.question_id === opts.questionId) ?? questionById(opts.questionId);
   if (!q) throw new Error("unknown_question");
   if (!opts.store) {
     return store.learningTransaction(opts.userId, transaction => recordQuestionAnswer({ ...opts, store: transaction }));

@@ -45,9 +45,9 @@ const existingGuides: SeoGuide[] = [
       "Arizona notary fees: A.R.S. § 41-316 and R2-12-1102 cap notarial-act charges. The posted maximum is $10. Inform the requestor before the act. Rush is not a loophole.",
     kicker: "Fees",
     h1: "Arizona Notary Fees and Allowed Charges",
-    lede: "For an acknowledgment, jurat, or oath, the reprinted fee rule allows no charge, or a charge up to $10. Copy certification is up to $10 per page certified. Tell the signer the fee before you start. Calling it a rush fee does not raise the cap.",
+    lede: "Arizona allows up to $10 per notary public signature for an acknowledgment or jurat, per act for an oath or affirmation, and per page for a copy certification. A notary may provide these services for free. Tell the requestor the fee before you start.",
     checked:
-      "A.R.S. § 41-316 was read on azleg.gov on 2026-10-19. R2-12-1102 was read on 2026-09-29 on the Cornell reprint (amendment noted there as 24 A.A.R. 137, effective March 5, 2018). On 2026-10-19, https://apps.azsos.gov/public_services/Title_02/2-12.htm returned 404, so the $10 ceilings are not reconfirmed from the official code host. Confirm the rule posted by the Secretary of State before you charge a customer.",
+      "A.R.S. § 41-316 and the official Arizona Administrative Code R2-12-1102 (Supp. 22-1, p. 9) were checked on November 19, 2026. The fee rule's listed amendment took effect March 5, 2018.",
     sections: [
       {
         heading: "The statute sets the fence, not the price list",
@@ -55,15 +55,15 @@ const existingGuides: SeoGuide[] = [
         sourceId: "ars_41_316",
       },
       {
-        heading: "What the reprinted rule allows",
+        heading: "What the fee rule allows",
         points: [
-          "Acknowledgment or jurat: no charge, up to $10 per notary signature.",
+          "Acknowledgment or jurat: no charge, up to $10 per notary public signature.",
           "Copy certification: no charge, up to $10 per page certified.",
           "Oath or affirmation: no charge, up to $10 per notarial act.",
           "Pick one standard fee inside that range and use it consistently.",
           "Post the schedule in a conspicuous place, and tell the requestor the fee before the act if you will charge one.",
         ],
-        body: "Those ceilings come from the Cornell reprint of R2-12-1102, subsections B, D, and E. Zero is allowed. Ten dollars is a maximum, not a required price. Travel and per diem under A.R.S. § 41-316(B) are a different payment, tied to the state-employee mileage and subsistence amounts, not an extra notarial-act fee.",
+        body: "R2-12-1102(B), (D), and (E) set the fee limits and disclosure requirements. A.R.S. § 41-316(B) separately allows mileage and per diem up to the state employee reimbursement amounts.",
         sourceId: "aac_r2_12_1102",
         href: paths.law("fee-cap-reminders"),
         hrefLabel: "Fee-cap note on the laws page",
@@ -163,7 +163,7 @@ const existingGuides: SeoGuide[] = [
       },
       {
         heading: "Deeds, powers of attorney, and the thumbprint",
-        body: "A.R.S. § 41-254(C) requires a right-thumbprint in the journal, with the stated alternatives, when the document is a deed, quitclaim deed, deed of trust, other document affecting real property, or a power of attorney. Subsection D(3) skips that thumbprint for a remote act that complies with § 41-263 only when the journal includes the signer’s identification credential number and the audiovisual recording is kept for at least seven years. The ordinary recording floor remains five years when that exception does not apply.",
+        body: "A.R.S. § 41-254(C) requires a journal thumbprint for covered deeds and powers of attorney, with alternatives when the signer cannot use the right thumb. Subsection D(3) makes the journal credential number and retention for at least seven years conditions of the remote exception. A.A.C. R2-12-1309(A)(5) excludes the credential's serial or identification number from the journal description when credential analysis and identity proofing are used. How those provisions work together is under review.",
         sourceId: "ars_41_254",
         href: paths.law("sb1479-journal-thumbprint"),
         hrefLabel: "Journal thumbprint details",
@@ -188,7 +188,7 @@ const existingGuides: SeoGuide[] = [
     kicker: "Cram sheet",
     h1: "Arizona Notary Exam Cram Sheet",
     lede: "Use this as a last pass, then take a timed practice exam. It is a checklist of rules checked in statute. It is not the SOS manual, and these are not official exam questions.",
-    checked: `${officialExamChecked} Eligibility, bond, identification, the fee statute, the stamp, the spouse conflict, remote notarization, the journal, and the deed thumbprint were read on azleg.gov on October 19, 2026. The $10 notarial-act ceilings were not re-opened: the official code URL tried that day returned 404, and the Cornell reprint of R2-12-1102 was last read on 2026-09-29. Confirm that rule before you charge a customer.`,
+    checked: `${officialExamChecked} Eligibility, bond, identification, the fee statute, the stamp, the spouse conflict, remote notarization, the journal, and the deed thumbprint were read on azleg.gov on October 19, 2026. The $10 notarial-act ceilings were checked in the official Arizona Administrative Code R2-12-1102 on November 19, 2026.`,
     sections: [
       {
         heading: "Practice format on this site",
@@ -232,7 +232,7 @@ const existingGuides: SeoGuide[] = [
         points: [
           "Notary in Arizona. SOS notice before the first remote act, naming the technologies.",
           "Identity by personal knowledge, a credible witness, or at least two types of identity proofing.",
-          "Audiovisual recording, normally at least five years. Seven years, plus the ID credential number in the journal, if you are using the thumbprint exception for a covered deed or power of attorney.",
+          "The usual statutory recording minimum is five years. The special seven-year condition for the remote thumbprint exception is set by § 41-254(D)(3). Application of that exception’s journal condition is under review.",
           "Certificate states that communication technology was used.",
         ],
         body: "Simultaneous sight and sound is the start of the definition, not the whole test.",
@@ -261,11 +261,11 @@ const existingGuides: SeoGuide[] = [
     h1: "Arizona Notary Exam Mistakes to Avoid",
     lede: "These are application errors, not trivia. Each one below is tied to a statute or fee rule checked on 2026-09-29. After you can explain the miss, take a timed 45-question practice exam. The items on this site are practice questions, not official exam forms.",
     checked:
-      "A.R.S. §§ 41-252, 41-253, 41-255, 41-263, 41-266, and 41-269, plus § 41-316, were read on azleg.gov on 2026-09-29. The $10 ceilings were read the same day on the Cornell reprint of R2-12-1102.",
+      "A.R.S. §§ 41-252, 41-253, 41-255, 41-263, and 41-269 were read on azleg.gov on September 29, 2026. A.R.S. §§ 41-266 and 41-316 and the official Arizona Administrative Code R2-12-1102 were checked on November 19, 2026.",
     sections: [
       {
         heading: "Using an ID the statute does not list",
-        body: "A.R.S. § 41-255(B)(1) lists satisfactory documents: an unexpired U.S. passport, an unexpired state driver license or nonoperating identification license, an unexpired U.S. military ID, another unexpired U.S., state, or tribal government ID that has a signature or a photograph and physical description, and the inmate IDs the section names. A journal note does not turn a different card into one of those documents. Personal knowledge and a credible witness are separate methods in the same section.",
+        body: "A.R.S. § 41-255(B)(1) lists qualifying credentials, including unexpired U.S. passports, state driver licenses and nonoperating IDs, and U.S. military IDs, plus specified inmate IDs for people in custody. Other unexpired U.S., state, or tribal government IDs must have a signature or a photo and physical description and must be satisfactory to the notarial officer. Personal knowledge and verification under oath or affirmation by a qualified credible witness are separate methods.",
         sourceId: "ars_41_255",
         href: paths.study + "#identification",
         hrefLabel: "Identification chapter",
@@ -286,7 +286,7 @@ const existingGuides: SeoGuide[] = [
       },
       {
         heading: "Adding a charge the fee rule does not authorize",
-        body: "The Cornell reprint of R2-12-1102 allows no charge up to $10 for an acknowledgment or jurat per signature, a copy certification per page, and an oath per act. A.R.S. § 41-316(C) forbids advertising or collecting any other fee for the notarial act. Tell the requestor the fee before you begin. Mileage and per diem under § 41-316(B) are not a second notarial fee.",
+        body: "R2-12-1102 allows no charge or up to $10 per notary public signature for an acknowledgment or jurat, per page for a copy certification, and per act for an oath or affirmation. A.R.S. § 41-316(C) bars other charges for the act. Tell the requestor the fee before you begin. Section 41-316(B) separately allows mileage and per diem within state employee limits.",
         sourceId: "ars_41_316",
         href: paths.fees,
         hrefLabel: "Fee rules",

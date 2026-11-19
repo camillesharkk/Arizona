@@ -4,6 +4,7 @@ import { expansionDrafts } from "./question-bank-expansion.ts";
 import { scenarioDrafts } from "./scenario-questions.ts";
 import { wave2Drafts } from "./question-bank-wave2.ts";
 import { questionReviewDate } from "./question-review-dates.ts";
+import { questionDrawHold } from "./question-draw-holds.ts";
 
 type Draft = Omit<
   Question,
@@ -25,7 +26,7 @@ function publish(drafts: Draft[]): Question[] {
     status: "published",
     version: 1,
     effective_from: q.effective_from ?? "2024-01-01",
-    effective_to: null,
+    effective_to: questionDrawHold(q.question_id),
     last_verified_at: questionReviewDate(q.question_id, q.last_verified_at ?? "2026-08-01"),
   }));
 }
@@ -211,7 +212,7 @@ const drafts: Draft[] = [
     option_d: "Ask the signer to describe what the ID used to look like",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-255 does not use the words 'damaged ID.' Section 41-255(B)(1) lists credentials that must be unexpired (and otherwise meet the statutory description). If a photograph and expiration date cannot be read, the officer cannot determine that those requirements are met from that card. Section 41-255(D) allows the officer to require additional information or credentials to be assured of identity. Other permitted methods include personal knowledge (§ 41-255(A)) or a credible witness (§ 41-255(B)(2)). The statute does not create a damaged-ID exception, a temporary exception, or an expired-document grace period.",
+      "A.R.S. § 41-255(B)(1)(a)–(c) requires the listed ordinary credentials to be unexpired. If damage prevents you from checking the applicable requirements or confirming identity, use another allowed method. Section 41-255(D) lets the officer ask for additional information or credentials. Personal knowledge and a qualifying credible witness are separate routes. The custody-specific cards in § 41-255(B)(1)(d)–(e) have their own conditions.",
     option_feedback: {
       A: "That the card was once a government ID does not establish the unexpired listed credential in § 41-255(B).",
       B: "Correct. An unreadable photograph and expiration date cannot satisfy the listed credential; use another statutory method if available.",
@@ -1185,6 +1186,10 @@ const drafts: Draft[] = [
 ];
 
 export const questions: Question[] = publish([...drafts, ...expansionDrafts, ...wave2Drafts, ...scenarioDrafts]);
+
+export function historicalAzQuestions(): Question[] {
+  return questions.filter((q) => q.status === "published");
+}
 
 export function publishedQuestions(): Question[] {
   return questions.filter((q) => isActiveQuestion(q));

@@ -2,7 +2,7 @@ import { serverStateQuestions } from '../data/full-state-server';
 import { isFreeState } from './free-state-catalog';
 import { shuffle } from './answer-sequence';
 import { packFor } from "./prep-pack";
-import { publishedQuestions } from "../data/questions";
+import { historicalAzQuestions } from "../data/questions";
 import { publishedCaQuestions } from "../data/ca-questions";
 import { publishedHiQuestions } from "../data/hi-questions";
 import { examConfig } from "../data/exam-config";
@@ -97,7 +97,7 @@ export async function savePackFullSubmission(store: Store, userId: string, input
     // supply its persisted unscored identities, but every quota is checked here.
     const splitScore = state === "PA" || state === "CA";
     const unscored = new Set(splitScore ? (matchesDraw ? draw?.unscoredIds || [] : input.unscoredIds || []) : []);
-    const classicBank = new Map([...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].map(question => [question.question_id, question]));
+    const classicBank = new Map([...historicalAzQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions()].map(question => [question.question_id, question]));
     const questions = input.questions.map(answer => {
       const question = classicBank.get(answer.questionId) ?? questionById(answer.questionId);
       if (!question || question.state !== state) throw new Error("invalid_exam");

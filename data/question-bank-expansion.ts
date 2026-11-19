@@ -414,7 +414,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "Keep no journal if the acts are electronic",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-319(A) requires a paper journal to chronicle all notarial acts performed regarding tangible records. For electronic records, the notary shall keep either a paper journal or one or more electronic journals. Except as prescribed by subsection E, the notary shall keep only one paper journal at a time. Electronic records still must be chronicled; they are not journal-exempt.",
+      "Under A.R.S. § 41-319(A), use a paper journal for tangible records and either a paper journal or one or more electronic journals for electronic records. Subsection E provides an exception to the one-paper-journal rule. Remote online acts have a separate rule: A.A.C. R2-12-1309(A) requires a permanent, tamper-evident electronic journal.",
     option_feedback: {
       A: "Tangible-record acts require a paper journal, not an electronic-only journal.",
       B: "Correct. Paper journal for tangible records; paper or electronic journal(s) for electronic records; generally one paper journal at a time.",
@@ -438,7 +438,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "Only the county name",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-319(A)(1)–(7) list those minimum contents. The signature requirement in paragraph 4 applies if a paper journal is used. Personal-knowledge notation is in paragraph 5 as an alternative to the type of satisfactory evidence presented. Subsections (B) and (C) are narrower alternatives. They do not erase these fields when the notary makes a journal entry.",
+      "A.R.S. § 41-319(A)(1)–(7) lists the ordinary minimum contents. Paragraph 4 requires the individual's signature when you use a paper journal. Paragraph 5 accepts a notation of personal knowledge as an alternative to noting the type of evidence presented. A personal-knowledge entry under subsection B omits paragraph 6. Subsection C limits repeated identity evidence and journal signatures for qualifying acts within six months and excludes remote acts. Separate rules cover thumbprints for certain documents and journal entries for remote online acts.",
     option_feedback: {
       A: "Color and doodles are not the statutory contents.",
       B: "Correct. A.R.S. § 41-319(A)(1)–(7) are the minimum entry fields.",
@@ -777,7 +777,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "The customer may waive the journal thumbprint",
     correct_option: "B",
     explanation:
-      "Laws 2026, Chapter 31 (SB 1479) amended A.R.S. § 41-254 effective September 12, 2026. That is now current law. Subsection (C) requires a right-thumbprint journal entry for a deed, quitclaim deed, deed of trust, other document affecting real property, or a power of attorney, with left-thumb/other-finger and physical-inability notation rules. Subsection (D) lists exceptions (trustee's deed from judicial or nonjudicial foreclosure, deed of release and reconveyance, and a compliant remote act under § 41-263). Signing date and a study last-verified date are not substitutes for that effective date.",
+      "Laws 2026, Chapter 31 (SB 1479) amended A.R.S. § 41-254 effective September 12, 2026. Subsection C requires a journal thumbprint for a covered deed or power of attorney. Use the left thumb or another available finger if the right thumb is unavailable and note that in the journal. If the signer cannot provide any print, record the inability and explain the physical condition. The in-person exceptions are a trustee's deed from judicial or nonjudicial foreclosure and a deed of release and reconveyance. Signing and study-review dates do not determine when the law applies.",
     option_feedback: {
       A: "Chapter 31 took effect September 12, 2026, and is current law.",
       B: "Correct. Current A.R.S. § 41-254(C) (as amended effective September 12, 2026) requires that journal thumbprint or the statutory alternative notation.",
@@ -803,7 +803,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_d: "Mail the deed to the Governor instead of completing a certificate",
     correct_option: "B",
     explanation:
-      "Chapter 31 § 6 added A.R.S. § 41-254(C)–(D), effective September 12, 2026. That is now current law. Subsection (C) requires a right-thumbprint journal entry for a deed, quitclaim deed, deed of trust, other document that affects real property, or a power of attorney, with left-thumb/other-finger and physical-inability notation rules. Subsection (D) excepts a trustee's deed from judicial or nonjudicial foreclosure, a deed of release and reconveyance, and a compliant remote act under § 41-263 if the journal includes the individual's identification credential number and the audiovisual recording is retained at least seven years.",
+      "Effective September 12, 2026, A.R.S. § 41-254(C) requires the right thumbprint in the journal for this covered in-person deed. If the right thumb is unavailable, use the left thumb or another available finger and note that in the journal. If no print is physically possible, record the inability and explain the physical condition. The question excludes the in-person exceptions for a foreclosure trustee's deed and a deed of release and reconveyance. The separate remote exception in subsection D(3) does not apply to this in-person act.",
     option_feedback: {
       A: "Recording does not waive the Chapter 31 journal-thumbprint duty for covered in-person deeds.",
       B: "Correct. Current A.R.S. § 41-254(C) (effective September 12, 2026) requires that journal thumbprint (or the statutory alternative notation).",

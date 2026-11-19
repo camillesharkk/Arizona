@@ -29152,7 +29152,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_id": "ri-law-6",
       "source_reference": "Section 42-30.1-6(a)-(c)",
       "effective_from": "2026-11-14",
-      "effective_to": null,
+      "effective_to": "2026-11-19",
       "last_verified_at": "2026-11-14",
       "version": 1,
       "is_free": true,
@@ -29181,7 +29181,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Section 42-30.1-4(a)-(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -29209,7 +29209,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Section 42-30.1-4(a)-(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -29237,7 +29237,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Section 42-30.1-4(a)-(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -29265,7 +29265,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Section 42-30.1-4(a)-(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -29293,7 +29293,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Section 42-30.1-4(a)-(c)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30021,7 +30021,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Printed pages 15-16, Notarizing in Special Circumstances",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30049,7 +30049,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Printed pages 15-16, Notarizing in Special Circumstances",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30077,7 +30077,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Printed pages 15-16, Notarizing in Special Circumstances",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30105,7 +30105,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Printed pages 15-16, Notarizing in Special Circumstances",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30133,7 +30133,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Printed pages 15-16, Notarizing in Special Circumstances",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30161,7 +30161,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Steps 1-4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30189,7 +30189,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Steps 1-4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30217,7 +30217,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Steps 1-4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30245,7 +30245,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Steps 1-4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30273,7 +30273,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "Steps 1-4",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30863,7 +30863,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.005(a)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30891,7 +30891,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.005(a)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30919,7 +30919,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.005(a)(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30947,7 +30947,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.005(a)(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -30975,7 +30975,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "121.005(a)(1)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31283,7 +31283,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.014(a)(1),(2)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31310,7 +31310,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_id": "tx-gov",
       "source_reference": "406.014(a)(3),(4)",
       "effective_from": "2026-11-14",
-      "effective_to": null,
+      "effective_to": "2026-11-19",
       "last_verified_at": "2026-11-14",
       "version": 1,
       "is_free": true,
@@ -31339,7 +31339,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.014(a)(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31366,7 +31366,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_id": "tx-gov",
       "source_reference": "406.014(a)(5)",
       "effective_from": "2026-11-14",
-      "effective_to": null,
+      "effective_to": "2026-11-19",
       "last_verified_at": "2026-11-14",
       "version": 1,
       "is_free": true,
@@ -31394,7 +31394,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_id": "tx-gov",
       "source_reference": "406.014(a)(6)",
       "effective_from": "2026-11-14",
-      "effective_to": null,
+      "effective_to": "2026-11-19",
       "last_verified_at": "2026-11-14",
       "version": 1,
       "is_free": true,
@@ -31423,7 +31423,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.013(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31451,7 +31451,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.013(a)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31479,7 +31479,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.013(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31507,7 +31507,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.013(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31535,7 +31535,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.013(b)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31563,7 +31563,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.024(a)(6)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31591,7 +31591,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.024(a)(5)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31618,7 +31618,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_id": "tx-gov",
       "source_reference": "406.024(a)(5)",
       "effective_from": "2026-11-14",
-      "effective_to": null,
+      "effective_to": "2026-11-19",
       "last_verified_at": "2026-11-14",
       "version": 1,
       "is_free": true,
@@ -31647,7 +31647,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.024(a)(8)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"
@@ -31675,7 +31675,7 @@ export const fullStatePublicQuestions: Partial<Record<FreeStateCode, Question[]>
       "source_reference": "406.024(a)(9)",
       "effective_from": "2026-11-14",
       "effective_to": null,
-      "last_verified_at": "2026-11-14",
+      "last_verified_at": "2026-11-19",
       "version": 1,
       "is_free": true,
       "status": "published"

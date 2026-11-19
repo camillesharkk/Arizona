@@ -44,7 +44,7 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "Satisfactory evidence",
-        body: "A.R.S. § 41-255 separates personal knowledge from satisfactory evidence. Listed credentials include an unexpired passport, driver license or government-issued nondriver ID; other listed government identification must carry a signature or photograph and be satisfactory to the officer. A credible witness must make an oath or affirmation and be personally known to the officer or identified with a listed credential. Check the statute’s special rules for real-estate conveyances; do not assume every foreign credential works for every act.",
+        body: "A.R.S. § 41-255 separates personal knowledge from satisfactory evidence. The statute lists unexpired U.S. passports, state driver licenses and nonoperating IDs, U.S. military IDs, and other qualifying credentials. An ID in the other-government-ID category must be unexpired and satisfactory to the officer and have a signature or both a photo and a physical description. A credible witness personally knows the signer, appears before the notary, and verifies identity under oath or affirmation. The notary must personally know the witness or identify them using a listed credential. Real estate conveyances and financing have additional credential options.",
       },
       {
         heading: "Communication",
@@ -59,7 +59,7 @@ export const chapters: StudyChapter[] = [
     source_id: "ars_41_255",
     example: {
       heading: "Worked example: unreadable ID",
-      body: "A signer hands you a government card so damaged that the photograph and expiration date cannot be read. A.R.S. § 41-255(B) lists credentials that must be unexpired and otherwise match the statute. If you cannot read those facts, that card is not the listed credential. Use another method the statute allows—personal knowledge under § 41-255(A), a credible witness under § 41-255(B)(2), or additional credentials under § 41-255(D)—or stop. A journal note that says “ID damaged” does not create satisfactory evidence.",
+      body: "A signer hands you a driver's license with an unreadable photo and expiration date. If you cannot confirm the license is current or use it to identify the signer, ask for another qualifying credential or use personal knowledge or a credible witness under A.R.S. § 41-255. Stop if you cannot establish identity.",
     },
   },
   {
@@ -140,6 +140,10 @@ export const chapters: StudyChapter[] = [
         heading: "Privacy and access",
         body: "Separate public-record entries from entries that must remain confidential. Section 41-319 addresses a written request identifying the person, type of document and month/year for a certified copy of a public journal entry. Do not expose unrelated entries while fulfilling that request.",
       },
+      {
+        heading: "Journal delivery and retention",
+        body: "A.R.S. § 41-317(B) directs delivery of journals and other specified materials to the Secretary of State within three months of the listed commission-ending events. Subsection (C) sets a five-year minimum retention period for journals. The Secretary of State’s October 2026 manual, page 11, describes an exception to delivery for journals with no entries from the past five years. The statute does not expressly state that exception. Confirm the applicable SOS instructions before handling a journal with only older entries.",
+      },
     ],
     keyFacts: [
       "Contemporaneous sequential entries.",
@@ -156,7 +160,7 @@ export const chapters: StudyChapter[] = [
     id: "seals-fees",
     title: "Seal, Stamp & Fees",
     topic: "seals-fees",
-    summary: "The seal authenticates the certificate. Fees are capped by statute.",
+    summary: "The seal authenticates the certificate. An Arizona administrative rule sets notarial fee limits.",
     sections: [
       {
         heading: "Control of the seal",
@@ -168,7 +172,7 @@ export const chapters: StudyChapter[] = [
       },
       {
         heading: "Fees vs. bond vs. E&O",
-        body: "Statutory fees are a ceiling. The surety bond protects the public. E&O insurance, if purchased, protects you. They are not the same product.",
+        body: "R2-12-1102 allows up to $10 per notary public signature for an acknowledgment or jurat, per page certified for a copy certification, and per act for an oath or affirmation. A notary may provide the service for free. The surety bond protects the public. Optional errors and omissions insurance covers the notary subject to the terms of the policy.",
       },
     ],
     keyFacts: [
@@ -289,7 +293,7 @@ export const chapters: StudyChapter[] = [
     keyFacts: [
       "The notary must be located in Arizona for a remote act under § 41-263(B).",
       "RON identity may use personal knowledge, a credible witness, or at least two types of identity proofing.",
-      "The usual statutory recording minimum is five years. The SB 1479 thumbprint exception requires compliance with A.R.S. § 41-263, the signer's credential number in the journal, and at least seven years of recording retention.",
+      "The usual statutory recording minimum is five years. A.R.S. § 41-254(D)(3) makes a journal credential number and at least seven years of recording retention conditions of the remote thumbprint exception. A.A.C. R2-12-1309(A)(5) excludes the credential's serial or identification number from the journal description when credential analysis and identity proofing are used. The application of those provisions together is under review.",
     ],
     source_id: "ars_41_263",
     example: {

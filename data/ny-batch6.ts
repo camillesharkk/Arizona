@@ -63,14 +63,14 @@ export const nyBatch6: NyRow[] = [
       "Automatic renewal without review"
     ],
     "correct": 2,
-    "why": "The statute permits discretionary waiver for an application within six months after expiration.",
+    "why": "Executive Law §130(1) permits the Secretary of State to waive qualifying requirements for an application filed within six months after expiration. The 90-day reappointment window in 19 NYCRR §182.10(c) is a separate rule.",
     "miss": [
       "The Secretary holds the waiver discretion.",
       "The statute expressly permits this post-expiration window.",
-      "Correct. The statute permits discretionary waiver for an application within six months after expiration.",
+      "Correct. Four months falls within the statutory waiver window. The Secretary has discretion to grant the waiver.",
       "Renewal is not automatic."
     ],
-    "source": "New York §130(1); https://www.nysenate.gov/legislation/laws/EXC/130; verified 2026-11-09",
+    "source": "New York Executive Law §130(1); https://www.nysenate.gov/legislation/laws/EXC/130; verified 2026-11-09",
     "verified": "2026-11-09"
   },
   {

@@ -16712,7 +16712,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Keep the transactions distinct",
-          "body": "Section 406.014 lists the date of the instrument and the date of notarization separately. It also includes the signer name and mailing address, actual identity or introducer details, and instrument description. Applicable grantee, proof-witness and land information must be addressed. Daily totals and a vague appointment label cannot reconstruct these transaction-specific details. No-fee acts remain within the ordinary rule unless a specific exception applies."
+          "body": "Section 406.014 lists the date of the instrument and the date of notarization separately. It also includes the signer name and mailing address, actual identity or introducer details, and instrument description. Applicable grantee, proof-witness and land information must be addressed. The SOS educational page still uses residence addresses. The current statute uses mailing addresses for the applicable fields. Daily totals and a vague appointment label cannot reconstruct these transaction-specific details. No-fee acts remain within the ordinary rule unless a specific exception applies."
         },
         {
           "heading": "Use only lawful personal-information fields",
@@ -16720,7 +16720,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Measure retention from the act",
-          "body": "Current §406.014(g) requires retention of its subsection (a) records until the tenth anniversary of notarization. It was added by SB693 effective September 1, 2025. Commission expiration and renewal do not supply a deletion date. Online electronic records have the separate at-least-five-year provision in §406.108(c), and other applicable record duties continue. Preserve records through software migrations and changes in workplace."
+          "body": "Current §406.014(g) requires retention of its subsection (a) records until the tenth anniversary of notarization. SB 693 took effect September 1, 2025. The SOS FAQ and its published Rule §87.54 still give the earlier, shorter period. Commission expiration and renewal do not supply a deletion date. Online electronic records have the separate at-least-five-year provision in §406.108(c), and other applicable record duties continue. Preserve records through software migrations and changes in workplace."
         },
         {
           "heading": "Plan access and custody",
@@ -16741,6 +16741,36 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.sos.texas.gov/statdoc/1-87.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS Notary Public Educational Information",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/statdoc/edinfo.shtml",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas SOS Notary Public FAQ",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.sos.texas.gov/statdoc/faqs2300.shtml",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Texas Senate Bill 693, Section 5",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://capitol.texas.gov/tlodocs/89R/billtext/html/SB00693F.htm",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"

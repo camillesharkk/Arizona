@@ -3,6 +3,8 @@ import { shuffle } from "../lib/answer-sequence.ts";
 import { inTopics } from "./in-bank-summary";
 import { inAdditionalGroups } from "./in-question-items";
 import { questionReviewDate } from "./question-review-dates";
+import { questionDrawHold } from "./question-draw-holds";
+import { isActiveQuestion } from "../lib/question-status";
 export { inTopics } from "./in-bank-summary";
 
 const VERIFIED = "2026-11-13";
@@ -118,7 +120,7 @@ export const inQuestions: Question[] = sortedGroups.flatMap(group => group.items
     correct_option:letters[choices.findIndex(c=>c.correct)], explanation:rule,
     option_feedback:{A:choices[0].feedback,B:choices[1].feedback,C:choices[2].feedback,D:choices[3].feedback},
     ...evidenceFor(group), concept_ids:[`in-card-${String(group.card).padStart(3,"0")}`],
-    effective_from:VERIFIED, effective_to:null, last_verified_at:draftReason ? "" : questionReviewDate(questionId, VERIFIED), version:1,
+    effective_from:VERIFIED, effective_to:questionDrawHold(questionId), last_verified_at:draftReason ? "" : questionReviewDate(questionId, VERIFIED), version:1,
     is_free:false, status:draftReason ? "draft" : "published",
   } satisfies Question;
 }));
@@ -139,15 +141,15 @@ export const inQuestionReview = inQuestions.map(q=>{
 });
 
 export function publishedInQuestions(): Question[] {
-  return inQuestions.filter(q=>q.status === "published" && q.state === "IN" && q.effective_to === null);
+  return inQuestions.filter(q=>q.status === "published" && q.state === "IN");
 }
 export function inQuestionCounts() {
-  const published = publishedInQuestions();
+  const published = publishedInQuestions().filter(q=>isActiveQuestion(q));
   return { candidate:inQuestions.length, draft:inQuestions.filter(q=>q.status === "draft").length, published:published.length, free:published.filter(q=>q.is_free).length, pro:published.filter(q=>!q.is_free).length,
     topics:Object.fromEntries(inTopics.map(t=>[t.id,published.filter(q=>q.study_topic===t.id).length])) };
 }
 function selectExam(seed: number, count: number, pro: boolean): Question[] {
-  const pool = publishedInQuestions().filter(q=>pro || q.is_free);
+  const pool = publishedInQuestions().filter(q=>isActiveQuestion(q) && (pro || q.is_free));
   const mandatory = inTopics.map((topic,index)=>shuffle(pool.filter(q=>q.study_topic===topic.id),seed+index*101)[0]).filter(Boolean);
   const selected = new Set(mandatory.map(q=>q.question_id));
   return shuffle([...mandatory,...shuffle(pool.filter(q=>!selected.has(q.question_id)),seed+701).slice(0,count-mandatory.length)],seed+1301);

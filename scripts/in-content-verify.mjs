@@ -7,11 +7,15 @@ assert.ok(fs.existsSync('data/in-questions.ts'), 'Indiana question bank must exi
 const load = testLoader();
 const bank = load('data/in-questions.ts');
 const { questionReviewDate } = load('data/question-review-dates.ts');
+const { isActiveQuestion } = load('lib/question-status.ts');
 const questions = bank.publishedInQuestions();
 const freeModule = load('data/in-free-questions.ts');
 const summary = load('data/in-bank-summary.ts');
 assert.equal(JSON.stringify(freeModule.inFreeQuestions), JSON.stringify(questions.filter(q=>q.is_free)), 'Client free bank matches authoritative public items');
-for(const [key,value] of Object.entries({candidate:203,draft:0,published:203,free:60,pro:143})) assert.equal(summary.inBankCounts[key],value);
+const active = questions.filter(q => isActiveQuestion(q));
+const activeFree = active.filter(q => q.is_free).length;
+for(const [key,value] of Object.entries({candidate:203,draft:0,published:active.length,free:activeFree,pro:active.length-activeFree})) assert.equal(summary.inBankCounts[key],value);
+assert.equal(questions.find(q => q.question_id === 'in-059')?.version, 1, 'Held question remains readable at its original version');
 assert.ok(!/from\s+["'][^"']*(?:in-questions|in-question-items)/.test(fs.readFileSync('data/in-free-questions.ts','utf8')), 'Public bank must not import full paid bank');
 assert.ok(freeModule.inFreeQuestions.every(q=>q.status==='published' && q.is_free));
 assert.equal(bank.inQuestions.length,203,'203 original Indiana candidates');
@@ -47,6 +51,7 @@ for (const seed of new Set([1,2,42,20261113,...Array.from({length:200},(_,i)=>i)
   assert.equal(quick.length, 10);
   assert.equal(new Set(quick.map(q => q.question_id)).size, 10);
   assert.ok(quick.every(q => q.is_free));
+  assert.ok(quick.every(q => isActiveQuestion(q)));
   assert.equal(new Set(quick.map(q => q.study_topic)).size, 6);
   assert.deepEqual(quick.map(q=>q.question_id), bank.pickInQuickExam(seed).map(q=>q.question_id));
   for (const pro of [false,true]) {
@@ -55,6 +60,7 @@ for (const seed of new Set([1,2,42,20261113,...Array.from({length:200},(_,i)=>i)
     assert.equal(new Set(full.questions.map(q=>q.question_id)).size,30);
     assert.equal(full.unscoredIds.length,0);
     if (!pro) assert.ok(full.questions.every(q=>q.is_free));
+    assert.ok(full.questions.every(q=>isActiveQuestion(q)));
     assert.deepEqual(full.questions.map(q=>q.question_id),bank.pickInFullExam(seed,pro).questions.map(q=>q.question_id));
   }
 }

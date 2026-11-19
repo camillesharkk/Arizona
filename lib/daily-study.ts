@@ -7,7 +7,8 @@ import { caCards } from "@/data/ca-cards";
 import { hiCards } from "@/data/hi-cards";
 import { activeCaQuestions, publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions, publishedQuestions } from "@/data/questions";
+import { questionDrawHold } from "@/data/question-draw-holds";
 import { topics } from "@/data/exam-config";
 import { optionText } from "@/lib/answer-sequence";
 import { localDate } from "@/lib/calendar";
@@ -58,7 +59,8 @@ function isPack(state: StudyState) {
 function pool(state: StudyState, isPro: boolean) {
   if (isPack(state)) {
     const pack = packFor(state as StateCode);
-    const questions = (state === "IN" ? publishedInQuestions() : isFreeState(state) ? serverStateQuestions(state) : pack?.questions() || []).filter((question) => isPro || question.is_free);
+    const bank = state === "IN" ? publishedInQuestions() : isFreeState(state) ? serverStateQuestions(state) : pack?.questions() || [];
+    const questions = bank.filter((question) => (isPro || question.is_free) && isActiveQuestion(question));
     const practice = pack?.paths.practice || "/";
     const cards = (pack?.cards || []).map((card) => ({
       id: card.id,
@@ -165,11 +167,11 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
   const today = localDate(now, timeZone);
   const { questions, cards, cardsByQuestion } = pool(state, pro);
   const existingDay = doc.days[today];
-  if (state === "CA" && existingDay) {
+  if (existingDay) {
     const activeIds = new Set(questions.map((question) => question.question_id));
-    doc = { ...doc, days: { ...doc.days, [today]: { ...existingDay, tasks: existingDay.tasks.filter((task) =>
-      task.status !== "pending" || !task.key.startsWith("question:") || activeIds.has(task.key.slice(9)),
-    ) } } };
+    const tasks = existingDay.tasks.filter((task) => task.status !== "pending" || !task.key.startsWith("question:") ||
+      activeIds.has(task.key.slice(9)) || !(state === "CA" || questionDrawHold(task.key.slice(9))));
+    if (tasks.length !== existingDay.tasks.length) doc = { ...doc, days: { ...doc.days, [today]: { ...existingDay, tasks } } };
   }
   const stats = await store.listStats(userId);
   const stateStats = stats.filter((item) => item.state === state).map((stat) => {
@@ -274,8 +276,18 @@ export async function dailyStudyView(userId: string, timeZoneHint?: string, now 
     unmappedQuestionIds: built.unmappedQuestionIds,
     nextReviewAt: nextReview,
     taskStatus: built.tasks,
-    ...reviewHistory(state === "CA" ? publishedCaQuestions() : questions, stateStats, await store.listExams(userId), checks, state, now),
+    ...reviewHistory(reviewBank(state, pro, questions), stateStats, await store.listExams(userId), checks, state, now),
   };
+}
+
+function reviewBank(state: StudyState, pro: boolean, active: Question[]): Question[] {
+  if (state === "CA") return publishedCaQuestions();
+  const bank = state === "AZ" ? historicalAzQuestions() : state === "NY" ? packFor(state)?.questions() :
+    state === "IN" ? publishedInQuestions() :
+    isFreeState(state) ? serverStateQuestions(state) : undefined;
+  if (!bank) return active;
+  const statsVisible = new Set(active.map((q) => q.question_id));
+  return bank.filter((q) => statsVisible.has(q.question_id) || (questionDrawHold(q.question_id) && (pro || q.is_free)));
 }
 
 function reviewHistory(
@@ -304,7 +316,7 @@ function reviewHistory(
         previousWrongCount: previousWrongCount(stat),
         saved: Boolean(stat.savedForReview),
         mastered: stat.mastered,
-        due: Boolean(question && (state !== "CA" || isActiveQuestion(question, new Date(now))) && !stat.mastered && stat.nextReviewAt && stat.nextReviewAt <= now),
+        due: Boolean(question && isActiveQuestion(question, new Date(now)) && !stat.mastered && stat.nextReviewAt && stat.nextReviewAt <= now),
       };
     })
     .sort((a, b) => (a.nextReviewAt || "9").localeCompare(b.nextReviewAt || "9"));

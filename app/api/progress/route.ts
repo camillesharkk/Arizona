@@ -3,7 +3,7 @@ import { z } from "zod";
 import { getSession } from "@/lib/session";
 import { canAccessQuestion, getArizonaEntitlement, indianaEntitlement } from "@/lib/entitlements";
 import { recordProUsage } from "@/lib/commerce/usage";
-import { publishedQuestions } from "@/data/questions";
+import { historicalAzQuestions } from "@/data/questions";
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { ctProCovers, accountProExpiry, hasLifetimePro } from "@/lib/account-pro";
@@ -111,7 +111,7 @@ export async function POST(req: Request) {
   }
   const parsed = answerSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid answer" }, { status: 400 });
-  const q = [...publishedQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(parsed.data.questionId)].find((x) => x && x.question_id === parsed.data.questionId);
+  const q = [...historicalAzQuestions(), ...publishedCaQuestions(), ...publishedHiQuestions(), questionById(parsed.data.questionId)].find((x) => x && x.question_id === parsed.data.questionId);
   if (!q) return NextResponse.json({ error: "Unknown question" }, { status: 404 });
   if (productionStateBlocked(q.state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
   if ((isFreeState(q.state) || q.state === "NY" || q.state === "PA" || q.state === "LA" || q.state === "CT" || q.state === "NC" || q.state === "IN") && (parsed.data.questionVersion ?? 1) !== q.version) {

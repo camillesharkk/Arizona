@@ -1193,9 +1193,9 @@ export const fullStateSummary: Partial<Record<FreeStateCode, { published: number
     ]
   },
   "RI": {
-    "published": 203,
-    "free": 60,
-    "pro": 143,
+    "published": 199,
+    "free": 59,
+    "pro": 140,
     "cards": 50,
     "articles": 10,
     "ready": true,
@@ -1263,9 +1263,9 @@ export const fullStateSummary: Partial<Record<FreeStateCode, { published: number
     ]
   },
   "TX": {
-    "published": 203,
-    "free": 60,
-    "pro": 143,
+    "published": 195,
+    "free": 56,
+    "pro": 139,
     "cards": 50,
     "articles": 10,
     "ready": true,

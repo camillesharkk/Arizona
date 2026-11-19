@@ -24,6 +24,9 @@ const proUsageRoute = load('app/api/billing/pro-usage/route.ts');
 const mistakes = load('app/api/mistakes/route.ts');
 const authMe = load('app/api/auth/me/route.ts');
 const { serverStateQuestions } = load('data/full-state-server.ts');
+const { serverQuestionById } = load('lib/server-questions.ts');
+const { isActiveQuestion } = load('lib/question-status.ts');
+const { packFor } = load('lib/prep-pack.ts');
 const { shuffle } = load('lib/answer-sequence.ts');
 const { packFullExamCounts } = load('lib/entitlements.ts');
 let testIp = '192.0.2.1';
@@ -39,6 +42,18 @@ for (const code of codes) {
   assert.equal(payload.customData.source_state, code);
   assert.equal(payload.customData.product_code, 'az_exam_pro_60d');
   const bank = serverStateQuestions(code);
+  const current = bank.filter(question => isActiveQuestion(question));
+  if (code === 'RI' || code === 'TX') {
+    const held = new Set(code === 'RI' ? ['ri-039', 'ri-183', 'ri-184', 'ri-200'] :
+      ['tx-056', 'tx-102', 'tx-104', 'tx-105', 'tx-106', 'tx-119', 'tx-143', 'tx-190']);
+    assert.deepEqual(Array.from(bank.filter(q => !isActiveQuestion(q)), q => q.question_id), [...held]);
+    for (const id of held) assert.equal(serverQuestionById(id)?.version, 1, 'Old item must be readable');
+    for (let seed = 0; seed < 64; seed++) {
+      const quick = packFor(code).pickQuick(seed);
+      assert.equal(quick.length, 10);
+      assert.ok(quick.every(q => !held.has(q.question_id)), 'New Quick draws exclude held questions');
+    }
+  }
   const free = bank.filter(question => question.is_free);
   const paid = bank.find(question => !question.is_free);
   assert.equal(bank.length, 203, code);
@@ -60,6 +75,15 @@ for (const code of codes) {
     const result = await (await bankRoute.GET(request(`/api/state/questions/?state=${code}`))).json();
     assert.equal(result.questions.length, accessible, `${code} bank ${accessible}`);
     assert.equal(result.pro, isPro);
+    for (const question of bank.filter(q => !isActiveQuestion(q))) {
+      const historical = result.questions.find(q => q.question_id === question.question_id);
+      if (question.is_free || isPro) {
+        assert.equal(historical?.version, question.version, `${code} preserves held version`);
+        assert.equal(historical?.correct_option, question.correct_option, `${code} preserves held answer`);
+      } else {
+        assert.equal(historical, undefined, `${code} held Pro item remains private`);
+      }
+    }
     if (isPro) {
       assert.equal((await proUsageRoute.POST(request('/api/billing/pro-usage/', { featureCode: 'advanced_analytics', state: code }))).status, 200);
       assert.equal(usage.at(-1)[3], code);
@@ -72,8 +96,8 @@ for (const code of codes) {
     response = await tutor.POST(request('/api/ai/tutor/', { state: code, questionId: paid.question_id, questionVersion: paid.version, mode: 'explain' }));
     assert.equal(response.status, isPro ? 200 : 402, `${code} paid Tutor authorization`);
     const plan = await (await daily.GET(request(`/api/daily-study/?state=${code}`))).json();
-    assert.equal(plan.questionCount, 203, `${code} Daily Study full pool`);
-    assert.equal(plan.freeQuestionCount, 60);
+    assert.equal(plan.questionCount, current.length, `${code} Daily Study full pool`);
+    assert.equal(plan.freeQuestionCount, current.filter(q => q.is_free).length);
     assert.equal(plan.cardCount, 50);
     assert.equal(plan.freeOnly, !isPro);
   }

@@ -10232,9 +10232,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Record content beyond identity",
       "front": "Capture the statutory instrument, participant and land details.",
       "rule": "Section 406.014 lists signer and grantee information, identification or introducer details, description and applicable land or proof-witness information.",
-      "boundary": "Apply the specific fields to the actual instrument and procedure.",
+      "boundary": "For the applicable address fields, the statute says mailing address. The SOS educational page still uses the earlier residence wording.",
       "mixup": "A daily transaction count cannot replace the required entries.",
-      "source": "Texas Government Code Chapter 406 — §406.014(a)",
+      "source": "Texas Government Code Chapter 406 — §406.014(a)(4)–(7)",
       "sourceUrl": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm"
     },
     {
@@ -10265,9 +10265,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Ten-year ordinary retention",
       "front": "Measure the current ordinary record period from each act.",
       "rule": "Section 406.014(g) requires retaining its subsection (a) records until the tenth anniversary of notarization.",
-      "boundary": "Online electronic records have an additional five-year provision under §406.108(c).",
+      "boundary": "The SOS still publishes an older Rule §87.54 with a shorter period. Online electronic records have a separate five-year minimum under §406.108(c).",
       "mixup": "Do not use commission expiration as the deletion date or assume one period cancels the other.",
-      "source": "Texas Government Code Chapter 406 — §406.014(g);§406.108(c)",
+      "source": "Texas Government Code Chapter 406 — §§406.014(g) and 406.108(c)",
       "sourceUrl": "https://tcss.legis.texas.gov/resources/GV/htm/GV.406.htm"
     },
     {

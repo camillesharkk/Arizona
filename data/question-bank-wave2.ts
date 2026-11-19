@@ -27,7 +27,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Nothing; the Secretary of State may publish the entire application",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-269(A) says that except for the applicant's name and business address, all information provided on the application is confidential and may not be disclosed except to the applicant, a guardian or personal representative, or a government employee acting officially. The Secretary of State may use that information only to carry out this article.",
+      "A.R.S. § 41-269(A) makes the applicant's name and business address public. The rest may be disclosed only to the applicant, the applicant's guardian or personal representative, or a federal, state, or local government employee or officer acting in an official capacity. The Secretary of State may use the information only to carry out this article.",
     option_feedback: {
       A: "The statute does not make the whole application public.",
       B: "Correct. Name and business address are the stated exceptions; other application information is confidential.",
@@ -415,7 +415,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "A tribal card is satisfactory only when it has no photograph",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-255(B)(1)(c) covers another form of unexpired government identification issued by the United States, a state, or a tribal government. It is not the expired-passport test in paragraph (a) and it is not the expired driver-license test.",
+      "A.R.S. § 41-255(B)(1)(c) requires an unexpired U.S., state, or tribal government ID that is satisfactory to the notarial officer and has the holder’s signature or both a photo and a physical description. A clear photo and description do not make an expired tribal ID qualify.",
     option_feedback: {
       A: "A clear photo does not remove the word unexpired.",
       B: "Correct. The government identification in paragraph (c) must be unexpired.",
@@ -1010,7 +1010,7 @@ export const wave2Drafts: ExpansionDraft[] = [
       "A.R.S. § 41-323(C) treats failure to comply with subsection A or B as failure to fully and faithfully discharge notary duties. The secretary of state may impose $25 for an address-notice failure and shall impose $1,000 for a loss, theft, or compromise notice failure. Any civil penalty imposed under that subsection must be paid before renewal. It is not the question of whether a county move ends the commission.",
     option_feedback: {
       A: "The $1,000 figure is for the subsection B notice failure, not for both.",
-      B: "Correct. Address notice: up to a $25 penalty. Loss notice: a $1,000 penalty, payable before renewal.",
+      B: "Correct. The Secretary of State may impose $25 for missing the address notice and must impose $1,000 for missing the loss, theft, or compromise notice. Any penalty imposed under this subsection is payable before renewal.",
       C: "Both failures are described as failure to discharge duties.",
       D: "Unpaid penalties may be referred to the attorney general for collection.",
     },
@@ -1162,7 +1162,7 @@ export const wave2Drafts: ExpansionDraft[] = [
     option_d: "Skip both the copy and the entry because personal knowledge cancels all duties",
     correct_option: "B",
     explanation:
-      "A.R.S. § 41-319(B) says that if the notary has personal knowledge, the notary shall retain a paper or electronic copy of the notarized documents for each act in lieu of a journal entry, or shall make a journal entry under subsection A, paragraphs 1, 2, 3, 4, 5, and 7. Personal knowledge is not permission to keep nothing.",
+      "A.R.S. § 41-319(B) gives a notary who personally knows the signer two choices for ordinary recordkeeping: retain a paper or electronic copy of the notarized documents, or make an entry under subsection A, paragraphs 1–5 and 7. Separate journal requirements still apply to covered deeds and powers of attorney under § 41-254(C) and to remote online acts under A.A.C. R2-12-1309(A).",
     option_feedback: {
       A: "Nothing is not one of the two choices.",
       B: "Correct. Keep copies of the documents or make the abbreviated journal entry.",

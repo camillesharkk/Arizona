@@ -1,0 +1,238 @@
+{
+  "total": {
+    "total": 5701,
+    "verifiedUnchanged": 514,
+    "revisedRechecked": 53,
+    "pending": 5115,
+    "held": 19
+  },
+  "byState": {
+    "AR": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "AZ": {
+      "total": 203,
+      "verifiedUnchanged": 91,
+      "revisedRechecked": 13,
+      "pending": 95,
+      "held": 4
+    },
+    "CA": {
+      "total": 203,
+      "verifiedUnchanged": 53,
+      "revisedRechecked": 19,
+      "pending": 130,
+      "held": 1
+    },
+    "CO": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "CT": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "HI": {
+      "total": 220,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 220,
+      "held": 0
+    },
+    "IL": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "IN": {
+      "total": 203,
+      "verifiedUnchanged": 118,
+      "revisedRechecked": 0,
+      "pending": 84,
+      "held": 1
+    },
+    "LA": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "MD": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "ME": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "MO": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "MT": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "NC": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "NE": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "NJ": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "NM": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "NV": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "NY": {
+      "total": 203,
+      "verifiedUnchanged": 60,
+      "revisedRechecked": 14,
+      "pending": 128,
+      "held": 1
+    },
+    "OH": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "OR": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "PA": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "RI": {
+      "total": 203,
+      "verifiedUnchanged": 105,
+      "revisedRechecked": 5,
+      "pending": 89,
+      "held": 4
+    },
+    "TX": {
+      "total": 203,
+      "verifiedUnchanged": 87,
+      "revisedRechecked": 2,
+      "pending": 106,
+      "held": 8
+    },
+    "UT": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "VT": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "WI": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    },
+    "WY": {
+      "total": 203,
+      "verifiedUnchanged": 0,
+      "revisedRechecked": 0,
+      "pending": 203,
+      "held": 0
+    }
+  },
+  "nextPendingId": {
+    "AR": "ar-001",
+    "AZ": "az-012",
+    "CA": "ca-001",
+    "CO": "co-001",
+    "CT": "ct-001",
+    "HI": "hi-001",
+    "IL": "il-001",
+    "IN": "in-120",
+    "LA": "la-001",
+    "MD": "md-001",
+    "ME": "me-001",
+    "MO": "mo-001",
+    "MT": "mt-001",
+    "NC": "nc-001",
+    "NE": "ne-001",
+    "NJ": "nj-001",
+    "NM": "nm-001",
+    "NV": "nv-001",
+    "NY": "ny-051",
+    "OH": "oh-001",
+    "OR": "or-001",
+    "PA": "pa-001",
+    "RI": "ri-083",
+    "TX": "tx-004",
+    "UT": "ut-001",
+    "VT": "vt-001",
+    "WI": "wi-001",
+    "WY": "wy-001"
+  },
+  "staleEvidence": []
+}

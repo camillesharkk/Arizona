@@ -7,6 +7,7 @@ const load = testLoader();
 const { freeStateCatalog, freeStateFeatures } = load('lib/free-state-catalog.ts');
 const { freeStateContent } = load('data/free-state-content.ts');
 const { stateQuestion } = load('lib/state-question.ts');
+const { isActiveQuestion } = load('lib/question-status.ts');
 const canonicalTopics = new Set(load('data/exam-config.ts').topics.map(topic => topic.id));
 const root = path.resolve('data/full-states');
 fs.mkdirSync(root, { recursive: true });
@@ -96,7 +97,9 @@ for (const [code, name, slug] of freeStateCatalog) {
   const freeIds = selectFree(bank, base.topics);
   const publicQuestions = bank.filter(question => freeIds.has(question.id)).map(question => stateQuestion(code, question, true));
   questions[code] = publicQuestions;
-  summaries[code] = { published: bank.length, free: freeIds.size, pro: bank.length - freeIds.size, cards: content.cards.length, articles: content.articles.length, ready: true, freeQuestionIds: [...freeIds] };
+  const active = bank.map(question => stateQuestion(code, question, freeIds.has(question.id))).filter(question => isActiveQuestion(question));
+  const free = active.filter(question => question.is_free).length;
+  summaries[code] = { published: active.length, free, pro: active.length - free, cards: content.cards.length, articles: content.articles.length, ready: true, freeQuestionIds: [...freeIds] };
   cards[code] = content.cards;
   guides[code] = content.guideTopics;
   articles[code] = content.articles.map(({ sources: articleSources, ...article }) => ({
