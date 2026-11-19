@@ -166,7 +166,7 @@ try {
   await publicPage.waitForFunction((value) => document.querySelector('textarea[name="body"]')?.value === value, replyBody);
   await setupNickname(publicPage, "FocusedReader");
   await publicPage.getByRole("button", { name: "Post reply", exact: true }).click();
-  await publicPage.getByText(replyBody, { exact: true }).waitFor();
+  await publicPage.locator(".community-post .community-message").filter({ hasText: replyBody }).waitFor();
   const [{ id: replyId }] = await fixture`select id::text from community_posts where thread_id = ${id}`;
   console.log("Mobile guest draft, real login return, nickname consent, new-user publishing, and reply draft passed.");
 
@@ -192,7 +192,9 @@ try {
   await signIn(reportingPage, reader);
   await reportingPage.waitForURL((value) => value.searchParams.get("report") === id && value.hash === "#community-message-" + id);
   const rootReport = reportingPage.locator("#community-message-" + id + " > .row details.community-report");
+  await rootReport.locator("summary").waitFor();
   assert.ok(await rootReport.evaluate((node) => node.open));
+  await reportingPage.getByRole("button", { name: /open account menu/i }).waitFor();
   await rootReport.getByLabel("Other").check();
   if (process.env.COMMUNITY_VERIFY_SCREENSHOT) {
     await rootReport.scrollIntoViewIfNeeded();
@@ -217,7 +219,7 @@ try {
   await page.getByRole("button", { name: "Post discussion" }).click();
   await page.getByRole("button", { name: "Write another message" }).waitFor();
   assert.equal(await page.getByLabel("Message (required)").inputValue(), suspiciousBody);
-  await page.getByText(/Awaiting review/).waitFor();
+  await page.locator(".community-member-panel summary").filter({ hasText: /^Awaiting review/ }).waitFor();
   const [{ id: pendingId, moderation_status }] = await fixture`select id::text, moderation_status from community_posts where body = ${suspiciousBody}`;
   assert.equal(moderation_status, "pending");
   const pendingUrl = url + "?discussion=" + pendingId;
@@ -235,7 +237,7 @@ try {
     await adminPage.locator('textarea[name="reason"]').fill(reason);
     if (action === "restore") await adminPage.locator('input[name="confirm"]').check();
     await adminPage.getByRole("button", { name: "保存处理结果" }).click();
-    await adminPage.locator('form [role="status"]').filter({ hasText: /保存|完成|处理/ }).first().waitFor();
+    await adminPage.getByText("操作已保存，并写入处理记录。", { exact: true }).waitFor();
     const [{ action: latest }] = await fixture`select action from community_moderation_log order by id desc limit 1`;
     assert.equal(latest, action);
   }
