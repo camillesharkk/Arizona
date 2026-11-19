@@ -13,7 +13,7 @@ export function nicknameValue(raw: string) {
   return value;
 }
 
-const dangerousScheme = /(?:^|[^\p{L}\p{N}_])(?:javascript|vbscript|data|file|blob):[^\s]/iu;
+const dangerousScheme = /(?:^|[^\p{L}\p{N}_])(?:(?:javascript|vbscript):\s*\S|(?:file|blob):\S|data:[^\s<>]*,)/iu;
 const webLink = /(?:[a-z][a-z0-9+.-]*:\/\/|https?:|(?<![\w:/])\/\/)[^\s<>"']+/giu;
 
 export function linkRisk(message: string): "allowed" | "blocked" {

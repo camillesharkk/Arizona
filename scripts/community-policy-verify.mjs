@@ -15,11 +15,12 @@ for (const value of [
   "Try https://[::1]/docs",
   "https://x.test https://a.test https://b.test https://c.test",
   "The page mentions data: values in the exam notes.",
+  "Suggested reading: data:value and file: examples.",
   "My contact is www.writer@example.org.",
 ]) assert.equal(linkRisk(value), "allowed", value);
 
 for (const value of [
-  "javascript:alert(1)", "data:text/html,test", "file:///etc/hosts",
+  "javascript:alert(1)", "javascript: alert(1)", "data:text/html,test", "file:///etc/hosts",
   "https://user:pass@other.test/path", "http://user@other.test/path",
   "See (//user:pass@other.test/path).", "http:user:pass@other.test/path",
   "ftp://user:pass@other.test/path", "sftp://user:pass@other.test/path",
