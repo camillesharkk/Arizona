@@ -4266,7 +4266,7 @@
       "title": "Initial prerequisites",
       "front": "What proof does the nonattorney initial applicant supply?",
       "rule": "Successful completion of the Treasurer's required course and prescribed examination.",
-      "boundary": "The portal directs manual reading, full video-series viewing and attestation.",
+      "boundary": "The portal directs applicants to read the manual and watch the full training-video series. The law requires acknowledgment of reading and understanding the manual and completion of required education.",
       "mixup": "Buying study access is different from official completion.",
       "source": "2026 Manual, Chapter 4; official exam portal",
       "sourceUrl": "https://www.njportal.com/DOR/NotaryExam/"
@@ -4376,7 +4376,7 @@
       "title": "Longer lapse",
       "front": "What lapse triggers new-applicant exam treatment in the portal?",
       "rule": "Expiration more than thirty days earlier triggers the stated new-applicant treatment.",
-      "boundary": "Do not infer continuing authority from application classification.",
+      "boundary": "The exam requirement applies to nonattorney applicants. Application classification does not extend acting authority.",
       "mixup": "A lapse rule is different from an extension of the old commission.",
       "source": "Official Notary Exam Portal",
       "sourceUrl": "https://www.njportal.com/DOR/NotaryExam/"
@@ -4408,11 +4408,11 @@
       "study": "lapsed-commission",
       "title": "Post-service records",
       "front": "What continues after resignation or suspension?",
-      "rule": "Journal retention or the prescribed secure-transmission route continues.",
-      "boundary": "The record period is measured from the last chronicled act.",
+      "rule": "Keep the journal for the required period and notify the State Treasurer where it is stored, or transmit it under the prescribed instructions.",
+      "boundary": "The location notice applies if the former notary keeps the journal after resignation, revocation or suspension.",
       "mixup": "Ending current service does not erase historical evidence.",
-      "source": "2026 Manual, Chapter 6",
-      "sourceUrl": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf"
+      "source": "N.J.S.A. 52:7-10.18(d)–(e)",
+      "sourceUrl": "https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM"
     },
     {
       "id": "nj-card-016",
@@ -4572,12 +4572,12 @@
       "id": "nj-card-030",
       "study": "identity",
       "title": "Remote proofing",
-      "front": "What does the manual add to visual remote ID verification?",
-      "rule": "Use a specified dynamic KBA, biometric or trusted-certificate proofing method under its stated standards.",
-      "boundary": "Visual display and identity proofing are distinct components.",
-      "mixup": "A camera image alone does not establish the complete manual workflow.",
-      "source": "2026 Manual, Chapter 8",
-      "sourceUrl": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf"
+      "front": "Which remote identity routes does New Jersey law recognize?",
+      "rule": "New Jersey law recognizes personal knowledge, a qualifying credible witness, or at least two different types of identity proofing.",
+      "boundary": "The statutes and adopted rules govern the available routes. Review the current standards before using credentials or proofing services.",
+      "mixup": "Do not assume that seeing an ID alone establishes the technology-based route.",
+      "source": "N.J.S.A. 52:7-10.10(d)(1)",
+      "sourceUrl": "https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM"
     },
     {
       "id": "nj-card-031",
@@ -4806,7 +4806,7 @@
       "sections": [
         {
           "heading": "State prerequisites",
-          "body": "The 2026 manual identifies age eighteen and New Jersey residence or the stated employment/practice connection, subject to disqualification. A nonattorney initial applicant completes the Treasurer's required course and prescribed examination. The current portal directs thorough manual reading, the entire training-video series and the completion attestation. Passing the exam permits the registration application to be completed. It does not finish every appointment step."
+          "body": "The 2026 manual identifies age eighteen and New Jersey residence or the stated employment/practice connection, subject to disqualification. A nonattorney initial applicant completes the Treasurer's required course and prescribed examination. The current portal directs applicants to read the manual and watch the entire training-video series. The statute requires applicants to state that they read and understood the manual and to complete required education. Passing the exam permits the registration application to be completed. It does not finish every appointment step."
         },
         {
           "heading": "Application and verified limits",
@@ -4815,7 +4815,7 @@
       ],
       "example": {
         "heading": "Worked example",
-        "body": "A first nonattorney applicant reads the manual, watches the whole video series and attests to completion, then uses the New Commissioning Application and passes the official test. The applicant completes registration with the required endorsement and payment and later qualifies before the proper county clerk. A commercial badge supplies no appointment authority."
+        "body": "A first nonattorney applicant reads the manual, watches the whole video series and follows the education instructions, then uses the New Commissioning Application and passes the official test. The applicant completes registration with the required endorsement and payment and later qualifies before the proper county clerk. A commercial badge supplies no appointment authority."
       },
       "keyFacts": [
         "Initial nonattorney applicants complete the required education and prescribed exam.",
@@ -4856,7 +4856,7 @@
         },
         {
           "heading": "Qualification and historical records",
-          "body": "An initial or renewed commission requires timely county swearing-in. A missed three-month receipt-based oath period causes the cancellation and revocation described in the manual. Resignation, revocation or suspension also leaves journal-retention or prescribed transmission duties. The statutory validity provision does not validate purported acts by persons without authority, and validity of an act does not bar all challenges to the underlying transaction."
+          "body": "An initial or renewed commission requires timely county swearing-in. A missed three-month receipt-based oath period causes the cancellation and revocation described in the manual. After resignation, revocation or suspension, a notary who retains the journal must tell the State Treasurer where it is kept. The alternative is transmission under the prescribed secure procedure. The statutory validity provision does not validate purported acts by persons without authority, and validity of an act does not bar all challenges to the underlying transaction."
         }
       ],
       "example": {
@@ -4925,7 +4925,7 @@
         },
         {
           "heading": "Acts, assistance and remote identity",
-          "body": "Acknowledgment identity includes the appearing individual and connection to the signature. Verification on oath or affirmation concerns truth of a record statement. A physically unable person may direct someone other than the officer to sign, with the prescribed explanation. Remote work under Chapter 8 uses visual Chapter 7 document verification and the stated proofing method. Signature/photo mismatch, competence or involuntary execution can support refusal under Chapter 10."
+          "body": "Acknowledgment identity includes the appearing individual and connection to the signature. Verification on oath or affirmation concerns truth of a record statement. A physically unable person may direct someone other than the officer to sign, with the prescribed explanation. For remote acts, N.J.S.A. 52:7-10.10(d)(1) recognizes personal knowledge, a qualifying credible witness, or at least two different kinds of identity proofing. The adopted rule also lists personal knowledge and addresses how technology-based identity verification works. The manual’s visual-review workflow should be read with those authorities. Signature/photo mismatch, competence or involuntary execution can support refusal under Chapter 10."
         }
       ],
       "example": {
@@ -4936,7 +4936,7 @@
         "The listed expiration allowance is no more than three years.",
         "The other-government-ID category uses signature or photograph plus satisfaction.",
         "The officer may request additional identity assurance.",
-        "Remote visual verification and identity proofing have separate roles."
+        "Check the statutory and adopted-rule routes when identifying a remote principal."
       ]
     },
     "record-ownership": {
@@ -4948,7 +4948,7 @@
         },
         {
           "heading": "Retention and transitions",
-          "body": "Report journal loss or theft within ten days and device loss or theft within ten calendar days as directed. The journal is retained ten years after its last chronicled act or handled through Treasury's secure-transmission instructions. Resignation or discipline preserves those record obligations. Death or adjudicated incompetency creates a forty-five-day Treasury contact step in the current manual. Electronic credentials and remote recordings have additional control and custody provisions."
+          "body": "Report journal loss or theft within ten days and device loss or theft within ten calendar days as directed. Retain the journal ten years after its last chronicled act or follow Treasury’s secure-transmission instructions. After resignation, revocation or suspension, a notary who retains the journal must tell the State Treasurer where it is kept. After death or adjudicated incompetency, contact Treasury promptly for instructions. The statute requires the applicable custodian to transmit the journal within 45 days. Electronic credentials and remote recordings have additional control and custody provisions."
         }
       ],
       "example": {
@@ -5097,7 +5097,7 @@
         },
         {
           "heading": "Use the right retention trigger",
-          "body": "The manual measures journal retention as ten years after the last act chronicled in that journal, with a Treasury secure-transmission instruction alternative. It also describes duties on resignation, revocation or suspension. A change of employer alone does not establish that the journal's period has ended. Identify the actual last entry and the continuing custody arrangement when the workplace transition is planned."
+          "body": "The manual measures journal retention as ten years after the last act chronicled in that journal, with a Treasury secure-transmission instruction alternative. On resignation, revocation or suspension, a notary who chooses to keep the journal must notify the State Treasurer of its location. A change of employer alone does not establish that the journal's period has ended. Identify the actual last entry and the continuing custody arrangement when the workplace transition is planned."
         },
         {
           "heading": "Protect related credentials",
@@ -5112,6 +5112,10 @@
         {
           "title": "New Jersey 2026 Notary Public Manual — Chapter 9, electronic credentials",
           "url": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf"
+        },
+        {
+          "title": "N.J.S.A. 52:7-10.18(d)–(f), journal retention and transfer",
+          "url": "https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM"
         }
       ],
       "faqs": [
@@ -5123,7 +5127,8 @@
           "q": "Does the oldest entry set the ten-year period?",
           "a": "The manual uses the last notarial act chronicled in the journal."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     },
     {
       "slug": "regular-law-and-title-files-as-records",

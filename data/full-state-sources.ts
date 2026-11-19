@@ -1986,10 +1986,10 @@ export const fullStateSources: Record<string, Source> = {
     "source_id": "wi-file",
     "source_type": "SOS",
     "title": "DFI Notary File Online",
-    "reference": "4-year Notary; Permanent Notary; November 16, 2026 system notice",
+    "reference": "Four-year Notary, Permanent Notary, and current WIMS filing link",
     "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx",
-    "last_verified_at": "2026-11-14",
-    "last_checked_at": "2026-11-14"
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
   },
   "wi-intro": {
     "source_id": "wi-intro",
@@ -2062,6 +2062,33 @@ export const fullStateSources: Record<string, Source> = {
     "url": "https://apps.dfi.wi.gov/apps/notarytutorialexam/Chapter6.aspx",
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
+  },
+  "wi-remote-registration": {
+    "source_id": "wi-remote-registration",
+    "source_type": "SOS",
+    "title": "Wisconsin DFI Remote Online Notary registration",
+    "reference": "Approved platforms, notary notification and upload, DFI review and approval",
+    "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "wi-ron-recertification": {
+    "source_id": "wi-ron-recertification",
+    "source_type": "SOS",
+    "title": "Wisconsin DFI remote provider recertification form",
+    "reference": "NOT107, revised August 2025, p. 1, provider recertification conditions",
+    "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
+  "wi-estate-act": {
+    "source_id": "wi-estate-act",
+    "source_type": "SOS",
+    "title": "Wisconsin 2023 Act 130, enacted text",
+    "reference": "Section 1, p. 2, Wis. Stat. § 140.147(3)(j)2. Enrolled law also reproduced in State Bar exhibit B.",
+    "url": "https://docs.legis.wisconsin.gov/2023/related/acts/130.pdf",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
   },
   "wy-home": {
     "source_id": "wy-home",

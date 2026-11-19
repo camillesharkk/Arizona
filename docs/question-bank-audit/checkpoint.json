@@ -1,11 +1,11 @@
 {
   "total": {
     "total": 5701,
-    "verifiedUnchanged": 3025,
-    "revisedRechecked": 188,
-    "pending": 2477,
+    "verifiedUnchanged": 3605,
+    "revisedRechecked": 207,
+    "pending": 1877,
     "held": 0,
-    "replaced": 11
+    "replaced": 12
   },
   "byState": {
     "AR": {
@@ -114,9 +114,9 @@
     },
     "NC": {
       "total": 203,
-      "verifiedUnchanged": 0,
-      "revisedRechecked": 0,
-      "pending": 203,
+      "verifiedUnchanged": 201,
+      "revisedRechecked": 2,
+      "pending": 0,
       "held": 0,
       "replaced": 0
     },
@@ -130,9 +130,9 @@
     },
     "NJ": {
       "total": 203,
-      "verifiedUnchanged": 19,
-      "revisedRechecked": 1,
-      "pending": 183,
+      "verifiedUnchanged": 193,
+      "revisedRechecked": 10,
+      "pending": 0,
       "held": 0,
       "replaced": 0
     },
@@ -146,9 +146,9 @@
     },
     "NV": {
       "total": 203,
-      "verifiedUnchanged": 0,
-      "revisedRechecked": 0,
-      "pending": 203,
+      "verifiedUnchanged": 26,
+      "revisedRechecked": 2,
+      "pending": 175,
       "held": 0,
       "replaced": 0
     },
@@ -178,9 +178,9 @@
     },
     "PA": {
       "total": 203,
-      "verifiedUnchanged": 153,
-      "revisedRechecked": 6,
-      "pending": 44,
+      "verifiedUnchanged": 196,
+      "revisedRechecked": 7,
+      "pending": 0,
       "held": 0,
       "replaced": 0
     },
@@ -218,11 +218,11 @@
     },
     "WI": {
       "total": 203,
-      "verifiedUnchanged": 0,
-      "revisedRechecked": 0,
-      "pending": 203,
+      "verifiedUnchanged": 136,
+      "revisedRechecked": 5,
+      "pending": 61,
       "held": 0,
-      "replaced": 0
+      "replaced": 1
     },
     "WY": {
       "total": 203,
@@ -237,15 +237,12 @@
     "HI": "hi-001",
     "MO": "mo-001",
     "MT": "mt-001",
-    "NC": "nc-001",
     "NE": "ne-001",
-    "NJ": "nj-011",
     "NM": "nm-001",
-    "NV": "nv-001",
+    "NV": "nv-029",
     "OH": "oh-001",
-    "PA": "pa-160",
     "VT": "vt-001",
-    "WI": "wi-001",
+    "WI": "wi-142",
     "WY": "wy-001"
   },
   "staleEvidence": []

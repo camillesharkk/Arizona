@@ -5117,10 +5117,10 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
     "exceptions": [
       "Wisconsin-licensed attorneys in good standing may apply for a permanent commission through a separate route with a recent certificate of good standing. Permanent commissions do not require the ordinary four-year bond.",
       "The general tutorial readings and chapter quizzes may be skipped by a prepared applicant, but the ordinary four-year final examination remains required.",
-      "The official application page announces a new online system for November 16, 2026 at 7 a.m. Central Time. Follow that page for the current filing route."
+      "DFI directs applicants and renewing notaries to the Wisconsin Integrated Management System (WIMS). Open it from the Notary File Online page."
     ],
-    "renewal": "Four-year renewals also require a passing examination of at least 90%, taken no more than one year before the commission or renewal date. Renew the application and required bond and oath materials through DFI.",
-    "ron": "Wisconsin notaries use DFI-approved communication technology providers and must be trained and authorized for the chosen system. The notary remains physically in Wisconsin. Follow the current provider requirements before offering remote acts.",
+    "renewal": "Four-year renewals require a passing exam score of at least 90%, plus a bond and oath. DFI’s exam tutorial counts back one year from the commission or renewal date. Its application materials refer to one year before filing. Follow the current instructions when filing.",
+    "ron": "For ordinary remote online notarization, train on a DFI-approved platform, notify DFI of the platforms you intend to use, and upload your digital seal and signature. Wait for DFI approval before using the platform. The notary remains physically in Wisconsin. Separate rules apply to certain estate-planning documents.",
     "officialNext": {
       "label": "Wisconsin DFI commissioning steps",
       "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx"
@@ -5130,8 +5130,8 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
         "id": "wi-file",
         "title": "DFI Notary File Online",
         "url": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx",
-        "reference": "4-year Notary; Permanent Notary; November 16, 2026 system notice",
-        "checkedAt": "2026-11-14"
+        "reference": "Four-year Notary, Permanent Notary, and current WIMS filing link",
+        "checkedAt": "2026-11-19"
       },
       {
         "id": "wi-intro",

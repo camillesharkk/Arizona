@@ -8511,7 +8511,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Use the right retention trigger",
-          "body": "The manual measures journal retention as ten years after the last act chronicled in that journal, with a Treasury secure-transmission instruction alternative. It also describes duties on resignation, revocation or suspension. A change of employer alone does not establish that the journal's period has ended. Identify the actual last entry and the continuing custody arrangement when the workplace transition is planned."
+          "body": "The manual measures journal retention as ten years after the last act chronicled in that journal, with a Treasury secure-transmission instruction alternative. On resignation, revocation or suspension, a notary who chooses to keep the journal must notify the State Treasurer of its location. A change of employer alone does not establish that the journal's period has ended. Identify the actual last entry and the continuing custody arrangement when the workplace transition is planned."
         },
         {
           "heading": "Protect related credentials",
@@ -8536,6 +8536,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
             "placement": "section",
             "targetMode": "official"
           }
+        },
+        {
+          "heading": "N.J.S.A. 52:7-10.18(d)–(f), journal retention and transfer",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
         }
       ],
       "faqs": [
@@ -8548,11 +8558,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "The manual uses the last notarial act chronicled in the journal."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nj-journal-custody-after-employer-departure",
       "state": "NJ",
       "path": "/new-jersey/guides/journal-custody-after-employer-departure/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-jersey/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -14068,7 +14078,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Train on the new provider",
-          "body": "Wisconsin permits changing providers and using multiple approved providers at the same time. Each provider used requires its own onboarding and training. Familiarity with the former interface does not establish competence on a new system's identity proofing, record confirmation and execution tools. The provider also supplies the authorization notification used for DFI's public database update."
+          "body": "Wisconsin permits changing providers and using multiple approved providers at the same time. Each provider used requires its own onboarding and training. Familiarity with the former interface does not establish competence on a new system's identity proofing, record confirmation and execution tools. Notify DFI of the new platform, upload your digital seal and signature, and wait for approval before using it. The approved provider must also report newly authorized users to DFI."
         },
         {
           "heading": "Keep confidentiality during transfer",
@@ -14079,6 +14089,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "Wisconsin DFI Remote Online Notary registration",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"
@@ -14095,11 +14115,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "Complete onboarding and training for each provider used."
         }
       ],
+      "updated": "2026-11-19",
       "id": "wi-wisconsin-changing-ron-provider-and-archives",
       "state": "WI",
       "path": "/wisconsin/guides/wisconsin-changing-ron-provider-and-archives/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/wisconsin/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -14297,7 +14317,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Select a listed material route",
-          "body": "After the special Wisconsin estate communication, the guide permits notarizing an identical copy of the original unsigned record, a signed copy forwarded by the individual or attorney, or the original signed document forwarded by the supervising attorney. These are particular options in the special procedure. The notary checks which version arrived and how it corresponds to the record actually used in the signing."
+          "body": "Wisconsin Stat. § 140.147(3)(j) provides three ways to complete this estate notarization. In the signed-copy procedure, the signer or someone acting at the signer’s direction sends a legible copy of the entire signed document directly to the notary by fax or electronic means within a reasonable time. They separately send the complete signed original to the supervising attorney by the delivery method specified in the statute."
         },
         {
           "heading": "Return it to the attorney",
@@ -14332,11 +14352,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. The permitted combination includes the information required by both provisions."
         }
       ],
+      "updated": "2026-11-19",
       "id": "wi-wisconsin-estate-counterparts-and-compliance-affidavit",
       "state": "WI",
       "path": "/wisconsin/guides/wisconsin-estate-counterparts-and-compliance-affidavit/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/wisconsin/practice/?mode=quick",
         "label": "Start Free Quick 10",

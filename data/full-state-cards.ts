@@ -4989,7 +4989,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Initial prerequisites",
       "front": "What proof does the nonattorney initial applicant supply?",
       "rule": "Successful completion of the Treasurer's required course and prescribed examination.",
-      "boundary": "The portal directs manual reading, full video-series viewing and attestation.",
+      "boundary": "The portal directs applicants to read the manual and watch the full training-video series. The law requires acknowledgment of reading and understanding the manual and completion of required education.",
       "mixup": "Buying study access is different from official completion.",
       "source": "2026 Manual, Chapter 4; official exam portal",
       "sourceUrl": "https://www.njportal.com/DOR/NotaryExam/"
@@ -5099,7 +5099,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Longer lapse",
       "front": "What lapse triggers new-applicant exam treatment in the portal?",
       "rule": "Expiration more than thirty days earlier triggers the stated new-applicant treatment.",
-      "boundary": "Do not infer continuing authority from application classification.",
+      "boundary": "The exam requirement applies to nonattorney applicants. Application classification does not extend acting authority.",
       "mixup": "A lapse rule is different from an extension of the old commission.",
       "source": "Official Notary Exam Portal",
       "sourceUrl": "https://www.njportal.com/DOR/NotaryExam/"
@@ -5131,11 +5131,11 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "lapsed-commission",
       "title": "Post-service records",
       "front": "What continues after resignation or suspension?",
-      "rule": "Journal retention or the prescribed secure-transmission route continues.",
-      "boundary": "The record period is measured from the last chronicled act.",
+      "rule": "Keep the journal for the required period and notify the State Treasurer where it is stored, or transmit it under the prescribed instructions.",
+      "boundary": "The location notice applies if the former notary keeps the journal after resignation, revocation or suspension.",
       "mixup": "Ending current service does not erase historical evidence.",
-      "source": "2026 Manual, Chapter 6",
-      "sourceUrl": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf"
+      "source": "N.J.S.A. 52:7-10.18(d)–(e)",
+      "sourceUrl": "https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM"
     },
     {
       "id": "nj-card-016",
@@ -5295,12 +5295,12 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "id": "nj-card-030",
       "study": "identity",
       "title": "Remote proofing",
-      "front": "What does the manual add to visual remote ID verification?",
-      "rule": "Use a specified dynamic KBA, biometric or trusted-certificate proofing method under its stated standards.",
-      "boundary": "Visual display and identity proofing are distinct components.",
-      "mixup": "A camera image alone does not establish the complete manual workflow.",
-      "source": "2026 Manual, Chapter 8",
-      "sourceUrl": "https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf"
+      "front": "Which remote identity routes does New Jersey law recognize?",
+      "rule": "New Jersey law recognizes personal knowledge, a qualifying credible witness, or at least two different types of identity proofing.",
+      "boundary": "The statutes and adopted rules govern the available routes. Review the current standards before using credentials or proofing services.",
+      "mixup": "Do not assume that seeing an ID alone establishes the technology-based route.",
+      "source": "N.J.S.A. 52:7-10.10(d)(1)",
+      "sourceUrl": "https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM"
     },
     {
       "id": "nj-card-031",
@@ -8386,12 +8386,12 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
     {
       "id": "wi-card-010",
       "study": "commission",
-      "title": "Transition calendar",
-      "front": "How is the November 2026 system notice used?",
-      "rule": "The opened page schedules the new system for November 16 at 7 a.m. Central.",
-      "boundary": "On the November 14 check date this is a future transition notice.",
-      "mixup": "A scheduled system change does not itself waive examination or revoke commissions.",
-      "source": "Wisconsin DFI Notary File Online",
+      "title": "Wisconsin online filing",
+      "front": "Where does DFI direct four-year applicants and renewals to file online?",
+      "rule": "Use the Wisconsin Integrated Management System (WIMS) linked from DFI’s Notary File Online page.",
+      "boundary": "The DFI tutorial exam is separate. Save the passing certificate as directed.",
+      "mixup": "Using WIMS does not waive the examination, oath or bond.",
+      "source": "DFI Notary File Online",
       "sourceUrl": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx"
     },
     {
@@ -8740,11 +8740,11 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "remote",
       "title": "Provider authority",
       "front": "What makes an ordinary RON system usable?",
-      "rule": "It is approved for Wisconsin use and the notary completes its training and authorization.",
-      "boundary": "Multiple platforms require onboarding with each.",
+      "rule": "Complete training on a Wisconsin-approved platform. Notify DFI of the platform, upload your digital seal and signature, and wait for DFI approval.",
+      "boundary": "Each platform needs onboarding. The provider has its own separate duty to report users it authorizes.",
       "mixup": "A generic meeting subscription is not approval.",
-      "source": "Wisconsin DFI Remote guide 2B",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "source": "Wisconsin DFI Remote Online Notary",
+      "sourceUrl": "https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx"
     },
     {
       "id": "wi-card-043",

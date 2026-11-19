@@ -1625,7 +1625,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "State prerequisites",
-          "body": "The 2026 manual identifies age eighteen and New Jersey residence or the stated employment/practice connection, subject to disqualification. A nonattorney initial applicant completes the Treasurer's required course and prescribed examination. The current portal directs thorough manual reading, the entire training-video series and the completion attestation. Passing the exam permits the registration application to be completed. It does not finish every appointment step."
+          "body": "The 2026 manual identifies age eighteen and New Jersey residence or the stated employment/practice connection, subject to disqualification. A nonattorney initial applicant completes the Treasurer's required course and prescribed examination. The current portal directs applicants to read the manual and watch the entire training-video series. The statute requires applicants to state that they read and understood the manual and to complete required education. Passing the exam permits the registration application to be completed. It does not finish every appointment step."
         },
         {
           "heading": "Application and verified limits",
@@ -1634,7 +1634,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       ],
       "example": {
         "heading": "Worked example",
-        "body": "A first nonattorney applicant reads the manual, watches the whole video series and attests to completion, then uses the New Commissioning Application and passes the official test. The applicant completes registration with the required endorsement and payment and later qualifies before the proper county clerk. A commercial badge supplies no appointment authority."
+        "body": "A first nonattorney applicant reads the manual, watches the whole video series and follows the education instructions, then uses the New Commissioning Application and passes the official test. The applicant completes registration with the required endorsement and payment and later qualifies before the proper county clerk. A commercial badge supplies no appointment authority."
       },
       "keyFacts": [
         "Initial nonattorney applicants complete the required education and prescribed exam.",
@@ -1675,7 +1675,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Qualification and historical records",
-          "body": "An initial or renewed commission requires timely county swearing-in. A missed three-month receipt-based oath period causes the cancellation and revocation described in the manual. Resignation, revocation or suspension also leaves journal-retention or prescribed transmission duties. The statutory validity provision does not validate purported acts by persons without authority, and validity of an act does not bar all challenges to the underlying transaction."
+          "body": "An initial or renewed commission requires timely county swearing-in. A missed three-month receipt-based oath period causes the cancellation and revocation described in the manual. After resignation, revocation or suspension, a notary who retains the journal must tell the State Treasurer where it is kept. The alternative is transmission under the prescribed secure procedure. The statutory validity provision does not validate purported acts by persons without authority, and validity of an act does not bar all challenges to the underlying transaction."
         }
       ],
       "example": {
@@ -1744,7 +1744,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Acts, assistance and remote identity",
-          "body": "Acknowledgment identity includes the appearing individual and connection to the signature. Verification on oath or affirmation concerns truth of a record statement. A physically unable person may direct someone other than the officer to sign, with the prescribed explanation. Remote work under Chapter 8 uses visual Chapter 7 document verification and the stated proofing method. Signature/photo mismatch, competence or involuntary execution can support refusal under Chapter 10."
+          "body": "Acknowledgment identity includes the appearing individual and connection to the signature. Verification on oath or affirmation concerns truth of a record statement. A physically unable person may direct someone other than the officer to sign, with the prescribed explanation. For remote acts, N.J.S.A. 52:7-10.10(d)(1) recognizes personal knowledge, a qualifying credible witness, or at least two different kinds of identity proofing. The adopted rule also lists personal knowledge and addresses how technology-based identity verification works. The manual’s visual-review workflow should be read with those authorities. Signature/photo mismatch, competence or involuntary execution can support refusal under Chapter 10."
         }
       ],
       "example": {
@@ -1755,7 +1755,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         "The listed expiration allowance is no more than three years.",
         "The other-government-ID category uses signature or photograph plus satisfaction.",
         "The officer may request additional identity assurance.",
-        "Remote visual verification and identity proofing have separate roles."
+        "Check the statutory and adopted-rule routes when identifying a remote principal."
       ]
     },
     "record-ownership": {
@@ -1767,7 +1767,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Retention and transitions",
-          "body": "Report journal loss or theft within ten days and device loss or theft within ten calendar days as directed. The journal is retained ten years after its last chronicled act or handled through Treasury's secure-transmission instructions. Resignation or discipline preserves those record obligations. Death or adjudicated incompetency creates a forty-five-day Treasury contact step in the current manual. Electronic credentials and remote recordings have additional control and custody provisions."
+          "body": "Report journal loss or theft within ten days and device loss or theft within ten calendar days as directed. Retain the journal ten years after its last chronicled act or follow Treasury’s secure-transmission instructions. After resignation, revocation or suspension, a notary who retains the journal must tell the State Treasurer where it is kept. After death or adjudicated incompetency, contact Treasury promptly for instructions. The statute requires the applicable custodian to transmit the journal within 45 days. Electronic credentials and remote recordings have additional control and custody provisions."
         }
       ],
       "example": {
@@ -2643,7 +2643,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Wait for issued authority",
-          "body": "Follow the current filing page for the online information, executed oath, specific bond and active seal/signature samples. Notice that the commission has issued precedes performing acts. Permanent attorney applicants have separate good-standing evidence and no ordinary bond, but must still apply and receive issuance. On the November 14 verification date, the filing page schedules a new system for November 16, 2026 at 7 a.m. Central, so consult the official entry when actually filing."
+          "body": "Follow the current filing page for the online information, executed oath, specific bond and active seal/signature samples. Notice that the commission has issued precedes performing acts. Permanent attorney applicants have separate good-standing evidence and no ordinary bond, but must still apply and receive issuance. Use Wisconsin’s Integrated Management System (WIMS), linked on the DFI filing page, to file or renew online."
         }
       ],
       "example": {
@@ -2731,7 +2731,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Arrange ordinary RON safeguards",
-          "body": "A commissioned notary obtains authorization and training with a suitable approved provider, then checks provider notification and the public database. Confirm identity through the prescribed route, the same record, tamper evidence and the communication-technology certificate statement. Preserve the audiovisual performance for at least seven years through a retrievable arrangement. The notary remains physically in Wisconsin and ultimately responsible for preservation and confidentiality."
+          "body": "A commissioned notary completes an approved provider’s training, notifies DFI of the platform, uploads the digital seal and signature, and waits for agency approval before use. The provider also reports its newly authorized users to DFI. Confirm identity through the prescribed route, the same record, tamper evidence and the communication-technology certificate statement. Preserve the audiovisual performance for at least seven years through a retrievable arrangement. The notary remains physically in Wisconsin and ultimately responsible for preservation and confidentiality."
         },
         {
           "heading": "Route estate planning correctly",

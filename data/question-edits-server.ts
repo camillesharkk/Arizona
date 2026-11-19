@@ -1021,6 +1021,378 @@ export const serverQuestionEdits: Readonly<Partial<Record<string, QuestionEdit>>
       "last_verified_at": "2026-11-19"
     }
   },
+  "nj-020": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A first-time New Jersey applicant who is not a New Jersey-licensed attorney has watched only the first training video. What does the official exam portal direct applicants to do before starting the exam process?",
+      "option_a": "Review the New Jersey Notary Public Manual and watch the entire training video series",
+      "option_b": "Watch any one training clip",
+      "option_c": "Buy a private study subscription",
+      "option_d": "Open the registration page without reviewing the materials",
+      "correct_option": "A",
+      "explanation": "The first step on the official exam portal is to review the New Jersey Notary Public Manual and watch the entire training video series. Watching one video does not complete that step.",
+      "option_feedback": {
+        "A": "Correct. The portal lists both activities in its first step.",
+        "B": "One clip does not complete the full series.",
+        "C": "A private subscription does not complete the official study step.",
+        "D": "Opening the registration page does not complete the manual or video review."
+      },
+      "source_id": "nj-portal",
+      "source_reference": "New Jersey DORES Notary Public Exam portal, New Notary Applicant Process, step 1 https://www.njportal.com/DOR/NotaryExam/",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-026": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A New Jersey notary applicant who is not a New Jersey-licensed attorney was found culpable in a disciplinary proceeding involving another professional license regulated by the state. How can the State Treasurer treat that finding?",
+      "option_a": "Disregard it if the applicant creates a new email address",
+      "option_b": "Consider it only if the proceeding led to a criminal conviction",
+      "option_c": "Consider it among the grounds for an adverse decision on the notary commission",
+      "option_d": "Disregard it because professional discipline is unrelated to notary eligibility",
+      "correct_option": "C",
+      "explanation": "New Jersey lists a finding of culpability in a disciplinary or other administrative action involving a state-regulated professional license among the grounds that may affect a non-attorney applicant’s notary commission.",
+      "option_feedback": {
+        "A": "Changing contact information does not affect the disciplinary finding.",
+        "B": "The specific ground does not require a criminal conviction.",
+        "C": "Correct. The finding is among the circumstances the Treasurer may consider.",
+        "D": "The statute expressly lists this kind of professional discipline."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.4(a)(7)(d); September 2026 NJ Notary Public Manual, Chapter 5, p. 10 https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-053": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A New Jersey notary is identifying a remote signer through the identity-proofing route in N.J.S.A. 52:7-10.10(d)(1)(c), without relying on personal knowledge or a credible witness. What minimum does that statutory route specify?",
+      "option_a": "One answer supplied by the signer’s employer",
+      "option_b": "One file name matching the signer’s name",
+      "option_c": "One type of identity proofing",
+      "option_d": "At least two different types of identity proofing",
+      "correct_option": "D",
+      "explanation": "The statute’s identity-proofing route requires at least two different types of proofing. It also lists personal knowledge and sworn or affirmed verification by a qualifying credible witness as separate identity routes. The administrative rule supplies its own remote identification procedures.",
+      "option_feedback": {
+        "A": "A statement from an employer does not meet this statutory identity-proofing minimum.",
+        "B": "A matching file name does not prove the signer’s identity.",
+        "C": "The specified statute requires at least two different types.",
+        "D": "Correct. This is the minimum in the named statutory route."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.10(d)(1)(a)–(c); N.J.A.C. 17:50-1.14(g)(3) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-054": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A remote identity service gives a signer the expected answers before a dynamic knowledge-based authentication challenge. Which New Jersey requirement did the service violate?",
+      "option_a": "The challenge must be limited to questions about payments.",
+      "option_b": "The challenge must use questions from the notary commissioning exam.",
+      "option_c": "The challenge uses questions based on personal history from public or private data sources without giving the signer the answers in advance.",
+      "option_d": "The challenge must use questions about the notary’s family.",
+      "correct_option": "C",
+      "explanation": "Dynamic knowledge-based authentication uses questions about the person’s history from public or private data sources. The service may not give the person the answers in advance.",
+      "option_feedback": {
+        "A": "The definition does not limit the questions to payments.",
+        "B": "This is an identity challenge, separate from the notary commissioning exam.",
+        "C": "Correct. Giving the answers beforehand violates the definition.",
+        "D": "The questions concern the person being identified."
+      },
+      "source_id": "nj-manual",
+      "source_reference": "New Jersey Notary Public Manual, September 14, 2026, Chapter 8, p. 18; N.J.A.C. 17:50-1.14(d) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-071": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A New Jersey notary resigns and chooses to keep the journal instead of transferring it. What does state law require of the former notary?",
+      "option_a": "Keep the front cover and discard the entries.",
+      "option_b": "Retain the journal for 10 years after its last notarial act and tell the State Treasurer where it is kept.",
+      "option_c": "Destroy the journal immediately after resigning.",
+      "option_d": "Give the journal to the last customer and take no further action.",
+      "correct_option": "B",
+      "explanation": "A former notary who keeps the journal after resignation retains it for 10 years after the last act recorded in it and informs the State Treasurer of its location. The law also permits transfer to the Division of Revenue and Enterprise Services or a repository approved by the Treasurer.",
+      "option_feedback": {
+        "A": "The journal entries are part of the record the former notary must retain.",
+        "B": "Correct. The law requires both retention and notice of the journal’s location.",
+        "C": "Resignation does not end the retention duty.",
+        "D": "The last customer is not an authorized recipient by virtue of being the last customer."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.18(d)–(e) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-072": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Someone knowingly holds a journal after a New Jersey notary dies. Which recipient does state law authorize for the required journal transfer?",
+      "option_a": "The Division of Revenue and Enterprise Services or a repository approved by the State Treasurer",
+      "option_b": "Any storage company the family chooses",
+      "option_c": "Any of the deceased notary’s last customers",
+      "option_d": "The first new notary willing to use the journal",
+      "correct_option": "A",
+      "explanation": "State law directs the person holding the journal after the notary’s death to transmit it to the Division of Revenue and Enterprise Services or a repository approved by the State Treasurer within 45 days. The administrative rule and manual direct the holder to contact the Treasurer for secure transmission instructions.",
+      "option_feedback": {
+        "A": "Correct. The law identifies these recipients.",
+        "B": "A private repository must have the State Treasurer’s approval.",
+        "C": "Receiving service from the former notary does not authorize custody.",
+        "D": "A new notary does not inherit a predecessor’s journal for use in their own work."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.18(f); N.J.A.C. 17:50-1.11(f) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-162": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A New Jersey notary’s commission is suspended. What may the notary do with the existing journal?",
+      "option_a": "Give it to any customer who agrees to store it.",
+      "option_b": "Leave it at the office without telling the State Treasurer where it is.",
+      "option_c": "Retain it for the required period and tell the State Treasurer where it is, or transfer it to an authorized recipient.",
+      "option_d": "Delete the journal as soon as the suspension begins.",
+      "correct_option": "C",
+      "explanation": "Suspension does not end the record duty. The notary can keep the journal for 10 years after the last recorded act and tell the State Treasurer where it is kept. Alternatively, the notary can transfer it to the Division of Revenue and Enterprise Services or a repository approved by the Treasurer.",
+      "option_feedback": {
+        "A": "A customer is not a designated statutory recipient simply because they offer to store it.",
+        "B": "If the notary keeps the journal, the law requires notice of its location.",
+        "C": "Correct. Use the retention-and-notice or authorized-transfer route.",
+        "D": "Suspension does not authorize destruction."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.18(d)–(e) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-174": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A commissioned New Jersey notary takes an acknowledgment on a paper document. The notary says aloud that the act is complete but writes nothing on or with the document. What is still required?",
+      "option_a": "Only a fee receipt",
+      "option_b": "Only a reminder of the appointment",
+      "option_c": "A notarial certificate and a clear official stamp near the notary’s signature",
+      "option_d": "Only an oral promise to confirm the act later",
+      "correct_option": "C",
+      "explanation": "The acknowledgment must be evidenced by a signed and dated notarial certificate. For a paper act performed by a New Jersey notary public, the official stamp is placed near the notary’s signature so it is clear and readable.",
+      "option_feedback": {
+        "A": "A receipt records payment. It does not document the acknowledgment.",
+        "B": "A reminder does not record the completed act.",
+        "C": "Correct. A paper acknowledgment by a commissioned notary requires the certificate and official stamp.",
+        "D": "An oral promise cannot replace the written certificate or stamp."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-19(a), (e); N.J.S.A. 52:7-10.5(b) https://www.nj.gov/treasury/revenue/pdf/notarypublicmanual.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nj-203": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A New Jersey notarial officer was authorized to act but omitted a required step. Under N.J.S.A. 52:7-10.19(a), what is the general effect of that omission on the notarization?",
+      "option_a": "It grants retroactive notarial authority to anyone who acted without it.",
+      "option_b": "The omission does not by itself invalidate the act, subject to the statute’s express exception for the provision on commission actions.",
+      "option_c": "It automatically makes every term in the underlying record enforceable.",
+      "option_d": "It prevents an aggrieved party from seeking other remedies.",
+      "correct_option": "B",
+      "explanation": "Section 52:7-10.19(a) generally preserves an authorized officer’s notarial act despite a missed duty or requirement, except as otherwise provided in § 52:7-10.4. The surrounding provisions preserve challenges to the underlying record and do not validate actions by someone without authority. The separate prohibition on acting when the officer or a specified partner has a conflict remains applicable.",
+      "option_feedback": {
+        "A": "The statute expressly excludes purported acts by someone without authority.",
+        "B": "Correct. The express cross-reference is to § 52:7-10.4, which addresses grounds for commission actions.",
+        "C": "The rule concerns validity of the notarial act. It does not decide enforceability of every term.",
+        "D": "The statute preserves available challenges and remedies."
+      },
+      "source_id": "nj-law-2021",
+      "source_reference": "N.J.S.A. 52:7-10.19(a)–(c), 52:7-10.4, and 52:7-10.7(b) https://pub.njleg.state.nj.us/Bills/2020/PL21/179_.HTM",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-012": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "The Nevada Secretary of State has authority to approve a vendor to provide mandatory notary education. What do the agency’s current public instructions say new and renewing applicants should use for traditional training?",
+      "option_a": "The Nevada Secretary of State’s official training site.",
+      "option_b": "Any company that has registered to do business in Nevada.",
+      "option_c": "Any course website that looks professional.",
+      "option_d": "Any course the applicant personally approves.",
+      "correct_option": "A",
+      "explanation": "The statute permits instruction by the Secretary of State or an approved vendor. For a traditional appointment or renewal, the agency’s current instructions direct applicants to its own training website.",
+      "option_feedback": {
+        "A": "The agency’s published instructions identify its official training site.",
+        "B": "A business registration does not satisfy the training instructions.",
+        "C": "A website’s design does not establish approval.",
+        "D": "An applicant cannot approve a vendor for the program."
+      },
+      "source_reference": "Nevada Secretary of State, Training and Exam Requirements. NRS 240.018(1)(a)(2). https://nvsos.gov/index.aspx?page=165",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-023": {
+    "version": 1,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Nevada applicant earned a traditional notary training certificate more than 90 days ago. How long is that certificate valid under Nevada’s rule?",
+      "option_a": "Until the county clerk decides it has expired.",
+      "option_b": "For 90 days after the date it was issued.",
+      "option_c": "Indefinitely.",
+      "option_d": "Until the applicant’s first stamp expires.",
+      "correct_option": "B",
+      "explanation": "The successful-completion certificate is valid for 90 days after its date of issuance. The applicant should check the current course and filing instructions before applying with expired proof.",
+      "option_feedback": {
+        "A": "The rule identifies the period and gives the county clerk no extension authority.",
+        "B": "The rule measures the 90 days from issuance.",
+        "C": "The regulation specifies a limited validity period.",
+        "D": "Stamp expiration does not determine training certificate validity."
+      },
+      "source_reference": "NAC 240.270(2). https://www.leg.state.nv.us/NAC/NAC-240.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-056": {
+    "version": 1,
+    "replacementId": "wi-204",
+    "fields": {
+      "question_text": "A Wisconsin notary is preparing to renew a four-year commission online. Which filing route does the Department of Financial Institutions currently direct them to use?",
+      "option_a": "Use the Wisconsin Integrated Management System linked from DFI’s Notary File Online page.",
+      "option_b": "Enter the renewal application in the notary tutorial’s final exam.",
+      "option_c": "Ask the surety company to renew the commission automatically.",
+      "option_d": "Wait for a private notary training provider to file the renewal.",
+      "correct_option": "A",
+      "explanation": "DFI directs four-year renewal applicants to the Wisconsin Integrated Management System (WIMS), linked from its Notary File Online page. Follow the current DFI filing instructions and meet the separate exam, oath and bond requirements.",
+      "option_feedback": {
+        "A": "WIMS is the online filing portal identified by DFI.",
+        "B": "DFI provides the examination separately from the renewal filing process.",
+        "C": "A surety company supplies the bond. DFI handles renewal filings.",
+        "D": "DFI directs the notary to use its filing portal."
+      },
+      "source_id": "wi-file",
+      "source_reference": "Wisconsin DFI Notary File Online, four-year application or renewal steps, and DFI FAQ, “How do I renew my commission?” https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/NotaryFileOnline.aspx",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-127": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Under Wisconsin Administrative Code DFI-CCS 25.04(4)(c), who must promptly inform DFI when a technology provider newly authorizes a Wisconsin notary to use its platform for remote notarizations?",
+      "option_a": "The notary, as a substitute for the provider’s report.",
+      "option_b": "The approved technology provider.",
+      "option_c": "The first customer to use the platform with that notary.",
+      "option_d": "The manufacturer of the notary’s stamp.",
+      "correct_option": "B",
+      "explanation": "The approved technology provider must report Wisconsin notaries it newly authorizes to use its platform. The notary separately notifies DFI of the technology they intend to use and follows DFI’s registration and approval instructions before using the platform.",
+      "option_feedback": {
+        "A": "The notary’s own registration is a separate step. The rule assigns this authorization report to the provider.",
+        "B": "The approved provider reports the notaries it newly authorizes.",
+        "C": "The customer has no role in the provider’s report.",
+        "D": "The stamp manufacturer does not authorize platform use or report it."
+      },
+      "source_id": "wi-remote-registration",
+      "source_reference": "Wisconsin Admin. Code DFI-CCS 25.04(4)(c), Wis. Stat. §§ 140.145(7) and 140.20(2), and DFI Remote Online Notary registration. https://www.wisbar.org/wssfc/2024/PublishingImages/Pages/Resources/TECH6_ESignatureTechnology.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-128": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Wisconsin notary has sent DFI the platform information, digital seal and signature for ordinary remote online notarization. DFI has yet to approve the registration. How should the notary handle the first remote appointment on that platform?",
+      "option_a": "Wait for DFI approval before performing the appointment on the platform.",
+      "option_b": "Treat the upload receipt as approval and perform the appointment.",
+      "option_c": "Go ahead if the customer consents in writing.",
+      "option_d": "Ask the platform to waive DFI review.",
+      "correct_option": "A",
+      "explanation": "DFI says it reviews a notary’s remote registration and that the notary may start using the platform after approval. Uploading the materials begins that review.",
+      "option_feedback": {
+        "A": "DFI approval must be in place before using the platform for the act.",
+        "B": "An upload receipt confirms submission. DFI still needs to review the registration.",
+        "C": "Customer consent does not confer DFI approval.",
+        "D": "The provider cannot waive a DFI registration review."
+      },
+      "source_id": "wi-remote-registration",
+      "source_reference": "Wisconsin DFI, Remote Online Notary registration instructions, approval and public record notice. https://dfi.wi.gov/Pages/ConsumerServices/NotaryPublic/RemoteOnlineNotary.aspx",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-133": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "What does DFI’s current recertification form require a Wisconsin remote online notarization technology provider to do when a notary gains or loses authorization to use its platform?",
+      "option_a": "Wait until the next annual recertification to report the change.",
+      "option_b": "Report the change only if a customer complains.",
+      "option_c": "Keep the change only in the provider’s internal records.",
+      "option_d": "Promptly update DFI through its dedicated technology-provider portal.",
+      "correct_option": "D",
+      "explanation": "Condition 2 of DFI’s current recertification form requires approved providers to promptly report both new and ended authorizations through the provider portal.",
+      "option_feedback": {
+        "A": "Annual recertification is a separate obligation.",
+        "B": "The change itself calls for a prompt update.",
+        "C": "Keeping internal records does not submit the required DFI update.",
+        "D": "Prompt reporting through the dedicated provider portal covers both kinds of changes."
+      },
+      "source_id": "wi-ron-recertification",
+      "source_reference": "Wisconsin DFI Form NOT107, revised August 2025, p. 1, condition 2. https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-135": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Wisconsin remote online notarization technology provider has a breach involving its notarial services that triggers a legal duty to notify Wisconsin residents. What additional notification does DFI’s current recertification form require?",
+      "option_a": "Send a copy of the promotional terms to the affected customers.",
+      "option_b": "Notify DFI of the breach and its scope.",
+      "option_c": "Wait and mention the breach only in the next annual recertification.",
+      "option_d": "Report only to the provider’s internal marketing department.",
+      "correct_option": "B",
+      "explanation": "Condition 5 of DFI’s current recertification form requires the provider to notify DFI of the breach and its scope when it concerns remote notarial services or technology and requires notice to one or more Wisconsin residents under Wis. Stat. §134.98 or other applicable law.",
+      "option_feedback": {
+        "A": "Marketing materials do not provide DFI with the required breach notice.",
+        "B": "The notice to DFI is additional to the legally required resident notice.",
+        "C": "Annual recertification is separate from the breach notice.",
+        "D": "Internal reporting does not notify DFI."
+      },
+      "source_id": "wi-ron-recertification",
+      "source_reference": "Wisconsin DFI Form NOT107, revised August 2025, p. 1, condition 5. https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wi-158": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Under Wisconsin’s signed-copy procedure for remote estate notarization, who sends a legible copy of the entire signed document directly to the notary by fax or electronic means?",
+      "option_a": "The notary’s technology provider.",
+      "option_b": "Any person with a copy, regardless of the signer’s direction.",
+      "option_c": "The remotely located signer or someone acting at the signer’s direction.",
+      "option_d": "Only the supervising attorney, even when the signer has not directed the attorney to send it.",
+      "correct_option": "C",
+      "explanation": "Under Wis. Stat. § 140.147(3)(j)2, the signer or a person acting at the signer’s direction sends the legible signed copy directly to the notary by fax or electronic means within a reasonable time. They separately send the entire signed original to the supervising attorney through the delivery methods the statute specifies.",
+      "option_feedback": {
+        "A": "The statute assigns the sending step to the signer or a directed person.",
+        "B": "A person other than the signer must act at the signer’s direction.",
+        "C": "This is the statutory sender for the signed-copy procedure.",
+        "D": "The supervising attorney receives the signed original. Their role on its own does not authorize them to send the separate signed copy on behalf of the signer."
+      },
+      "source_id": "wi-estate-act",
+      "source_reference": "Wisconsin 2023 Act 130 § 1, Wis. Stat. § 140.147(3)(j)2. https://www.wisbar.org/wssfc/2024/PublishingImages/Pages/Resources/SUB4_EstatePlanningLaws.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
   "il-157": {
     "version": 2,
     "previousReviewedDate": "2026-11-14",

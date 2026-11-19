@@ -85,6 +85,27 @@ export const paQuestionEdits: Readonly<Partial<Record<string, QuestionEdit>>> = 
       "last_verified_at": "2026-11-19"
     }
   },
+  "pa-173": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-12",
+    "fields": {
+      "question_text": "A Pennsylvania notary dies. The personal representative finds the notary’s official stamping device. What must the representative do?",
+      "option_a": "Render the device unusable.",
+      "option_b": "Let relatives use it until the expiration date printed on it.",
+      "option_c": "Sell it in working condition.",
+      "option_d": "",
+      "correct_option": "A",
+      "explanation": "After a notary’s death or an adjudication of incompetency, the personal representative, guardian, or anyone knowingly in possession of the device must make it unusable. The statute allows destroying, defacing, damaging, erasing, or securing the device in a way that prevents its use.",
+      "option_feedback": {
+        "A": "The representative must prevent the device from being used again.",
+        "B": "A printed expiration date does not allow continued use after the notary’s death.",
+        "C": "Selling a functioning device does not satisfy the duty to disable it.",
+        "D": ""
+      },
+      "source_reference": "57 Pa.C.S. § 318(a)(3). https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/57/00.003..HTM",
+      "last_verified_at": "2026-11-19"
+    }
+  },
   "pa-077": {
     "version": 1,
     "previousReviewedDate": "2026-11-12",

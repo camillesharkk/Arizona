@@ -4,6 +4,8 @@ import { testLoader } from './pack-test-utils.mjs';
 
 const load = testLoader();
 const { publishedNcQuestions, ncQuestionCounts, ncTopics, ncCards, ncSources, NC_CHECKED } = load('data/nc-content.ts');
+const { ncQuestionEdits } = load('data/question-edits-nc.ts');
+const { questionReviewDate } = load('data/question-review-dates.ts');
 const questions = publishedNcQuestions();
 assert.deepEqual(JSON.parse(JSON.stringify(ncQuestionCounts())), { published: 203, free: 60, pro: 143 });
 assert.equal(questions.length, new Set(questions.map(question => question.question_id)).size);
@@ -21,8 +23,15 @@ for (let index = 0; index < questions.length; index += 1) {
   assert.equal(question.question_id, `nc-${String(index + 1).padStart(3, '0')}`);
   assert.equal(question.state, 'NC');
   assert.equal(question.status, 'published');
-  assert.equal(question.last_verified_at, NC_CHECKED);
-  assert.equal(question.version, 1);
+  const edit = ncQuestionEdits[question.question_id];
+  assert.equal(question.last_verified_at, questionReviewDate(question.question_id, NC_CHECKED));
+  assert.equal(question.version, edit?.version ?? 1);
+  if (question.version > 1) {
+    const historical = question.previous_versions.find(item => item.version === question.version - 1);
+    assert.equal(historical.question_id, question.question_id);
+    assert.equal(historical.last_verified_at, NC_CHECKED);
+    assert.ok(historical.option_feedback[historical.correct_option]);
+  }
   assert.ok(topicIds.has(question.study_topic));
   assert.ok(ncSources[question.source_id], `${question.question_id} resolves its official source`);
   assert.ok(/G\.S\. 10B-\d+|18 NCAC 07[A-Z] \.\d{4}|SOS 2026/.test(question.source_reference));
@@ -34,7 +43,7 @@ for (let index = 0; index < questions.length; index += 1) {
   const choices = ['a', 'b', 'c', 'd'].map(letter => question[`option_${letter}`]);
   assert.equal(new Set(choices.map(normalized)).size, 4, `${question.question_id} has four distinct options`);
   for (const letter of ['A', 'B', 'C', 'D']) assert.ok(question.option_feedback[letter]?.length > 15);
-  assert.equal(question.option_feedback[question.correct_option], question.explanation);
+  if (!edit) assert.equal(question.option_feedback[question.correct_option], question.explanation);
   answers[question.correct_option] += 1;
   distribution[question.study_topic] ??= { published: 0, free: 0, pro: 0 };
   distribution[question.study_topic].published += 1;
