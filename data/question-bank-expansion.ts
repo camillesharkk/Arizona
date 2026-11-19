@@ -224,7 +224,7 @@ export const expansionDrafts: ExpansionDraft[] = [
     option_feedback: {
       A: "An acknowledgment is not an investment guarantee.",
       B: "Correct. A.R.S. § 41-251(1): purpose stated, and if representative, proper authority as the identified person or entity.",
-      C: "The notary does not legal-opinion the trust.",
+      C: "Taking the acknowledgment does not certify that the trust is legally valid.",
       D: "Do not certify appearance of persons who did not appear (§ 41-254(A)).",
     },
     source_id: "ars_41_251",

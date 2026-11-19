@@ -1,9 +1,9 @@
 {
   "total": {
     "total": 5701,
-    "verifiedUnchanged": 514,
-    "revisedRechecked": 53,
-    "pending": 5115,
+    "verifiedUnchanged": 529,
+    "revisedRechecked": 57,
+    "pending": 5096,
     "held": 19
   },
   "byState": {
@@ -16,9 +16,9 @@
     },
     "AZ": {
       "total": 203,
-      "verifiedUnchanged": 91,
-      "revisedRechecked": 13,
-      "pending": 95,
+      "verifiedUnchanged": 106,
+      "revisedRechecked": 17,
+      "pending": 76,
       "held": 4
     },
     "CA": {
@@ -206,7 +206,7 @@
   },
   "nextPendingId": {
     "AR": "ar-001",
-    "AZ": "az-012",
+    "AZ": "az-016",
     "CA": "ca-001",
     "CO": "co-001",
     "CT": "ct-001",

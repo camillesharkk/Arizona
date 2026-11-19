@@ -2,9 +2,11 @@
 
 The starting revision was `cff103d7ac578a70d6f6d54ccf935416cc57d2b6`, confirmed on GitHub main and in the successful production deployment. The [checkpoint](checkpoint.json) is rebuilt from the canonical bank and the [per-item evidence ledger](evidence.jsonl). Each reviewed record identifies the authored location, content version and SHA-256, timestamp, rule evidence, and substantive disposition. Prior evidence was recovered from the original ledger and tied to hashes rebuilt from its exact published commit. Raw working records remain in the existing private audit location.
 
-395 questions passed for the first time, 3 previous passes were rechecked, 169 were carried forward with matching evidence, and 2 previous passes were suspended. The 398 passes recorded during this continuation use their actual November 19 review time. The full-audit date has not advanced for any bank.
+414 questions passed for the first time, 3 previous passes were rechecked, 169 were carried forward with matching evidence, and 2 previous passes were suspended. The 417 passes recorded during this continuation use their actual November 19 review time. The full-audit date has not advanced for any bank.
 
 Card and guide coverage was limited to the topics reviewed. Arizona changes cover journal custody, seal reporting, identity and electronic records in the guide, law pages and affected cards. California review covered recordkeeping, thumbprints, journal requests and seizure, listed ID and credible witnesses, with changes to the ID guide and one linked card. Indiana's identification review changed one card. New York's appointment review changed two cards and the related article. The Rhode Island ledger identifies 14 linked cards, and the Texas ledger identifies 18. The Texas records guide, article and two cards were updated. None of these checks represents a complete card-bank review.
+
+Arizona's acknowledgment follow-up also checked 19 questions against the current statute and the October 2026 manual, plus the linked appearance card and guide. It updated four questions, including the explanation for `az-013` to reflect the deed journal rule added by Laws 2026, chapter 31, effective September 12, 2026. [Enacted chapter, § 6](https://www.azleg.gov/legtext/57leg/2r/laws/0031.htm)
 
 ## Current holds and official sources
 
@@ -22,3 +24,5 @@ These reviews concern this site's original practice items. The official material
 Review the pending IDs in AZ, CA, IN, NY, RI and TX first, excluding every row that still matches completed evidence. Start with the remaining Arizona identification and notarial-act topics, California qualification and certificate rules, Indiana pending administrative standards, New York appointment and certificate details, Rhode Island control of official tools and Texas exceptions. Continue with the 22 remaining jurisdictions, using the [official-source index](pending-state-official-sources.md). Rebuild the fingerprint inventory and checkpoint before each independent release, and do not advance a complete-state date while any items remain pending or held.
 
 The RI [announcement draft](community-rhode-island-draft.md) was checked against the act and live guide. A public-page exact-match duplicate check returned no match. Chrome identified the Community Insights URL but the page binding timed out, leaving the signed-in team identity and posting rights unconfirmed.
+
+The Arizona [announcement draft](community-arizona-draft.md) addresses in-person deed acknowledgments. A public-page check found a California thumbprint topic but no match for SB 1479 or AZ-013.

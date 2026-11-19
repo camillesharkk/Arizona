@@ -70,7 +70,7 @@ export const chapters: StudyChapter[] = [
     sections: [
       {
         heading: "What you are certifying",
-        body: "You are not swearing that the deed is valid or that the price is fair. You are certifying identity, appearance, and a voluntary acknowledgment of the signature.",
+        body: "The signer declares that they signed for the purpose stated in the record. Confirm the appearing signer’s identity and that the signature is theirs. You may refuse if you are not satisfied that they signed knowingly and voluntarily.",
       },
       {
         heading: "Prior signatures",
@@ -84,12 +84,12 @@ export const chapters: StudyChapter[] = [
     keyFacts: [
       "Acknowledgment ≠ oath that the document is true.",
       "Complete the venue for the place the act occurs.",
-      "Loose certificates are for space, not for missing signers.",
+      "Securely attach a separate paper certificate and describe the record as required by A.R.S. § 41-264(F).",
     ],
     source_id: "ars_41_253",
     example: {
       heading: "Worked example: two names, one person",
-      body: "The deed names two owners. Only one appears. A.R.S. § 41-254(A) requires the individual whose signature is the subject of the act to appear. Complete the acknowledgment only for the person in front of you, and write a certificate that names only who appeared. Do not claim the absent owner appeared, and do not sign that person’s name. Executing a certificate certifies compliance with the act actually performed (A.R.S. § 41-264(D)).",
+      body: "The deed names two owners. Only one appears. Complete the acknowledgment for that signer and identify only that signer in the certificate. Apply the deed thumbprint rule and its exceptions in A.R.S. § 41-254(C)–(D). Keep the absent owner off the certificate under §§ 41-254(A) and 41-264(D).",
     },
   },
   {
