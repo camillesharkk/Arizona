@@ -75,7 +75,7 @@ export async function POST(req: Request) {
       const used = await store.getGuestExam(owner, claims.state);
       const accountId = claims.sub === session?.id ? session.id : undefined;
       const receipt = used ?? (await fullTrialAvailable(claims.state, claims.sub, accountId)
-        ? await store.reserveGuestExam({ owner, state: claims.state, examId: claims.fullTrialId, sitting: {} })
+        ? await store.reserveGuestExam({ owner, state: claims.state, examId: claims.fullTrialId, sitting: claims })
         : await store.getGuestExam(owner, claims.state));
       if (receipt?.examId !== claims.fullTrialId) {
         return NextResponse.json({ error: "The free full practice for this state is already used." }, { status: 402, headers: privateHeaders });

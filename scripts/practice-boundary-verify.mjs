@@ -104,6 +104,8 @@ for (const state of fullStates) {
   assert(finish.status === 200 && JSON.parse(finish.text).results[0].skipped, `${state} full grade ${finish.status}`);
   const retry = await post("/api/practice/feedback/", submission, guest);
   assert(retry.status === 200, `${state} grade retry ${retry.status}`);
+  const review = await post("/api/practice/batch/", { state, mode: "full", restoreExamId: full.examId }, guest);
+  assert(review.status === 200 && JSON.parse(review.text).revealed, `${state} verified review without old token ${review.status}`);
   const again = await post("/api/practice/batch/", { state, mode: "full", practice: false }, guest);
   assert(again.status === 402, `${state} free trial reuse ${again.status}`);
 }

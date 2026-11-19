@@ -33,6 +33,7 @@ const schema = z.object({
   presetIds: z.array(z.string().max(80)).max(40).optional(),
   deliveryToken: z.string().max(8000).optional(),
   token: z.string().max(8000).optional(),
+  restoreExamId: z.string().uuid().optional(),
   topic: z.string().max(80).optional(),
   difficulty: z.string().max(20).optional(),
   filter: z.string().max(40).optional(),
@@ -88,8 +89,22 @@ export async function POST(req: Request) {
   const actor = await actorId(session?.id);
   const isPro = Boolean(session && await hasStatePro(session.id, body.data.state));
   const bypass = internalTask(req);
-  const prior = body.data.token ? await readPractice(body.data.token) : null;
-  const claimed = prior && prior.purpose === "sitting" && prior.state === body.data.state && ownsPractice(prior, session?.id, actor.anon);
+  let prior = body.data.token ? await readPractice(body.data.token) : null;
+  if (body.data.restoreExamId && body.data.mode === "full" &&
+      (!prior?.revealed || prior.fullTrialId !== body.data.restoreExamId)) {
+    const store = await getStore();
+    const guest = practiceGuestSubject(actor.anon);
+    const receipt = await store.getGuestExam(`practice-full:${actor.id}`, body.data.state);
+    const match = receipt?.examId === body.data.restoreExamId ? receipt :
+      session ? await store.getGuestExam(`practice-full:${guest}`, body.data.state) : null;
+    if (match?.examId === body.data.restoreExamId) {
+      const saved = match.sitting as typeof prior;
+      if (saved?.fullTrialId === match.examId && saved.state === body.data.state && ownsPractice(saved, session?.id, actor.anon)) {
+        prior = { ...saved, revealed: true };
+      }
+    }
+  }
+  const claimed = prior?.purpose === "sitting" && prior.state === body.data.state && ownsPractice(prior, session?.id, actor.anon) ? prior : null;
   try {
     if (body.data.kind === "topic") {
       if (!bypass) {
@@ -133,12 +148,12 @@ export async function POST(req: Request) {
     let examId: string | undefined;
     let fullTrialId: string | undefined;
     let resume = false;
-    if (claimed && prior) {
-      questions = loadIds(prior.ids, body.data.state, isPro || prior.revealed || Boolean(prior.fullTrialId), prior.versions);
+    if (claimed) {
+      questions = loadIds(claimed.ids, body.data.state, isPro || claimed.revealed || Boolean(claimed.fullTrialId), claimed.versions);
       if (!questions) return NextResponse.json({ error: "Pro access is required to reopen this saved set. Your stored result is preserved." }, { status: 402, headers: privateHeaders });
-      seed = prior.seed;
-      unscoredIds = prior.unscoredIds || [];
-      fullTrialId = prior.fullTrialId;
+      seed = claimed.seed;
+      unscoredIds = claimed.unscoredIds || [];
+      fullTrialId = claimed.fullTrialId;
       examId = fullTrialId;
       resume = true;
     }
@@ -211,15 +226,15 @@ export async function POST(req: Request) {
     }
     if (!questions.length) return NextResponse.json({ token: "", seed, questions: [], unscoredIds, pro: isPro, examId }, { headers: privateHeaders });
     if (questions.length > 80) return NextResponse.json({ error: "This practice set is not available." }, { status: 400, headers: privateHeaders });
-    const revealed = Boolean(claimed && prior?.revealed);
-    const pv = (claimed && prior.pv) || body.data.presentationVersion || 2;
+    const revealed = Boolean(claimed?.revealed);
+    const pv = claimed?.pv || body.data.presentationVersion || 2;
     const token = await signPractice({
-      sub: actor.id,
+      sub: claimed && fullTrialId ? claimed.sub : actor.id,
       state: body.data.state,
       ids: questions.map((question) => question.question_id),
       seed,
       pv,
-      practice: claimed ? prior.practice : body.data.mode !== "full" && Boolean(body.data.practice),
+      practice: claimed?.practice ?? (body.data.mode !== "full" && Boolean(body.data.practice)),
       revealed,
       purpose: "sitting",
       fullTrialId,

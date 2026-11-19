@@ -264,7 +264,7 @@ export function ExamRunner({
           if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner, stateCode);
           const archived = readCaAttempt(nextOwner, requestedAttempt, stateCode);
           if (archived && archived.mode === mode) {
-            const batch = await openBatch({ seed: archived.seed, questionIds: archived.questionIds, token: existing?.practiceToken, presentationVersion: archived.presentationVersion ?? 1 });
+            const batch = await openBatch({ seed: archived.seed, questionIds: archived.questionIds, restoreExamId: mode === "full" ? archived.id : undefined, presentationVersion: archived.presentationVersion ?? 1 });
             if (cancel) return;
             viewOnly.current = Boolean(existing);
             setOwner(nextOwner);
@@ -290,6 +290,7 @@ export function ExamRunner({
           seed: existing?.seed,
           questionIds: existing?.questionIds,
           token: startFresh ? undefined : existing?.practiceToken,
+          restoreExamId: mode === "full" && existing?.done ? existing.examId : undefined,
           presentationVersion: existing?.presentationVersion ?? 2,
         });
         if (cancel) return;
