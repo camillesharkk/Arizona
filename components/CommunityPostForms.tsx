@@ -56,6 +56,21 @@ export function CommunityComposer({
   const completed = Boolean(draft.submitted);
   const [dismissedResult, setDismissedResult] = useState<typeof result | null>(null);
 
+  const [cooldown, setCooldown] = useState<{ result: typeof result; remaining: number } | null>(null);
+  const remaining = cooldown?.result === result ? cooldown.remaining : result.retryAfterSeconds ?? 0;
+
+  useEffect(() => {
+    if (!result.retryAfterSeconds) return;
+    const until = performance.now() + result.retryAfterSeconds * 1000;
+    const tick = () => {
+      const seconds = Math.max(0, Math.ceil((until - performance.now()) / 1000));
+      setCooldown({ result, remaining: seconds });
+      if (!seconds) window.clearInterval(timer);
+    };
+    const timer = window.setInterval(tick, 1000);
+    return () => window.clearInterval(timer);
+  }, [result]);
+
   useEffect(() => {
     if (initializedDraftKey.current === draftKey) return;
     initializedDraftKey.current = draftKey;
@@ -98,7 +113,7 @@ export function CommunityComposer({
   return (
     <EnglishForm action={action} aria-labelledby={formId + "-label"} className="community-composer"
       onSubmit={(event) => {
-        if (!canPost || pending || completed) event.preventDefault();
+        if (!canPost || pending || completed || remaining > 0) event.preventDefault();
       }}>
       <p className="community-form-caption" id={formId + "-label"}>{label}</p>
       <p className="community-meta" id={formId + "-help"}>
@@ -125,11 +140,16 @@ export function CommunityComposer({
         : banned ? null
         : !accountScope ? <Link className="btn btn-primary" href={signIn}>Sign in to post</Link>
         : !hasNickname ? <a className="btn btn-primary" href="#community-nickname">Set a nickname to post</a>
-        : <button className="btn btn-primary" disabled={pending} type="submit">
+        : <button className="btn btn-primary" disabled={pending || remaining > 0} type="submit">
           {pending ? "Posting…" : needsTitle ? "Post discussion" : parentId ? "Post reply" : "Post comment"}
         </button>}
       <p className={result.message && !result.status ? "form-error" : "community-meta"} role="status">
-        {(result !== dismissedResult && result.message) || (completed ? "This draft was submitted for review." : "")}
+        {result.retryAfterSeconds ? (
+          remaining > 0 ? <>
+            <span className="visually-hidden">{result.message}</span>
+            <span aria-hidden="true">Posting limit reached. Try again in {remaining} {remaining === 1 ? "second" : "seconds"}.</span>
+          </> : "You can post again."
+        ) : (result !== dismissedResult && result.message) || (completed ? "This draft was submitted for review." : "")}
       </p>
     </EnglishForm>
   );

@@ -21,11 +21,11 @@ export default function CommunityRulesPage() {
         </section>
         <section>
           <h2>Discuss respectfully</h2>
-          <p>Questions, disagreements and criticism are welcome. Harassment, threats, impersonation, scams and spam are prohibited. Avoid rapid repeat posting and duplicate messages.</p>
+          <p>Questions, disagreements and criticism are welcome. Harassment, threats, impersonation, scams and spam are prohibited. You can publish up to {communityLimits.postsPerMinute} posts or replies per rolling minute. Identical submissions to the same discussion target within {communityLimits.duplicateSeconds} seconds are saved once.</p>
         </section>
         <section>
           <h2>Use trustworthy links</h2>
-          <p>Ordinary web links are welcome. Suspicious links may be held for review. Dangerous URL schemes are blocked.</p>
+          <p>Ordinary HTTP and HTTPS links are welcome. Dangerous URL schemes and links with embedded credentials are blocked.</p>
         </section>
         <section>
           <h2>Report a concern</h2>

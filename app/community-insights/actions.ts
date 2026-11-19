@@ -19,7 +19,7 @@ const postInput = z.object({
   body: z.string().trim().min(3).max(communityLimits.postBodyMax),
 });
 
-export type PublishDiscussionResult = { message: string; status?: "published" | "pending"; href?: string };
+export type PublishDiscussionResult = { message: string; status?: "published" | "pending"; href?: string; retryAfterSeconds?: number };
 export type CommunityReportResult = { message: string; ok?: boolean };
 
 export async function publishDiscussion(_prior: PublishDiscussionResult, form: FormData): Promise<PublishDiscussionResult> {
@@ -48,21 +48,24 @@ export async function publishDiscussion(_prior: PublishDiscussionResult, form: F
     return { message: "We could not save your message. Please try again." };
   }
   if (!result.ok) {
+    if (result.code === "rate") {
+      const seconds = result.retryAfterSeconds;
+      return { message: `Posting limit reached. Try again in ${seconds} ${seconds === 1 ? "second" : "seconds"}.`, retryAfterSeconds: seconds };
+    }
     return { message: {
-      rate: "You’ve reached the posting limit. Wait before trying again.",
       missing: "This discussion is no longer available.",
       depth: "Reply to an earlier message in this thread.",
       full: "This thread has reached its reply limit.",
       banned: "Your community access is restricted.",
       nickname: "Set a community nickname before posting.",
-      duplicate: "You recently posted a similar message. Edit your draft before trying again.",
-      link: "Remove the unsupported link and try again.",
+      duplicate: "This message was already submitted. Check the discussion before retrying.",
+      link: "Remove the link with an unsafe protocol or embedded credentials and try again.",
     }[result.code] };
   }
 
   revalidatePath(paths.community);
   return result.status === "pending"
-    ? { status: "pending", message: "Your message is awaiting link review. You can see it under Awaiting review." }
+    ? { status: "pending", message: "This message is awaiting moderator review. You can see it under Awaiting review." }
     : { status: "published", message: "Message posted.", href: communityDiscussionPath(insightId, result.threadId) };
 }
 

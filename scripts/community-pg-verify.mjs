@@ -13,6 +13,9 @@ const operator = postgres(url, { max: 1, ssl: "require", onnotice: () => {} });
 const sql = postgres(url, { max: 1, ssl: "require" });
 const secondSql = postgres(url, { max: 1, ssl: "require" });
 const load = testLoader({
+  "next/cache": { revalidatePath: () => {} },
+  "@/lib/session": { getSession: async () => ({ id: "e" }) },
+  "@/lib/community-store": { communityStore: () => store },
   "@/lib/store/pg-store": { getPgSql: () => { throw new Error("Production storage is forbidden in this test."); } },
 });
 const store = load("lib/community-store.ts").communityStore(sql);
@@ -35,7 +38,8 @@ try {
     values ('a','Alice Example','a@example.invalid','fixture',true,'pro'),
            ('b','Bob Example','b@example.invalid','fixture',true,'free'),
            ('c','Chris Example','c@example.invalid','fixture',true,'free'),
-           ('d','Dale Example','d@example.invalid','fixture',true,'free')
+           ('d','Dale Example','d@example.invalid','fixture',true,'free'),
+           ('e','Edition Example','e@example.invalid','fixture',true,'free')
   `;
   const legacyId = randomUUID();
   await sql`
@@ -58,7 +62,7 @@ try {
   const second = { ...first, id: randomUUID(), userId: "b", title: "Second question", body: "How can I check https://example.com/official-guide?" };
   const editorial = { ...first, id: randomUUID(), userId: "c", title: null, body: "The official handbook is helpful.", insightId: "az-manual-navigation" };
   assert.equal((await store.publish(first)).code, "nickname", "Auth account names do not enable posting");
-  for (const [user, name] of [["a", "Desert Owl"], ["b", "Study Buddy"], ["c", "Blue Pen"], ["d", "West Reader"]]) await store.setNickname(user, name);
+  for (const [user, name] of [["a", "Desert Owl"], ["b", "Study Buddy"], ["c", "Blue Pen"], ["d", "West Reader"], ["e", "Study Editor"]]) await store.setNickname(user, name);
   for (const post of [first, second, editorial]) {
     assert.equal((await store.publish(post)).status, "published", "New accounts and ordinary links publish immediately");
   }
@@ -68,9 +72,6 @@ try {
   assert.equal((await store.list(null, null, 0)).posts[0].id, second.id, "Newest wins an engagement tie");
   assert.equal((await store.list(editorial.insightId, "b", 0)).posts[0].id, editorial.id);
   assert.equal((await store.list("different-insight", "b", 0)).posts.length, 0);
-  assert.equal((await store.publish({ ...first, id: randomUUID(), body: first.body.toUpperCase() + "!!!" })).code, "duplicate");
-  const similar = { ...first, id: randomUUID(), body: first.body + " Yes." };
-  assert.equal((await store.publish(similar)).code, "duplicate");
   assert.equal((await store.publish({ ...first, id: randomUUID(), body: "Try javascript:alert(1)" })).code, "link");
 
   await Promise.all([store.setInsightLike(editorial.insightId, "b", true), secondStore.setInsightLike(editorial.insightId, "b", true)]);
@@ -110,11 +111,18 @@ try {
 
   const suspicious = { ...first, id: randomUUID(), userId: "b", title: "Short link", body: "This is the resource https://bit.ly/example." };
   const pendingReply = { ...reply, id: randomUUID(), body: "Try https://user@example.invalid/resource." };
-  assert.equal((await store.publish(suspicious)).status, "pending");
-  assert.equal((await store.publish(pendingReply)).status, "pending");
+  // These records represent the review queue from before immediate publication.
+  await sql`insert into community_posts (id, user_id, title, body, moderation_status)
+    values (${suspicious.id}, ${suspicious.userId}, ${suspicious.title}, ${suspicious.body}, 'pending')`;
+  await sql`insert into community_posts (id, user_id, parent_id, thread_id, depth, body, moderation_status)
+    values (${pendingReply.id}, ${pendingReply.userId}, ${first.id}, ${first.id}, 1, ${pendingReply.body}, 'pending')`;
+  assert.equal((await store.publish({
+    ...suspicious, id: randomUUID(), title: "Another discussion",
+  })).status, "published", "A new ordinary short-link post is independent of the old review queue");
   assert.equal(await store.thread(null, suspicious.id, null), null);
   assert.equal(await store.thread(null, suspicious.id, "b"), null, "Only the private author view returns pending content");
   assert.equal((await store.member("b")).pending[0].id, suspicious.id);
+  assert.equal((await store.publish(suspicious)).status, "pending", "A legacy in-flight retry does not publish pending content");
   assert.equal((await store.member("a")).pending.length, 0);
   assert.equal((await store.thread(null, first.id, null)).replies.some((row) => row.id === pendingReply.id), false);
   assert.equal((await moderator.posts("review", 0)).length, 2);
@@ -175,17 +183,91 @@ try {
   assert.equal((await store.member("a")).banned, false);
   assert.equal((await store.publish({ ...first, id: randomUUID(), body: "Study group starts next week." })).status, "published");
 
-  await sql`update community_posts set created_at = now() - interval '1 second' where user_id = 'c'`;
-  const accepted = { ...nested, id: randomUUID(), parentId: first.id, body: "Where is the application checklist?" };
-  assert.equal((await store.publish(accepted)).status, "published");
-  assert.equal((await store.publish({ ...accepted, id: randomUUID(), body: "Could we review this tomorrow?" })).code, "rate");
-  await sql`update community_posts set created_at = now() - interval '2 minutes' where user_id = 'c'`;
-  await sql`
-    insert into community_posts (id, user_id, title, body, created_at)
-    select gen_random_uuid(), 'c', 'Daily rate fixture', 'Daily rate fixture ' || n, now() - interval '3 minutes'
-    from generate_series(1, 27) as n
-  `;
-  assert.equal((await store.publish({ ...accepted, id: randomUUID(), body: "This is submission thirty-one." })).code, "rate");
+  const { publishDiscussion } = load("app/community-insights/actions.ts");
+  // The action's database guard sees only the isolated binding.
+  process.env.DATABASE_URL = url;
+  function submit(post) {
+    const form = new FormData();
+    for (const key of ["id", "insightId", "parentId", "title", "body"]) {
+      if (post[key] !== null) form.set(key, post[key]);
+    }
+    return publishDiscussion({ message: "" }, form);
+  }
+  const makeReply = (body, parentId = first.id) => ({
+    id: randomUUID(), userId: "e", title: null, parentId, body, insightId: null,
+  });
+  const publishBody = async (body, target) => {
+    const post = makeReply(body, target);
+    const result = await submit(post);
+    assert.equal(result.status, "published", result.message);
+    return post;
+  };
+
+  const thanks = await publishBody("Thank you");
+  const duplicate = await submit({ ...thanks, id: randomUUID() });
+  assert.equal(duplicate.status, undefined);
+  assert.match(duplicate.message, /identical|same|already|twice/i);
+  assert.equal((await submit(thanks)).status, "published", "Request-ID retry must succeed");
+  assert.equal((await sql`select count(*)::int as count from community_posts
+    where user_id = 'e' and parent_id = ${first.id} and body = 'Thank you'`)[0].count, 1);
+  await publishBody("Thank you", second.id);
+  await sql`update community_posts set created_at = clock_timestamp() - interval '11 seconds'
+    where id = ${thanks.id}`;
+  await publishBody("Thank you");
+  await publishBody("For the application rule, I am comparing subsection 2 with this interpretation.");
+  await publishBody("For the application rule, I am comparing subsection 3 with this interpretation.");
+  await publishBody("The statute says: a notary shall keep a journal. I read this as requiring a record.");
+  await publishBody("The statute says: a notary shall keep a journal. The effective date is worth noting.");
+  await publishBody("Reference: https://bit.ly/example");
+  await publishBody("Reference: http://192.0.2.10/reference");
+  await publishBody("References: https://example.com/a http://example.org/b https://example.net/c https://example.edu/d");
+  for (const body of ["Try javascript:alert(1)", "Try data:text/html,hello", "Try https://user:password@example.invalid/resource", "Try http://user@example.invalid/guide"]) {
+    const post = makeReply(body);
+    assert.equal((await store.publish(post)).code, "link");
+    assert.equal((await submit(post)).status, undefined);
+  }
+  assert.equal((await store.member("e")).pending.length, 0, "No new content enters automatic review");
+
+  const distinctKeys = await Promise.all([
+    store.publish(makeReply("Concurrent exact reply")),
+    secondStore.publish(makeReply("Concurrent exact reply")),
+  ]);
+  assert.equal(distinctKeys.filter(result => result.status === "published").length, 1);
+  assert.equal(distinctKeys.filter(result => result.code === "duplicate").length, 1);
+  assert.equal((await sql`select count(*)::int as count from community_posts
+    where user_id = 'e' and body = 'Concurrent exact reply'`)[0].count, 1);
+
+  await sql`update community_posts set created_at = clock_timestamp() - interval '3 minutes' where user_id = 'e'`;
+  const ten = await Promise.all(Array.from({ length: 10 }, (_, index) => publishBody("First burst reply " + (index + 1))));
+  const withinMinute = (await sql`select extract(epoch from max(created_at) - min(created_at))::float as elapsed
+    from community_posts where id = any(${sql.array(ten.map(post => post.id))}::uuid[])`)[0].elapsed;
+  assert.ok(withinMinute < 60, "Ten real publications completed within 60 seconds");
+  await sql`update community_posts set created_at = clock_timestamp() - interval '2 minutes'
+    where id = any(${sql.array(ten.map(post => post.id))}::uuid[])`;
+  const rateRoot = { ...makeReply("Rate-boundary post"), parentId: null, title: "Rate-boundary post" };
+  assert.equal((await submit(rateRoot)).status, "published");
+  const twenty = [rateRoot, ...await Promise.all(Array.from({ length: 19 }, (_, index) =>
+    publishBody("Rate-boundary reply " + (index + 1))))];
+  // Replay a full recent window regardless of the latency between isolated inserts.
+  await sql`update community_posts set created_at = clock_timestamp() - interval '1 second'
+    where id = any(${sql.array(twenty.map(post => post.id))}::uuid[])`;
+  const inDay = (await sql`select count(*)::int as count from community_posts
+    where user_id = 'e' and created_at > clock_timestamp() - interval '24 hours'`)[0].count;
+  assert.ok(inDay > 30, "More than 30 real publications within a rolling day");
+  const twentyFirst = makeReply("First reply after the current window");
+  const throttled = await store.publish(twentyFirst);
+  assert.equal(throttled.code, "rate");
+  assert.ok(Number.isInteger(throttled.retryAfterSeconds));
+  assert.ok(throttled.retryAfterSeconds > 0 && throttled.retryAfterSeconds <= 60);
+  const actionThrottle = await submit(twentyFirst);
+  assert.equal(actionThrottle.status, undefined);
+  assert.match(actionThrottle.message, /\d+ second/i);
+  assert.equal((await submit(twenty[0])).status, "published", "Idempotent retry bypasses rate accounting");
+  await sql`update community_posts set created_at = clock_timestamp() - interval '61 seconds'
+    where id = ${twenty[0].id}`;
+  assert.equal((await submit(twentyFirst)).status, "published", "Release one slot and retry the same ID");
+  assert.equal((await sql`select count(*)::int as count from community_posts where id = ${twentyFirst.id}`)[0].count, 1);
+
   const audit = await moderator.history(0);
   assert.equal(audit.length, 10);
   assert.ok(audit.every((entry) => entry.actor_id === "moderator" && entry.reason && entry.created_at));
@@ -208,7 +290,7 @@ try {
   assert.equal(await store.thread(null, first.id, "a"), null);
   await sql`update users set deleted_at = now() where id = 'b'`;
   assert.equal(await store.thread(null, second.id, null), null, "Deleted accounts disappear from public discussions");
-  console.log("Isolated PostgreSQL: migration, legacy privacy, nicknames, publication and throttling, reports, nested visibility, moderation, append-only audit, and unchanged learning/paid records passed.");
+  console.log("Isolated PostgreSQL: migration, legacy privacy, nicknames, 20/minute and no daily cap, exact target duplicates and safe links, reports, nested visibility, moderation, append-only audit, and unchanged learning/paid records passed.");
 } finally {
   await Promise.all([sql.end(), secondSql.end()]);
   await operator`drop schema if exists ${operator(schema)} cascade`;

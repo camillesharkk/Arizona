@@ -1,5 +1,5 @@
 import "server-only";
-import { communityLimits, duplicates, linkRisk, type CommunityReportReason } from "@/lib/community-policy";
+import { communityLimits, linkRisk, type CommunityReportReason } from "@/lib/community-policy";
 import { getPgSql } from "@/lib/store/pg-store";
 
 export const COMMUNITY_PAGE_SIZE = 20;
@@ -200,22 +200,9 @@ export function communityStore(sql = getPgSql()) {
               existing.title !== input.title || existing.body !== input.body) return { ok: false, code: "duplicate" } as const;
           return { ok: true, threadId: String(existing.id), status: existing.moderation_status === "pending" ? "pending" : "published" } as const;
         }
-        const recent = await tx<{ title: string | null; body: string; deleted_at: Date | null; last_minute: boolean; last_day: boolean }[]>`
-          select title, body, deleted_at, created_at >= now() - interval '1 minute' as last_minute,
-            created_at >= now() - interval '1 day' as last_day
-          from community_posts
-          where user_id = ${input.userId} and created_at >= now() - make_interval(hours => ${communityLimits.duplicateHours})
-        `;
-        if (recent.filter(post => post.last_minute).length >= communityLimits.postsPerMinute ||
-            recent.filter(post => post.last_day).length >= communityLimits.postsPerDay) return { ok: false, code: "rate" } as const;
-        const content = [input.title, input.body].filter(Boolean).join(" ");
-        if (recent.some(post => !post.deleted_at &&
-          (duplicates(input.body, post.body) || duplicates(content, [post.title, post.body].filter(Boolean).join(" "))))) {
-          return { ok: false, code: "duplicate" } as const;
+        if (linkRisk([input.title, input.body].filter(Boolean).join(" ")) === "blocked") {
+          return { ok: false, code: "link" } as const;
         }
-        const risk = linkRisk(content);
-        if (risk === "blocked") return { ok: false, code: "link" } as const;
-        const status = risk === "pending" ? "pending" : "published";
         let threadId: string | null = null;
         let depth = 0;
         if (input.parentId) {
@@ -242,14 +229,45 @@ export function communityStore(sql = getPgSql()) {
           const [capacity] = await tx`select count(*)::int as total from community_posts where thread_id = ${threadId}`;
           if (capacity.total >= COMMUNITY_REPLY_LIMIT) return { ok: false, code: "full" } as const;
         }
+        const [sameMessage] = await tx`
+          select id from community_posts
+          where user_id = ${input.userId}
+            and created_at > statement_timestamp() - make_interval(secs => ${communityLimits.duplicateSeconds})
+            and deleted_at is null and moderation_status <> 'pending'
+            and parent_id is not distinct from ${input.parentId}::uuid
+            and insight_id is not distinct from ${input.insightId}
+            and title is not distinct from ${input.title}
+            and body = ${input.body}
+          limit 1
+        `;
+        if (sameMessage) return { ok: false, code: "duplicate" } as const;
+
+        const [boundary] = await tx<{ wait_seconds: number }[]>`
+          select greatest(1, ceil(extract(epoch from p.created_at -
+            (statement_timestamp() - make_interval(secs => ${communityLimits.postingWindowSeconds}))))::int)
+            as wait_seconds
+          from community_posts p
+          where p.user_id = ${input.userId}
+            and p.created_at > statement_timestamp() - make_interval(secs => ${communityLimits.postingWindowSeconds})
+            and p.moderation_status <> 'pending'
+            and not exists (
+              select 1 from community_moderation_log review
+              where review.post_id = p.id and review.action in ('approve', 'reject')
+                and review.created_at >= p.created_at
+            )
+          order by p.created_at desc
+          offset ${communityLimits.postsPerMinute - 1} limit 1
+        `;
+        if (boundary) return { ok: false, code: "rate", retryAfterSeconds: boundary.wait_seconds } as const;
+
         const inserted = await tx`
-          insert into community_posts (id, user_id, insight_id, parent_id, thread_id, depth, title, body, moderation_status)
+          insert into community_posts (id, user_id, insight_id, parent_id, thread_id, depth, title, body, moderation_status, created_at)
           values (${input.id}, ${input.userId}, ${input.insightId}, ${input.parentId}, ${threadId}, ${depth},
-            ${input.title}, ${input.body}, ${status})
+            ${input.title}, ${input.body}, 'published', statement_timestamp())
           on conflict (id) do nothing returning id
         `;
         if (!inserted.length) return { ok: false, code: "duplicate" } as const;
-        return { ok: true, threadId: threadId ?? input.id, status } as const;
+        return { ok: true, threadId: threadId ?? input.id, status: "published" } as const;
       });
     },
     async report(postId: string, userId: string, reason: CommunityReportReason, note: string) {

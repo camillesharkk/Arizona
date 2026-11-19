@@ -3,12 +3,9 @@ export const communityLimits = {
   nicknameMax: 32,
   postTitleMax: 100,
   postBodyMax: 1600,
-  postsPerMinute: 3,
-  postsPerDay: 30,
-  duplicateHours: 24,
-  similarityMinLength: 40,
-  similarityThreshold: 0.86,
-  reviewAtDistinctLinks: 4,
+  postsPerMinute: 20,
+  postingWindowSeconds: 60,
+  duplicateSeconds: 10,
   reportNoteMax: 300,
 } as const;
 

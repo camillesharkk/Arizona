@@ -213,19 +213,31 @@ try {
   console.log("Mobile Report, login return target, private report notes, duplicate reports, and non-admin dashboard denial passed.");
 
   await page.goto(url);
-  const suspiciousBody = "My resource for the test is https://bit.ly/test-fixture";
+  const shortLinkBody = "My study resources include https://bit.ly/test-fixture and http://192.0.2.1/example.";
   await page.getByLabel("Title (required)").fill("A resource to check");
-  await page.getByLabel("Message (required)").fill(suspiciousBody);
+  await page.getByLabel("Message (required)").fill(shortLinkBody);
   await page.getByRole("button", { name: "Post discussion" }).click();
-  await page.getByRole("button", { name: "Write another message" }).waitFor();
-  assert.equal(await page.getByLabel("Message (required)").inputValue(), suspiciousBody);
+  await page.waitForURL(/\/community-insights\/\?discussion=/);
+  await page.locator(".community-post .community-message").filter({ hasText: shortLinkBody }).waitFor();
+  const [shortLinkPost] = await fixture`
+    select moderation_status from community_posts where user_id = ${writer.id} and body = ${shortLinkBody}
+  `;
+  assert.equal(shortLinkPost.moderation_status, "published", "A short link and an IP address URL publish directly.");
+
+  const pendingId = randomUUID();
+  const pendingBody = "This legacy message still awaits manual review. https://bit.ly/legacy-fixture";
+  await fixture`
+    insert into community_posts (id, user_id, title, body, moderation_status, created_at)
+    values (${pendingId}, ${writer.id}, 'Legacy review fixture', ${pendingBody}, 'pending', now() - interval '1 day')
+  `;
+  await page.goto(url);
   await page.locator(".community-member-panel summary").filter({ hasText: /^Awaiting review/ }).waitFor();
-  const [{ id: pendingId, moderation_status }] = await fixture`select id::text, moderation_status from community_posts where body = ${suspiciousBody}`;
-  assert.equal(moderation_status, "pending");
+  await page.locator(".community-member-panel summary").filter({ hasText: /^Awaiting review/ }).click();
+  await page.locator(".community-member-panel p").filter({ hasText: pendingBody }).waitFor();
   const pendingUrl = url + "?discussion=" + pendingId;
   const publicPending = await outsider.request.get(pendingUrl);
-  assert.doesNotMatch(await publicPending.text(), /My resource for the test/);
-  console.log("Suspicious link pending, author-only preview, retained draft, and hidden direct link passed.");
+  assert.ok(!(await publicPending.text()).includes(pendingBody));
+  console.log("Short and IP links published directly. Legacy pending content remained author-only and off the public URL.");
 
   const admin = await usingContext({ width: 1400, height: 900 });
   const adminPage = await admin.newPage();
@@ -249,7 +261,7 @@ try {
   assert.match(publicRestored, /My first study session/);
   assert.doesNotMatch(publicRestored, /practice questions helped/);
   await moderate(pendingId, "approve", "Reviewed the fixture link.");
-  assert.match(await (await outsider.request.get(pendingUrl)).text(), /My resource for the test/);
+  assert.ok((await (await outsider.request.get(pendingUrl)).text()).includes(pendingBody));
   await moderate(id, "warn", "Fixture moderation warning.");
   await moderate(id, "ban", "Fixture community restriction.");
   await page.goto(thread);
@@ -265,6 +277,28 @@ try {
   await page.reload();
   await page.getByRole("button", { name: "Post reply", exact: true }).waitFor();
   console.log("Post and reply visibility, approve, audit, warning, ban/unban, lifetime entitlement and Daily Study passed.");
+
+  const coolingDraft = "This draft should stay while the publishing window is full.";
+  await page.getByLabel("Message (required)").fill(coolingDraft);
+  await fixture.begin(async (tx) => {
+    await tx`update community_posts set created_at = now() - interval '2 minutes' where user_id = ${writer.id}`;
+    await tx`
+      insert into community_posts (id, user_id, title, body, moderation_status, created_at)
+      select gen_random_uuid(), ${writer.id}, 'Cooldown fixture ' || n,
+        'Prior successful publication ' || n, 'published', now() - interval '5 seconds'
+      from generate_series(1, 20) as n
+    `;
+  });
+  await page.getByRole("button", { name: "Post reply", exact: true }).click();
+  const cooldown = page.locator("#reply-composer [role='status']").filter({ hasText: /\b\d+ seconds?\b/i });
+  await cooldown.waitFor();
+  assert.equal(await page.getByLabel("Message (required)").inputValue(), coolingDraft);
+  assert.equal((await fixture`select count(*)::int as count from community_posts where body = ${coolingDraft}`)[0].count, 0);
+  if (process.env.COMMUNITY_VERIFY_COOLDOWN_SCREENSHOT) {
+    await page.locator("#reply-composer").scrollIntoViewIfNeeded();
+    await page.screenshot({ path: process.env.COMMUNITY_VERIFY_COOLDOWN_SCREENSHOT });
+  }
+  console.log("The next reply over 20 recent successes showed remaining seconds, kept the mobile draft, and created no row.");
 } finally {
   if (browser) await browser.close();
   if (server?.pid) {
