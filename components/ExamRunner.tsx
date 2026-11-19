@@ -308,7 +308,7 @@ export function ExamRunner({
         setDone(existing.done);
         attemptIds.current = existing.attemptIds;
         recordedIds.current = existing.recordedIds;
-        examSaveId.current = stateCode === "IN" && mode === "full" ? examSaveId.current || existing.examId : existing.examId;
+        examSaveId.current = mode === "full" ? examSaveId.current || existing.examId : existing.examId;
         localSaved.current = existing.scored;
         if (existing.startedAt != null) {
           startReported.current = true;
@@ -461,7 +461,7 @@ export function ExamRunner({
     if (bootError) {
       return (
         <div className="card">
-          <p className="form-error" role="alert">Could not load this practice set.{(stateCode === "IN" || (isFreeState(stateCode) && bootMessage.startsWith("Pro access"))) && bootMessage ? ` ${bootMessage}` : ""}</p>
+          <p className="form-error" role="alert">{bootMessage || "Could not load this practice set."}</p>
           <button className="btn btn-primary" type="button" onClick={() => setBootTry((n) => n + 1)}>Retry</button>
           {isFreeState(stateCode) && pack?.purchaseEnabled !== false && bootMessage.startsWith("Pro access") ? <Link className="btn btn-ghost" href={site.pricing}>Open Pro access</Link> : null}
         </div>
@@ -1061,8 +1061,6 @@ export function ExamRunner({
   async function startNew() {
     if (!owner) return;
     cancelAutoAdvance();
-    clearSitting(sessionStorage, owner, modeKey, stateCode);
-    tokenRef.current = "";
     const response = await fetch("/api/practice/batch/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1073,6 +1071,7 @@ export function ExamRunner({
       setSubmitError(batch.error || "Could not start a new set. Your previous answers are still on this device.");
       return;
     }
+    clearSitting(sessionStorage, owner, modeKey, stateCode);
     setServed(batch.questions || []);
     tokenRef.current = batch.token || "";
     setActiveSeed(batch.seed);
@@ -1089,7 +1088,7 @@ export function ExamRunner({
     startReported.current = false;
     poolLocked.current = false;
     localSaved.current = false;
-    examSaveId.current = null;
+    examSaveId.current = batch.examId || null;
     attemptIds.current = {};
     recordedIds.current = [];
     finishOnce.current = false;

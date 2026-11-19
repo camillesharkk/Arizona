@@ -1,3 +1,5 @@
+import "server-only";
+
 import { publishedCaQuestions } from "@/data/ca-questions";
 import { examConfig } from "@/data/exam-config";
 import { publishedHiQuestions } from "@/data/hi-questions";
@@ -8,7 +10,7 @@ import { presentExamQuestions, type Letter } from "@/lib/answer-sequence";
 import { pickCaFullExam, pickCaQuickExam } from "@/lib/ca-exam";
 import { isFreeState } from "@/lib/free-state-catalog";
 import { pickHiFullExam, pickHiQuickExam } from "@/lib/hi-exam";
-import { stemQuestion } from "@/lib/question-stem";
+import { revealedQuestion, stemQuestion } from "@/lib/question-stem";
 import { isActiveQuestion } from "@/lib/question-status";
 import { prepPacks, packFor } from "@/lib/prep-pack";
 import { buildQuickExam, pickExamSet, pickFullExam } from "@/lib/quiz";
@@ -166,7 +168,7 @@ export function topicPage(input: {
 export function clientQuestions(questions: Question[], seed: number, presentationVersion: number, revealed: boolean) {
   if (!questions.length) return [];
   const presented = presentExamQuestions(questions, seed, presentationVersion).questions;
-  return revealed ? presented : presented.map(stemQuestion);
+  return presented.map(revealed ? revealedQuestion : stemQuestion);
 }
 
 export function revealChoice(questions: Question[], seed: number, presentationVersion: number, questionId: string, display: Letter) {

@@ -23,6 +23,7 @@ const nextConfig: NextConfig = {
       "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.google.com https://us.i.posthog.com https://us-assets.i.posthog.com https://www.clarity.ms https://*.clarity.ms https://cdn.paddle.com https://sandbox-cdn.paddle.com https://buy.paddle.com https://sandbox-buy.paddle.com",
       "frame-src 'self' https://www.googletagmanager.com https://buy.paddle.com https://sandbox-buy.paddle.com",
       "report-uri /api/security/csp-report/",
+      "report-to csp",
     ].join("; ");
     return [
       {
@@ -33,6 +34,7 @@ const nextConfig: NextConfig = {
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self)" },
           { key: "Content-Security-Policy-Report-Only", value: reportOnly },
+          { key: "Reporting-Endpoints", value: 'csp="/api/security/csp-report/"' },
         ],
       },
       {

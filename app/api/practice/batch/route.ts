@@ -1,4 +1,4 @@
-import { randomBytes, randomInt } from "node:crypto";
+import { randomBytes, randomInt, randomUUID } from "node:crypto";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -8,9 +8,11 @@ import { trustedClientIp } from "@/lib/trusted-ip";
 import { ensureIndianaGuest, indianaGuestSitting } from "@/lib/indiana-guest";
 import { indianaSittingQuestions, startIndianaSitting, type IndianaSitting } from "@/lib/indiana-sitting";
 import { hasStatePro } from "@/lib/entitlements";
-import { ANON_COOKIE, readPractice, signPractice } from "@/lib/practice-token";
+import { ANON_COOKIE, anonymousPracticeActor, ownsPractice, practiceGuestSubject, readPractice, signPractice } from "@/lib/practice-token";
+import { fullTrialAvailable } from "@/lib/practice-trial";
 import { clientQuestions, drawPractice, questionByBankId, topicPage } from "@/lib/practice-draw";
 import { diagnosticCandidates, pickDiagnosticQuestions } from "@/lib/diagnostic";
+import { resolveQuestionVersion } from "@/lib/question-version";
 import { productionStateBlocked } from "@/lib/state-release";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
@@ -52,11 +54,9 @@ function limited(result: { ok: boolean; retryAfter: number }, message: string) {
 
 async function actorId(sessionId?: string) {
   const jar = await cookies();
-  let anon = jar.get(ANON_COOKIE)?.value || "";
-  let fresh = false;
-  if (anon.length < 20) {
+  let anon = anonymousPracticeActor(jar.get(ANON_COOKIE)?.value);
+  if (!anon) {
     anon = randomBytes(24).toString("base64url");
-    fresh = true;
     jar.set(ANON_COOKIE, anon, {
       httpOnly: true,
       sameSite: "lax",
@@ -65,13 +65,14 @@ async function actorId(sessionId?: string) {
       maxAge: 60 * 60 * 24 * 180,
     });
   }
-  return { id: sessionId || anon, anon, fresh };
+  return { id: sessionId || practiceGuestSubject(anon), anon };
 }
 
-function loadIds(ids: string[], state: StateCode, isPro: boolean) {
+function loadIds(ids: string[], state: StateCode, isPro: boolean, versions?: number[]) {
   const questions: Question[] = [];
-  for (const id of ids) {
-    const question = questionByBankId(id);
+  for (const [index, id] of ids.entries()) {
+    const current = questionByBankId(id);
+    const question = versions ? resolveQuestionVersion(current, versions[index]) : current;
     if (!question || question.state !== state || (!isPro && !question.is_free)) return null;
     questions.push(question);
   }
@@ -88,7 +89,7 @@ export async function POST(req: Request) {
   const isPro = Boolean(session && await hasStatePro(session.id, body.data.state));
   const bypass = internalTask(req);
   const prior = body.data.token ? await readPractice(body.data.token) : null;
-  const claimed = prior && prior.purpose === "sitting" && prior.state === body.data.state && (prior.sub === actor.id || (!session && prior.sub === actor.anon) || (session && prior.sub === actor.anon));
+  const claimed = prior && prior.purpose === "sitting" && prior.state === body.data.state && ownsPractice(prior, session?.id, actor.anon);
   try {
     if (body.data.kind === "topic") {
       if (!bypass) {
@@ -113,6 +114,7 @@ export async function POST(req: Request) {
       const token = page.questions.length ? await signPractice({
         sub: actor.id, state: body.data.state, ids: page.questions.map((question) => question.question_id),
         seed, pv: 2, practice: true, revealed: false, purpose: "sitting",
+        versions: page.questions.map((question) => question.version),
       }) : "";
       return NextResponse.json({
         token,
@@ -129,17 +131,21 @@ export async function POST(req: Request) {
     let questions: Question[] | null = null;
     let unscoredIds: string[] = [];
     let examId: string | undefined;
+    let fullTrialId: string | undefined;
     let resume = false;
     if (claimed && prior) {
-      questions = loadIds(prior.ids, body.data.state, isPro || prior.revealed);
+      questions = loadIds(prior.ids, body.data.state, isPro || prior.revealed || Boolean(prior.fullTrialId), prior.versions);
       if (!questions) return NextResponse.json({ error: "Pro access is required to reopen this saved set. Your stored result is preserved." }, { status: 402, headers: privateHeaders });
       seed = prior.seed;
+      unscoredIds = prior.unscoredIds || [];
+      fullTrialId = prior.fullTrialId;
+      examId = fullTrialId;
       resume = true;
     }
     if (!questions && body.data.presetIds?.length && body.data.deliveryToken) {
       const delivery = await readPractice(body.data.deliveryToken);
       const allowed = new Set(delivery?.ids || []);
-      if (delivery && delivery.purpose === "delivery" && delivery.state === body.data.state && (delivery.sub === actor.id || delivery.sub === actor.anon) && body.data.presetIds.every((id) => allowed.has(id))) {
+      if (delivery && delivery.purpose === "delivery" && delivery.state === body.data.state && ownsPractice(delivery, session?.id, actor.anon) && body.data.presetIds.every((id) => allowed.has(id))) {
         questions = loadIds(body.data.presetIds, body.data.state, isPro);
         if (!questions) return NextResponse.json({ error: "Pro access is required to reopen this saved set. Your stored result is preserved." }, { status: 402, headers: privateHeaders });
       }
@@ -179,6 +185,10 @@ export async function POST(req: Request) {
       questions = picked;
     }
     if (!questions) {
+      const full = body.data.mode === "full" && !body.data.focusArea;
+      if (full && !isPro && !await fullTrialAvailable(body.data.state, actor.id, session?.id)) {
+        return NextResponse.json({ error: "The free full practice for this state is already used." }, { status: 402, headers: privateHeaders });
+      }
       const drawn = drawPractice({
         state: body.data.state,
         mode: body.data.mode || "quick",
@@ -191,6 +201,10 @@ export async function POST(req: Request) {
       if ("error" in drawn) return NextResponse.json({ error: "This practice set is not available." }, { status: 400, headers: privateHeaders });
       const same = body.data.questionIds?.length && drawn.questions.map((question) => question.question_id).join("|") === body.data.questionIds.join("|");
       questions = drawn.questions;
+      if (full && !isPro && questions.length) {
+        fullTrialId = randomUUID();
+        examId = fullTrialId;
+      }
       unscoredIds = drawn.unscoredIds;
       seed = drawn.seed;
       resume = Boolean(same);
@@ -198,16 +212,19 @@ export async function POST(req: Request) {
     if (!questions.length) return NextResponse.json({ token: "", seed, questions: [], unscoredIds, pro: isPro, examId }, { headers: privateHeaders });
     if (questions.length > 80) return NextResponse.json({ error: "This practice set is not available." }, { status: 400, headers: privateHeaders });
     const revealed = Boolean(claimed && prior?.revealed);
-    const pv = prior?.pv || body.data.presentationVersion || 2;
+    const pv = (claimed && prior.pv) || body.data.presentationVersion || 2;
     const token = await signPractice({
       sub: actor.id,
       state: body.data.state,
       ids: questions.map((question) => question.question_id),
       seed,
       pv,
-      practice: Boolean(body.data.practice),
+      practice: claimed ? prior.practice : body.data.mode !== "full" && Boolean(body.data.practice),
       revealed,
       purpose: "sitting",
+      fullTrialId,
+      unscoredIds,
+      versions: questions.map((question) => question.version),
     });
     return NextResponse.json({
       token,

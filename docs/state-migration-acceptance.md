@@ -118,3 +118,11 @@ Google 可信识别：`lib/googlebot.ts` 只接受反向 DNS 以 `.googlebot.com
 
 生产迁移清单：2026-11-19 已在 Neon 项目 Arizona-notary 的默认分支 `production`（`br-raspy-fog-a76oj2y2`）执行 `023_rate_buckets.sql`，并写入 `schema_migrations`。执行前确认缺失的迁移只有 023。恢复点是同项目分支 `pre-023-restore-20261119`（`br-gentle-mountain-a7mi1qwm`，父 LSN `0/670C5B0`）。恢复方式是用该分支的数据恢复生产分支，或把应用暂时指向该分支；不要为了前端故障整库回滚。代码回滚时保留 `rate_buckets`。隔离分支 `security-rate-023-20261119` 上用两个独立连接完成 30 次并发计数，结果连续且无重复。`PRACTICE_LIMITS=off` 仍只停限额，改环境变量后需要重新部署。
 
+
+### 2026-11-20 练习和安全回归
+
+- 新场次签名保留题目顺序、版本、选项乱序版本和不计分题 ID。恢复和评分使用对应服务端版本。客户端题目不含历次修订快照，提交需覆盖所有场次题目且每题恰好一次，跳题发送该题 ID 并省略选项。新匿名令牌使用 cookie 的摘要标识，旧令牌保留原有时限。继续测试游客登录后导入及换账号隔离。
+- 免费完整模拟的首次有效评分复用既有 guest_exams 表，按州及访客或账号原子登记。同场次可重试评分，账号正式保存仍用现有按州和场次的事务。印第安纳继续使用其已有的专项场次流程。代码回滚时保留登记和共享限流表。
+- CSP 保持 Report-Only。上报支持 Reporting-Endpoints 及旧浏览器的 report-uri。接收器最多读取 8,000 字节，仅记录已知指令及资源 origin 或资源类型，忽略路径、查询、片段、页面 URL 和脚本片段。正式强制前验证 GA4、Paddle、PostHog 和 Clarity 的实际请求。
+- GitHub API 确认仓库为 Public，源代码含完整题库及知识卡。仓库可见性单独处理，变更前核对 Vercel 对私有仓库的构建权限。历史公开版本和已下载的数据无法撤回。
+- Vercel → Arizona 项目 → Firewall。先新增 Log 规则，匹配 POST 和正则 ^/api/practice/(batch|feedback|archive)/?$。在 Firewall Observability 核对连续练习、快速切州和共享 IP 高峰后，按套餐支持的 IP 键和窗口配置限额。当前应用每 IP 每 10 分钟 150 次开场、800 次反馈可作观察参照。边缘阈值应覆盖正常共享网络峰值。公开页面、Next 静态资源、Paddle Webhook、Cron 与认证回调不匹配。若公开页另有机器人规则，在该规则核对 Vercel Verified Bots，并通过 Search Console 测试实际网址。应用练习接口不依赖 User-Agent 放行。

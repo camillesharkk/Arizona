@@ -1,6 +1,21 @@
+import { createHash } from "node:crypto";
 import { SignJWT, jwtVerify } from "jose";
 
 export const ANON_COOKIE = "np_actor";
+
+export function anonymousPracticeActor(value?: string) {
+  // Existing guest IDs are 24 random bytes encoded as base64url. Account IDs are UUIDs.
+  return value && /^[A-Za-z0-9_-]{32}$/.test(value) ? value : "";
+}
+
+export function practiceGuestSubject(anon: string) {
+  return anon ? `guest:${createHash("sha256").update(anon).digest("base64url")}` : "";
+}
+
+export function ownsPractice(claims: PracticeClaims, accountId: string | undefined, anon: string) {
+  return Boolean(claims.sub && (claims.sub === accountId ||
+    (anon && (claims.sub === practiceGuestSubject(anon) || (!claims.versions && claims.sub === anon)))));
+}
 
 export type PracticeClaims = {
   sub: string;
@@ -11,6 +26,9 @@ export type PracticeClaims = {
   practice: boolean;
   revealed: boolean;
   purpose: "sitting" | "delivery";
+  fullTrialId?: string;
+  unscoredIds?: string[];
+  versions?: number[];
 };
 
 function secret() {
@@ -42,6 +60,9 @@ export async function readPractice(token: string): Promise<PracticeClaims | null
       practice: Boolean(payload.practice),
       revealed: Boolean(payload.revealed),
       purpose,
+      fullTrialId: typeof payload.fullTrialId === "string" ? payload.fullTrialId : undefined,
+      unscoredIds: Array.isArray(payload.unscoredIds) ? payload.unscoredIds.filter((id): id is string => typeof id === "string" && ids.includes(id)) : undefined,
+      versions: Array.isArray(payload.versions) && payload.versions.length === ids.length && payload.versions.every((version) => Number.isInteger(version) && version > 0) ? payload.versions : undefined,
     };
   } catch {
     return null;
