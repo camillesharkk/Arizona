@@ -1,13 +1,12 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import Image from "next/image";
 import Link from "next/link";
 import { communityInsights } from "@/data/community-insights";
 import { communityDiscussionPath } from "@/lib/community-links";
-import { communityDisplayName, communityStore, COMMUNITY_MAX_DEPTH, type CommunityInsightActivity, type CommunityPost } from "@/lib/community-store";
+import { communityStore, COMMUNITY_MAX_DEPTH, type CommunityInsightActivity, type CommunityPost } from "@/lib/community-store";
 import { paths } from "@/lib/paths";
 import { getSession } from "@/lib/session";
-import { getStore } from "@/lib/store";
-import { CommunityComposer, CommunityLike, CommunityRemove, CommunityShare } from "./CommunityPostForms";
+import { CommunityComposer, CommunityLike, CommunityNickname, CommunityRemove, CommunityReport, CommunityShare } from "./CommunityPostForms";
 import { CommunityInsightFeed } from "./CommunityInsightFeed";
 
 const dateFormat = new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" });
@@ -25,24 +24,44 @@ function Message({ post }: { post: CommunityPost }) {
   );
 }
 
-function MessageActions({ post, signedIn }: { post: CommunityPost; signedIn: boolean }) {
+type DiscussionActions = {
+  signedIn: boolean;
+  banned: boolean;
+  insightId: string | null;
+  threadId: string | null;
+  reportId: string | null;
+  returnTo: string;
+};
+
+function signInFor(returnTo: string) {
+  return paths.login + "?next=" + encodeURIComponent(returnTo);
+}
+
+function MessageActions({ post, context }: { post: CommunityPost; context: DiscussionActions }) {
   if (post.deleted) return null;
+  const { signedIn, banned, reportId, returnTo, insightId, threadId } = context;
+  const path = (threadId ? returnTo : communityDiscussionPath(insightId, post.id)).split("#")[0];
+  const reportHref = path + (path.includes("?") ? "&" : "?") + "report=" + post.id + "#community-message-" + post.id;
   return (
     <>
       {signedIn
         ? <CommunityLike id={post.id} likes={post.likes} liked={post.liked} target={post.title || `${post.author}’s message`} />
         : <span className="community-meta">{post.likes} {post.likes === 1 ? "like" : "likes"}</span>}
+      {signedIn
+        ? banned ? <button className="btn btn-ghost community-report-entry" type="button" disabled>Report</button>
+          : <CommunityReport id={post.id} initiallyOpen={reportId === post.id} />
+        : <Link className="btn btn-ghost community-report-entry" href={signInFor(reportHref)}>Report</Link>}
       {post.mine && <CommunityRemove id={post.id} root={post.depth === 0} />}
     </>
   );
 }
 
-function Replies({ parentId, threadId, insightId, grouped, signedIn }: {
+function Replies({ parentId, threadId, insightId, grouped, context }: {
   parentId: string;
   threadId: string;
   insightId: string | null;
   grouped: Map<string, CommunityPost[]>;
-  signedIn: boolean;
+  context: DiscussionActions;
 }) {
   const children = grouped.get(parentId);
   if (!children?.length) return null;
@@ -52,14 +71,14 @@ function Replies({ parentId, threadId, insightId, grouped, signedIn }: {
         <li key={post.id} id={`community-message-${post.id}`}>
           <Message post={post} />
           <div className="row">
-            <MessageActions post={post} signedIn={signedIn} />
-            {signedIn && !post.deleted && post.depth < COMMUNITY_MAX_DEPTH && (
+            <MessageActions post={post} context={context} />
+            {!context.banned && !post.deleted && post.depth < COMMUNITY_MAX_DEPTH && (
               <Link className="btn btn-ghost" href={communityDiscussionPath(insightId, threadId, 0, post.id)}>
                 Reply<span className="visually-hidden"> to {post.author}</span>
               </Link>
             )}
           </div>
-          <Replies parentId={post.id} threadId={threadId} insightId={insightId} grouped={grouped} signedIn={signedIn} />
+          <Replies parentId={post.id} threadId={threadId} insightId={insightId} grouped={grouped} context={context} />
         </li>
       ))}
     </ul>
@@ -78,8 +97,8 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
   const insights = insight ? [insight] : overview ? communityInsights : [];
   const heading = insight ? `Discussion: ${insight.title}` : "Community discussions";
   const session = await getSession();
-  const user = session ? await (await getStore()).getUserById(session.id).catch(() => null) : null;
-  const signIn = `${paths.login}?next=${encodeURIComponent(communityDiscussionPath(insightId, threadId, page))}`;
+  const accountScope = session ? createHash("sha256").update(session.id).digest("hex") : null;
+  let member: Awaited<ReturnType<ReturnType<typeof communityStore>["member"]>> | null = null;
   let posts: CommunityPost[] = [];
   let allReplies: CommunityPost[] = [];
   let more = false;
@@ -89,6 +108,7 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
   if (!unavailable) {
     try {
       const store = communityStore();
+      if (session) member = await store.member(session.id);
       if (threadId) {
         const thread = await store.thread(insightId, threadId, session?.id ?? null);
         if (thread) {
@@ -113,11 +133,26 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
     grouped.set(reply.parentId, siblings);
   }
   const replyTarget = allReplies.find((post) => post.id === params.reply && !post.deleted && post.depth < COMMUNITY_MAX_DEPTH);
-  const author = communityDisplayName(user?.name);
+  const returnTo = communityDiscussionPath(insightId, threadId, page, replyTarget?.id);
+  const composerSignIn = signInFor(threadId && !replyTarget ? returnTo.split("#")[0] + "#reply-composer" : returnTo);
+  const context = {
+    signedIn: Boolean(session),
+    banned: member?.banned ?? false,
+    insightId,
+    threadId,
+    reportId: typeof params.report === "string" && idPattern.test(params.report) ? params.report : null,
+    returnTo,
+  };
+  const composer = {
+    accountScope,
+    hasNickname: Boolean(member?.nickname),
+    banned: context.banned,
+    signIn: composerSignIn,
+  };
 
   return (
     <>
-    <CommunityInsightFeed insights={insights} activity={activity} memberPosts={memberHighlights} signedIn={Boolean(user)} showHighlights={overview} />
+    <CommunityInsightFeed insights={insights} activity={activity} memberPosts={memberHighlights} signedIn={context.signedIn} showHighlights={overview} />
     <section className="community-discussions home-section" id="community-discussions" aria-labelledby="community-discussions-heading">
       <div className="community-discussions-header">
         <Image src="/images/glass-demo/community-chat.png" alt="" width={72} height={48} sizes="72px" />
@@ -130,14 +165,46 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
           {insight && <Link href={communityDiscussionPath()}>All community discussions</Link>}
         </div>
       )}
-      {unavailable ? <p className="card">Discussions are temporarily unavailable. You can still browse the study insights above.</p> : (
+      {unavailable ? <p className="card" role="status">
+        Discussions are temporarily unavailable. <Link href={returnTo}>Try again</Link>.
+      </p> : (
         <>
-          {!user && (
-            <p className="community-meta"><Link href={signIn}>Sign in</Link> to post, reply or like a message.</p>
+          {member && (
+            <div className="card community-member-panel">
+              {member.banned && <p role="status">Your community account is restricted. You can still use your study tools.</p>}
+              {member.warnings.length > 0 && (
+                <details>
+                  <summary>Moderation notices ({member.warnings.length})</summary>
+                  <ul>
+                    {member.warnings.map((warning, index) => (
+                      <li key={warning.createdAt + index} className="community-message">
+                        <time dateTime={warning.createdAt}>{dateFormat.format(new Date(warning.createdAt))} UTC</time>
+                        <p>{warning.reason}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+              {member.pending.length > 0 && (
+                <details>
+                  <summary>Awaiting review ({member.pending.length})</summary>
+                  <ul>
+                    {member.pending.map((message) => (
+                      <li key={message.id}>
+                        {message.title && <strong>{message.title}</strong>}
+                        <p className="community-message">{message.body}</p>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="community-meta">Visible only to you and moderators while under review.</p>
+                </details>
+              )}
+              {!member.banned && <CommunityNickname nickname={member.nickname} />}
+            </div>
           )}
-          {user && !threadId && (
+          {!threadId && !context.banned && (
             <div className="card">
-              <CommunityComposer id={randomUUID()} insightId={insightId} parentId={null} author={author}
+              <CommunityComposer key={insightId ?? "general"} id={randomUUID()} insightId={insightId} parentId={null} {...composer}
                 label={insight ? "Post comment" : "Start a discussion"} />
             </div>
           )}
@@ -148,7 +215,7 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
             <article key={post.id} className="card community-post" id={`community-message-${post.id}`}>
               <Message post={post} />
               <div className="row">
-                <MessageActions post={post} signedIn={Boolean(user)} />
+                <MessageActions post={post} context={context} />
                 <CommunityShare href={communityDiscussionPath(insightId, post.id)} label="Share" />
                 {!threadId && (
                   <Link className="btn btn-ghost" href={communityDiscussionPath(insightId, post.id)}>
@@ -159,10 +226,10 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
               </div>
               {threadId && (
                 <>
-                  <Replies parentId={post.id} threadId={threadId} insightId={insightId} grouped={grouped} signedIn={Boolean(user)} />
-                  {user && <div id="reply-composer">
+                  <Replies parentId={post.id} threadId={threadId} insightId={insightId} grouped={grouped} context={context} />
+                  {!context.banned && <div id="reply-composer">
                     <CommunityComposer key={replyTarget?.id || post.id} id={randomUUID()} insightId={insightId}
-                      parentId={replyTarget?.id ?? post.id} author={author}
+                      parentId={replyTarget?.id ?? post.id} {...composer}
                       label={replyTarget ? `Reply to ${replyTarget.author}` : "Post reply"} />
                   </div>}
                 </>

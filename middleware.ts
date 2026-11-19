@@ -13,17 +13,18 @@ export async function middleware(request: NextRequest) {
   }
   if (!productionStateBlocked("IN") && (path === "/preview/indiana" || path.startsWith("/preview/indiana/"))) { const url = request.nextUrl.clone(); url.pathname = path.replace("/preview/indiana", "/indiana"); return NextResponse.redirect(url); }
   if (path.startsWith("/admin")) {
+    const section = path === "/admin/community" || path.startsWith("/admin/community/") ? "社区管理" : "运营日报";
     const token = request.cookies.get(SESSION_COOKIE)?.value;
     const user = token ? await readSessionToken(token) : null;
     const access = operationsAccess(user?.email, process.env.OPERATIONS_ADMIN_EMAILS);
     if (access === "anonymous") {
-      return new NextResponse("请先登录后再查看运营日报。", {
+      return new NextResponse(`请先登录后再查看${section}。`, {
         status: 401,
         headers: { "content-type": "text/plain; charset=utf-8" },
       });
     }
     if (access === "forbidden") {
-      return new NextResponse("无权查看运营日报。", {
+      return new NextResponse(`无权查看${section}。`, {
         status: 403,
         headers: { "content-type": "text/plain; charset=utf-8" },
       });

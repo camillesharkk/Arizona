@@ -1,3 +1,4 @@
+import { parseWebUrl } from "@/lib/web-url";
 import { findSource } from "@/data/sources";
 import type { Question } from "@/lib/types";
 
@@ -65,18 +66,13 @@ const indianaFaqCopy = "https://www.in.gov/dA/93ab6b5f72/New-Notary-System-FAQs-
 
 function officialUrl(value?: string): string | undefined {
   if (!value) return undefined;
-  try {
-    const url = new URL(value);
-    if (url.protocol === "https:" && !url.username && !url.password) {
-      if (url.hostname === "www.capitol.hawaii.gov" &&
-          url.pathname.startsWith("/hrscurrent/Vol10_Ch0436-0474/HRS0456/")) {
-        url.hostname = "data.capitol.hawaii.gov";
-      }
-      return url.href;
-    }
-  } catch {
-    // Older records can still show their citation when a URL is unavailable.
+  const url = parseWebUrl(value);
+  if (!url || url.protocol !== "https:" || url.username || url.password) return undefined;
+  if (url.hostname === "www.capitol.hawaii.gov" &&
+      url.pathname.startsWith("/hrscurrent/Vol10_Ch0436-0474/HRS0456/")) {
+    url.hostname = "data.capitol.hawaii.gov";
   }
+  return url.href;
 }
 
 function cleanAuthoredUrl(value: string) {
