@@ -9,17 +9,15 @@ import {
   arizonaDiagnostic,
   bandAction,
   blankSession,
-  diagnosticCandidates,
   diagnosticStorageKey,
   missedTopics,
   parseDiagnosticSession,
-  pickDiagnosticQuestions,
   recommendFor,
   scoreDiagnostic,
   topicScores,
   type DiagnosticChoice,
   type DiagnosticSession,
-} from "@/lib/diagnostic";
+} from "@/lib/diagnostic-ui";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { currentEmail } from "@/lib/account";
 import { paths } from "@/lib/paths";
@@ -29,7 +27,22 @@ import type { Question, TopicId } from "@/lib/types";
 const profile = arizonaDiagnostic;
 
 function lookupQuestion(id: string) {
-  return diagnosticCandidates(profile.stateCode).find((q) => q.question_id === id) ?? null;
+  const saved = readStems();
+  return saved.questions.find((question) => question.question_id === id) ?? null;
+}
+
+function readStems(): { questions: Question[]; token: string } {
+  if (typeof window === "undefined") return { questions: [], token: "" };
+  try {
+    const parsed = JSON.parse(localStorage.getItem(`${diagnosticStorageKey(currentEmail())}:stems`) || "");
+    return { questions: Array.isArray(parsed?.questions) ? parsed.questions : [], token: typeof parsed?.token === "string" ? parsed.token : "" };
+  } catch {
+    return { questions: [], token: "" };
+  }
+}
+
+function writeStems(questions: Question[], token: string) {
+  localStorage.setItem(`${diagnosticStorageKey(currentEmail())}:stems`, JSON.stringify({ questions, token }));
 }
 
 function readSaved() {
@@ -44,8 +57,10 @@ function readSaved() {
 function writeSaved(session: DiagnosticSession | null) {
   const key = diagnosticStorageKey(currentEmail());
   try {
-    if (!session) localStorage.removeItem(key);
-    else localStorage.setItem(key, JSON.stringify(session));
+    if (!session) {
+      localStorage.removeItem(key);
+      localStorage.removeItem(`${key}:stems`);
+    } else localStorage.setItem(key, JSON.stringify(session));
   } catch {
     /* private mode still runs this visit */
   }
@@ -84,6 +99,8 @@ export function DiagnosticFlow({
   const [unavailable, setUnavailable] = useState(false);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const submitting = useRef(false);
+  const tokenRef = useRef("");
+  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
     const saved = readSaved();
@@ -96,27 +113,40 @@ export function DiagnosticFlow({
     }
     if (!fresh && saved?.session.status === "active") {
       const next = saved.session.startSent ? saved.session : { ...saved.session, startSent: true };
+      tokenRef.current = readStems().token;
       setQuestions(saved.questions);
       setSession(next);
       writeSaved(next);
       if (!saved.session.startSent) trackDiagnostic("diagnostic_start", "diagnostic");
       return;
     }
-    const picked = pickDiagnosticQuestions(
-      diagnosticCandidates(profile.stateCode),
-      profile.questionCount,
-      Math.floor(Math.random() * 1_000_000_000) || 1,
-      profile.stateCode
-    );
-    if (picked.length !== profile.questionCount) {
-      setUnavailable(true);
-      return;
-    }
-    const next = { ...blankSession(picked), startSent: true };
-    setQuestions(picked);
-    setSession(next);
-    writeSaved(next);
-    trackDiagnostic("diagnostic_start", "diagnostic");
+    let cancel = false;
+    fetch("/api/practice/batch/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ state: "AZ", mode: "diagnostic", practice: true }),
+    })
+      .then(async (response) => {
+        const body = await response.json().catch(() => ({}));
+        if (cancel) return;
+        if (!response.ok || !Array.isArray(body.questions) || body.questions.length !== profile.questionCount) {
+          setUnavailable(true);
+          return;
+        }
+        tokenRef.current = body.token || "";
+        const next = { ...blankSession(body.questions), startSent: true };
+        setQuestions(body.questions);
+        setSession(next);
+        writeSaved(next);
+        writeStems(body.questions, tokenRef.current);
+        trackDiagnostic("diagnostic_start", "diagnostic");
+      })
+      .catch(() => {
+        if (!cancel) setUnavailable(true);
+      });
+    return () => {
+      cancel = true;
+    };
   }, [fresh, showResult]);
 
   useEffect(() => {
@@ -172,12 +202,38 @@ export function DiagnosticFlow({
     persist({ ...session!, answers: { ...session!.answers, [q.question_id]: choice } });
   }
 
-  function submit() {
+  async function submit() {
     if (submitting.current || session!.completeSent) return;
     submitting.current = true;
+    setSubmitError("");
+    const response = await fetch("/api/practice/feedback/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: tokenRef.current,
+        action: "grade",
+        answers: questions.map((item) => ({
+          questionId: item.question_id,
+          display: session!.answers[item.question_id] === "unsure" ? undefined : session!.answers[item.question_id],
+        })),
+      }),
+    });
+    const graded = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      submitting.current = false;
+      setSubmitError(graded.error || "Could not score this check. Your answers are still here.");
+      return;
+    }
+    const rows = new Map<string, { correctOption?: Question["correct_option"]; explanation?: string; optionFeedback?: Question["option_feedback"] }>((graded.results || []).map((row: { questionId: string; correctOption?: Question["correct_option"]; explanation?: string; optionFeedback?: Question["option_feedback"] }) => [row.questionId, row]));
+    const revealed = questions.map((item) => {
+      const row = rows.get(item.question_id);
+      return row?.correctOption ? { ...item, correct_option: row.correctOption, explanation: row.explanation || "", option_feedback: row.optionFeedback || item.option_feedback } : item;
+    });
+    setQuestions(revealed);
+    writeStems(revealed, graded.token || tokenRef.current);
     const next: DiagnosticSession = { ...session!, status: "complete", completeSent: true, index: session!.index };
     persist(next);
-    const { correct } = scoreDiagnostic(questions, next.answers);
+    const { correct } = scoreDiagnostic(revealed, next.answers);
     trackDiagnostic("diagnostic_complete", "diagnostic", { recommendation: recommendFor(correct) });
   }
 
@@ -247,10 +303,11 @@ export function DiagnosticFlow({
           <button className="btn btn-ghost" type="button" disabled={session.index === 0} onClick={() => persist({ ...session, index: session.index - 1 })}>
             Previous
           </button>
-          <button className="btn btn-primary" type="button" disabled={!selected} onClick={() => (last ? submit() : persist({ ...session, index: session.index + 1 }))}>
+          <button className="btn btn-primary" type="button" disabled={!selected || submitting.current} onClick={() => (last ? void submit() : persist({ ...session, index: session.index + 1 }))}>
             {last ? "Submit check" : "Next"}
           </button>
         </div>
+        {submitError ? <p className="form-error" role="alert">{submitError}</p> : null}
       </div>
     </div>
   );

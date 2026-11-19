@@ -1,6 +1,6 @@
 "use client";
 
-import { adoptGuestCaRecords, hasPendingCaAttempts, listCaAttempts, markCaAttemptSynced, type TopicPracticeState } from "@/lib/ca-attempts";
+import { adoptGuestCaRecords, hasPendingCaAttempts, listCaAttempts, markCaAttemptSynced, saveCaQuickAttempt, type TopicPracticeState } from "@/lib/ca-attempts";
 import { adoptGuestSittings, readSitting, sittingKey } from "@/lib/sitting";
 import { fetchAccount } from "@/lib/client-account";
 
@@ -42,9 +42,13 @@ export function syncGuestProgress(userId?: string) {
 async function syncOnce(state: TopicPracticeState, userId: string): Promise<SyncResult> {
   for (const mode of ["quick", "home-quick", "full", "home-full"]) {
     const guestSitting = readSitting(sessionStorage, "guest", mode, state);
-    if (guestSitting?.done && guestSitting.examId && !listCaAttempts("guest", state).some(attempt => attempt.id === guestSitting.examId)) {
-      const { archiveGuestSitting } = await import("@/lib/guest-sitting-attempt");
-      archiveGuestSitting(guestSitting);
+    if (guestSitting?.done && guestSitting.examId && guestSitting.practiceToken && !listCaAttempts("guest", state).some(attempt => attempt.id === guestSitting.examId)) {
+      const response = await fetch("/api/practice/archive/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(guestSitting),
+      });
+      if (response.ok) saveCaQuickAttempt(await response.json());
     }
   }
   adoptGuestCaRecords(userId, state);

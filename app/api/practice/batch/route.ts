@@ -10,6 +10,7 @@ import { indianaSittingQuestions, startIndianaSitting, type IndianaSitting } fro
 import { hasStatePro } from "@/lib/entitlements";
 import { ANON_COOKIE, readPractice, signPractice } from "@/lib/practice-token";
 import { clientQuestions, drawPractice, questionByBankId, topicPage } from "@/lib/practice-draw";
+import { diagnosticCandidates, pickDiagnosticQuestions } from "@/lib/diagnostic";
 import { productionStateBlocked } from "@/lib/state-release";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
@@ -170,6 +171,12 @@ export async function POST(req: Request) {
         seed = row.seed;
         questions = indianaSittingQuestions(row);
       }
+    }
+    if (!questions && body.data.mode === "diagnostic") {
+      if (body.data.state !== "AZ") return NextResponse.json({ error: "This practice set is not available." }, { status: 400, headers: privateHeaders });
+      const picked = pickDiagnosticQuestions(diagnosticCandidates("AZ"), 10, seed, "AZ");
+      if (picked.length !== 10) return NextResponse.json({ error: "This practice set is not available." }, { status: 400, headers: privateHeaders });
+      questions = picked;
     }
     if (!questions) {
       const drawn = drawPractice({

@@ -13,7 +13,7 @@ writeFileSync(new URL("../data/full-state-ready.ts", import.meta.url), readyBody
 
 const packs = {};
 for (const [code, pack] of Object.entries(prepPacks)) {
-  const counts = pack.counts();
+  const { freeQuestionIds: _ids, ...counts } = pack.counts();
   packs[code] = {
     code: pack.code,
     name: pack.name,

@@ -1,7 +1,6 @@
 import type { Question, TopicId } from "./types.ts";
 import { paths } from "./paths.ts";
-import { publicStudyCards } from "./study-cards.ts";
-import { weakTopics } from "./quiz.ts";
+import { weakTopics } from "./quiz-ui.ts";
 
 export type AnsweredResult = {
   question: Question;
@@ -21,8 +20,7 @@ export function weakestMissedTopic(items: AnsweredResult[]): { topic: TopicId; l
   return { topic: top.topic, label: top.label };
 }
 
-/** Study cards when this account can open at least one card. Otherwise the free study-guide chapter. */
+/** Pro opens the topic's study cards. Everyone else gets the public study-guide chapter. */
 export function topicStudyHref(topic: TopicId, isPro: boolean) {
-  const open = publicStudyCards(isPro).some((card) => card.topic === topic && !card.locked && !card.pending);
-  return open ? `${paths.studyCards}?topic=${topic}` : `${paths.study}#${topic}`;
+  return isPro ? `${paths.studyCards}?topic=${topic}` : `${paths.study}#${topic}`;
 }
