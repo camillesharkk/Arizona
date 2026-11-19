@@ -4990,7 +4990,7 @@
       "sections": [
         {
           "heading": "Qualifying and registering",
-          "body": "Sections 64-303 through 305 and 64-403 through 406 establish the additional paths. A valid Nebraska commission remains foundational. Online applicants complete the required SOS course before the official online examination and registration filing. Current instructions list twenty questions, eighty-five percent, three attempts and ninety-day score validity for that separate examination. Identify approved provider technology, supply the required certifications and email, pay the listed registration fee and obtain the approval letter."
+          "body": "Sections 64-303 through 305 and 64-403 through 406 establish the additional paths. A valid Nebraska commission remains foundational. Online applicants complete the required SOS course before the official online examination and registration filing. Current instructions list twenty questions, eighty-five percent, three attempts and ninety-day score validity for that separate examination. Identify approved provider technology, supply the required certifications and email, pay the listed registration fee, and wait until the Secretary of State has registered you before performing an online act."
         },
         {
           "heading": "Service design and limits",
@@ -5004,7 +5004,7 @@
       "keyFacts": [
         "In-person electronic and online services are distinct.",
         "The online registration filing fee listed in the instructions is $50.",
-        "Approved online applicants receive an approval letter.",
+        "Complete online registration with the Secretary of State before your first online act.",
         "Not every instrument-specific appearance rule is satisfied by the Online Act."
       ]
     },
@@ -5375,6 +5375,7 @@
     },
     {
       "slug": "leaving-an-employer-and-replacing-supplies",
+      "updated": "2026-11-19",
       "keyword": "leaving a nebraska employer and replacing notarial supplies",
       "intent": "Apply Nebraska notary law to a specific work scenario",
       "title": "Leaving a Nebraska Employer and Replacing Notarial Supplies",
@@ -5385,11 +5386,11 @@
       "sections": [
         {
           "heading": "Check whether the commission remains current",
-          "body": "A notary leaves a private employer that keeps the stamp and certificate it purchased. FAQ 12 addresses that circumstance and says recommissioning is unnecessary. The notary can obtain a replacement commission certificate and purchase a new seal. The employee should first identify the existing current record. Starting an unrelated new commissioning process simply because the office retained the supplies overlooks the specified replacement route."
+          "body": "A Nebraska resident whose commission remains valid can request a replacement certificate and purchase a new seal when a former employer keeps the original supplies. First locate the current record. If you live in a bordering state, confirm you still meet Nebraska’s employment requirement before you perform another act."
         },
         {
           "heading": "Obtain the official copy",
-          "body": "The FAQ lists a ten-dollar replacement-copy fee and points to the notary portal. The update instructions describe access through My Records for recent online filings and a Request Certificate amendment for the other described situations. The available route depends on the person's existing portal record. A former employer's photocopy or a vendor receipt does not independently amend the official commissioned name or term."
+          "body": "Check My Records in the Secretary of State’s portal. If the copy is unavailable there, use the notary search to open your commission record. Choose File an Amendment, then Request Certificate. Use the name and expiration shown on the commission when ordering the new seal."
         },
         {
           "heading": "Recreate compliant authentication",
@@ -5414,6 +5415,10 @@
           "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-210"
         },
         {
+          "title": "Nebraska Legislature — 64-101(8)",
+          "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-101"
+        },
+        {
           "title": "Nebraska Legislature — 64-410",
           "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-410"
         }
@@ -5421,7 +5426,7 @@
       "faqs": [
         {
           "q": "Does employer retention force another examination and initial commission?",
-          "a": "FAQ 12 says the notary need not be recommissioned solely for that situation and provides a replacement route."
+          "a": "FAQ 12 gives a replacement route when the notary’s commission remains valid. A Nebraska resident in that situation can request a certificate and buy a new seal under the existing commission."
         },
         {
           "q": "Can a coworker's stamp serve as the replacement?",

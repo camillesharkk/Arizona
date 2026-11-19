@@ -21,12 +21,18 @@ const ledger = readRows(ledgerPath);
 const staleEvidence = [];
 const states = new Map();
 const nextPendingId = {};
+let latestReviewTime = 0;
 const emptyCounts = () => ({ total: 0, verifiedUnchanged: 0, revisedRechecked: 0, pending: 0, held: 0, replaced: 0 });
 const total = emptyCounts();
 for (const [id, row] of inventory) {
   const evidence = ledger.get(id);
   const currentEvidence = evidence?.contentSha256 === row.contentSha256 && evidence?.version === row.version;
   if (evidence && !currentEvidence) staleEvidence.push(id);
+  if (currentEvidence && ["verified_unchanged", "revised_rechecked"].includes(evidence.status)) {
+    const reviewedTime = Date.parse(evidence.reviewedAt);
+    assert.ok(Number.isFinite(reviewedTime), `Invalid review timestamp: ${id}`);
+    latestReviewTime = Math.max(latestReviewTime, reviewedTime);
+  }
   if (row.replacesQuestionId) {
     assert.equal(ledger.get(row.replacesQuestionId)?.replacementId, id, `Missing replacement relationship: ${id}`);
     assert.ok(currentEvidence && evidence.status === "revised_rechecked" && row.reviewedAt === evidence.reviewedAt &&
@@ -57,6 +63,9 @@ for (const [id, row] of inventory) {
 for (const id of ledger.keys()) assert.ok(inventory.has(id), `Ledger item absent from inventory: ${id}`);
 const summary = {
   total,
+  lastCompleteActiveBankReviewAt: total.pending || total.held || !latestReviewTime
+    ? null
+    : new Date(latestReviewTime).toISOString(),
   byState: Object.fromEntries([...states].sort(([a], [b]) => a.localeCompare(b))),
   nextPendingId: Object.fromEntries(Object.entries(nextPendingId).sort(([a], [b]) => a.localeCompare(b))),
   staleEvidence,

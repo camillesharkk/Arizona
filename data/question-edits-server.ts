@@ -658,6 +658,180 @@ export const serverQuestionEdits: Readonly<Partial<Record<string, QuestionEdit>>
       "last_verified_at": "2026-11-19"
     }
   },
+  "mt-170": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A person appearing before a Montana notarial officer for a stand-alone oral oath says they are repeating the words without understanding them or intending to be bound. What should the officer do?",
+      "option_a": "Ask a supervisor to waive the concern.",
+      "option_b": "Complete a certificate without obtaining the declaration.",
+      "option_c": "Decline to administer the oath while the concern remains.",
+      "option_d": "Accept repetition of the words as enough to complete the oath.",
+      "correct_option": "C",
+      "explanation": "For an oral oath or affirmation, the officer must determine that the person is knowingly and willingly making the statement with the intent to be bound by it. The person’s own statement prevents that determination, so the officer should decline to proceed.",
+      "option_feedback": {
+        "A": "A supervisor cannot make the required determination for the notarial officer.",
+        "B": "A certificate cannot substitute for a knowingly and willingly made statement.",
+        "C": "Correct. The officer cannot determine that the person understands the statement and intends to be bound by it.",
+        "D": "Reciting the words alone does not establish knowing and willing participation or an intent to be bound."
+      },
+      "source_id": "mt-mca-603",
+      "source_reference": "MCA 1-5-603(7) https://mca.legmt.gov/bills/mca/title_0010/chapter_0050/part_0060/section_0030/0010-0050-0060-0030.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nm-035": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A first-time New Mexico notary applicant is preparing for the approved ordinary notary exam. What format does the Secretary of State’s approved provider publish?",
+      "option_a": "25 questions in 30 minutes, with a passing score of 70%",
+      "option_b": "50 questions in 60 minutes, with a passing score of at least 80%",
+      "option_c": "At least five questions in two minutes, with a passing score of at least 80%",
+      "option_d": "100 questions in 60 minutes, with a passing score of at least 90%",
+      "correct_option": "B",
+      "explanation": "The National Notary Association, the provider listed by the New Mexico Secretary of State, gives applicants 60 minutes to answer 50 questions in a single sitting. New Mexico’s rule requires a score of at least 80%.",
+      "option_feedback": {
+        "A": "The approved provider publishes 50 questions in 60 minutes, and a score of 70% is below the state requirement.",
+        "B": "The approved provider publishes 50 questions in 60 minutes, with a passing score of at least 80%.",
+        "C": "The two-minute knowledge-based quiz concerns a remote signer’s identity. It is separate from the ordinary notary exam.",
+        "D": "The approved provider publishes 50 questions, and the passing threshold is 80%."
+      },
+      "source_reference": "New Mexico SOS Training Resources; NNA New Mexico State-Required Training and Exam, Exam Instructions; 12.9.3.10(C) NMAC https://www.sos.nm.gov/notary-and-apostille/notary-commissions/training-resources/",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nm-190": {
+    "version": 1,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A remote principal takes the prescribed KBA quiz. Which success standard applies to that identity quiz?",
+      "option_a": "100% correct without a time limit",
+      "option_b": "The 60-minute time limit used for the approved notary examination",
+      "option_c": "At least 80% correct with all answers completed within two minutes",
+      "option_d": "Any correct answer within ten minutes",
+      "correct_option": "C",
+      "explanation": "The identity quiz requires at least 80% correct and completion within two minutes. These are identity-proofing specifications.",
+      "option_feedback": {
+        "A": "The rule supplies an 80% threshold and a two-minute limit.",
+        "B": "The approved provider gives notary applicants 60 minutes. The remote signer’s identity quiz has its own two-minute limit.",
+        "C": "Correct. The identity quiz requires at least 80% correct and completion within two minutes. These are identity-proofing specifications.",
+        "D": "One correct answer does not meet the percentage threshold."
+      },
+      "source_reference": "12.9.4.11(B)(3)–(4) NMAC; NNA Exam Instructions for the separate approved notary examinations https://www.srca.nm.gov/parts/title12/12.009.0004.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ne-101": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Nebraska resident still holds a valid notary commission after changing jobs. The former employer kept the commission certificate and official seal. What can the notary do?",
+      "option_a": "Apply for a new commission because every job change ends the current one.",
+      "option_b": "Wait for the former employer to approve a new appointment.",
+      "option_c": "Borrow a coworker's seal until the current commission expires.",
+      "option_d": "Request a replacement commission certificate and buy a new seal for the current commission.",
+      "correct_option": "D",
+      "explanation": "Nebraska's Secretary of State says a notary whose commission remains active can request a replacement commission certificate and buy a new seal. The employer's earlier purchase does not require the notary to start over.",
+      "option_feedback": {
+        "A": "This resident's commission is still valid.",
+        "B": "The former employer does not issue or renew the commission.",
+        "C": "A seal belongs to the commissioned notary identified on it.",
+        "D": "Correct. Replace the certificate and seal for the still-active commission."
+      },
+      "source_id": "ne-faq",
+      "source_reference": "Nebraska Secretary of State Notary FAQ, Q12; Steps to Update your Notary Public Record, p. 3 https://sos.nebraska.gov/notary-frequently-asked-questions",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ne-102": {
+    "version": 1,
+    "replacementId": "ne-204",
+    "fields": {
+      "question_text": "A Nebraska notary needs a duplicate of an active commission certificate. It is not available in My Records. Which online filing should the notary select after finding the notary record?",
+      "option_a": "Notary Public Renewal Application",
+      "option_b": "Add/Remove Solution Provider",
+      "option_c": "File an Amendment, then Request Certificate",
+      "option_d": "Notary Public Resignation",
+      "correct_option": "C",
+      "explanation": "The Secretary of State directs a notary to find the commission in the portal's notary search, open its record and use File an Amendment to select Request Certificate when a copy is unavailable in My Records.",
+      "option_feedback": {
+        "A": "Renewal is for a new term.",
+        "B": "The solution-provider filing changes electronic or online technology records.",
+        "C": "Correct. Request Certificate is the duplicate-certificate filing.",
+        "D": "Resignation ends the commission rather than supplying a duplicate."
+      },
+      "source_id": "ne-update",
+      "source_reference": "Nebraska Secretary of State, Steps to Update your Notary Public Record, p. 3, Duplicate Certificate Request https://sos.nebraska.gov/notary-frequently-asked-questions",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ne-154": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Nebraska online notary completed the statutory identity verification and wants to record that verification in the secure electronic record. Which entry provides evidence of identity?",
+      "option_a": "Only the color of the credential",
+      "option_b": "A blank checkbox next to the principal's name",
+      "option_c": "The record of the identity verification performed under § 64-411",
+      "option_d": "Only the payment receipt",
+      "correct_option": "C",
+      "explanation": "The secure online record must include evidence of each principal's identity. Nebraska law allows the record of the identity verification under § 64-411 as one form of that evidence. A notation of the identification document type is another listed form.",
+      "option_feedback": {
+        "A": "A color does not document the statutory verification.",
+        "B": "A blank checkbox does not document which verification occurred.",
+        "C": "Correct. The completed verification record is a stated form of evidence.",
+        "D": "A receipt documents a payment rather than an identity verification."
+      },
+      "source_id": "ne-stat-64-409",
+      "source_reference": "Neb. Rev. Stat. § 64-409(1)(e)(iii); § 64-411(2)(b) https://nebraskalegislature.gov/laws/statutes.php?statute=64-409",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ne-177": {
+    "version": 1,
+    "replacementId": "ne-205",
+    "fields": {
+      "question_text": "A Nebraska notary submits an online-notary registration application but has not yet been registered. What must happen before the notary performs a first online act?",
+      "option_a": "A private course provider must issue a badge.",
+      "option_b": "The vendor must promise access for the rest of the commission term.",
+      "option_c": "A technology vendor must transfer its own commission to the notary.",
+      "option_d": "The notary must be registered as an online notary public with the Secretary of State.",
+      "correct_option": "D",
+      "explanation": "A valid underlying Nebraska notary commission is a prerequisite. The notary must also register with the Secretary of State before performing any online notarial act. Submitting an application does not itself confer online authority.",
+      "option_feedback": {
+        "A": "A private badge is not a state registration.",
+        "B": "Vendor access cannot substitute for Nebraska registration.",
+        "C": "A vendor cannot transfer a notary commission to an applicant.",
+        "D": "Correct. Nebraska requires completed online registration before a first online act."
+      },
+      "source_id": "ne-stat-64-406",
+      "source_reference": "Neb. Rev. Stat. §§ 64-403(1), 64-406(1) https://sos.nebraska.gov/sites/default/files/doc/business-services/Notary/StepstoBecomeanOnlineNotary.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "ne-179": {
+    "version": 1,
+    "replacementId": "ne-206",
+    "fields": {
+      "question_text": "An approved Nebraska online-notary solution provider needs to verify that a notary may perform online notarial acts. Where does the provider confirm the notary's authorization?",
+      "option_a": "With the notary's first customer",
+      "option_b": "Through the Secretary of State or the Secretary's online listing, if available",
+      "option_c": "Through a private practice-test dashboard",
+      "option_d": "With the notary's employer only",
+      "correct_option": "B",
+      "explanation": "The Nebraska rules direct the approved provider to confirm the notary's online authority through the Secretary of State or the Secretary's website if an online listing is available. Registration with the Secretary is required before performing online acts.",
+      "option_feedback": {
+        "A": "A customer's statement does not establish state authorization.",
+        "B": "Correct. The Secretary or the official listing confirms online authority.",
+        "C": "A practice score does not establish state registration.",
+        "D": "An employer cannot confirm state registration on the Secretary's behalf."
+      },
+      "source_id": "ne-stat-64-406",
+      "source_reference": "433 NAC ch. 8, § 010.01(F), p. 6; Neb. Rev. Stat. § 64-406(1) https://sos.nebraska.gov/sites/default/files/doc/business-services/Notary/StepstoBecomeanOnlineNotary.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
   "ut-080": {
     "version": 2,
     "previousReviewedDate": "2026-11-14",

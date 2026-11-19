@@ -805,7 +805,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Reapply and amend through the official route",
-          "body": "A term lasts four years. Current and former notaries comply anew for a new commission, with new bond, qualification and updated seal. Address and legal-name changes have the stated ten-day notices and surety updates. Name changes include official evidence, amended bond and a new confirmed-name seal. Loss of the qualifying Missouri connection requires resignation. Another state's commission does not transfer automatically."
+          "body": "A term lasts four years. Applicants for a new term need a new bond, qualification and updated seal. Send the Secretary a signed notice within ten days of a covered address or legal name change. For a regular workplace or business move, send the notice, wait for state confirmation and inform the surety in writing before performing another act. For a legal name change, follow the separate rules for evidence, written surety notice, an amended bond and a new confirmed-name seal. An out-of-state commission does not transfer automatically."
         }
       ],
       "example": {
@@ -853,7 +853,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Identify and communicate under Missouri's standard",
-          "body": "Personal knowledge comes from sufficient interactions over time. Ordinary documentary evidence is a current qualifying federal/state/tribal document in an understood language with facial photograph, signature and physical description, or the stated passport exception. Credible witnesses are disinterested and use the one-person personally-known or two-person credential-identified arrangement. The principal also understands the transaction, acts freely, signs in understood language/characters and directly communicates in a shared language."
+          "body": "Personal knowledge comes from sufficient interactions over time. Ordinary documentary evidence is a current qualifying federal, state or tribal document in an understood language with a facial photograph, signature and physical description, subject to the passport exception. Each disinterested witness personally knows the principal and vouches under oath or affirmation. A single witness must be personally known to the notary. On the two-witness route, each witness presents qualifying identification. The principal also understands the transaction, acts freely, signs in understood language or characters and communicates directly in a language the notary understands."
         },
         {
           "heading": "Screen relationships and special execution",
@@ -1071,7 +1071,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Obtain a meaningful declaration",
-          "body": "MCA 1-5-603(2) and (7) require the identified participant's knowing and willing statement with intent to be bound. A verification involves the appearing person signing and making the verification. A certificate or silent stamp cannot supply the participant's missing solemn declaration. The officer must also apply the mandatory refusal rule when the required capacity or voluntariness is unresolved."
+          "body": "For a stand-alone oral oath or affirmation, MCA 1-5-603(7) requires the officer to establish the person's identity and determine that the person knowingly and willingly makes the statement with intent to be bound. A verification on oath or affirmation under MCA 1-5-603(2) also involves the appearing person signing the record and making the verification. When a person is executing a record, MCA 1-5-622(1) requires refusal if the officer cannot establish the required capacity or knowing and voluntary execution."
         },
         {
           "heading": "Accommodate execution without changing roles",
@@ -1345,7 +1345,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Qualifying and registering",
-          "body": "Sections 64-303 through 305 and 64-403 through 406 establish the additional paths. A valid Nebraska commission remains foundational. Online applicants complete the required SOS course before the official online examination and registration filing. Current instructions list twenty questions, eighty-five percent, three attempts and ninety-day score validity for that separate examination. Identify approved provider technology, supply the required certifications and email, pay the listed registration fee and obtain the approval letter."
+          "body": "Sections 64-303 through 305 and 64-403 through 406 establish the additional paths. A valid Nebraska commission remains foundational. Online applicants complete the required SOS course before the official online examination and registration filing. Current instructions list twenty questions, eighty-five percent, three attempts and ninety-day score validity for that separate examination. Identify approved provider technology, supply the required certifications and email, pay the listed registration fee, and wait until the Secretary of State has registered you before performing an online act."
         },
         {
           "heading": "Service design and limits",
@@ -1359,7 +1359,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "keyFacts": [
         "In-person electronic and online services are distinct.",
         "The online registration filing fee listed in the instructions is $50.",
-        "Approved online applicants receive an approval letter.",
+        "Complete online registration with the Secretary of State before your first online act.",
         "Not every instrument-specific appearance rule is satisfied by the Online Act."
       ]
     },
@@ -1879,8 +1879,8 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "summary": "New Mexico specifies an eighty-percent threshold for the approved ordinary examination and separately for the RON examination. Keep those specifications distinct from the timed knowledge-based authentication used to identify a remote principal.",
       "sections": [
         {
-          "heading": "Completion evidence and unknown specifications",
-          "body": "The application includes proof of successful approved learning and examination. Third-party examination vendors retain examination records, including scores, for five years. The official provisions reviewed establish the passing threshold. They do not establish a licensing-exam question count or time allowance, so preparation materials should leave those specifications unknown."
+          "heading": "Exam format and proof of passage",
+          "body": "The Secretary of State lists the National Notary Association as the approved provider. It gives applicants 60 minutes to answer 50 questions in a single sitting for each of the ordinary and RON exams. Pass the applicable exam with at least 80% and include your completion certificate with the application. Approved third-party vendors retain examination records, including scores, for five years."
         },
         {
           "heading": "Renewal and changed rules",
@@ -1895,7 +1895,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         "The ordinary examination passing threshold is at least eighty percent.",
         "RON has its own approved learning and examination requirement.",
         "Vendor examination records are retained for five years.",
-        "The reviewed materials leave licensing-exam length and duration unconfirmed."
+        "The approved provider publishes 50 questions in 60 minutes for each exam."
       ]
     },
     "applicant-oath": {
@@ -1926,7 +1926,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Commissioned notary stamp",
-          "body": "Use the commissioned legal name, commission number, expiration date, required Notary Public and State of New Mexico wording, and the official state seal. The administrative rule requires ten-point type. The stamp must use permanent ink that is photographically reproducible. Review an impression before submitting the copy and before placing it on customer records."
+          "body": "Use the commissioned legal name, commission number, expiration date, required Notary Public and State of New Mexico wording, and the official state seal. The administrative rule requires ten-point type. The stamp must use permanent ink that is photographically reproducible. Review an impression before submitting the copy and before placing it on customer records. If a notary registered a stamp before the June 16, 2023 change, state law permits continued use of that stamp until that commission expires."
         },
         {
           "heading": "Automatic officers and custody",
@@ -2022,7 +2022,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Electronic sources and fees",
-          "body": "Current law permits certifying that a tangible copy accurately reproduces an electronic record. Under the remote rule, a certified tangible copy of an electronic record with the required copy certificate is considered an original record. An uncertified printout does not obtain that status automatically. The ordinary copy-fee provision is fifty cents per page with a five-dollar minimum total charge. Keep copy certification distinct from authenticating a photograph, which the handbook prohibits."
+          "body": "Current law permits certifying that a tangible copy accurately reproduces an electronic record. Under the remote rule, a certified tangible copy of an electronic record with the required copy certificate is considered an original record. An uncertified printout does not obtain that status automatically. The ordinary copy-fee provision is fifty cents per page with a five-dollar minimum total charge. Keep copy certification distinct from authenticating a photograph, which the handbook prohibits. A notarial officer may charge less than the scheduled amount or waive the fee."
         }
       ],
       "example": {
@@ -2041,7 +2041,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Apply and verify the platform",
-          "body": "Apply to SOS and receive approval before the first remote act. The rule permits simultaneous ordinary-commission and RON applications. Identify every approved intended system, explain journal and recording storage, supply the required training proof, and pay the nonrefundable $75 application fee. The officer must be physically in New Mexico and verify provider active status for each act. Notify SOS when adopting a new system."
+          "body": "Apply to SOS and receive approval before the first remote act. The rule permits simultaneous ordinary-commission and RON applications. Identify every approved intended system, explain journal and recording storage, supply the required training proof, and pay the nonrefundable $75 application fee. The officer must be physically in New Mexico and verify provider active status for each act. Notify SOS when adopting a new system. The Secretary of State’s portal instructions describe the RON filing as an amendment to an existing record. If applying for both at once under the rule, confirm the filing steps with the Secretary of State."
         },
         {
           "heading": "Conduct a compliant session",

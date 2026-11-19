@@ -2857,11 +2857,11 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "study": "commission",
       "title": "Information amendments",
       "front": "What changes need prompt reporting?",
-      "rule": "The FAQ requires the stated ten-day signed notices for address and legal-name changes, with old/new details and required fees/evidence.",
-      "boundary": "Address/name changes also require written surety notice. A name change includes an amended bond and new confirmed-name seal.",
+      "rule": "Send the Secretary a signed notice within ten days after a covered address change or a legal name change. Include the old and new information and required supporting documents.",
+      "boundary": "After a regular workplace or business move, wait to notarize until you send the notice, receive state confirmation, and notify the surety in writing. For a name change, follow the separate seal, surety and amended-bond requirements.",
       "mixup": "Updating an employer's file does not update the state and surety records.",
-      "source": "Missouri Secretary of State notary FAQs — Q16–18",
-      "sourceUrl": "https://s1.sos.mo.gov/business/notary/notary_faq"
+      "source": "RSMo §§486.780 and 486.785; Missouri SOS FAQ 16–18",
+      "sourceUrl": "https://revisor.mo.gov/main/OneSection.aspx?section=486.780"
     },
     {
       "id": "mo-card-010",
@@ -3012,7 +3012,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "One or two credible witnesses",
       "front": "How are the ordinary witness routes structured?",
       "rule": "Use one disinterested witness personally known to the notary who knows the principal, or two disinterested witnesses who each know the principal and present qualifying ID.",
-      "boundary": "The witness takes the oath or affirmation identifying the principal.",
+      "boundary": "Each participating witness takes an oath or affirmation to vouch for the principal’s identity.",
       "mixup": "One unknown unsworn companion does not satisfy either route.",
       "source": "Missouri Revised Statutes §486.600 — §486.600(7),(21)(b)",
       "sourceUrl": "https://revisor.mo.gov/main/OneSection.aspx?section=486.600"
@@ -3652,9 +3652,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "A solemn participant's act",
       "front": "What makes an oath or affirmation more than a signature?",
       "rule": "The person knowingly and willingly makes the statement with intent to be bound, and the officer establishes the person's identity.",
-      "boundary": "The person must participate through the authorized appearance method.",
+      "boundary": "A verification on oath or affirmation also involves signing the record.",
       "mixup": "A silent stamp does not administer a solemn declaration.",
-      "source": "MCA 1-5-603(7), (9)",
+      "source": "MCA 1-5-603(7)",
       "sourceUrl": "https://mca.legmt.gov/bills/mca/title_0010/chapter_0050/part_0060/section_0030/0010-0050-0060-0030.html"
     },
     {
@@ -3765,7 +3765,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Check current agency instructions for the actual transaction.",
       "mixup": "A remaining blank stamp box on an old form does not itself prove a current requirement.",
       "source": "SOS Vehicle Title Transfer Updates",
-      "sourceUrl": "https://sosmt.gov/notary/"
+      "sourceUrl": "https://sosmt.gov/notary/MVTitles/"
     },
     {
       "id": "mt-card-042",
@@ -3809,7 +3809,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Use the current statutory duties and agency instructions for the transfer involved.",
       "mixup": "A notary commission does not guarantee the agency will approve a client's transfer paperwork.",
       "source": "SOS Vehicle Title Transfer Updates — agency referral",
-      "sourceUrl": "https://sosmt.gov/notary/"
+      "sourceUrl": "https://sosmt.gov/notary/MVTitles/"
     },
     {
       "id": "mt-card-046",
@@ -5585,9 +5585,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Ordinary examination threshold",
       "front": "What score establishes passage of the ordinary required examination?",
       "rule": "An applicant must provide proof of passing the approved examination with a score of at least eighty percent.",
-      "boundary": "The reviewed official materials do not establish an examination question count or time allowance.",
+      "boundary": "The Secretary of State’s approved provider gives ordinary applicants 60 minutes to answer 50 questions in one sitting.",
       "mixup": "An identity-proofing quiz's two-minute limit is a different specification.",
-      "source": "12.9.3.10(C) NMAC",
+      "source": "12.9.3.10(C) NMAC; NNA Ordinary Exam Instructions",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
     },
     {
@@ -5629,9 +5629,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "RON examination is separate",
       "front": "What examination accompanies RON qualification?",
       "rule": "RON authorization requires the approved remote-notarization course and examination, with proof of a score of at least eighty percent.",
-      "boundary": "The RON training fee is separate from the RON application fee.",
+      "boundary": "The exam and course fee is separate from the RON application fee. The approved provider gives applicants 60 minutes to answer 50 questions in one sitting.",
       "mixup": "Passing ordinary training does not automatically grant remote authority.",
-      "source": "12.9.4.8(A)(4); 12.9.4.9 NMAC",
+      "source": "12.9.4.9 NMAC; NNA RON Exam Instructions",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0004.html"
     },
     {
@@ -5695,7 +5695,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Commissioned stamp identity",
       "front": "Which identifying details belong on a commissioned notary's stamp?",
       "rule": "The stamp includes the commissioned legal name, commission number, expiration date, and required New Mexico designation and official seal.",
-      "boundary": "The name must match the commission.",
+      "boundary": "The name must match the commission. A stamp registered before the 2023 change may be used until that commission expires.",
       "mixup": "A company logo does not replace the official identifiers.",
       "source": "14-14A-16, amended2023; 12.9.3.14 NMAC",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
@@ -5873,7 +5873,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "rule": "The individual declares execution for the record's stated purpose and, in a representative capacity, proper authority and execution as the represented person's act.",
       "boundary": "Identify the individual appearing.",
       "mixup": "A representative acknowledgment does not establish the underlying facts as sworn testimony.",
-      "source": "14-14A-2(1); 14-14A-4(A), amended2023",
+      "source": "NMSA 1978 §§ 14-14A-2(A)(1)–(2) and 14-14A-4(A)",
       "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
     },
     {
@@ -5895,8 +5895,8 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "rule": "The principal may direct someone other than the notarial officer to sign, and the officer records the required directed-signature notation.",
       "boundary": "The principal's direction remains essential.",
       "mixup": "The officer cannot become the directed signer in the officer's own act.",
-      "source": "14-14A-8, amended2023",
-      "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
+      "source": "NMSA 1978 § 14-14A-8 (2021 SB 12, § 8, p. 13)",
+      "sourceUrl": "https://www.nmlegis.gov/Sessions/21%20Regular/final/SB0012.PDF"
     },
     {
       "id": "nm-card-035",
@@ -5937,10 +5937,10 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Copy fee minimum",
       "front": "How is the ordinary copy-certification fee ceiling calculated?",
       "rule": "The maximum is fifty cents per page with a minimum total charge of five dollars.",
-      "boundary": "Apply the special copy provision to the page count.",
+      "boundary": "An officer may charge less than the scheduled amount or waive the fee.",
       "mixup": "A separate five-dollar charge for every page is not the stated copy-fee formula.",
-      "source": "14-14A-28(C); SOS Handbook, Fees",
-      "sourceUrl": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf"
+      "source": "NMSA 1978 § 14-14A-28(A), (C)(4)",
+      "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
     },
     {
       "id": "nm-card-039",
@@ -5959,9 +5959,9 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Certified tangible original",
       "front": "How does the remote rule treat a certified tangible copy of an electronic record?",
       "rule": "A certified tangible copy with the required copy certificate is considered an original record under the rule.",
-      "boundary": "The short form for copy certification remains required.",
+      "boundary": "The certificate must substantially follow the statutory short form for certifying a copy.",
       "mixup": "An uncertified printout does not acquire that status merely by coming from a RON platform.",
-      "source": "12.9.4.16(B) NMAC",
+      "source": "12.9.4.16(B) NMAC; NMSA 1978 § 14-14A-15(E)",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0004.html"
     },
     {
@@ -6047,10 +6047,10 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Sole custody",
       "front": "Who controls the journal while the officer works for an employer?",
       "rule": "The officer keeps the journal secure under the officer's control.",
-      "boundary": "The employer may receive clearly marked copies of relevant entries as allowed by the statute.",
+      "boundary": "A former employer may retain a clearly marked copy under the rule.",
       "mixup": "Employment does not transfer the original journal to the employer.",
-      "source": "12.9.3.15(B)-(D) NMAC",
-      "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
+      "source": "12.9.3.15(B)–(D) NMAC",
+      "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
     },
     {
       "id": "nm-card-049",

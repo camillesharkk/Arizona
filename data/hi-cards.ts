@@ -55,8 +55,8 @@ export const hiCards: HiCard[] = [
   },
   {
     id: "hi-card-011", study: "term-renewal", title: "Thirty-day notice",
-    front: "A name, job, or address changes. What notice is due?", rule: "Written notice to the attorney general within 30 days.", boundary: "A missed address that sends renewal mail to the wrong place is a $50 fine. Other late change notices are $25.",
-    mixup: "Do not wait for the next renewal.", source: "HAR §5-11-10", sourceUrl: "https://ag.hawaii.gov/wp-content/uploads/2022/03/HAR-Ch-5-11.pdf",
+    front: "A name, job, or address changes. What notice is due?", rule: "Report covered changes promptly to the attorney general. Follow the applicable rule for written notice within 30 days.", boundary: "The fee schedule lists $50 when an unreported address change misdirects a renewal notice and $25 for a late change notice.",
+    mixup: "Report the change before the next renewal.", source: "HRS §456-1(a); HAR §5-11-10", sourceUrl: "https://ag.hawaii.gov/wp-content/uploads/2022/03/HAR-Ch-5-11.pdf",
   },
   {
     id: "hi-card-012", study: "term-renewal", title: "Suspension and revocation",
@@ -95,7 +95,7 @@ export const hiCards: HiCard[] = [
   },
   {
     id: "hi-card-019", study: "identity", title: "Credible witness",
-    front: "Who can be a credible witness?", rule: "A person who personally appears, whom the notary knows or identifies through a permitted photo credential, and who provides sworn or affirmed verification.", boundary: "A spouse is not a witness merely by being a spouse.",
+    front: "Who can be a credible witness?", rule: "The witness appears in person and verifies the signer’s identity under oath or affirmation. The notary knows the witness personally or identifies the witness using a listed passport, driver’s license or government nondriver ID.", boundary: "The listed witness credential may be current or expired no more than three years.",
     mixup: "One person's ID does not identify the other signer.", source: "HRS §456-1.6(1)(D)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
   },
   {
@@ -115,7 +115,7 @@ export const hiCards: HiCard[] = [
   },
   {
     id: "hi-card-023", study: "acknowledgment", title: "Five dollars",
-    front: "What is the in-person acknowledgment fee?", rule: "$5 for each party signing.", boundary: "A duplicate original beyond the first is $2.50 per person for the extra certificate.",
+    front: "What is the in-person acknowledgment fee?", rule: "$5 for each party signing, including the original and first duplicate original.", boundary: "The certificate on each further duplicate original costs $2.50 per person making the acknowledgment.",
     mixup: "$25 is the remote fee, not this fee.", source: "HRS §456-17(7)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm",
   },
   {

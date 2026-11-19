@@ -4310,9 +4310,9 @@
       "title": "Ordinary examination threshold",
       "front": "What score establishes passage of the ordinary required examination?",
       "rule": "An applicant must provide proof of passing the approved examination with a score of at least eighty percent.",
-      "boundary": "The reviewed official materials do not establish an examination question count or time allowance.",
+      "boundary": "The Secretary of State’s approved provider gives ordinary applicants 60 minutes to answer 50 questions in one sitting.",
       "mixup": "An identity-proofing quiz's two-minute limit is a different specification.",
-      "source": "12.9.3.10(C) NMAC",
+      "source": "12.9.3.10(C) NMAC; NNA Ordinary Exam Instructions",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
     },
     {
@@ -4354,9 +4354,9 @@
       "title": "RON examination is separate",
       "front": "What examination accompanies RON qualification?",
       "rule": "RON authorization requires the approved remote-notarization course and examination, with proof of a score of at least eighty percent.",
-      "boundary": "The RON training fee is separate from the RON application fee.",
+      "boundary": "The exam and course fee is separate from the RON application fee. The approved provider gives applicants 60 minutes to answer 50 questions in one sitting.",
       "mixup": "Passing ordinary training does not automatically grant remote authority.",
-      "source": "12.9.4.8(A)(4); 12.9.4.9 NMAC",
+      "source": "12.9.4.9 NMAC; NNA RON Exam Instructions",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0004.html"
     },
     {
@@ -4420,7 +4420,7 @@
       "title": "Commissioned stamp identity",
       "front": "Which identifying details belong on a commissioned notary's stamp?",
       "rule": "The stamp includes the commissioned legal name, commission number, expiration date, and required New Mexico designation and official seal.",
-      "boundary": "The name must match the commission.",
+      "boundary": "The name must match the commission. A stamp registered before the 2023 change may be used until that commission expires.",
       "mixup": "A company logo does not replace the official identifiers.",
       "source": "14-14A-16, amended2023; 12.9.3.14 NMAC",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
@@ -4598,7 +4598,7 @@
       "rule": "The individual declares execution for the record's stated purpose and, in a representative capacity, proper authority and execution as the represented person's act.",
       "boundary": "Identify the individual appearing.",
       "mixup": "A representative acknowledgment does not establish the underlying facts as sworn testimony.",
-      "source": "14-14A-2(1); 14-14A-4(A), amended2023",
+      "source": "NMSA 1978 §§ 14-14A-2(A)(1)–(2) and 14-14A-4(A)",
       "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
     },
     {
@@ -4620,8 +4620,8 @@
       "rule": "The principal may direct someone other than the notarial officer to sign, and the officer records the required directed-signature notation.",
       "boundary": "The principal's direction remains essential.",
       "mixup": "The officer cannot become the directed signer in the officer's own act.",
-      "source": "14-14A-8, amended2023",
-      "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
+      "source": "NMSA 1978 § 14-14A-8 (2021 SB 12, § 8, p. 13)",
+      "sourceUrl": "https://www.nmlegis.gov/Sessions/21%20Regular/final/SB0012.PDF"
     },
     {
       "id": "nm-card-035",
@@ -4662,10 +4662,10 @@
       "title": "Copy fee minimum",
       "front": "How is the ordinary copy-certification fee ceiling calculated?",
       "rule": "The maximum is fifty cents per page with a minimum total charge of five dollars.",
-      "boundary": "Apply the special copy provision to the page count.",
+      "boundary": "An officer may charge less than the scheduled amount or waive the fee.",
       "mixup": "A separate five-dollar charge for every page is not the stated copy-fee formula.",
-      "source": "14-14A-28(C); SOS Handbook, Fees",
-      "sourceUrl": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf"
+      "source": "NMSA 1978 § 14-14A-28(A), (C)(4)",
+      "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
     },
     {
       "id": "nm-card-039",
@@ -4684,9 +4684,9 @@
       "title": "Certified tangible original",
       "front": "How does the remote rule treat a certified tangible copy of an electronic record?",
       "rule": "A certified tangible copy with the required copy certificate is considered an original record under the rule.",
-      "boundary": "The short form for copy certification remains required.",
+      "boundary": "The certificate must substantially follow the statutory short form for certifying a copy.",
       "mixup": "An uncertified printout does not acquire that status merely by coming from a RON platform.",
-      "source": "12.9.4.16(B) NMAC",
+      "source": "12.9.4.16(B) NMAC; NMSA 1978 § 14-14A-15(E)",
       "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0004.html"
     },
     {
@@ -4772,10 +4772,10 @@
       "title": "Sole custody",
       "front": "Who controls the journal while the officer works for an employer?",
       "rule": "The officer keeps the journal secure under the officer's control.",
-      "boundary": "The employer may receive clearly marked copies of relevant entries as allowed by the statute.",
+      "boundary": "A former employer may retain a clearly marked copy under the rule.",
       "mixup": "Employment does not transfer the original journal to the employer.",
-      "source": "12.9.3.15(B)-(D) NMAC",
-      "sourceUrl": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
+      "source": "12.9.3.15(B)–(D) NMAC",
+      "sourceUrl": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
     },
     {
       "id": "nm-card-049",
@@ -4828,8 +4828,8 @@
       "summary": "New Mexico specifies an eighty-percent threshold for the approved ordinary examination and separately for the RON examination. Keep those specifications distinct from the timed knowledge-based authentication used to identify a remote principal.",
       "sections": [
         {
-          "heading": "Completion evidence and unknown specifications",
-          "body": "The application includes proof of successful approved learning and examination. Third-party examination vendors retain examination records, including scores, for five years. The official provisions reviewed establish the passing threshold. They do not establish a licensing-exam question count or time allowance, so preparation materials should leave those specifications unknown."
+          "heading": "Exam format and proof of passage",
+          "body": "The Secretary of State lists the National Notary Association as the approved provider. It gives applicants 60 minutes to answer 50 questions in a single sitting for each of the ordinary and RON exams. Pass the applicable exam with at least 80% and include your completion certificate with the application. Approved third-party vendors retain examination records, including scores, for five years."
         },
         {
           "heading": "Renewal and changed rules",
@@ -4844,7 +4844,7 @@
         "The ordinary examination passing threshold is at least eighty percent.",
         "RON has its own approved learning and examination requirement.",
         "Vendor examination records are retained for five years.",
-        "The reviewed materials leave licensing-exam length and duration unconfirmed."
+        "The approved provider publishes 50 questions in 60 minutes for each exam."
       ]
     },
     "applicant-oath": {
@@ -4875,7 +4875,7 @@
       "sections": [
         {
           "heading": "Commissioned notary stamp",
-          "body": "Use the commissioned legal name, commission number, expiration date, required Notary Public and State of New Mexico wording, and the official state seal. The administrative rule requires ten-point type. The stamp must use permanent ink that is photographically reproducible. Review an impression before submitting the copy and before placing it on customer records."
+          "body": "Use the commissioned legal name, commission number, expiration date, required Notary Public and State of New Mexico wording, and the official state seal. The administrative rule requires ten-point type. The stamp must use permanent ink that is photographically reproducible. Review an impression before submitting the copy and before placing it on customer records. If a notary registered a stamp before the June 16, 2023 change, state law permits continued use of that stamp until that commission expires."
         },
         {
           "heading": "Automatic officers and custody",
@@ -4971,7 +4971,7 @@
         },
         {
           "heading": "Electronic sources and fees",
-          "body": "Current law permits certifying that a tangible copy accurately reproduces an electronic record. Under the remote rule, a certified tangible copy of an electronic record with the required copy certificate is considered an original record. An uncertified printout does not obtain that status automatically. The ordinary copy-fee provision is fifty cents per page with a five-dollar minimum total charge. Keep copy certification distinct from authenticating a photograph, which the handbook prohibits."
+          "body": "Current law permits certifying that a tangible copy accurately reproduces an electronic record. Under the remote rule, a certified tangible copy of an electronic record with the required copy certificate is considered an original record. An uncertified printout does not obtain that status automatically. The ordinary copy-fee provision is fifty cents per page with a five-dollar minimum total charge. Keep copy certification distinct from authenticating a photograph, which the handbook prohibits. A notarial officer may charge less than the scheduled amount or waive the fee."
         }
       ],
       "example": {
@@ -4990,7 +4990,7 @@
       "sections": [
         {
           "heading": "Apply and verify the platform",
-          "body": "Apply to SOS and receive approval before the first remote act. The rule permits simultaneous ordinary-commission and RON applications. Identify every approved intended system, explain journal and recording storage, supply the required training proof, and pay the nonrefundable $75 application fee. The officer must be physically in New Mexico and verify provider active status for each act. Notify SOS when adopting a new system."
+          "body": "Apply to SOS and receive approval before the first remote act. The rule permits simultaneous ordinary-commission and RON applications. Identify every approved intended system, explain journal and recording storage, supply the required training proof, and pay the nonrefundable $75 application fee. The officer must be physically in New Mexico and verify provider active status for each act. Notify SOS when adopting a new system. The Secretary of State’s portal instructions describe the RON filing as an amendment to an existing record. If applying for both at once under the rule, confirm the filing steps with the Secretary of State."
         },
         {
           "heading": "Conduct a compliant session",
@@ -5062,12 +5062,16 @@
       ],
       "sources": [
         {
-          "title": "2023 enacted RULONA amendments, Sections4 and8",
-          "url": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
+          "title": "NMSA 1978 §§ 14-14A-4 and 14-14A-8 (2021 SB 12)",
+          "url": "https://www.nmlegis.gov/Sessions/21%20Regular/final/SB0012.PDF"
         },
         {
           "title": "SOS Handbook, Notarial Acts",
           "url": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf"
+        },
+        {
+          "title": "NMSA 1978 §§ 14-14A-2(A), (S) and 14-14A-5 (2023 SB 246)",
+          "url": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
         }
       ],
       "faqs": [
@@ -5079,7 +5083,8 @@
           "q": "May the officer be the directed signer?",
           "a": "No. The directed signer must be someone other than the notarial officer."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     },
     {
       "slug": "identification-and-credible-witnesses",
@@ -5149,7 +5154,7 @@
         },
         {
           "heading": "Keep custody after employment ends",
-          "body": "The journal remains under the officer's secure control. Statutory permission for a former employer to receive clearly marked copies of relevant entries does not give the employer the original journal. When an employee leaves, plan lawful retention or transfer and document the custody location. The required ten-year retention period continues after the officer changes jobs or stops working as a notary."
+          "body": "The journal remains under the officer’s secure control. A former employer may retain a clearly marked copy under 12.9.3.15(D) NMAC. The employer does not acquire the original. When leaving a job, arrange lawful retention or transfer and document where the journal is kept. The ten-year retention period runs from the last recorded notarial act."
         },
         {
           "heading": "Protect credentials and fee limits",
@@ -5158,7 +5163,7 @@
       ],
       "sources": [
         {
-          "title": "2023 enacted RULONA, Sections3,7,18 and28",
+          "title": "NMSA 1978 §§ 14-14A-3, 14-14A-7, 14-14A-18 and 14-14A-28 (2023 SB 246)",
           "url": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
         },
         {
@@ -5168,6 +5173,10 @@
         {
           "title": "SOS Handbook, Prohibited Acts and Fees",
           "url": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf"
+        },
+        {
+          "title": "12.9.3.15(B)–(D) NMAC",
+          "url": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
         }
       ],
       "faqs": [
@@ -5179,7 +5188,8 @@
           "q": "May a coworker use the officer's RON login?",
           "a": "No. The signature and official stamp remain under the officer's sole control and access."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     },
     {
       "slug": "copy-certification-and-electronic-printouts",
@@ -5205,7 +5215,7 @@
         },
         {
           "heading": "Apply the copy fee formula",
-          "body": "The ordinary copy-certification provision uses fifty cents per page with a minimum total charge of five dollars. A small eligible copy therefore does not require charging only a fraction of a dollar, while a larger copy uses the page formula. Do not convert that provision into five dollars for every page. Other notarial acts and any separately agreed travel charge have their own rules, so make the invoice describe what was actually performed."
+          "body": "The ordinary copy-certification provision uses fifty cents per page with a minimum total charge of five dollars. A small eligible copy therefore does not require charging only a fraction of a dollar, while a larger copy uses the page formula. Do not convert that provision into five dollars for every page. Other notarial acts and any separately agreed travel charge have their own rules, so make the invoice describe what was actually performed. A notarial officer can charge less than the scheduled amount or waive the fee."
         }
       ],
       "sources": [
@@ -5214,7 +5224,7 @@
           "url": "https://www.srca.nm.gov/parts/title12/12.009.0003.html"
         },
         {
-          "title": "2023 enacted RULONA, Section3",
+          "title": "NMSA 1978 §§ 14-14A-3(C), 14-14A-15(E) and 14-14A-28(A), (C)(4) (2023 SB 246)",
           "url": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
         },
         {
@@ -5235,7 +5245,8 @@
           "q": "Does every printout from a RON platform count as a certified original?",
           "a": "The remote rule requires a certified tangible copy and the appropriate copy certificate."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     },
     {
       "slug": "contemporaneous-journals-and-electronic-recovery",
@@ -5266,7 +5277,7 @@
       ],
       "sources": [
         {
-          "title": "2023 enacted RULONA, Section18",
+          "title": "NMSA 1978 § 14-14A-18 (2023 SB 246, § 16)",
           "url": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
         },
         {
@@ -5287,7 +5298,8 @@
           "q": "Does a recording replace the RON journal entry?",
           "a": "No. The journal requires its own entry, including the provider name."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     },
     {
       "slug": "loss-resignation-and-record-disposition",
@@ -5318,7 +5330,7 @@
       ],
       "sources": [
         {
-          "title": "2023 enacted RULONA, Sections17-18",
+          "title": "NMSA 1978 §§ 14-14A-17 and 14-14A-18 (2023 SB 246, §§ 15–16)",
           "url": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
         },
         {
@@ -5339,7 +5351,8 @@
           "q": "Is owning the failed storage device enough?",
           "a": "No. Electronic journal recovery and availability requirements concern the records themselves."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     },
     {
       "slug": "ron-identity-proofing-and-kba",
@@ -5510,7 +5523,7 @@
       ],
       "sources": [
         {
-          "title": "2023 enacted RULONA, Sections9 and16",
+          "title": "NMSA 1978 §§ 14-14A-2(B), 14-14A-9, 14-14A-16 and 14-14A-21 (2023 SB 246)",
           "url": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF"
         },
         {
@@ -5535,7 +5548,8 @@
           "q": "Does the old implementation grace period excuse a new officer in 2026?",
           "a": "No. The historical transition does not remove the current training and stamp requirements."
         }
-      ]
+      ],
+      "updated": "2026-11-19"
     }
   ],
   "sources": [

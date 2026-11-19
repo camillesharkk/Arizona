@@ -1,12 +1,13 @@
 {
   "total": {
     "total": 5701,
-    "verifiedUnchanged": 4840,
-    "revisedRechecked": 238,
-    "pending": 609,
+    "verifiedUnchanged": 5441,
+    "revisedRechecked": 243,
+    "pending": 0,
     "held": 0,
-    "replaced": 14
+    "replaced": 17
   },
+  "lastCompleteActiveBankReviewAt": "2026-11-19T13:37:41.198Z",
   "byState": {
     "AR": {
       "total": 203,
@@ -106,9 +107,9 @@
     },
     "MT": {
       "total": 203,
-      "verifiedUnchanged": 0,
-      "revisedRechecked": 0,
-      "pending": 203,
+      "verifiedUnchanged": 202,
+      "revisedRechecked": 1,
+      "pending": 0,
       "held": 0,
       "replaced": 0
     },
@@ -122,11 +123,11 @@
     },
     "NE": {
       "total": 203,
-      "verifiedUnchanged": 0,
-      "revisedRechecked": 0,
-      "pending": 203,
+      "verifiedUnchanged": 198,
+      "revisedRechecked": 2,
+      "pending": 0,
       "held": 0,
-      "replaced": 0
+      "replaced": 3
     },
     "NJ": {
       "total": 203,
@@ -138,9 +139,9 @@
     },
     "NM": {
       "total": 203,
-      "verifiedUnchanged": 0,
-      "revisedRechecked": 0,
-      "pending": 203,
+      "verifiedUnchanged": 201,
+      "revisedRechecked": 2,
+      "pending": 0,
       "held": 0,
       "replaced": 0
     },
@@ -233,10 +234,6 @@
       "replaced": 0
     }
   },
-  "nextPendingId": {
-    "MT": "mt-001",
-    "NE": "ne-001",
-    "NM": "nm-001"
-  },
+  "nextPendingId": {},
   "staleEvidence": []
 }

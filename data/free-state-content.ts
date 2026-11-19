@@ -3065,7 +3065,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
     "processKind": "Approved course",
     "summary": "Ordinary first-time New Mexico applicants complete the state-required approved course and examination before applying.",
     "training": "Complete the Notary Education Course and examination from the SOS-approved provider. The training page identifies the National Notary Association as the approved provider. Automatic notarial officers also have education requirements.",
-    "assessment": "Pass the approved course examination with at least 80% and include the completion certificate with the application. The opened official materials do not establish a fixed question count or examination duration.",
+    "assessment": "The Secretary of State’s approved provider gives ordinary applicants 60 minutes to answer 50 questions in one sitting. Score at least 80% and include the issued completion certificate with your application. The provider publishes the same format for the separate RON exam.",
     "steps": [
       "Check eligibility and complete the approved education and exam.",
       "Obtain the $10,000 bond and have the required applicant signature and oath notarized by another authorized officer.",
@@ -3077,7 +3077,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
       "Automatic notarial officers have a distinct office/registration basis of authority and still have training and stamp duties. The historical 2023 training grace period is not a current new-applicant exemption."
     ],
     "renewal": "The commission term is four years. Renew online. For the renewed commission, file the stamp copy within 45 days of receipt and before its first act. Under 12.9.3.8(A)(1) NMAC, a recorded prior examination pass can excuse retraining and retesting, unless the commission expired more than one year ago or the Secretary of State determines that substantial legal or rule changes since the last application require them.",
-    "ron": "A commissioned notary or qualifying automatic notarial officer completes separate RON education and examination and files the RON application as an amendment. The authorized officer must be physically in New Mexico during remote acts and must comply with separate electronic-stamp, technology, recording and journal requirements. The Secretary of State must receive the electronic-stamp copy within 45 days of RON authorization and before the first remote act.",
+    "ron": "Complete the separate approved RON course and exam. The Secretary of State’s portal instructions describe filing a RON amendment to an existing record. State rules also allow a simultaneous ordinary and RON application. The authorized officer must be physically in New Mexico for each remote act and follow the technology, recording, and journal rules. The Secretary of State must receive the electronic stamp copy within 45 days of authorization and before the first remote act.",
     "officialNext": {
       "label": "New Mexico official approved training and exam",
       "url": "https://www.sos.nm.gov/notary-and-apostille/notary-commissions/training-resources/"
@@ -3152,11 +3152,25 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
         "url": "https://www.srca.nm.gov/parts/title12/12.009.0004.html",
         "reference": "12.9.4.8(C) and 12.9.4.13(A), electronic stamp receipt before remote work",
         "checkedAt": "2026-11-14"
+      },
+      {
+        "id": "nm-ordinary-provider-specs",
+        "title": "National Notary Association — Approved New Mexico Notary Exam",
+        "url": "https://www.nationalnotary.org/new-mexico-state-required-training-and-exam",
+        "reference": "Exam Instructions, ordinary exam format",
+        "checkedAt": "2026-11-19"
+      },
+      {
+        "id": "nm-ron-provider-specs",
+        "title": "National Notary Association — Approved New Mexico RON Exam",
+        "url": "https://www.nationalnotary.org/new-mexico-state-required-remote-online-notary-training-and-exam",
+        "reference": "Exam Instructions, separate RON exam format",
+        "checkedAt": "2026-11-19"
       }
     ],
     "specs": {
-      "questions": null,
-      "minutes": null,
+      "questions": 50,
+      "minutes": 60,
       "passing": "80%",
       "credential": "Certificate of Completion of Notary Education Course and exam"
     },

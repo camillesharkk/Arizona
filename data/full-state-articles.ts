@@ -4685,6 +4685,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "ordinary-credible-witness-routes",
+      "updated": "2026-11-19",
       "keyword": "Missouri credible witness one two identification",
       "intent": "Apply the ordinary identity-witness alternatives",
       "title": "One Known Witness or Two Identified Witnesses in Missouri",
@@ -4703,7 +4704,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Apply the two-identified-witness alternative",
-          "body": "The same provision offers a route with two disinterested witnesses who each personally know the principal and show the notary qualifying documentary identification. This differs from assuming any one unknown companion will suffice. The ordinary credential definition specifies a current federal, state or tribal document in an understood language with the required features and its passport exception. The notary applies that actual credential standard to the witnesses."
+          "body": "Two disinterested witnesses may identify the principal. Each witness personally knows the principal, presents qualifying documentary identification and vouches for the principal under oath or affirmation. Apply the ordinary credential requirements to each witness, including the statutory passport exception."
         },
         {
           "heading": "Preserve the method in the journal",
@@ -4754,7 +4755,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "MO",
       "path": "/missouri/guides/ordinary-credible-witness-routes/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/missouri/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -6547,7 +6547,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "heading": "Montana Secretary of State — Notary Public, vehicle title update",
           "body": "Official source checked November 14, 2026.",
           "link": {
-            "href": "https://sosmt.gov/notary/",
+            "href": "https://sosmt.gov/notary/MVTitles/",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"
@@ -6564,11 +6564,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "Check the official-record restriction and its exception for employment by the issuing or original-holding public entity."
         }
       ],
+      "updated": "2026-11-19",
       "id": "mt-vehicle-title-change-and-service-boundaries",
       "state": "MT",
       "path": "/montana/guides/vehicle-title-change-and-service-boundaries/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/montana/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -7233,6 +7233,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
     },
     {
       "slug": "leaving-an-employer-and-replacing-supplies",
+      "updated": "2026-11-19",
       "keyword": "leaving a nebraska employer and replacing notarial supplies",
       "intent": "Apply Nebraska notary law to a specific work scenario",
       "title": "Leaving a Nebraska Employer and Replacing Notarial Supplies",
@@ -7243,11 +7244,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Check whether the commission remains current",
-          "body": "A notary leaves a private employer that keeps the stamp and certificate it purchased. FAQ 12 addresses that circumstance and says recommissioning is unnecessary. The notary can obtain a replacement commission certificate and purchase a new seal. The employee should first identify the existing current record. Starting an unrelated new commissioning process simply because the office retained the supplies overlooks the specified replacement route."
+          "body": "A Nebraska resident whose commission remains valid can request a replacement certificate and purchase a new seal when a former employer keeps the original supplies. First locate the current record. If you live in a bordering state, confirm you still meet Nebraska’s employment requirement before you perform another act."
         },
         {
           "heading": "Obtain the official copy",
-          "body": "The FAQ lists a ten-dollar replacement-copy fee and points to the notary portal. The update instructions describe access through My Records for recent online filings and a Request Certificate amendment for the other described situations. The available route depends on the person's existing portal record. A former employer's photocopy or a vendor receipt does not independently amend the official commissioned name or term."
+          "body": "Check My Records in the Secretary of State’s portal. If the copy is unavailable there, use the notary search to open your commission record. Choose File an Amendment, then Request Certificate. Use the name and expiration shown on the commission when ordering the new seal."
         },
         {
           "heading": "Recreate compliant authentication",
@@ -7288,6 +7289,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           }
         },
         {
+          "heading": "Nebraska Legislature — 64-101(8)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://nebraskalegislature.gov/laws/statutes.php?statute=64-101",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
           "heading": "Nebraska Legislature — 64-410",
           "body": "Official source checked November 14, 2026.",
           "link": {
@@ -7301,7 +7312,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "faqs": [
         {
           "q": "Does employer retention force another examination and initial commission?",
-          "a": "FAQ 12 says the notary need not be recommissioned solely for that situation and provides a replacement route."
+          "a": "FAQ 12 gives a replacement route when the notary’s commission remains valid. A Nebraska resident in that situation can request a certificate and buy a new seal under the existing commission."
         },
         {
           "q": "Can a coworker's stamp serve as the replacement?",
@@ -7312,7 +7323,6 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "state": "NE",
       "path": "/nebraska/guides/leaving-an-employer-and-replacing-supplies/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/nebraska/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -9341,10 +9351,10 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Use the actual act date and the certificate appropriate to what occurred. For an ordinary tangible transaction, the principal appears physically before the officer. The principal's requested result does not permit backdating an acknowledgment or recording an oath that was never administered. If the record is incomplete or the principal has not decided what act is required, resolve the missing instructions within the officer's lawful role before completing the certificate."
         },
         {
-          "heading": "2023 enacted RULONA amendments, Sections4 and8",
+          "heading": "NMSA 1978 §§ 14-14A-4 and 14-14A-8 (2021 SB 12)",
           "body": "Official source checked November 14, 2026.",
           "link": {
-            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
+            "href": "https://www.nmlegis.gov/Sessions/21%20Regular/final/SB0012.PDF",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"
@@ -9355,6 +9365,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.sos.nm.gov/wp-content/uploads/2023/10/Notary-Handbook-100223.pdf",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
+        },
+        {
+          "heading": "NMSA 1978 §§ 14-14A-2(A), (S) and 14-14A-5 (2023 SB 246)",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
             "label": "Open official source",
             "placement": "section",
             "targetMode": "official"
@@ -9371,11 +9391,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. The directed signer must be someone other than the notarial officer."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-acknowledgment-verification-and-witnessing",
       "state": "NM",
       "path": "/new-mexico/guides/acknowledgment-verification-and-witnessing/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -9512,14 +9532,14 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Keep custody after employment ends",
-          "body": "The journal remains under the officer's secure control. Statutory permission for a former employer to receive clearly marked copies of relevant entries does not give the employer the original journal. When an employee leaves, plan lawful retention or transfer and document the custody location. The required ten-year retention period continues after the officer changes jobs or stops working as a notary."
+          "body": "The journal remains under the officer’s secure control. A former employer may retain a clearly marked copy under 12.9.3.15(D) NMAC. The employer does not acquire the original. When leaving a job, arrange lawful retention or transfer and document where the journal is kept. The ten-year retention period runs from the last recorded notarial act."
         },
         {
           "heading": "Protect credentials and fee limits",
           "body": "A RON employer must not allow another worker to use the officer's electronic signature or stamp. Keep those credentials under the officer's sole control and access. Employers also remain subject to the applicable maximum notarial fees. For travel compensation, agree in advance and disclose that the charge is separate and is not mandated by law. A company's internal invoice policy does not override those requirements."
         },
         {
-          "heading": "2023 enacted RULONA, Sections3,7,18 and28",
+          "heading": "NMSA 1978 §§ 14-14A-3, 14-14A-7, 14-14A-18 and 14-14A-28 (2023 SB 246)",
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
@@ -9547,6 +9567,16 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
             "placement": "section",
             "targetMode": "official"
           }
+        },
+        {
+          "heading": "12.9.3.15(B)–(D) NMAC",
+          "body": "Official source checked November 14, 2026.",
+          "link": {
+            "href": "https://www.srca.nm.gov/parts/title12/12.009.0003.html",
+            "label": "Open official source",
+            "placement": "section",
+            "targetMode": "official"
+          }
         }
       ],
       "faqs": [
@@ -9559,11 +9589,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. The signature and official stamp remain under the officer's sole control and access."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-workplace-custody-and-impartiality",
       "state": "NM",
       "path": "/new-mexico/guides/workplace-custody-and-impartiality/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -9615,7 +9645,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Apply the copy fee formula",
-          "body": "The ordinary copy-certification provision uses fifty cents per page with a minimum total charge of five dollars. A small eligible copy therefore does not require charging only a fraction of a dollar, while a larger copy uses the page formula. Do not convert that provision into five dollars for every page. Other notarial acts and any separately agreed travel charge have their own rules, so make the invoice describe what was actually performed."
+          "body": "The ordinary copy-certification provision uses fifty cents per page with a minimum total charge of five dollars. A small eligible copy therefore does not require charging only a fraction of a dollar, while a larger copy uses the page formula. Do not convert that provision into five dollars for every page. Other notarial acts and any separately agreed travel charge have their own rules, so make the invoice describe what was actually performed. A notarial officer can charge less than the scheduled amount or waive the fee."
         },
         {
           "heading": "12.9.3.12(E) NMAC",
@@ -9628,7 +9658,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           }
         },
         {
-          "heading": "2023 enacted RULONA, Section3",
+          "heading": "NMSA 1978 §§ 14-14A-3(C), 14-14A-15(E) and 14-14A-28(A), (C)(4) (2023 SB 246)",
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
@@ -9668,11 +9698,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "The remote rule requires a certified tangible copy and the appropriate copy certificate."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-copy-certification-and-electronic-printouts",
       "state": "NM",
       "path": "/new-mexico/guides/copy-certification-and-electronic-printouts/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -9727,7 +9757,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "A RON journal includes the name of the remote system provider used for each act in addition to the statutory fields. That entry is separate from saving the audiovisual recording. Keep the journal secure under the officer's control and preserve permitted employer copies as clearly marked copies. Retention continues for ten years after the last recorded act, so everyday format decisions also affect long-term access."
         },
         {
-          "heading": "2023 enacted RULONA, Section18",
+          "heading": "NMSA 1978 § 14-14A-18 (2023 SB 246, § 16)",
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
@@ -9767,11 +9797,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. The journal requires its own entry, including the provider name."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-contemporaneous-journals-and-electronic-recovery",
       "state": "NM",
       "path": "/new-mexico/guides/contemporaneous-journals-and-electronic-recovery/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -9826,7 +9856,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "A personal representative, guardian, or other person knowingly possessing the journal has statutory disposition duties after death or adjudicated incompetence. Use the authorized recipient route rather than discarding the journal with ordinary office papers. RON recordings have their own rule permitting retention, repository transfer, or delivery to SOS in an accessible open format. Written custody instructions should distinguish journals, stamping devices, and recordings."
         },
         {
-          "heading": "2023 enacted RULONA, Sections17-18",
+          "heading": "NMSA 1978 §§ 14-14A-17 and 14-14A-18 (2023 SB 246, §§ 15–16)",
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
@@ -9866,11 +9896,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. Electronic journal recovery and availability requirements concern the records themselves."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-loss-resignation-and-record-disposition",
       "state": "NM",
       "path": "/new-mexico/guides/loss-resignation-and-record-disposition/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
@@ -10182,7 +10212,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Automatic authority for traditional acts does not itself authorize RON. A noncommissioned notarial officer who wants remote authority follows the SOS authorization application procedure and, after approval, complies with the remote rules and applicable statutes. The officer still needs a compliant system, electronic-stamp submission, required learning, secure credentials, and compliant record preservation. The role supplies the source of ordinary authority without removing the remote safeguards."
         },
         {
-          "heading": "2023 enacted RULONA, Sections9 and16",
+          "heading": "NMSA 1978 §§ 14-14A-2(B), 14-14A-9, 14-14A-16 and 14-14A-21 (2023 SB 246)",
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0246.PDF",
@@ -10232,11 +10262,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. The historical transition does not remove the current training and stamp requirements."
         }
       ],
+      "updated": "2026-11-19",
       "id": "nm-automatic-officers-role-and-stamp-boundaries",
       "state": "NM",
       "path": "/new-mexico/guides/automatic-officers-role-and-stamp-boundaries/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/new-mexico/practice/?mode=quick",
         "label": "Start Free Quick 10",
