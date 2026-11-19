@@ -192,7 +192,7 @@ export default async function OperationsPage({
     return (
       <main className={styles.page}>
         <h1>运营日报</h1>
-        <p><a href="/admin/community/">社区管理</a></p>
+        <nav className={styles.links} aria-label="运营管理工具"><a href="/admin/community/">社区管理</a><a href="/admin/pro-grants/">授予或延长 Pro</a></nav>
         <p>{history.ok ? "这一天还没有正式环境的汇总日报。" : "日报暂时读不出来。确认数据库迁移已经应用到当前库。"}</p>
         {history.ok && history.previewIsolated > 0 ? (
           <p>已隔离 {history.previewIsolated} 条 Preview 汇总。这些记录还在库里，不删除，也不当作正式报告。</p>
@@ -263,7 +263,7 @@ export default async function OperationsPage({
     <main className={styles.page}>
       <header>
         <h1>运营日报</h1>
-        <p><a href="/admin/community/">社区管理</a></p>
+        <nav className={styles.links} aria-label="运营管理工具"><a href="/admin/community/">社区管理</a><a href="/admin/pro-grants/">授予或延长 Pro</a></nav>
         <p className={styles.times}>报告日 {phoenixDay(report.reportDate)}。报告时区是美洲/凤凰城，全年 UTC-7。</p>
         <p className={styles.times}>生成时间 {phoenixClock(report.generatedAt || view.generatedAt)}。数据截止 {phoenixClock(report.dataAsOf || view.dataAsOf)}，不含该时刻之后。</p>
         <p className={styles.chips}>
