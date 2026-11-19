@@ -833,7 +833,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Handle loss and the end of office",
-          "body": "Report listed theft, loss, damage, destruction or unreadability within ten days through a receipt-producing means, with theft/vandalism law-enforcement reporting. The bound record has a ten-year last-entry period and is delivered under the cessation/death provisions. Ordinary cessation disposition is within 30 days. The specified pending-recommission expiration case extends to three months unless recommissioned. Section 486.800 gives the representative's death-specific notice, seal-forwarding and 30-day record duties."
+          "body": "Report listed theft, loss, damage, destruction or unreadability within ten days through a receipt-producing means, with theft/vandalism law-enforcement reporting. The bound record has a ten-year last-entry period and is delivered under the cessation/death provisions. Ordinary cessation disposition is within 30 days. The specified pending-recommission expiration case extends to three months unless recommissioned. Section 486.800 gives the representative's death-specific written notice and 30-day record duties. The sections addressing the paper seal use different disposal instructions. Keep it secure and confirm the applicable procedure."
         }
       ],
       "example": {
@@ -885,7 +885,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
         },
         {
           "heading": "Keep official identity and seal control",
-          "body": "The seal contains exact commissioned name, number, required wording and expiration, with the stated border. Keep it off document text and use the FAQ's permitted legibility remedies. A nonreproducible embossing supplements the official seal. The seal is personal, secure and used only for acts. Report listed loss/damage within ten days. Follow event-specific disposition, including state forwarding for revocation and the representative's death duties."
+          "body": "The seal contains exact commissioned name, number, required wording and expiration, with the stated border. Keep it off document text and use the FAQ's permitted legibility remedies. A nonreproducible embossing supplements the official seal. The seal is personal, secure and used only for acts. Report listed loss/damage within ten days. For a revoked or deceased notary’s paper seal, §§486.725, 486.795 and 486.800 give different forwarding and destruction procedures. Keep the seal secure while confirming the applicable procedure with the Secretary of State."
         },
         {
           "heading": "Attach and correct certificates as prescribed",

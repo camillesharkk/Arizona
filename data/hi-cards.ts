@@ -95,7 +95,7 @@ export const hiCards: HiCard[] = [
   },
   {
     id: "hi-card-019", study: "identity", title: "Credible witness",
-    front: "Who can be a credible witness?", rule: "A person who appears before the notary and whom the notary knows, or whom the notary identifies with a listed photo credential.", boundary: "A spouse is not a witness merely by being a spouse.",
+    front: "Who can be a credible witness?", rule: "A person who personally appears, whom the notary knows or identifies through a permitted photo credential, and who provides sworn or affirmed verification.", boundary: "A spouse is not a witness merely by being a spouse.",
     mixup: "One person's ID does not identify the other signer.", source: "HRS §456-1.6(1)(D)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
   },
   {
@@ -180,8 +180,8 @@ export const hiCards: HiCard[] = [
   },
   {
     id: "hi-card-036", study: "documents", title: "Power of attorney",
-    front: "What copy of a power of attorney does the FAQ accept?", rule: "An original or a certified copy that actually grants the power being used.", boundary: "A plain photocopy is not enough.",
-    mixup: "The agent's ID proves identity, not authority.", source: "Notary FAQ", sourceUrl: "https://notary.ehawaii.gov/notary/public/faq.html",
+    front: "What effect can a copy of a power of attorney have in Hawaii?", rule: "Except as another statute provides, a photocopy or electronically transmitted copy has the same effect as the original.", boundary: "Check that the power of attorney actually grants the authority the signer claims.",
+    mixup: "The agent’s identification establishes the agent’s identity. Verify the claimed authority separately.", source: "HRS §551E-3(e)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol12_Ch0501-0588/HRS0551E/HRS_0551E-0003.htm",
   },
   {
     id: "hi-card-037", study: "documents", title: "No room",
@@ -215,7 +215,7 @@ export const hiCards: HiCard[] = [
   },
   {
     id: "hi-card-043", study: "authentication", title: "Not your apostille",
-    front: "Who issues the apostille?", rule: "The Office of the Lieutenant Governor.", boundary: "The Notary Public Office does not authenticate the seal. The circuit court certificate is the comparison step the FAQ describes.",
+    front: "Who issues the apostille?", rule: "The Office of the Lieutenant Governor.", boundary: "The Notary Public Office does not authenticate the seal. For a private document notarized in Hawaii, obtain the circuit court clerk’s certificate before applying for the apostille.",
     mixup: "Recheck the street address before a visit. The FAQ contact block is old.", source: "Notary FAQ", sourceUrl: "https://notary.ehawaii.gov/notary/public/faq.html",
   },
   {

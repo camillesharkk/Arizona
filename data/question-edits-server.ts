@@ -1367,6 +1367,223 @@ export const serverQuestionEdits: Readonly<Partial<Record<string, QuestionEdit>>
       "last_verified_at": "2026-11-19"
     }
   },
+  "mo-003": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Missouri has issued Leah's notary commission, but she has not taken her oath of office. Which county qualification step must she complete?",
+      "option_a": "Present her surety bond and take the oath before the county clerk or designee within 60 days of the commission issue date.",
+      "option_b": "Announce her commission publicly within 60 days.",
+      "option_c": "Start notarizing immediately and take the oath at her first reappointment.",
+      "option_d": "Obtain a commission from another state before taking the Missouri oath.",
+      "correct_option": "A",
+      "explanation": "Present the surety bond and take the oath before the county clerk or designee within 60 days of the commission issue date. Then mail the oath and bond to the Secretary of State with a postmark no more than seven days after the date of the oath. The Secretary updates the commissioned status after reviewing and approving those papers.",
+      "option_feedback": {
+        "A": "Correct. The commission issue date starts the 60-day oath window.",
+        "B": "A public announcement does not satisfy the county qualification requirement.",
+        "C": "State issuance does not replace the oath and bond process.",
+        "D": "Another state's commission does not satisfy Missouri's county qualification requirement."
+      },
+      "source_id": "mo-qualify",
+      "source_reference": "Mo. Rev. Stat. § 486.620(2)(1)–(4), (3)–(4); Missouri Notary Handbook, pp. 69–70 https://revisor.mo.gov/main/OneSection.aspx?section=486.620",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-039": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Missouri notary moves their regular place of work to a new address. The Secretary of State has confirmed the reported address change. Who else must the notary notify in writing before performing another act?",
+      "option_a": "The surety for the notary's bond",
+      "option_b": "The first customer at the new office",
+      "option_c": "The vendor that supplied the notary's stamp",
+      "option_d": "The person receiving the next notarized document",
+      "correct_option": "A",
+      "explanation": "After a change to the regular place of work or business, Missouri requires the notary to send the signed notice, receive confirmation from the Secretary of State, and notify the surety in writing before performing a notarial act.",
+      "option_feedback": {
+        "A": "Correct. Notify the surety for the notary bond in writing.",
+        "B": "A customer's awareness does not update the bond.",
+        "C": "A stamp vendor does not replace the surety.",
+        "D": "The recipient of the next record is not the surety."
+      },
+      "source_id": "mo-faq",
+      "source_reference": "Mo. Rev. Stat. § 486.780(2)(1)–(3); Missouri Secretary of State FAQ, Q16 https://revisor.mo.gov/main/OneSection.aspx?section=486.780",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-097": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Missouri notary does not personally know a principal or either proposed identity witness. Which arrangement can provide satisfactory evidence of the principal's identity?",
+      "option_a": "One stranger gives an unsworn introduction.",
+      "option_b": "Two disinterested credible witnesses who personally know the principal show qualifying identification and each vouch for the principal under oath or affirmation.",
+      "option_c": "One anonymous caller vouches for the principal.",
+      "option_d": "The principal's employer sends an email identifying the principal.",
+      "correct_option": "B",
+      "explanation": "This route requires two credible witnesses who are disinterested in the document or transaction. Each must personally know the principal, show a qualifying identification document, and vouch for the principal's identity under oath or affirmation.",
+      "option_feedback": {
+        "A": "One unknown, unsworn witness does not meet either witness route.",
+        "B": "Correct. The two-witness route requires both qualifying identification and sworn or affirmed identity verification.",
+        "C": "An anonymous caller cannot establish the required witness identity and sworn proof.",
+        "D": "An employer's email does not supply two properly identified witnesses and their oaths or affirmations."
+      },
+      "source_id": "mo-definitions",
+      "source_reference": "Mo. Rev. Stat. § 486.600(7), (21)(b) https://revisor.mo.gov/main/OneSection.aspx?section=486.600",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-100": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Missouri notary's grandchild asks the notary to perform a jurat. What should the notary do?",
+      "option_a": "Decline because the notary is the principal's ancestor.",
+      "option_b": "Proceed because the family rule applies only to spouses.",
+      "option_c": "Proceed because the affidavit does not concern real estate.",
+      "option_d": "Proceed if the notary waives the fee.",
+      "correct_option": "A",
+      "explanation": "Missouri disqualifies a notary who is the principal's ancestor, including a grandparent. The principal should use a different authorized notary.",
+      "option_feedback": {
+        "A": "Correct. A grandparent is an ancestor of the principal.",
+        "B": "The rule also covers ancestors and other listed relationships.",
+        "C": "The family rule is not limited to real-estate documents.",
+        "D": "Waiving the fee does not remove a family disqualification."
+      },
+      "source_id": "mo-acts",
+      "source_reference": "Mo. Rev. Stat. § 486.645(3)(3) https://revisor.mo.gov/main/OneSection.aspx?section=486.645",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-126": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Missouri notary signs a contract as one of its parties and considers notarizing their own signature. Which rule applies?",
+      "option_a": "The notary can proceed if no travel fee is charged.",
+      "option_b": "The notary can proceed if a witness gives an address.",
+      "option_c": "The notary is disqualified because the notary is a party to the contract.",
+      "option_d": "The notary can proceed if the contract fits on one sheet.",
+      "correct_option": "C",
+      "explanation": "Missouri disqualifies a notary who is a party to or named in the document to be notarized. Another authorized notary should perform the act.",
+      "option_feedback": {
+        "A": "The disqualification applies whether or not the notary charges travel fees.",
+        "B": "A witness address does not remove the notary's stake in the contract.",
+        "C": "Correct. The notary is a party to the contract.",
+        "D": "Paper size does not change who is a party to the document."
+      },
+      "source_id": "mo-acts",
+      "source_reference": "Mo. Rev. Stat. § 486.645(3)(1) https://revisor.mo.gov/main/OneSection.aspx?section=486.645",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-157": {
+    "version": 1,
+    "replacementId": "mo-204",
+    "fields": {
+      "question_text": "A Missouri notary leaves a job. A coworker asks to hold and use the notary's official paper seal after the notary leaves. What should the notary do?",
+      "option_a": "Leave it with the coworker because both worked at the same office.",
+      "option_b": "Give it to a manager if the employer paid for it.",
+      "option_c": "Keep the seal secure and accessible only to the notary.",
+      "option_d": "Leave it available for coworkers to use on documents they already received.",
+      "correct_option": "C",
+      "explanation": "The official paper seal belongs exclusively to the notary. The notary must keep it secure and accessible only to them, and it must not be surrendered to an employer at termination.",
+      "option_feedback": {
+        "A": "A coworker cannot affix the notary's seal.",
+        "B": "Employer payment does not authorize taking control of the seal.",
+        "C": "Correct. Access and use remain with the commissioned notary.",
+        "D": "An earlier request does not authorize a coworker to use the seal."
+      },
+      "source_id": "mo-seal",
+      "source_reference": "Mo. Rev. Stat. § 486.725(3)(1)–(4) https://revisor.mo.gov/main/OneSection.aspx?section=486.725",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "mo-158": {
+    "version": 1,
+    "replacementId": "mo-205",
+    "fields": {
+      "question_text": "A Missouri notary dies while their commission is active. How must the personal representative notify the Secretary of State of the death?",
+      "option_a": "Wait for the commission to expire before giving notice.",
+      "option_b": "Leave an oral message with the notary's last employer.",
+      "option_c": "Report the death only if a customer asks about an old notarization.",
+      "option_d": "Notify the Secretary of State in writing.",
+      "correct_option": "D",
+      "explanation": "A deceased Missouri notary's personal representative must notify the Secretary of State of the death in writing. This notice is a distinct responsibility from delivering the journal and notarial records.",
+      "option_feedback": {
+        "A": "The representative's notice duty applies when the notary dies during the term.",
+        "B": "The Secretary of State is the statutory recipient of the written notice.",
+        "C": "The duty does not depend on a customer's request.",
+        "D": "Correct. The personal representative sends written notice to the Secretary of State."
+      },
+      "source_id": "mo-death",
+      "source_reference": "Mo. Rev. Stat. § 486.800(1) https://revisor.mo.gov/main/OneSection.aspx?section=486.725",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wy-005": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A customer asks a Wyoming notary in a private shipping store to certify a photocopy of a birth certificate. The notary does not work for the public entity that issued or holds the original. What should the notary do?",
+      "option_a": "Certify it if the photocopy is legible.",
+      "option_b": "Certify it in the presence of two witnesses.",
+      "option_c": "Direct the customer to the public entity that issued or holds the original.",
+      "option_d": "Certify it after charging a technology fee.",
+      "correct_option": "C",
+      "explanation": "A Wyoming notarial officer may certify a copy of this official record only if the officer works for the public entity that issued or holds the original. Refer this customer to that entity for an official copy.",
+      "option_feedback": {
+        "A": "Legibility does not qualify a private notary to certify an official birth record.",
+        "B": "Witnesses do not replace the statutory employment condition.",
+        "C": "The public entity is the proper route on these facts.",
+        "D": "Paying a technology fee does not affect authority."
+      },
+      "source_reference": "W.S. 32-3-123(a)(iv); Secretary of State education presentation, slide 14. https://wyoleg.gov/statutes/compress/title32.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wy-029": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Wyoming notary whose commission is still active seeks renewal but fails to meet the examination and education requirements. What action does W.S. 32-3-122(a)(i) expressly authorize?",
+      "option_a": "Grant automatic immunity after paying the application fee.",
+      "option_b": "Require only a warning from the stamp supplier.",
+      "option_c": "Automatically extend the current commission.",
+      "option_d": "Suspend or impose conditions on a commission.",
+      "correct_option": "D",
+      "explanation": "The Secretary of State may suspend or impose conditions on a commission for failure to meet the examination and education requirements. Meeting those requirements is also a condition of renewal.",
+      "option_feedback": {
+        "A": "Paying a fee does not grant immunity or waive education.",
+        "B": "The statute gives authority to the Secretary of State.",
+        "C": "Noncompliance does not automatically extend the term.",
+        "D": "These actions are expressly listed in subsection (a)."
+      },
+      "source_reference": "W.S. 32-3-122(a)(i) and 32-3-120(b). https://wyoleg.gov/statutes/compress/title32.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "wy-200": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Two Wyoming customers prepaid lawful travel fees. The notary cancels one appointment without completing the act. The other customer cancels six hours before the scheduled act. How does the rule treat those cancellations?",
+      "option_a": "Refund the fee for the notary’s cancellation. The notary may keep the travel fee for the customer’s short-notice cancellation.",
+      "option_b": "Treat both cancellations the same in every case.",
+      "option_c": "Charge every customer a new mandatory cancellation fee.",
+      "option_d": "Use the refund to decide whether the notary’s commission remains active.",
+      "correct_option": "A",
+      "explanation": "Chapter 6 requires a travel-fee refund if the notary cancels and does not complete the act. It allows the notary to retain a compliant prepaid travel fee if the principal cancels the act with less than 24 hours’ notice.",
+      "option_feedback": {
+        "A": "The rule distinguishes the officer’s cancellation from the principal’s short-notice cancellation.",
+        "B": "The rule provides separate treatment.",
+        "C": "The rule does not authorize a new universal fee.",
+        "D": "The refund concerns the travel charge. It does not decide commission status."
+      },
+      "source_reference": "Wyoming Notary Rules, Chapter 6 § 6(a)(ii), (b), printed pp. 6-1–6-2. https://sos.wyo.gov/Services/Docs/Notary-Rules_current.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
   "wi-056": {
     "version": 1,
     "replacementId": "wi-204",

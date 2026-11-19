@@ -3765,7 +3765,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
     "exceptions": [
       "Ohio attorneys applying after September 20, 2019 take the education but are exempt from the initial test. Attorneys commissioned before that date have the statutory education/test exemption.",
       "Attorneys and peace officers have a statutory BCI-report exemption.",
-      "A separate statutory route exists for qualifying notaries from other states under Chapter 4796."
+      "R.C. 147.01(F) refers to Chapter 4796 for certain out-of-state commissions. Confirm the applicable process with the Secretary of State before relying on an out-of-state commission."
     ],
     "renewal": "Ordinary non-attorney renewal requires one hour of authorized education and no test. A non-attorney commission ordinarily lasts five years. An attorney commission continues while statutory residence/practice and good-standing conditions hold.",
     "ron": "Obtain an Ohio commission first, then complete two hours of approved RON education and testing and apply separately for online authorization. RON renewal requires one hour and no test under the SOS table.",

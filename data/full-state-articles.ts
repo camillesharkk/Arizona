@@ -5113,7 +5113,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
         },
         {
           "heading": "Apply the death-specific responsibilities",
-          "body": "Section 486.800 requires the personal representative to notify the Secretary in writing, forward seals as soon as reasonably practicable and forward the journal and records within thirty days. These specific forwarding instructions should remain visible alongside general seal-misuse prevention rules. The representative should preserve receipt evidence through the statutory delivery method. Official records and usable official tools require deliberate legal disposition rather than ordinary office cleanout treatment."
+          "body": "Section 486.800 requires written notice of death and delivery of the journal and notarial records within 30 days. The paper-seal forwarding and destruction provisions differ. Keep the seal secure and confirm the applicable disposal procedure with the Secretary of State. Keep receipt evidence for records transmitted to the state."
         },
         {
           "heading": "Missouri Secretary of State notary FAQs",
@@ -5166,11 +5166,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "It concerns record disposition for the stated pending-recommission case."
         }
       ],
+      "updated": "2026-11-19",
       "id": "mo-journal-cessation-and-recommission",
       "state": "MO",
       "path": "/missouri/guides/journal-cessation-and-recommission/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/missouri/practice/?mode=quick",
         "label": "Start Free Quick 10",

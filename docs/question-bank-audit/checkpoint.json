@@ -1,11 +1,11 @@
 {
   "total": {
     "total": 5701,
-    "verifiedUnchanged": 4257,
-    "revisedRechecked": 217,
-    "pending": 1215,
+    "verifiedUnchanged": 4840,
+    "revisedRechecked": 238,
+    "pending": 609,
     "held": 0,
-    "replaced": 12
+    "replaced": 14
   },
   "byState": {
     "AR": {
@@ -50,9 +50,9 @@
     },
     "HI": {
       "total": 220,
-      "verifiedUnchanged": 101,
-      "revisedRechecked": 5,
-      "pending": 114,
+      "verifiedUnchanged": 202,
+      "revisedRechecked": 18,
+      "pending": 0,
       "held": 0,
       "replaced": 0
     },
@@ -98,11 +98,11 @@
     },
     "MO": {
       "total": 203,
-      "verifiedUnchanged": 0,
-      "revisedRechecked": 0,
-      "pending": 203,
+      "verifiedUnchanged": 196,
+      "revisedRechecked": 5,
+      "pending": 0,
       "held": 0,
-      "replaced": 0
+      "replaced": 2
     },
     "MT": {
       "total": 203,
@@ -162,9 +162,9 @@
     },
     "OH": {
       "total": 203,
-      "verifiedUnchanged": 117,
+      "verifiedUnchanged": 203,
       "revisedRechecked": 0,
-      "pending": 86,
+      "pending": 0,
       "held": 0,
       "replaced": 0
     },
@@ -226,21 +226,17 @@
     },
     "WY": {
       "total": 203,
-      "verifiedUnchanged": 0,
-      "revisedRechecked": 0,
-      "pending": 203,
+      "verifiedUnchanged": 200,
+      "revisedRechecked": 3,
+      "pending": 0,
       "held": 0,
       "replaced": 0
     }
   },
   "nextPendingId": {
-    "HI": "hi-107",
-    "MO": "mo-001",
     "MT": "mt-001",
     "NE": "ne-001",
-    "NM": "nm-001",
-    "OH": "oh-118",
-    "WY": "wy-001"
+    "NM": "nm-001"
   },
   "staleEvidence": []
 }
