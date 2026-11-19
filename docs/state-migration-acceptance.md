@@ -102,7 +102,7 @@ RI/TX purchase acceptance uses the existing account-wide 60-day product. The cur
 
 题库服务端边界：抽题、权益、正确答案和评分在服务端。`lib/practice-draw.ts` 使用既有抽题规则。浏览器只拿当前页或当前场次的题干和选项。即时反馈走 `POST /api/practice/feedback/` 的 `one`；整场提交走 `grade`，之后才带解析。场次令牌不能代替登录或 Pro 校验。`GET /api/state/questions/` 和 `GET /api/indiana/questions/` 不再返回题库。公开样题页仍对所有访客输出同一段 SSR 正文。
 
-最小下发：Quick、完整模拟和 Daily Study 一次领取当前场次，上限 80 题。题目浏览按 15 题分页，同一 seed 保持顺序。Daily Study 和错题练习使用 `purpose: "delivery"` 令牌覆盖预设题目 ID。作答阶段 `correct_option` 为空。包元数据在 `data/client-pack.json`，题量变化后运行 `node --experimental-strip-types scripts/emit-client-pack.mjs`。
+最小下发：Quick、完整模拟和 Daily Study 一次领取当前场次，上限 80 题。题目浏览按 15 题分页，同一 seed 保持顺序。Daily Study 和错题练习使用 `purpose: "delivery"` 令牌覆盖预设题目 ID。作答阶段 `correct_option` 为空。包元数据在 `data/client-pack.json`，只含导航、题量和开关；`counts` 不得写入 `freeQuestionIds` 或题干。题量变化后运行 `node --experimental-strip-types scripts/emit-client-pack.mjs`，再用生产构建确认 `.next/static` 客户端包不含题库正文。访客归档走 `POST /api/practice/archive/`，必须同时核对场次令牌与当前登录或 `np_actor` cookie。诊断题由 `mode: "diagnostic"` 在服务端抽取。
 
 Google 可信识别：`lib/googlebot.ts` 只接受反向 DNS 以 `.googlebot.com` 结尾、并且正向解析回到同一 IP 的地址。不接受 User-Agent、Referer 或 `googleusercontent.com`。练习、Pro、后台和个人数据不调用这个例外。公开 HTML 不按爬虫分流。
 
