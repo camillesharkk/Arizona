@@ -297,6 +297,10 @@
   min-height: 5rem;
 }
 
+.community-discussions .community-composer a.btn-primary {
+  color: #fff;
+}
+
 .community-composer :is(input:not([type="hidden"]), textarea) {
   border-color: #738b9d;
 }
@@ -399,6 +403,10 @@
 .community-discussions :is(.community-profile-form, .community-report-form, .community-composer) [role="status"]:empty,
 .community-report > [role="status"]:empty {
   margin: 0;
+}
+
+.community-report-form textarea {
+  min-height: 4.5rem;
 }
 
 @media (forced-colors: active) {
