@@ -1,9 +1,9 @@
 {
   "total": {
     "total": 5701,
-    "verifiedUnchanged": 3605,
-    "revisedRechecked": 207,
-    "pending": 1877,
+    "verifiedUnchanged": 4257,
+    "revisedRechecked": 217,
+    "pending": 1215,
     "held": 0,
     "replaced": 12
   },
@@ -50,9 +50,9 @@
     },
     "HI": {
       "total": 220,
-      "verifiedUnchanged": 0,
-      "revisedRechecked": 0,
-      "pending": 220,
+      "verifiedUnchanged": 101,
+      "revisedRechecked": 5,
+      "pending": 114,
       "held": 0,
       "replaced": 0
     },
@@ -146,9 +146,9 @@
     },
     "NV": {
       "total": 203,
-      "verifiedUnchanged": 26,
-      "revisedRechecked": 2,
-      "pending": 175,
+      "verifiedUnchanged": 197,
+      "revisedRechecked": 6,
+      "pending": 0,
       "held": 0,
       "replaced": 0
     },
@@ -162,9 +162,9 @@
     },
     "OH": {
       "total": 203,
-      "verifiedUnchanged": 0,
+      "verifiedUnchanged": 117,
       "revisedRechecked": 0,
-      "pending": 203,
+      "pending": 86,
       "held": 0,
       "replaced": 0
     },
@@ -210,17 +210,17 @@
     },
     "VT": {
       "total": 203,
-      "verifiedUnchanged": 0,
-      "revisedRechecked": 0,
-      "pending": 203,
+      "verifiedUnchanged": 202,
+      "revisedRechecked": 1,
+      "pending": 0,
       "held": 0,
       "replaced": 0
     },
     "WI": {
       "total": 203,
-      "verifiedUnchanged": 136,
+      "verifiedUnchanged": 197,
       "revisedRechecked": 5,
-      "pending": 61,
+      "pending": 0,
       "held": 0,
       "replaced": 1
     },
@@ -234,15 +234,12 @@
     }
   },
   "nextPendingId": {
-    "HI": "hi-001",
+    "HI": "hi-107",
     "MO": "mo-001",
     "MT": "mt-001",
     "NE": "ne-001",
     "NM": "nm-001",
-    "NV": "nv-029",
-    "OH": "oh-001",
-    "VT": "vt-001",
-    "WI": "wi-142",
+    "OH": "oh-118",
     "WY": "wy-001"
   },
   "staleEvidence": []

@@ -4426,7 +4426,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "title": "Instruction minimum",
       "front": "What is the ordinary mandatory course's statutory minimum?",
       "rule": "At least three hours of instruction and an examination.",
-      "boundary": "The course may be provided by SOS or an approved vendor.",
+      "boundary": "The statute permits approved vendors. Current agency instructions direct traditional applicants to the Secretary of State’s training site.",
       "mixup": "Instructional hours do not establish examination duration.",
       "source": "NRS 240.018(1)",
       "sourceUrl": "https://www.leg.state.nv.us/NRS/NRS-240.html"
@@ -4896,13 +4896,13 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
     {
       "id": "nv-card-044",
       "study": "course-validity",
-      "title": "Unverified test metrics",
-      "front": "What ordinary examination metrics remain unconfirmed in the opened sources?",
-      "rule": "Question count, duration and numerical passing threshold.",
-      "boundary": "The principal's remote KBA has separately stated metrics.",
-      "mixup": "KBA's eighty percent is not proof of a Commission Exam passing score.",
-      "source": "NAC 240.697; LMS Commission Exam requirements",
-      "sourceUrl": "https://www.leg.state.nv.us/NAC/NAC-240.html"
+      "title": "Traditional examination score",
+      "front": "What passing score does the Nevada Secretary of State list for the traditional exam?",
+      "rule": "At least 80%.",
+      "boundary": "The public instructions reviewed do not specify the question count or duration.",
+      "mixup": "The remote signer’s KBA identity test is separate even though its passing percentage is also 80%.",
+      "source": "Nevada Secretary of State — Training and Exam Requirements",
+      "sourceUrl": "https://nvsos.gov/index.aspx?page=165"
     },
     {
       "id": "nv-card-045",
@@ -8168,7 +8168,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "front": "What current ordinary renewal minimum applies?",
       "rule": "One approved hour in the preceding biennial period unless exempt.",
       "boundary": "The endorsement adds a relevant hour.",
-      "mixup": "An older exam question listing two hours does not change the current rules.",
+      "mixup": "Use the current renewal rule. The public May 2026 exam form omits the one-hour choice in its ordinary-renewal item.",
       "source": "Vermont Rule 9-1; February 2026 renewal instructions",
       "sourceUrl": "https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf"
     },

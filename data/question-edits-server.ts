@@ -1261,6 +1261,112 @@ export const serverQuestionEdits: Readonly<Partial<Record<string, QuestionEdit>>
       "last_verified_at": "2026-11-19"
     }
   },
+  "nv-030": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "Nevada law requires at least three hours of instruction and an examination in its mandatory notary course. What does NRS 240.018(1)(a)(1) tell an applicant about the exam’s time limit?",
+      "option_a": "The exam has unlimited time.",
+      "option_b": "The exam must take exactly ten minutes.",
+      "option_c": "The provision requires an exam but does not set its duration.",
+      "option_d": "The exam itself must last at least three hours.",
+      "correct_option": "C",
+      "explanation": "The three-hour minimum applies to the instruction. This provision requires an examination and leaves its timing unstated. Check the state training site for the exam’s current instructions.",
+      "option_feedback": {
+        "A": "The statute’s silence does not establish unlimited time.",
+        "B": "The provision gives no ten-minute requirement.",
+        "C": "The provision sets a minimum for instruction and requires an examination.",
+        "D": "The minimum applies to instruction, not the exam."
+      },
+      "source_reference": "NRS 240.018(1)(a)(1). https://www.leg.state.nv.us/NRS/NRS-240.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-095": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "While acting within the scope of employment, a Nevada notary commits misconduct that the employer consented to. What employer liability can NRS 240.150(2) impose?",
+      "option_a": "Liability only for the notary’s training vendor.",
+      "option_b": "Liability for damages proximately caused by the misconduct and a possible state civil penalty for the specified violations.",
+      "option_c": "Automatic immunity for the employer.",
+      "option_d": "Responsibility only for the customer.",
+      "correct_option": "B",
+      "explanation": "When the notary acted within the scope of employment and the employer consented to the misconduct, the employer is liable for the damages proximately caused by it. The Secretary of State may assess a civil penalty of up to $2,000 per specified violation.",
+      "option_feedback": {
+        "A": "The provision concerns the consenting employer.",
+        "B": "Those are the damage and civil-penalty consequences in the statute.",
+        "C": "The statute expressly allows both kinds of exposure.",
+        "D": "The listed conditions apply to the notary and employer."
+      },
+      "source_reference": "NRS 240.150(2)(a)–(b). https://www.leg.state.nv.us/NRS/NRS-240.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-116": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A person incarcerated in a Nevada state prison cannot use any of the ordinary identity methods and has no qualifying inmate ID card. Which other method does the statute list?",
+      "option_a": "A declaration attesting to identity that the person signs under penalty of perjury as provided in NRS 208.165.",
+      "option_b": "An unsigned note giving the person's name.",
+      "option_c": "An unsworn assurance from a visitor.",
+      "option_d": "A receipt for the person's stored property.",
+      "correct_option": "A",
+      "explanation": "NRS 240.1655(4)(g)(2) allows a signed declaration attesting to identity under penalty of perjury. Under NRS 208.165, the qualifying signature following that declaration has the same legal effect as an acknowledgment or oath before an authorized person.",
+      "option_feedback": {
+        "A": "This is the statutory alternative to the qualifying inmate card.",
+        "B": "The alternative requires a signed declaration under penalty of perjury.",
+        "C": "A visitor’s unsworn statement is not the principal’s declaration.",
+        "D": "The provision does not identify a property receipt as proof of identity."
+      },
+      "source_reference": "NRS 240.1655(4)(g)(2) and 208.165. https://www.leg.state.nv.us/NRS/NRS-240.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "nv-178": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "A Nevada electronic notary and the platform provider discover that anyone with a public link can open a remote notarization recording. What duty does NAC 240.682 assign to both?",
+      "option_a": "Reduce the subscription price.",
+      "option_b": "Put a warning on the public link and leave access unchanged.",
+      "option_c": "Protect the recording and the identifying information disclosed during the act from unauthorized access.",
+      "option_d": "Rename the recording and keep it public.",
+      "correct_option": "C",
+      "explanation": "NAC 240.682 requires the electronic notary and the provider to protect the recording and identifying information from unauthorized access. A separate rule requires the electronic notary to take reasonable steps to keep a secure backup of each recording.",
+      "option_feedback": {
+        "A": "Pricing does not control access to the recording.",
+        "B": "A warning alone does not prevent unauthorized access.",
+        "C": "The shared duty covers recordings and the identifying information disclosed during the act.",
+        "D": "Renaming a public file does not secure it."
+      },
+      "source_reference": "NAC 240.682 and 240.665(3). https://www.leg.state.nv.us/NAC/NAC-240.html",
+      "last_verified_at": "2026-11-19"
+    }
+  },
+  "vt-171": {
+    "version": 2,
+    "previousReviewedDate": "2026-11-14",
+    "fields": {
+      "question_text": "How much approved continuing education must a nonexempt Vermont notary complete during the preceding two-year period to renew an ordinary commission only?",
+      "option_a": "Ten hours",
+      "option_b": "At least one hour",
+      "option_c": "At least two hours",
+      "option_d": "No continuing education",
+      "correct_option": "B",
+      "explanation": "A nonexempt Vermont notary must complete at least one hour of approved continuing education during the preceding two-year period to renew an ordinary commission. Renewing a special endorsement requires a separate, additional hour on electronic or remote notarization.",
+      "option_feedback": {
+        "A": "Ten hours is more than the regular renewal rule requires.",
+        "B": "Correct. The ordinary commission renewal requires at least one approved hour.",
+        "C": "One hour satisfies ordinary renewal. The additional hour applies when renewing a special endorsement.",
+        "D": "This notary is nonexempt and must complete the ordinary continuing education requirement."
+      },
+      "source_id": "vt-renewal",
+      "source_reference": "Vermont OPR Renewal Instructions (Feb. 2026), p. 1, Steps to Renew; Administrative Rules 9-1(a)–(b), p. 21 https://outside.vermont.gov/dept/sos/office_professional_regulation/professions/notary_public/notary_public_administrative_rules.pdf",
+      "last_verified_at": "2026-11-19"
+    }
+  },
   "wi-056": {
     "version": 1,
     "replacementId": "wi-204",

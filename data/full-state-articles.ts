@@ -13396,7 +13396,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
       "sections": [
         {
           "heading": "Use the current credit structure",
-          "body": "A Vermont notary renews ordinary authority and the remote and electronic endorsement. Current Rule 9-1 and the February 2026 instructions use one approved ordinary hour unless exempt and one additional relevant endorsement hour. The current examination packet still contains an older ordinary-hours item, so the actual renewal rules and current operational instructions control this study content."
+          "body": "A Vermont notary renews ordinary authority and the remote and electronic endorsement. Current Rule 9-1 and the February 2026 instructions use one approved ordinary hour unless exempt and one additional relevant endorsement hour. The current examination packet omits the one-hour choice in an ordinary-renewal item, so the actual renewal rules and current operational instructions control this study content."
         },
         {
           "heading": "Count actual learning time",
@@ -13441,11 +13441,11 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "a": "No. They count only for the commission period being audited."
         }
       ],
+      "updated": "2026-11-19",
       "id": "vt-vermont-continuing-education-evidence-and-audits",
       "state": "VT",
       "path": "/vermont/guides/vermont-continuing-education-evidence-and-audits/",
       "checked": "2026-11-14",
-      "updated": "2026-11-14",
       "ledeCta": {
         "href": "/vermont/practice/?mode=quick",
         "label": "Start Free Quick 10",

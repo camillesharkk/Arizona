@@ -1,5 +1,8 @@
 import type { Difficulty, ExamArea, Question, TopicId } from "@/lib/types";
 import { hiTopicMeta } from "@/lib/hi-topics";
+import { publishQuestionEdits } from "../lib/question-version.ts";
+import { hiQuestionEdits } from "./question-edits-hi.ts";
+import { questionReviewDate } from "./question-review-dates.ts";
 
 const VERIFIED = "2026-11-07";
 
@@ -2462,14 +2465,14 @@ function publish(row: Row): Question {
     source_reference: row.source,
     effective_from: "2021-01-01",
     effective_to: null,
-    last_verified_at: VERIFIED,
+    last_verified_at: questionReviewDate(row.id, VERIFIED),
     version: 1,
     is_free: true,
     status: "published",
   };
 }
 
-const questions = rows.map(publish);
+const questions = publishQuestionEdits(rows.map(publish), hiQuestionEdits);
 
 export function publishedHiQuestions(): Question[] {
   return questions.filter((question) => question.status === "published" && question.state === "HI" && question.effective_to == null);

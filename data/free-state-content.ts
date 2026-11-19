@@ -3434,7 +3434,7 @@ export const freeStateContent: Partial<Record<FreeStateCode, FreeStateContent>> 
     "processKind": "Approved course",
     "summary": "Nevada requires its traditional-notary course and course examination before appointment.",
     "training": "Complete the state’s traditional Commission Course. NRS 240.018 calls for at least three instructional hours plus an examination. The official LMS requires separate enrollment and completion of the course and exam.",
-    "assessment": "Pass the Commission Exam and save completion evidence. The official LMS states that training, examinations and payment must be completed within 90 days for validity. The question count, exam duration and numerical passing threshold were not confirmed in the official pages opened.",
+    "assessment": "Pass the Commission Exam and save completion evidence. The official LMS states that training, examinations and payment must be completed within 90 days for validity. The Nevada Secretary of State lists a passing score of at least 80% for the traditional exam. The official public instructions reviewed do not give its question count or duration.",
     "steps": [
       "Check eligibility and complete the Commission Course and Commission Exam.",
       "Obtain the $10,000 bond and take the oath.",

@@ -1613,6 +1613,15 @@ export const fullStateSources: Record<string, Source> = {
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
   },
+  "nv-sos-commission": {
+    "source_id": "nv-sos-commission",
+    "source_type": "SOS",
+    "title": "Nevada Secretary of State — Notary",
+    "reference": "Training and Exam Requirements and Application Requirements",
+    "url": "https://nvsos.gov/index.aspx?page=165",
+    "last_verified_at": "2026-11-19",
+    "last_checked_at": "2026-11-19"
+  },
   "nj-education-report-2026": {
     "source_id": "nj-education-report-2026",
     "source_type": "SOS",

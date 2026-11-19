@@ -1393,7 +1393,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "The required course",
-          "body": "NRS 240.018 requires at least three instructional hours plus an examination. It includes initial applicants, renewing appointees and specified enforcement cases directed to study by SOS. Courses may be offered by SOS or an approved vendor. The current official LMS requires separate enrollment and completion of the Commission Course and Commission Exam. A private study product's badge does not establish completion of that official route."
+          "body": "NRS 240.018 requires at least three instructional hours plus an examination. It includes initial applicants, renewing appointees and specified enforcement cases directed to study by SOS. The statute permits instruction by the Secretary of State or an approved vendor. The agency’s current instructions direct traditional applicants to the Secretary of State’s training site. The current official LMS requires separate enrollment and completion of the Commission Course and Commission Exam. A private study product's badge does not establish completion of that official route."
         },
         {
           "heading": "LMS and application evidence",
@@ -1485,7 +1485,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Ordinary identity and execution",
-          "body": "NRS 240.1655 requires personal presentation for an ordinary acknowledgment and specifies identity routes including personal knowledge, sworn credible witnesses and listed documentary alternatives. Conditional senior and state-prisoner routes have their own predicates. A jurat includes identity, present signing and an oath or affirmation. Copy certification requires the entire presented document, subject to express document restrictions elsewhere in the chapter."
+          "body": "NRS 240.1655 requires personal presentation for an ordinary acknowledgment and specifies identity routes including personal knowledge, sworn credible witnesses and listed documentary alternatives. The senior and Nevada state-prison routes apply when the earlier statutory routes are unavailable. The state-prison route accepts a qualifying Department of Corrections card or a declaration signed under penalty of perjury that meets NRS 208.165. A jurat includes identity, present signing and an oath or affirmation. Copy certification requires the entire presented document, subject to express document restrictions elsewhere in the chapter."
         },
         {
           "heading": "Accommodation and remote work",
@@ -1531,7 +1531,7 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Ordinary records",
-          "body": "NRS 240.120 requires a bound ordinary journal with preprinted page numbers, secure non-entry storage, public inspection and certified entry copies on request and payment. Each journal remains until seven years after the person ceases to be a notary. Lost or stolen journals are reported to SOS and appropriate law enforcement. Personal ownership of a journal does not eliminate its legal public-inspection obligation."
+          "body": "NRS 240.120 requires a bound ordinary journal with preprinted page numbers, secure non-entry storage, public inspection and certified entry copies on request and payment. Each journal remains until seven years after the person ceases to be a notary. Lost or stolen journals are reported to SOS and appropriate law enforcement. Personal ownership of a journal does not eliminate its legal public-inspection obligation. The agency overview describes seven years from the last entry. NRS 240.120(9) requires retention until seven years after ceasing to be a notary. Use the statutory trigger."
         },
         {
           "heading": "Electronic journals and recordings",
@@ -1577,22 +1577,22 @@ export const fullStateGuides: Partial<Record<FreeStateCode, Record<string, PrepG
       "sections": [
         {
           "heading": "Validity and documentation",
-          "body": "NAC 240.270 makes the required successful-completion certificate valid ninety days after issuance and specifies the SOS validation stamp. The official LMS separately states that training, examinations and payment must be completed within ninety days for validity. Save the completion notification or certificate in the stated screenshot or PDF form and attach it through SilverFlume with the supporting packet and payment."
+          "body": "NAC 240.270 makes the required successful-completion certificate valid for 90 days after issuance and specifies the SOS validation stamp. The official LMS separately states that training, examinations and payment must be completed within ninety days for validity. Save the completion notification or certificate in the stated screenshot or PDF form and attach it through SilverFlume with the supporting packet and payment."
         },
         {
           "heading": "Verified assessment scope",
-          "body": "The original materials reviewed establish the instructional minimum and the existence of the Commission Exam, but do not establish its numerical question count, duration or passing threshold. NAC 240.697 does state five-question, eighty-percent, two-minute criteria for a remote principal's dynamic KBA identity assessment. Those are identity rules for a signer, so they supply no Commission Exam threshold. An independent study score also cannot establish official completion."
+          "body": "The Nevada Secretary of State’s traditional exam instructions require a passing score of at least 80%. Its public instructions reviewed here give no question count or time limit. Separately, remote signer identity rules require 80% correct within two minutes on the five-question KBA test. A practice score cannot establish official completion."
         }
       ],
       "example": {
         "heading": "Worked example",
-        "body": "A learner finds an eighty-percent number in the remote identity regulation and considers treating it as the Commission Exam passing score. The learner keeps that specification with principal identity proofing and instead relies on the actual official exam completion notification for application evidence. The ordinary numeric threshold remains unverified in this content."
+        "body": "A traditional applicant checks the Secretary of State’s exam instructions for the 80% passing requirement, then saves official exam completion evidence for SilverFlume. The different time and identity questions in the remote signer’s KBA rule do not set the terms of the Commission Exam."
       },
       "keyFacts": [
         "The course certificate has ninety-day validity.",
         "The LMS includes payment in its ninety-day instruction.",
         "Preserve official completion evidence.",
-        "Remote principal KBA metrics do not establish Commission Exam specifications."
+        "The Secretary of State gives an 80% passing threshold for the traditional Commission Exam."
       ]
     },
     "truthful-certificate": {
