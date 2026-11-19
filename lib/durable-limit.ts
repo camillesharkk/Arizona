@@ -4,6 +4,9 @@ import { rateLimit } from "@/lib/rate-limit";
 
 export type LimitResult = { ok: boolean; retryAfter: number; degraded: boolean };
 
+let missingTableLogged = false;
+let prunedAt = 0;
+
 function retrySeconds(resetAt: Date) {
   return Math.max(1, Math.ceil((resetAt.getTime() - Date.now()) / 1000));
 }
@@ -24,11 +27,22 @@ export async function durableLimit(key: string, limit: number, windowMs: number)
         reset_at = case when rate_buckets.reset_at <= now() then excluded.reset_at else rate_buckets.reset_at end
       returning hits, reset_at
     `;
+    if (Date.now() - prunedAt >= 60 * 60_000) {
+      prunedAt = Date.now();
+      await sql`delete from rate_buckets where reset_at < now() - interval '1 day'`.catch(() => undefined);
+    }
     if (!row || row.hits <= limit) return { ok: true, retryAfter: 0, degraded: false };
     return { ok: false, retryAfter: retrySeconds(new Date(row.reset_at)), degraded: false };
   } catch (error) {
     const code = typeof error === "object" && error && "code" in error ? String(error.code) : "";
-    if (code !== "42P01") console.info(JSON.stringify({ event: "rate_limit_degraded", bucket: key.split(":")[0] }));
+    if (code === "42P01") {
+      if (!missingTableLogged) {
+        missingTableLogged = true;
+        console.info(JSON.stringify({ event: "rate_limit_degraded", reason: "missing_table" }));
+      }
+    } else {
+      console.info(JSON.stringify({ event: "rate_limit_degraded", bucket: key.split(":")[0] }));
+    }
     return burst(key, limit, windowMs);
   }
 }

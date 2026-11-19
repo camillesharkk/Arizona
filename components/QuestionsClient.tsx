@@ -71,6 +71,7 @@ export function QuestionsClient({
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const reviewScroll = useRef(0);
   const doneOnce = useRef(false);
+  const paging = useRef(false);
   const attemptIds = useRef<Record<string, string>>({});
   const pendingSaves = useRef<Promise<Response>[]>([]);
   const scrollIdx = useRef<number | null>(null);
@@ -214,6 +215,49 @@ export function QuestionsClient({
   function attemptId(questionId: string) {
     if (!attemptIds.current[questionId]) attemptIds.current[questionId] = crypto.randomUUID();
     return attemptIds.current[questionId];
+  }
+
+  async function loadNextPage() {
+    if (pageMeta.nextOffset == null || seed == null) {
+      void finishSet();
+      return;
+    }
+    if (paging.current) return;
+    paging.current = true;
+    const offset = pageMeta.nextOffset;
+    try {
+      const response = await fetch("/api/practice/batch/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        body: JSON.stringify({
+          kind: "topic",
+          state: stateCode,
+          topic,
+          filter,
+          difficulty,
+          seed,
+          offset,
+          wrongIds: progressRef.current.wrongIds.slice(0, 80),
+          unansweredIds: progressRef.current.answeredIds.slice(0, 200),
+        }),
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setSubmitError(body.error || "Could not load the next questions. Your answers are still here.");
+        return;
+      }
+      const list = (body.questions || []) as Question[];
+      for (const item of list) tokenById.current[item.question_id] = body.token || "";
+      setServed((current) => {
+        setIdx(current.length);
+        return [...current, ...list];
+      });
+      setOrder((current) => [...(current || []), ...list.map((item) => item.question_id)]);
+      setPageMeta({ total: body.total || 0, nextOffset: body.nextOffset ?? null, freeCount: body.freeCount || 0, topicCount: body.topicCount || 0 });
+    } finally {
+      paging.current = false;
+    }
   }
 
   async function finishSet() {
@@ -433,7 +477,7 @@ export function QuestionsClient({
                   const at = safeIdx;
                   scheduleAfterCorrect(() => {
                     if (at + 1 < active.length) setIdx(at + 1);
-                    else finishSet();
+                    else void loadNextPage();
                   });
                 } else {
                   cancelAutoAdvance();
@@ -452,8 +496,8 @@ export function QuestionsClient({
                     prevDisabled={safeIdx === 0 || submitting}
                     nextDisabled={submitting || !selected}
                     onPrev={() => goTo(safeIdx - 1)}
-                    onNext={() => (lastQuestion ? void finishSet() : goTo(safeIdx + 1))}
-                    nextLabel={lastQuestion ? "See results" : "Next"}
+                    onNext={() => (lastQuestion ? void loadNextPage() : goTo(safeIdx + 1))}
+                    nextLabel={lastQuestion && pageMeta.nextOffset == null ? "See results" : "Next"}
                     progress={`${safeIdx + 1} / ${active.length}`}
                   />
                   {submitting ? <SubmitStatus /> : null}

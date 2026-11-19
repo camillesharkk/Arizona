@@ -104,9 +104,9 @@ RI/TX purchase acceptance uses the existing account-wide 60-day product. The cur
 
 最小下发：Quick、完整模拟和 Daily Study 一次领取当前场次，上限 80 题。题目浏览按 15 题分页，同一 seed 保持顺序。Daily Study 和错题练习使用 `purpose: "delivery"` 令牌覆盖预设题目 ID。作答阶段 `correct_option` 为空。包元数据在 `data/client-pack.json`，只含导航、题量和开关；`counts` 不得写入 `freeQuestionIds` 或题干。题量变化后运行 `node --experimental-strip-types scripts/emit-client-pack.mjs`，再用生产构建确认 `.next/static` 客户端包不含题库正文。访客归档走 `POST /api/practice/archive/`，必须同时核对场次令牌与当前登录或 `np_actor` cookie。诊断题由 `mode: "diagnostic"` 在服务端抽取。
 
-Google 可信识别：`lib/googlebot.ts` 只接受反向 DNS 以 `.googlebot.com` 结尾、并且正向解析回到同一 IP 的地址。不接受 User-Agent、Referer 或 `googleusercontent.com`。练习、Pro、后台和个人数据不调用这个例外。公开 HTML 不按爬虫分流。
+Google 可信识别：`lib/googlebot.ts` 只接受反向 DNS 以 `.googlebot.com` 结尾、并且正向解析回到同一 IP 的地址。不接受 User-Agent、Referer 或 `googleusercontent.com`。这个函数目前只在校验脚本里使用，请求路径和 Vercel Firewall 都没有调用它。公开 HTML 不按爬虫分流，伪造 User-Agent 也拿不到额外题库。上线前不要把它接进练习或会员接口。
 
-限流策略：题目领取、新建场次和解析领取使用 Postgres `rate_buckets`（迁移 `023_rate_buckets.sql`，未对生产执行）。同一账号或匿名 cookie 每 10 分钟新建 12 个场次，同一可信 IP 150 个；解析每 10 分钟账号 90 次、IP 800 次。依据是一个人连续做几套题，一个约 30 人的共享网络可以同时开始，单账号不能在一次突发里走完各州。可信 IP 在 Vercel 上取 `x-real-ip`。数据库不可用时练习接口降级放行，并保留单实例突发上限；付费鉴权、管理员和 Webhook 验签不降级。`PRACTICE_LIMITS=off` 只关闭这层限额。内部任务用 `Authorization: Bearer` 与 `CRON_SECRET` 做限额例外，不能代替身份校验。登录仍使用原有进程内限额；注册、重置、联系、AI Tutor、删号和社区动作在原限额之外再记一笔共享限额。Paddle Webhook 和 Cron 不走练习限额。
+限流策略：题目领取、新建场次和解析领取使用 Postgres `rate_buckets`（迁移 `023_rate_buckets.sql`，未对生产执行）。编号 023 目前未被其他迁移占用。同一账号或匿名 cookie 每 10 分钟新建 12 个场次，同一可信 IP 150 个；解析每 10 分钟账号 90 次、IP 800 次。题目浏览的每一页也计入新建限额，15 题一批不能当成防遍历。依据是一个人连续做几套题，一个约 30 人的共享网络可以同时开始，单账号不能在一次突发里走完各州。可信 IP 在 Vercel 上取 `x-real-ip`。计数键是前缀加用户 ID、匿名 cookie 或 IP，不写邮箱或令牌。同一条 `insert ... on conflict` 完成窗口重置和加一。过期行由下一次成功计数时、每个实例最多每小时删除 `reset_at` 早于一天前的记录。缺表时日志只打一次 `rate_limit_degraded` / `missing_table`，然后走单实例突发上限。数据库不可用时练习接口降级放行；付费鉴权、管理员和 Webhook 验签不降级。`PRACTICE_LIMITS=off` 只关闭这层限额，改环境变量后需要重新部署该环境才生效，不能关闭鉴权。内部任务用 `Authorization: Bearer` 与 `CRON_SECRET` 做限额例外，不能代替身份校验。登录仍是每 IP 每分钟 12 次的进程内限额，本轮没有改成共享限额，避免把学校网络的成功登录收得更紧。注册、重置、联系、AI Tutor、删号和社区动作在原限额之外再记一笔共享限额。Paddle Webhook 和 Cron 不走练习限额。
 
 统计兼容：不新增 GA4、PostHog 或 Clarity 脚本。CSP 目前是 Report-Only，报告写到 `/api/security/csp-report/`，去掉 URL 查询串并限流。未看到浏览器违规报告前不要改成强制 CSP，也不要为 nonce 把静态页改成动态。不向统计发送邮箱、答案或密钥。
 
@@ -115,4 +115,6 @@ Google 可信识别：`lib/googlebot.ts` 只接受反向 DNS 以 `.googlebot.com
 缓存隔离：练习、错题、Daily Study 和 `/api/:path*` 使用 `private, no-store`。公开 SEO 页不套这层。闪卡页按会话动态输出，免费访客只收到前 8 张。
 
 回滚：预览环境设 `PRACTICE_LIMITS=off` 可停用共享限额，鉴权保持。代码回滚使用分支 `security/content-boundary`，不要把它直接合进未授权的生产发布。删除部署文件不能撤回已经公开过的历史响应或仓库历史。
+
+生产迁移清单（本轮不执行）：先备份 Neon 或确认可恢复的时间点。在生产部署新代码之前或同时执行 `023_rate_buckets.sql`。新代码遇到缺表会降级并打 `missing_table`，旧代码不读这张表。部署后用两条不同实例的练习请求确认同一 `bucket_key` 的 `hits` 连续增加，再确认过期行会被删除。回滚代码时保留该表即可；若要停限额，设 `PRACTICE_LIMITS=off` 并重新部署，不要删表。正式域名的 Search Console 检查要等生产部署后做，预览不能代替。生产响应里已经有平台下发的 `Strict-Transport-Security: max-age=63072000`，应用代码不要再重复设置。
 
