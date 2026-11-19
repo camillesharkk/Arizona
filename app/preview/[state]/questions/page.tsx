@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
   return (
     <main className="wrap hero">
       <h1>{pack.name} questions</h1>
-      <QuestionsClient stateCode={code} questions={pack.questions()} />
+      <QuestionsClient stateCode={code} />
     </main>
   );
 }

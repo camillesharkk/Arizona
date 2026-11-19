@@ -3,8 +3,6 @@
 import { MemberCopy } from "@/components/MemberCopy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { publishedCaQuestions } from "@/data/ca-questions";
-import { publishedQuestions } from "@/data/questions";
 import { MissedStateGallery, ScheduledReviewGallery, type MissedState, type ScheduledReviewItem } from "@/components/DailyStudyGalleries";
 import { ExamRunner } from "@/components/ExamRunner";
 import { MessageDialog } from "@/components/MessageDialog";
@@ -13,12 +11,11 @@ import { StudyPager } from "@/components/StudyPager";
 import { LoadingNote } from "@/components/QuizChrome";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
-import { publishedHiQuestions } from "@/data/hi-questions";
 import { hiStudyLabel } from "@/lib/hi-topics";
 import { syncCaAttempts } from "@/lib/ca-sync";
 import { paths } from "@/lib/paths";
 import { isFreeState } from "@/lib/free-state-catalog";
-import { packFor } from "@/lib/prep-pack";
+import { packFor } from "@/lib/client-pack";
 import type { Question, StateCode } from "@/lib/types";
 import "@/app/daily-study-galleries.css";
 
@@ -73,12 +70,12 @@ type View = {
   taskStatus: { key: string; kind: string; status: string }[];
   recent?: { id: string; at: string; label: string; correct: number; total: number; wrong: number }[];
   scheduled?: ScheduledReviewItem[];
+  deliveryToken?: string;
 };
 
 export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }) {
   const pack = packFor(stateCode);
   const site = pack ? pack.paths : stateCode === "HI" ? hiPaths : stateCode === "CA" ? caPaths : paths;
-  const [authorizedQuestions, setAuthorizedQuestions] = useState<Question[] | null>(null);
   const [view, setView] = useState<View | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -152,14 +149,6 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         return;
       }
       if (stateCode !== "AZ" && data.state !== stateCode) throw new Error("state");
-      if (stateCode === "IN" || isFreeState(stateCode)) {
-        const url = stateCode === "IN" ? "/api/indiana/questions/" : `/api/state/questions/?state=${stateCode}`;
-        const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(30000) });
-        if (!response.ok) throw new Error("questions");
-        const bank = await response.json();
-        if (id !== loadId.current) return;
-        setAuthorizedQuestions(bank.questions);
-      }
       setView(data);
     } catch {
       if (id === loadId.current) setLoadError(true);
@@ -221,14 +210,9 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
   const reviewCards = view.reviewCards.filter((card) => pending("review-card").has(`card:${card.id}`));
   const practiceCard = practiceCards[Math.min(practiceIndex, Math.max(practiceCards.length - 1, 0))];
   const reviewCard = reviewCards[Math.min(reviewIndex, Math.max(reviewCards.length - 1, 0))];
-  const bank = authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : stateCode === "HI" ? publishedHiQuestions() : stateCode === "CA" ? publishedCaQuestions() : publishedQuestions();
-  const practiceQuestions = bank.filter((question) => pending("new-question").has(`question:${question.question_id}`));
-  const questionsById = new Map(bank.map((question) => [question.question_id, question]));
-  const pendingReviews = pending("review-question");
-  const reviewQuestions = view.reviewQuestionIds.flatMap((id) => {
-    const question = questionsById.get(id);
-    return question && pendingReviews.has(`question:${id}`) ? [question] : [];
-  });
+  const practiceIds = view.practiceQuestionIds.filter((id) => pending("new-question").has(`question:${id}`));
+  const reviewIds = view.reviewQuestionIds.filter((id) => pending("review-question").has(`question:${id}`));
+  const stub = (id: string) => ({ question_id: id, state: stateCode, question_text: "", options: [], correct_option: "", explanation: "", is_free: true, topic: "commission" }) as unknown as Question;
   const studySettingsHref = `${paths.studySettings}?state=${stateCode}`;
   const scheduledById = new Map(view.scheduled?.map((item) => [item.questionId, item]));
   const entitlement = view.entitlementExpiresAt ? view.entitlementExpiresAt.slice(0, 10) : null;
@@ -310,7 +294,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
               {view.yesterdayWaiting.length} missed {view.yesterdayWaiting.length === 1 ? "question is" : "questions are"} not due until {new Date(view.yesterdayWaiting[0].nextReviewAt).toLocaleString("en-US")}.
             </p>
           ) : null}
-          {!reviewCard && !reviewQuestions.length ? (
+          {!reviewCard && !reviewIds.length ? (
             <p>No reviews due today.{view.nextReviewAt ? ` Next review ${new Date(view.nextReviewAt).toLocaleString("en-US")}.` : ""}</p>
           ) : null}
           {reviewCard ? (
@@ -338,14 +322,14 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
             </>
           ) : null}
         </section>
-        {practiceQuestions.length ? (
+        {practiceIds.length ? (
           <div className="daily-practice-quiz">
-            <ExamRunner mode="practice" practice isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={practiceQuestions} questionReason={() => "You haven’t answered this question yet. It counts toward today’s practice goal."} onRecorded={load} sittingMode={`daily-practice-${view.today}`} stateCode={stateCode} />
+            <ExamRunner mode="practice" practice isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={practiceIds.map(stub)} deliveryToken={view.deliveryToken} questionReason={() => "You haven’t answered this question yet. It counts toward today’s practice goal."} onRecorded={load} sittingMode={`daily-practice-${view.today}`} stateCode={stateCode} />
           </div>
         ) : null}
-        {reviewQuestions.length ? (
+        {reviewIds.length ? (
           <div className="daily-review-quiz">
-            <ExamRunner mode="weak" practice review isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={reviewQuestions} questionReason={(id) => {
+            <ExamRunner mode="weak" practice review isPro={(stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode)) && view.freeOnly === false} preset={reviewIds.map(stub)} deliveryToken={view.deliveryToken} questionReason={(id) => {
               const item = scheduledById.get(id);
               if (item?.wrongCount) return "You previously missed this question, and it’s due for review.";
               if (item?.saved) return "You added this question to Daily Study, and it’s due for review.";

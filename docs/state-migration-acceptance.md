@@ -95,3 +95,24 @@ Use `freeStateFeatures` to keep complete-learning readiness independent of accep
 Both state releases reuse the existing production schema. A state addition alone needs no production migration.
 
 RI/TX purchase acceptance uses the existing account-wide 60-day product. The current sandbox API credential returned authenticated 403 on November 14, 2026. Repair the existing test configuration and rerun provider checkout/callback acceptance before activating these purchase entries. The added signed webhook contract uses a mocked Transactions API, real SDK signature verification and actual in-memory entitlement grants. Treat its successful 60-day ALL and duplicate-callback checks as isolated contract evidence.
+
+## 题库服务端边界、最小下发、Google 可信识别、限流策略、统计兼容、匿名合并、缓存隔离与回滚
+
+后续州复用同一套练习入口，不要把整包题目再放进 Client Component 或公开 JSON。
+
+题库服务端边界：抽题、权益、正确答案和评分在服务端。`lib/practice-draw.ts` 使用既有抽题规则。浏览器只拿当前页或当前场次的题干和选项。即时反馈走 `POST /api/practice/feedback/` 的 `one`；整场提交走 `grade`，之后才带解析。场次令牌不能代替登录或 Pro 校验。`GET /api/state/questions/` 和 `GET /api/indiana/questions/` 不再返回题库。公开样题页仍对所有访客输出同一段 SSR 正文。
+
+最小下发：Quick、完整模拟和 Daily Study 一次领取当前场次，上限 80 题。题目浏览按 15 题分页，同一 seed 保持顺序。Daily Study 和错题练习使用 `purpose: "delivery"` 令牌覆盖预设题目 ID。作答阶段 `correct_option` 为空。包元数据在 `data/client-pack.json`，题量变化后运行 `node --experimental-strip-types scripts/emit-client-pack.mjs`。
+
+Google 可信识别：`lib/googlebot.ts` 只接受反向 DNS 以 `.googlebot.com` 结尾、并且正向解析回到同一 IP 的地址。不接受 User-Agent、Referer 或 `googleusercontent.com`。练习、Pro、后台和个人数据不调用这个例外。公开 HTML 不按爬虫分流。
+
+限流策略：题目领取、新建场次和解析领取使用 Postgres `rate_buckets`（迁移 `023_rate_buckets.sql`，未对生产执行）。同一账号或匿名 cookie 每 10 分钟新建 12 个场次，同一可信 IP 150 个；解析每 10 分钟账号 90 次、IP 800 次。依据是一个人连续做几套题，一个约 30 人的共享网络可以同时开始，单账号不能在一次突发里走完各州。可信 IP 在 Vercel 上取 `x-real-ip`。数据库不可用时练习接口降级放行，并保留单实例突发上限；付费鉴权、管理员和 Webhook 验签不降级。`PRACTICE_LIMITS=off` 只关闭这层限额。内部任务用 `Authorization: Bearer` 与 `CRON_SECRET` 做限额例外，不能代替身份校验。登录仍使用原有进程内限额；注册、重置、联系、AI Tutor、删号和社区动作在原限额之外再记一笔共享限额。Paddle Webhook 和 Cron 不走练习限额。
+
+统计兼容：不新增 GA4、PostHog 或 Clarity 脚本。CSP 目前是 Report-Only，报告写到 `/api/security/csp-report/`，去掉 URL 查询串并限流。未看到浏览器违规报告前不要改成强制 CSP，也不要为 nonce 把静态页改成动态。不向统计发送邮箱、答案或密钥。
+
+匿名合并：匿名标识是 httpOnly cookie `np_actor`，不是浏览器指纹。登录后沿用现有 `syncGuestProgress` / `/api/progress/import`，同一 attempt ID 可重复提交。匿名场次令牌只在当前匿名 cookie 仍匹配时由该浏览器的登录会话领走。
+
+缓存隔离：练习、错题、Daily Study 和 `/api/:path*` 使用 `private, no-store`。公开 SEO 页不套这层。闪卡页按会话动态输出，免费访客只收到前 8 张。
+
+回滚：预览环境设 `PRACTICE_LIMITS=off` 可停用共享限额，鉴权保持。代码回滚使用分支 `security/content-boundary`，不要把它直接合进未授权的生产发布。删除部署文件不能撤回已经公开过的历史响应或仓库历史。
+

@@ -4,7 +4,7 @@ import { useId, useState } from "react";
 import Link from "next/link";
 import { isFreeState } from "@/lib/free-state-catalog";
 import { prepNavigation } from "@/lib/prep-navigation";
-import { fullStateSummary } from "@/data/full-state-summary";
+import { fullStateReady } from "@/data/full-state-ready";
 import { TutorPanel } from "@/components/TutorPanel";
 import { AnswerSource } from "@/components/AnswerSource";
 import { ExplanationBody } from "@/components/ExplanationBody";
@@ -41,7 +41,7 @@ export function AnswerResult({
     ? (shown ? "Hide detailed explanation" : "View detailed explanation")
     : (shown ? "Hide option comparison" : "Compare the other options");
   const topicPaths =
-    isFreeState(q.state) && fullStateSummary[q.state]?.ready
+    isFreeState(q.state) && fullStateReady[q.state]
       ? prepNavigation[q.state].paths
       : null;
   const topic = encodeURIComponent(q.study_topic || q.topic);

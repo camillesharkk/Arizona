@@ -1,7 +1,6 @@
 "use client";
 
 import { MemberCopy } from "@/components/MemberCopy";
-import { mistakeReviewQuestions } from "@/lib/mistake-targets";
 import { clientStatePro } from '@/lib/state-pro';
 import { isFreeState } from '@/lib/free-state-catalog';
 
@@ -10,25 +9,22 @@ import { fetchAccount } from "@/lib/client-account";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { publishedQuestions } from "@/data/questions";
-import { publishedCaQuestions } from "@/data/ca-questions";
-import { publishedHiQuestions } from "@/data/hi-questions";
-import { topics } from "@/data/exam-config";
+import { ExamRunner } from "@/components/ExamRunner";
 import { caPaths } from "@/lib/ca-site";
+import { topics } from "@/data/exam-config";
 import { caStudyLabel, caStudyTopics } from "@/lib/ca-topics";
 import { hiPaths } from "@/lib/hi-site";
 import { hiStudyLabel, hiStudyTopics } from "@/lib/hi-topics";
-import { ExamRunner } from "@/components/ExamRunner";
 import { MistakeActions, mistakeTargets } from "@/components/MistakeActions";
 import { publishReviewSave } from "@/components/SaveForReview";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { LoadingNote } from "@/components/QuizChrome";
-import { topicLabel } from "@/lib/quiz";
+import { topicLabel } from "@/lib/quiz-ui";
 import { paths } from "@/lib/paths";
 import { readCaAttempt, latestCaQuick, type CaQuickAttempt } from "@/lib/ca-attempts";
 import { listPhase } from "@/lib/list-phase";
 import { markMistakePromptSeen, mistakePrompt, readMistakePrompts, type MistakeAction, type MistakePrompt } from "@/lib/mistake-prompts";
-import { packFor } from "@/lib/prep-pack";
+import { packFor } from "@/lib/client-pack";
 import { savedInNotebook } from "@/lib/review-save";
 import { syncCaAttempts } from "@/lib/ca-sync";
 import type { Question, StateCode } from "@/lib/types";
@@ -53,8 +49,9 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
   const topicPractice = onCa || onHi || Boolean(pack);
   const practiceState = stateCode;
   const site = pack ? pack.paths : onHi ? hiPaths : onCa ? caPaths : paths;
-  const [authorizedQuestions, setAuthorizedQuestions] = useState<Question[] | null>(null);
-  const questionPool = authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions();
+  type Prompt = { questionId: string; question_text: string; topic: string; study_topic?: string; is_free: boolean; concept_ids?: string[] };
+  const [prompts, setPrompts] = useState<Record<string, Prompt>>({});
+  const [deliveryToken, setDeliveryToken] = useState("");
   const topicChoices = pack
     ? pack.topics.map((item) => ({ id: item.id, short: item.label }))
     : topicPractice
@@ -116,7 +113,6 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
       userIdRef.current = me.user.id;
       setSeen(readMistakePrompts(window.localStorage, me.user.id));
       setIsPro(clientStatePro(me.user, stateCode));
-      if (stateCode === "IN" || isFreeState(stateCode)) { const response = await fetch(stateCode === "IN" ? "/api/indiana/questions/" : `/api/state/questions/?state=${stateCode}`, { cache: "no-store" }); if (!response.ok) throw new Error("questions"); const bank = await response.json(); if (id !== requestId.current) return; setAuthorizedQuestions(bank.questions); }
       const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Phoenix";
       const day = new Intl.DateTimeFormat("en-CA", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
       const response = await fetch(`/api/mistakes/?state=${stateCode}&timeZone=${encodeURIComponent(zone)}&day=${day}&account=${encodeURIComponent(me.user.id)}`, { cache: "no-store", signal: AbortSignal.timeout(30000) });
@@ -125,6 +121,8 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
       const data = await response.json();
       if (id !== requestId.current || pendingIds.current.size || data.state !== stateCode || data.accountId !== me.user.id) return;
       if (!Array.isArray(data.mistakes)) throw new Error("mistakes");
+      setPrompts(Object.fromEntries((Array.isArray(data.prompts) ? data.prompts : []).map((item: Prompt) => [item.questionId, item])));
+      setDeliveryToken(typeof data.deliveryToken === "string" ? data.deliveryToken : "");
       const scope = await resolveScope(me.user.id, attemptId);
       if (id !== requestId.current) return;
       setScopeIds(scope.ids);
@@ -262,7 +260,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
 
   const byTopic = stats.filter((s) => {
     if (topic === "all") return true;
-    const question = questionPool.find((item) => item.question_id === s.questionId);
+    const question = prompts[s.questionId];
     if (!topicPractice) return s.topic === topic;
     return question?.study_topic === topic || (isFreeState(stateCode) && s.chapter === topic);
   });
@@ -308,7 +306,13 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
   }
 
   function begin() {
-    setQueue(mistakeReviewQuestions(stateCode, questionPool, filtered, isPro));
+    const rows = filtered.flatMap((stat) => {
+      const prompt = prompts[stat.questionId];
+      if (!prompt) return [];
+      if ((stateCode === "CT" || isFreeState(stateCode)) && !prompt.is_free && !isPro) return [];
+      return [prompt];
+    }).slice(0, 40);
+    setQueue(rows.map((prompt) => ({ question_id: prompt.questionId, state: stateCode, is_free: prompt.is_free, topic: prompt.topic, study_topic: prompt.study_topic, concept_ids: prompt.concept_ids, question_text: prompt.question_text, options: [], correct_option: "", explanation: "" }) as unknown as Question));
   }
 
   async function importMistakes() {
@@ -375,7 +379,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         <button className="btn btn-ghost" type="button" onClick={() => { setQueue(null); load(); }}>
           Back
         </button>
-        <ExamRunner mode="weak" practice review preset={queue} isPro={stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode) ? isPro : topicPractice ? true : isPro} sittingMode={`review-${source}-${topic}${stateCode === "CT" || (isFreeState(stateCode) && attemptId) ? `-${attemptId || "all"}` : ""}`} stateCode={stateCode} />
+        <ExamRunner mode="weak" practice review preset={queue} deliveryToken={deliveryToken} isPro={stateCode === "CT" || stateCode === "NC" || stateCode === "IN" || isFreeState(stateCode) ? isPro : topicPractice ? true : isPro} sittingMode={`review-${source}-${topic}${stateCode === "CT" || (isFreeState(stateCode) && attemptId) ? `-${attemptId || "all"}` : ""}`} stateCode={stateCode} />
       </div>,
     );
   }
@@ -431,7 +435,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
       </div>
       <div className="row" style={{ marginTop: 12 }}>
         <Link className="btn btn-primary" href={site.daily}>Open Daily Study</Link>
-        <button className="btn btn-ghost" type="button" onClick={begin} disabled={filtered.length === 0 || (isFreeState(stateCode) && !filtered.some(stat => questionPool.some(question => question.question_id === stat.questionId)))}>Practice wrong answers</button>
+        <button className="btn btn-ghost" type="button" onClick={begin} disabled={filtered.length === 0 || (isFreeState(stateCode) && !filtered.some(stat => prompts[stat.questionId]))}>Practice wrong answers</button>
         {topicPractice ? <button className="btn btn-ghost" type="button" onClick={() => { setImportOpen((open) => !open); setImportError(""); const found = (attemptId && readCaAttempt(userIdRef.current, attemptId, practiceState)) || latestCaQuick(userIdRef.current, practiceState); setImportAttempt(found); }}>Import Mistakes</button> : null}
       </div>
       {importOpen && topicPractice ? (
@@ -483,7 +487,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         {actionMessage}
       </p>
       {filtered.map((s) => {
-        const q = questionPool.find((x) => x.question_id === s.questionId);
+        const q = prompts[s.questionId];
         if (!q) return isFreeState(stateCode) && !pack?.freeLaunch ? <article className="card" key={s.questionId} style={{ marginTop: 12 }}>
           <h3>Pro question · {s.questionId}</h3><p>Your progress for this question is saved. Pro opens its question and explanation.</p>
           <p>{s.wrongCount} missed · {s.rightCount} correct</p>{pack?.purchaseEnabled !== false ? <Link className="btn btn-primary" href={site.pricing}>Open Pro access</Link> : <Link href={`${site.practice}?mode=quick`}><MemberCopy member={<>Start Member Practice</>}>Start Free Practice</MemberCopy></Link>}

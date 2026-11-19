@@ -7,6 +7,15 @@ import { getSession } from "@/lib/session";
 import { isFreeState } from "@/lib/free-state-catalog";
 import { LIVE_STATES } from "@/lib/ca-site";
 import { productionStateBlocked } from "@/lib/state-release";
+import { signPractice } from "@/lib/practice-token";
+
+async function deliver(sessionId: string, state: string, view: { practiceQuestionIds?: string[]; reviewQuestionIds?: string[] }) {
+  const ids = [...(view.practiceQuestionIds || []), ...(view.reviewQuestionIds || [])].filter((id, index, all) => all.indexOf(id) === index).slice(0, 80);
+  const deliveryToken = ids.length
+    ? await signPractice({ sub: sessionId, state: state || "AZ", ids, seed: 0, pv: 2, practice: true, revealed: false, purpose: "delivery" })
+    : "";
+  return NextResponse.json({ ...view, deliveryToken }, { headers: { "Cache-Control": "private, no-store" } });
+}
 
 export async function GET(req: Request) {
   const session = await getSession();
@@ -14,14 +23,12 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const state = url.searchParams.get("state");
   if (productionStateBlocked(state)) return NextResponse.json({ error: "State not available" }, { status: 404 });
-  if (isFreeState(state) || state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN") return NextResponse.json(await (await getStore()).learningTransaction(session.id, () => dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, state)));
-  if (state === "CA") return NextResponse.json(await caDailyView(session.id, url.searchParams.get("timeZone") || undefined));
-  if (state === "HI") {
-    return NextResponse.json(await dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, state));
-  }
+  if (isFreeState(state) || state === "NY" || state === "PA" || state === "LA" || state === "CT" || state === "NC" || state === "IN") return deliver(session.id, state || "AZ", await (await getStore()).learningTransaction(session.id, () => dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, state as StudyState)));
+  if (state === "CA") return deliver(session.id, "CA", await caDailyView(session.id, url.searchParams.get("timeZone") || undefined));
+  if (state === "HI") return deliver(session.id, "HI", await dailyStudyView(session.id, url.searchParams.get("timeZone") || undefined, undefined, state));
   if (state && state !== "AZ") return NextResponse.json({ error: "Unknown state" }, { status: 400 });
   const timeZone = url.searchParams.get("timeZone") || undefined;
-  return NextResponse.json(await dailyStudyView(session.id, timeZone));
+  return deliver(session.id, "AZ", await dailyStudyView(session.id, timeZone));
 }
 
 const bodySchema = z.object({
@@ -50,7 +57,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid" }, { status: 400 });
     }
     const timeZone = new URL(req.url).searchParams.get("timeZone") || undefined;
-    return NextResponse.json(await dailyStudyView(session.id, timeZone, undefined, state));
+    return deliver(session.id, state, await dailyStudyView(session.id, timeZone, undefined, state));
   };
   try {
     return (isFreeState(state) || ["NY", "PA", "LA", "CT", "NC", "IN"].includes(state)) ? await (await getStore()).learningTransaction(session.id, update) : await update();

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getStore } from "@/lib/store";
 import { getSession } from "@/lib/session";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { durableLimit } from "@/lib/durable-limit";
 import { getDeviceRepo } from "@/lib/devices";
 import { revokeAllDevices, revokeOthersKeepCurrent } from "@/lib/devices/service";
 import { refreshUserSession } from "@/lib/devices/http";
@@ -12,6 +13,8 @@ import { completePasswordReset } from "@/lib/auth/password-reset";
 export async function POST(req: Request) {
   const limited = rateLimit(`reset:${clientIp(req)}`, 8, 60_000);
   if (!limited.ok) return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
+  const shared = await durableLimit(`reset:${clientIp(req)}`, 8, 60_000);
+  if (!shared.ok) return NextResponse.json({ error: "Too many attempts" }, { status: 429, headers: { "Retry-After": String(shared.retryAfter) } });
   const body = z
     .object({ token: z.string().optional(), currentPassword: z.string().optional(), password: z.string().min(8) })
     .safeParse(await req.json().catch(() => null));

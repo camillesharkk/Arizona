@@ -1,4 +1,4 @@
-import { fullStateSummary } from '../data/full-state-summary.ts';
+import { fullStateReady } from '../data/full-state-ready.ts';
 import type { PrepPaths } from './prep-navigation';
 import type { ExamGroup } from './states';
 
@@ -31,7 +31,7 @@ export function freeStatePaths(slug: string): PrepPaths {
   const home = `/${slug}/`;
   const study = `${home}study-guide/`;
   const code = freeStateCatalog.find(([, , stateSlug]) => stateSlug === slug)?.[0];
-  const ready = Boolean(code && fullStateSummary[code]?.ready);
+  const ready = Boolean(code && fullStateReady[code]);
   return {
     home, practice: `${home}practice/`, mistakes: `${home}wrong-answers/`,
     study, become: `${home}become-a-notary/`, resources: `${home}resources/`,

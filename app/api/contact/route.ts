@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { contactNoticeHtml, contactToEmail, sendMail } from "@/lib/email";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { durableLimit } from "@/lib/durable-limit";
 import { validateContactInput } from "@/lib/contact-validation";
 
 export const runtime = "nodejs";
@@ -42,6 +43,8 @@ export async function POST(req: Request) {
 
   const limited = rateLimit(`contact:${clientIp(req)}`, 5, 10 * 60_000);
   if (!limited.ok) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  const shared = await durableLimit(`contact:${clientIp(req)}`, 5, 10 * 60_000);
+  if (!shared.ok) return NextResponse.json({ error: "Too many requests" }, { status: 429, headers: { "Retry-After": String(shared.retryAfter) } });
 
   const to = contactToEmail();
   if (!to) {

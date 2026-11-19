@@ -8,6 +8,39 @@ const nextConfig: NextConfig = {
   // Keep metadata in the managed head across client-side state navigation.
   htmlLimitedBots: /.*/,
   serverExternalPackages: ["postgres", "posthog-node"],
+  productionBrowserSourceMaps: false,
+  async headers() {
+    const reportOnly = [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "object-src 'none'",
+      "frame-ancestors 'self'",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://scripts.clarity.ms https://cdn.paddle.com https://sandbox-cdn.paddle.com",
+      "script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://scripts.clarity.ms https://cdn.paddle.com https://sandbox-cdn.paddle.com",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://www.clarity.ms https://c.clarity.ms https://*.clarity.ms",
+      "font-src 'self' data:",
+      "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.google.com https://us.i.posthog.com https://us-assets.i.posthog.com https://www.clarity.ms https://*.clarity.ms https://cdn.paddle.com https://sandbox-cdn.paddle.com https://buy.paddle.com https://sandbox-buy.paddle.com",
+      "frame-src 'self' https://www.googletagmanager.com https://buy.paddle.com https://sandbox-buy.paddle.com",
+      "report-uri /api/security/csp-report/",
+    ].join("; ");
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self)" },
+          { key: "Content-Security-Policy-Report-Only", value: reportOnly },
+        ],
+      },
+      {
+        source: "/api/:path*",
+        headers: [{ key: "Cache-Control", value: "private, no-store" }],
+      },
+    ];
+  },
   async redirects() {
     return [
       {

@@ -12,6 +12,8 @@ import { compareMistakes, DEFAULT_STUDY_TIME_ZONE, isDue } from "@/lib/review-sc
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { productionStateBlocked } from "@/lib/state-release";
+import { signPractice } from "@/lib/practice-token";
+import { questionByBankId } from "@/lib/practice-draw";
 import type { QuestionStat } from "@/lib/store/types";
 
 export async function POST(req: Request) {
@@ -92,14 +94,32 @@ export async function GET(req: Request) {
   const mistakes = stats
     .filter((s) => s.bank === bank && !s.mastered && (s.wrongCount > 0 || savedInNotebook(s)))
     .sort((a, b) => compareMistakes(a, b, now));
+  const prompts = mistakes.slice(0, 80).flatMap((stat) => {
+    const question = questionByBankId(stat.questionId);
+    if (!question || question.state !== state) return [];
+    return [{
+      questionId: question.question_id,
+      question_text: question.question_text,
+      topic: question.topic,
+      study_topic: question.study_topic,
+      is_free: question.is_free,
+      state: question.state,
+      concept_ids: question.concept_ids,
+    }];
+  });
+  const deliveryToken = prompts.length
+    ? await signPractice({ sub: session.id, state, ids: prompts.map((item) => item.questionId), seed: 0, pv: 2, practice: true, revealed: false, purpose: "delivery" })
+    : "";
   return NextResponse.json({
     state,
     accountId: session.id,
     studyDay: localDate(new Date().toISOString(), timeZone),
     mistakes: mistakes.map(toClientStat),
+    prompts,
+    deliveryToken,
     savedReviewIds: stats.filter(stat => stat.savedForReview && !stat.mastered).map(stat => stat.questionId),
     dueCount: mistakes.filter((s) => isDue(s, now)).length,
-    truncated: false,
+    truncated: mistakes.length > prompts.length,
     favorites: stats.filter((s) => s.favorited).map(toClientStat),
   }, { headers: { "Cache-Control": "private, no-store" } });
 }

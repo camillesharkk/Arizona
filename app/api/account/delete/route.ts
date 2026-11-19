@@ -6,6 +6,7 @@ import { getCommerceRepo } from "@/lib/commerce";
 import { getDeviceRepo } from "@/lib/devices";
 import { confirmAndDeleteAccount } from "@/lib/auth/deletion";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { durableLimit } from "@/lib/durable-limit";
 
 const schema = z.object({
   password: z.string().min(8),
@@ -16,6 +17,8 @@ const schema = z.object({
 export async function POST(req: Request) {
   const limited = rateLimit(`acct-del:${clientIp(req)}`, 6, 60_000);
   if (!limited.ok) return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
+  const shared = await durableLimit(`acct-del:${clientIp(req)}`, 6, 60_000);
+  if (!shared.ok) return NextResponse.json({ error: "Too many attempts" }, { status: 429, headers: { "Retry-After": String(shared.retryAfter) } });
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const body = schema.safeParse(await req.json().catch(() => null));

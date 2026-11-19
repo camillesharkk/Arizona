@@ -15,6 +15,7 @@ import { saveCaExamCheck } from "@/lib/ca-daily";
 import { recordExam, recordQuestionAnswer } from "@/lib/progress";
 import { getStore } from "@/lib/store";
 import { productionStateBlocked } from "@/lib/state-release";
+import { readPractice } from "@/lib/practice-token";
 import { savePackFullSubmission } from "@/lib/ny-full-submission";
 import type { ExamRow, QuestionStat, UserRow } from "@/lib/store/types";
 import { stateProCovers, stateProExpiry } from "@/lib/state-pro";
@@ -27,6 +28,7 @@ const answerSchema = z.object({
   review: z.boolean().optional(),
   state: z.enum(["AZ", "CA", "HI", "NY", "PA", "LA", "CT", "NC", "IN", "AR", "CO", "IL", "ME", "MD", "MO", "MT", "NE", "NV", "NJ", "NM", "OH", "OR", "UT", "VT", "WI", "WY", "RI", "TX"]).optional(),
   timeZone: z.string().max(80).optional(),
+  token: z.string().max(8000).optional(),
 });
 
 export async function POST(req: Request) {
@@ -122,6 +124,8 @@ export async function POST(req: Request) {
   }
   if (!(await canAccessQuestion(session.id, q))) return NextResponse.json({ error: "Pro required" }, { status: 402 });
   const correct = parsed.data.selected === q.correct_option;
+  const claims = parsed.data.token ? await readPractice(parsed.data.token) : null;
+  const covered = Boolean(claims && claims.purpose === "sitting" && claims.sub === session.id && claims.ids.includes(q.question_id));
   const stat = await recordQuestionAnswer({
     userId: session.id,
     questionId: q.question_id,
@@ -131,11 +135,12 @@ export async function POST(req: Request) {
     attemptId: parsed.data.attemptId,
     timeZone: parsed.data.timeZone,
   });
-  if (!stat) return NextResponse.json({ ok: true, duplicate: true, correct });
+  const revealed = covered ? { correct } : {};
+  if (!stat) return NextResponse.json({ ok: true, duplicate: true, ...revealed });
   if (!q.is_free) {
     await recordProUsage(session.id, "pro_question", undefined, q.state);
   }
-  return NextResponse.json({ ok: true, correct, stat: toClientStat(stat) });
+  return NextResponse.json({ ok: true, ...revealed, stat: toClientStat(stat) });
 }
 
 export async function GET(req: Request) {

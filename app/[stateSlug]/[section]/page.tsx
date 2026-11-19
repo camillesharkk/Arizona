@@ -5,9 +5,6 @@ import { StateCheckout } from '@/components/StateCheckout';
 import { QuestionsClient } from '@/components/QuestionsClient';
 import { prepPacks } from '@/lib/prep-pack';
 import { fullStateArticles } from '@/lib/seo-article-catalog';
-import { getSession } from '@/lib/session';
-import { hasStatePro } from '@/lib/entitlements';
-import { serverStateQuestions } from '@/data/full-state-server';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { PracticeLaunch } from '@/components/PracticeLaunch';
@@ -63,11 +60,8 @@ export default async function Page({ params, searchParams }: {
         topics={pack.topics} cardsHref={site.studyCards} dailyHref={site.daily} practiceBaseHref={site.practice} /></main>;
   }
   if (section === 'questions') {
-    const session = await getSession();
-    const pro = Boolean(session && await hasStatePro(session.id, code));
     const query = await searchParams;
-    return <main className="wrap hero"><h1>{state[1]} Practice Questions</h1><QuestionsClient key={code} stateCode={code} topic={query.topic}
-      questions={serverStateQuestions(code).filter(question => pro || question.is_free)} /></main>;
+    return <main className="wrap hero"><h1>{state[1]} Practice Questions</h1><QuestionsClient key={code} stateCode={code} topic={query.topic} /></main>;
   }
   if (section === 'practice') return <main className="wrap hero"><h1>{state[1]} Notary Practice</h1>
     <p><MemberCopy member={<>Quick 10 gives ten original questions with explanations and official sources.</>}>Quick 10 gives ten free original questions with explanations and official sources.</MemberCopy></p>

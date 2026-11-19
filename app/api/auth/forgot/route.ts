@@ -3,10 +3,13 @@ import { z } from "zod";
 import { getStore } from "@/lib/store";
 import { allowDevEmailTokens, newToken, resetEmailHtml, RESET_SUBJECT, resetUrl, sendMail } from "@/lib/email";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { durableLimit } from "@/lib/durable-limit";
 
 export async function POST(req: Request) {
   const limited = rateLimit(`forgot:${clientIp(req)}`, 6, 60_000);
   if (!limited.ok) return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
+  const shared = await durableLimit(`forgot:${clientIp(req)}`, 6, 60_000);
+  if (!shared.ok) return NextResponse.json({ error: "Too many attempts" }, { status: 429, headers: { "Retry-After": String(shared.retryAfter) } });
   const body = z.object({ email: z.string().email() }).safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid email" }, { status: 400 });
   const store = await getStore();

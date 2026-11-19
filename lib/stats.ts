@@ -1,12 +1,12 @@
 import type { QuestionStat } from "@/lib/store/types";
-import { publishedQuestions } from "@/data/questions";
+import azPublic from "@/data/az-public.json";
 
 export function readinessScore(stats: QuestionStat[], exams: { score: number }[]) {
   const answered = stats.reduce((n, s) => n + s.rightCount + s.wrongCount, 0);
   const right = stats.reduce((n, s) => n + s.rightCount, 0);
   const acc = answered ? Math.round((right / answered) * 100) : 0;
   const last = exams[0]?.score ?? 0;
-  const bank = Math.max(1, publishedQuestions().length);
+  const bank = Math.max(1, azPublic.published);
   const coverage = Math.min(100, Math.round((stats.length / bank) * 100));
   return Math.round(acc * 0.5 + last * 0.3 + coverage * 0.2);
 }

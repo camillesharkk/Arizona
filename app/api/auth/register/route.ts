@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getStore } from "@/lib/store";
 import { allowDevEmailTokens } from "@/lib/email";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { durableLimit } from "@/lib/durable-limit";
 import { getCommerceRepo } from "@/lib/commerce";
 import { registerAccount } from "@/lib/auth/register";
 
@@ -16,6 +17,8 @@ const schema = z.object({
 export async function POST(req: Request) {
   const limited = rateLimit(`reg:${clientIp(req)}`, 8, 60_000);
   if (!limited.ok) return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
+  const shared = await durableLimit(`reg:${clientIp(req)}`, 8, 60_000);
+  if (!shared.ok) return NextResponse.json({ error: "Too many attempts" }, { status: 429, headers: { "Retry-After": String(shared.retryAfter) } });
   const body = schema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid email or password" }, { status: 400 });
   const store = await getStore();

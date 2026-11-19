@@ -1,7 +1,7 @@
 import { knowledgeCards } from "../data/knowledge-cards.ts";
 import { publishedQuestions } from "../data/questions.ts";
-import { topics } from "../data/exam-config.ts";
 import { chapters } from "../data/study-guide.ts";
+export { isTopicSlug } from "./topic-slug.ts";
 import { findSource } from "../data/sources.ts";
 import type { Flashcard, TopicId } from "./types.ts";
 
@@ -15,8 +15,6 @@ export const HOME_STUDY_CARD_IDS = [
   "kc-advice",
   "kc-fee",
 ] as const;
-
-const TOPIC_IDS = new Set<string>(topics.map((topic) => topic.id));
 
 export const chapterTopic = Object.fromEntries(chapters.map((chapter) => [chapter.id, chapter.topic])) as Record<
   string,
@@ -87,10 +85,6 @@ export function studyCardGaps() {
   return studyCardCatalog().flatMap((card) =>
     card.pendingVerification ? [{ cardId: card.id, questionIds: card.question_ids ?? [], sourceId: card.source_id }] : []
   );
-}
-
-export function isTopicSlug(value: string | undefined): value is TopicId {
-  return Boolean(value && TOPIC_IDS.has(value));
 }
 
 export type PublicStudyCard = {

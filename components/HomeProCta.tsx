@@ -9,7 +9,7 @@ import { ProAccessNote } from "@/components/ProAccessNote";
 import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { formatUsd } from "@/lib/pricing/money";
 import { GUEST_NEWCOMER_HINT } from "@/lib/pricing/copy";
-import { eligibleExamPool } from "@/lib/quiz";
+import azPublic from "@/data/az-public.json";
 import { examConfig } from "@/data/exam-config";
 
 export function HomeProCta() {
@@ -18,7 +18,7 @@ export function HomeProCta() {
   const [signedIn, setSignedIn] = useState(false);
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
-  const bankSize = eligibleExamPool().length;
+  const bankSize = azPublic.published;
 
   useEffect(() => {
     fetchAccount()

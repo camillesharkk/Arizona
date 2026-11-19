@@ -8,6 +8,7 @@ import { communityLimits, communityReportReasons, nicknameValue, unreadableCommu
 import { communityStore } from "@/lib/community-store";
 import { paths } from "@/lib/paths";
 import { rateLimit } from "@/lib/rate-limit";
+import { durableLimit } from "@/lib/durable-limit";
 import { getSession } from "@/lib/session";
 
 const uuid = z.string().uuid();
@@ -124,6 +125,7 @@ export async function changeDiscussion(_prior: string, form: FormData): Promise<
   const parsed = postAction.safeParse({ kind: form.get("kind"), id: form.get("id"), value: form.get("value") });
   if (!parsed.success) return "This discussion action is invalid.";
   if (!rateLimit(`community-action:${session.id}`, 60, 60_000).ok) return "Please wait before trying again.";
+  if (!(await durableLimit(`community-action:${session.id}`, 60, 60_000)).ok) return "Please wait before trying again.";
   const action = parsed.data;
   try {
     const store = communityStore();

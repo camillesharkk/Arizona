@@ -1,6 +1,6 @@
 "use client";
 
-import { fullStateSummary } from "@/data/full-state-summary";
+import { fullStateReady } from "@/data/full-state-ready";
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -126,7 +126,7 @@ export function AccountMenu({ me, onLogout, stateCode = null }: { me: HeaderUser
           <Link href={paths.billing} onClick={() => setOpen(false)}>
             Billing & Access
           </Link>
-          {(!isFreeState(stateCode) || (fullStateSummary[stateCode]?.ready && freeStateFeatures[stateCode]?.purchase !== false)) ? <Link href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>{pricingLabel}</Link> : null}
+          {(!isFreeState(stateCode) || (fullStateReady[stateCode] && freeStateFeatures[stateCode]?.purchase !== false)) ? <Link href={stateCode ? pricing : "/"} onClick={() => setOpen(false)}>{pricingLabel}</Link> : null}
           <div className="account-menu-sep" role="separator" />
           <button className="account-signout" type="button" onClick={onLogout}>
             Sign out

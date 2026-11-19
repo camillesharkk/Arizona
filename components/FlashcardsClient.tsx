@@ -5,7 +5,7 @@ import { fetchAccount } from "@/lib/client-account";
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { flashcards } from "@/data/flashcards";
+import type { Flashcard } from "@/lib/types";
 import { getSource } from "@/data/sources";
 import { loadProgress, saveProgress } from "@/lib/storage";
 import { paths } from "@/lib/paths";
@@ -15,7 +15,7 @@ import { categoryLabel, StudyCardBody } from "@/components/StudyCardBody";
 const FLASH_KEY = "az-flash-place";
 const categoryOrder = ["identification", "appearance", "journal", "conflicts", "fees", "dates", "definitions", "acts"];
 
-export function FlashcardsClient() {
+export function FlashcardsClient({ cards, totalCount }: { cards: Flashcard[]; totalCount: number }) {
   const [cat, setCat] = useState("all");
   const [i, setI] = useState(0);
   const [flipped, setFlipped] = useState(false);
@@ -34,9 +34,9 @@ export function FlashcardsClient() {
     }
     const requested = new URLSearchParams(window.location.search).get("card");
     if (!requested) return;
-    const allowed = flashcards.slice(0, FREE_FLASHCARD_PREVIEW).map((card) => card.id);
-    const pool = flashcards.filter((card) => allowed.includes(card.id) || false);
-    const at = (pool.length ? pool : flashcards).findIndex((card) => card.id === requested);
+    const allowed = cards.slice(0, FREE_FLASHCARD_PREVIEW).map((card) => card.id);
+    const pool = cards.filter((card) => allowed.includes(card.id) || false);
+    const at = (pool.length ? pool : cards).findIndex((card) => card.id === requested);
     if (at >= 0 && allowed.includes(requested)) {
       setCat("all");
       setI(at);
@@ -56,7 +56,7 @@ export function FlashcardsClient() {
     if (!isPro) return;
     const requested = new URLSearchParams(window.location.search).get("card");
     if (!requested) return;
-    const at = flashcards.findIndex((card) => card.id === requested);
+    const at = cards.findIndex((card) => card.id === requested);
     if (at < 0) return;
     setCat("all");
     setI(at);
@@ -77,13 +77,13 @@ export function FlashcardsClient() {
     fetch("/api/billing/pro-usage/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ featureCode: "flashcards_full" }),
+      body: JSON.stringify({ featureCode: "cards_full" }),
     }).catch(() => undefined);
   }, [isPro, fullReported, i]);
 
   const allowed = useMemo(() => {
-    const freeIds = new Set(flashcards.slice(0, FREE_FLASHCARD_PREVIEW).map((card) => card.id));
-    return flashcards.filter((card) => isPro || freeIds.has(card.id));
+    const freeIds = new Set(cards.slice(0, FREE_FLASHCARD_PREVIEW).map((card) => card.id));
+    return cards.filter((card) => isPro || freeIds.has(card.id));
   }, [isPro]);
   const categories = ["all", ...categoryOrder.filter((category) => allowed.some((card) => card.category === category))];
   const full = useMemo(
@@ -168,7 +168,7 @@ export function FlashcardsClient() {
       <p className="notice">
         Mastered {known} · Review pile {p.reviewCards.length}
         {` · ${Math.min(i + 1, deck.length)} of ${deck.length} in this set`}
-        <MemberCopy member={!isPro ? ` · Starter preview ${allowed.length} of ${flashcards.length} cards` : ""}>{!isPro ? ` · Free preview ${allowed.length} of ${flashcards.length} cards` : ""}</MemberCopy>
+        <MemberCopy member={!isPro ? ` · Starter preview ${allowed.length} of ${totalCount} cards` : ""}>{!isPro ? ` · Free preview ${allowed.length} of ${totalCount} cards` : ""}</MemberCopy>
       </p>
       <div
         className="card flash-card"

@@ -8,7 +8,7 @@ import type { Question } from "@/lib/types";
 import { paths } from "@/lib/paths";
 import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
 import { trackEvent } from "@/lib/analytics";
-import { packFor } from "@/lib/prep-pack";
+import { packFor } from "@/lib/client-pack";
 
 const MODES = [
   { id: "explain", label: "Explain this question" },

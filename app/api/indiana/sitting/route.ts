@@ -8,6 +8,7 @@ import { ensureIndianaGuest, readIndianaGuest, indianaGuestSitting } from "@/lib
 import { indianaSittingQuestions, readIndianaSitting, startIndianaSitting, validateIndianaAnswers, type IndianaSitting } from "@/lib/indiana-sitting";
 import { savePackFullSubmission } from "@/lib/ny-full-submission";
 import { recordProUsage } from "@/lib/commerce/usage";
+import { stemQuestion } from "@/lib/question-stem";
 
 const headers = { "Cache-Control": "private, no-store" };
 const schema = z.discriminatedUnion("action", [
@@ -19,7 +20,7 @@ function blocked() {
   return productionStateBlocked("IN") ? NextResponse.json({ error: "State not available" }, { status: 404 }) : null;
 }
 function view(sitting: IndianaSitting) {
-  return { ...sitting, questions: indianaSittingQuestions(sitting) };
+  return { ...sitting, questions: indianaSittingQuestions(sitting).map(stemQuestion) };
 }
 function failed(error: unknown) {
   const code = error instanceof Error ? error.message : "";

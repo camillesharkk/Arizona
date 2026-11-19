@@ -23,7 +23,7 @@ import {
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { currentEmail } from "@/lib/account";
 import { paths } from "@/lib/paths";
-import { eligibleExamPool } from "@/lib/quiz";
+import azPublic from "@/data/az-public.json";
 import type { Question, TopicId } from "@/lib/types";
 
 const profile = arizonaDiagnostic;
@@ -327,7 +327,7 @@ function DiagnosticResult({
         <ul className="home-links">
           {scores.map((item) => {
             const study = chapterHref(item.topic);
-            const freePractice = eligibleExamPool({ topic: item.topic, freeOnly: true }).length > 0;
+            const freePractice = (azPublic.freeTopics as string[]).includes(item.topic);
             return (
               <li key={item.topic}>
                 {item.label}: {item.correct} of {item.total} correct

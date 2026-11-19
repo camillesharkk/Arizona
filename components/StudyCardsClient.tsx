@@ -9,7 +9,8 @@ import { StudyPager } from "@/components/StudyPager";
 import { scrollUnderHeaderSoon } from "@/lib/scroll-under-header";
 import { paths } from "@/lib/paths";
 import { hiStudyLabel } from "@/lib/hi-topics";
-import { isTopicSlug, type PublicStudyCard } from "@/lib/study-cards";
+import { isTopicSlug } from "@/lib/topic-slug";
+import type { PublicStudyCard } from "@/lib/study-cards";
 
 export function StudyCardsClient({
   cards,

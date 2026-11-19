@@ -1,7 +1,7 @@
 import { MemberCopy } from "@/components/MemberCopy";
 import type { Metadata } from "next";
 import { QuestionsClient } from "@/components/QuestionsClient";
-import { publishedHiQuestions, hiQuestionCounts } from "@/data/hi-questions";
+import { hiQuestionCounts } from "@/data/hi-questions";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
 import { hiStudyLabel, hiStudyTopics } from "@/lib/hi-topics";
 import { canonicalUrl } from "@/lib/site";
@@ -31,7 +31,6 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
       <QuestionsClient
         stateCode="HI"
         topic={topic}
-        questions={publishedHiQuestions()}
         topicChoices={hiStudyTopics.map((topic) => ({ id: topic.id, short: topic.label, label: topic.label }))}
       />
     </main>

@@ -15,7 +15,7 @@ import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
 import { hiStudyLabel } from "@/lib/hi-topics";
-import { packFor } from "@/lib/prep-pack";
+import { packFor } from "@/lib/client-pack";
 import type { StateCode } from "@/lib/types";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { openSitting } from "@/lib/sitting";
@@ -208,7 +208,7 @@ export function HomeStudy({ cards, stateCode = "AZ" }: { cards: StudyPreviewCard
       {stateCode === "IN" ? <section className="card" aria-label="30-Question Mock Exam">
         <h2>30-Question Mock Exam</h2><p><MemberCopy member={<>30 original questions. No timer. One starter mock per account or guest browser identity; IN Pro includes more sets.</>}>30 original questions. No timer. One free mock per account or guest browser identity; IN Pro includes more sets.</MemberCopy></p>
         <Link className="btn btn-primary" href={fullHref}>Start 30-Question Mock Exam</Link>
-        <p className="notice">{pack?.counts().published} published questions · {pack?.counts().free}<MemberCopy member={<> starter · </>}> free · </MemberCopy>{pack?.counts().pro} Pro · {pack?.cards.length} independent study cards.</p>
+        <p className="notice">{pack?.counts.published} published questions · {pack?.counts.free}<MemberCopy member={<> starter · </>}> free · </MemberCopy>{pack?.counts.pro} Pro · {pack?.counts.cards} independent study cards.</p>
       </section> : null}
     <div className="study-stack">
 

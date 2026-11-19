@@ -26,8 +26,8 @@ export type Sitting = {
   attemptIds: Record<string, string>;
   recordedIds: string[];
   scored: boolean;
-  /** California full exams persist which items do not affect the raw score. */
   unscoredIds?: string[];
+  practiceToken?: string;
 };
 
 const LETTERS = new Set(["A", "B", "C", "D"]);
@@ -104,6 +104,7 @@ export function parseSitting(raw: unknown, owner: string, mode: string, state: S
     recordedIds: stringList(row.recordedIds),
     scored: Boolean(row.scored),
     unscoredIds: stringList(row.unscoredIds),
+    practiceToken: typeof row.practiceToken === "string" ? row.practiceToken : undefined,
   };
 }
 

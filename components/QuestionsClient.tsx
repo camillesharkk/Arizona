@@ -5,14 +5,13 @@ import { clientStatePro } from "@/lib/state-pro";
 
 import { fetchAccount } from "@/lib/client-account";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { publishedQuestions } from "@/data/questions";
 import { topics } from "@/data/exam-config";
 import type { Difficulty } from "@/lib/types";
+import type { Letter } from "@/lib/answer-sequence";
 import { QuestionBlock } from "@/components/ExamRunner";
 import { ExamNav, LoadingNote, QuestionJump, RestartPracticeDialog } from "@/components/QuizChrome";
-import { shuffleQuestionOptions, type Letter } from "@/lib/quiz";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress } from "@/lib/storage";
 import { clearSitting, readSitting, writeSitting } from "@/lib/sitting";
 import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
@@ -23,14 +22,12 @@ import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { paths } from "@/lib/paths";
 import { caPaths } from "@/lib/ca-site";
 import { hiPaths } from "@/lib/hi-site";
-import { packFor } from "@/lib/prep-pack";
-import { isActiveQuestion } from "@/lib/question-status";
+import { packFor } from "@/lib/client-pack";
 import type { Question, StateCode } from "@/lib/types";
 
 export function QuestionsClient({
   topic,
   stateCode = "AZ",
-  questions,
   topicChoices,
 }: {
   topic?: string;
@@ -64,7 +61,12 @@ export function QuestionsClient({
   const [bootTry, setBootTry] = useState(0);
   const recordedIds = useRef<string[]>([]);
   const modeKey = `questions:${topic || filter}:${difficulty}`;
-  const toOriginalRef = useRef<Record<string, Record<Letter, Letter>>>({});
+  const tokenById = useRef<Record<string, string>>({});
+  const canonicalRef = useRef<Record<string, Letter>>({});
+  const progressRef = useRef(progress);
+  progressRef.current = progress;
+  const [served, setServed] = useState<Question[]>([]);
+  const [pageMeta, setPageMeta] = useState({ total: 0, nextOffset: null as number | null, freeCount: 0, topicCount: 0 });
   const choiceLock = useRef<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const reviewScroll = useRef(0);
@@ -120,46 +122,48 @@ export function QuestionsClient({
     };
   }, [modeKey, bootTry, stateCode]);
 
-  const rawPool = useMemo(() => {
-    let list = (questions ?? pack?.questions() ?? publishedQuestions()).filter((q) => q.is_free || isPro);
-    if (topic) list = list.filter((q) => q.study_topic === topic || q.topic === topic);
-    else if (filter !== "all" && filter !== "wrong" && filter !== "unanswered") {
-      list = list.filter((q) => q.study_topic === filter || q.topic === filter);
-    }
-    if (filter === "wrong") list = list.filter((q) => progress.wrongIds.includes(q.question_id));
-    if (filter === "unanswered") list = list.filter((q) => !progress.answeredIds.includes(q.question_id));
-    if (difficulty !== "all") list = list.filter((q) => q.difficulty === difficulty);
-    return list;
-  }, [questions, pack, filter, difficulty, topic, progress.wrongIds, progress.answeredIds, isPro]);
-
-  const pool = useMemo(() => {
-    const maps: Record<string, Record<Letter, Letter>> = {};
-    const out = rawPool.map((item) => {
-      const { question, toOriginal } = shuffleQuestionOptions(item, seed ?? 0);
-      maps[item.question_id] = toOriginal;
-      return question;
-    });
-    toOriginalRef.current = maps;
-    return out;
-  }, [rawPool, seed]);
-
-  const orderedPool = useMemo(() => {
-    if (!order?.length) return pool;
-    const byId = new Map(pool.map((item) => [item.question_id, item]));
-    const kept = order.flatMap((id) => {
-      const question = byId.get(id);
-      return question ? [question] : [];
-    });
-    const keptIds = new Set(kept.map(question => question.question_id));
-    return [...kept, ...pool.filter(question => !keptIds.has(question.question_id))];
-  }, [pool, order]);
-
   useEffect(() => {
-    if (!authReady || loadedKey !== modeKey || !pool.length) return;
-    const next = orderedPool.map(question => question.question_id);
-    if (order?.length === next.length && order.every((id, index) => id === next[index])) return;
-    setOrder(next);
-  }, [authReady, loadedKey, modeKey, order, pool, orderedPool]);
+    if (!authReady || loadedKey !== modeKey || seed == null) return;
+    let cancel = false;
+    const snapshot = progressRef.current;
+    fetch("/api/practice/batch/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-store",
+      body: JSON.stringify({
+        kind: "topic",
+        state: stateCode,
+        topic,
+        filter,
+        difficulty,
+        seed,
+        offset: 0,
+        wrongIds: snapshot.wrongIds.slice(0, 80),
+        unansweredIds: snapshot.answeredIds.slice(0, 200),
+      }),
+    })
+      .then(async (response) => {
+        const body = await response.json().catch(() => ({}));
+        if (cancel) return;
+        if (!response.ok) {
+          setSubmitError(body.error || "Could not load these questions.");
+          setServed([]);
+          return;
+        }
+        const list = (body.questions || []) as Question[];
+        tokenById.current = {};
+        for (const item of list) tokenById.current[item.question_id] = body.token || "";
+        setServed(list);
+        setOrder(list.map((item) => item.question_id));
+        setPageMeta({ total: body.total || list.length, nextOffset: body.nextOffset ?? null, freeCount: body.freeCount || 0, topicCount: body.topicCount || 0 });
+      })
+      .catch(() => {
+        if (!cancel) setBootError(true);
+      });
+    return () => {
+      cancel = true;
+    };
+  }, [authReady, loadedKey, modeKey, seed, filter, difficulty, topic, stateCode]);
 
   useEffect(() => {
     if (!authReady || loadedKey !== modeKey || seed == null || !order?.length) return;
@@ -188,7 +192,7 @@ export function QuestionsClient({
     }
   }, [authReady, loadedKey, modeKey, seed, order, idx, answers, explainOpen, marked, done, owner, stateCode]);
 
-  const active = orderedPool;
+  const active = served;
   const safeIdx = Math.min(idx, Math.max(0, active.length - 1));
   const q = active[safeIdx];
   const selected = q ? answers[q.question_id] : undefined;
@@ -198,7 +202,7 @@ export function QuestionsClient({
 
   function originalLetter(display: Letter): Letter {
     if (!q) return display;
-    return toOriginalRef.current[q.question_id]?.[display] ?? display;
+    return canonicalRef.current[`${q.question_id}:${display}`] ?? display;
   }
 
   function goTo(nextIdx: number) {
@@ -257,11 +261,8 @@ export function QuestionsClient({
 
   const selectedTopic: string | null =
     topic ?? (filter !== "all" && filter !== "wrong" && filter !== "unanswered" ? filter : null);
-  const topicQuestions = selectedTopic
-    ? (questions ?? pack?.questions() ?? publishedQuestions()).filter((item) => (item.study_topic === selectedTopic || item.topic === selectedTopic) && isActiveQuestion(item))
-    : [];
-  const topicFreeCount = topicQuestions.filter((item) => item.is_free).length;
-  const proOnlyTopic = Boolean(selectedTopic && !isPro && topicFreeCount === 0 && topicQuestions.length > 0);
+  const topicFreeCount = pageMeta.freeCount;
+  const proOnlyTopic = Boolean(selectedTopic && !isPro && topicFreeCount === 0 && pageMeta.topicCount > 0);
 
   if (bootError) {
     return (
@@ -325,7 +326,7 @@ export function QuestionsClient({
         <div className="card">
           <h2>{topicList.find((t) => t.id === selectedTopic)?.label} is in the Pro bank</h2>
           <p>
-            This topic has {topicQuestions.length}<MemberCopy member={<> practice questions and no starter questions. Quick 10 still uses the starter
+            This topic has {pageMeta.topicCount}<MemberCopy member={<> practice questions and no starter questions. Quick 10 still uses the starter
             pool, and topics with starter questions can be practiced without Pro.
           </>}> practice questions and no free questions. Quick 10 still uses the free
             pool, and topics with free questions can be practiced without Pro.
@@ -408,19 +409,27 @@ export function QuestionsClient({
             compactFeedback
             lockChoice={!!selected}
             headingRef={headingRef}
-            onChoose={(l) => {
+            onChoose={async (l) => {
                 if (recordedIds.current.includes(q.question_id) || answers[q.question_id] || choiceLock.current === q.question_id) return;
                 choiceLock.current = q.question_id;
-                recordedIds.current = [...recordedIds.current, q.question_id];
-                setAnswers((a) => ({ ...a, [q.question_id]: l }));
-                recordAnswer(q.question_id, l === q.correct_option, stateCode);
-                saveProgress({ lastQuestionId: q.question_id }, stateCode);
-                pendingSaves.current.push(fetch("/api/progress/", {
+                const response = await fetch("/api/practice/feedback/", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ questionId: q.question_id, questionVersion: q.version, state: q.state, selected: originalLetter(l), attemptId: attemptId(q.question_id) }),
-                }));
-                if (l === q.correct_option) {
+                  body: JSON.stringify({ token: tokenById.current[q.question_id], action: "one", questionId: q.question_id, display: l, attemptId: attemptId(q.question_id) }),
+                });
+                const revealed = await response.json().catch(() => ({}));
+                if (!response.ok || !revealed.correctOption) {
+                  choiceLock.current = null;
+                  setSubmitError(revealed.error || "Could not check this answer. Your other answers are still here.");
+                  return;
+                }
+                recordedIds.current = [...recordedIds.current, q.question_id];
+                canonicalRef.current[`${q.question_id}:${l}`] = revealed.canonical;
+                setServed((current) => current.map((item) => item.question_id === q.question_id ? { ...item, correct_option: revealed.correctOption, explanation: revealed.explanation, option_feedback: revealed.optionFeedback } : item));
+                setAnswers((a) => ({ ...a, [q.question_id]: l }));
+                recordAnswer(q.question_id, Boolean(revealed.correct), stateCode);
+                saveProgress({ lastQuestionId: q.question_id }, stateCode);
+                if (revealed.correct) {
                   const at = safeIdx;
                   scheduleAfterCorrect(() => {
                     if (at + 1 < active.length) setIdx(at + 1);

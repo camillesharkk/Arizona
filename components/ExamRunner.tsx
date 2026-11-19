@@ -5,30 +5,17 @@ import { isFreeState } from "@/lib/free-state-catalog";
 import { FreeStateResultNext } from "@/components/FreeStateResultNext";
 import { fetchAccount } from "@/lib/client-account";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from "react";
+import { useEffect, useRef, useState, type ReactNode, type Ref } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
-import { publishedQuestions } from "@/data/questions";
-import { publishedCaQuestions } from "@/data/ca-questions";
-import { publishedHiQuestions } from "@/data/hi-questions";
-import { pickCaFullExam, pickCaQuickExam, weakestCaArea } from "@/lib/ca-exam";
-import { pickHiFullExam, pickHiQuickExam } from "@/lib/hi-exam";
+import { packFor } from "@/lib/client-pack";
+import { weakestCaArea } from "@/lib/ca-result";
+import { scorePercent, topicLabel, weakTopics } from "@/lib/quiz-ui";
+import type { Letter } from "@/lib/answer-sequence";
 import { areaLabel, CA_EXAM, caPaths } from "@/lib/ca-site";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
-import { packFor } from "@/lib/prep-pack";
 import { hiStudyLabel } from "@/lib/hi-topics";
 import { examConfig, officialExam } from "@/data/exam-config";
-import {
-  buildQuickExam,
-  pickExamSet,
-  pickFullExam,
-  presentExamQuestions,
-  scorePercent,
-  shuffle,
-  topicLabel,
-  weakTopics,
-  type Letter,
-} from "@/lib/quiz";
 import { recordAnswer, saveProgress, loadProgress } from "@/lib/storage";
 import { currentQuestionVersion } from '@/lib/question-revisions';
 import { AccountInvite } from "@/components/AccountInvite";
@@ -47,7 +34,7 @@ import { adoptGuestCaRecords, readCaAttempt, saveCaQuickAttempt } from "@/lib/ca
 import { CtResultNext } from "@/components/CtResultNext";
 import { ctSources } from "@/lib/ct-site";
 import { NcPracticeNext } from "@/components/NcPracticeNext";
-import { startIndianaPractice, clearIndianaStart } from "@/lib/in-client";
+import { clearIndianaStart } from "@/lib/in-client";
 import { IndianaNext } from "@/components/IndianaNext";
 import { CaQuickNext } from "@/components/CaQuickNext";
 import { FREE_FULL_EXAMS } from "@/lib/product";
@@ -68,6 +55,7 @@ export function ExamRunner({
   stateCode = "AZ",
   focusArea,
   questionReason,
+  deliveryToken,
 }: {
   mode: Mode;
   practice?: boolean;
@@ -84,6 +72,7 @@ export function ExamRunner({
   stateCode?: SittingState;
   focusArea?: string;
   questionReason?: (id: string) => string;
+  deliveryToken?: string;
 }) {
   const baseModeKey = sittingMode || mode;
   const dailySet = Boolean(practice && preset && sittingMode?.startsWith("daily-"));
@@ -106,11 +95,8 @@ export function ExamRunner({
   const [poolIsPro, setPoolIsPro] = useState(isPro);
   const fullSize = pack ? (pack.fullCountFor?.(isPro) ?? pack.fullCount) : onHi ? HI_EXAM.practiceQuestionCount : onCa ? CA_EXAM.questionCount : examConfig.questionCount;
   const count = mode === "quick" ? 10 : mode === "full" ? fullSize : 10;
-  const [authorizedQuestions, setAuthorizedQuestions] = useState<Question[] | null>(null);
-  const byId = useMemo(
-    () => new Map((authorizedQuestions ? authorizedQuestions : pack ? pack.questions() : onHi ? publishedHiQuestions() : onCa ? publishedCaQuestions() : publishedQuestions()).map((item) => [item.question_id, item])),
-    [stateCode, authorizedQuestions]
-  );
+  const [served, setServed] = useState<Question[]>([]);
+  const questions = served;
   const [owner, setOwner] = useState<string | null>(null);
   const [signedIn, setSignedIn] = useState(false);
   const [fullExamCount, setFullExamCount] = useState(0);
@@ -122,16 +108,6 @@ export function ExamRunner({
   const [presentationVersion, setPresentationVersion] = useState(2);
   const [lockedIds, setLockedIds] = useState<string[] | null>(null);
   const [restored, setRestored] = useState(false);
-  const questions = useMemo(() => {
-    if (activeSeed == null || !lockedIds?.length) return [];
-    const list = lockedIds.flatMap((id) => {
-      const question = byId.get(id);
-      return question ? [question] : [];
-    });
-    const { questions: out, maps } = presentExamQuestions(list, activeSeed, presentationVersion);
-    toOriginalRef.current = maps;
-    return out;
-  }, [activeSeed, lockedIds, byId, presentationVersion]);
 
   useEffect(() => {
     if (reportStart !== "answer" || poolLocked.current) return;
@@ -170,72 +146,8 @@ export function ExamRunner({
   answersRef.current = answers;
   const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
-  function drawQuestionIds(seed: number, inBank?: Question[]) {
-    if (dailySet && preset) {
-      return preset.filter(item => item.state === stateCode).map(item => item.question_id);
-    }
-    if (stateCode === "IN" && preset?.length) return preset.filter(item => item.state === "IN" && (item.is_free || isPro)).map(item => item.question_id);
-    if (stateCode === "CT" && preset && mode !== "full") {
-      return preset.filter(item => item.state === "CT" && (item.is_free || isPro)).map(item => item.question_id);
-    }
-    if (pack) {
-      const bank = (inBank ?? pack.questions()).filter(item => (stateCode !== "NC" && !isFreeState(stateCode)) || isPro || item.is_free);
-      if ((stateCode === "NC" || isFreeState(stateCode)) && preset?.length) return preset.filter(item => bank.some(question => question.question_id === item.question_id)).map(item => item.question_id);
-      if (focusArea) {
-        const pool = bank.filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
-        const open = pool.filter((item) => item.is_free || isPro);
-        return shuffle(open.length ? open : pool.filter((item) => item.is_free), seed).slice(0, 10).map((item) => item.question_id);
-      }
-      if (mode === "quick") return pack.pickQuick(seed).map((item) => item.question_id);
-      if (mode === "full") {
-        const picked = isFreeState(stateCode)
-          ? { questions: shuffle(bank, seed).slice(0, pack.fullCount), unscoredIds: [] }
-          : pack.pickFull(seed, isPro);
-        unscoredRef.current = picked?.unscoredIds || [];
-        return picked ? picked.questions.map((item) => item.question_id) : [];
-      }
-      const missed = loadProgress(pack.code).wrongIds;
-      return bank.filter((item) => missed.includes(item.question_id) && (stateCode !== "CT" || item.is_free || isPro)).slice(0, 10).map((item) => item.question_id);
-    }
-    if (onHi || onCa) {
-      const bank = onHi ? publishedHiQuestions() : publishedCaQuestions();
-      if (focusArea) {
-        const pool = bank.filter((item) => item.study_topic === focusArea || item.exam_area === focusArea);
-        const open = pool.filter((item) => item.is_free || isPro);
-        return shuffle(open.length ? open : pool.filter((item) => item.is_free), seed).slice(0, 10).map((item) => item.question_id);
-      }
-      if (mode === "quick") return (onHi ? pickHiQuickExam(seed) : pickCaQuickExam(seed)).map((item) => item.question_id);
-      if (mode === "full") {
-        if (onHi) {
-          const picked = pickHiFullExam(seed);
-          unscoredRef.current = [];
-          return picked ? picked.map((item) => item.question_id) : [];
-        }
-        const picked = pickCaFullExam(seed);
-        if (!picked) return [];
-        unscoredRef.current = picked.unscoredIds;
-        return picked.questions.map((item) => item.question_id);
-      }
-      const missed = loadProgress(onHi ? "HI" : "CA").wrongIds;
-      return bank.filter((item) => missed.includes(item.question_id)).slice(0, 10).map((item) => item.question_id);
-    }
-    if (mode === "quick") {
-      const picked = buildQuickExam({ isPro: reportStart === "answer" ? poolIsPro : isPro, seed, stale: preset });
-      return picked.length === 10 ? picked.map((item) => item.question_id) : [];
-    }
-    if (preset?.length) return preset.map((item) => item.question_id);
-    if (mode === "full") {
-      const picked = pickFullExam(seed);
-      return picked.length === examConfig.questionCount ? picked.map((item) => item.question_id) : [];
-    }
-    if (mode === "weak") {
-      const missed = loadProgress().wrongIds;
-      const pool = pickExamSet(200, { seed }).filter((item) => missed.includes(item.question_id));
-      const preview = isPro ? 10 : 5;
-      return pool.length >= 3 ? pool.slice(0, preview).map((item) => item.question_id) : [];
-    }
-    return pickExamSet(count, { seed }).map((item) => item.question_id);
-  }
+  const tokenRef = useRef("");
+  const canonicalRef = useRef<Record<string, Letter>>({});
 
   function currentSitting(patch: Partial<Sitting> = {}): Sitting | null {
     if (!owner || activeSeed == null || !lockedIds) return null;
@@ -260,6 +172,7 @@ export function ExamRunner({
       attemptIds: attemptIds.current,
       recordedIds: recordedIds.current,
       scored: localSaved.current,
+      practiceToken: tokenRef.current,
       ...patch,
     };
   }
@@ -306,14 +219,30 @@ export function ExamRunner({
       .then((response) => (response.ok ? response.json() : Promise.reject(new Error("account"))))
       .then(async (data) => {
         if (cancel) return;
-        let inBank: Question[] | undefined;
-        if (stateCode === "IN" || isFreeState(stateCode)) {
-          const bankUrl = stateCode === "IN" ? "/api/indiana/questions/" : `/api/state/questions/?state=${stateCode}`;
-          const response = await fetch(bankUrl, { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(30000)]), cache: "no-store" });
-          if (!response.ok) throw new Error("questions");
-          inBank = (await response.json()).questions;
-          if (cancel) return;
-          setAuthorizedQuestions(inBank || []);
+        async function openBatch(extra: Record<string, unknown>) {
+          const response = await fetch("/api/practice/batch/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            cache: "no-store",
+            signal: AbortSignal.any([controller.signal, AbortSignal.timeout(30000)]),
+            body: JSON.stringify({
+              state: stateCode,
+              mode,
+              practice: mode !== "full",
+              focusArea,
+              missedIds: loadProgress(stateCode).wrongIds.slice(0, 40),
+              presetIds: preset?.map((question) => question.question_id),
+              deliveryToken,
+              ...extra,
+            }),
+          });
+          const body = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(typeof body.error === "string" ? body.error : "Could not load this practice set.");
+          setServed(body.questions || []);
+          tokenRef.current = body.token || "";
+          if (Array.isArray(body.unscoredIds)) unscoredRef.current = body.unscoredIds;
+          if (typeof body.examId === "string") examSaveId.current = body.examId;
+          return body as { seed: number; questionIds: string[]; presentationVersion?: number };
         }
         const nextOwner = data.user?.id || "guest";
         setSignedIn(Boolean(data.user));
@@ -335,14 +264,13 @@ export function ExamRunner({
           if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner, stateCode);
           const archived = readCaAttempt(nextOwner, requestedAttempt, stateCode);
           if (archived && archived.mode === mode) {
-            const restricted = isFreeState(stateCode) && inBank && archived.questionIds.some(id => !inBank!.some(question => question.question_id === id));
-            if (restricted) setRestrictedResult(archived);
-            viewOnly.current = Boolean(existing) || Boolean(restricted);
+            const batch = await openBatch({ seed: archived.seed, questionIds: archived.questionIds, token: existing?.practiceToken, presentationVersion: archived.presentationVersion ?? 1 });
+            if (cancel) return;
+            viewOnly.current = Boolean(existing);
             setOwner(nextOwner);
-            setActiveSeed(archived.seed);
-            setPresentationVersion(archived.presentationVersion ?? 1);
-            unscoredRef.current = archived.unscoredIds || [];
-            setLockedIds(archived.questionIds);
+            setActiveSeed(batch.seed);
+            setPresentationVersion(batch.presentationVersion ?? archived.presentationVersion ?? 1);
+            setLockedIds(batch.questionIds || archived.questionIds);
             initializedScope.current = modeKey;
             setAnswers(archived.answers);
             answersRef.current = archived.answers;
@@ -358,30 +286,17 @@ export function ExamRunner({
           }
         }
         viewOnly.current = false;
-        let seed = existing?.seed ?? Math.floor(Math.random() * 1_000_000_000);
-        let serverIds: string[] | undefined;
-        if (stateCode === "IN" && mode === "full" && !existing?.done) {
-          const sitting = await startIndianaPractice(nextOwner, existing?.examId || undefined);
-          if (cancel) return;
-          seed = sitting.seed; serverIds = sitting.questionIds; examSaveId.current = sitting.examId;
-          if (sitting.questions) setAuthorizedQuestions(sitting.questions);
-        }
-        if (existing?.unscoredIds?.length) unscoredRef.current = existing.unscoredIds;
-        const savedIds = serverIds || (existing?.questionIds?.length ? existing.questionIds : drawQuestionIds(seed, inBank));
-        const ctPro = Boolean(data.user?.connecticutPro);
-        const ids = stateCode === "CT" && mode !== "full" ? savedIds.filter(id => {
-          const question = byId.get(id);
-          return question && (question.is_free || ctPro);
-        }) : savedIds;
-        if ((stateCode === "IN" || isFreeState(stateCode)) && inBank && ids.some(id => !inBank!.some(question => question.question_id === id))) {
-          const archived = existing?.done && existing.examId && isFreeState(stateCode) ? readCaAttempt(nextOwner, existing.examId, stateCode) : null;
-          if (!archived) throw new Error("Pro access is required to reopen this saved set. Your stored result is preserved.");
-          setRestrictedResult(archived);
-          viewOnly.current = true;
-        }
+        const batch = await openBatch({
+          seed: existing?.seed,
+          questionIds: existing?.questionIds,
+          token: startFresh ? undefined : existing?.practiceToken,
+          presentationVersion: existing?.presentationVersion ?? 2,
+        });
+        if (cancel) return;
+        const ids = batch.questionIds || [];
         setOwner(nextOwner);
-        setActiveSeed(seed);
-        setPresentationVersion(existing ? existing.presentationVersion ?? 1 : 2);
+        setActiveSeed(batch.seed);
+        setPresentationVersion(batch.presentationVersion ?? (existing ? existing.presentationVersion ?? 1 : 2));
         setLockedIds(ids);
         initializedScope.current = modeKey;
         if (!existing) return;
@@ -582,7 +497,7 @@ export function ExamRunner({
   }
 
   function originalLetter(questionId: string, display: Letter): Letter {
-    return toOriginalRef.current[questionId]?.[display] ?? display;
+    return canonicalRef.current[`${questionId}:${display}`] ?? display;
   }
 
   function goTo(nextIdx: number) {
@@ -604,7 +519,7 @@ export function ExamRunner({
     requestAnimationFrame(() => window.scrollTo(0, y));
   }
 
-  function choose(letter: "A" | "B" | "C" | "D") {
+  async function choose(letter: "A" | "B" | "C" | "D") {
     if (reportStart === "answer") reportExamStart();
     if (!practice && timed && done) return;
     if (practice) {
@@ -616,20 +531,34 @@ export function ExamRunner({
     answersRef.current = nextAnswers;
     setAnswers(nextAnswers);
     if (practice) {
-      recordAnswer(q.question_id, letter === q.correct_option, stateCode);
-      fetch("/api/progress/", {
+      const response = await fetch("/api/practice/feedback/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          token: tokenRef.current,
+          action: "one",
           questionId: q.question_id,
-          questionVersion: q.version,
-            selected: originalLetter(q.question_id, letter),
-            attemptId: attemptId(q.question_id),
-            review,
-            state: stateCode,
-            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          display: letter,
+          attemptId: attemptId(q.question_id),
+          review,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         }),
-      }).then(() => onRecorded?.()).catch(() => undefined);
+      });
+      const revealed = await response.json().catch(() => ({}));
+      if (!response.ok || !revealed.correctOption) {
+        choiceLock.current = null;
+        recordedIds.current = recordedIds.current.filter((id) => id !== q.question_id);
+        const rolled = { ...answersRef.current };
+        delete rolled[q.question_id];
+        answersRef.current = rolled;
+        setAnswers(rolled);
+        setSubmitError(revealed.error || "Could not check this answer. Your other answers are still here.");
+        return;
+      }
+      canonicalRef.current[`${q.question_id}:${letter}`] = revealed.canonical;
+      setServed((current) => current.map((item) => item.question_id === q.question_id ? { ...item, correct_option: revealed.correctOption, explanation: revealed.explanation, option_feedback: revealed.optionFeedback } : item));
+      recordAnswer(q.question_id, Boolean(revealed.correct), stateCode);
+      onRecorded?.();
       if (stateCode !== "IN" && mode === "weak" && isPro && !weakReported.current) {
         weakReported.current = true;
         fetch("/api/billing/pro-usage/", {
@@ -638,7 +567,7 @@ export function ExamRunner({
           body: JSON.stringify({ featureCode: "weak_areas", state: stateCode }),
         }).catch(() => undefined);
       }
-      if (letter === q.correct_option) {
+      if (revealed.correct) {
         const at = idx;
         scheduleAfterCorrect(() => {
           if (at + 1 < questions.length) setIdx(at + 1);
@@ -671,12 +600,40 @@ export function ExamRunner({
     setSubmitting(true);
     if (reportStart === "answer") reportExamStart();
     cancelAutoAdvance();
+    let live = questions;
+    if (tokenRef.current) {
+      const response = await fetch("/api/practice/feedback/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: tokenRef.current,
+          action: "grade",
+          answers: questions.map((item) => ({ questionId: item.question_id, display: answersRef.current[item.question_id] })),
+        }),
+      });
+      const graded = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        finishOnce.current = false;
+        setSubmitting(false);
+        setSubmitError(graded.error || "We couldn't score this set. Your answers are still here.");
+        return;
+      }
+      if (graded.token) tokenRef.current = graded.token;
+      const rows = new Map<string, { correctOption?: Letter; explanation?: string; optionFeedback?: Question["option_feedback"]; canonical?: Letter }>((graded.results || []).map((row: { questionId: string; correctOption?: Letter; explanation?: string; optionFeedback?: Question["option_feedback"]; canonical?: Letter }) => [row.questionId, row]));
+      live = questions.map((item) => {
+        const row = rows.get(item.question_id);
+        const selected = answersRef.current[item.question_id];
+        if (row?.canonical && selected) canonicalRef.current[`${item.question_id}:${selected}`] = row.canonical;
+        return row?.correctOption ? { ...item, correct_option: row.correctOption, explanation: row.explanation || "", option_feedback: row.optionFeedback || item.option_feedback } : item;
+      });
+      setServed(live);
+    }
     const current = answersRef.current;
-    const results = questions.map((item) => ({
+    const results = live.map((item) => ({
       question: item,
       correct: current[item.question_id] === item.correct_option,
     }));
-    const pct = scorePercent(results.filter((r) => r.correct).length, questions.length);
+    const pct = scorePercent(results.filter((r) => r.correct).length, live.length);
     if (!examSaveId.current) examSaveId.current = crypto.randomUUID();
     if (!localSaved.current) {
       localSaved.current = true;
@@ -700,7 +657,7 @@ export function ExamRunner({
       body: JSON.stringify({
         kind: "pack-full", ...(stateCode === "IN" ? { action: "submit" } : {}), state: stateCode, seed: activeSeed, examId: examSaveId.current, accountId: owner === "guest" ? undefined : owner,
         unscoredIds: unscoredRef.current,
-        questions: questions.map(item => ({ questionId: item.question_id, questionVersion: item.version, attemptId: attemptIds.current[item.question_id],
+        questions: live.map(item => ({ questionId: item.question_id, questionVersion: item.version, attemptId: attemptIds.current[item.question_id],
           selected: current[item.question_id] ? originalLetter(item.question_id, current[item.question_id]) : undefined })),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       }),
@@ -742,7 +699,7 @@ export function ExamRunner({
         mode,
         score: scoreUnscored ? scorePercent(scoredCorrect, scoredResults.length || 1) : pct,
         correctCount: scoreUnscored ? scoredCorrect : results.filter((r) => r.correct).length,
-        total: scoreUnscored ? scoredResults.length : questions.length,
+        total: scoreUnscored ? scoredResults.length : live.length,
         examId: examSaveId.current,
         state: stateCode,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -779,7 +736,7 @@ export function ExamRunner({
         examCompleteParams({
           mode,
           practice,
-          questionCount: questions.length,
+          questionCount: live.length,
           answeredCount: Object.keys(current).length,
           score: pct,
           passed: topicPractice ? false : pct >= examConfig.passingScorePercent,
@@ -1101,15 +1058,27 @@ export function ExamRunner({
     </>
   );
 
-  function startNew() {
+  async function startNew() {
     if (!owner) return;
     cancelAutoAdvance();
     clearSitting(sessionStorage, owner, modeKey, stateCode);
-    const seed = Math.floor(Math.random() * 1_000_000_000);
-    const ids = drawQuestionIds(seed, authorizedQuestions || undefined);
-    setActiveSeed(seed);
-    setPresentationVersion(2);
-    setLockedIds(ids);
+    tokenRef.current = "";
+    const response = await fetch("/api/practice/batch/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ state: stateCode, mode, practice: mode !== "full", focusArea, deliveryToken, presetIds: preset?.map((question) => question.question_id) }),
+    });
+    const batch = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      setSubmitError(batch.error || "Could not start a new set. Your previous answers are still on this device.");
+      return;
+    }
+    setServed(batch.questions || []);
+    tokenRef.current = batch.token || "";
+    setActiveSeed(batch.seed);
+    setPresentationVersion(batch.presentationVersion || 2);
+    setLockedIds(batch.questionIds || []);
+    unscoredRef.current = batch.unscoredIds || [];
     setIdx(0);
     setAnswers({});
     answersRef.current = {};

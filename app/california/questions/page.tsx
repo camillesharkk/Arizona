@@ -1,7 +1,7 @@
 import { MemberCopy } from "@/components/MemberCopy";
 import type { Metadata } from "next";
 import { QuestionsClient } from "@/components/QuestionsClient";
-import { publishedCaQuestions, caQuestionCounts } from "@/data/ca-questions";
+import { caQuestionCounts } from "@/data/ca-questions";
 import { CA_EXAM, areaLabel, caPaths } from "@/lib/ca-site";
 import { caStudyTopics } from "@/lib/ca-topics";
 import { canonicalUrl } from "@/lib/site";
@@ -31,7 +31,6 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
       <QuestionsClient
         stateCode="CA"
         topic={topic}
-        questions={publishedCaQuestions()}
         topicChoices={caStudyTopics.map((topic) => ({ id: topic.id, short: topic.label, label: topic.label }))}
       />
     </main>

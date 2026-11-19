@@ -4,7 +4,7 @@ import { caStudyTopics } from "@/lib/ca-topics";
 import { hiPaths } from "@/lib/hi-site";
 import { hiStudyTopics } from "@/lib/hi-topics";
 import { paths } from "@/lib/paths";
-import { packFor } from "@/lib/prep-pack";
+import { packFor } from "@/lib/client-pack";
 import type { Question, StateCode } from "@/lib/types";
 import { isFreeState } from "@/lib/free-state-catalog";
 

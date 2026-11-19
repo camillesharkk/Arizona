@@ -13,7 +13,7 @@ import { examConfig } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
-import { packFor } from "@/lib/prep-pack";
+import { packFor } from "@/lib/client-pack";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { clearSitting, openSitting, readSitting, type SittingState } from "@/lib/sitting";
 import { readCaAttempt } from "@/lib/ca-attempts";

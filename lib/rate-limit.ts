@@ -1,3 +1,5 @@
+import { trustedClientIp } from "./trusted-ip.ts";
+
 const buckets = new Map<string, { n: number; reset: number }>();
 
 export function rateLimit(key: string, limit: number, windowMs: number) {
@@ -13,7 +15,7 @@ export function rateLimit(key: string, limit: number, windowMs: number) {
 }
 
 export function clientIp(req: Request) {
-  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "local";
+  return trustedClientIp(req);
 }
 
 export function resetRateLimit(key: string) {

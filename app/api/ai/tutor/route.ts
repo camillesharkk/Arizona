@@ -8,6 +8,7 @@ import { publishedCaQuestions } from "@/data/ca-questions";
 import { publishedHiQuestions } from "@/data/hi-questions";
 import { getStore } from "@/lib/store";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { durableLimit } from "@/lib/durable-limit";
 import { recordProUsage } from "@/lib/commerce/usage";
 import { readAiUsage, utcAiDay } from "@/lib/ai/quota";
 import { parseAiProvider, parseProviderDailyCap } from "@/lib/ai/provider";
@@ -37,6 +38,8 @@ export async function POST(req: Request) {
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const ipLimit = rateLimit(`ai:${clientIp(req)}`, 20, 60_000);
   if (!ipLimit.ok) return NextResponse.json({ error: "Rate limited" }, { status: 429 });
+  const shared = await durableLimit(`ai:${clientIp(req)}`, 20, 60_000);
+  if (!shared.ok) return NextResponse.json({ error: "Rate limited" }, { status: 429, headers: { "Retry-After": String(shared.retryAfter) } });
   const body = z
     .object({
       questionId: z.string(),
