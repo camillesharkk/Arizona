@@ -3,7 +3,9 @@
 import { MemberCopy } from "@/components/MemberCopy";
 import type { StateCode } from "@/lib/types";
 import { isFreeState } from '@/lib/free-state-catalog';
-import { prepNavigation } from '@/lib/prep-navigation';
+import { packNavigationFor, prepNavigation } from '@/lib/prep-navigation';
+import { caPaths } from "@/lib/ca-site";
+import { hiPaths } from "@/lib/hi-site";
 
 import { fetchAccount } from "@/lib/client-account";
 
@@ -79,7 +81,9 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
 }) {
   const lifetime = productCode === LIFETIME_PRO_PRODUCT_CODE;
   const timedReturnPath = isFreeState(sourceState) ? prepNavigation[sourceState].paths.pricing : null;
-  const returnPath = lifetime ? `${lifetimePage ? "/lifetime/" : paths.pricing}#lifetime-checkout` : timedReturnPath;
+  const lifetimePricingPath = sourceState === "CA" ? caPaths.pricing : sourceState === "HI" ? hiPaths.pricing :
+    packNavigationFor(sourceState)?.paths.pricing ?? paths.pricing;
+  const returnPath = lifetime ? `${lifetimePage ? "/lifetime/" : lifetimePricingPath}#lifetime-checkout` : timedReturnPath;
   const termsHref = lifetime && !lifetimePage ? "#lifetime-refund-policy" : "#refund-policy";
   const registerHref = returnPath ? `${paths.register}?next=${encodeURIComponent(returnPath)}` : paths.register;
   const loginHref = returnPath ? `${paths.login}?next=${encodeURIComponent(returnPath)}` : paths.login;
@@ -100,6 +104,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
   const submitting = useRef(false);
   const stopLifetimeWatch = useRef<() => void>(() => undefined);
   const policyId = useId();
+  const unavailableId = useId();
   useEffect(() => () => stopLifetimeWatch.current(), []);
 
   const load = useCallback(async (credit: boolean) => {
@@ -246,19 +251,13 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
       trackBeginCheckout(breakdown, data.transactionId, productCode);
       if (lifetime) setHasPendingLifetime(true);
       const fallback = paddleCheckoutFallback(data.checkoutUrl, data.transactionId, window.location.host, lifetime);
-      if (!lifetime && fallback) {
+      if (fallback) {
         window.location.assign(fallback);
         return;
       }
       const overlay = await openPaddleOverlay(data.transactionId).catch(() => ({ ok: false as const }));
       if (overlay.ok) return;
-      if (lifetime) {
-        stopLifetimeWatch.current();
-        if (fallback) {
-          window.location.assign(fallback);
-          return;
-        }
-      }
+      if (lifetime) stopLifetimeWatch.current();
       setErr("Checkout couldn't be opened. Please try again.");
       return;
     }
@@ -419,7 +418,12 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
       {ownsLifetime ? (
         <p className="checkout-status" role="status">Lifetime Pro is active on your account. <Link href={paths.billing}>View Billing &amp; Access</Link></p>
       ) : unavailable ? (
-        <p className="checkout-status" role="status">Lifetime checkout is currently unavailable.</p>
+        <>
+          <button className="btn btn-primary pricing-cta" type="button" disabled aria-describedby={unavailableId}>
+            Get Lifetime Pro — {ctaPrice}
+          </button>
+          <p className="checkout-status" role="status" id={unavailableId}>Lifetime checkout is currently unavailable.</p>
+        </>
       ) : isGuest ? (
         lifetime ? (
           <Link className="btn btn-primary pricing-cta" href={loginHref}>Sign in to buy Lifetime Pro</Link>
@@ -435,6 +439,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
             <div className="policy-accept">
               <input
                 id={policyId}
+                name="acceptPolicy"
                 type="checkbox"
                 required
                 data-required-message={lifetime

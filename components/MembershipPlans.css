@@ -12,9 +12,6 @@
   align-items: flex-start;
   background: var(--glass-fill);
 }
-.membership-plan:last-child {
-  background: linear-gradient(135deg, #fbfdff, #eef0f8);
-}
 .membership-art {
   position: absolute;
   inset-block-start: 12px;

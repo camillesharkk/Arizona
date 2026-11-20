@@ -69,7 +69,7 @@ export function MembershipPlans({ lifetimeAvailable }: { lifetimeAvailable: bool
             <p className="membership-price">{lifetime} <small>USD once</small></p>
             <p>{access} for lifetime access + {guarantee} for the official exam guarantee.</p>
             {!lifetimeAvailable && <p className="notice">Checkout is currently unavailable.</p>}
-            <a className="btn btn-ghost" href="#lifetime-checkout">{lifetimeAvailable ? "Continue to Lifetime Pro checkout" : "View Lifetime Pro checkout"}</a>
+            <a className="btn btn-primary" href="#lifetime-checkout">Continue to Lifetime Pro checkout</a>
           </article>
         </div>
       </section>
