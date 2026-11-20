@@ -1,4 +1,4 @@
-import SharedPage from "@/app/preview/[state]/pricing/page";
+import { StatePricingPage } from "@/components/StatePricingPage";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
@@ -9,5 +9,5 @@ export const metadata = pageMeta({
 });
 
 export default function Page() {
-  return SharedPage({ params: Promise.resolve({ state: "pennsylvania" }) });
+  return <StatePricingPage state="PA" />;
 }
