@@ -51,7 +51,7 @@ export default async function Page({ params, searchParams }: {
   if (section === 'pricing') return <main className="wrap hero"><h1>{state[1]} Notary Pro</h1>
     <div className="card"><p>{counts.free} of {counts.published}<MemberCopy member={<> questions are available to all learners. Pro opens the complete bank, repeated Comprehensive Practice and the shared Pro Tutor allowance for 60 days across every available state.</>}> questions are free. Pro opens the complete bank, repeated Comprehensive Practice and the shared Pro Tutor allowance for 60 days across every available state.</MemberCopy></p>
     <p><MemberCopy member={<>Study Cards, the Study Guide and Quick 10 remain available. Comprehensive Practice has 40 questions and no time limit. One full practice is included.</>}>Study Cards, the Study Guide and Quick 10 remain available free. Comprehensive Practice has 40 questions and no time limit. One full practice is included free.</MemberCopy></p>
-    <Link href={site.practice}>Try practice</Link></div><StateCheckout source={code} /></main>;
+    <Link className="btn btn-ghost card-action" href={site.practice}>Try practice</Link></div><StateCheckout source={code} /></main>;
   if (section === 'study-cards') {
     const query = await searchParams;
     const cards = pack.cards.map(item => ({ ...item, topic: item.study, back: item.rule, sourceLabel: item.source, locked: false, pending: false }));

@@ -77,7 +77,6 @@ function primaryLinks(nav: ReturnType<typeof navFor>) {
     { href: nav.mistakes, label: "Wrong Answers" },
     { href: nav.daily, label: "Daily Study" },
     { href: paths.community, label: "Community Insights" },
-    { href: nav.laws, label: "Laws" },
   ];
 }
 
@@ -87,6 +86,7 @@ function moreLinks(nav: ReturnType<typeof navFor>, state: LiveCode) {
     { href: nav.flashcards, label: "Study cards" },
     { href: nav.examPrep, label: isFreeState(state) && freeStateFeatures[state]?.fullPractice === false ? "Requirements guide" : "Exam guide" },
     { href: nav.become, label: "Become a Notary" },
+    { href: nav.laws, label: "Laws" },
     { href: nav.resources, label: "Resources" },
     ...(state === "AZ" ? [{ href: paths.courses, label: "Courses" }] : []),
   ];

@@ -26,7 +26,7 @@ export default function Page() {
         <p>Passing the official exam requires a scaled score of at least 70. That score is not the number correct divided by 45 or by 40. This site does not issue a scaled score or an official pass.</p>
         <p><MemberCopy member={<>Quick 10 shows the explanation after each question. One full practice exam is available to all learners. The published questions are available to all learners. Pro does not unlock a hidden California bank. It removes the one-exam limit for 60 days in every available state.</>}>Free Quick 10 shows the explanation after each question. One full practice exam is free. The published questions are free. Pro does not unlock a hidden California bank. It removes the one-exam limit for 60 days in every available state.</MemberCopy></p>
         <p><a href="/california/open-book/">Closed-book rule</a>{" · "}<a href="/california/exam-retake/">Retake rules</a>{" · "}<a href="/california/how-hard/">Readiness</a></p>
-        <p><a href={CA_EXAM.sources.exam}>CPS HR exam information</a></p>
+        <p><a className="btn btn-ghost card-action" href={CA_EXAM.sources.exam}>CPS HR exam information</a></p>
       </div>
     </main>
   );

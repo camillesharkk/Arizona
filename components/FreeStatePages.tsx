@@ -33,7 +33,7 @@ export function FreeStateHome({ code }: { code: FreeStateCode }) {
       <Link className="btn btn-primary" href={`${site.practice}?mode=full`}>Start Comprehensive Practice</Link>
       {pack.purchaseEnabled !== false ? <Link className="btn btn-ghost" href={site.pricing}>Get 60-Day Pro</Link> : null}</div></section> : null}
     <section className="card"><h2>First-time application</h2><p>{content.training}</p><p>{content.assessment}</p>
-      <Link href={site.become}>Application steps and exceptions</Link>
+      <Link className="btn btn-ghost card-action" href={site.become}>Application steps and exceptions</Link>
     </section>
     <section><h2>Study and review</h2><div className="tool-row">
       <Link className="btn btn-ghost" href={site.study}>Study Guide</Link>

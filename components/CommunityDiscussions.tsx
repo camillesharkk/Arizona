@@ -8,6 +8,7 @@ import { paths } from "@/lib/paths";
 import { getSession } from "@/lib/session";
 import { CommunityComposer, CommunityLike, CommunityNickname, CommunityRemove, CommunityReport, CommunityShare } from "./CommunityPostForms";
 import { CommunityInsightFeed } from "./CommunityInsightFeed";
+import { CommunityAnnouncementPager } from "./CommunityAnnouncementPager";
 
 const dateFormat = new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" });
 
@@ -39,20 +40,43 @@ function signInFor(returnTo: string) {
 
 function MessageActions({ post, context }: { post: CommunityPost; context: DiscussionActions }) {
   if (post.deleted) return null;
-  const { signedIn, banned, reportId, returnTo, insightId, threadId } = context;
-  const path = (threadId ? returnTo : communityDiscussionPath(insightId, post.id)).split("#")[0];
-  const reportHref = path + (path.includes("?") ? "&" : "?") + "report=" + post.id + "#community-message-" + post.id;
   return (
     <>
-      {signedIn
+      {context.signedIn
         ? <CommunityLike id={post.id} likes={post.likes} liked={post.liked} target={post.title || `${post.author}’s message`} />
         : <span className="community-meta">{post.likes} {post.likes === 1 ? "like" : "likes"}</span>}
-      {signedIn
-        ? banned ? <button className="btn btn-ghost community-report-entry" type="button" disabled>Report</button>
-          : <CommunityReport id={post.id} initiallyOpen={reportId === post.id} />
-        : <Link className="btn btn-ghost community-report-entry" href={signInFor(reportHref)}>Report</Link>}
       {post.mine && <CommunityRemove id={post.id} root={post.depth === 0} />}
     </>
+  );
+}
+
+function ReportAction({ post, context }: { post: CommunityPost; context: DiscussionActions }) {
+  if (post.deleted) return null;
+  const { signedIn, banned, reportId, returnTo, insightId, threadId } = context;
+  if (signedIn) {
+    return banned
+      ? <button className="btn btn-ghost community-report-entry" type="button" disabled>Report</button>
+      : <CommunityReport id={post.id} initiallyOpen={reportId === post.id} />;
+  }
+  const path = (threadId ? returnTo : communityDiscussionPath(insightId, post.id)).split("#")[0];
+  const reportHref = path + (path.includes("?") ? "&" : "?") + "report=" + post.id + "#community-message-" + post.id;
+  return <Link className="btn btn-ghost community-report-entry" href={signInFor(reportHref)}>Report</Link>;
+}
+
+function PostActions({ post, context }: { post: CommunityPost; context: DiscussionActions }) {
+  const href = communityDiscussionPath(context.insightId, post.id);
+  return (
+    <div className="row community-post-actions">
+      <MessageActions post={post} context={context} />
+      <CommunityShare href={href} label="Share" />
+      {!context.threadId && (
+        <Link className="btn btn-ghost" href={href}>
+          {post.replies} {post.replies === 1 ? "reply" : "replies"}
+          <span className="visually-hidden"> to {post.title || `${post.author}’s comment`}</span>
+        </Link>
+      )}
+      <ReportAction post={post} context={context} />
+    </div>
   );
 }
 
@@ -77,6 +101,7 @@ function Replies({ parentId, threadId, insightId, grouped, context }: {
                 Reply<span className="visually-hidden"> to {post.author}</span>
               </Link>
             )}
+            <ReportAction post={post} context={context} />
           </div>
           <Replies parentId={post.id} threadId={threadId} insightId={insightId} grouped={grouped} context={context} />
         </li>
@@ -104,6 +129,7 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
   let more = false;
   let activity: CommunityInsightActivity[] | null = null;
   let memberHighlights: CommunityPost[] = [];
+  let announcements: CommunityPost[] = [];
   let unavailable = !process.env.DATABASE_URL;
   if (!unavailable) {
     try {
@@ -118,7 +144,14 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
       } else {
         ({ posts, more } = await store.list(insightId, session?.id ?? null, page));
       }
-      if (overview) memberHighlights = page === 0 ? posts : (await store.list(null, session?.id ?? null, 0)).posts;
+      if (overview) {
+        const [highlights, team] = await Promise.all([
+          page === 0 ? { posts } : store.list(null, session?.id ?? null, 0),
+          store.list(null, session?.id ?? null, 0, true),
+        ]);
+        memberHighlights = highlights.posts;
+        announcements = team.posts;
+      }
       if (insights.length) activity = await store.insightActivity(insights.map((item) => item.id), session?.id ?? null);
     } catch {
       // Leave the editorial feed available during a database interruption.
@@ -152,7 +185,18 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
 
   return (
     <>
-    <CommunityInsightFeed insights={insights} activity={activity} memberPosts={memberHighlights} signedIn={context.signedIn} showHighlights={overview} />
+    <CommunityInsightFeed insights={insights} activity={activity} memberPosts={memberHighlights}
+      signedIn={context.signedIn} showHighlights={overview}
+      announcements={announcements.length ? (
+        <CommunityAnnouncementPager titles={announcements.map(post => post.title ?? "Team announcement")}>
+          {announcements.map(post => (
+            <article key={post.id} className="card community-post" id={`community-message-${post.id}`}>
+              <Message post={post} />
+              <PostActions post={post} context={context} />
+            </article>
+          ))}
+        </CommunityAnnouncementPager>
+      ) : undefined} />
     <section className="community-discussions home-section" id="community-discussions" aria-labelledby="community-discussions-heading">
       <div className="community-discussions-header">
         <Image src="/images/glass-demo/community-chat.png" alt="" width={72} height={48} sizes="72px" />
@@ -214,16 +258,7 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
           {posts.map((post) => (
             <article key={post.id} className="card community-post" id={`community-message-${post.id}`}>
               <Message post={post} />
-              <div className="row">
-                <MessageActions post={post} context={context} />
-                <CommunityShare href={communityDiscussionPath(insightId, post.id)} label="Share" />
-                {!threadId && (
-                  <Link className="btn btn-ghost" href={communityDiscussionPath(insightId, post.id)}>
-                    {post.replies} {post.replies === 1 ? "reply" : "replies"}
-                    <span className="visually-hidden"> to {post.title || `${post.author}’s comment`}</span>
-                  </Link>
-                )}
-              </div>
+              <PostActions post={post} context={context} />
               {threadId && (
                 <>
                   <Replies parentId={post.id} threadId={threadId} insightId={insightId} grouped={grouped} context={context} />

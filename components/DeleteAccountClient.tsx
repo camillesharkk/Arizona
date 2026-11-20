@@ -68,7 +68,7 @@ export function DeleteAccountClient({
         purchase, request the refund before deleting your account.
       </p>
       <p>
-        <Link href={paths.billing}>View Billing & Refund Eligibility</Link>
+        <Link className="btn btn-ghost card-action" href={paths.billing}>View Billing & Refund Eligibility</Link>
       </p>
       <p className="notice">
         New Member and one-time Referral discounts cannot be restored. Unused Referral Credits are forfeited and cannot

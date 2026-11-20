@@ -1077,6 +1077,32 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
 .flash-select { display: none; }
 .flash-card { box-shadow: none; }
 .study-stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.application-steps,
+.application-step-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.application-step-heading {
+  display: flex;
+  align-items: baseline;
+  gap: .5em;
+}
+.application-actions { margin-block-start: 16px; }
+
+.btn.card-action {
+  border-radius: 8px;
+  max-inline-size: 100%;
+  white-space: normal;
+  text-align: center;
+}
+.btn.card-action:focus-visible {
+  outline-color: var(--ink);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn.card-action { transition: none; }
+  .btn.card-action:active { transform: none; }
+}
 .study-module-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; }
 .study-module-bar h2 { margin: 0; font-size: 1.05rem; }
 .study-category { color: var(--muted); text-transform: capitalize; }
@@ -1208,7 +1234,8 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
   .home-choice .btn { width: 100%; }
 }
 .daily-meta { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; margin: 8px 0 16px; }
-.daily-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 16px; align-items: start; }
+.daily-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; }
+.daily-practice-quiz, .daily-review-quiz { align-self: start; }
 .daily-practice-card { grid-column: 1; grid-row: 1; min-width: 0; }
 .daily-review-card { grid-column: 2; grid-row: 1; min-width: 0; }
 .daily-practice-quiz, .daily-review-quiz { grid-column: 1 / -1; min-width: 0; }

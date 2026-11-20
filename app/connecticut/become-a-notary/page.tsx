@@ -16,9 +16,20 @@ export default function Page() {
   return <main className="wrap hero">
     <h1>First Application Checklist</h1>
     <p className="lede">For a first appointment as an ordinary Connecticut notary public. Source check {CT_CHECKED_ON}.</p>
-    <ol className="study-stack">{steps.map(step => <li className="card" key={step.title}><h2>{step.title}</h2><p>{step.body}</p><p className="notice">{step.source}</p><a href={step.href} target="_blank" rel="noopener noreferrer">{step.label}</a></li>)}</ol>
-    <section className="card"><h2>Check which application process applies</h2><p>An expired commission can be renewed within 90 days. After that, contact the Secretary at bsd@ct.gov for reinstatement. A lapse does not authorize notarial acts. Special state-police appointments under §3-94e have separate official-duty restrictions and a statutory fee exception. Applicants must answer eligibility and disciplinary-history questions accurately. The Secretary may deny appointment on the grounds in §3-94b(c).</p><a href={ctSources.licensing}>Check the Secretary’s Current Licensing Instructions</a></section>
-    <section className="card"><h2>Application examination requirements</h2><p>The all-correct rule belongs to the official application examination. Official item count, time limit, format and permission to consult reference materials are unspecified in the current sources reviewed here. This site offers handbook-supported study practice.</p><a href={`${ctSources.manual}#page=6`}>Read Manual §2.2</a></section>
-    <p><a href={ctSources.forms}>Official Forms</a>{' · '}<a href={`${ctPaths.practice}?mode=quick`}>Practice With the Handbook</a></p>
+    <div className="study-stack">
+      <ol className="study-stack application-steps" role="list">
+        {steps.map((step, index) => (
+          <li className="card" key={step.title}>
+            <h2 className="application-step-heading"><span aria-hidden="true">{index + 1}.</span>{step.title}</h2>
+            <p>{step.body}</p>
+            <p className="notice">{step.source}</p>
+            <a className="btn btn-ghost card-action" href={step.href} target="_blank" rel="noopener noreferrer">{step.label}</a>
+          </li>
+        ))}
+      </ol>
+      <section className="card"><h2>Check which application process applies</h2><p>An expired commission can be renewed within 90 days. After that, contact the Secretary at bsd@ct.gov for reinstatement. A lapse does not authorize notarial acts. Special state-police appointments under §3-94e have separate official-duty restrictions and a statutory fee exception. Applicants must answer eligibility and disciplinary-history questions accurately. The Secretary may deny appointment on the grounds in §3-94b(c).</p><a className="btn btn-ghost card-action" href={ctSources.licensing}>Check the Secretary’s Current Licensing Instructions</a></section>
+      <section className="card"><h2>Application examination requirements</h2><p>The all-correct rule belongs to the official application examination. Official item count, time limit, format and permission to consult reference materials are unspecified in the current sources reviewed here. This site offers handbook-supported study practice.</p><a className="btn btn-ghost card-action" href={`${ctSources.manual}#page=6`}>Read Manual §2.2</a></section>
+    </div>
+    <div className="row application-actions"><a className="btn btn-ghost card-action" href={ctSources.forms}>Official Forms</a><a className="btn btn-ghost card-action" href={`${ctPaths.practice}?mode=quick`}>Practice With the Handbook</a></div>
   </main>;
 }

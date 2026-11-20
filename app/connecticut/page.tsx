@@ -19,13 +19,13 @@ export default function Page() {
       <section className="card" style={{ marginTop: 24 }}>
         <h2>Your first Connecticut application</h2>
         <p>Read the manual, prepare your Jurat and Writing Sample and Certificate of Character, then complete the eLicense application. After approval, take the oath of office and record your appointment.</p>
-        <Link href={ctPaths.become}>First Application Checklist</Link>
+        <Link className="btn btn-ghost card-action" href={ctPaths.become}>First Application Checklist</Link>
       </section>
       <p>{counts.published} original questions · {counts.free}<MemberCopy member={<> starter · </>}> free · </MemberCopy>{ctCards.length} independent study cards</p>
       <div className="grid grid-3">
-        <section className="card"><h2>Handbook practice</h2><p>Quick 10, focused topic practice and an untimed comprehensive set.</p><Link href={ctPaths.practice}>Choose practice</Link></section>
-        <section className="card"><h2>Study the rules</h2><p>Find the rule and compare its limits before your next practice.</p><Link href={ctPaths.study}>Study Guide</Link>{' · '}<Link href={ctPaths.studyCards}>Study Cards</Link></section>
-        <section className="card"><h2>Your learning</h2><p>Review missed questions, save favorites and plan daily study.</p><Link href={ctPaths.mistakes}>Wrong Answers</Link>{' · '}<Link href={ctPaths.daily}>Daily Study</Link></section>
+        <section className="card"><h2>Handbook practice</h2><p>Quick 10, focused topic practice and an untimed comprehensive set.</p><div className="row"><Link className="btn btn-ghost card-action" href={ctPaths.practice}>Choose practice</Link></div></section>
+        <section className="card"><h2>Study the rules</h2><p>Find the rule and compare its limits before your next practice.</p><div className="row"><Link className="btn btn-ghost card-action" href={ctPaths.study}>Study Guide</Link><Link className="btn btn-ghost card-action" href={ctPaths.studyCards}>Study Cards</Link></div></section>
+        <section className="card"><h2>Your learning</h2><p>Review missed questions, save favorites and plan daily study.</p><div className="row"><Link className="btn btn-ghost card-action" href={ctPaths.mistakes}>Wrong Answers</Link><Link className="btn btn-ghost card-action" href={ctPaths.daily}>Daily Study</Link></div></section>
       </div>
       <section className="card" style={{ marginTop: 24 }}><h2>Practice by topic</h2>{ctTopics.map(topic => <p key={topic.id}><Link href={`${ctPaths.practice}?mode=practice&area=${topic.id}`}>{topic.label}</Link></p>)}</section>
       <p className="notice">Independent study practice. <Link href={ctPaths.resources}>Official sources and version notes</Link></p>

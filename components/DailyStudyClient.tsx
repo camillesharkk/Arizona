@@ -225,7 +225,7 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
         <span>{view.done} / {view.goal} today</span>
         <span>{progress}% of this plan</span>
         <span>Target {view.targetDate}</span>
-        <Link href={studySettingsHref}>Study Settings</Link>
+        <Link className="btn btn-ghost card-action" href={studySettingsHref}>Study Settings</Link>
         <button className="btn btn-ghost" type="button" aria-haspopup="dialog" onClick={openGuide}>Daily Study guide</button>
         <Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link>
       </div>
@@ -365,8 +365,8 @@ export function DailyStudyClient({ stateCode = "AZ" }: { stateCode?: StateCode }
           </ul>
         </section>
       ) : null}
-      <MissedStateGallery total={view.wrongQuestionCount} states={view.wrongQuestionsByState} stateCode={stateCode} dailyHref={site.daily} />
       <ScheduledReviewGallery key={stateCode} items={view.scheduled ?? []} stateCode={stateCode} />
+      <MissedStateGallery total={view.wrongQuestionCount} states={view.wrongQuestionsByState} stateCode={stateCode} dailyHref={site.daily} />
     </>
   );
 }

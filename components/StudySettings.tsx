@@ -96,7 +96,7 @@ export function StudySettings() {
 
   return (
     <section id="study-settings" className="card">
-      <Link href={site.daily}>Back to Daily Study</Link>
+      <Link className="btn btn-ghost card-action" href={site.daily}>Back to Daily Study</Link>
       <h2>Your study plan</h2>
       <p>{payload.introduced} cards introduced · {payload.reviewed} reviews finished.</p>
       <p className="notice">

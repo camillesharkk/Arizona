@@ -6,6 +6,13 @@ export const COMMUNITY_PAGE_SIZE = 20;
 export const COMMUNITY_REPLY_LIMIT = 200;
 export const COMMUNITY_MAX_DEPTH = 4;
 
+// These published posts establish the team accounts independently of editable nicknames.
+const announcementAuthorPosts = [
+  "189e2686-add2-4dcf-8a06-2bee464d14ff", // Wisconsin WIMS update
+  "4f74ba0f-cb55-439d-8862-d698dff4f8af", // New Jersey exam update
+  "2b8ea8e4-68d7-4df4-88fa-9f4bdb96f291", // Arizona journal update
+];
+
 type Row = {
   id: string;
   parent_id: string | null;
@@ -110,7 +117,7 @@ export function communityStore(sql = getPgSql()) {
         await sql`delete from community_insight_likes where insight_id = ${insightId} and user_id = ${userId}`;
       }
     },
-    async list(insightId: string | null, viewer: string | null, page: number) {
+    async list(insightId: string | null, viewer: string | null, page: number, announcements = false) {
       const rows = await sql<Row[]>`
         select ${columns(viewer)}
         from community_posts p join users u on u.id = p.user_id
@@ -118,9 +125,15 @@ export function communityStore(sql = getPgSql()) {
         ${counts(viewer)}
         where p.parent_id is null and p.insight_id is not distinct from ${insightId}
           and p.deleted_at is null and u.deleted_at is null and p.moderation_status = 'published'
-        order by l.like_count + r.reply_count desc, p.created_at desc, p.id desc
-        limit ${COMMUNITY_PAGE_SIZE + 1} offset ${page * COMMUNITY_PAGE_SIZE}
+          and (${insightId}::text is not null or exists (
+            select 1 from community_posts team
+            where team.id = any(${sql.array(announcementAuthorPosts)}::uuid[]) and team.user_id = p.user_id
+          ) = ${announcements})
+        order by case when not ${announcements} then l.like_count + r.reply_count end desc,
+          p.created_at desc, p.id desc
+        limit ${announcements ? null : COMMUNITY_PAGE_SIZE + 1} offset ${page * COMMUNITY_PAGE_SIZE}
       `;
+      if (announcements) return { posts: rows.map(publicPost), more: false };
       return { posts: rows.slice(0, COMMUNITY_PAGE_SIZE).map(publicPost), more: rows.length > COMMUNITY_PAGE_SIZE };
     },
     async thread(insightId: string | null, id: string, viewer: string | null) {

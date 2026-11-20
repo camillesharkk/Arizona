@@ -408,3 +408,16 @@
 @media (forced-colors: active) {
   .community-discussions summary:focus-visible { outline-color: Highlight; }
 }
+
+.community-announcement-controls {
+  justify-content: space-between;
+  margin-block-end: .75rem;
+}
+
+.community-announcement-controls .btn {
+  min-inline-size: 44px;
+}
+
+.community-post-actions > :is(.community-report, .community-report-entry) {
+  margin-inline-start: auto;
+}

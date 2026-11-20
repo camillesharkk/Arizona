@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { communityInsightsUpdatedAt, type CommunityInsight } from "@/data/community-insights";
 import { communityDiscussionPath } from "@/lib/community-links";
 import type { CommunityInsightActivity, CommunityPost } from "@/lib/community-store";
@@ -57,12 +57,13 @@ function CommunityIntro() {
   );
 }
 
-export function CommunityInsightFeed({ insights, activity, memberPosts, signedIn, showHighlights }: {
+export function CommunityInsightFeed({ insights, activity, memberPosts, signedIn, showHighlights, announcements }: {
   insights: readonly CommunityInsight[];
   activity: CommunityInsightActivity[] | null;
   memberPosts: CommunityPost[];
   signedIn: boolean;
   showHighlights: boolean;
+  announcements?: ReactNode;
 }) {
   const metrics = new Map(activity?.map((item) => [item.id, item] as const));
   const reviewed = insights.map((insight) => ({ insight, activity: metrics.get(insight.id), image: thumbnailFor(insight) }))
@@ -114,9 +115,10 @@ export function CommunityInsightFeed({ insights, activity, memberPosts, signedIn
           </ul>
         </section>
       ) : <CommunityIntro />}
-      {reviewed.length > 0 && <section className="community-editorial home-section" id="community-insights" aria-labelledby="community-editorial-heading">
+      {(reviewed.length > 0 || announcements) && <section className="community-editorial home-section" id="community-insights" aria-labelledby="community-editorial-heading">
         <h2 id="community-editorial-heading">{showHighlights ? `${reviewed.length} reviewed public posts` : "Reviewed public post"}</h2>
         <div className="community-editorial-list">
+          {announcements}
           {reviewed.map(({ insight, activity, image }) => (
             <article className="card community-insight-post" key={insight.id} id={`insight-${insight.id}`} aria-labelledby={`title-${insight.id}`}>
               <div className="community-insight-image"><Thumbnail name={image} /></div>
