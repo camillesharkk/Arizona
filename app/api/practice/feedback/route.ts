@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { durableLimit, internalTask, sameOrigin } from "@/lib/durable-limit";
 import { trustedClientIp } from "@/lib/trusted-ip";
-import { canAccessQuestion, hasStatePro } from "@/lib/entitlements";
+import { hasStatePro } from "@/lib/entitlements";
 import { ANON_COOKIE, anonymousPracticeActor, ownsPractice, readPractice, signPractice } from "@/lib/practice-token";
 import { questionByBankId, revealChoice } from "@/lib/practice-draw";
 import { recordQuestionAnswer } from "@/lib/progress";
@@ -91,7 +91,7 @@ export async function POST(req: Request) {
   const revealed = revealChoice(questions, claims.seed, claims.pv, body.data.questionId, body.data.display);
   if (!revealed) return NextResponse.json({ error: "Invalid answer" }, { status: 400, headers: privateHeaders });
   const question = questions.find((item) => item.question_id === body.data.questionId);
-  if (session && question && await canAccessQuestion(session.id, question)) {
+  if (session && question && (question.is_free || isPro)) {
     await recordQuestionAnswer({
       userId: session.id,
       questionId: question.question_id,

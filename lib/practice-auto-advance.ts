@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 
 /** Delay after a correct practice answer before advancing. Wrong answers never auto-advance. */
-export const PRACTICE_CORRECT_ADVANCE_MS = 900;
+export const PRACTICE_CORRECT_ADVANCE_MS = 350;
 
 export function usePracticeAutoAdvance() {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);

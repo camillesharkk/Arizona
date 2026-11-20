@@ -44,11 +44,13 @@ export function QuestionJump({
   index,
   flagged,
   onJump,
+  disabled = false,
 }: {
   ids: string[];
   index: number;
   flagged: string[];
   onJump: (index: number) => void;
+  disabled?: boolean;
 }) {
   const flaggedAt = ids.flatMap((id, i) => (flagged.includes(id) ? [i] : []));
   function jumpFlagged() {
@@ -57,7 +59,7 @@ export function QuestionJump({
   }
   return (
     <div className="q-jump-wrap">
-      <button className="chip" type="button" onClick={jumpFlagged} disabled={flaggedAt.length === 0}>
+      <button className="chip" type="button" onClick={jumpFlagged} disabled={disabled || flaggedAt.length === 0}>
         <FlagIcon /> Flagged ({flaggedAt.length})
       </button>
       <div className="q-jump" aria-label="Question numbers">
@@ -67,6 +69,7 @@ export function QuestionJump({
             className={`q-num${i === index ? " on" : ""}`}
             type="button"
             aria-current={i === index ? "true" : undefined}
+            disabled={disabled}
             onClick={() => onJump(i)}
           >
             {i + 1}

@@ -128,6 +128,8 @@ export function ExamRunner({
   const weakReported = useRef(false);
   const startReported = useRef(false);
   const choiceLock = useRef<string | null>(null);
+  const [pendingChoice, setPendingChoice] = useState<Letter>();
+  const [answerFailures, setAnswerFailures] = useState<Record<string, AnswerCheckFailure | undefined>>({});
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const resultHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const resultRef = useRef<HTMLDivElement | null>(null);
@@ -525,16 +527,14 @@ export function ExamRunner({
     if (reportStart === "answer") reportExamStart();
     if (!practice && timed && done) return;
     if (practice) {
-      if (recordedIds.current.includes(q.question_id) || answersRef.current[q.question_id] || choiceLock.current === q.question_id) return;
-      choiceLock.current = q.question_id;
-      recordedIds.current = [...recordedIds.current, q.question_id];
-    }
-    const nextAnswers = { ...answersRef.current, [q.question_id]: letter };
-    answersRef.current = nextAnswers;
-    setAnswers(nextAnswers);
-    if (practice) {
+      const id = q.question_id;
+      const retryChoice = answerFailures[id]?.retryChoice;
+      if (choiceLock.current || recordedIds.current.includes(id) || answersRef.current[id] || (retryChoice && retryChoice !== letter)) return;
+      choiceLock.current = id;
+      setPendingChoice(letter);
       const response = await fetch("/api/practice/feedback/", {
         method: "POST",
+        signal: AbortSignal.timeout?.(15000),
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           token: tokenRef.current,
@@ -545,22 +545,27 @@ export function ExamRunner({
           review,
           timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         }),
-      });
-      const revealed = await response.json().catch(() => ({}));
-      if (!response.ok || !revealed.correctOption) {
-        choiceLock.current = null;
-        recordedIds.current = recordedIds.current.filter((id) => id !== q.question_id);
-        const rolled = { ...answersRef.current };
-        delete rolled[q.question_id];
-        answersRef.current = rolled;
-        setAnswers(rolled);
-        setSubmitError(revealed.error || "Could not check this answer. Your other answers are still here.");
+      }).catch(() => null);
+      const revealed = (await response?.json().catch(() => null)) ?? {};
+      choiceLock.current = null;
+      setPendingChoice(undefined);
+      if (!response?.ok || !revealed.correctOption) {
+        const retry = retryChoice ?? (!response || response.status >= 500 || response.ok ? letter : undefined);
+        setAnswerFailures((current) => ({ ...current, [id]: { message: revealed.error, retryChoice: retry } }));
         return;
       }
+      if (answerFailures[id]) setAnswerFailures((current) => ({ ...current, [id]: undefined }));
+      recordedIds.current = [...recordedIds.current, q.question_id];
       canonicalRef.current[`${q.question_id}:${letter}`] = revealed.canonical;
       setServed((current) => current.map((item) => item.question_id === q.question_id ? { ...item, correct_option: revealed.correctOption, explanation: revealed.explanation, option_feedback: revealed.optionFeedback } : item));
-      recordAnswer(q.question_id, Boolean(revealed.correct), stateCode);
-      onRecorded?.();
+      const nextAnswers = { ...answersRef.current, [id]: letter };
+      answersRef.current = nextAnswers;
+      setAnswers(nextAnswers);
+      try {
+        recordAnswer(id, Boolean(revealed.correct), stateCode);
+      } catch {
+        // Local storage can be blocked. The answer check has already succeeded.
+      }
       if (stateCode !== "IN" && mode === "weak" && isPro && !weakReported.current) {
         weakReported.current = true;
         fetch("/api/billing/pro-usage/", {
@@ -578,7 +583,12 @@ export function ExamRunner({
       } else {
         cancelAutoAdvance();
       }
+      onRecorded?.();
+      return;
     }
+    const nextAnswers = { ...answersRef.current, [q.question_id]: letter };
+    answersRef.current = nextAnswers;
+    setAnswers(nextAnswers);
   }
 
   function requestFinish() {
@@ -1036,6 +1046,7 @@ export function ExamRunner({
 
   const remain = seconds;
   const lastQuestion = idx + 1 >= questions.length;
+  const checking = Boolean(pendingChoice);
   const practiceLocked = Boolean(practice && selected);
   const past = pastIndex != null ? questions[pastIndex] : null;
   const view = past ?? q;
@@ -1044,7 +1055,7 @@ export function ExamRunner({
   const nextLabel = lastQuestion ? (practice ? "See results" : "Submit exam") : "Next";
   const previousAnswer =
     practice && idx > 0 && pastIndex == null ? (
-      <button className="card-corner-btn" type="button" onClick={openPast}>
+      <button className="card-corner-btn" type="button" disabled={checking} onClick={openPast}>
         Previous answer
       </button>
     ) : null;
@@ -1100,6 +1111,7 @@ export function ExamRunner({
     setRestored(false);
     setPastIndex(null);
     setSubmitError("");
+    setAnswerFailures({});
     setUnansweredToConfirm(0);
   }
 
@@ -1107,8 +1119,8 @@ export function ExamRunner({
     setMarked((current) => (current.includes(questionId) ? current.filter((id) => id !== questionId) : [...current, questionId]));
   }
 
-  const prevLocked = idx === 0 || pastIndex != null || (layout === "compact" && submitting);
-  const nextLocked = pastIndex != null || submitting || (layout === "compact" ? false : practice ? !selected : false);
+  const prevLocked = checking || idx === 0 || pastIndex != null || (layout === "compact" && submitting);
+  const nextLocked = checking || pastIndex != null || submitting || (layout === "compact" ? false : practice ? !selected : false);
   return (
     <div className="home-exam" data-editorial-quiz-active="">
       <div className="row space">
@@ -1118,7 +1130,7 @@ export function ExamRunner({
         </span>
         <span className="row">
           {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{(onHi || stateCode === "CT" || stateCode === "NC" || stateCode === "IN") && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
-          <button className="btn btn-ghost" type="button" onClick={() => {
+          <button className="btn btn-ghost" type="button" disabled={checking} onClick={() => {
             cancelAutoAdvance();
             setConfirmRestart(true);
           }}>Start new</button>
@@ -1132,14 +1144,17 @@ export function ExamRunner({
         index={viewIndex}
         flagged={marked}
         onJump={goTo}
+        disabled={checking}
       />
       {previousAnswer}
       <QuestionBlock
         q={view}
         reason={past ? undefined : questionReason?.(view.question_id)}
         index={viewIndex}
-        selected={viewSelected}
+        selected={pendingChoice ?? viewSelected}
         reveal={Boolean((practice && viewSelected) || past)}
+        checking={checking}
+        answerFailure={past ? undefined : answerFailures[view.question_id]}
         compactFeedback={practice && !past}
         onChoose={past ? undefined : choose}
         lockPaid={false}
@@ -1205,11 +1220,15 @@ function formatTime(s: number) {
   return `${m}:${r.toString().padStart(2, "0")}`;
 }
 
+export type AnswerCheckFailure = { message?: string; retryChoice?: Letter };
+
 export function QuestionBlock({
   q,
   index,
   selected,
   reveal,
+  checking = false,
+  answerFailure,
   compactFeedback,
   onChoose,
   marked,
@@ -1229,6 +1248,8 @@ export function QuestionBlock({
   index: number;
   selected?: "A" | "B" | "C" | "D";
   reveal?: boolean;
+  checking?: boolean;
+  answerFailure?: AnswerCheckFailure;
   compactFeedback?: boolean;
   onChoose?: (l: "A" | "B" | "C" | "D") => void;
   marked?: boolean;
@@ -1302,8 +1323,9 @@ export function QuestionBlock({
               type="button"
               aria-pressed={selected === l}
               aria-label={`${l}. ${map[l]}${status ? `. ${status}` : ""}`}
-              disabled={choiceDisabled}
-              onClick={() => onChoose?.(l)}
+              disabled={choiceDisabled || Boolean(answerFailure?.retryChoice && answerFailure.retryChoice !== l)}
+              aria-disabled={checking || undefined}
+              onClick={() => { if (!checking) onChoose?.(l); }}
             >
               <span className="q-option-inner">
                 <strong>{l}.</strong> {map[l]}
@@ -1317,6 +1339,13 @@ export function QuestionBlock({
           );
         })}
       </div>
+      {onChoose ? <div role="status">{checking ? <p className="notice">Checking answer…</p> : null}</div> : null}
+      {!checking && answerFailure ? (
+        <p className="form-error" role="alert">
+          {answerFailure.message || "Could not check this answer."}{" "}
+          {answerFailure.retryChoice ? `Select ${answerFailure.retryChoice} to try again.` : "Select an option to try again."}
+        </p>
+      ) : null}
       {navigation ? <div className="question-navigation">{navigation}</div> : null}
       {reveal && !locked ? (
         <AnswerResult

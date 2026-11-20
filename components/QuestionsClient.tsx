@@ -10,7 +10,7 @@ import Link from "next/link";
 import { topics } from "@/data/exam-config";
 import type { Difficulty } from "@/lib/types";
 import type { Letter } from "@/lib/answer-sequence";
-import { QuestionBlock } from "@/components/ExamRunner";
+import { QuestionBlock, type AnswerCheckFailure } from "@/components/ExamRunner";
 import { ExamNav, LoadingNote, QuestionJump, RestartPracticeDialog } from "@/components/QuizChrome";
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress } from "@/lib/storage";
 import { clearSitting, readSitting, writeSitting } from "@/lib/sitting";
@@ -69,6 +69,8 @@ export function QuestionsClient({
   const [served, setServed] = useState<Question[]>([]);
   const [pageMeta, setPageMeta] = useState({ total: 0, nextOffset: null as number | null, freeCount: 0, topicCount: 0 });
   const choiceLock = useRef<string | null>(null);
+  const [pendingChoice, setPendingChoice] = useState<Letter>();
+  const [answerFailures, setAnswerFailures] = useState<Record<string, AnswerCheckFailure | undefined>>({});
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const reviewScroll = useRef(0);
   const doneOnce = useRef(false);
@@ -198,6 +200,7 @@ export function QuestionsClient({
   const safeIdx = Math.min(idx, Math.max(0, active.length - 1));
   const q = active[safeIdx];
   const selected = q ? answers[q.question_id] : undefined;
+  const checking = Boolean(pendingChoice);
   const lastQuestion = safeIdx + 1 >= active.length;
   const answered = progress.answeredIds.length;
   const correctSession = active.filter((item) => answers[item.question_id] === item.correct_option).length;
@@ -333,8 +336,10 @@ export function QuestionsClient({
               key={id}
               className={`chip ${filter === id ? "on" : ""}`}
               type="button"
+              disabled={checking}
               onClick={() => {
                 cancelAutoAdvance();
+                setAnswerFailures({});
                 setFilter(id);
                 setIdx(0);
                 setDone(false);
@@ -351,8 +356,10 @@ export function QuestionsClient({
             key={d}
             className={`chip ${difficulty === d ? "on" : ""}`}
             type="button"
+            disabled={checking}
             onClick={() => {
               cancelAutoAdvance();
+              setAnswerFailures({});
               setDifficulty(d);
               setIdx(0);
               setDone(false);
@@ -398,7 +405,7 @@ export function QuestionsClient({
       <div className="home-exam" data-editorial-quiz-active="">
         <div className="row space">
           <span className="notice">Question {safeIdx + 1} of {active.length}{resumed ? " · Resumed" : ""}</span>
-          <button className="btn btn-ghost" type="button" onClick={() => {
+          <button className="btn btn-ghost" type="button" disabled={checking} onClick={() => {
             cancelAutoAdvance();
             setConfirmRestart(true);
           }}>Start new</button>
@@ -412,6 +419,7 @@ export function QuestionsClient({
             setOrder(null);
             setIdx(0);
             setAnswers({});
+            setAnswerFailures({});
             setExplainOpen({});
             setMarked([]);
             setDone(false);
@@ -424,9 +432,9 @@ export function QuestionsClient({
         <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
           <span style={{ width: `${((safeIdx + 1) / active.length) * 100}%` }} />
         </div>
-        <QuestionJump ids={active.map((item) => item.question_id)} index={pastIndex ?? safeIdx} flagged={marked} onJump={goTo} />
+        <QuestionJump ids={active.map((item) => item.question_id)} index={pastIndex ?? safeIdx} flagged={marked} onJump={goTo} disabled={checking} />
         {safeIdx > 0 && pastIndex == null ? (
-          <button className="card-corner-btn" type="button" onClick={openPast}>Previous answer</button>
+          <button className="card-corner-btn" type="button" disabled={checking} onClick={openPast}>Previous answer</button>
         ) : null}
         {pastIndex != null && active[pastIndex] ? (
           <QuestionBlock
@@ -449,31 +457,44 @@ export function QuestionsClient({
           <QuestionBlock
             q={q}
             index={safeIdx}
-            selected={selected}
+            selected={pendingChoice ?? selected}
             reveal={!!selected}
+            checking={checking}
+            answerFailure={answerFailures[q.question_id]}
             compactFeedback
             lockChoice={!!selected}
             headingRef={headingRef}
             onChoose={async (l) => {
-                if (recordedIds.current.includes(q.question_id) || answers[q.question_id] || choiceLock.current === q.question_id) return;
-                choiceLock.current = q.question_id;
+                const id = q.question_id;
+                const retryChoice = answerFailures[id]?.retryChoice;
+                if (choiceLock.current || recordedIds.current.includes(id) || answers[id] || (retryChoice && retryChoice !== l)) return;
+                choiceLock.current = id;
+                setPendingChoice(l);
                 const response = await fetch("/api/practice/feedback/", {
                   method: "POST",
+                  signal: AbortSignal.timeout?.(15000),
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ token: tokenById.current[q.question_id], action: "one", questionId: q.question_id, display: l, attemptId: attemptId(q.question_id) }),
-                });
-                const revealed = await response.json().catch(() => ({}));
-                if (!response.ok || !revealed.correctOption) {
-                  choiceLock.current = null;
-                  setSubmitError(revealed.error || "Could not check this answer. Your other answers are still here.");
+                }).catch(() => null);
+                const revealed = (await response?.json().catch(() => null)) ?? {};
+                choiceLock.current = null;
+                setPendingChoice(undefined);
+                if (!response?.ok || !revealed.correctOption) {
+                  const retry = retryChoice ?? (!response || response.status >= 500 || response.ok ? l : undefined);
+                  setAnswerFailures((current) => ({ ...current, [id]: { message: revealed.error, retryChoice: retry } }));
                   return;
                 }
+                if (answerFailures[id]) setAnswerFailures((current) => ({ ...current, [id]: undefined }));
                 recordedIds.current = [...recordedIds.current, q.question_id];
                 canonicalRef.current[`${q.question_id}:${l}`] = revealed.canonical;
                 setServed((current) => current.map((item) => item.question_id === q.question_id ? { ...item, correct_option: revealed.correctOption, explanation: revealed.explanation, option_feedback: revealed.optionFeedback } : item));
                 setAnswers((a) => ({ ...a, [q.question_id]: l }));
-                recordAnswer(q.question_id, Boolean(revealed.correct), stateCode);
-                saveProgress({ lastQuestionId: q.question_id }, stateCode);
+                try {
+                  recordAnswer(id, Boolean(revealed.correct), stateCode);
+                  saveProgress({ lastQuestionId: id }, stateCode);
+                } catch {
+                  // Local storage can be blocked. The answer check has already succeeded.
+                }
                 if (revealed.correct) {
                   const at = safeIdx;
                   scheduleAfterCorrect(() => {
@@ -494,7 +515,7 @@ export function QuestionsClient({
               navigation={
                 <>
                   <ExamNav
-                    prevDisabled={safeIdx === 0 || submitting}
+                    prevDisabled={checking || safeIdx === 0 || submitting}
                     nextDisabled={submitting || !selected}
                     onPrev={() => goTo(safeIdx - 1)}
                     onNext={() => (lastQuestion ? void loadNextPage() : goTo(safeIdx + 1))}
