@@ -127,7 +127,7 @@ export function communityStore(sql = getPgSql()) {
           and p.deleted_at is null and u.deleted_at is null and p.moderation_status = 'published'
           and (${insightId}::text is not null or exists (
             select 1 from community_posts team
-            where team.id = any(${sql.array(announcementAuthorPosts)}::uuid[]) and team.user_id = p.user_id
+            where team.id in ${sql(announcementAuthorPosts)} and team.user_id = p.user_id
           ) = ${announcements})
         order by case when not ${announcements} then l.like_count + r.reply_count end desc,
           p.created_at desc, p.id desc

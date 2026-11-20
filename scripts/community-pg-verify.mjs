@@ -290,6 +290,25 @@ try {
   assert.equal(await store.thread(null, first.id, "a"), null);
   await sql`update users set deleted_at = now() where id = 'b'`;
   assert.equal(await store.thread(null, second.id, null), null, "Deleted accounts disappear from public discussions");
+  const teamAnchor = "189e2686-add2-4dcf-8a06-2bee464d14ff";
+  const teamUpdate = randomUUID();
+  const pendingUpdate = randomUUID();
+  const sameNickname = randomUUID();
+  await store.setNickname("e", "Renamed team account");
+  await store.setNickname("c", "Notary Exam Prep Team");
+  await sql`
+    insert into community_posts (id, user_id, title, body, moderation_status, created_at)
+    values (${teamAnchor}, 'e', 'Team update', 'Published', 'published', now() - interval '1 day'),
+           (${teamUpdate}, 'e', 'New team update', 'Published', 'published', now()),
+           (${pendingUpdate}, 'e', 'Pending update', 'Pending', 'pending', now()),
+           (${sameNickname}, 'c', 'Member discussion', 'Published', 'published', now())
+  `;
+  assert.equal((await store.list(null, null, 0, true)).posts.map(post => post.id).join(), [teamUpdate, teamAnchor].join());
+  const publicFeed = (await store.list(null, null, 0)).posts;
+  assert.ok(publicFeed.some(post => post.id === sameNickname));
+  assert.ok(publicFeed.every(post => ![teamAnchor, teamUpdate, pendingUpdate].includes(post.id)));
+  assert.equal((await store.thread(null, teamUpdate, null)).post.id, teamUpdate);
+
   console.log("Isolated PostgreSQL: migration, legacy privacy, nicknames, 20/minute and no daily cap, exact target duplicates and safe links, reports, nested visibility, moderation, append-only audit, and unchanged learning/paid records passed.");
 } finally {
   await Promise.all([sql.end(), secondSql.end()]);
