@@ -171,18 +171,21 @@ export function clientQuestions(questions: Question[], seed: number, presentatio
   return presented.map(revealed ? revealedQuestion : stemQuestion);
 }
 
-export function revealChoice(questions: Question[], seed: number, presentationVersion: number, questionId: string, display: Letter) {
+export function prepareChoiceReveal(questions: Question[], seed: number, presentationVersion: number) {
   const presented = presentExamQuestions(questions, seed, presentationVersion);
-  const item = presented.questions.find((question) => question.question_id === questionId);
-  const canonical = presented.maps[questionId]?.[display];
-  if (!item || !canonical) return null;
-  return {
-    correct: display === item.correct_option,
-    correctOption: item.correct_option,
-    explanation: item.explanation,
-    optionFeedback: item.option_feedback,
-    canonical,
-    version: item.version,
-    state: item.state,
+  const byId = new Map(presented.questions.map((question) => [question.question_id, question]));
+  return (questionId: string, display: Letter) => {
+    const item = byId.get(questionId);
+    const canonical = presented.maps[questionId]?.[display];
+    if (!item || !canonical) return null;
+    return {
+      correct: display === item.correct_option,
+      correctOption: item.correct_option,
+      explanation: item.explanation,
+      optionFeedback: item.option_feedback,
+      canonical,
+      version: item.version,
+      state: item.state,
+    };
   };
 }

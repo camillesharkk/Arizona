@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import { Suspense } from "react";
+import Link from "next/link";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { LifetimeGuaranteeTerms } from "@/components/LifetimeGuaranteeTerms";
 import type { StateCode } from "@/lib/types";
 import { LIFETIME_PRO_PRODUCT_CODE } from "@/lib/pro-products";
 import { TAX_CHECKOUT_NOTICE } from "@/lib/pricing/copy";
+import { paths } from "@/lib/paths";
 
 export function MembershipCheckouts({ source, timedNotes, lifetimeAvailable }: {
   source?: StateCode;
@@ -15,6 +17,8 @@ export function MembershipCheckouts({ source, timedNotes, lifetimeAvailable }: {
     <div className="membership-checkouts">
       <section className="card" id="pro-checkout" aria-labelledby="pro-checkout-heading">
         <h2 id="pro-checkout-heading">60-Day Pro Checkout</h2>
+        <p className="notice">Share your invite link with a friend. If you qualify for rewards, their first qualifying purchase earns you a $3 credit toward an eligible 60-Day Pro purchase.</p>
+        <p><Link className="btn btn-ghost card-action" href={paths.referrals}>Invite &amp; Credits</Link></p>
         <Suspense fallback={<p>Loading checkout…</p>}>
           <CheckoutButton sourceState={source} belowCta={timedNotes} />
         </Suspense>

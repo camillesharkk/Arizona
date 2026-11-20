@@ -1,11 +1,8 @@
 export function SubmitStatus() {
   return (
     <div className="submit-status" role="status" aria-live="polite">
-      <span className="submit-spin" aria-hidden="true" />
-      <div>
-        <p><strong>Checking your answers…</strong></p>
-        <p>Saving your sitting. If this takes too long, your answers stay in this browser; retrying returns the same result.</p>
-      </div>
+      <p><strong>Checking your answers…</strong></p>
+      <p>Saving your sitting. If this takes too long, your answers stay in this browser; retrying returns the same result.</p>
     </div>
   );
 }

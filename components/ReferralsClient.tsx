@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { REFERRAL_CREDIT_RULES, CREDIT_PER_ORDER_NOTICE } from "@/lib/pricing/copy";
 import { trackEvent } from "@/lib/analytics";
+import { paths } from "@/lib/paths";
 
 type Me = {
   code: string;
@@ -24,7 +26,7 @@ export function ReferralsClient() {
   }, []);
   if (!data?.code) {
     return (
-      <p className="notice">Sign in to view your referral code.</p>
+      <p className="notice"><Link href={`${paths.login}?next=${encodeURIComponent(paths.referrals)}`}>Sign in</Link> to get your invite link and view your credits.</p>
     );
   }
   async function copy(text: string, label: string) {

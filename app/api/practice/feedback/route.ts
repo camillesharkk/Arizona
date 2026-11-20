@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { durableLimit, internalTask, sameOrigin } from "@/lib/durable-limit";
+import { durableLimits, internalTask, sameOrigin } from "@/lib/durable-limit";
 import { trustedClientIp } from "@/lib/trusted-ip";
 import { hasStatePro } from "@/lib/entitlements";
 import { ANON_COOKIE, anonymousPracticeActor, ownsPractice, readPractice, signPractice } from "@/lib/practice-token";
-import { questionByBankId, revealChoice } from "@/lib/practice-draw";
+import { prepareChoiceReveal, questionByBankId } from "@/lib/practice-draw";
 import { recordQuestionAnswer } from "@/lib/progress";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
@@ -39,11 +39,12 @@ export async function POST(req: Request) {
   const session = await getSession();
   const anon = anonymousPracticeActor((await cookies()).get(ANON_COOKIE)?.value);
   if (!ownsPractice(claims, session?.id, anon)) return NextResponse.json({ error: "This practice set belongs to another session." }, { status: 403, headers: privateHeaders });
-  const isPro = Boolean(session && await hasStatePro(session.id, claims.state));
   if (!internalTask(req)) {
-    const actorCap = await durableLimit(`reveal:${claims.sub}`, revealActor.limit, revealActor.windowMs);
-    const ipCap = await durableLimit(`reveal-ip:${trustedClientIp(req)}`, revealIp.limit, revealIp.windowMs);
-    const hit = !actorCap.ok ? actorCap : !ipCap.ok ? ipCap : null;
+    const caps = await durableLimits([
+      { key: `reveal:${claims.sub}`, ...revealActor },
+      { key: `reveal-ip:${trustedClientIp(req)}`, ...revealIp },
+    ]);
+    const hit = caps.find((cap) => !cap.ok);
     if (hit) {
       console.info(JSON.stringify({ event: "reveal_limited", retryAfter: hit.retryAfter }));
       return NextResponse.json({ error: "Too many answers were checked. Your place in this set is saved. Retry shortly." }, { status: 429, headers: { ...privateHeaders, "Retry-After": String(hit.retryAfter) } });
@@ -55,7 +56,10 @@ export async function POST(req: Request) {
     return question && question.state === claims.state ? [question] : [];
   });
   if (questions.length !== claims.ids.length) return NextResponse.json({ error: "Question updated; reload before answering" }, { status: 409, headers: privateHeaders });
-  const locked = questions.some((question) => !question.is_free && !isPro);
+  const hasProQuestions = questions.some((question) => !question.is_free);
+  const needsPro = hasProQuestions || (body.data.action === "grade" && Boolean(claims.fullTrialId));
+  const isPro = Boolean(session && needsPro && await hasStatePro(session.id, claims.state));
+  const locked = hasProQuestions && !isPro;
   if (locked && !claims.revealed && (body.data.action !== "grade" || !claims.fullTrialId)) return NextResponse.json({ error: "Pro access is required to reopen this saved set. Your stored result is preserved." }, { status: 402, headers: privateHeaders });
   if (body.data.action === "grade") {
     const answers = body.data.answers || [];
@@ -63,9 +67,10 @@ export async function POST(req: Request) {
     if (answers.length !== claims.ids.length || ids.size !== claims.ids.length || claims.ids.some((id) => !ids.has(id))) {
       return NextResponse.json({ error: "Submit every question in this set, including skipped questions." }, { status: 400, headers: privateHeaders });
     }
+    const reveal = prepareChoiceReveal(questions, claims.seed, claims.pv);
     const rows = answers.map((answer) => {
       if (!answer.display) return { questionId: answer.questionId, correct: false, skipped: true };
-      const revealed = revealChoice(questions, claims.seed, claims.pv, answer.questionId, answer.display);
+      const revealed = reveal(answer.questionId, answer.display);
       return revealed ? { questionId: answer.questionId, ...revealed, skipped: false } : null;
     });
     if (rows.some((row) => !row)) return NextResponse.json({ error: "Invalid answer" }, { status: 400, headers: privateHeaders });
@@ -88,7 +93,8 @@ export async function POST(req: Request) {
   if (!body.data.questionId || !body.data.display || !claims.ids.includes(body.data.questionId)) {
     return NextResponse.json({ error: "Invalid answer" }, { status: 400, headers: privateHeaders });
   }
-  const revealed = revealChoice(questions, claims.seed, claims.pv, body.data.questionId, body.data.display);
+  const reveal = prepareChoiceReveal(questions, claims.seed, claims.pv);
+  const revealed = reveal(body.data.questionId, body.data.display);
   if (!revealed) return NextResponse.json({ error: "Invalid answer" }, { status: 400, headers: privateHeaders });
   const question = questions.find((item) => item.question_id === body.data.questionId);
   if (session && question && (question.is_free || isPro)) {

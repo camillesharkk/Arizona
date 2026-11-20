@@ -15,7 +15,6 @@ import { ExamNav, LoadingNote, QuestionJump, RestartPracticeDialog } from "@/com
 import { loadProgress, recordAnswer, saveProgress, subscribeProgress } from "@/lib/storage";
 import { clearSitting, readSitting, writeSitting } from "@/lib/sitting";
 import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
-import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
 import { SaveForReview } from "@/components/SaveForReview";
 import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
 import { WrongAnswersLink } from "@/components/WrongAnswersLink";
@@ -79,7 +78,6 @@ export function QuestionsClient({
   const pendingSaves = useRef<Promise<Response>[]>([]);
   const scrollIdx = useRef<number | null>(null);
   const scrollExplain = useRef(false);
-  const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   useEffect(() => subscribeProgress(() => setProgress(loadProgress(stateCode))), [stateCode]);
   useEffect(() => {
@@ -211,7 +209,6 @@ export function QuestionsClient({
   }
 
   function goTo(nextIdx: number) {
-    cancelAutoAdvance();
     setPastIndex(null);
     setIdx(nextIdx);
   }
@@ -269,7 +266,6 @@ export function QuestionsClient({
     doneOnce.current = true;
     setSubmitError("");
     setSubmitting(true);
-    cancelAutoAdvance();
     const outcomes = await Promise.all(pendingSaves.current.map((save) => settleSave(save)));
     if (outcomes.some((outcome) => outcome === "fail")) {
       doneOnce.current = false;
@@ -283,7 +279,6 @@ export function QuestionsClient({
 
   function openPast() {
     if (safeIdx < 1) return;
-    cancelAutoAdvance();
     reviewScroll.current = window.scrollY;
     setPastIndex(safeIdx - 1);
   }
@@ -338,7 +333,6 @@ export function QuestionsClient({
               type="button"
               disabled={checking}
               onClick={() => {
-                cancelAutoAdvance();
                 setAnswerFailures({});
                 setFilter(id);
                 setIdx(0);
@@ -358,7 +352,6 @@ export function QuestionsClient({
             type="button"
             disabled={checking}
             onClick={() => {
-              cancelAutoAdvance();
               setAnswerFailures({});
               setDifficulty(d);
               setIdx(0);
@@ -405,10 +398,7 @@ export function QuestionsClient({
       <div className="home-exam" data-editorial-quiz-active="">
         <div className="row space">
           <span className="notice">Question {safeIdx + 1} of {active.length}{resumed ? " · Resumed" : ""}</span>
-          <button className="btn btn-ghost" type="button" disabled={checking} onClick={() => {
-            cancelAutoAdvance();
-            setConfirmRestart(true);
-          }}>Start new</button>
+          <button className="btn btn-ghost" type="button" disabled={checking} onClick={() => setConfirmRestart(true)}>Start new</button>
         </div>
         {confirmRestart && (
           <RestartPracticeDialog onClose={(restart) => {
@@ -445,7 +435,7 @@ export function QuestionsClient({
             lockChoice
             isPro={isPro}
             marked={marked.includes(active[pastIndex].question_id)}
-            extra={<SaveForReview key={active[pastIndex].question_id} questionId={active[pastIndex].question_id} hint={false} onAsk={cancelAutoAdvance} />}
+            extra={<SaveForReview key={active[pastIndex].question_id} questionId={active[pastIndex].question_id} hint={false} />}
             navigation={<button className="btn btn-ghost" type="button" onClick={closePast}>Back to this question</button>}
             explainOpen={Boolean(explainOpen[active[pastIndex].question_id])}
             onToggleExplain={() => {
@@ -495,20 +485,11 @@ export function QuestionsClient({
                 } catch {
                   // Local storage can be blocked. The answer check has already succeeded.
                 }
-                if (revealed.correct) {
-                  const at = safeIdx;
-                  scheduleAfterCorrect(() => {
-                    if (at + 1 < active.length) setIdx(at + 1);
-                    else void loadNextPage();
-                  });
-                } else {
-                  cancelAutoAdvance();
-                }
               }}
               marked={marked.includes(q.question_id)}
               onMark={() => setMarked((current) => current.includes(q.question_id) ? current.filter((id) => id !== q.question_id) : [...current, q.question_id])}
               isPro={isPro}
-              extra={<SaveForReview key={q.question_id} questionId={q.question_id} hint={false} onAsk={cancelAutoAdvance} />}
+              extra={<SaveForReview key={q.question_id} questionId={q.question_id} hint={false} />}
               explainOpen={Boolean(explainOpen[q.question_id])}
               onToggleExplain={() => setExplainOpen((current) => ({ ...current, [q.question_id]: !current[q.question_id] }))}
               tutor

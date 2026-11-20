@@ -23,7 +23,6 @@ function load(file) {
   if(name==='@/lib/session')return {getSession:async()=>user};
   if(name==='@/lib/commerce/usage')return {recordProUsage:async()=>{}};
   if(name==='@/lib/account')return {currentEmail:()=>null};
-  if(name==='@/lib/practice-auto-advance')return {usePracticeAutoAdvance:()=>({cancel(){},scheduleAfterCorrect(){}})};
   if(name==='server-only')return {};
   if(name.startsWith('@/'))return load(name.slice(2));
   if(name.startsWith('.'))return load(path.resolve(path.dirname(file),name));

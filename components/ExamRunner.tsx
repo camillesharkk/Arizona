@@ -25,7 +25,6 @@ import { MessageDialog } from "@/components/MessageDialog";
 import { ExamNav, FlagIcon, LoadingNote, QuestionJump, RestartPracticeDialog } from "@/components/QuizChrome";
 import { paths } from "@/lib/paths";
 import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
-import { usePracticeAutoAdvance } from "@/lib/practice-auto-advance";
 import { SaveForReview } from "@/components/SaveForReview";
 import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
 import { clearSitting, openSitting, readSitting, remainingSeconds, writeSitting, type Sitting, type SittingState } from "@/lib/sitting";
@@ -147,7 +146,6 @@ export function ExamRunner({
   const reviewScroll = useRef(0);
   const [pastIndex, setPastIndex] = useState<number | null>(null);
   answersRef.current = answers;
-  const { cancel: cancelAutoAdvance, scheduleAfterCorrect } = usePracticeAutoAdvance();
 
   const tokenRef = useRef("");
   const canonicalRef = useRef<Record<string, Letter>>({});
@@ -505,14 +503,12 @@ export function ExamRunner({
   }
 
   function goTo(nextIdx: number) {
-    cancelAutoAdvance();
     setPastIndex(null);
     setIdx(nextIdx);
   }
 
   function openPast() {
     if (idx < 1) return;
-    cancelAutoAdvance();
     reviewScroll.current = window.scrollY;
     setPastIndex(idx - 1);
   }
@@ -574,15 +570,6 @@ export function ExamRunner({
           body: JSON.stringify({ featureCode: "weak_areas", state: stateCode }),
         }).catch(() => undefined);
       }
-      if (revealed.correct) {
-        const at = idx;
-        scheduleAfterCorrect(() => {
-          if (at + 1 < questions.length) setIdx(at + 1);
-          else requestFinish();
-        });
-      } else {
-        cancelAutoAdvance();
-      }
       onRecorded?.();
       return;
     }
@@ -597,7 +584,6 @@ export function ExamRunner({
     if (reportStart === "answer" && Object.keys(current).length === 0) return;
     const unanswered = questions.filter((item) => !current[item.question_id]).length;
     if (unanswered > 0 && !localSaved.current) {
-      cancelAutoAdvance();
       setUnansweredToConfirm(unanswered);
       return;
     }
@@ -611,7 +597,6 @@ export function ExamRunner({
     setSubmitError("");
     setSubmitting(true);
     if (reportStart === "answer") reportExamStart();
-    cancelAutoAdvance();
     let live = questions;
     if (tokenRef.current) {
       const response = await fetch("/api/practice/feedback/", {
@@ -787,7 +772,6 @@ export function ExamRunner({
       if (r.correct) cur.right += 1;
       topicAcc.set(key, cur);
     });
-    const sources = [...new Set(results.map((r) => r.question.source_reference))];
     const guided = (mode === "quick" || mode === "full") && !review;
     const missed = guided
       ? weakestMissedTopic(
@@ -977,12 +961,6 @@ export function ExamRunner({
               <p><MemberCopy member={<>Review those chapters in the starter study guide, then drill the missed items.</>}>Review those chapters in the free study guide, then drill the missed items.</MemberCopy></p>
             </div>
           )}
-          <h3>Official sources</h3>
-          <ul>
-            {sources.map((s) => (
-              <li key={s}>{s}</li>
-            ))}
-          </ul>
           {isFreeState(stateCode) || stateCode === "CT" || stateCode === "NC" || (topicPractice && mode === "quick") ? null : guided ? (
             <div className="result-links">
               {topicPractice ? <Link href={mistakesHref}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" href={mistakesHref} stateCode={stateCode} />}
@@ -1073,7 +1051,6 @@ export function ExamRunner({
 
   async function startNew() {
     if (!owner) return;
-    cancelAutoAdvance();
     const response = await fetch("/api/practice/batch/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1130,10 +1107,7 @@ export function ExamRunner({
         </span>
         <span className="row">
           {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{(onHi || stateCode === "CT" || stateCode === "NC" || stateCode === "IN") && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
-          <button className="btn btn-ghost" type="button" disabled={checking} onClick={() => {
-            cancelAutoAdvance();
-            setConfirmRestart(true);
-          }}>Start new</button>
+          <button className="btn btn-ghost" type="button" disabled={checking} onClick={() => setConfirmRestart(true)}>Start new</button>
         </span>
       </div>
       <div className="progress-bar" style={{ margin: "10px 0 18px" }}>
@@ -1163,7 +1137,7 @@ export function ExamRunner({
         isPro={isPro}
         marked={marked.includes(view.question_id)}
         onMark={past ? undefined : () => toggleMark(view.question_id)}
-        extra={<SaveForReview key={view.question_id} questionId={view.question_id} hint={false} onAsk={cancelAutoAdvance} />}
+        extra={<SaveForReview key={view.question_id} questionId={view.question_id} hint={false} />}
         explainOpen={Boolean(explainOpen[view.question_id])}
         onToggleExplain={() => {
           const id = view.question_id;
@@ -1302,7 +1276,7 @@ export function QuestionBlock({
           </Link>
         </div>
       ) : null}
-      <div className="q-options" role="group" aria-label="Answer choices">
+      <div className="q-options" role="group" aria-label="Answer choices" aria-busy={checking || undefined}>
         {letters.map((l) => {
           let cls = "q-option";
           if (selected === l) cls += " selected";
@@ -1316,6 +1290,7 @@ export function QuestionBlock({
               : reveal && selected === l && selected !== q.correct_option
                 ? "Incorrect"
                 : null;
+          const retainFocus = Boolean(onChoose && lockChoice && !locked && selected === l);
           return (
             <button
               key={l}
@@ -1323,9 +1298,9 @@ export function QuestionBlock({
               type="button"
               aria-pressed={selected === l}
               aria-label={`${l}. ${map[l]}${status ? `. ${status}` : ""}`}
-              disabled={choiceDisabled || Boolean(answerFailure?.retryChoice && answerFailure.retryChoice !== l)}
-              aria-disabled={checking || undefined}
-              onClick={() => { if (!checking) onChoose?.(l); }}
+              disabled={(choiceDisabled && !retainFocus) || Boolean(answerFailure?.retryChoice && answerFailure.retryChoice !== l)}
+              aria-disabled={checking || retainFocus || undefined}
+              onClick={() => { if (!checking && !choiceDisabled) onChoose?.(l); }}
             >
               <span className="q-option-inner">
                 <strong>{l}.</strong> {map[l]}
@@ -1339,7 +1314,6 @@ export function QuestionBlock({
           );
         })}
       </div>
-      {onChoose ? <div role="status">{checking ? <p className="notice">Checking answer…</p> : null}</div> : null}
       {!checking && answerFailure ? (
         <p className="form-error" role="alert">
           {answerFailure.message || "Could not check this answer."}{" "}

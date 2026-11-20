@@ -98,6 +98,10 @@ try {
   await button(quick.page, "Previous answer").click();
   await button(quick.page, "Back to this question").click();
   await quick.page.getByRole("button", { name: /A \$5,000 surety bond/ }).click();
+  await quick.page.locator(".q-option.correct").waitFor();
+  await quick.page.waitForTimeout(500);
+  assert.equal(await confirmation(quick.page).count(), 0);
+  await button(quick.page, "See results").click();
   await confirmation(quick.page).waitFor();
   assert.match(await confirmation(quick.page).innerText(), /1 unanswered question\b/);
   assert.equal(quick.submissions.length, 0);
@@ -105,9 +109,11 @@ try {
   await button(quick.page, "See results").click();
   await button(quick.page, "Submit anyway").click();
   await result(quick.page).waitFor();
+  assert.equal(await result(quick.page).getByRole("heading", { name: "Official sources" }).count(), 0);
+  assert.ok(await quick.page.locator(".answer-source a").count());
   assert.equal(quick.submissions.length, 1);
   await quick.context.close();
-  console.log("Quick practice: previous answer, correct auto-advance and See results each respect missing answers.");
+  console.log("Quick practice: correct feedback stays in place, See results requires an explicit action, and question sources remain.");
 
   const home = await openSitting("quick", { index: 2, compact: true });
   await button(home.page, "See results").click();

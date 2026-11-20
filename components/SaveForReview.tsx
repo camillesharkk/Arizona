@@ -103,12 +103,10 @@ export function SaveForReview({
   questionId,
   label = "Add to Daily Study",
   hint = true,
-  onAsk,
 }: {
   questionId: string;
   label?: string;
   hint?: boolean;
-  onAsk?: () => void;
 }) {
   const [saved, setSaved] = useState(savedIds.has(questionId));
   const [busy, setBusy] = useState(false);
@@ -179,7 +177,6 @@ export function SaveForReview({
   return (
     <div className="save-review">
       <button className={`btn btn-ghost${saved ? " is-on" : ""}`} type="button" onClick={() => {
-        onAsk?.();
         if (saved) return save(false);
         setAsking(true);
       }} disabled={busy} aria-pressed={saved} aria-haspopup={saved ? undefined : "dialog"}>
