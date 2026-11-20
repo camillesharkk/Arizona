@@ -36,7 +36,7 @@ export function PracticeAfterword({
             <ol type="A">{Object.entries(q.options).map(([letter, text]) => <li key={letter}>{text}</li>)}</ol>
             <p><strong>Answer: {q.correct}. {q.options[q.correct]}</strong></p>
             <AnswerExplain question={q} explanation={q.explanation} />
-            <Link href={q.moreHref}>Practice more questions on this topic</Link>
+            <Link className="btn btn-ghost card-action" href={q.moreHref}>Practice more questions on this topic</Link>
           </article>
         ))}
       </section>

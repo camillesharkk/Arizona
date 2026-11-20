@@ -128,8 +128,8 @@ export function CommunityInsightFeed({ insights, activity, memberPosts, signedIn
                 <p>{insight.summary}</p>
                 <p className="community-meta"><span className="visually-hidden">Topics:</span> {insight.keywords.join(" · ")}</p>
                 <div className="community-source-links">
-                  <a href={insight.postUrl} target="_blank" rel="noopener noreferrer">Original {insight.platform} post <span aria-hidden="true">↗</span></a>
-                  <a href={insight.officialUrl} target="_blank" rel="noopener noreferrer">Official reference <span aria-hidden="true">↗</span></a>
+                  <a className="btn btn-ghost card-action" href={insight.postUrl} target="_blank" rel="noopener noreferrer">Original {insight.platform} post <span aria-hidden="true">↗</span></a>
+                  <a className="btn btn-ghost card-action" href={insight.officialUrl} target="_blank" rel="noopener noreferrer">Official reference <span aria-hidden="true">↗</span></a>
                   <span className="community-meta">Last checked <time dateTime={insight.checkedAt}>{insight.checkedAt}</time></span>
                 </div>
               </div>

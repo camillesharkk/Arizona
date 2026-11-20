@@ -61,7 +61,7 @@ export default function PracticeTestPage() {
               <ol type="A">{Object.entries(options).map(([letter, text]) => <li key={letter}>{text}</li>)}</ol>
               <p><strong>Answer: {q.correct_option}. {options[q.correct_option]}</strong></p>
               <AnswerExplain question={q} explanation={q.explanation} />
-              <Link href={paths.topic(q.topic)}>Practice more questions on this topic</Link>
+              <Link className="btn btn-ghost card-action" href={paths.topic(q.topic)}>Practice more questions on this topic</Link>
             </article>
           );
         })}

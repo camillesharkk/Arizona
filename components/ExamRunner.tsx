@@ -1265,7 +1265,7 @@ export function QuestionBlock({
           )}
         </div>
       </div>
-      {q.state === "CT" ? <p><a href={ctSources.manual} target="_blank" rel="noopener noreferrer">Open Official Handbook</a></p> : null}
+      {q.state === "CT" ? <p><a className="btn btn-ghost card-action" href={ctSources.manual} target="_blank" rel="noopener noreferrer">Open Official Handbook</a></p> : null}
       {reason ? <p className="notice">Why this question? {reason}</p> : null}
       {q.scenario_text ? <p className="notice">{q.scenario_text}</p> : null}
       <h3 className="quiz-heading quiz-stem" ref={headingRef} tabIndex={-1}>
