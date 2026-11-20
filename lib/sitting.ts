@@ -24,6 +24,7 @@ export type Sitting = {
   done: boolean;
   examId: string | null;
   attemptIds: Record<string, string>;
+  pendingAnswers?: Record<string, Letter>;
   recordedIds: string[];
   scored: boolean;
   unscoredIds?: string[];
@@ -101,6 +102,7 @@ export function parseSitting(raw: unknown, owner: string, mode: string, state: S
     done: Boolean(row.done),
     examId: typeof row.examId === "string" ? row.examId : null,
     attemptIds: row.attemptIds && typeof row.attemptIds === "object" ? (row.attemptIds as Record<string, string>) : {},
+    pendingAnswers: row.pendingAnswers ? letters(row.pendingAnswers) : undefined,
     recordedIds: stringList(row.recordedIds),
     scored: Boolean(row.scored),
     unscoredIds: stringList(row.unscoredIds),

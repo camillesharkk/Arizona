@@ -11,8 +11,10 @@ import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import { fullTrialAvailable } from "@/lib/practice-trial";
 import { resolveQuestionVersion } from "@/lib/question-version";
+import { ANSWER_FEEDBACK_STREAM } from "@/lib/answer-feedback";
 
 export const dynamic = "force-dynamic";
+export const preferredRegion = "syd1";
 
 const privateHeaders = { "Cache-Control": "private, no-store" };
 const letter = z.enum(["A", "B", "C", "D"]);
@@ -31,6 +33,7 @@ const revealActor = { limit: 90, windowMs: 10 * 60_000 };
 const revealIp = { limit: 800, windowMs: 10 * 60_000 };
 
 export async function POST(req: Request) {
+  const start = performance.now();
   if (!sameOrigin(req)) return NextResponse.json({ error: "This answer check was rejected." }, { status: 403, headers: privateHeaders });
   const body = schema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid answer" }, { status: 400, headers: privateHeaders });
@@ -39,6 +42,7 @@ export async function POST(req: Request) {
   const session = await getSession();
   const anon = anonymousPracticeActor((await cookies()).get(ANON_COOKIE)?.value);
   if (!ownsPractice(claims, session?.id, anon)) return NextResponse.json({ error: "This practice set belongs to another session." }, { status: 403, headers: privateHeaders });
+  const authenticated = performance.now();
   if (!internalTask(req)) {
     const caps = await durableLimits([
       { key: `reveal:${claims.sub}`, ...revealActor },
@@ -50,6 +54,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Too many answers were checked. Your place in this set is saved. Retry shortly." }, { status: 429, headers: { ...privateHeaders, "Retry-After": String(hit.retryAfter) } });
     }
   }
+  const limited = performance.now();
   const questions = claims.ids.flatMap((id, index) => {
     const current = questionByBankId(id);
     const question = claims.versions ? resolveQuestionVersion(current, claims.versions[index]) : current;
@@ -96,9 +101,18 @@ export async function POST(req: Request) {
   const reveal = prepareChoiceReveal(questions, claims.seed, claims.pv);
   const revealed = reveal(body.data.questionId, body.data.display);
   if (!revealed) return NextResponse.json({ error: "Invalid answer" }, { status: 400, headers: privateHeaders });
+  const graded = performance.now();
+  const feedback = {
+    correct: revealed.correct,
+    correctOption: revealed.correctOption,
+    explanation: revealed.explanation,
+    optionFeedback: revealed.optionFeedback,
+    canonical: revealed.canonical,
+  };
+  const timings = `auth;dur=${Math.round(authenticated - start)}, limit;dur=${Math.round(limited - authenticated)}, grade;dur=${Math.round(graded - limited)}`;
   const question = questions.find((item) => item.question_id === body.data.questionId);
   if (session && question && (question.is_free || isPro)) {
-    await recordQuestionAnswer({
+    const save = () => recordQuestionAnswer({
       userId: session.id,
       questionId: question.question_id,
       questionVersion: question.version,
@@ -108,12 +122,34 @@ export async function POST(req: Request) {
       attemptId: body.data.attemptId,
       timeZone: body.data.timeZone,
     });
+    if (body.data.attemptId && req.headers.get("accept") === ANSWER_FEEDBACK_STREAM) {
+      const encoder = new TextEncoder();
+      let cancelled = false;
+      const stream = new ReadableStream<Uint8Array>({
+        async start(controller) {
+          controller.enqueue(encoder.encode(JSON.stringify(feedback) + "\n"));
+          const saved = await save().then(() => true, () => {
+            console.error("Quick practice answer progress could not be saved.");
+            return false;
+          });
+          if (cancelled) return;
+          controller.enqueue(encoder.encode(JSON.stringify({ saved }) + "\n"));
+          controller.close();
+        },
+        cancel() {
+          cancelled = true;
+        },
+      });
+      return new Response(stream, { headers: {
+        "Cache-Control": "private, no-store, no-transform",
+        "Content-Type": ANSWER_FEEDBACK_STREAM,
+        "Server-Timing": timings,
+      } });
+    }
+    await save();
   }
-  return NextResponse.json({
-    correct: revealed.correct,
-    correctOption: revealed.correctOption,
-    explanation: revealed.explanation,
-    optionFeedback: revealed.optionFeedback,
-    canonical: revealed.canonical,
-  }, { headers: privateHeaders });
+  return NextResponse.json(feedback, { headers: {
+    ...privateHeaders,
+    "Server-Timing": `${timings}, save;dur=${Math.round(performance.now() - graded)}`,
+  } });
 }

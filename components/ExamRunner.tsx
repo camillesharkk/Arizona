@@ -4,6 +4,7 @@ import { MemberCopy } from "@/components/MemberCopy";
 import { isFreeState } from "@/lib/free-state-catalog";
 import { FreeStateResultNext } from "@/components/FreeStateResultNext";
 import { fetchAccount } from "@/lib/client-account";
+import { ANSWER_FEEDBACK_STREAM, readAnswerFeedback, type AnswerFeedback } from "@/lib/answer-feedback";
 
 import { useEffect, useRef, useState, type ReactNode, type Ref } from "react";
 import Link from "next/link";
@@ -40,6 +41,10 @@ import { FREE_FULL_EXAMS } from "@/lib/product";
 import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
 
 type Mode = "quick" | "full" | "weak" | "practice";
+
+function withAnswerFeedback(question: Question, feedback: AnswerFeedback): Question {
+  return { ...question, correct_option: feedback.correctOption, explanation: feedback.explanation, option_feedback: feedback.optionFeedback };
+}
 
 export function ExamRunner({
   mode,
@@ -126,8 +131,10 @@ export function ExamRunner({
   const booted = owner != null && activeSeed != null && lockedIds != null;
   const weakReported = useRef(false);
   const startReported = useRef(false);
-  const choiceLock = useRef<string | null>(null);
+  const choiceLock = useRef<symbol | null>(null);
   const [pendingChoice, setPendingChoice] = useState<Letter>();
+  const [pendingFeedback, setPendingFeedback] = useState<AnswerFeedback>();
+  const [restarting, setRestarting] = useState(false);
   const [answerFailures, setAnswerFailures] = useState<Record<string, AnswerCheckFailure | undefined>>({});
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const resultHeadingRef = useRef<HTMLHeadingElement | null>(null);
@@ -142,6 +149,7 @@ export function ExamRunner({
   const [unansweredToConfirm, setUnansweredToConfirm] = useState(0);
   const [confirmRestart, setConfirmRestart] = useState(false);
   const attemptIds = useRef<Record<string, string>>({});
+  const pendingAnswers = useRef<Record<string, Letter>>({});
   const viewOnly = useRef(false);
   const reviewScroll = useRef(0);
   const [pastIndex, setPastIndex] = useState<number | null>(null);
@@ -171,6 +179,7 @@ export function ExamRunner({
       done,
       examId: examSaveId.current,
       attemptIds: attemptIds.current,
+      pendingAnswers: mode === "quick" ? pendingAnswers.current : undefined,
       recordedIds: recordedIds.current,
       scored: localSaved.current,
       practiceToken: tokenRef.current,
@@ -214,6 +223,12 @@ export function ExamRunner({
     examSaveId.current = null;
     recordedIds.current = [];
     attemptIds.current = {};
+    pendingAnswers.current = {};
+    choiceLock.current = null;
+    setPendingChoice(undefined);
+    setPendingFeedback(undefined);
+    setRestarting(false);
+    setAnswerFailures({});
     viewOnly.current = false;
     const controller = new AbortController();
     fetchAccount({ signal: controller.signal, cache: "no-store" })
@@ -309,6 +324,13 @@ export function ExamRunner({
         setMarked(existing.flaggedIds);
         setDone(existing.done);
         attemptIds.current = existing.attemptIds;
+        if (mode === "quick") {
+          pendingAnswers.current = Object.fromEntries(ids.flatMap((id: string) => {
+            const letter = existing.pendingAnswers?.[id];
+            return letter && existing.attemptIds[id] && !existing.answers[id] ? [[id, letter]] : [];
+          }));
+          setAnswerFailures(Object.fromEntries(Object.entries(pendingAnswers.current).map(([id, retryChoice]) => [id, { retryChoice }])));
+        }
         recordedIds.current = existing.recordedIds;
         examSaveId.current = mode === "full" ? examSaveId.current || existing.examId : existing.examId;
         localSaved.current = existing.scored;
@@ -520,40 +542,59 @@ export function ExamRunner({
   }
 
   async function choose(letter: "A" | "B" | "C" | "D") {
+    if (choiceLock.current) return;
     if (reportStart === "answer") reportExamStart();
     if (!practice && timed && done) return;
     if (practice) {
       const id = q.question_id;
       const retryChoice = answerFailures[id]?.retryChoice;
-      if (choiceLock.current || recordedIds.current.includes(id) || answersRef.current[id] || (retryChoice && retryChoice !== letter)) return;
-      choiceLock.current = id;
+      if (recordedIds.current.includes(id) || answersRef.current[id] || (retryChoice && retryChoice !== letter)) return;
+      const operation = Symbol();
+      choiceLock.current = operation;
       setPendingChoice(letter);
+      const key = attemptId(id);
+      if (mode === "quick") {
+        pendingAnswers.current[id] = letter;
+        persistSitting();
+      }
       const response = await fetch("/api/practice/feedback/", {
         method: "POST",
         signal: AbortSignal.timeout?.(15000),
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: mode === "quick" ? ANSWER_FEEDBACK_STREAM : "application/json",
+        },
         body: JSON.stringify({
           token: tokenRef.current,
           action: "one",
           questionId: q.question_id,
           display: letter,
-          attemptId: attemptId(q.question_id),
+          attemptId: key,
           review,
           timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         }),
       }).catch(() => null);
-      const revealed = (await response?.json().catch(() => null)) ?? {};
+      const revealed = await readAnswerFeedback(response, (feedback) => {
+        if (choiceLock.current === operation) setPendingFeedback(feedback);
+      });
+      if (choiceLock.current !== operation) return;
       choiceLock.current = null;
       setPendingChoice(undefined);
+      setPendingFeedback(undefined);
       if (!response?.ok || !revealed.correctOption) {
         const retry = retryChoice ?? (!response || response.status >= 500 || response.ok ? letter : undefined);
-        setAnswerFailures((current) => ({ ...current, [id]: { message: revealed.error, retryChoice: retry } }));
+        if (mode === "quick" && !retry) {
+          delete pendingAnswers.current[id];
+          persistSitting();
+        }
+        setAnswerFailures((current) => ({ ...current, [id]: { message: "error" in revealed ? revealed.error : undefined, retryChoice: retry } }));
         return;
       }
       if (answerFailures[id]) setAnswerFailures((current) => ({ ...current, [id]: undefined }));
+      delete pendingAnswers.current[id];
       recordedIds.current = [...recordedIds.current, q.question_id];
       canonicalRef.current[`${q.question_id}:${letter}`] = revealed.canonical;
-      setServed((current) => current.map((item) => item.question_id === q.question_id ? { ...item, correct_option: revealed.correctOption, explanation: revealed.explanation, option_feedback: revealed.optionFeedback } : item));
+      setServed((current) => current.map((item) => item.question_id === id ? withAnswerFeedback(item, revealed) : item));
       const nextAnswers = { ...answersRef.current, [id]: letter };
       answersRef.current = nextAnswers;
       setAnswers(nextAnswers);
@@ -1024,10 +1065,10 @@ export function ExamRunner({
 
   const remain = seconds;
   const lastQuestion = idx + 1 >= questions.length;
-  const checking = Boolean(pendingChoice);
+  const checking = Boolean(pendingChoice) || restarting;
   const practiceLocked = Boolean(practice && selected);
   const past = pastIndex != null ? questions[pastIndex] : null;
-  const view = past ?? q;
+  const view = past ?? (pendingFeedback ? withAnswerFeedback(q, pendingFeedback) : q);
   const viewIndex = past && pastIndex != null ? pastIndex : idx;
   const viewSelected = past ? answers[past.question_id] : selected;
   const nextLabel = lastQuestion ? (practice ? "See results" : "Submit exam") : "Next";
@@ -1050,14 +1091,21 @@ export function ExamRunner({
   );
 
   async function startNew() {
-    if (!owner) return;
+    if (!owner || choiceLock.current) return;
+    const operation = Symbol();
+    choiceLock.current = operation;
+    setRestarting(true);
     const response = await fetch("/api/practice/batch/", {
       method: "POST",
+      signal: AbortSignal.timeout?.(15000),
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ state: stateCode, mode, practice: mode !== "full", focusArea, deliveryToken, presetIds: preset?.map((question) => question.question_id) }),
-    });
-    const batch = await response.json().catch(() => ({}));
-    if (!response.ok) {
+    }).catch(() => null);
+    const batch = (await response?.json().catch(() => null)) ?? {};
+    if (choiceLock.current !== operation) return;
+    choiceLock.current = null;
+    setRestarting(false);
+    if (!response?.ok) {
       setSubmitError(batch.error || "Could not start a new set. Your previous answers are still on this device.");
       return;
     }
@@ -1080,10 +1128,10 @@ export function ExamRunner({
     localSaved.current = false;
     examSaveId.current = batch.examId || null;
     attemptIds.current = {};
+    pendingAnswers.current = {};
     recordedIds.current = [];
     finishOnce.current = false;
     completeReported.current = false;
-    choiceLock.current = null;
     setSeconds(examMinutes * 60);
     setRestored(false);
     setPastIndex(null);
@@ -1126,7 +1174,7 @@ export function ExamRunner({
         reason={past ? undefined : questionReason?.(view.question_id)}
         index={viewIndex}
         selected={pendingChoice ?? viewSelected}
-        reveal={Boolean((practice && viewSelected) || past)}
+        reveal={Boolean((practice && (viewSelected || pendingFeedback)) || past)}
         checking={checking}
         answerFailure={past ? undefined : answerFailures[view.question_id]}
         compactFeedback={practice && !past}
