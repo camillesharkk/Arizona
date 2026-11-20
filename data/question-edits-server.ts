@@ -1828,21 +1828,21 @@ export const serverQuestionEdits: Readonly<Partial<Record<string, QuestionEdit>>
     "version": 2,
     "previousReviewedDate": "2026-11-14",
     "fields": {
-      "question_text": "What does DFI’s current recertification form require a Wisconsin remote online notarization technology provider to do when a notary gains or loses authorization to use its platform?",
+      "question_text": "How can a Wisconsin remote online notarization technology provider report that a notary gained or lost authorization to use its platform?",
       "option_a": "Wait until the next annual recertification to report the change.",
       "option_b": "Report the change only if a customer complains.",
       "option_c": "Keep the change only in the provider’s internal records.",
-      "option_d": "Promptly update DFI through its dedicated technology-provider portal.",
+      "option_d": "Report the change through DFI’s dedicated technology-provider portal.",
       "correct_option": "D",
-      "explanation": "Condition 2 of DFI’s current recertification form requires approved providers to promptly report both new and ended authorizations through the provider portal.",
+      "explanation": "Approved providers must promptly notify DFI of newly authorized notaries. DFI’s technology-provider portal accepts both onboarding and offboarding notices.",
       "option_feedback": {
         "A": "Annual recertification is a separate obligation.",
-        "B": "The change itself calls for a prompt update.",
+        "B": "The portal accepts notices without waiting for a customer complaint.",
         "C": "Keeping internal records does not submit the required DFI update.",
-        "D": "Prompt reporting through the dedicated provider portal covers both kinds of changes."
+        "D": "The dedicated provider portal covers both kinds of changes."
       },
-      "source_id": "wi-ron-recertification",
-      "source_reference": "Wisconsin DFI Form NOT107, revised August 2025, p. 1, condition 2. https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf",
+      "source_id": "wi-remote-registration",
+      "source_reference": "Wisconsin DFI Remote Online Notarization Technology Providers Portal, onboarding and offboarding; Wis. Admin. Code DFI-CCS 25.04(4)(c), printed p. 28. https://apps.dfi.wi.gov/apps/NotaryTechProvider; https://www.wisbar.org/wssfc/2024/PublishingImages/Pages/Resources/TECH6_ESignatureTechnology.pdf",
       "last_verified_at": "2026-11-19"
     }
   },
@@ -1856,7 +1856,7 @@ export const serverQuestionEdits: Readonly<Partial<Record<string, QuestionEdit>>
       "option_c": "Wait and mention the breach only in the next annual recertification.",
       "option_d": "Report only to the provider’s internal marketing department.",
       "correct_option": "B",
-      "explanation": "Condition 5 of DFI’s current recertification form requires the provider to notify DFI of the breach and its scope when it concerns remote notarial services or technology and requires notice to one or more Wisconsin residents under Wis. Stat. §134.98 or other applicable law.",
+      "explanation": "Condition 4 of DFI’s current recertification form requires the provider to notify DFI of the breach and its scope when it concerns remote notarial services or technology and requires notice to one or more Wisconsin residents under Wis. Stat. §134.98 or other applicable law.",
       "option_feedback": {
         "A": "Marketing materials do not provide DFI with the required breach notice.",
         "B": "The notice to DFI is additional to the legally required resident notice.",
@@ -1864,7 +1864,7 @@ export const serverQuestionEdits: Readonly<Partial<Record<string, QuestionEdit>>
         "D": "Internal reporting does not notify DFI."
       },
       "source_id": "wi-ron-recertification",
-      "source_reference": "Wisconsin DFI Form NOT107, revised August 2025, p. 1, condition 5. https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf",
+      "source_reference": "Wisconsin DFI Form NOT107, revised November 2026, p. 1, condition 4. https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf#page=1",
       "last_verified_at": "2026-11-19"
     }
   },

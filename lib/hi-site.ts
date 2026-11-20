@@ -22,7 +22,7 @@ export const HI_EXAM = {
     documents: "https://ag.hawaii.gov/notaries-public/notaries-public-documents/",
     manual: "https://ag.hawaii.gov/wp-content/uploads/2023/04/Notary-Manual-website-version-2023_AG-website_updated-2023-04-14.pdf",
     har: "https://ag.hawaii.gov/wp-content/uploads/2022/03/HAR-Ch-5-11.pdf",
-    statutes: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/",
+    statutes: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-.htm",
     resources: "https://notary.ehawaii.gov/notary/public/resources.html",
     scheduler: "https://notary.ehawaii.gov/notary/public/notary-scheduler.html",
     faq: "https://notary.ehawaii.gov/notary/public/faq.html",

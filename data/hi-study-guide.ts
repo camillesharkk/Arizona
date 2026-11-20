@@ -44,7 +44,7 @@ export const hiGuideChapters: HiGuideChapter[] = [
     exampleTitle: "Example: thirteen months late",
     example: "The commission expired thirteen months ago. The one-year restoration window has closed. The person reapplies as a new applicant and must pass the exam again.",
     sourceLabel: "HRS §456-1 and HAR §5-11-23",
-    sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001.htm",
+    sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001.htm",
   },
   {
     id: "authority",
@@ -66,7 +66,7 @@ export const hiGuideChapters: HiGuideChapter[] = [
     exampleTitle: "Example: a license expired two years ago",
     example: "The license has a photo and a signature and expired two years ago. It can fit the statute. A license expired four years ago cannot.",
     sourceLabel: "HRS §456-1.6",
-    sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
+    sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
   },
   {
     id: "acknowledgment",
@@ -77,7 +77,7 @@ export const hiGuideChapters: HiGuideChapter[] = [
     exampleTitle: "Example: three signers",
     example: "Three people each acknowledge the same document in person. The statute entitles the notary to $5 for each, $15 total, before any duplicate original is considered.",
     sourceLabel: "HRS §456-1.6 and §456-17",
-    sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm",
+    sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm",
   },
   {
     id: "jurat-oath",
@@ -99,7 +99,7 @@ export const hiGuideChapters: HiGuideChapter[] = [
     exampleTitle: "Example: a second stamp in the drawer",
     example: "The notary keeps a spare rubber stamp. The rule allows one rubber stamp at a time, and the fine schedule lists $200.",
     sourceLabel: "HRS §456-3 and HAR §5-11-5",
-    sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm",
+    sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm",
   },
   {
     id: "journal",
@@ -110,7 +110,7 @@ export const hiGuideChapters: HiGuideChapter[] = [
     exampleTitle: "Example: three copies",
     example: "The notary notarizes an original and two copies as three acts. The journal needs three complete entries.",
     sourceLabel: "HRS §456-15",
-    sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
+    sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
   },
   {
     id: "documents",
@@ -121,7 +121,7 @@ export const hiGuideChapters: HiGuideChapter[] = [
     exampleTitle: "Example: blanks for later",
     example: "The signer says the purchase price will be filled in after the notarization. The FAQ says to decline.",
     sourceLabel: "HRS §551E-3(e)",
-    sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol12_Ch0501-0588/HRS0551E/HRS_0551E-0003.htm",
+    sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol12_Ch0501-0588/HRS0551E/HRS_0551E-0003.htm",
   },
   {
     id: "fees-bond",
@@ -132,7 +132,7 @@ export const hiGuideChapters: HiGuideChapter[] = [
     exampleTitle: "Example: which $40",
     example: "A question asks for the amount printed in HRS §456-9 for renewal. The answer is $40. A question that asks for the HAR §5-11-46 renewal line is $100.",
     sourceLabel: "HRS §456-5, HRS §456-9, and HAR §5-11-46",
-    sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm",
+    sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm",
   },
   {
     id: "refusal-misconduct",
@@ -165,6 +165,6 @@ export const hiGuideChapters: HiGuideChapter[] = [
     exampleTitle: "Example: the phone call",
     example: "An ordinary notary takes an acknowledgment by telephone. There is no remote commission and no simultaneous sight and sound. The act is not authorized.",
     sourceLabel: "HRS §456-23 and HAR §§5-11-62 to 5-11-71",
-    sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm",
+    sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm",
   },
 ];

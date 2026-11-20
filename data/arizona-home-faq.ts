@@ -51,7 +51,7 @@ export const arizonaHomeFaq = [
     links: [
       {
         label: "Official Renewal Instructions",
-        href: "https://azsos.gov/business/notary",
+        href: "https://azsos.gov/business/notary-public/existing-notaries",
       },
       {
         label: "Renewal Form",
@@ -110,7 +110,7 @@ export const arizonaHomeFaq = [
     links: [
       {
         label: "Official Arizona Fees and Filing Instructions",
-        href: "https://azsos.gov/business/notary",
+        href: "https://azsos.gov/business/notary-public/notary-resources",
       },
     ],
   },
@@ -132,7 +132,7 @@ export const arizonaHomeFaq = [
     links: [
       {
         label: "Official Arizona Filing and Processing Information",
-        href: "https://azsos.gov/business/notary",
+        href: "https://azsos.gov/business/notary-public/notary-resources",
       },
     ],
   },

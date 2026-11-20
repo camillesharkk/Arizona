@@ -6,7 +6,7 @@ export const hiCards: HiCard[] = [
   {
     id: "hi-card-001", study: "qualification", title: "Who commissions",
     front: "Who issues a Hawaii notary commission?", rule: "The attorney general.", boundary: "A circuit judge approves the bond. The judge does not issue the commission.",
-    mixup: "The Lieutenant Governor handles apostilles, not commissions.", source: "HRS §456-1", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001.htm",
+    mixup: "The Lieutenant Governor handles apostilles, not commissions.", source: "HRS §456-1", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001.htm",
   },
   {
     id: "hi-card-002", study: "qualification", title: "Age and residence",
@@ -46,7 +46,7 @@ export const hiCards: HiCard[] = [
   {
     id: "hi-card-009", study: "term-renewal", title: "Four years",
     front: "How long is the commission?", rule: "Four years from the commission date, unless it ends sooner.", boundary: "An act after revocation, suspension, or termination is invalid.",
-    mixup: "One year is the restoration window, not the term.", source: "HRS §456-1; HAR §5-11-12", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001.htm",
+    mixup: "One year is the restoration window, not the term.", source: "HRS §456-1; HAR §5-11-12", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001.htm",
   },
   {
     id: "hi-card-010", study: "term-renewal", title: "Restore or start over",
@@ -81,52 +81,52 @@ export const hiCards: HiCard[] = [
   {
     id: "hi-card-016", study: "authority", title: "Government notary",
     front: "Does a government notary charge for government business?", rule: "No.", boundary: "Private fee work needs the attorney general's prior written approval, the legal fees, and the notary's own bond.",
-    mixup: "Government service is not a remote online commission.", source: "HRS §456-18", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0018.htm",
+    mixup: "Government service is not a remote online commission.", source: "HRS §456-18", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0018.htm",
   },
   {
     id: "hi-card-017", study: "identity", title: "Three-year ID",
     front: "May a listed photo ID be expired?", rule: "Yes, if it has a photo and signature and expired no more than three years before the act.", boundary: "Four years is too old for that credential.",
-    mixup: "The older FAQ said current only. The statute controls.", source: "HRS §456-1.6", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
+    mixup: "The older FAQ said current only. The statute controls.", source: "HRS §456-1.6", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
   },
   {
     id: "hi-card-018", study: "identity", title: "Personal knowledge",
     front: "What is personal knowledge?", rule: "Dealings sufficient to give reasonable certainty of identity.", boundary: "A stranger's introduction is not personal knowledge.",
-    mixup: "Record a personal-knowledge statement in the journal.", source: "HRS §456-1.6(1)(A)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
+    mixup: "Record a personal-knowledge statement in the journal.", source: "HRS §456-1.6(1)(A)", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
   },
   {
     id: "hi-card-019", study: "identity", title: "Credible witness",
     front: "Who can be a credible witness?", rule: "The witness appears in person and verifies the signer’s identity under oath or affirmation. The notary knows the witness personally or identifies the witness using a listed passport, driver’s license or government nondriver ID.", boundary: "The listed witness credential may be current or expired no more than three years.",
-    mixup: "One person's ID does not identify the other signer.", source: "HRS §456-1.6(1)(D)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
+    mixup: "One person's ID does not identify the other signer.", source: "HRS §456-1.6(1)(D)", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
   },
   {
     id: "hi-card-020", study: "identity", title: "More ID",
     front: "May the notary ask for another credential?", rule: "Yes, when more is needed to be sure of identity.", boundary: "A private badge is not a listed government ID.",
-    mixup: "Do not notarize a name that does not match unless identity is actually satisfied.", source: "HRS §456-1.6", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
+    mixup: "Do not notarize a name that does not match unless identity is actually satisfied.", source: "HRS §456-1.6", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
   },
   {
     id: "hi-card-021", study: "acknowledgment", title: "Declaration, not oath",
     front: "What does the signer declare in an acknowledgment?", rule: "That the person signed for the purpose stated in the document.", boundary: "Representative capacity also requires a declaration of authority.",
-    mixup: "Truth of the contents is a verification, not an acknowledgment.", source: "HRS §456-1.6", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
+    mixup: "Truth of the contents is a verification, not an acknowledgment.", source: "HRS §456-1.6", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
   },
   {
     id: "hi-card-022", study: "acknowledgment", title: "Already signed",
     front: "Must the notary have watched the original signing?", rule: "No. The signer must be present for the declaration. The signature can already be on the page.", boundary: "A mailed document with no appearance does not qualify.",
-    mixup: "A jurat is the act that ties the oath to signing before the notary.", source: "HRS §456-1.6", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
+    mixup: "A jurat is the act that ties the oath to signing before the notary.", source: "HRS §456-1.6", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
   },
   {
     id: "hi-card-023", study: "acknowledgment", title: "Five dollars",
     front: "What is the in-person acknowledgment fee?", rule: "$5 for each party signing, including the original and first duplicate original.", boundary: "The certificate on each further duplicate original costs $2.50 per person making the acknowledgment.",
-    mixup: "$25 is the remote fee, not this fee.", source: "HRS §456-17(7)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm",
+    mixup: "$25 is the remote fee, not this fee.", source: "HRS §456-17(7)", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm",
   },
   {
     id: "hi-card-024", study: "jurat-oath", title: "Truth oath",
     front: "What is a verification on oath or affirmation?", rule: "A declaration before the notary, on oath or affirmation, that a statement in the document is true.", boundary: "The signer must make that declaration. The seal does not replace it.",
-    mixup: "Do not label that act as an acknowledgment.", source: "HRS §456-1.6", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
+    mixup: "Do not label that act as an acknowledgment.", source: "HRS §456-1.6", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm",
   },
   {
     id: "hi-card-025", study: "jurat-oath", title: "Oath fee",
     front: "What does the oath fee include?", rule: "$5, including the certificate.", boundary: "Affixing that certificate to every duplicate original beyond four is $2.50.",
-    mixup: "Government business is not a personal $5.", source: "HRS §456-17(6); HRS §456-18", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm",
+    mixup: "Government business is not a personal $5.", source: "HRS §456-17(6); HRS §456-18", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm",
   },
   {
     id: "hi-card-026", study: "jurat-oath", title: "Same day",
@@ -136,7 +136,7 @@ export const hiCards: HiCard[] = [
   {
     id: "hi-card-027", study: "certificate-seal", title: "One stamp",
     front: "What does the rubber stamp contain?", rule: "Only the name, commission number, and the words notary public and State of Hawaii.", boundary: "One circular stamp, one to two inches, serrated or milled edge.",
-    mixup: "A second rubber stamp is a $200 fine.", source: "HRS §456-3; HAR §5-11-5", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm",
+    mixup: "A second rubber stamp is a $200 fine.", source: "HRS §456-3; HAR §5-11-5", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm",
   },
   {
     id: "hi-card-028", study: "certificate-seal", title: "Signature block",
@@ -146,27 +146,27 @@ export const hiCards: HiCard[] = [
   {
     id: "hi-card-029", study: "certificate-seal", title: "End of the seal",
     front: "What happens to the stamp when the commission ends?", rule: "It is delivered to the attorney general to be defaced or destroyed.", boundary: "The statute says immediately. The $200 fine applies if it is not surrendered within 90 days.",
-    mixup: "Do not give it to the employer.", source: "HRS §456-3; HAR §5-11-46", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm",
+    mixup: "Do not give it to the employer.", source: "HRS §456-3; HAR §5-11-46", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm",
   },
   {
     id: "hi-card-030", study: "journal", title: "One book",
     front: "How many tangible journals are active?", rule: "One for tangible documents. Electronic documents use one electronic journal.", boundary: "The paper book is bound, numbered, and within the rule's size limits.",
-    mixup: "A spreadsheet does not replace the tangible journal.", source: "HRS §456-15; HAR §5-11-9", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
+    mixup: "A spreadsheet does not replace the tangible journal.", source: "HRS §456-15; HAR §5-11-9", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
   },
   {
     id: "hi-card-031", study: "journal", title: "The entry",
     front: "What does each entry include?", rule: "Type, date, and time; the document and the nature of the act; name, address, and tangible signature; how the person was identified; and the fee, if any.", boundary: "Personal knowledge is a statement. A credential entry includes the number and expiration.",
-    mixup: "The older FAQ list is shorter than the current statute.", source: "HRS §456-15(e)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
+    mixup: "The older FAQ list is shorter than the current statute.", source: "HRS §456-15(e)", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
   },
   {
     id: "hi-card-032", study: "journal", title: "Ten years",
     front: "How long is the journal kept?", rule: "Ten years after the last act in it.", boundary: "On resignation or expiration the notary keeps it and reports its location. On death it is transmitted to the attorney general.",
-    mixup: "The old FAQ's 90-day turn-in is not the current statute.", source: "HRS §456-15", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
+    mixup: "The old FAQ's 90-day turn-in is not the current statute.", source: "HRS §456-15", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
   },
   {
     id: "hi-card-033", study: "journal", title: "Audit",
     front: "Can the journal be inspected without notice?", rule: "Yes. The attorney general may audit at any time without prior notice.", boundary: "Failure to comply can be fined $50 to $500.",
-    mixup: "The employer is not the inspector.", source: "HRS §456-15(j)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
+    mixup: "The employer is not the inspector.", source: "HRS §456-15(j)", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
   },
   {
     id: "hi-card-034", study: "documents", title: "Language",
@@ -181,7 +181,7 @@ export const hiCards: HiCard[] = [
   {
     id: "hi-card-036", study: "documents", title: "Power of attorney",
     front: "What effect can a copy of a power of attorney have in Hawaii?", rule: "Except as another statute provides, a photocopy or electronically transmitted copy has the same effect as the original.", boundary: "Check that the power of attorney actually grants the authority the signer claims.",
-    mixup: "The agent’s identification establishes the agent’s identity. Verify the claimed authority separately.", source: "HRS §551E-3(e)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol12_Ch0501-0588/HRS0551E/HRS_0551E-0003.htm",
+    mixup: "The agent’s identification establishes the agent’s identity. Verify the claimed authority separately.", source: "HRS §551E-3(e)", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol12_Ch0501-0588/HRS0551E/HRS_0551E-0003.htm",
   },
   {
     id: "hi-card-037", study: "documents", title: "No room",
@@ -191,17 +191,17 @@ export const hiCards: HiCard[] = [
   {
     id: "hi-card-038", study: "fees-bond", title: "Bond",
     front: "What is the notary bond?", rule: "$1,000, to the State, from a Hawaii-authorized surety, approved by a circuit judge, and filed with the clerk where the notary resides.", boundary: "It is the notary's expense, except when a department requires a government notary's bond and pays for it.",
-    mixup: "Do not use another state's bond amount.", source: "HRS §456-5", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm",
+    mixup: "Do not use another state's bond amount.", source: "HRS §456-5", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm",
   },
   {
     id: "hi-card-039", study: "fees-bond", title: "Two fee texts",
     front: "Why do $40 and $100 both appear?", rule: "HRS §456-9 prints $40 to issue or renew and allows a rule adjustment. HAR §5-11-46 lists issuance and renewal at $100.", boundary: "The application line in the rule is $20. The exam line is $10.",
-    mixup: "Name the text before naming the dollar.", source: "HRS §456-9; HAR §5-11-46", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm",
+    mixup: "Name the text before naming the dollar.", source: "HRS §456-9; HAR §5-11-46", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm",
   },
   {
     id: "hi-card-040", study: "fees-bond", title: "Signer fees",
     front: "What may the notary demand for an in-person acknowledgment or oath?", rule: "$5. Remote acts under §456-23 are $25, except a duplicate-original certificate.", boundary: "A lower fee or no fee is allowed if the reason is not discriminatory.",
-    mixup: "Government business is free.", source: "HRS §456-17", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm",
+    mixup: "Government business is free.", source: "HRS §456-17", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm",
   },
   {
     id: "hi-card-041", study: "refusal-misconduct", title: "Lawful refusal",
@@ -231,7 +231,7 @@ export const hiCards: HiCard[] = [
   {
     id: "hi-card-046", study: "remote-online", title: "Sight and sound",
     front: "What must the technology do?", rule: "Simultaneous sight and sound, plus an audiovisual recording kept at least ten years.", boundary: "The notary is located in Hawaii. The signer is the remote person.",
-    mixup: "A phone call is not enough.", source: "HRS §456-23", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm",
+    mixup: "A phone call is not enough.", source: "HRS §456-23", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm",
   },
   {
     id: "hi-card-047", study: "remote-online", title: "Two kinds of proofing",
@@ -241,7 +241,7 @@ export const hiCards: HiCard[] = [
   {
     id: "hi-card-048", study: "remote-online", title: "Say it was remote",
     front: "What does the remote certificate add?", rule: "A statement that communication technology was used.", boundary: "The sample sentence is: This notarial act involved the use of communication technology.",
-    mixup: "Ordinary acknowledgment wording alone hides the remote act.", source: "HRS §456-23(d)", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm",
+    mixup: "Ordinary acknowledgment wording alone hides the remote act.", source: "HRS §456-23(d)", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm",
   },
   {
     id: "hi-card-049", study: "application-exam", title: "Live dates",
@@ -256,12 +256,12 @@ export const hiCards: HiCard[] = [
   {
     id: "hi-card-051", study: "journal", title: "Each copy",
     front: "Three notarized copies mean how many journal entries?", rule: "Three, if each copy was a separate notarial act.", boundary: "Matching text does not merge the entries.",
-    mixup: "A daily summary is not the statute.", source: "HRS §456-15", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
+    mixup: "A daily summary is not the statute.", source: "HRS §456-15", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm",
   },
   {
     id: "hi-card-052", study: "certificate-seal", title: "Electronic device",
     front: "What happens to an electronic stamp at the end of the commission?", rule: "Disable it and declare the date and manner to the attorney general.", boundary: "The paper stamp is delivered to be destroyed. The journal is retained.",
-    mixup: "Do not treat the stamp and the journal the same way.", source: "HRS §456-3; HRS §456-15", sourceUrl: "https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm",
+    mixup: "Do not treat the stamp and the journal the same way.", source: "HRS §456-3; HRS §456-15", sourceUrl: "https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm",
   },
   {
     id: "hi-card-053", study: "refusal-misconduct", title: "Status notice",

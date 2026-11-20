@@ -64,6 +64,16 @@ const indianaGuide = "https://inbiz.in.gov/Assets/NotaryGuide.pdf";
 const indianaFaq = "https://www.in.gov/sos/business/files/New-Notary-System-FAQs-5-4-26.pdf";
 const indianaFaqCopy = "https://www.in.gov/dA/93ab6b5f72/New-Notary-System-FAQs-5-4-26.pdf?language_id=1";
 
+// The State Bar packet reproduces the March 2024 DFI Remote Guide starting on PDF page 20.
+const wisconsinRemoteGuidePages: Record<string, number> = {
+  "1.2": 3, "1.4": 3,
+  "2A.1": 3, "2A.2": 4, "2A.3": 5, "2A.4": 5, "2A.5": 6,
+  "2A.6": 6, "2A.7": 6, "2A.8": 6, "2A.9": 6,
+  "2B.1": 7, "2B.2": 7, "2B.3": 7, "2B.4": 7, "2B.5": 8, "2B.6": 8,
+  "2C.1": 8, "2C.2": 8, "2C.4": 9, "2C.5": 9, "2C.6": 10,
+  "3.1": 10, "3.2": 11, "3.3": 13,
+};
+
 function officialUrl(value?: string): string | undefined {
   if (!value) return undefined;
   const url = parseWebUrl(value);
@@ -138,6 +148,16 @@ export function resolveAnswerEvidence(question: AnswerEvidenceFields) {
       resolution = "handbook section";
     }
   }
+  if (!link && fallback && question.source_id === "wi-remote-guide") {
+    const sections = reference.match(/\b(?:1\.[24]|2[ABC]\.\d|3\.[1-3])\b/g) || [];
+    const pages = [...new Set(sections.map((section) => wisconsinRemoteGuidePages[section]).filter(Boolean))];
+    if (pages.length) {
+      const destinations = pages.map((page) => `${fallback.split("#")[0]}#page=${page + 19}`);
+      [link] = destinations;
+      links.push(...destinations.slice(1));
+      resolution = "handbook section";
+    }
+  }
   const href = link || fallback;
   if (href === indianaGuide || links.includes(indianaGuide)) {
     links.push("https://inbiz.in.gov/certification/notary");
@@ -145,7 +165,8 @@ export function resolveAnswerEvidence(question: AnswerEvidenceFields) {
   if (href?.startsWith("https://cpshr.us/")) {
     links.push("https://www.sos.ca.gov/notary/checklist/take-exam");
   }
-  if (href?.startsWith("https://dos.ny.gov/system/files/documents/2026/06/")) {
+  if (href === "https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule" ||
+      href?.startsWith("https://dos.ny.gov/system/files/documents/2026/06/")) {
     links.push("https://dos.ny.gov/notary-public");
   }
   return {

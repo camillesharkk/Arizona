@@ -118,7 +118,7 @@ export const nyRevisedRows: NyRow[] = [
       "The sheet requires current identification.",
       "A fee receipt does not identify the candidate."
     ],
-    "source": "New York DOS, July-December 2026 examination information, What to Bring item 1; https://dos.ny.gov/system/files/documents/2026/06/july-dec-2026-notary-written-exam-info-and-schedule_0.pdf; reviewed 2026-11-09",
+    "source": "New York DOS, July-December 2026 examination information, What to Bring item 1; https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule; reviewed 2026-11-09",
     "verified": "2026-11-09"
   }
 ];

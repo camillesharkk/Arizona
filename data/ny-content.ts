@@ -125,7 +125,7 @@ export function nyQuestionCounts() {
   return { published: published.length, free: published.filter((q) => q.is_free).length, pro: published.filter((q) => !q.is_free).length };
 }
 
-const DOS = "https://dos.ny.gov/notary-public-license-law";
+const DOS = "https://dos.ny.gov/notary-public-license-law-0";
 export const nyCards = nyCardsMore.concat([
   { id: "ny-card-hour", study: "exam-day", title: "One hour, pass or fail", front: "What does the official exam sheet actually state?", rule: "Multiple choice, one hour after the instructions, and a pass or fail result by mail.", boundary: "The sheet does not state a question count or a percent that must be correct.", mixup: "A 40-question practice on this site is a study setting, not the official form.", source: "Department of State July–December 2026 exam information", sourceUrl: "https://dos.ny.gov/notary-public" },
   { id: "ny-card-fee", study: "appointment", title: "Sixty dollars, nonrefundable", front: "What is the commission application fee?", rule: "Executive Law §131 sets a nonrefundable $60 fee. No further fee is charged to issue the commission.", boundary: "Twenty dollars of that fee is sent to the county clerk.", mixup: "The $15 charge is the exam fee, not the application.", source: "Executive Law §131, September 2026 booklet", sourceUrl: DOS },

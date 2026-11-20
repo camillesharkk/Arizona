@@ -357,7 +357,7 @@ const rows: Row[] = [
     options: ["The statute repealed the power to adopt a fee rule", "The 2022 rule lists issuance at $40", "The statute prints $40 and allows a rule adjustment. The later compiled rule lists $100 for issuance", "Both documents print $100"],
     correct: 2,
     why: "Read on November 7, 2026, HRS §456-9(a)(1) prints $40 and allows adjustment under chapter 91. HAR §5-11-46(a)(5) lists issuance at $100. A question that hides which text it is asking about would mix those figures.",
-    source: "HRS §456-9(a); HAR §5-11-46(a)(5); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
+    source: "HRS §456-9(a); HAR §5-11-46(a)(5); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
     miss: ["The statute expressly allows adjustment by rule.", "The rule line for issuance is $100, not $40.", "Correct. Keep the printed statute amount and the later rule amount separate.", "The statute text that was read still prints $40."],
   },
   {
@@ -368,7 +368,7 @@ const rows: Row[] = [
     options: ["For life", "Four years from the date of the commission, unless it ends sooner", "One year", "Two years"],
     correct: 1,
     why: "HRS §456-1(a) and HAR §5-11-12 set a four-year term from the commission date, unless the commission ends earlier by removal, resignation, death, abandonment, revocation, or suspension.",
-    source: "HRS §456-1(a); HAR §5-11-12; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001.htm; checked 2026-11-07",
+    source: "HRS §456-1(a); HAR §5-11-12; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001.htm; checked 2026-11-07",
     miss: ["The commission is not lifelong.", "Correct. The term is four years from the commission date.", "One year is the restoration window after forfeiture, not the term.", "Two years is not the term."],
   },
   {
@@ -401,7 +401,7 @@ const rows: Row[] = [
     options: ["Restoration is available for five years with no new papers", "Forfeiture can be cured only by a remote online commission", "The commission is forfeited, and the attorney general may restore it within one year after forfeiture if renewal requirements and fees are met", "The commission continues until the seal wears out"],
     correct: 2,
     why: "HRS §456-1(b) states forfeiture for failure to renew on time, and restoration within one year upon compliance and payment.",
-    source: "HRS §456-1(b); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001.htm; checked 2026-11-07",
+    source: "HRS §456-1(b); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001.htm; checked 2026-11-07",
     miss: ["Five years is the wait after a revocation before a new application, not this restoration window.", "Remote authority does not restore an ordinary commission.", "Correct. The restoration window is one year.", "Expiration ends the authority to act. The seal does not extend it."],
   },
   {
@@ -621,7 +621,7 @@ const rows: Row[] = [
     options: ["The notary may notarize anywhere a Hawaii ID is shown", "The bond makes the act valid in any country", "The notary is commissioned for Hawaii and performs notarial acts in Hawaii. A remote act for a person who is not physically present requires a remote online commission and the remote rules", "Any Hawaii notary may notarize worldwide"],
     correct: 2,
     why: "HRS §456-1 commissions notaries for the State. HRS §456-23 lets a remotely located individual appear through communication technology only before a remote online notary, and that notary must be located in this State.",
-    source: "HRS §456-1; HRS §456-23; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-1; HRS §456-23; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["Showing a Hawaii ID does not move the act outside the State.", "The bond does not add territory.", "Correct. Ordinary authority is not worldwide authority, and remote appearance is a separate commission.", "A Hawaii commission is not a worldwide commission."],
   },
   {
@@ -632,7 +632,7 @@ const rows: Row[] = [
     options: ["The notary must charge $25 because every private act is remote", "The notary does not demand a fee for public business. A private act for a fee needs the Attorney General's prior written approval, payment of the legal fees, and the notary's own bond", "Every private deed is free and required", "The neighbor's request automatically expands the commission to every circuit"],
     correct: 1,
     why: "HRS §456-18 requires government notaries to perform government business without charge. Private fee work needs prior written approval from the attorney general plus the fees and the notary's own bond. Urgent nongovernmental oaths or acknowledgments, if the department head judges them necessary, are a separate path and the fees are government realizations.",
-    source: "HRS §456-18; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0018.htm; checked 2026-11-07",
+    source: "HRS §456-18; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0018.htm; checked 2026-11-07",
     miss: ["$25 is the remote-act fee, and this fact is not a remote act.", "Correct. Private fee work is not automatic.", "The statute does not require every private deed to be done for free.", "Circuit designation is made by the attorney general. A neighbor's request does not expand it."],
   },
   {
@@ -643,7 +643,7 @@ const rows: Row[] = [
     options: ["The circuit-clerk fee for filing a copy of the commission, and the attorney general's fee to issue or renew the commission. A bond is not required unless the department head requires it, and then the department pays", "The $1,000 bond in every case, paid by the notary", "All signer fees for private work, with no approval", "The remote online exam"],
     correct: 0,
     why: "HRS §456-18(2) lists those exemptions. The bond exemption ends if the department head requires a bond, and that expense is the department's.",
-    source: "HRS §456-18(2); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0018.htm; checked 2026-11-07",
+    source: "HRS §456-18(2); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0018.htm; checked 2026-11-07",
     miss: ["Correct. Those are the stated exemptions.", "The notary does not personally pay a bond the department does not require. If one is required, the department pays.", "Private fee work still needs the statute's approval path.", "A government commission is not a remote online commission."],
   },
   {
@@ -687,7 +687,7 @@ const rows: Row[] = [
     options: ["No. Personal appearance is physical presence unless the separate remote online rules and commission are being used", "Yes. Any live voice is an appearance", "Yes, if the notary recognizes the voice", "Yes, if the journal says telephone"],
     correct: 0,
     why: "HRS §456-23 allows communication technology only for a remote online notary and a remotely located individual. A telephone call is not that process, and an ordinary notary cannot replace appearance with audio.",
-    source: "HRS §456-23; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["Correct. A phone call is not the remote online procedure.", "Voice alone is not communication technology under §456-23, which requires simultaneous sight and sound.", "Recognizing a voice is not the remote identity procedure.", "Writing telephone in the journal does not create authority."],
   },
   {
@@ -698,7 +698,7 @@ const rows: Row[] = [
     options: ["Any expired card, with no time limit", "Only a card that expired yesterday, and never a current card", "A card with a photo but no signature", "One that contains the signature and photograph and is valid, or expired no more than three years before the notarial act"],
     correct: 3,
     why: "HRS §456-1.6(1)(B) allows that credential if it contains the signature and photograph and is valid or expired no more than three years.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["There is a three-year limit. An older card is outside this paragraph.", "A current card is allowed. The rule is not limited to cards that expired yesterday.", "The paragraph requires both a signature and a photograph.", "Correct. Current cards qualify, and so do cards expired no more than three years, if they have a photo and a signature."],
   },
   {
@@ -709,7 +709,7 @@ const rows: Row[] = [
     options: ["Yes, because it was issued in Hawaii", "Yes, if the signer remembers the license number", "No. Four years is more than the three-year limit", "Yes, because the photo is clear"],
     correct: 2,
     why: "The statute allows expiration of no more than three years. Four years is outside that credential.",
-    source: "HRS §456-1.6(1)(B); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6(1)(B); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["The place of issue does not remove the three-year limit.", "Memory of the number is not the credential.", "Correct. The three-year line is part of the definition.", "A clear photo does not erase the expiration limit."],
   },
   {
@@ -720,7 +720,7 @@ const rows: Row[] = [
     options: ["Yes, even if it has no photo", "Yes. Another government identification may be used if it meets the photo, signature, three-year, and satisfactory-to-the-notary tests", "No. Every ID must be unexpired", "No. Only a U.S. passport counts"],
     correct: 1,
     why: "HRS §456-1.6(1)(C) covers another government identification with those conditions. The older FAQ said identification must be current. The current statute allows up to three years of expiration. Use the statute.",
-    source: "HRS §456-1.6(1)(C); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6(1)(C); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["A photo is required.", "Correct. Two years is inside the three-year statute.", "The current statute is not an unexpired-only rule.", "Passports are one option, not the only option."],
   },
   {
@@ -731,7 +731,7 @@ const rows: Row[] = [
     options: ["Personal knowledge", "A credible witness", "An apostille", "A journal estimate"],
     correct: 0,
     why: "Personal knowledge is dealings sufficient to provide reasonable certainty that the individual has the identity claimed.",
-    source: "HRS §456-1.6(1)(A); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6(1)(A); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["Correct. That is personal knowledge.", "A credible witness is a different paragraph.", "An apostille does not identify a signer in the room.", "The journal records the method. It is not itself the method."],
   },
   {
@@ -742,7 +742,7 @@ const rows: Row[] = [
     options: ["Yes, because a spouse is always a credible witness", "Yes, if both names are on one acknowledgment", "Yes, if the fee is waived", "No. A family introduction is not personal knowledge and is not the credible-witness identification in HRS §456-1.6"],
     correct: 3,
     why: "A credible witness must personally appear and be known to the notary, or be identified by a passport, driver's license, or government non-driver card meeting the statute. Marriage alone is not that proof.",
-    source: "HRS §456-1.6(1)(D); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6(1)(D); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["The statute does not make every spouse a credible witness.", "One acknowledgment does not identify a person who was not proved.", "A fee waiver does not prove identity.", "Correct. The introduction does not meet the definition."],
   },
   {
@@ -753,7 +753,7 @@ const rows: Row[] = [
     options: ["No. Two witnesses are always required", "Yes, even if the witness does not appear", "Yes. HRS §456-1.6(1)(D) allows a witness the notary knows or a witness the notary identifies with that kind of credential", "No. The notary must have known the witness for ten years"],
     correct: 2,
     why: "The paragraph allows either personal knowledge of the witness or identification of the witness by the listed credential. The witness must personally appear.",
-    source: "HRS §456-1.6(1)(D); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6(1)(D); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["It does not require two witnesses.", "Personal appearance of the witness is required.", "Correct. The license can identify the witness.", "The statute does not require ten years."],
   },
   {
@@ -764,7 +764,7 @@ const rows: Row[] = [
     options: ["Have the signer write the ID name in the margin and proceed", "Not notarize until satisfied that the person appearing is the person named", "Notarize and correct the name after the signer leaves", "Notarize because the photo is close"],
     correct: 1,
     why: "The notary needs proof of the identity of the individual appearing. A mismatched name, with nothing else, does not show that the person is the one identified in the document. The FAQ states the same refusal.",
-    source: "HRS §456-1.6; Notary FAQ; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; Notary FAQ; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["A margin note does not prove the person is the one named.", "Correct. Stop until identity is actually satisfied.", "Changing the name later is not identification.", "A similar photo is not a name match."],
   },
   {
@@ -775,7 +775,7 @@ const rows: Row[] = [
     options: ["Yes. HRS §456-1.6 allows the notary to require additional information or credentials necessary to be sure of identity", "No. The first card ends the inquiry", "No, unless the signer is outside the United States", "Yes, but only a birth certificate"],
     correct: 0,
     why: "Paragraph (2) of the definition allows additional information or credentials when needed to assure identity.",
-    source: "HRS §456-1.6(2); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6(2); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["Correct. The notary may require more.", "The first card does not bar further questions.", "The paragraph is not limited to signers outside the United States.", "The paragraph does not name a birth certificate as the required extra document."],
   },
   {
@@ -797,7 +797,7 @@ const rows: Row[] = [
     options: ["No identity entry", "The words 'remote online'", "A statement that identity is based on personal knowledge", "The signer's passport number anyway"],
     correct: 2,
     why: "HRS §456-15(e)(4) requires a statement to that effect when identity is based on personal knowledge.",
-    source: "HRS §456-15(e)(4); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(e)(4); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["The identity method is a required entry.", "Those words are for a remote act, which this fact is not.", "Correct. Personal knowledge is recorded as personal knowledge.", "A credential number is the entry for satisfactory evidence, not for personal knowledge."],
   },
   {
@@ -808,7 +808,7 @@ const rows: Row[] = [
     options: ["No description if the fee was zero", "A brief description of the method and the credential, including the identification number and the expiration date", "Only the word 'ID'", "The signer's Social Security number"],
     correct: 1,
     why: "The entry describes the method and the credential presented, including the identification number and expiration date.",
-    source: "HRS §456-15(e)(5); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(e)(5); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["A zero fee is recorded as the fee. It does not erase the identity entry.", "Correct. Number and expiration are part of that entry.", "One word is not the description the statute lists.", "Social Security number is not the item named."],
   },
   {
@@ -819,7 +819,7 @@ const rows: Row[] = [
     options: ["The current statute", "The older FAQ, because it is still linked", "Whichever text is shorter", "Arizona's unexpired-only rule"],
     correct: 0,
     why: "The FAQ conflicts with the later statutory definition. The statute is the identity rule for this question.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["Correct. Use HRS §456-1.6 on expiration.", "A conflicting older FAQ does not replace the statute.", "Length is not the test.", "Arizona's ID statute is not Hawaii's."],
   },
   {
@@ -830,7 +830,7 @@ const rows: Row[] = [
     options: ["Notarize both, because one ID covers the pair", "Notarize both if they share a last name", "Notarize both and leave the journal blank for the second person", "Notarize only for the person whose identity is proved. The other person must wait until that person's identity is proved"],
     correct: 3,
     why: "Each person whose signature is notarized must be identified. One person's credential does not identify the other. The FAQ describes the same limit for a couple with one ID.",
-    source: "HRS §456-1.6; HRS §456-15; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; HRS §456-15; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["One ID does not cover two people.", "A shared name is not identification.", "Omitting the second person from the journal is a separate violation, not a solution.", "Correct. Identity is individual."],
   },
   {
@@ -841,7 +841,7 @@ const rows: Row[] = [
     options: ["Yes, if the employer is a bank", "Yes, if it is current", "No", "Yes, if it has a photo"],
     correct: 2,
     why: "The listed photo credentials are government documents. A private badge is not one of them.",
-    source: "HRS §456-1.6(1)(B) and (C); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6(1)(B) and (C); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["The employer's business does not make the badge a government ID.", "A current private badge is still private.", "Correct. Government issuance is part of the listed cards.", "A photo alone does not make a private badge a government ID."],
   },
   {
@@ -863,7 +863,7 @@ const rows: Row[] = [
     options: ["A declaration before the notary that the person signed the document for the purpose stated in it", "An oath that every statement in the document is true", "A court order", "A promise to pay the notary"],
     correct: 0,
     why: "The definition is a declaration before the notary about the signature and its purpose. If the person signs in a representative capacity, the person also declares proper authority.",
-    source: "HRS §456-1.6, acknowledgment; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6, acknowledgment; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["Correct. That is the statutory acknowledgment.", "Truth of the contents is a verification on oath or affirmation, not the definition of an acknowledgment.", "An acknowledgment is not a court order.", "The fee is separate from the definition."],
   },
   {
@@ -874,7 +874,7 @@ const rows: Row[] = [
     options: ["An oath that the trust is fair", "A second notary", "A remote online recording", "A declaration that the person signed with proper authority and as the act of the person or entity named"],
     correct: 3,
     why: "HRS §456-1.6 says a representative-capacity acknowledgment includes proper authority and that the person signed as the act of the identified person or entity.",
-    source: "HRS §456-1.6, in a representative capacity; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6, in a representative capacity; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["Fairness of the trust is legal advice and is not the acknowledgment definition.", "One notary performs the acknowledgment.", "Remote recording is not required for an in-person acknowledgment.", "Correct. Representative capacity is part of the definition."],
   },
   {
@@ -885,7 +885,7 @@ const rows: Row[] = [
     options: ["No. Only a jurat can use a prior signature", "Yes, even if the signer is not present", "Yes. An acknowledgment is a declaration about a signature. It does not require the notary to have watched the earlier signing", "No. Every acknowledgment must be signed in the notary's presence"],
     correct: 2,
     why: "The acknowledgment definition is a declaration before the notary that the person has signed for the stated purpose. Watching the original pen stroke is the difference usually associated with a jurat or a signature witnessing, not with this definition.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["A jurat is the oath about truth, not the only act that can involve a document.", "The declaration is made before the notary, so absence fails.", "Correct. The signer must be before the notary for the declaration. The earlier signing can already have happened.", "The definition does not say the notary watched the signing."],
   },
   {
@@ -896,7 +896,7 @@ const rows: Row[] = [
     options: ["Yes, if the fee is prepaid", "No. The declaration is made before the notary", "Yes, if the signature looks familiar", "Yes, if a copy of the ID is in the envelope"],
     correct: 1,
     why: "An acknowledgment is a declaration before the notary. Mail is not appearance. A remote appearance requires the remote online commission and its technology rules.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["Prepayment does not create an appearance.", "Correct. No appearance, no acknowledgment.", "Familiarity with a signature on paper is not the declaration before the notary.", "A mailed copy of an ID does not create an appearance."],
   },
   {
@@ -907,7 +907,7 @@ const rows: Row[] = [
     options: ["$5 for each party signing", "$25 for each party", "$5 for the whole document no matter how many signers", "$15 for each party"],
     correct: 0,
     why: "HRS §456-17(7) says $5 for each party signing the acknowledgment. The $25 amount is for specified remote acts, not for this in-person acknowledgment line.",
-    source: "HRS §456-17(7); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
+    source: "HRS §456-17(7); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
     miss: ["Correct. The in-person acknowledgment is $5 per signing party.", "$25 is the remote-act line.", "The statute uses each party, not one fee for the document.", "$15 is not the Hawaii acknowledgment fee."],
   },
   {
@@ -918,7 +918,7 @@ const rows: Row[] = [
     options: ["Another $5, because every paper is a new acknowledgment party", "$25, because a copy is remote", "$0, because duplicates are free by statute", "$2.50 for each person making the acknowledgment, for affixing the certificate to every duplicate original beyond one"],
     correct: 3,
     why: "The same paragraph sets $2.50 for each person when the certificate is affixed to every duplicate original beyond one.",
-    source: "HRS §456-17(7); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
+    source: "HRS §456-17(7); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
     miss: ["The extra original is the duplicate fee, not a second full party fee by default.", "A paper duplicate is not a remote act.", "The statute states a fee. It does not say duplicates are free.", "Correct. Beyond one, the duplicate certificate fee is $2.50 per person."],
   },
   {
@@ -929,7 +929,7 @@ const rows: Row[] = [
     options: ["$25", "$2.50", "$5 for each of the three parties, $15 in total", "$5 for the document"],
     correct: 2,
     why: "HRS §456-17(7) is $5 for each party signing. Three parties are three fees. The duplicate fee is a different clause.",
-    source: "HRS §456-17(7); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
+    source: "HRS §456-17(7); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
     miss: ["$25 is the remote line.", "$2.50 is the duplicate-original clause.", "Correct. Count the signing parties.", "The fee is not one amount for the whole document."],
   },
   {
@@ -940,7 +940,7 @@ const rows: Row[] = [
     options: ["Yes, if the seal is applied", "No. The signer declares the signature and its stated purpose. Truth of the statements is a verification on oath or affirmation", "Yes. Every acknowledgment is an oath", "Yes, if the notary reads the document"],
     correct: 1,
     why: "HRS §456-1.6 defines acknowledgment and verification on oath or affirmation separately.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["The seal authenticates the notarial act. It does not change the definition.", "Correct. The two definitions do different work.", "An oath about truth is the verification definition.", "Reading the document does not turn an acknowledgment into that oath."],
   },
   {
@@ -951,7 +951,7 @@ const rows: Row[] = [
     options: ["The declaration that the person signed the document for the purpose stated", "A second seal", "An apostille", "A ten-year journal"],
     correct: 0,
     why: "Without that declaration before the notary, the acknowledgment definition is not met.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["Correct. The declaration is the act.", "A second seal does not create the declaration.", "An apostille does not create it.", "Journal retention does not replace the declaration."],
   },
   {
@@ -962,7 +962,7 @@ const rows: Row[] = [
     options: ["An acknowledgment, because the certificate uses that word", "A protest", "An apostille", "A verification on oath or affirmation, not an acknowledgment"],
     correct: 3,
     why: "The definition follows the act. A declaration on oath that a statement is true is a verification on oath or affirmation. The certificate should describe the act performed.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["The printed word does not change the act that was performed.", "A protest is a different notarial act.", "An apostille is not performed by the notary.", "Correct. The oath about truth is the verification."],
   },
   {
@@ -973,7 +973,7 @@ const rows: Row[] = [
     options: ["Yes, if the agent has a driver's license", "Yes, if the fee is $5", "No. That form of acknowledgment includes a declaration of proper authority", "Yes. Authority is presumed for every agent"],
     correct: 2,
     why: "HRS §456-1.6 includes proper authority in the representative-capacity acknowledgment. A license proves identity, not authority to sign for someone else.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["The license is an identity credential.", "The fee does not create authority.", "Correct. Identity and authority are different.", "Authority is not presumed."],
   },
   {
@@ -984,7 +984,7 @@ const rows: Row[] = [
     options: ["Yes, if the fee is $5", "No. Both are notarial acts, and the fee statute prices a protest separately", "Yes", "Yes, if the protest is on a deed"],
     correct: 1,
     why: "HAR §5-11-4 lists both. HRS §456-17 has separate protest fees and a separate acknowledgment fee.",
-    source: "HAR §5-11-4; HRS §456-17; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
+    source: "HAR §5-11-4; HRS §456-17; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
     miss: ["A matching dollar amount does not merge the acts.", "Correct. They are different acts.", "The statute lists them separately.", "Putting a protest on a deed does not rename it as an acknowledgment."],
   },
   {
@@ -995,7 +995,7 @@ const rows: Row[] = [
     options: ["When the act is one of the listed acts performed for a remotely located individual under §456-23, other than affixing a certificate to a duplicate original", "Whenever the signer prefers the higher fee", "Whenever the document has more than one page", "Whenever the notary uses a rubber stamp"],
     correct: 0,
     why: "The $25 line is tied to remote acts under §456-23. An ordinary in-person acknowledgment stays on the $5 line.",
-    source: "HRS §456-17(8); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
+    source: "HRS §456-17(8); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
     miss: ["Correct. Remote status, not preference, selects the $25 line.", "The signer's preference does not change the statutory line.", "Page count is not the remote test.", "Using the required seal does not make an act remote."],
   },
   {
@@ -1006,7 +1006,7 @@ const rows: Row[] = [
     options: ["The notary, on the signer's behalf", "The court clerk", "The surety", "The person appearing before the notary"],
     correct: 3,
     why: "The definition says a declaration by a person before a notary public.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["The notary certifies the act. The notary does not make the signer's declaration.", "The clerk files records. The clerk does not make the declaration.", "The surety is not the signer.", "Correct. The signer makes the declaration."],
   },
   {
@@ -1028,7 +1028,7 @@ const rows: Row[] = [
     options: ["A bond approval", "A declaration, made on oath or affirmation before the notary, that a statement in a document is true", "A declaration that a signature was made for the purpose stated, with no oath about truth", "A filing in the Bureau of Conveyances"],
     correct: 1,
     why: "That is the statutory definition. An acknowledgment does not use this truth oath.",
-    source: "HRS §456-1.6, verification on oath or affirmation; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6, verification on oath or affirmation; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["Bond approval is not the verification.", "Correct. Truth of a statement, on oath or affirmation, is the verification.", "That other sentence is the acknowledgment.", "Recording is not the verification."],
   },
   {
@@ -1039,7 +1039,7 @@ const rows: Row[] = [
     options: ["Before the notary, as part of the notarial act", "Later, by mail", "Only if a judge is in the room", "Never. The notary takes the oath instead"],
     correct: 0,
     why: "The definition says the declaration is made on oath or affirmation before a notary public.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["Correct. The oath is before the notary.", "Mail is not before the notary.", "A judge is not required for this notarial act.", "The signer makes the declaration. The notary administers the oath."],
   },
   {
@@ -1050,7 +1050,7 @@ const rows: Row[] = [
     options: ["$2.50 for the first certificate", "$25 for every oath", "$0", "$5"],
     correct: 3,
     why: "The oath fee is $5, including the certificate. The $2.50 amount applies to affixing the certificate to every duplicate original instrument beyond four.",
-    source: "HRS §456-17(6); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
+    source: "HRS §456-17(6); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
     miss: ["$2.50 is the duplicate clause, and it starts beyond four.", "$25 is the remote line.", "The statute entitles the notary to the $5 fee.", "Correct. The first oath certificate is inside the $5."],
   },
   {
@@ -1061,7 +1061,7 @@ const rows: Row[] = [
     options: ["$25", "Nothing, because duplicates are included without a limit", "$2.50 for affixing the certificate to every duplicate original beyond four", "Another $5 for every duplicate including the first"],
     correct: 2,
     why: "The $2.50 charge is for every duplicate original beyond four, not for the first certificate.",
-    source: "HRS §456-17(6); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
+    source: "HRS §456-17(6); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
     miss: ["This is not the remote fee.", "The statute does not make every duplicate free.", "Correct. Count past four.", "The first certificate is in the $5. The extra amount is $2.50 and starts beyond four."],
   },
   {
@@ -1072,7 +1072,7 @@ const rows: Row[] = [
     options: ["An apostille", "A verification on oath or affirmation", "An acknowledgment of a signature that was made last week", "A protest of a check"],
     correct: 1,
     why: "Signing in the notary's presence and swearing that the statements are true matches the verification definition and the FAQ's description of a jurat. An acknowledgment does not require that truth oath.",
-    source: "HRS §456-1.6; Notary FAQ; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; Notary FAQ; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["An apostille is not this act.", "Correct. Use the verification, commonly called a jurat.", "An earlier signature plus a declaration of signing is the acknowledgment pattern.", "A protest is a different act."],
   },
   {
@@ -1083,7 +1083,7 @@ const rows: Row[] = [
     options: ["No. That act is the oath or affirmation that the statement is true", "Yes. The seal replaces the oath", "Yes, if the signer nods", "Yes, if the notary writes 'jurat' anyway"],
     correct: 0,
     why: "Without the oath or affirmation, the definition is not met. The certificate wording does not supply the missing oath.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["Correct. The oath or affirmation has to happen.", "The seal does not replace the oath.", "A nod that is not an oath or affirmation does not meet the definition.", "Writing the word does not create the oath."],
   },
   {
@@ -1105,7 +1105,7 @@ const rows: Row[] = [
     options: ["No. An affirmation is an acknowledgment", "Yes, but only in a remote online session", "Yes. The definition says oath or affirmation", "No. Only a religious oath counts"],
     correct: 2,
     why: "The statute uses both words. An affirmation is not demoted to an acknowledgment, and it is not limited to remote sessions.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["An acknowledgment is a different definition.", "The definition is not limited to remote acts.", "Correct. Affirmation is expressly included.", "The statute does not require a religious oath."],
   },
   {
@@ -1127,7 +1127,7 @@ const rows: Row[] = [
     options: ["No. HRS §456-18 says the government notary does not demand or receive a fee for service as a notary on that public business", "Yes. Section 456-17 overrides 456-18 in every government case", "Yes, if the signer insists", "Yes, and the notary keeps the fee personally"],
     correct: 0,
     why: "Section 456-17 is subject to section 456-18. Government business is without charge. A separate urgent private matter, or approved private practice, is not this fact.",
-    source: "HRS §456-17; HRS §456-18; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0018.htm; checked 2026-11-07",
+    source: "HRS §456-17; HRS §456-18; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0018.htm; checked 2026-11-07",
     miss: ["Correct. Public business is not a personal $5.", "Section 456-17 says it is subject to 456-18.", "The signer's insistence does not create a personal fee.", "Fees on the urgent nongovernmental path are government realizations, not the notary's personal fee."],
   },
   {
@@ -1138,7 +1138,7 @@ const rows: Row[] = [
     options: ["No. A phone message is enough for an ordinary notary", "No. Presence is only for acknowledgments", "No, if the document was signed last year", "Yes"],
     correct: 3,
     why: "The verification is made before the notary. An ordinary notary cannot replace that with a phone message.",
-    source: "HRS §456-1.6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["A phone message is not the remote online process either, and it is not an ordinary oath.", "Acknowledgments also require the person before the notary. That does not remove the oath requirement.", "An old signature does not supply today's oath.", "Correct. The oath is before the notary."],
   },
   {
@@ -1193,7 +1193,7 @@ const rows: Row[] = [
     options: ["The signer's name", "The fee charged", "Only the notary's name, the commission number, and the words notary public and State of Hawaii", "The notary's home address and phone number"],
     correct: 2,
     why: "HRS §456-3 and HAR §5-11-5(a) require the name, commission number, and the words notary public and State of Hawaii. The statute says those items only.",
-    source: "HRS §456-3; HAR §5-11-5(a); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
+    source: "HRS §456-3; HAR §5-11-5(a); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
     miss: ["The signer's name goes in the journal and certificate, not in the seal.", "The fee is a journal entry, not a seal element.", "Correct. Those are the seal elements, and the statute says only those.", "The home address is not a seal element."],
   },
   {
@@ -1237,7 +1237,7 @@ const rows: Row[] = [
     options: ["The bond number only", "Nothing, if the seal is clear", "The typed or printed name and a statement of the commission expiration date", "The signer's thumbprint"],
     correct: 2,
     why: "HRS §456-3 and HAR §5-11-6 require the official signature as filed, plus the typed or printed name and the commission expiration.",
-    source: "HRS §456-3; HAR §5-11-6; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
+    source: "HRS §456-3; HAR §5-11-6; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
     miss: ["The bond number is not the required addition.", "A clear seal does not remove the printed name and expiration.", "Correct. Name and expiration accompany the signature.", "A thumbprint is not the Hawaii signature requirement."],
   },
   {
@@ -1281,7 +1281,7 @@ const rows: Row[] = [
     options: ["Sells it", "Files it as a new commission", "Defaces or destroys it", "Returns it to the employer"],
     correct: 2,
     why: "On resignation, death, expiration without renewal, revocation, or abandonment, the seal is delivered to the attorney general to be defaced or destroyed. On death, the personal representative delivers it.",
-    source: "HRS §456-3; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
+    source: "HRS §456-3; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
     miss: ["The statute does not authorize a sale.", "A delivered seal is not a new commission.", "Correct. The seal is destroyed, not reused.", "The employer does not receive the official seal."],
   },
   {
@@ -1292,7 +1292,7 @@ const rows: Row[] = [
     options: ["The fine replaces the duty to deliver the seal", "The statute requires immediate delivery. The rule states the fine if the seal has not been surrendered within 90 days", "The notary may wait 90 days before doing anything", "Immediate means four years"],
     correct: 1,
     why: "Both texts were read. Immediate delivery is the statutory duty. The fine is the rule's sanction for failure within 90 days. Waiting on purpose is not what the statute says.",
-    source: "HRS §456-3; HAR §5-11-46; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
+    source: "HRS §456-3; HAR §5-11-46; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
     miss: ["The fine is for failing to surrender the seal. It does not erase the duty.", "Correct. Do not collapse the two sentences into a 90-day permission slip.", "The statute does not give a 90-day waiting period.", "Four years is the commission term."],
   },
   {
@@ -1303,7 +1303,7 @@ const rows: Row[] = [
     options: ["Disable the device so it cannot be used, and submit a declaration to the attorney general with the date and manner of disabling", "Mail the laptop to the signer", "Keep the device active for the journal's ten years", "Give the device to the next employee"],
     correct: 0,
     why: "The statute requires the device to be destroyed, defaced, damaged, erased, or secured against use, plus the declaration.",
-    source: "HRS §456-3; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
+    source: "HRS §456-3; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
     miss: ["Correct. Disable it and declare that fact.", "The signer does not receive the stamping device.", "Journal retention does not keep the stamping device active.", "The next employee does not inherit it."],
   },
   {
@@ -1314,7 +1314,7 @@ const rows: Row[] = [
     options: ["No. An impression that will not copy is preferred", "Only if the document is going abroad", "Only for remote acts", "Yes. HRS §456-3 says the seal must be capable of being copied with the document"],
     correct: 3,
     why: "The statute requires the seal to be capable of being copied with the document to which it is stamped, impressed, attached, or logically associated.",
-    source: "HRS §456-3; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
+    source: "HRS §456-3; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0003.htm; checked 2026-11-07",
     miss: ["A nonreproducible impression does not meet the sentence.", "The requirement is not limited to documents sent abroad.", "The requirement is not limited to remote acts.", "Correct. A copy of the document should also show the seal."],
   },
   {
@@ -1369,7 +1369,7 @@ const rows: Row[] = [
     options: ["One per circuit", "As many as are convenient", "One", "One per employer"],
     correct: 2,
     why: "The statute says one tangible journal at a time for tangible documents, and one electronic journal at a time for electronic documents.",
-    source: "HRS §456-15(b); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(b); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["The limit is not one per circuit.", "Convenience does not add journals.", "Correct. One active tangible journal for paper acts.", "Employers do not get separate official journals."],
   },
   {
@@ -1413,7 +1413,7 @@ const rows: Row[] = [
     options: ["When the book is turned in", "Only if the signer later complains", "Contemporaneously with the notarial act", "At the end of the commission term"],
     correct: 2,
     why: "HRS §456-15(e) requires a contemporaneous entry.",
-    source: "HRS §456-15(e); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(e); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["The journal is retained, not turned in as the moment of entry.", "A complaint is not what creates the duty.", "Correct. Write the entry with the act.", "The end of the term is not the time to create the entry."],
   },
   {
@@ -1424,7 +1424,7 @@ const rows: Row[] = [
     options: ["Only the notary's opinion of the transaction", "Type, date, and time of day; title or type and date of the document and the nature of the act; the printed name, address, and, in a tangible journal, signature of each person and witness; the identity method; and the fee, if any", "Only the document title", "Only the fee"],
     correct: 1,
     why: "Subsections (e)(1) through (e)(6) list those elements. The older FAQ omitted the fee and the credential number. Use the current statute.",
-    source: "HRS §456-15(e); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(e); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["The notary's opinion is not an entry.", "Correct. The current entry is the statutory list.", "The title is only one element.", "The fee is only one element."],
   },
   {
@@ -1435,7 +1435,7 @@ const rows: Row[] = [
     options: ["One complete entry for each notarial act", "One entry for the original only", "One entry per day", "No entry if the copies match the original"],
     correct: 0,
     why: "HRS §456-15 requires every notarial act to be chronicled. The FAQ reaches the same conclusion for multiple copies. Matching contents do not merge the acts.",
-    source: "HRS §456-15; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["Correct. Each act gets its own entry.", "The copies are separate acts if each was notarized.", "A daily summary is not the statute.", "Matching text does not erase the later acts."],
   },
   {
@@ -1446,7 +1446,7 @@ const rows: Row[] = [
     options: ["Ninety days after the commission ends", "One year", "Until the employer asks for it", "Ten years after the last notarial act recorded in it"],
     correct: 3,
     why: "HRS §456-15(a) and HAR §5-11-9(f) both use ten years after the last act.",
-    source: "HRS §456-15(a); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(a); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["Ninety days is not the retention period. The older FAQ's instruction to turn books in within 90 days conflicts with the current statute.", "One year is the restoration window, not journal retention.", "The employer does not collect the journal.", "Correct. The retention period is ten years from the last act."],
   },
   {
@@ -1457,7 +1457,7 @@ const rows: Row[] = [
     options: ["The notary destroys it the day the commission ends", "The notary gives it to the employer", "The notary keeps it for the retention period and tells the attorney general where it is", "The notary mails the journal to the attorney general within 90 days and does not keep a copy"],
     correct: 2,
     why: "On resignation, expiration, revocation, or suspension, the notary retains the journal and provides its location. The older FAQ said to turn the books in within 90 days. The current statute does not say that.",
-    source: "HRS §456-15(g); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(g); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["Destruction would violate the ten-year duty.", "The employer does not receive it.", "Correct. Retain it and report the location.", "Turning it in within 90 days is the outdated FAQ, not §456-15(g)."],
   },
   {
@@ -1468,7 +1468,7 @@ const rows: Row[] = [
     options: ["Nobody", "The personal representative, guardian, or any other person who knows they have the journal, to the attorney general or a repository the attorney general approves", "The employer, who may keep it", "The signer"],
     correct: 1,
     why: "HRS §456-15(h) assigns that duty on death or adjudication of incompetency.",
-    source: "HRS §456-15(h); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(h); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["The statute names someone to transmit it.", "Correct. The person in possession transmits it.", "The employer does not keep the official journal.", "The signer does not become the custodian."],
   },
   {
@@ -1479,7 +1479,7 @@ const rows: Row[] = [
     options: ["Prompt notice to the attorney general upon discovering the loss", "Notice within ten years", "Notice only if a signer sues", "No notice if the notary remembers the entries"],
     correct: 0,
     why: "The statute says prompt notice upon discovery. The fine rules also punish failure to notify of loss or theft.",
-    source: "HRS §456-15(f); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(f); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["Correct. Prompt notice is the statutory duty.", "Ten years is retention, not the loss notice.", "A lawsuit is not the trigger.", "Memory does not replace the notice."],
   },
   {
@@ -1490,7 +1490,7 @@ const rows: Row[] = [
     options: ["No. A 30-day appointment is required", "No. Inspections happen only after the commission ends", "Yes, but only the employer may inspect", "Yes. HRS §456-15(j) allows reasonable audits or inspections at any time, without prior notice"],
     correct: 3,
     why: "The statute authorizes periodic, special, or other audits, at any time and without prior notice, including copying records.",
-    source: "HRS §456-15(j); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(j); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["Thirty days is not an inspection waiting period.", "Inspection is not limited to the end of the commission.", "The employer is not the inspector named in the statute.", "Correct. No advance appointment is required."],
   },
   {
@@ -1501,7 +1501,7 @@ const rows: Row[] = [
     options: ["$200 flat", "$1,000 flat", "Not less than $50 and not more than $500", "$20 flat"],
     correct: 2,
     why: "The statute states that range. HAR §5-11-46 uses the same range for journal retention, audit, location, and death-transmission failures.",
-    source: "HRS §456-15(j); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(j); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["$200 is the seal-surrender fine.", "$1,000 is the bond, not this fine.", "Correct. The range is $50 to $500.", "$20 is the loss-notice fine."],
   },
   {
@@ -1523,7 +1523,7 @@ const rows: Row[] = [
     options: ["Yes. HRS §456-15(e)(6) says the fee, if any", "No. Zero fees are omitted", "No. Only fees over $5 are entered", "No, if the signer is a relative"],
     correct: 0,
     why: "The entry includes the fee, if any. A zero fee is still the fee charged.",
-    source: "HRS §456-15(e)(6); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(e)(6); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["Correct. Record that no fee was charged.", "Omitting zero hides the required fee element.", "The statute does not use a $5 threshold for whether to record the fee.", "A relative does not remove the entry."],
   },
   {
@@ -1534,7 +1534,7 @@ const rows: Row[] = [
     options: ["Yes. Format is the notary's choice for every act", "Yes, if the employer prefers a spreadsheet", "Yes, for acts on Oahu only", "No. Tangible documents are chronicled in the one tangible journal. Electronic documents use the electronic journal"],
     correct: 3,
     why: "HRS §456-15(b) separates the tangible journal and the electronic journal by the kind of document.",
-    source: "HRS §456-15(b); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(b); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["The statute does not leave the format open for paper acts.", "A spreadsheet is not the required tangible journal.", "Oahu is not an exception.", "Correct. Match the journal to the document."],
   },
   {
@@ -1600,7 +1600,7 @@ const rows: Row[] = [
     options: ["Only the Lieutenant Governor certifies copies as a notarial act", "Yes. HRS §456-1.6 includes it in the list of notarial acts", "No. Hawaii notaries have no copy act at all", "Only remote online notaries may ever certify a copy"],
     correct: 1,
     why: "The definition lists certifying or attesting a copy. That general definition does not answer the blank FAQ about birth certificates and passports.",
-    source: "HRS §456-1.6, notarial act; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6, notarial act; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["The Lieutenant Governor's authentication work is not this definition.", "Correct. The act exists in the definition. The vital-record question is still unanswered.", "The definition includes the act.", "The definition is not limited to remote notaries."],
   },
   {
@@ -1644,7 +1644,7 @@ const rows: Row[] = [
     options: ["Writing the journal entry", "A change by erasure, obliteration, deletion, insertion, or transposition of content", "Turning the page", "Stamping the notary seal"],
     correct: 1,
     why: "The definition lists those methods of change. The seal and the journal are not alterations of the signer's document.",
-    source: "HRS §456-1.6, alter; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
+    source: "HRS §456-1.6, alter; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0001_0006.htm; checked 2026-11-07",
     miss: ["The journal is a separate book.", "Correct. Those methods are the definition.", "Turning a page does not change content.", "The seal is the notary's authentication, not that definition."],
   },
   {
@@ -1666,7 +1666,7 @@ const rows: Row[] = [
     options: ["Yes, if the video is clear", "Yes, if the call is recorded", "Yes, if the signer holds up an ID", "No"],
     correct: 3,
     why: "Ordinary presence is not a video call. Remote appearance requires the remote online commission, communication technology, and the rest of §456-23.",
-    source: "HRS §456-23; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["Picture quality does not create the commission.", "A recording does not create the commission.", "Holding up an ID on a video call does not create the commission.", "Correct. A video call is not ordinary presence and is not, by itself, a remote online notarization."],
   },
   {
@@ -1710,7 +1710,7 @@ const rows: Row[] = [
     options: ["$5,000", "$15,000", "No bond", "$1,000, at the notary's own expense"],
     correct: 3,
     why: "HRS §456-5 requires an official surety bond of $1,000 at the notary's expense, approved by a circuit judge.",
-    source: "HRS §456-5; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm; checked 2026-11-07",
+    source: "HRS §456-5; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm; checked 2026-11-07",
     miss: ["$5,000 is not the amount in §456-5.", "$15,000 is not the amount in §456-5.", "The statute requires the bond.", "Correct. The Hawaii bond is $1,000."],
   },
   {
@@ -1721,7 +1721,7 @@ const rows: Row[] = [
     options: ["The signer", "The surety", "The State", "The notary's employer"],
     correct: 2,
     why: "HRS §456-5 says the obligee of each bond or continuation certificate is the State.",
-    source: "HRS §456-5; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm; checked 2026-11-07",
+    source: "HRS §456-5; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm; checked 2026-11-07",
     miss: ["The signer is not the obligee.", "The surety issues the bond. The surety is not the obligee.", "Correct. The State is the obligee.", "The employer is not the obligee."],
   },
   {
@@ -1732,7 +1732,7 @@ const rows: Row[] = [
     options: ["The circuit clerk", "A surety company authorized to do business in Hawaii", "Any out-of-state individual", "The notary"],
     correct: 1,
     why: "HRS §456-5 requires a surety company authorized to do business in the State. The FAQ also points to an insurer or surety licensed in Hawaii.",
-    source: "HRS §456-5; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm; checked 2026-11-07",
+    source: "HRS §456-5; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm; checked 2026-11-07",
     miss: ["The clerk files the approved bond. The clerk does not write it.", "Correct. The surety must be authorized in Hawaii.", "An unauthorized individual is not the statutory surety.", "The notary cannot be the notary's own surety under this section."],
   },
   {
@@ -1743,7 +1743,7 @@ const rows: Row[] = [
     options: ["On file with the clerk of the circuit court in the circuit where the notary resides", "In the notary's desk only", "With the Lieutenant Governor", "With the employer"],
     correct: 0,
     why: "HRS §456-5 says that after the judge approves the bond, it is deposited and kept in that clerk's office. The clerk keeps a bond record.",
-    source: "HRS §456-5; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm; checked 2026-11-07",
+    source: "HRS §456-5; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm; checked 2026-11-07",
     miss: ["Correct. The clerk of the notary's circuit keeps it.", "The notary does not privately hold the filed bond as the official file.", "The Lieutenant Governor is not the bond file.", "The employer is not the bond file."],
   },
   {
@@ -1754,7 +1754,7 @@ const rows: Row[] = [
     options: ["That the notary will charge the maximum fee every time", "That the notary will issue apostilles", "That the employer will supervise every act", "That the notary will faithfully perform the duties of the commission"],
     correct: 3,
     why: "The condition is faithful performance of the duties required by law or rule, and of the duties undertaken under color of the commission.",
-    source: "HRS §456-5; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm; checked 2026-11-07",
+    source: "HRS §456-5; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0005.htm; checked 2026-11-07",
     miss: ["Maximum fees are not the bond condition.", "Apostilles are not the bond condition.", "Employer supervision is not the bond condition.", "Correct. Faithful performance is the condition."],
   },
   {
@@ -1776,7 +1776,7 @@ const rows: Row[] = [
     options: ["$80", "$40", "$100", "$20"],
     correct: 1,
     why: "The statute text read on November 7, 2026, prints $40 for renewal and says the fees may be adjusted by rule. HAR §5-11-46(a)(6) lists renewal at $100. This question asks for the printed statute amount.",
-    source: "HRS §456-9(a)(2); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
+    source: "HRS §456-9(a)(2); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
     miss: ["$80 is the rule's restoration line.", "Correct. The printed statute amount is $40.", "$100 is the later rule line, not the figure printed in §456-9(a)(2).", "$20 is the rule's renewal-application line."],
   },
   {
@@ -1798,7 +1798,7 @@ const rows: Row[] = [
     options: ["$25", "$2.50", "$100", "$5"],
     correct: 3,
     why: "The protest lines in §456-17 are $5. The $25 line is the remote-act paragraph.",
-    source: "HRS §456-17(1); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
+    source: "HRS §456-17(1); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
     miss: ["$25 is not the protest line.", "$2.50 is the duplicate certificate amount.", "$100 is a commission fee, not a protest.", "Correct. A protest is $5 under that paragraph."],
   },
   {
@@ -1809,7 +1809,7 @@ const rows: Row[] = [
     options: ["$2.50", "$100", "$25", "$5"],
     correct: 2,
     why: "Paragraph (8) sets $25 for the listed acts performed for a remotely located individual under §456-23, other than affixing the certificate to a duplicate original.",
-    source: "HRS §456-17(8); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
+    source: "HRS §456-17(8); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0017.htm; checked 2026-11-07",
     miss: ["$2.50 is the duplicate line the statute carves out of the $25.", "$100 is not a signer fee.", "Correct. This remote acknowledgment is the $25 line.", "$5 is the in-person acknowledgment line."],
   },
   {
@@ -1820,7 +1820,7 @@ const rows: Row[] = [
     options: ["There is no processing fee", "Ten percent", "One percent", "Fifty percent"],
     correct: 1,
     why: "The statute allows an electronic processing service fee of up to ten percent of the transaction, in addition to the printed commission fees.",
-    source: "HRS §456-9(a)(3); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
+    source: "HRS §456-9(a)(3); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
     miss: ["The paragraph states the fee.", "Correct. The cap in that paragraph is ten percent.", "One percent is lower than the statute.", "Fifty percent is higher than the statute."],
   },
   {
@@ -1842,7 +1842,7 @@ const rows: Row[] = [
     options: ["$20", "$5", "$1,000", "$500, under HRS §456-9(c)(4)"],
     correct: 3,
     why: "HRS §456-9(c)(4) states $500 for failing to authenticate the acknowledgment or jurat with the described certificate.",
-    source: "HRS §456-9(c)(4); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
+    source: "HRS §456-9(c)(4); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
     miss: ["$20 is a different fine.", "$5 is a fee, not this fine.", "$1,000 is the bond.", "Correct. That failure is $500 in the statute."],
   },
   {
@@ -1853,7 +1853,7 @@ const rows: Row[] = [
     options: ["$500 for every missing line", "$50 only", "$200", "$20"],
     correct: 2,
     why: "The statute states $200 for that failure. The $50-to-$500 range is in §456-15(j) for failing to comply with the journal section, including audits. The question asks for §456-9(c)(5).",
-    source: "HRS §456-9(c)(5); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
+    source: "HRS §456-9(c)(5); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
     miss: ["This paragraph does not use a per-line $500.", "The range belongs to a different subsection.", "Correct. This paragraph states $200.", "$20 is the loss-notice fine in §456-9(c)(6)."],
   },
   {
@@ -1864,7 +1864,7 @@ const rows: Row[] = [
     options: ["No exemption exists", "The attorney general's issuance and renewal fees, and the clerk's fee for filing a copy of the commission", "The signer's $5, which the notary must still collect and keep", "The remote online issuance fee, because every government notary is a remote notary"],
     correct: 1,
     why: "Section 456-18(2) states those exemptions. It does not turn the government notary into a remote online notary, and it forbids demanding a fee for the public service.",
-    source: "HRS §456-18; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0018.htm; checked 2026-11-07",
+    source: "HRS §456-18; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0018.htm; checked 2026-11-07",
     miss: ["The statute states the exemptions.", "Correct. Those government-notary fee exemptions are specific.", "The notary does not collect a personal fee for public business.", "Government service is not remote authority."],
   },
   {
@@ -1875,7 +1875,7 @@ const rows: Row[] = [
     options: ["A debt due and owing to the State", "A private debt to the signer", "A tip", "A bond credit"],
     correct: 0,
     why: "HRS §456-9(e) says unpaid fees, fines, and forfeitures are a debt due and owing to the State.",
-    source: "HRS §456-9(e); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
+    source: "HRS §456-9(e); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
     miss: ["Correct. The State is the creditor for those amounts.", "The signer is not the creditor for the attorney general's fees and fines.", "A fine is not a tip.", "The bond is not a credit against the fine."],
   },
   {
@@ -1919,7 +1919,7 @@ const rows: Row[] = [
     options: ["Failing to notify the attorney general within ten days after loss, misplacement, or theft of the stamping device or a journal, and failing to give law enforcement's theft report to the attorney general", "Failing to keep a journal for ten years", "Charging $5 for an acknowledgment", "Filing the bond"],
     correct: 0,
     why: "That paragraph states the $20 fine and the ten-day notice. HAR's loss section also uses a $20 fine, without restating the ten-day figure in the same words. This question uses the statute's text.",
-    source: "HRS §456-9(c)(6); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
+    source: "HRS §456-9(c)(6); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0009.htm; checked 2026-11-07",
     miss: ["Correct. That is the $20 statute fine.", "Journal retention uses a different fine.", "The $5 acknowledgment fee is lawful.", "Filing the bond is a duty, not this fine."],
   },
   {
@@ -2040,7 +2040,7 @@ const rows: Row[] = [
     options: ["Loss of the apostille", "The $50 to $500 range for failing to comply with a journal audit", "No consequence, because the journal is private", "A $5 acknowledgment fee"],
     correct: 1,
     why: "HRS §456-15(j) and HAR §5-11-46 both use that range for audit noncompliance.",
-    source: "HRS §456-15(j); HAR §5-11-46; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
+    source: "HRS §456-15(j); HAR §5-11-46; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0015.htm; checked 2026-11-07",
     miss: ["The notary does not hold an apostille to lose.", "Correct. The audit can be enforced with that fine.", "The statute authorizes the audit. The journal is not beyond inspection.", "The acknowledgment fee is unrelated."],
   },
   {
@@ -2216,7 +2216,7 @@ const rows: Row[] = [
     options: ["An apostille", "Notice to the attorney general that the notary will perform remote acts, and identification of the technologies the notary intends to use", "Nothing, if the remote commission is already in the notary's pocket", "A new $1,000 bond for every act"],
     correct: 1,
     why: "The statute requires that notice and technology identification before the initial remote act. The technologies must meet the attorney general's standards.",
-    source: "HRS §456-23(f); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23(f); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["An apostille is not the pre-act notice.", "Correct. Notify and identify the technology first.", "The commission is not a substitute for the pre-act notice.", "The bond is not collected per act."],
   },
   {
@@ -2227,7 +2227,7 @@ const rows: Row[] = [
     options: ["In this State", "Anywhere, if the signer is in Hawaii", "Anywhere, if the technology works", "In the same room as the signer"],
     correct: 0,
     why: "HRS §456-23(b) says a remote online notary public located in this State may perform the act for a remotely located individual.",
-    source: "HRS §456-23(b); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23(b); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["Correct. The notary is in Hawaii. The signer is the remote person.", "The signer's location does not move the notary out of the State.", "Working technology does not move the notary out of the State.", "The same room would not be a remotely located individual."],
   },
   {
@@ -2238,7 +2238,7 @@ const rows: Row[] = [
     options: ["A single selfie", "A mailed photocopy of a license", "The signer's email address", "Personal knowledge, a credible witness before the remote notary, or at least two different types of identity proofing"],
     correct: 3,
     why: "The statute lists those three paths. One selfie, a mailing, or an email address is not the list.",
-    source: "HRS §456-23(b)(1); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23(b)(1); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["A selfie is not the list.", "Mail is not appearance through the required technology.", "An email address is not the list.", "Correct. Use one of the three statutory paths."],
   },
   {
@@ -2293,7 +2293,7 @@ const rows: Row[] = [
     options: ["A photograph of the ID only", "No recording if the journal is complete", "An audiovisual recording of the notarial act", "An audio-only recording"],
     correct: 2,
     why: "The statute requires an audiovisual recording. The communication-technology definition also requires simultaneous sight and sound.",
-    source: "HRS §456-23(b)(3); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23(b)(3); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["A still photo of the ID is not the recording of the act.", "The journal does not replace the recording.", "Correct. Audio and video, not audio alone.", "Audio alone misses the visual record."],
   },
   {
@@ -2304,7 +2304,7 @@ const rows: Row[] = [
     options: ["Until the signer downloads it", "At least ten years after the recording is made", "Ninety days", "One year"],
     correct: 1,
     why: "HRS §456-23(e) sets a minimum of ten years unless a rule requires a different period.",
-    source: "HRS §456-23(e); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23(e); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["The signer's download does not end the notary's duty.", "Correct. The statutory floor is ten years.", "Ninety days is not the retention period.", "One year is not the floor."],
   },
   {
@@ -2315,7 +2315,7 @@ const rows: Row[] = [
     options: ["That the notarial act used communication technology. The statute's sufficient statement is: This notarial act involved the use of communication technology", "That the signer was in the same room", "That an apostille is attached", "Nothing, if the ordinary acknowledgment wording is used"],
     correct: 0,
     why: "HRS §456-23(c) and (d) require the certificate to indicate communication technology, and they supply that sample statement.",
-    source: "HRS §456-23(c) and (d); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23(c) and (d); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["Correct. The certificate has to say the technology was used.", "The same room would not be remote.", "An apostille is not the remote certificate statement.", "Ordinary wording that hides the remote act does not meet the statute."],
   },
   {
@@ -2326,7 +2326,7 @@ const rows: Row[] = [
     options: ["No additional limit", "The notary must travel to that country", "The act is allowed only if the signer is a Hawaii resident", "The document must fit one of the listed U.S. connections, and the foreign state must not prohibit the signing or statement"],
     correct: 3,
     why: "The subsection requires a listed connection to the United States and that the foreign state not prohibit the act.",
-    source: "HRS §456-23(b)(4); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23(b)(4); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["The subsection adds limits.", "The notary remains located in Hawaii.", "Hawaii residence of the signer is not the test in that paragraph.", "Correct. Overseas signers have those extra conditions."],
   },
   {
@@ -2370,7 +2370,7 @@ const rows: Row[] = [
     options: ["Communicate by email within one day", "Communicate by audio only", "Communicate by text message", "Communicate simultaneously by sight and sound"],
     correct: 3,
     why: "The definition requires simultaneous sight and sound, and it includes accommodating a vision, hearing, or speech impairment when necessary and consistent with other law.",
-    source: "HRS §456-23, communication technology; https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23, communication technology; https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["Email is not simultaneous sight and sound.", "Audio only omits sight.", "Text omits both.", "Correct. Sight and sound, at the same time."],
   },
   {
@@ -2425,7 +2425,7 @@ const rows: Row[] = [
     options: ["Only in the apostille FAQ", "It is not a duty", "HRS §456-23(b)(2)", "Only in the bond statute"],
     correct: 2,
     why: "The statute requires the notary to be reasonably able to confirm it is the same document.",
-    source: "HRS §456-23(b)(2); https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
+    source: "HRS §456-23(b)(2); https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/HRS_0456-0023.htm; checked 2026-11-07",
     miss: ["The apostille FAQ does not state this comparison.", "The duty is in the statute.", "Correct. Same-document confirmation is a statutory condition.", "The bond does not state this comparison."],
   },
   {

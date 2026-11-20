@@ -14118,8 +14118,8 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "heading": "Wisconsin DFI Remote guide 2A.6-2A.7 and 2B.3-2B.6",
           "body": "Official source checked November 14, 2026.",
           "link": {
-            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
-            "label": "Open official source",
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=25",
+            "label": "Open current DFI Notary Public Handbook",
             "placement": "section",
             "targetMode": "official"
           }
@@ -14207,8 +14207,8 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "heading": "Wisconsin DFI Remote guide 2A.2-2A.6 and 1.4",
           "body": "Official source checked November 14, 2026.",
           "link": {
-            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
-            "label": "Open official source",
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=24",
+            "label": "Open current DFI Notary Public Handbook",
             "placement": "section",
             "targetMode": "official"
           }
@@ -14286,8 +14286,8 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "heading": "Wisconsin DFI Remote guide 3.1-3.3",
           "body": "Official source checked November 14, 2026.",
           "link": {
-            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
-            "label": "Open official source",
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26",
+            "label": "Open current DFI Notary Public Handbook",
             "placement": "section",
             "targetMode": "official"
           }
@@ -14365,8 +14365,8 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "heading": "Wisconsin DFI Remote guide 3.2-3.3",
           "body": "Official source checked November 14, 2026.",
           "link": {
-            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
-            "label": "Open official source",
+            "href": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26",
+            "label": "Open current DFI Notary Public Handbook",
             "placement": "section",
             "targetMode": "official"
           }

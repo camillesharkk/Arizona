@@ -2058,8 +2058,8 @@ export const fullStateSources: Record<string, Source> = {
     "source_id": "wi-remote-guide",
     "source_type": "SOS",
     "title": "Wisconsin DFI, Guidance for Notaries Seeking to Perform Notarial Acts for Remotely Located Individuals",
-    "reference": "March 22, 2024 served edition, all fourteen pages, Parts 1-3",
-    "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
+    "reference": "March 22, 2024 edition, Parts 1-3, reproduced in the State Bar of Wisconsin packet",
+    "url": "https://www.wisbar.org/wssfc/2024/PublishingImages/Pages/Resources/TECH6_ESignatureTechnology.pdf#page=20",
     "last_verified_at": "2026-11-14",
     "last_checked_at": "2026-11-14"
   },
@@ -2085,7 +2085,7 @@ export const fullStateSources: Record<string, Source> = {
     "source_id": "wi-ron-recertification",
     "source_type": "SOS",
     "title": "Wisconsin DFI remote provider recertification form",
-    "reference": "NOT107, revised August 2025, p. 1, provider recertification conditions",
+    "reference": "NOT107, revised November 2026, p. 1, provider recertification conditions",
     "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/Forms/NOT107.pdf",
     "last_verified_at": "2026-11-19",
     "last_checked_at": "2026-11-19"

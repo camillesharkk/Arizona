@@ -4,7 +4,7 @@ import type { StateArticle } from "@/lib/state-articles";
 const ag = "https://ag.hawaii.gov/notaries-public/";
 const har = "https://ag.hawaii.gov/wp-content/uploads/2022/03/HAR-Ch-5-11.pdf";
 const scheduler = "https://notary.ehawaii.gov/notary/public/notary-scheduler.html";
-const hrs = (file: string) => `https://www.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/${file}`;
+const hrs = (file: string) => `https://data.capitol.hawaii.gov/hrscurrent/Vol10_Ch0436-0474/HRS0456/${file}`;
 
 function item(slug: string, article: Omit<StateArticle, "state" | "slug" | "path" | "updated">): StateArticle {
   return { ...article, state: "HI", slug, path: `/hawaii/${slug}/`, updated: "2026-11-07" };

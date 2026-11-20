@@ -4687,7 +4687,7 @@
       "boundary": "Arrange retrieval and storage while completing the new provider's onboarding.",
       "mixup": "Cancelling a subscription does not erase the legal retention period.",
       "source": "Wisconsin DFI Remote guide 2A.6 and 2B.6",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=25"
     },
     {
       "id": "wi-card-041",
@@ -4698,7 +4698,7 @@
       "boundary": "Remote deposition oaths have their separately identified rule.",
       "mixup": "A universal video workflow does not address all categories.",
       "source": "Wisconsin DFI Remote guide 1.4 and 2A.1",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=22"
     },
     {
       "id": "wi-card-042",
@@ -4720,7 +4720,7 @@
       "boundary": "Qualifying personal knowledge supplies the stated proofing exception.",
       "mixup": "A passing notary exam does not verify a customer's remote identity.",
       "source": "Wisconsin DFI Remote guide 2A.3-2A.5",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=24"
     },
     {
       "id": "wi-card-044",
@@ -4731,7 +4731,7 @@
       "boundary": "Tamper evidence must reveal later changes.",
       "mixup": "A similar filename alone does not establish the same record.",
       "source": "Wisconsin DFI Remote guide 2A.2",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=22"
     },
     {
       "id": "wi-card-045",
@@ -4742,7 +4742,7 @@
       "boundary": "Repositories may help, but the notary remains ultimately responsible.",
       "mixup": "The ordinary optional journal does not replace this recording.",
       "source": "Wisconsin DFI Remote guide 2A.6",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=25"
     },
     {
       "id": "wi-card-046",
@@ -4753,7 +4753,7 @@
       "boundary": "Retention alone does not authorize marketing use.",
       "mixup": "A subscription payment is not separate written disclosure consent.",
       "source": "Wisconsin DFI Remote guide 2A.7",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=10"
     },
     {
       "id": "wi-card-047",
@@ -4764,7 +4764,7 @@
       "boundary": "The attorney completes the compliance affidavit.",
       "mixup": "An ordinary provider account does not replace legal supervision.",
       "source": "Wisconsin DFI Remote guide 3.2-3.3",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26"
     },
     {
       "id": "wi-card-048",
@@ -4775,7 +4775,7 @@
       "boundary": "Ordinary RON has different signer-location treatment.",
       "mixup": "A Wisconsin mailing address does not relocate a person across the border.",
       "source": "Wisconsin DFI Remote guide 3.2",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26"
     },
     {
       "id": "wi-card-049",
@@ -4786,7 +4786,7 @@
       "boundary": "The notary and attorney observe the signing.",
       "mixup": "A hidden signature below the camera misses a stated safeguard.",
       "source": "Wisconsin DFI Remote guide 3.2",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26"
     },
     {
       "id": "wi-card-050",
@@ -4797,7 +4797,7 @@
       "boundary": "The attorney completes the statutory compliance affidavit.",
       "mixup": "An ordinary PDF download alone does not perform every estate step.",
       "source": "Wisconsin DFI Remote guide 3.2-3.3",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26"
     }
   ],
   "guideTopics": {
@@ -5220,7 +5220,7 @@
       "sources": [
         {
           "title": "Wisconsin DFI Remote guide 2A.6-2A.7 and 2B.3-2B.6",
-          "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+          "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=25"
         },
         {
           "title": "Wisconsin DFI Remote Online Notary registration",
@@ -5269,7 +5269,7 @@
       "sources": [
         {
           "title": "Wisconsin DFI Remote guide 2A.2-2A.6 and 1.4",
-          "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+          "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=24"
         }
       ],
       "faqs": [
@@ -5313,7 +5313,7 @@
       "sources": [
         {
           "title": "Wisconsin DFI Remote guide 3.1-3.3",
-          "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+          "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26"
         }
       ],
       "faqs": [
@@ -5357,7 +5357,7 @@
       "sources": [
         {
           "title": "Wisconsin DFI Remote guide 3.2-3.3",
-          "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+          "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26"
         }
       ],
       "faqs": [
@@ -5426,8 +5426,8 @@
     {
       "id": "wi-remote-guide",
       "title": "Wisconsin DFI, Guidance for Notaries Seeking to Perform Notarial Acts for Remotely Located Individuals",
-      "url": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf",
-      "reference": "March 22, 2024 served edition, all fourteen pages, Parts 1-3",
+      "url": "https://www.wisbar.org/wssfc/2024/PublishingImages/Pages/Resources/TECH6_ESignatureTechnology.pdf#page=20",
+      "reference": "March 22, 2024 edition, Parts 1-3, reproduced in the State Bar of Wisconsin packet",
       "checkedAt": "2026-11-14"
     },
     {

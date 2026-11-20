@@ -1,9 +1,9 @@
 // Per-item source locators rechecked during the full-bank review on 2026-11-09.
 export const nyReviewedSources: Record<string, string> = {
-  "ny-001": "New York DOS, July-December 2026 examination information, About the Exam and Exam Center Policies; https://dos.ny.gov/system/files/documents/2026/06/july-dec-2026-notary-written-exam-info-and-schedule_0.pdf; reviewed 2026-11-09",
-  "ny-002": "New York DOS, July-December 2026 examination information, What to Bring item 2; https://dos.ny.gov/system/files/documents/2026/06/july-dec-2026-notary-written-exam-info-and-schedule_0.pdf; reviewed 2026-11-09",
-  "ny-003": "New York DOS, July-December 2026 examination information, Score Reporting; https://dos.ny.gov/system/files/documents/2026/06/july-dec-2026-notary-written-exam-info-and-schedule_0.pdf; reviewed 2026-11-09",
-  "ny-004": "New York DOS, July-December 2026 examination information, Score Reporting; https://dos.ny.gov/system/files/documents/2026/06/july-dec-2026-notary-written-exam-info-and-schedule_0.pdf; reviewed 2026-11-09",
+  "ny-001": "New York DOS, July-December 2026 examination information, About the Exam and Exam Center Policies; https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule; reviewed 2026-11-09",
+  "ny-002": "New York DOS, July-December 2026 examination information, What to Bring item 2; https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule; reviewed 2026-11-09",
+  "ny-003": "New York DOS, July-December 2026 examination information, Score Reporting; https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule; reviewed 2026-11-09",
+  "ny-004": "New York DOS, July-December 2026 examination information, Score Reporting; https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule; reviewed 2026-11-09",
   "ny-005": "New York DOS, FAQ, General FAQs: Who is exempt for taking the notary public examination?; https://dos.ny.gov/notary-public-frequently-asked-questions; reviewed 2026-11-09",
   "ny-006": "New York DOS, FAQ, General FAQs: Who is exempt for taking the notary public examination?; https://dos.ny.gov/notary-public-frequently-asked-questions; reviewed 2026-11-09",
   "ny-007": "New York DOS, September 2026 License Law, Executive Law 130(1), p.5; https://dos.ny.gov/notary-public-license-law-0; reviewed 2026-11-09",

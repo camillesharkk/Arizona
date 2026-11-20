@@ -8722,7 +8722,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Arrange retrieval and storage while completing the new provider's onboarding.",
       "mixup": "Cancelling a subscription does not erase the legal retention period.",
       "source": "Wisconsin DFI Remote guide 2A.6 and 2B.6",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=25"
     },
     {
       "id": "wi-card-041",
@@ -8733,7 +8733,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Remote deposition oaths have their separately identified rule.",
       "mixup": "A universal video workflow does not address all categories.",
       "source": "Wisconsin DFI Remote guide 1.4 and 2A.1",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=22"
     },
     {
       "id": "wi-card-042",
@@ -8755,7 +8755,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Qualifying personal knowledge supplies the stated proofing exception.",
       "mixup": "A passing notary exam does not verify a customer's remote identity.",
       "source": "Wisconsin DFI Remote guide 2A.3-2A.5",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=24"
     },
     {
       "id": "wi-card-044",
@@ -8766,7 +8766,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Tamper evidence must reveal later changes.",
       "mixup": "A similar filename alone does not establish the same record.",
       "source": "Wisconsin DFI Remote guide 2A.2",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=22"
     },
     {
       "id": "wi-card-045",
@@ -8777,7 +8777,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Repositories may help, but the notary remains ultimately responsible.",
       "mixup": "The ordinary optional journal does not replace this recording.",
       "source": "Wisconsin DFI Remote guide 2A.6",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=25"
     },
     {
       "id": "wi-card-046",
@@ -8788,7 +8788,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Retention alone does not authorize marketing use.",
       "mixup": "A subscription payment is not separate written disclosure consent.",
       "source": "Wisconsin DFI Remote guide 2A.7",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=10"
     },
     {
       "id": "wi-card-047",
@@ -8799,7 +8799,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "The attorney completes the compliance affidavit.",
       "mixup": "An ordinary provider account does not replace legal supervision.",
       "source": "Wisconsin DFI Remote guide 3.2-3.3",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26"
     },
     {
       "id": "wi-card-048",
@@ -8810,7 +8810,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "Ordinary RON has different signer-location treatment.",
       "mixup": "A Wisconsin mailing address does not relocate a person across the border.",
       "source": "Wisconsin DFI Remote guide 3.2",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26"
     },
     {
       "id": "wi-card-049",
@@ -8821,7 +8821,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "The notary and attorney observe the signing.",
       "mixup": "A hidden signature below the camera misses a stated safeguard.",
       "source": "Wisconsin DFI Remote guide 3.2",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26"
     },
     {
       "id": "wi-card-050",
@@ -8832,7 +8832,7 @@ export const fullStateCards: Partial<Record<FreeStateCode, FullStateLearning['ca
       "boundary": "The attorney completes the statutory compliance affidavit.",
       "mixup": "An ordinary PDF download alone does not perform every estate step.",
       "source": "Wisconsin DFI Remote guide 3.2-3.3",
-      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotariesBecomingRON.pdf"
+      "sourceUrl": "https://dfi.wi.gov/Documents/ConsumerServices/NotaryPublic/NotaryHandbook.pdf#page=26"
     }
   ],
   "WY": [

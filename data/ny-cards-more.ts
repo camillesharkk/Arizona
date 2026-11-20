@@ -1,4 +1,4 @@
-const DOS = "https://dos.ny.gov/notary-public-license-law";
+const DOS = "https://dos.ny.gov/notary-public-license-law-0";
 const FAQ = "https://dos.ny.gov/notary-public-frequently-asked-questions";
 
 export const nyCardsMore = [
