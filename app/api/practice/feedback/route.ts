@@ -14,7 +14,6 @@ import { resolveQuestionVersion } from "@/lib/question-version";
 import { ANSWER_FEEDBACK_STREAM } from "@/lib/answer-feedback";
 
 export const dynamic = "force-dynamic";
-export const preferredRegion = "syd1";
 
 const privateHeaders = { "Cache-Control": "private, no-store" };
 const letter = z.enum(["A", "B", "C", "D"]);
