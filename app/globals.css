@@ -597,6 +597,7 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
   background: transparent;
   color: var(--ink);
   grid-template-rows: 17px 16px;
+  row-gap: 2px;
   align-content: center;
   font-weight: 800;
 }
