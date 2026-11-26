@@ -22,6 +22,7 @@ export type ClientPack = {
   quickReady: boolean;
   purchaseEnabled: boolean;
   handbookUrl?: string;
+  officialNext?: { label: string; url: string };
   practiceNotice?: Notice;
   freeLaunch: boolean;
   fullCountFor: (isPro: boolean) => number;

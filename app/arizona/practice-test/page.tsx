@@ -9,45 +9,38 @@ import { pageMeta } from "@/lib/seo";
 import { eligibleExamPool } from "@/lib/quiz";
 
 const practicePool = eligibleExamPool();
-const practiceFreeCount = practicePool.filter((q) => q.is_free).length;
+const freeQuestions = practicePool.filter((question) => question.is_free);
+const publicSampleIds = ["az-001", "az-007", "az-012", "az-016", "az-024", "az-029"];
 
 export const metadata = pageMeta({
-  title: "Arizona Notary Exam Practice Test 2026 | Free Quick 10 & Full 45",
-  description: `Practice bank of ${practicePool.length} questions. ${practiceFreeCount} are free for Quick 10 and topic practice. Pro includes all ${practicePool.length}. Each Full 45 draws ${examConfig.questionCount}. Not official exam questions.`,
+  title: `${examConfig.state} Notary Practice Test | Free Quick 10 & Full ${examConfig.questionCount}`,
+  description: `Prepare for the Arizona notary exam with independent questions and explanations. Use ${freeQuestions.length} free questions for Quick 10 and topic practice, or try the timed Full ${examConfig.questionCount}.`,
   path: paths.practice,
-  keywords: "Arizona notary exam practice test, free Arizona notary practice test",
 });
 
 export default function PracticeTestPage() {
-  const pool = practicePool;
-  const free = pool.filter((q) => q.is_free);
-  const samples = ["commission", "identification", "acknowledgments", "jurats", "seals-fees", "prohibited-acts"]
-    .flatMap((topic) => free.filter((q) => q.topic === topic).slice(0, 1));
+  const samples = publicSampleIds.flatMap(id => freeQuestions.filter(question => question.question_id === id));
   return (
-    <main className="wrap hero">
+    <main className="wrap hero" data-notary-white-canvas>
       <p className="kicker">Practice Test</p>
-      <h1><MemberCopy member={<>Arizona Notary Exam Practice Test — Quick 10 & Full 45</>}>Arizona Notary Exam Practice Test — Free Quick 10 & Full 45</MemberCopy></h1>
+      <h1>{`${examConfig.state} Notary Practice Test`}</h1>
       <p>
-        <strong>
-          The practice bank has {pool.length} questions. {free.length}<MemberCopy member={<> are available to all learners. Pro can use all </>}> are free. Pro can use all </MemberCopy>{pool.length}. Each Full 45
-          draws {examConfig.questionCount} distinct questions from that bank.
-        </strong>
+        Try Quick 10 or practice one topic for feedback as you answer. Use Full {examConfig.questionCount} for a timed practice exam with a score and explanations after you submit.
       </p>
       <p>
-        Quick 10 and topic practice without Pro use only the {free.length}<MemberCopy member={<> starter questions. The other </>}> free questions. The other </MemberCopy>{pool.length - free.length}<MemberCopy member={<> are
-        Pro-only. One starter Full 45 in this browser can include Pro questions.
-      </>}> are
-        Pro-only. One free Full 45 in this browser can include Pro questions.
-      </MemberCopy></p>
+        <MemberCopy member={<>Your Pro access includes all {practicePool.length} questions and additional full practice exams.</>}>
+          Quick 10 and topic practice draw from {freeQuestions.length} free questions. One introductory Full {examConfig.questionCount} can include Pro questions. Pro adds the other {practicePool.length - freeQuestions.length} questions and additional full attempts.
+        </MemberCopy>
+      </p>
       <Suspense fallback={<p className="notice">Loading exam…</p>}>
         <PracticeLaunch />
       </Suspense>
       <section className="card" style={{ margin: "20px 0" }}>
         <h2>What happens during and after the test?</h2>
         <p>
-          Quick 10 shows whether the answer is correct after each question. Full 45 gives you {examConfig.timeLimitMinutes} minutes and hides explanations until you submit.
-          The practice target is {examConfig.passingScorePercent}%. The SOS notice checked on {officialExam.checkedOn} lists the same question count, time, and passing score.{" "}
-          <a href={examConfig.officialExamUrl}>Arizona SOS exam notice</a>
+          Full {examConfig.questionCount} gives you {examConfig.timeLimitMinutes} minutes. Our practice target is {examConfig.passingScorePercent}%.
+          Each practice set uses independently written questions. After submitting, review the explanations for the questions you missed.{" "}
+          <a href={officialExam.noticeUrl}>Arizona Secretary of State exam notice</a>, checked November 27, 2026.
         </p>
       </section>
       <section aria-labelledby="sample-questions">
@@ -73,7 +66,7 @@ export default function PracticeTestPage() {
         {" · "}
         <Link href={paths.guidesIndex}>Exam guides</Link>
         {" · "}
-        <Link href={paths.pricing}>Pro</Link>
+        <MemberCopy member={<Link href={paths.daily}>Continue in Daily Study</Link>}><Link href={paths.pricing}>What Pro adds</Link></MemberCopy>
       </p>
     </main>
   );

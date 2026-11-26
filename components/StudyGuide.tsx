@@ -80,7 +80,7 @@ export function StudyGuide({ stateCode, title, lede, introduction, chapters, sit
       ))}
       <section className="study-pro" aria-labelledby="study-pro-heading">
         <h2 id="study-pro-heading">Put what you’ve learned into practice</h2>
-        {purchaseEnabled ? <><p>Use Pro to practice more questions on the topics in this guide and prepare with full practice exams.</p>
+        {purchaseEnabled ? <><p>{stateCode === "CA" || stateCode === "HI" ? "Keep using the free question bank. Pro adds repeat full practice and a higher AI Tutor allowance." : "Use Pro to practice more questions on the topics in this guide and prepare with full practice exams."}</p>
         <p><Link href={sitePaths.pricing}>Explore Pro</Link></p></> : <p><Link href={`${sitePaths.practice}?mode=quick`}><MemberCopy member={<>Start Member Practice</>}>Start Free Practice</MemberCopy></Link></p>}
       </section>
     </main></StudyProgressProvider>

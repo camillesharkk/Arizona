@@ -7,6 +7,7 @@ import { activeCaQuestions, caQuestionCounts } from "@/data/ca-questions";
 import { CA_EXAM, caPaths } from "@/lib/ca-site";
 import { caStudyTopics } from "@/lib/ca-topics";
 import { canonicalUrl } from "@/lib/site";
+import Link from "next/link";
 
 const counts = caQuestionCounts();
 
@@ -48,6 +49,9 @@ export default function Page() {
       <Suspense fallback={<p className="notice">Loading exam…</p>}>
         <PracticeLaunch stateCode="CA" />
       </Suspense>
+      {counts.free === counts.published && <p>
+        Every California question is available for free. A free account keeps wrong answers, favorites and Daily Study synced across devices. Pro adds repeat Full 45 practice after the included sitting and a higher AI Tutor allowance. <Link href={caPaths.mistakes}>Review wrong answers</Link>
+      </p>}
       <PracticeAfterword
         during={`Quick 10 shows whether the answer is correct after each question. Full 45 gives you ${CA_EXAM.timeLimitMinutes} minutes and hides explanations until you submit. Forty items are scored and five are unscored. The site study route uses ${CA_EXAM.studyCutoff} of 10 on Quick 10. That cutoff is not the official scaled score.`}
         samples={samples}

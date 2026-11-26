@@ -1,5 +1,5 @@
 import { fullStateSources } from './full-state-sources.ts';
-import { freeStateSources } from "./free-state-questions.ts";
+import { freeStateSources } from "./free-state-sources.ts";
 import type { Source } from "../lib/types.ts";
 import { ncSources } from "./nc-sources.ts";
 

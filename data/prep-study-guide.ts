@@ -14,10 +14,10 @@ export const prepGuideTopics: Partial<Record<PrepCode, Record<string, PrepGuideT
       summary: "Prepare for the written examination, recognize the limits of a practice result, and keep professional-conduct rules in your study routine.",
       sections: [
         { heading: "Build a study sequence", body: "Read the Department of State License Law booklet before drilling questions. Start with appointment and authority, then compare acknowledgments, affidavits, oaths and affirmations. Work through the journal and electronic-notary rules separately. When reviewing a question, explain the rule and why each alternative fails. Revisit an uncertain correct answer alongside your mistakes." },
-        { heading: "Official examination and site practice", body: "The current Department bulletin describes a multiple-choice examination with one hour after instructions. It reports results as passed or failed and leaves the item count and numerical passing threshold unspecified. This site's 40-question, 60-minute full practice and Quick 10 study target are preparation settings. Check the Department's current schedule and your location's admission arrangements before traveling." },
+        { heading: "Check the exam schedule and admission instructions", body: "Before traveling, check the Department's schedule for your chosen location and read the admission instructions for that site." },
       ],
-      example: { heading: "Worked example — a practice percentage", body: "Maya gets 28 of 40 questions right in this site's practice and calls it an official passing score. The Department bulletin does not publish that numerical rule. She should use the missed topics to plan review, follow the official admission instructions, and wait for the Department's actual pass-or-fail notice. A practice result also does not grant a commission." },
-      keyFacts: ["Official examination time is one hour after instructions.", "A passing examination result is valid for two years.", "The site's 40-question practice is a study setting."],
+      example: { heading: "Worked example — a practice percentage", body: "Maya uses her practice score and missed topics to plan review. After taking the state exam, she waits for the Department's pass-or-fail notice before relying on the result in her application." },
+      keyFacts: ["Check the admission instructions for your location.", "A passing examination result is valid for two years.", "Use missed practice topics to plan review."],
     },
     appointment: {
       summary: "Follow qualification, appointment, statewide authority and certificate requirements through the whole commission term.",

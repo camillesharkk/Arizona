@@ -39,6 +39,7 @@ export type PrepPack = {
   fullDetail: string;
   purchaseEnabled?: boolean;
   handbookUrl?: string;
+  officialNext?: { label: string; url: string };
   practiceNotice?: { title: string; body: string; anchor: string };
   anonKey: string;
   pickQuick: (seed: number) => Question[];
@@ -92,6 +93,7 @@ const freePacks = Object.fromEntries(freeStateCatalog.map(([code]) => {
     fullReady, quickReady: questions().length >= 10,
     cards: fullStateCards[code] || [], purchaseEnabled: ready && features?.purchase !== false,
     handbookUrl: freeStateContent[code]?.sources.find(source => /manual|handbook/i.test(source.title))?.url,
+    officialNext: freeStateContent[code]?.officialNext,
   } satisfies PrepPack];
 })) as unknown as Record<FreeStateCode, PrepPack>;
 

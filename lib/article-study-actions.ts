@@ -21,6 +21,6 @@ export function articleStudyActions(state: StateCode): ArticleLink[] {
     { href: `${site.practice}?mode=quick`, label: 'Try 10 free questions', placement: 'section', targetMode: 'quick' },
     { href: site.study, label: 'Review the Study Guide', placement: 'section', targetMode: 'guide' },
     ...(features?.fullPractice === false ? [] : [{ href: `${site.practice}?mode=full`, label: 'Start full practice', placement: 'end', targetMode: 'full' } as const]),
-    ...(features?.purchase === false ? [{ href: site.questions, label: 'Review practice questions', placement: 'end', targetMode: 'topic' } as const] : [{ href: site.pricing, label: 'Explore the Pro question bank', placement: 'end', targetMode: 'pricing' } as const]),
+    ...(features?.purchase === false ? [{ href: site.questions, label: 'Review practice questions', placement: 'end', targetMode: 'topic' } as const] : [{ href: site.pricing, label: 'Compare Pro plans', placement: 'end', targetMode: 'pricing' } as const]),
   ];
 }

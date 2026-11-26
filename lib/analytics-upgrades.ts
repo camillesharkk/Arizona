@@ -1,4 +1,5 @@
 import { isPricingPath, rememberUpgradeSource, trackAnalyticsEvent } from "./analytics.ts";
+import { LIFETIME_PRO_PRODUCT_CODE, SITE_PRO_PRODUCT_CODE } from "./pro-products.ts";
 
 /** Observe actual visibility, including links rendered after quiz results load. */
 export function observeUpgradeLinks(root: Document = document) {
@@ -6,6 +7,20 @@ export function observeUpgradeLinks(root: Document = document) {
   const seen = new Set<string>();
   const source = (link: HTMLAnchorElement) => link.dataset.upgradeSource ||
     (link.closest("header") ? "header" : link.closest("footer") ? "footer" : "page_content");
+  const context = (link: HTMLAnchorElement) => {
+    const mode = link.dataset.upgradeMode;
+    const count = Number(link.dataset.upgradeQuestionCount);
+    const state = link.dataset.upgradeState;
+    const product = link.dataset.upgradeProduct;
+    return {
+      entry_point: source(link),
+      ...(state && /^[A-Z]{2}$/.test(state) ? { state } : {}),
+      ...(product === SITE_PRO_PRODUCT_CODE || product === LIFETIME_PRO_PRODUCT_CODE
+        ? { product_code: product, plan: product === LIFETIME_PRO_PRODUCT_CODE ? "lifetime" : "60_day" } : {}),
+      ...(mode && /^(?:quick10|full\d{1,2}|topic|practice)$/.test(mode) ? { mode } : {}),
+      ...(Number.isInteger(count) && count > 0 && count <= 80 ? { question_count: count } : {}),
+    };
+  };
   const isUpgrade = (link: HTMLAnchorElement) => {
     try {
       const url = new URL(link.href, window.location.href);
@@ -16,10 +31,11 @@ export function observeUpgradeLinks(root: Document = document) {
     for (const entry of entries) {
       if (!entry.isIntersecting || entry.intersectionRatio < 0.5) continue;
       const link = entry.target as HTMLAnchorElement;
-      const entryPoint = source(link);
-      if (!seen.has(entryPoint)) {
-        seen.add(entryPoint);
-        trackAnalyticsEvent("upgrade_view", { entry_point: entryPoint });
+      const params = context(link);
+      const key = [window.location.pathname, params.state, params.entry_point, params.product_code].join("|");
+      if (!seen.has(key)) {
+        seen.add(key);
+        trackAnalyticsEvent("upgrade_view", params);
       }
       observer?.unobserve(link);
     }
@@ -37,7 +53,7 @@ export function observeUpgradeLinks(root: Document = document) {
     if (!link || !isUpgrade(link)) return;
     const entryPoint = source(link);
     rememberUpgradeSource(entryPoint);
-    trackAnalyticsEvent("upgrade_click", { entry_point: entryPoint });
+    trackAnalyticsEvent("upgrade_click", context(link));
   };
   scan();
   const mutations = new MutationObserver(scan);

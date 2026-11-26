@@ -1,5 +1,6 @@
 import type { SeoGuide } from "@/lib/seo-guides";
-import { officialExamChecked } from "@/data/exam-config";
+import { officialExam, officialExamChecked } from "@/data/exam-config";
+import { paths } from "@/lib/paths";
 
 export const expandedGuides: SeoGuide[] = [
   {
@@ -334,48 +335,38 @@ export const expandedGuides: SeoGuide[] = [
     "id": "open-book",
     "path": "/is-the-arizona-notary-exam-open-book/",
     "title": "Is the Arizona Notary Exam Open Book?",
-    "description": "Prepare for the built-in manual with a repeatable lookup method and timed practice.",
+    "description": "Yes. Arizona provides its notary manual inside the exam. Paper copies are prohibited at test centers and during remote testing.",
     "kicker": "Is the Arizona Notary Exam Open Book?",
     "h1": "Is the Arizona Notary Exam Open Book?",
-    "lede": "Yes. The SOS notice says the manual is built into the examination, while physical copies are prohibited at test centers and during remote testing.",
-    checked: officialExamChecked,
+    "lede": "Yes. The Arizona Notary Public Reference Manual is available inside the exam. You cannot bring a paper copy to a test center or use one during remote testing.",
+    modified: "2026-11-27",
+    checked: "Arizona Secretary of State exam notice checked November 27, 2026.",
     "sections": [
       {
-        "heading": "Practice finding a rule, not just a keyword",
-        "body": "First name the issue: identity, the act, certificate, journal or fee. Find the relevant manual section, read the surrounding conditions, and return to the question. A matching word alone may not answer a scenario with an exception.",
-        "sourceId": "sos_new_notary"
+        "heading": "What reference can I use during the exam?",
+        "body": "Use the manual provided by the exam. To prepare, download the current edition from the Secretary of State. The notice confirms that the manual is built in. Follow the testing provider’s instructions for how to use it.",
+        "sourceId": "sos_new_notary",
+        "href": "https://azsos.gov/resources/notary-manual-cover",
+        "hrefLabel": "Get the current official notary manual"
       },
       {
-        "heading": "Rehearse a lookup log",
-        "body": "During practice, record the question topic, section consulted and whether the lookup changed your answer. If you search repeatedly for the same rule, review that chapter separately. Do not assume outside websites or a second device are permitted during the official exam.",
-        "href": "/arizona-notary-study-guide/",
-        "hrefLabel": "Build familiarity with the study chapters"
-      },
-      {
-        "heading": "Use a timer after chapter review",
-        "body": "Try a timed Full 45 and review how many items required long searches. Our simulation does not reproduce the vendor\u2019s built-in manual interface. It helps you practice decisions and pacing, not certify your testing setup.",
-        "href": "/arizona-notary-practice-test/?mode=full",
-        "hrefLabel": "Practice under a timer"
+        "heading": "Find the rule before you practice under time",
+        "body": "Work through a few manual lookups first. Then try a timed Arizona practice set and review explanations after submitting.",
+        "href": `${paths.practice}?mode=full`,
+        "hrefLabel": "Try timed Arizona practice",
+        targetMode: "full"
       }
     ],
     "related": [
-      {
-        "href": "/arizona-notary-study-guide/",
-        "label": "Study Guide: review the rules behind missed answers"
-      },
-      {
-        "href": "/arizona-notary-practice-test/",
-        "label": "Practice test: Quick 10 and Full 45"
-      },
-      {
-        "href": "/arizona-notary-exam-guides/",
-        "label": "All Arizona exam guides"
-      }
+      { "href": paths.study, "label": "Arizona Notary Study Guide" },
+      { "href": paths.practice, "label": "Arizona Notary Practice Test" },
+      { "href": paths.guidesIndex, "label": "All Arizona exam guides" }
     ],
     "ctas": [
       {
-        "href": "/arizona-notary-practice-test/?mode=quick",
-        "label": "Try 10 free questions"
+        "href": "/arizona/guides/open-book-manual-lookup-drills/",
+        "label": "Try Arizona manual lookup drills",
+        targetMode: "guide"
       }
     ]
   },
@@ -386,8 +377,9 @@ export const expandedGuides: SeoGuide[] = [
     "description": "After a failed Arizona notary exam, the SOS notice allows three attempts, then a 30-day wait. Confirm the live booking rule before you schedule again.",
     "kicker": "Retake",
     "h1": "Arizona Notary Exam Retake Rules: What to Do Next",
-    "lede": "The current SOS notice says the exam can be taken three times; after the third failure, you must wait 30 days to reschedule. The notice also lists a $35 charge for each proctored examination. Verify current instructions before booking again.",
-    checked: officialExamChecked,
+    "lede": `The Arizona Secretary of State allows ${officialExam.attemptsBeforeWait} attempts. After the third unsuccessful attempt, you must wait ${officialExam.waitDaysAfterLimit} days to reschedule. The notice lists a $${officialExam.examFeeUsd} fee for each proctored exam.`,
+    modified: "2026-11-27",
+    checked: "Arizona Secretary of State exam notice checked November 27, 2026.",
     "sections": [
       {
         "heading": "Check the booking rule before another attempt",
@@ -396,15 +388,17 @@ export const expandedGuides: SeoGuide[] = [
       },
       {
         "heading": "Repair the cause of a miss",
-        "body": "Separate rule gaps, confusing acts and pacing problems. For a rule gap, read the manual chapter and write a one-sentence explanation. For pacing, rehearse a timed set. If a score report gives only a total, do not invent a topic breakdown; use independent practice to diagnose gaps.",
-        "href": "/arizona-notary-study-guide/",
-        "hrefLabel": "Review the chapters"
+        "body": "Use Quick 10 to identify one or two rules to revisit. Read the corresponding chapter and explain both the correct answer and why the other choices do not fit. Use the practice results to plan your review, especially if your official score report did not break down the topics.",
+        "href": paths.study,
+        "hrefLabel": "Review the Arizona Study Guide",
+        targetMode: "guide"
       },
       {
-        "heading": "Avoid memorizing the same answers",
-        "body": "Re-answer a missed question only after explaining its source. Another scenario shows whether you learned the rule or remembered the letter. Start with Quick 10, then reread the chapter for the topic you miss.",
-        "href": "/arizona-notary-practice-test/?mode=quick",
-        "hrefLabel": "Start with Quick 10"
+        "heading": "Apply the rules to a fresh scenario",
+        "body": "Try a different question on a topic you missed before repeating a full set. If your main problem was finding the right rule under time pressure, rehearse a manual lookup and note where you got stuck.",
+        "href": "/arizona/guides/open-book-manual-lookup-drills/",
+        "hrefLabel": "Try Arizona manual lookup drills",
+        targetMode: "guide"
       }
     ],
     "related": [
@@ -423,8 +417,9 @@ export const expandedGuides: SeoGuide[] = [
     ],
     "ctas": [
       {
-        "href": "/arizona-notary-practice-test/?mode=quick",
-        "label": "Try 10 free questions"
+        "href": `${paths.practice}?mode=quick`,
+        "label": "Try 10 free questions",
+        targetMode: "quick"
       }
     ]
   },

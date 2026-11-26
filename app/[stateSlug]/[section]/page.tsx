@@ -8,6 +8,7 @@ import { fullStateArticles } from '@/lib/seo-article-catalog';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { PracticeLaunch } from '@/components/PracticeLaunch';
+import { PracticeAfterword } from '@/components/PracticeAfterword';
 import { CloudMistakes } from '@/components/CloudMistakes';
 import { DailyStudyClient } from '@/components/DailyStudyClient';
 import { FreeStateGuide, FreeStateSources } from '@/components/FreeStatePages';
@@ -15,9 +16,11 @@ import { freeStateContent } from '@/data/free-state-content';
 import { freeStateCatalog, freeStateFeatures, freeStateForSlug, freeStatePaths, releasedFreeStates } from '@/lib/free-state-catalog';
 import { productionStateBlocked } from '@/lib/state-release';
 import { pageMeta } from '@/lib/seo';
+import { publicPracticeSamples } from '@/lib/public-practice-samples';
 import Link from 'next/link';
 
 const sections = ['practice', 'study-guide', 'become-a-notary', 'exam-guide', 'resources', 'laws', 'wrong-answers', 'daily-study', 'questions', 'study-cards', 'pricing', 'passing-score'];
+const ohioEducation = 'https://www.ohiosos.gov/notary/become-a-notary-in-ohio/education-and-testing';
 export const dynamicParams = false;
 export function generateStaticParams() {
   return freeStateCatalog.flatMap(([code, , stateSlug]) => sections.filter(section => section !== 'pricing' || freeStateFeatures[code]?.purchase !== false).map(section => ({ stateSlug, section })));
@@ -27,6 +30,18 @@ export async function generateMetadata({ params }: { params: Promise<{ stateSlug
   const { stateSlug, section } = await params;
   const state = freeStateForSlug(stateSlug);
   if (!state) return {};
+  if (state[0] === 'OH' && section === 'practice') return pageMeta({
+    title: 'Ohio Notary Practice Test | Free Questions & Explanations',
+    description: 'Try free Ohio notary practice questions, review explanations with official sources, and prepare for your approved course and assessment.',
+    path: '/ohio/practice/',
+    index: releasedFreeStates.includes('OH') && process.env.VERCEL_ENV !== 'preview',
+  });
+  if (state[0] === 'OH' && section === 'questions') return pageMeta({
+    title: 'Ohio Notary Questions & Answers | Original Examples',
+    description: 'Read original Ohio notary scenarios with answers, explanations and official Ohio Revised Code references. Review acknowledgments, jurats and prohibited acts.',
+    path: '/ohio/questions/',
+    index: releasedFreeStates.includes('OH') && process.env.VERCEL_ENV !== 'preview',
+  });
   const label = section === 'practice' ? 'Notary Practice Questions' : section === 'wrong-answers' ? 'Wrong Answers' : section === 'resources' || section === 'laws' ? 'Official Notary Resources' : section === 'daily-study' ? 'Daily Study' : section === 'study-cards' ? 'Notary Study Cards' : section === 'pricing' ? '60-Day Pro Access' : section === 'questions' ? 'Notary Question Bank' : 'Notary Application and Study Guide';
   return pageMeta({ title: `${state[1]} ${label}`, description: `Prepare for ${state[1]} notary duties with free original practice, explanations and dated official application sources.`,
     path: `/${stateSlug}/${section}/`, index: releasedFreeStates.includes(state[0]) && !['wrong-answers', 'daily-study'].includes(section) && process.env.VERCEL_ENV !== 'preview' });
@@ -61,8 +76,30 @@ export default async function Page({ params, searchParams }: {
   }
   if (section === 'questions') {
     const query = await searchParams;
+    if (code === 'OH') return <main className="wrap hero" data-public-practice data-notary-white-canvas>
+      <h1>Ohio Notary Questions and Answers</h1>
+      <p>Review original Ohio scenarios with answers, explanations and official references. Use the question bank to answer on your own, or <a href="#sample-questions">read the worked examples</a>.</p>
+      <p><Link className="btn btn-primary" href={site.practice}>Choose an Ohio practice mode</Link></p>
+      <QuestionsClient key={code} stateCode={code} topic={query.topic} />
+      <PracticeAfterword
+        publicLanding
+        samples={publicPracticeSamples('OH')}
+        links={[{ href: site.study, label: 'Ohio study guide' }, { href: site.practice, label: 'Ohio practice' }]}
+      />
+    </main>;
     return <main className="wrap hero"><h1>{state[1]} Practice Questions</h1><QuestionsClient key={code} stateCode={code} topic={query.topic} /></main>;
   }
+  if (section === 'practice' && code === 'OH' && full) return <main className="wrap hero" data-notary-white-canvas>
+    <h1>Ohio Notary Practice Test</h1>
+    <p>Start with a free Quick 10, practice one topic, or choose Comprehensive Practice.</p>
+    <Suspense fallback={<p role="status">Loading practice…</p>}><PracticeLaunch key={code} stateCode={code} /></Suspense>
+    <section className="card">
+      <h2>What to expect</h2>
+      <p>Quick 10 and topic practice draw from {counts.free} free questions out of {counts.published} published questions and give feedback as you answer. Comprehensive Practice uses {pack.fullCount} questions, with explanations after you submit and {pack.fullMinutes ? `a ${pack.fullMinutes}-minute limit` : 'no time limit'}.</p>
+      <p>Ohio’s initial non-attorney commission requires education and a test through an approved provider. For training, testing and separate renewal or remote-online requirements, see the <a href={ohioEducation}>Ohio Secretary of State’s education and testing page</a>, checked November 27, 2026.</p>
+      <p><Link href={`${site.questions}#sample-questions`}>Read Ohio sample questions and explanations</Link>{' · '}<Link href={site.become}>Ohio application steps</Link></p>
+    </section>
+  </main>;
   if (section === 'practice') return <main className="wrap hero"><h1>{state[1]} Notary Practice</h1>
     <p><MemberCopy member={<>Quick 10 gives ten original questions with explanations and official sources.</>}>Quick 10 gives ten free original questions with explanations and official sources.</MemberCopy></p>
     {full ? <><p>{counts.published} published questions · {counts.free}<MemberCopy member={<> starter · </>}> free · </MemberCopy>{counts.pro} Pro</p><p>{pack.fullDetail}</p>

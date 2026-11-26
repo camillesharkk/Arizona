@@ -2,7 +2,6 @@
 
 import { MemberCopy } from "@/components/MemberCopy";
 import { isFreeState } from "@/lib/free-state-catalog";
-import { FreeStateResultNext } from "@/components/FreeStateResultNext";
 import { fetchAccount } from "@/lib/client-account";
 import { ANSWER_FEEDBACK_STREAM, readAnswerFeedback, type AnswerFeedback } from "@/lib/answer-feedback";
 
@@ -10,17 +9,17 @@ import { useEffect, useRef, useState, type ReactNode, type Ref } from "react";
 import Link from "next/link";
 import type { Question } from "@/lib/types";
 import { packFor } from "@/lib/client-pack";
-import { weakestCaArea } from "@/lib/ca-result";
-import { scorePercent, topicLabel, weakTopics } from "@/lib/quiz-ui";
+import { scorePercent, topicLabel } from "@/lib/quiz-ui";
 import type { Letter } from "@/lib/answer-sequence";
 import { areaLabel, CA_EXAM, caPaths } from "@/lib/ca-site";
 import { HI_EXAM, hiPaths } from "@/lib/hi-site";
-import { hiStudyLabel } from "@/lib/hi-topics";
-import { examConfig, officialExam } from "@/data/exam-config";
+import { hiStudyTopics } from "@/lib/hi-topics";
+import { caStudyTopics } from "@/lib/ca-topics";
+import { examConfig, officialExam, topics as azTopics } from "@/data/exam-config";
 import { recordAnswer, saveProgress, loadProgress } from "@/lib/storage";
 import { currentQuestionVersion } from '@/lib/question-revisions';
 import { AccountInvite } from "@/components/AccountInvite";
-import { WrongAnswersLink } from "@/components/WrongAnswersLink";
+import { PracticeResultNext } from "@/components/PracticeResultNext";
 import { AnswerResult } from "@/components/AnswerResult";
 import { MessageDialog } from "@/components/MessageDialog";
 import { ExamNav, FlagIcon, LoadingNote, QuestionJump, RestartPracticeDialog } from "@/components/QuizChrome";
@@ -29,21 +28,41 @@ import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } 
 import { SaveForReview } from "@/components/SaveForReview";
 import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
 import { clearSitting, openSitting, readSitting, remainingSeconds, writeSitting, type Sitting, type SittingState } from "@/lib/sitting";
-import { weakestMissedTopic, topicStudyHref } from "@/lib/next-step";
-import { adoptGuestCaRecords, readCaAttempt, saveCaQuickAttempt } from "@/lib/ca-attempts";
-import { CtResultNext } from "@/components/CtResultNext";
+import { adoptGuestCaRecords, listCaAttempts, readCaAttempt, saveCaQuickAttempt, type CaQuickAttempt } from "@/lib/ca-attempts";
 import { ctSources } from "@/lib/ct-site";
-import { NcPracticeNext } from "@/components/NcPracticeNext";
 import { clearIndianaStart } from "@/lib/in-client";
-import { IndianaNext } from "@/components/IndianaNext";
-import { CaQuickNext } from "@/components/CaQuickNext";
 import { FREE_FULL_EXAMS } from "@/lib/product";
 import { scrollUnderHeaderAfterLayout } from "@/lib/scroll-under-header";
+import { claimResultView, diagnosePractice, RESULT_EVENT_VERSION, type PracticeResultOffer } from "@/lib/practice-result";
 
 type Mode = "quick" | "full" | "weak" | "practice";
 
 function withAnswerFeedback(question: Question, feedback: AnswerFeedback): Question {
   return { ...question, correct_option: feedback.correctOption, explanation: feedback.explanation, option_feedback: feedback.optionFeedback };
+}
+
+async function gradePractice(token: string, questions: Question[], answers: Record<string, Letter>, signal?: AbortSignal) {
+  const response = await fetch("/api/practice/feedback/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(30000)]) : AbortSignal.timeout(30000),
+    body: JSON.stringify({
+      token,
+      action: "grade",
+      answers: questions.map(item => ({ questionId: item.question_id, display: answers[item.question_id] })),
+    }),
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(body.error || "We couldn't score this set. Your answers are still here.");
+  const rows = new Map<string, AnswerFeedback>((body.results || []).map((row: AnswerFeedback & { questionId: string }) => [row.questionId, row]));
+  const graded = questions.map(question => {
+    const feedback = rows.get(question.question_id);
+    return feedback?.correctOption ? withAnswerFeedback(question, feedback) : question;
+  });
+  if (graded.some(question => answers[question.question_id] && !question.correct_option)) {
+    throw new Error("Feedback is incomplete. Your answers are still here.");
+  }
+  return { questions: graded, rows, token: body.token as string | undefined };
 }
 
 export function ExamRunner({
@@ -105,7 +124,9 @@ export function ExamRunner({
   const [signedIn, setSignedIn] = useState(false);
   const [fullExamCount, setFullExamCount] = useState(0);
   const [bootError, setBootError] = useState(false);
-  const [restrictedResult, setRestrictedResult] = useState<ReturnType<typeof readCaAttempt>>(null);
+  const [restrictedResult, setRestrictedResult] = useState<CaQuickAttempt | null>(null);
+  const [resultOffer, setResultOffer] = useState<PracticeResultOffer | null>(null);
+  const [batchPro, setBatchPro] = useState(false);
   const [bootMessage, setBootMessage] = useState("");
   const [bootTry, setBootTry] = useState(0);
   const [activeSeed, setActiveSeed] = useState<number | null>(null);
@@ -138,7 +159,6 @@ export function ExamRunner({
   const [answerFailures, setAnswerFailures] = useState<Record<string, AnswerCheckFailure | undefined>>({});
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const resultHeadingRef = useRef<HTMLHeadingElement | null>(null);
-  const resultRef = useRef<HTMLDivElement | null>(null);
   const answersRef = useRef(answers);
   const finishOnce = useRef(false);
   const localSaved = useRef(false);
@@ -167,7 +187,7 @@ export function ExamRunner({
       mode: modeKey,
       seed: activeSeed,
       questionIds: lockedIds,
-      questionVersions: Object.fromEntries(lockedIds.map(id => [id, currentQuestionVersion(id)])),
+      questionVersions: Object.fromEntries(questions.map(item => [item.question_id, item.version ?? currentQuestionVersion(item.question_id)])),
       presentationVersion,
       idx,
       answers,
@@ -202,6 +222,9 @@ export function ExamRunner({
     let cancel = false;
     setBootError(false);
     setRestrictedResult(null);
+    setResultOffer(null);
+    setBatchPro(false);
+    cloudSaved.current = false;
     initializedScope.current = "";
     setBootMessage("");
     setOwner(null);
@@ -253,12 +276,25 @@ export function ExamRunner({
             }),
           });
           const body = await response.json().catch(() => ({}));
+          if (cancel) throw new DOMException("Practice changed", "AbortError");
           if (!response.ok) throw new Error(typeof body.error === "string" ? body.error : "Could not load this practice set.");
           setServed(body.questions || []);
           tokenRef.current = body.token || "";
           if (Array.isArray(body.unscoredIds)) unscoredRef.current = body.unscoredIds;
           if (typeof body.examId === "string") examSaveId.current = body.examId;
-          return body as { seed: number; questionIds: string[]; presentationVersion?: number };
+          setBatchPro(body.pro === true);
+          setResultOffer(body.resultOffer ?? null);
+          return body as { seed: number; questionIds: string[]; presentationVersion?: number; token: string; questions: Question[] };
+        }
+        async function restoreFeedback(batch: Awaited<ReturnType<typeof openBatch>>, savedAnswers: Record<string, Letter>) {
+          if (!batch.questions.some(item => savedAnswers[item.question_id] && !item.correct_option)) return;
+          const graded = await gradePractice(batch.token, batch.questions, savedAnswers, controller.signal);
+          if (cancel) return;
+          setServed(graded.questions);
+          tokenRef.current = graded.token || batch.token;
+          for (const [id, row] of graded.rows) {
+            if (row.canonical && savedAnswers[id]) canonicalRef.current[`${id}:${savedAnswers[id]}`] = row.canonical;
+          }
         }
         const nextOwner = data.user?.id || "guest";
         setSignedIn(Boolean(data.user));
@@ -280,9 +316,30 @@ export function ExamRunner({
           if (nextOwner !== "guest") adoptGuestCaRecords(nextOwner, stateCode);
           const archived = readCaAttempt(nextOwner, requestedAttempt, stateCode);
           if (archived && archived.mode === mode) {
-            const batch = await openBatch({ seed: archived.seed, questionIds: archived.questionIds, restoreExamId: mode === "full" ? archived.id : undefined, presentationVersion: archived.presentationVersion ?? 1 });
+            const batch = await (async () => {
+              if (!archived.answers || !archived.attemptIds || typeof archived.seed !== "number") return null;
+              try {
+                const restored = await openBatch({
+                  seed: archived.seed, questionIds: archived.questionIds,
+                  ...(mode === "full" ? { restoreExamId: archived.id } : {
+                    restoreQuickVersions: archived.questionIds.map(id => archived.questionVersions?.[id] ?? 1),
+                  }),
+                  presentationVersion: archived.presentationVersion ?? 1,
+                });
+                if (restored.questionIds?.join("|") !== archived.questionIds.join("|")) return null;
+                await restoreFeedback(restored, archived.answers);
+                return restored;
+              } catch {
+                return null;
+              }
+            })();
             if (cancel) return;
-            viewOnly.current = Boolean(existing);
+            viewOnly.current = true;
+            if (!batch) {
+              setRestrictedResult(archived);
+              setDone(true);
+              return;
+            }
             setOwner(nextOwner);
             setActiveSeed(batch.seed);
             setPresentationVersion(batch.presentationVersion ?? archived.presentationVersion ?? 1);
@@ -300,16 +357,45 @@ export function ExamRunner({
             setRestored(true);
             return;
           }
+          const older = listCaAttempts(nextOwner, stateCode).find(item => item.id === requestedAttempt && item.mode === mode);
+          if (older) {
+            setRestrictedResult(older);
+            setDone(true);
+            return;
+          }
+          throw new Error("This saved practice could not be found on this device.");
         }
         viewOnly.current = false;
-        const batch = await openBatch({
-          seed: existing?.seed,
-          questionIds: existing?.questionIds,
-          token: startFresh ? undefined : existing?.practiceToken,
-          restoreExamId: mode === "full" && existing?.done ? existing.examId : undefined,
-          presentationVersion: existing?.presentationVersion ?? 2,
-        });
+        const batch = await (async () => {
+          try {
+            const restored = await openBatch({
+              seed: existing?.seed,
+              questionIds: existing?.questionIds,
+              token: startFresh ? undefined : existing?.practiceToken,
+              restoreExamId: mode === "full" && existing?.done ? existing.examId : undefined,
+              ...(mode === "quick" && existing?.done ? {
+                restoreQuickVersions: existing.questionIds.map(id => existing.questionVersions?.[id] ?? 1),
+              } : {}),
+              presentationVersion: existing?.presentationVersion ?? 2,
+            });
+            if (existing?.done) {
+              if (restored.questionIds?.join("|") !== existing.questionIds.join("|")) {
+                throw new Error("The saved questions could not be restored.");
+              }
+              await restoreFeedback(restored, existing.answers);
+            }
+            return restored;
+          } catch (error) {
+            const archived = existing?.done && existing.examId
+              ? listCaAttempts(nextOwner, stateCode).find(item => item.id === existing.examId && item.mode === mode) : null;
+            if (!archived || cancel) throw error;
+            setRestrictedResult(archived);
+            setDone(true);
+            return null;
+          }
+        })();
         if (cancel) return;
+        if (!batch) return;
         const ids = batch.questionIds || [];
         setOwner(nextOwner);
         setActiveSeed(batch.seed);
@@ -358,6 +444,8 @@ export function ExamRunner({
   useEffect(() => {
     if (viewOnly.current || !done || (mode !== "quick" && mode !== "full")) return;
     if (!owner || !examSaveId.current || activeSeed == null || !lockedIds?.length || !questions.length) return;
+    if (questions.some(item => answersRef.current[item.question_id] && !item.correct_option)) return;
+    if (readCaAttempt(owner, examSaveId.current, stateCode)) return;
     const answersNow = answersRef.current;
     const correctIds: string[] = [];
     const wrongIds: string[] = [];
@@ -389,7 +477,7 @@ export function ExamRunner({
       questionIds: lockedIds,
       answers: answersNow,
       originalAnswers,
-      questionVersions: Object.fromEntries(lockedIds.map(id => [id, currentQuestionVersion(id)])),
+      questionVersions: Object.fromEntries(questions.map(item => [item.question_id, item.version ?? currentQuestionVersion(item.question_id)])),
       presentationVersion,
       unscoredIds: mode === "full" ? [...unscoredRef.current] : [],
       attemptIds: { ...attemptIds.current },
@@ -413,7 +501,30 @@ export function ExamRunner({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [owner, activeSeed, lockedIds, idx, answers, explainOpen, marked, startedAt, done, modeKey]);
 
-  useEffect(() => { if (stateCode === "IN" && done) scrollUnderHeaderAfterLayout(resultRef.current); }, [stateCode, done]);
+  const entryPoint = layout === "compact" ? "home_practice" : focusArea ? "topic_practice" : "practice";
+  const resultReady = done && booted && questions.length > 0 &&
+    questions.every(item => !answers[item.question_id] || item.correct_option);
+  const resultId = restrictedResult?.id || examSaveId.current;
+  useEffect(() => {
+    if (!resultReady || !resultId || !crypto.subtle) return;
+    const id = resultId;
+    function report(attemptRef: string) {
+      try {
+        if (!claimResultView(window.localStorage, stateCode, id)) return;
+        trackAnalyticsEvent("result_view", {
+          ...examStartParams({ mode, practice, questionCount: questions.length, plan: batchPro ? "pro" : "free",
+            state: stateCode, topic: Boolean(focusArea), entryPoint }),
+          result_version: RESULT_EVENT_VERSION,
+          attempt_ref: attemptRef,
+        });
+      } catch { /* Browser storage can be disabled. */ }
+    }
+    void crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${stateCode}:${id}`)).then(hash => {
+      const attemptRef = Array.from(new Uint8Array(hash).slice(0, 12), byte => byte.toString(16).padStart(2, "0")).join("");
+      if (navigator.locks) void navigator.locks.request("notary-result-view", () => report(attemptRef)).catch(() => report(attemptRef));
+      else report(attemptRef);
+    }).catch(() => undefined);
+  }, [resultReady, resultId, entryPoint, focusArea, batchPro, mode, practice, questions.length, stateCode]);
 
   function reportExamStart() {
     if (startReported.current || !questions.length) return;
@@ -421,17 +532,17 @@ export function ExamRunner({
     poolLocked.current = true;
     setStartedAt((current) => current ?? Date.now());
     const plan = isPro ? "pro" : "free";
-    const start = examStartParams({ mode, practice, questionCount: questions.length, plan, state: stateCode });
+    const start = examStartParams({ mode, practice, questionCount: questions.length, plan, state: stateCode, topic: Boolean(focusArea), entryPoint });
     trackAnalyticsEvent("exam_start", start);
     if (start.mode === "quick10") trackEvent("quick10_start");
-    if (start.mode === "full45") trackEvent("full45_start", { plan });
+    if (start.mode === "full45" && (stateCode === "AZ" || stateCode === "CA")) trackEvent("full45_start", { plan });
   }
 
   useEffect(() => {
-    if (!booted || reportStart !== "mount" || startedAt) return;
+    if (!booted || done || reportStart !== "mount" || startedAt) return;
     reportExamStart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [booted, questions.length, reportStart, startedAt]);
+  }, [booted, done, questions.length, reportStart, startedAt]);
 
   useEffect(() => {
     if (!timed || done || !startedAt) return;
@@ -448,10 +559,11 @@ export function ExamRunner({
   }, [seconds, timed, done, booted, startedAt]);
 
   useEffect(() => {
-    if (stateCode !== "CT" || !done) return;
-    resultHeadingRef.current?.focus({ preventScroll: true });
-    scrollUnderHeaderAfterLayout(resultHeadingRef.current);
-  }, [done, stateCode]);
+    if (!done || location.hash.startsWith("#review-")) return;
+    const heading = resultHeadingRef.current;
+    heading?.focus({ preventScroll: true });
+    scrollUnderHeaderAfterLayout(heading);
+  }, [done]);
 
   const q = questions[idx];
   const selected = q ? answers[q.question_id] : undefined;
@@ -471,12 +583,16 @@ export function ExamRunner({
     scrollUnderHeaderAfterLayout(idxChanged && !open ? headingRef.current : explain || headingRef.current);
   }, [idx, booted, done, q, explainOpen]);
 
-  if (done && restrictedResult && isFreeState(stateCode)) {
+  if (done && restrictedResult) {
+    const unscored = new Set(restrictedResult.unscoredIds || []);
+    const savedCorrect = restrictedResult.correctIds?.filter(id => !unscored.has(id)).length;
+    const savedTotal = restrictedResult.questionIds.length - unscored.size;
+    const savedAnalytics = examStartParams({ mode, practice, questionCount: restrictedResult.questionIds.length,
+      plan: batchPro ? "pro" : "free", state: stateCode, topic: Boolean(focusArea), entryPoint });
     return <div className="grid"><div className="card result-summary">
-      <span className="kicker">Saved result</span><h2>{restrictedResult.correctIds.length} of {restrictedResult.questionIds.length} correct</h2>
-      <p>Your completed score and progress are saved. Pro opens the paid questions and explanations in this practice.</p>
-      <FreeStateResultNext code={stateCode} attemptId={restrictedResult.id} />
-      {mode === "quick" && <Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link>}
+      <h2 ref={resultHeadingRef} tabIndex={-1}>Saved result</h2>
+      {savedCorrect != null && <p>{savedCorrect} of {savedTotal} {unscored.size ? "scored items correct" : "correct"}.</p>}
+      <PracticeResultNext diagnosis={diagnosePractice([])} guide={site.study} pricing={site.pricing} offer={null} analytics={savedAnalytics} />
     </div></div>;
   }
 
@@ -640,31 +756,21 @@ export function ExamRunner({
     if (reportStart === "answer") reportExamStart();
     let live = questions;
     if (tokenRef.current) {
-      const response = await fetch("/api/practice/feedback/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          token: tokenRef.current,
-          action: "grade",
-          answers: questions.map((item) => ({ questionId: item.question_id, display: answersRef.current[item.question_id] })),
-        }),
-      });
-      const graded = await response.json().catch(() => ({}));
-      if (!response.ok) {
+      try {
+        const graded = await gradePractice(tokenRef.current, questions, answersRef.current);
+        live = graded.questions;
+        if (graded.token) tokenRef.current = graded.token;
+        for (const [id, row] of graded.rows) {
+          const selected = answersRef.current[id];
+          if (row.canonical && selected) canonicalRef.current[`${id}:${selected}`] = row.canonical;
+        }
+        setServed(live);
+      } catch (error) {
         finishOnce.current = false;
         setSubmitting(false);
-        setSubmitError(graded.error || "We couldn't score this set. Your answers are still here.");
+        setSubmitError(error instanceof Error ? error.message : "We couldn't score this set. Your answers are still here.");
         return;
       }
-      if (graded.token) tokenRef.current = graded.token;
-      const rows = new Map<string, { correctOption?: Letter; explanation?: string; optionFeedback?: Question["option_feedback"]; canonical?: Letter }>((graded.results || []).map((row: { questionId: string; correctOption?: Letter; explanation?: string; optionFeedback?: Question["option_feedback"]; canonical?: Letter }) => [row.questionId, row]));
-      live = questions.map((item) => {
-        const row = rows.get(item.question_id);
-        const selected = answersRef.current[item.question_id];
-        if (row?.canonical && selected) canonicalRef.current[`${item.question_id}:${selected}`] = row.canonical;
-        return row?.correctOption ? { ...item, correct_option: row.correctOption, explanation: row.explanation || "", option_feedback: row.optionFeedback || item.option_feedback } : item;
-      });
-      setServed(live);
     }
     const current = answersRef.current;
     const results = live.map((item) => ({
@@ -779,6 +885,8 @@ export function ExamRunner({
           score: pct,
           passed: topicPractice ? false : pct >= examConfig.passingScorePercent,
           state: stateCode,
+          topic: Boolean(focusArea),
+          entryPoint,
           plan: isPro ? "pro" : "free",
           durationSeconds: elapsed,
         })
@@ -788,257 +896,82 @@ export function ExamRunner({
 
 
   if (done) {
-    const results = questions.map((item) => ({
-      question: item,
-      correct: answers[item.question_id] === item.correct_option,
+    const results = questions.map(question => ({
+      question,
+      correct: Boolean(answers[question.question_id] && answers[question.question_id] === question.correct_option),
     }));
-    const correct = results.filter((r) => r.correct).length;
+    const correct = results.filter(result => result.correct).length;
     const pct = scorePercent(correct, questions.length);
-    const pass = topicPractice ? false : pct >= examConfig.passingScorePercent;
     const unscored = new Set(unscoredRef.current);
     const splitScore = (stateCode === "CA" || stateCode === "PA") && mode === "full";
-    const scoredRows = splitScore ? results.filter((item) => !unscored.has(item.question.question_id)) : results;
-    const scoredCorrect = scoredRows.filter((item) => item.correct).length;
-    const caMiss = stateCode === "CA" ? weakestCaArea(questions.map((item) => ({
-      question: item,
-      selected: answers[item.question_id],
-      correct: answers[item.question_id] === item.correct_option,
-    }))) : null;
-    const weak = weakTopics(results, 4).filter((w) => w.wrong > 0);
-    const topicAcc = new Map<string, { right: number; total: number; label: string }>();
-    results.forEach((r) => {
-      const key = pack || onHi ? r.question.study_topic || r.question.topic : stateCode === "CA" ? r.question.exam_area || r.question.topic : r.question.topic;
-      const cur = topicAcc.get(key) || { right: 0, total: 0, label: pack ? pack.topics.find(topic => topic.id === key)?.label || key : onHi ? hiStudyLabel(key) : stateCode === "CA" ? areaLabel(key) : topicLabel(r.question.topic) };
-      if (stateCode !== "IN" || answers[r.question.question_id]) cur.total += 1;
-      if (r.correct) cur.right += 1;
-      topicAcc.set(key, cur);
-    });
-    const guided = (mode === "quick" || mode === "full") && !review;
-    const missed = guided
-      ? weakestMissedTopic(
-          questions.map((item) => ({
-            question: item,
-            selected: answers[item.question_id],
-            correct: answers[item.question_id] === item.correct_option,
-          }))
-        )
-      : null;
-    const packMiss = [...topicAcc.entries()].filter(([, value]) => value.total > value.right)
-      .sort(([, a], [, b]) => (b.total - b.right) - (a.total - a.right))[0];
-    const studyHref = pack ? (packMiss ? pack.freeLaunch ? `${site.study}#${packMiss[0]}` : `${site.studyCards}?topic=${packMiss[0]}` : site.study)
-      : stateCode === "CA"
-      ? (caMiss ? `${site.studyCards}?topic=${caMiss.area}` : site.study)
-      : (missed ? topicStudyHref(missed.topic, isPro) : paths.study);
-    const recommend = pack ? (packMiss ? { label: packMiss[1].label } : null) : stateCode === "CA" ? caMiss : missed;
-    let anonFullUsed = false;
-    if (typeof window !== "undefined") {
-      try {
-        anonFullUsed = localStorage.getItem(anonFullKey) === "1";
-      } catch {
-        anonFullUsed = false;
-      }
-    }
+    const scoredCorrect = results.filter(result => result.correct && !unscored.has(result.question.question_id)).length;
+    const topicDefinitions = pack?.topics ?? (onHi ? hiStudyTopics : onCa ? caStudyTopics : azTopics);
+    const diagnosis = diagnosePractice(questions.map(question => {
+      const topic = [question.study_topic, question.exam_area, question.topic]
+        .map(id => topicDefinitions.find(item => item.id === id)).find(Boolean)
+        ?? (onCa && question.exam_area && areaLabel(question.exam_area) !== question.exam_area
+          ? { id: question.exam_area, label: areaLabel(question.exam_area) } : undefined);
+      return {
+        id: question.question_id,
+        selected: answers[question.question_id],
+        correctOption: question.correct_option,
+        topic,
+        unscored: unscored.has(question.question_id),
+      };
+    }));
+    const quickOrFull = mode === "quick" || mode === "full";
+    const analytics = examStartParams({ mode, practice, questionCount: questions.length,
+      plan: batchPro ? "pro" : "free", state: stateCode, topic: Boolean(focusArea), entryPoint });
+    let fullUsed = false;
+    try { fullUsed = localStorage.getItem(anonFullKey) === "1"; } catch { /* Storage is optional. */ }
     const practiceFull = Boolean(owner && openSitting(sessionStorage, owner, "full", stateCode));
-    const homeFull = Boolean(owner && openSitting(sessionStorage, owner, "home-full", stateCode));
+    const homeFull = Boolean(stateCode === "AZ" && owner && openSitting(sessionStorage, owner, "home-full", stateCode));
     const fullResume = practiceFull || homeFull;
-    const fullLocked = !fullResume && !isPro && ((signedIn && fullExamCount >= FREE_FULL_EXAMS) || (!signedIn && anonFullUsed));
-    const fullHref = homeFull && !practiceFull
-      ? `${site.home}?exam=full`
+    const fullLocked = !fullResume && !batchPro && (signedIn ? fullExamCount >= FREE_FULL_EXAMS : fullUsed);
+    const fullHref = homeFull && !practiceFull ? `${site.home}?exam=full`
       : `${site.practice}?mode=full${practiceFull ? "" : "&start=1"}`;
     const dailyHref = signedIn ? site.daily : `${site.login}?next=${encodeURIComponent(site.daily)}`;
-    const mistakesHref = (mode === "full" || isFreeState(stateCode)) && examSaveId.current ? `${site.mistakes}?attempt=${examSaveId.current}` : site.mistakes;
+    const scopedAttempt = quickOrFull && resultId ? `?attempt=${encodeURIComponent(resultId)}` : "";
+    const fullName = pack?.fullTitle ?? (onHi ? HI_EXAM.practiceName : `Full ${onCa ? CA_EXAM.questionCount : examConfig.questionCount}`);
+    const scoredTotal = onCa ? CA_EXAM.scoredCount : questions.length - unscored.size;
+    const scoreLabel = splitScore ? `${scoredCorrect} of ${scoredTotal} scored` : `${correct} of ${questions.length} correct`;
+    const scoredNote = splitScore
+      ? `${unscored.size} unscored items are marked below. The raw practice score is separate from the official scaled score.`
+      : stateCode === "AZ" && mode === "full"
+      ? `${pct}% in this practice. The Arizona SOS notice checked ${officialExam.checkedOn} lists ${officialExam.passingScorePercent}% for the official exam.`
+      : stateCode === "IN" && mode === "full"
+      ? "Indiana’s official exam uses a 24/30 reference line. This practice is separate from the official course and exam."
+      : pack?.practiceNotice?.body && mode === "full" ? pack.practiceNotice.body
+      : stateCode === "NY" && mode === "full" ? pack?.fullDetail
+      : onHi && mode === "full" ? HI_EXAM.practiceNote
+      : "";
+    const continueHref = `${site.practice}?mode=quick&start=1`;
     return (
       <div className="grid">
-        <div className="card result-summary" ref={resultRef}>
-          <span className="kicker">Result</span>
-          {isFreeState(stateCode) ? (
-            <><h2>{correct} of {questions.length} correct</h2><FreeStateResultNext code={stateCode} attemptId={examSaveId.current || ""} /></>
-          ) : stateCode === "NC" ? (
-            <>
-              <h2>{correct} of {questions.length} correct</h2>
-              <p className="lede">Your {mode === "quick" ? "Quick 10" : mode === "full" ? "Comprehensive Practice" : "Topic Practice"} result. {questions.filter(item => !answers[item.question_id]).length} skipped.</p>
-              <NcPracticeNext correct={correct} total={questions.length} topics={[...topicAcc.entries()].map(([id, value]) => ({ id, ...value }))} quick={mode === "quick"} />
-            </>
-          ) : stateCode === "CT" ? (
-            <>
-              <h2 ref={resultHeadingRef} tabIndex={-1}>{correct} of {questions.length} correct</h2>
-              <p className="lede">Your Connecticut practice result.</p>
-              <CtResultNext correct={correct} total={questions.length}
-                missedTopics={[...topicAcc.entries()].filter(([, value]) => value.right < value.total).map(([id, value]) => ({ id, label: value.label }))}
-                attemptId={mode === "quick" || signedIn ? examSaveId.current || "" : ""} />
-            </>
-          ) : guided && mode === "quick" ? (
-            <>
-              <h2>{correct} of {questions.length} correct</h2>
-              {stateCode === "IN" ? <IndianaNext mode="quick" correct={correct} total={questions.length} topics={[...topicAcc.entries()].map(([id,value]) => ({ id,...value }))} fullHref={fullHref} fullLocked={fullLocked} /> : topicPractice ? (
-                <CaQuickNext
-                  correct={correct}
-                  total={questions.length}
-                  skipped={questions.filter((item) => !answers[item.question_id]).length}
-                  misses={(() => {
-                    const counts = new Map<string, number>();
-                    questions.forEach((item) => {
-                      const selected = answers[item.question_id];
-                      if (!selected || selected === item.correct_option || !item.study_topic) return;
-                      counts.set(item.study_topic, (counts.get(item.study_topic) || 0) + 1);
-                    });
-                    return [...counts.entries()].map(([id, missed]) => ({ id, missed }));
-                  })()}
-                  attemptId={examSaveId.current || ""}
-                  fullHref={fullHref}
-                  fullResume={fullResume}
-                  fullLocked={fullLocked}
-                  communityHref={onCa ? paths.community : undefined}
-                  paths={pack ? pack.paths : onHi ? hiPaths : caPaths}
-                  fullName={pack ? pack.fullTitle : onHi ? "Comprehensive Practice" : "Full 45 Practice Exam"}
-                  labelFor={onHi ? hiStudyLabel : undefined}
-                  dailyState={pack ? pack.code : onHi ? "HI" : "CA"}
-                  limitNote={pack || onHi ? <MemberCopy member={`The introductory ${pack?.fullTitle ?? "Comprehensive Practice"} on this account or browser is already used.`}>{`The free ${pack?.fullTitle ?? "Comprehensive Practice"} on this account or browser is already used.`}</MemberCopy> : undefined}
-                />
-              ) : (
-                <>
-              <p className="lede">
-                {correct >= 8
-                  ? "Next: take a full practice exam."
-                  : recommend
-                    ? `Next: review ${recommend.label}.`
-                    : "Next: read the study guide, or try another 10 questions. Skipped questions are not enough to pick a topic."}
-              </p>
-              <div className="result-next">
-                {correct >= 8 ? (
-                  fullLocked ? (
-                    <a className="btn btn-primary" href={site.pricing} data-upgrade-source="practice_limit">Unlock Pro</a>
-                  ) : (
-                    <a className="btn btn-primary" href={fullHref}>{fullResume ? "Resume Full Practice Exam" : "Start a Full Practice Exam"}</a>
-                  )
-                ) : recommend ? (
-                  <a className="btn btn-primary" href={studyHref}>Review {recommend.label}</a>
-                ) : (
-                  <a className="btn btn-primary" href={site.study}>Review Study Guide</a>
-                )}
-                {correct >= 8 && recommend ? (
-                  <a className="btn btn-ghost" href={studyHref}>Review {recommend.label}</a>
-                ) : null}
-                {correct >= 8 && fullLocked ? (
-                  <p className="notice">
-                    <MemberCopy member={signedIn
-                      ? "This account has used its starter Full 45. Pro includes more full exams."
-                      : "This browser has used its starter Full 45. Pro includes more full exams."}>{signedIn
-                      ? "This account has used its free Full 45. Pro includes more full exams."
-                      : "This browser has used its free Full 45. Pro includes more full exams."}</MemberCopy>
-                  </p>
-                ) : null}
-                {correct < 8 && !recommend ? (
-                  <a className="btn btn-ghost" href={`${site.practice}?mode=quick&start=1`}>Check My Knowledge — 10 Questions</a>
-                ) : null}
-                <a className="btn btn-ghost" href={dailyHref}>Open Daily Study</a>
-              </div>
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              <h2>
-                {stateCode === "IN"
-                  ? `${correct}/${questions.length}`
-                  : onHi && mode === "full"
-                  ? `${correct} of ${questions.length}`
-                  : stateCode === "CA" && mode === "full"
-                  ? `${scoredCorrect} of 40 scored`
-                  : stateCode === "PA" && mode === "full"
-                  ? `${scoredCorrect} of 25 practice-scored`
-                  : (pack?.code === "NY" || pack?.code === "LA") && mode === "full"
-                  ? `${correct} of ${questions.length}`
-                  : `${pct}% — ${pass ? "PASS" : "NEEDS REVIEW"}`}
-              </h2>
-              <p className="lede">
-                {stateCode === "IN"
-                  ? `${pct}% correct in this site practice. ${mode === "full" ? "Indiana’s official exam uses a 24/30 reference line. This practice score does not complete the official course or exam." : "Review the rules below and try the topic again."}`
-                  : onHi && mode === "full"
-                  ? `${correct} of ${questions.length} correct. ${HI_EXAM.practiceNote} A score of ${HI_EXAM.practiceTargetPercent}% is this site's practice target. It is not an official exam result. The Attorney General's written exam requires at least ${HI_EXAM.officialPassingPercent}%.`
-                  : stateCode === "CA" && mode === "full"
-                  ? `${scoredCorrect} of 40 scored items correct. Five items are unscored and are marked below. This raw count is study feedback. The official exam uses a scaled score of at least 70, and a scaled score is not a percent.`
-                  : stateCode === "PA" && mode === "full"
-                  ? `${scoredCorrect} of 25 practice-scored items correct. Five items were this site's unscored set and are marked below. All 30 still count for study. This raw count is not the official scaled score of 75.`
-                  : pack?.code === "LA" && mode === "full"
-                  ? `${correct} of ${questions.length} correct. This 40-question, 90-minute set is this site's scenario practice. It covers selected statute-based skills, not the complete official study guide or four-hour examination. The official passing score is scaled 70 out of 100; this raw count cannot be converted to that scale.`
-                  : pack?.code === "NY" && mode === "full"
-                  ? `${correct} of ${questions.length} correct. This 40-question, 60-minute set is this site's practice. The Department of State reports pass or fail only and does not publish a numeric passing score. This count is not an official result.`
-                  : `${correct} of ${questions.length} correct. Practice target ${examConfig.passingScorePercent}%. The SOS notice checked ${officialExam.checkedOn} lists ${officialExam.passingScorePercent}% for the official exam. This result is not an SOS score.`}
-              </p>
-              {guided && mode === "full" && stateCode === "IN" ? <IndianaNext mode="full" correct={correct} total={questions.length} topics={[...topicAcc.entries()].map(([id,value]) => ({ id,...value }))} fullHref={fullHref} fullLocked={fullLocked} /> : guided && mode === "full" ? (
-                <div className="result-next">
-                  {recommend ? (
-                    <a className="btn btn-primary" href={studyHref}>Review {recommend.label}</a>
-                  ) : null}
-                  <a className={recommend ? "btn btn-ghost" : "btn btn-primary"} href={dailyHref}>Open Daily Study</a>
-                  <p className="notice">
-                    <MemberCopy member={signedIn
-                      ? "Missed questions stay on your review schedule. Daily Study shows a question when it is due."
-                      : "Sign in to sync this practice and open Daily Study. If your account has used its starter full practice for this state, Pro access is required."}>{signedIn
-                      ? "Missed questions stay on your review schedule. Daily Study shows a question when it is due."
-                      : "Sign in to sync this practice and open Daily Study. If your account has used its free full practice for this state, Pro access is required."}</MemberCopy>
-                  </p>
-                </div>
-              ) : null}
-            </>
-          )}
-          <h3>Topic accuracy</h3>
-          {[...topicAcc.entries()].map(([id, v]) => (
-            <p key={id}>
-              {v.label}: {v.total ? Math.round((v.right / v.total) * 100) : 0}% ({v.total - v.right} missed)
-            </p>
-          ))}
-          {stateCode !== "NC" && !guided && weak.length > 0 && (
-            <div style={{ marginTop: 16 }}>
-              <p>
-                <strong>Your weakest areas are:</strong>
-              </p>
-              <ul>
-                {weak.map((w) => (
-                  <li key={w.topic}>{w.label}</li>
-                ))}
-              </ul>
-              <p><MemberCopy member={<>Review those chapters in the starter study guide, then drill the missed items.</>}>Review those chapters in the free study guide, then drill the missed items.</MemberCopy></p>
-            </div>
-          )}
-          {isFreeState(stateCode) || stateCode === "CT" || stateCode === "NC" || (topicPractice && mode === "quick") ? null : guided ? (
-            <div className="result-links">
-              {topicPractice ? <Link href={mistakesHref}>Review wrong answers</Link> : <WrongAnswersLink label="Review wrong answers" href={mistakesHref} stateCode={stateCode} />}
-              <Link href={site.study}>Review Study Guide</Link>
-            </div>
-          ) : (
-            <div className="result-next">
-              {weak.length > 0 ? (
-                <Link className="btn btn-primary" href={`${site.practice}?mode=weak`}>
-                  Fix My Weak Areas
-                </Link>
-              ) : (
-                <Link className="btn btn-primary" href={site.questions}>
-                  Continue Practice
-                </Link>
-              )}
-              <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" href={mistakesHref} stateCode={stateCode} />
-              <Link className="btn btn-ghost" href={site.study}>
-                Review Study Guide
-              </Link>
-            </div>
-          )}
-          {mode === "quick" && (!onCa || !guided) && <p><Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link></p>}
-          <AccountInvite />
-          {isFreeState(stateCode) ? null : stateCode === "CT" ? <p className="notice"><MemberCopy member={<>Topic practice is available in the Connecticut question bank.</>}>Free learning uses the Connecticut free question pool.</MemberCopy></p> : onCa ? (
-            <p className="notice">This is study feedback for California. Forty items are scored. This raw count is not an official scaled score.</p>
-          ) : onHi ? (
-            <p className="notice">This is study feedback for Hawaii. This score is this site's practice result, not an official exam result.</p>
-          ) : stateCode === "IN" ? <p className="notice"><MemberCopy member={isPro ? "Indiana Pro is active for this account." : "Starter practice uses 60 Indiana questions. Pro opens all 203 questions across every available state for 60 days."}>{isPro ? "Indiana Pro is active for this account." : "Free practice uses 60 Indiana questions. Pro opens all 203 questions across every available state for 60 days."}</MemberCopy></p> : isPro ? (
-            <p className="notice">Pro is active. Keep practicing the topics you missed.</p>
-          ) : (
-            <p className="notice"><MemberCopy member={<>
-              Starter practice uses the starter question pool. Pro opens the rest of the bank and more full exams.</>}>
-              Free practice uses the free question pool. Pro opens the rest of the bank and more full exams.</MemberCopy>{" "}
-              <Link href={site.pricing} data-upgrade-source="exam_results">View Pro</Link>
-            </p>
-          )}
+        <div className="card result-summary">
+          <span className="kicker">Practice result</span>
+          <h2 ref={resultHeadingRef} tabIndex={-1}>{resultReady ? scoreLabel : "Practice feedback unavailable"}</h2>
+          {resultReady && scoredNote && <p className="lede">{scoredNote}</p>}
+          <PracticeResultNext diagnosis={diagnosis} guide={site.study} pricing={site.pricing}
+            offer={resultReady && !review ? resultOffer : null} analytics={analytics}>
+            {diagnosis.firstMissedId && (scopedAttempt || !quickOrFull) && <Link href={`${site.mistakes}${scopedAttempt}`}>Wrong Answers notebook</Link>}
+            {(!pack?.freeLaunch) && <Link href={dailyHref}>Daily Study</Link>}
+            {mode === "quick" && !fullLocked && pack?.fullReady !== false &&
+              <Link href={fullHref}>{fullResume ? "Resume" : "Start"} {fullName}</Link>}
+            {mode === "quick" && !preset && layout === "page"
+              ? <button className="btn btn-ghost" type="button" disabled={restarting} onClick={() => void startNew()}>
+                {restarting ? "Starting…" : "Try another Quick 10"}
+              </button>
+              : <a href={continueHref}>Try another Quick 10</a>}
+            {stateCode === "IN" && <Link href={`${site.become}#course-exam`}>Official course and exam</Link>}
+            {stateCode === "CT" && <Link href={site.become}>First application checklist</Link>}
+            {stateCode === "NC" && <Link href={`${site.home}#courses`}>Find an approved course</Link>}
+            {pack?.officialNext && <a href={pack.officialNext.url}>{pack.officialNext.label}</a>}
+            {topicPractice && site.studyCards !== site.study && <Link href={site.studyCards}>Study cards</Link>}
+            {mode === "quick" && <Link href={paths.community}>Community Insights</Link>}
+          </PracticeResultNext>
+          {submitError && <p className="form-error" role="alert">{submitError}</p>}
+          <AccountInvite returnTo={scopedAttempt ? `${site.practice}?mode=${mode}&attempt=${encodeURIComponent(resultId!)}` : undefined} />
         </div>
         {results.map((r, i) => (
           <QuestionBlock
@@ -1047,15 +980,17 @@ export function ExamRunner({
             tutor={isFreeState(stateCode) && !pack?.freeLaunch}
             index={i}
             selected={answers[r.question.question_id]}
-            reveal
+            reveal={Boolean(r.question.correct_option)}
+            reviewAnchor={`review-${r.question.question_id}`}
             isPro={isPro}
             lockPaid={false}
             extra={
-              unscored.has(r.question.question_id) ? (
-                <p className="notice">Unscored. This item did not affect the {stateCode === "PA" ? "25-item practice" : "40-item"} count.</p>
-              ) : stateCode === "CA" ? null : (
-                <SaveForReview questionId={r.question.question_id} hint={false} />
-              )
+              <>
+                {!answers[r.question.question_id] && !r.question.correct_option && <p className="notice">Not answered</p>}
+                {unscored.has(r.question.question_id)
+                  ? <p className="notice">Unscored for this practice</p>
+                  : stateCode !== "CA" && <SaveForReview questionId={r.question.question_id} hint={false} />}
+              </>
             }
           />
         ))}
@@ -1115,6 +1050,8 @@ export function ExamRunner({
     setActiveSeed(batch.seed);
     setPresentationVersion(batch.presentationVersion || 2);
     setLockedIds(batch.questionIds || []);
+    setBatchPro(batch.pro === true);
+    setResultOffer(batch.resultOffer ?? null);
     unscoredRef.current = batch.unscoredIds || [];
     setIdx(0);
     setAnswers({});
@@ -1126,6 +1063,8 @@ export function ExamRunner({
     startReported.current = false;
     poolLocked.current = false;
     localSaved.current = false;
+    cloudSaved.current = false;
+    viewOnly.current = false;
     examSaveId.current = batch.examId || null;
     attemptIds.current = {};
     pendingAnswers.current = {};
@@ -1138,6 +1077,12 @@ export function ExamRunner({
     setSubmitError("");
     setAnswerFailures({});
     setUnansweredToConfirm(0);
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("attempt")) {
+      url.searchParams.delete("attempt");
+      url.hash = "";
+      window.history.replaceState(null, "", url);
+    }
   }
 
   function toggleMark(questionId: string) {
@@ -1154,7 +1099,7 @@ export function ExamRunner({
           {restored ? " · Resumed" : ""}
         </span>
         <span className="row">
-          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{(onHi || stateCode === "CT" || stateCode === "NC" || stateCode === "IN") && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
+          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
           <button className="btn btn-ghost" type="button" disabled={checking} onClick={() => setConfirmRestart(true)}>Start new</button>
         </span>
       </div>
@@ -1265,6 +1210,7 @@ export function QuestionBlock({
   onToggleExplain,
   tutor = false,
   reason,
+  reviewAnchor,
 }: {
   q: Question;
   index: number;
@@ -1287,6 +1233,7 @@ export function QuestionBlock({
   onToggleExplain?: () => void;
   tutor?: boolean;
   reason?: string;
+  reviewAnchor?: string;
 }) {
   const map = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
   const letters = (["A", "B", "C", "D"] as const).filter((letter) => map[letter]);
@@ -1311,7 +1258,7 @@ export function QuestionBlock({
       {q.state === "CT" ? <p><a className="btn btn-ghost card-action" href={ctSources.manual} target="_blank" rel="noopener noreferrer">Open Official Handbook</a></p> : null}
       {reason ? <p className="notice">Why this question? {reason}</p> : null}
       {q.scenario_text ? <p className="notice">{q.scenario_text}</p> : null}
-      <h3 className="quiz-heading quiz-stem" ref={headingRef} tabIndex={-1}>
+      <h3 className="quiz-heading quiz-stem" id={reviewAnchor} ref={headingRef} tabIndex={-1}>
         {marked ? <span className="flagged-note"><FlagIcon /> Flagged</span> : null}
         {index + 1}. {q.question_text}
       </h3>

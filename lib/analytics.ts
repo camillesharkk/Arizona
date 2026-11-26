@@ -157,7 +157,7 @@ export function viewEventForPath(pathname: string): "landing_view" | "practice_v
 
 export function isPricingPath(pathname: string) {
   const path = pathname.replace(/\/$/, "");
-  if (path === paths.pricing.replace(/\/$/, "")) return true;
+  if (path === paths.pricing.replace(/\/$/, "") || path === "/lifetime") return true;
   const state = stateByCode(pathState(path) || "");
   return Boolean(state && path === `/${state.slug}/pricing`);
 }
@@ -269,7 +269,7 @@ export function applyCommonParams(params?: Record<string, string | number | bool
   if (typeof window !== "undefined" && window.location?.pathname) {
     out.page_path = window.location.pathname;
   }
-  Object.assign(out, readAttribution(), readUpgradeSource(), readArticleEntry(), params || {});
+  Object.assign(out, readAttribution(), readUpgradeSource(), readArticleEntry(params?.state || state), params || {});
   let probe = false;
   let acceptance = false;
   if (typeof window !== "undefined") {
@@ -415,9 +415,10 @@ export function resetIdentity(state: IdentityState, nextAnonymousId: string): Id
   return { distinctId, identifiedUserId: null };
 }
 
-export function examAnalyticsMode(mode: string, practice?: boolean): "quick10" | "full45" | "practice" {
+export function examAnalyticsMode(mode: string, practice?: boolean, questionCount?: number, topic?: boolean) {
   if (mode === "quick") return "quick10";
-  if (mode === "full" && !practice) return "full45";
+  if (mode === "full" && !practice) return questionCount ? `full${questionCount}` : "full45";
+  if (topic) return "topic";
   return "practice";
 }
 
@@ -427,12 +428,15 @@ export function examStartParams(input: {
   questionCount: number;
   plan: "free" | "pro";
   state?: string;
+  topic?: boolean;
+  entryPoint?: string;
 }) {
   return {
-    mode: examAnalyticsMode(input.mode, input.practice),
+    mode: examAnalyticsMode(input.mode, input.practice, input.questionCount, input.topic),
     question_count: input.questionCount,
     plan: input.plan,
     state: input.state || ANALYTICS_STATE,
+    ...(input.entryPoint ? { entry_point: input.entryPoint } : {}),
   };
 }
 
@@ -446,8 +450,10 @@ export function examCompleteParams(input: {
   plan: "free" | "pro";
   durationSeconds?: number;
   state?: string;
+  topic?: boolean;
+  entryPoint?: string;
 }) {
-  const mode = examAnalyticsMode(input.mode, input.practice);
+  const mode = examAnalyticsMode(input.mode, input.practice, input.questionCount, input.topic);
   return {
     mode,
     question_count: input.questionCount,
@@ -456,6 +462,7 @@ export function examCompleteParams(input: {
     ...(typeof input.durationSeconds === "number" ? { duration_seconds: input.durationSeconds } : {}),
     plan: input.plan,
     state: input.state || ANALYTICS_STATE,
+    ...(input.entryPoint ? { entry_point: input.entryPoint } : {}),
     exam_type: mode,
     score_percent: input.score,
     passed: input.passed,
@@ -480,7 +487,7 @@ export function resetAnalyticsDedupe(store: Map<string, number> = recentEvents) 
 }
 
 function dedupeKey(name: string, params: Record<string, string | number | boolean>) {
-  return [name, params.page_path, params.mode, params.product_code, params.entry_point, params.transaction_id, params.article_id, params.entry_placement].join("|");
+  return [name, params.page_path, params.mode, params.product_code, params.entry_point, params.transaction_id, params.article_id, params.entry_placement, params.attempt_ref].join("|");
 }
 
 const ARTICLE_ENTRY_KEY = "np_article_entry";
@@ -488,21 +495,23 @@ const ARTICLE_ENTRY_KEY = "np_article_entry";
 export function rememberArticleEntry(entry: { article_id: string; article_state: string; entry_placement: string; target_mode: string }) {
   if (typeof window === "undefined") return;
   try {
-    window.sessionStorage.setItem(ARTICLE_ENTRY_KEY, JSON.stringify(entry));
+    window.sessionStorage.setItem(ARTICLE_ENTRY_KEY, JSON.stringify({ ...entry, recordedAt: Date.now() }));
   } catch {
     /* storage is optional */
   }
 }
 
-function readArticleEntry() {
+function readArticleEntry(state: string | number | boolean) {
   if (typeof window === "undefined") return {};
   try {
     const raw = JSON.parse(window.sessionStorage.getItem(ARTICLE_ENTRY_KEY) || "{}") as Record<string, unknown>;
+    if (raw.article_state !== state || typeof raw.recordedAt !== "number" || Date.now() - raw.recordedAt > 30 * 60 * 1000) return {};
     const out: Record<string, string> = {};
     for (const key of ["article_id", "article_state", "entry_placement", "target_mode"] as const) {
       const value = cleanAttr(String(raw[key] || ""));
       if (value) out[key] = value;
     }
+    if (out.article_id) out.content_id = out.article_id;
     return out;
   } catch {
     return {};
