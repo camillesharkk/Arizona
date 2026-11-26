@@ -6,7 +6,7 @@ import { LIFETIME_PRO_PRODUCT_CODE } from "./pro-products.ts";
 export const GA_MEASUREMENT_ID_ENV = "NEXT_PUBLIC_GA_MEASUREMENT_ID";
 export const GA_SCRIPT_ORIGIN = "https://www.googletagmanager.com/gtag/js";
 export const PRO_ITEM_ID = "az_exam_pro_60d";
-export const PRO_ITEM_NAME = "Arizona Notary Exam Prep Pro — 60-Day Access";
+export const PRO_ITEM_NAME = "Notary Exam Prep Pro — 60-Day Access";
 export type CheckoutProductCode = typeof PRO_ITEM_ID | typeof LIFETIME_PRO_PRODUCT_CODE;
 export const ANALYTICS_STATE = "AZ";
 export const ANALYTICS_SITE = "arizona_notary_prep";
@@ -157,7 +157,7 @@ export function viewEventForPath(pathname: string): "landing_view" | "practice_v
 
 export function isPricingPath(pathname: string) {
   const path = pathname.replace(/\/$/, "");
-  if (path === paths.pricing.replace(/\/$/, "")) return true;
+  if (path === paths.pricing.replace(/\/$/, "") || path === "/lifetime") return true;
   const state = stateByCode(pathState(path) || "");
   return Boolean(state && path === `/${state.slug}/pricing`);
 }
@@ -269,7 +269,7 @@ export function applyCommonParams(params?: Record<string, string | number | bool
   if (typeof window !== "undefined" && window.location?.pathname) {
     out.page_path = window.location.pathname;
   }
-  Object.assign(out, readAttribution(), readUpgradeSource(), readArticleEntry(), params || {});
+  Object.assign(out, readAttribution(), readUpgradeSource(), readArticleEntry(params?.state || state), params || {});
   let probe = false;
   let acceptance = false;
   if (typeof window !== "undefined") {
@@ -415,9 +415,10 @@ export function resetIdentity(state: IdentityState, nextAnonymousId: string): Id
   return { distinctId, identifiedUserId: null };
 }
 
-export function examAnalyticsMode(mode: string, practice?: boolean): "quick10" | "full45" | "practice" {
+export function examAnalyticsMode(mode: string, practice?: boolean, questionCount?: number, topic?: boolean) {
   if (mode === "quick") return "quick10";
-  if (mode === "full" && !practice) return "full45";
+  if (mode === "full" && !practice) return questionCount ? `full${questionCount}` : "full45";
+  if (topic) return "topic";
   return "practice";
 }
 
@@ -427,12 +428,15 @@ export function examStartParams(input: {
   questionCount: number;
   plan: "free" | "pro";
   state?: string;
+  topic?: boolean;
+  entryPoint?: string;
 }) {
   return {
-    mode: examAnalyticsMode(input.mode, input.practice),
+    mode: examAnalyticsMode(input.mode, input.practice, input.questionCount, input.topic),
     question_count: input.questionCount,
     plan: input.plan,
     state: input.state || ANALYTICS_STATE,
+    ...(input.entryPoint ? { entry_point: input.entryPoint } : {}),
   };
 }
 
@@ -446,8 +450,10 @@ export function examCompleteParams(input: {
   plan: "free" | "pro";
   durationSeconds?: number;
   state?: string;
+  topic?: boolean;
+  entryPoint?: string;
 }) {
-  const mode = examAnalyticsMode(input.mode, input.practice);
+  const mode = examAnalyticsMode(input.mode, input.practice, input.questionCount, input.topic);
   return {
     mode,
     question_count: input.questionCount,
@@ -456,6 +462,7 @@ export function examCompleteParams(input: {
     ...(typeof input.durationSeconds === "number" ? { duration_seconds: input.durationSeconds } : {}),
     plan: input.plan,
     state: input.state || ANALYTICS_STATE,
+    ...(input.entryPoint ? { entry_point: input.entryPoint } : {}),
     exam_type: mode,
     score_percent: input.score,
     passed: input.passed,
@@ -488,21 +495,23 @@ const ARTICLE_ENTRY_KEY = "np_article_entry";
 export function rememberArticleEntry(entry: { article_id: string; article_state: string; entry_placement: string; target_mode: string }) {
   if (typeof window === "undefined") return;
   try {
-    window.sessionStorage.setItem(ARTICLE_ENTRY_KEY, JSON.stringify(entry));
+    window.sessionStorage.setItem(ARTICLE_ENTRY_KEY, JSON.stringify({ ...entry, recordedAt: Date.now() }));
   } catch {
     /* storage is optional */
   }
 }
 
-function readArticleEntry() {
+function readArticleEntry(state: string | number | boolean) {
   if (typeof window === "undefined") return {};
   try {
     const raw = JSON.parse(window.sessionStorage.getItem(ARTICLE_ENTRY_KEY) || "{}") as Record<string, unknown>;
+    if (raw.article_state !== state || typeof raw.recordedAt !== "number" || Date.now() - raw.recordedAt > 30 * 60 * 1000) return {};
     const out: Record<string, string> = {};
     for (const key of ["article_id", "article_state", "entry_placement", "target_mode"] as const) {
       const value = cleanAttr(String(raw[key] || ""));
       if (value) out[key] = value;
     }
+    if (out.article_id) out.content_id = out.article_id;
     return out;
   } catch {
     return {};
@@ -627,6 +636,37 @@ export function rememberPendingCheckout(transactionId: string, productCode: Chec
     }
   } catch { /* payment must not depend on storage */ }
   notifyCheckoutChange();
+}
+
+export function validCheckoutAttemptId(value: unknown): value is string {
+  return typeof value === "string" && /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(value);
+}
+
+export type CheckoutAttempt = {
+  checkout_attempt_id: string;
+  product_code: CheckoutProductCode;
+  plan: "lifetime" | "pro";
+  state?: string;
+  value?: number;
+  currency: "USD";
+};
+
+let activeCheckout: { transactionId: string; attempt: CheckoutAttempt } | null = null;
+
+export function rememberCheckoutAttempt(transactionId: string, attempt: CheckoutAttempt) {
+  activeCheckout = { transactionId, attempt };
+  if (!shouldSendProductAnalytics()) return;
+  try {
+    window.sessionStorage.setItem("az_checkout_attempt", JSON.stringify(activeCheckout));
+  } catch { /* The live callback can still use the in-page attempt. */ }
+}
+
+export function checkoutAttemptFor(transactionId: string): CheckoutAttempt | undefined {
+  if (activeCheckout?.transactionId === transactionId) return activeCheckout.attempt;
+  try {
+    const saved = JSON.parse(window.sessionStorage.getItem("az_checkout_attempt") || "null");
+    return saved?.transactionId === transactionId ? saved.attempt : undefined;
+  } catch { return undefined; }
 }
 
 export function trackBeginCheckout(b: Parameters<typeof checkoutStartParams>[0], transactionId?: string, productCode: CheckoutProductCode = PRO_ITEM_ID) {

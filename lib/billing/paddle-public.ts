@@ -49,3 +49,12 @@ export function paddleCheckoutFallback(
 
 // Local overlay return tests: use `npm run dev`, not `npm run start`.
 // `next start` sets production Secure cookies; http://localhost will not keep them after the Paddle HTTPS redirect.
+
+export function paddleCheckoutStage(name: string | undefined, loaded: boolean, completed: boolean) {
+  if (name === "checkout.loaded") return "checkout_open";
+  if (name === "checkout.closed" && !completed) return "checkout_closed";
+  if (name === "checkout.error" && !loaded) return "checkout_load_failed";
+  if (name === "checkout.error") return "checkout_error";
+  if (name === "checkout.payment.failed" || name === "checkout.payment.error") return "checkout_payment_failed";
+  return null;
+}

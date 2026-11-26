@@ -94,6 +94,9 @@ export function QuestionUpdates() {
   const memoryReceipts = useRef<UpdateReceipts>({});
   const lastAccount = useRef<string | null | undefined>(undefined);
   const isLearningPage = pathname === "/" || /account|practice|study|questions|wrong-answers/.test(pathname);
+  useEffect(() => {
+    if (!isLearningPage) setDialog(current => current?.kind === "notice" ? null : current);
+  }, [isLearningPage]);
 
   const refresh = useCallback(async (requested = false) => {
     if ((!isLearningPage && !requested) || !editorialUpdates.length) return;
@@ -211,7 +214,7 @@ export function QuestionUpdates() {
     if (view.account) void refresh(true);
   }
 
-  if (!dialog) return null;
+  if (!dialog || (dialog.kind === "notice" && !isLearningPage)) return null;
   const notice = dialog.kind === "notice" ? dialog.rows : [];
   const kinds = [...new Set(notice.flatMap(row => row.relations))];
   const topics = [...new Set(notice.map(row => row.kind === "rule_change" ? "new rules" : row.kind === "replacement" ? "replacement questions" : "corrections"))];

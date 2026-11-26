@@ -18,6 +18,8 @@ export function PracticeAfterword({
     correct: string;
     explanation: string;
     moreHref: string;
+    cardsHref?: string;
+    optionFeedback?: Partial<Record<string, string>>;
   }[];
   links: { href: string; label: string }[];
 }) {
@@ -27,7 +29,7 @@ export function PracticeAfterword({
         <h2>What happens during and after the test?</h2>
         <p>{during}</p>
       </section>
-      <section aria-labelledby="sample-questions">
+      {samples.length > 0 && <section aria-labelledby="sample-questions">
         <h2 id="sample-questions">Sample questions with answers and explanations</h2>
         <p><MemberCopy member={<>These items are from the published starter set.</>}>These items are from the published free set.</MemberCopy></p>
         {samples.map((q, i) => (
@@ -35,11 +37,14 @@ export function PracticeAfterword({
             <h3>{i + 1}. {q.question_text}</h3>
             <ol type="A">{Object.entries(q.options).map(([letter, text]) => <li key={letter}>{text}</li>)}</ol>
             <p><strong>Answer: {q.correct}. {q.options[q.correct]}</strong></p>
-            <AnswerExplain question={q} explanation={q.explanation} />
+            <AnswerExplain question={q} explanation={q.explanation} optionFeedback={q.optionFeedback && Object.fromEntries(
+              Object.entries(q.optionFeedback).flatMap(([letter, feedback]) => letter !== q.correct && feedback ? [[letter, feedback]] : [])
+            )} />
             <Link className="btn btn-ghost card-action" href={q.moreHref}>Practice more questions on this topic</Link>
+            {q.cardsHref && <Link className="btn btn-ghost card-action" href={q.cardsHref}>Review this topic’s study cards</Link>}
           </article>
         ))}
-      </section>
+      </section>}
       <p style={{ marginTop: 24 }}>
         {links.map((link, i) => (
           <span key={link.href}>

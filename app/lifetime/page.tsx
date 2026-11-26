@@ -2,7 +2,7 @@ import Link from "next/link";
 import { stateByCode } from "@/lib/states";
 import { LIVE_STATES } from "@/lib/ca-site";
 import { pageMeta } from "@/lib/seo";
-import { LIFETIME_TOTAL_CENTS } from "@/lib/pricing/lifetime";
+import { EXAM_GUARANTEE_CENTS, LIFETIME_TOTAL_CENTS } from "@/lib/pricing/lifetime";
 import { formatUsd } from "@/lib/pricing/money";
 import { LifetimeGuaranteeTerms } from "@/components/LifetimeGuaranteeTerms";
 import { CheckoutButton } from "@/components/CheckoutButton";
@@ -10,9 +10,9 @@ import { LIFETIME_PRO_PRODUCT_CODE } from "@/lib/pro-products";
 import { getLifetimeCheckoutAvailability } from "@/lib/billing/lifetime-availability";
 import { TAX_CHECKOUT_NOTICE } from "@/lib/pricing/copy";
 export const metadata = pageMeta({
-  title: "Lifetime Pro — $29.99 All-State Access",
+  title: `Lifetime Pro — ${formatUsd(LIFETIME_TOTAL_CENTS)} All-State Access`,
   description:
-    "One-time Lifetime Pro access across all available states plus a $10 official exam guarantee.",
+    `One payment for Lifetime Pro with no automatic renewal. The ${formatUsd(EXAM_GUARANTEE_CENTS)} exam guarantee fee is refundable after a qualifying failed official exam.`,
   path: "/lifetime/",
 });
 export default async function LifetimePage() {
@@ -21,7 +21,7 @@ export default async function LifetimePage() {
     <main className="wrap hero pricing-page">
       <h1>Lifetime Pro</h1>
       <p className="lede">
-        {formatUsd(LIFETIME_TOTAL_CENTS)} USD standard · All available states · No expiration
+        {formatUsd(LIFETIME_TOTAL_CENTS)} USD once · No expiration · No automatic renewal
       </p>
       <section className="card guide-chapter" id="lifetime-checkout" aria-labelledby="lifetime-checkout-heading">
         <h2 id="lifetime-checkout-heading">Lifetime Pro Checkout</h2>
@@ -35,7 +35,7 @@ export default async function LifetimePage() {
       <section className="card pricing-policy-card">
         <h2>What’s included</h2>
         <p>
-          Full question banks, unlimited available practice exams, weak-area
+          Full question banks and repeat full practice where available, weak-area
           training, wrong-answer review, full flashcards, readiness and study
           planning tools, cross-device progress and the Pro daily AI allowance.
           Features follow each state’s available preparation format.

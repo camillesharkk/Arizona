@@ -9,7 +9,7 @@ import { SiteFooter, SiteHeader } from "@/components/Chrome";
 import { SavedStateProvider } from "@/components/SavedState";
 import { STATE_COOKIE, parseStateCookie, resolveState } from "@/lib/site-state";
 import { JsonLd, defaultGraph } from "@/components/JsonLd";
-import { site } from "@/lib/site";
+import { publicBrand } from "@/lib/site";
 import { siteUrl } from "@/lib/site";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { AnalyticsPageViews } from "@/components/AnalyticsPageViews";
@@ -48,10 +48,10 @@ export async function generateMetadata(): Promise<Metadata> {
       : california
       ? "California notary practice questions and study cards from published official sources. Independent of the California Secretary of State."
       : "Free Arizona notary practice test, exam questions, and study guide with official-source citations. Independent of the Arizona Secretary of State.",
-    applicationName: site.legalName,
+    applicationName: publicBrand,
     robots: preview ? { index: false, follow: false } : { index: true, follow: true },
     openGraph: {
-      siteName: site.legalName,
+      siteName: publicBrand,
       type: "website",
       locale: "en_US",
     },

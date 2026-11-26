@@ -239,7 +239,7 @@ export function SiteFooter({ savedState }: { savedState: LiveCode | null }) {
   return (
     <footer className="footer">
       <div className="wrap footer-bar">
-        <p className="footer-brand"><BrandMark size={26} lazy />{state === "CA" ? "California Exam. Independent practice." : state === "HI" ? "Hawaii Exam. Independent practice." : state === "AZ" ? "Arizona Exam. Independent practice." : "Notary Exam Prep. Independent practice."}</p>
+        <p className="footer-brand"><BrandMark size={26} lazy />Notary Exam Prep. Independent practice.</p>
         <nav className="footer-links" aria-label="Help and legal">
           {state ? (
             <>

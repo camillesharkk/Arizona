@@ -13,7 +13,7 @@ import { pickHiFullExam, pickHiQuickExam } from "@/lib/hi-exam";
 import { revealedQuestion, stemQuestion } from "@/lib/question-stem";
 import { isActiveQuestion } from "@/lib/question-status";
 import { prepPacks, packFor } from "@/lib/prep-pack";
-import { buildQuickExam, pickExamSet, pickFullExam } from "@/lib/quiz";
+import { buildQuickExam, eligibleExamPool, pickExamSet, pickFullExam } from "@/lib/quiz";
 import { shuffle } from "@/lib/answer-sequence";
 import type { Question, StateCode } from "@/lib/types";
 
@@ -105,6 +105,10 @@ export function drawPractice(input: {
     }
     const missed = new Set(input.missedIds || []);
     return { questions: source.filter((question) => missed.has(question.question_id)).slice(0, 10), unscoredIds: [], seed };
+  }
+  if (mode === "practice" && input.focusArea) {
+    const questions = eligibleExamPool({ freeOnly: !isPro }).filter(question => question.topic === input.focusArea);
+    return { questions: shuffle(questions, seed).slice(0, 10), unscoredIds: [], seed };
   }
   if (mode === "quick") {
     const questions = buildQuickExam({ isPro, seed });

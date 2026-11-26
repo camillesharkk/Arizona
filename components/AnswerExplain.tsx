@@ -8,12 +8,14 @@ export function AnswerExplain({
   wrongNote,
   expanded = false,
   reviewLinks,
+  optionFeedback,
 }: {
   explanation: string;
   question: AnswerEvidenceFields;
   wrongNote?: string;
   reviewLinks?: { href: string; label: string }[];
   expanded?: boolean;
+  optionFeedback?: Record<string, string>;
 }) {
   return (
     <div className="answer-result">
@@ -22,6 +24,12 @@ export function AnswerExplain({
           Explanation<span aria-hidden="true">⌄</span>
         </summary>
         <ExplanationBody explanation={explanation} wrongNote={wrongNote} />
+        {optionFeedback && <div>
+          <h4>Why the other choices are incorrect</h4>
+          <ul>{Object.entries(optionFeedback).map(([letter, feedback]) => (
+            <li key={letter}><strong>{letter}.</strong> {feedback}</li>
+          ))}</ul>
+        </div>}
         {reviewLinks?.length ? (
           <nav className="tool-row" aria-label="Related study tools">
             {reviewLinks.map((link) => (

@@ -1,5 +1,6 @@
 import type { SeoGuide } from "@/lib/seo-guides";
 import { officialExamChecked } from "@/data/exam-config";
+import { paths } from "@/lib/paths";
 
 export const expandedGuides: SeoGuide[] = [
   {
@@ -334,48 +335,38 @@ export const expandedGuides: SeoGuide[] = [
     "id": "open-book",
     "path": "/is-the-arizona-notary-exam-open-book/",
     "title": "Is the Arizona Notary Exam Open Book?",
-    "description": "Prepare for the built-in manual with a repeatable lookup method and timed practice.",
+    "description": "Yes. Arizona provides its notary manual inside the exam. Paper copies are prohibited at test centers and during remote testing.",
     "kicker": "Is the Arizona Notary Exam Open Book?",
     "h1": "Is the Arizona Notary Exam Open Book?",
-    "lede": "Yes. The SOS notice says the manual is built into the examination, while physical copies are prohibited at test centers and during remote testing.",
-    checked: officialExamChecked,
+    "lede": "Yes. The Arizona Notary Public Reference Manual is available inside the exam. You cannot bring a paper copy to a test center or use one during remote testing.",
+    modified: "2026-11-27",
+    checked: "Arizona Secretary of State exam notice checked November 27, 2026.",
     "sections": [
       {
-        "heading": "Practice finding a rule, not just a keyword",
-        "body": "First name the issue: identity, the act, certificate, journal or fee. Find the relevant manual section, read the surrounding conditions, and return to the question. A matching word alone may not answer a scenario with an exception.",
-        "sourceId": "sos_new_notary"
+        "heading": "What reference can I use during the exam?",
+        "body": "Use the manual provided by the exam. To prepare, download the current edition from the Secretary of State. The notice confirms that the manual is built in. Follow the testing provider’s instructions for how to use it.",
+        "sourceId": "sos_new_notary",
+        "href": "https://azsos.gov/resources/notary-manual-cover",
+        "hrefLabel": "Get the current official notary manual"
       },
       {
-        "heading": "Rehearse a lookup log",
-        "body": "During practice, record the question topic, section consulted and whether the lookup changed your answer. If you search repeatedly for the same rule, review that chapter separately. Do not assume outside websites or a second device are permitted during the official exam.",
-        "href": "/arizona-notary-study-guide/",
-        "hrefLabel": "Build familiarity with the study chapters"
-      },
-      {
-        "heading": "Use a timer after chapter review",
-        "body": "Try a timed Full 45 and review how many items required long searches. Our simulation does not reproduce the vendor\u2019s built-in manual interface. It helps you practice decisions and pacing, not certify your testing setup.",
-        "href": "/arizona-notary-practice-test/?mode=full",
-        "hrefLabel": "Practice under a timer"
+        "heading": "Find the rule before you practice under time",
+        "body": "First, use the manual’s table of contents to locate the chapter on identifying signers. Next, search for “credible person” and read the conditions around that term. Finally, set a short timer, pick a signer-identification scenario, and find the rule before choosing an answer. Try a Quick 10 to rehearse the decision. The lookup drills explain how to use the public manual while studying.",
+        "href": `${paths.practice}?mode=quick`,
+        "hrefLabel": "Start Free Arizona Quick 10",
+        targetMode: "quick"
       }
     ],
     "related": [
-      {
-        "href": "/arizona-notary-study-guide/",
-        "label": "Study Guide: review the rules behind missed answers"
-      },
-      {
-        "href": "/arizona-notary-practice-test/",
-        "label": "Practice test: Quick 10 and Full 45"
-      },
-      {
-        "href": "/arizona-notary-exam-guides/",
-        "label": "All Arizona exam guides"
-      }
+      { "href": paths.study, "label": "Arizona Notary Study Guide" },
+      { "href": paths.practice, "label": "Arizona Notary Practice Test" },
+      { "href": paths.guidesIndex, "label": "All Arizona exam guides" }
     ],
     "ctas": [
       {
-        "href": "/arizona-notary-practice-test/?mode=quick",
-        "label": "Try 10 free questions"
+        "href": "/arizona/guides/open-book-manual-lookup-drills/",
+        "label": "Try Arizona manual lookup drills",
+        targetMode: "guide"
       }
     ]
   },

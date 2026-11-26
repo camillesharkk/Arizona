@@ -1,4 +1,4 @@
-import { canonicalUrl, site } from "@/lib/site";
+import { canonicalUrl, publicBrand } from "@/lib/site";
 
 export function pageMeta(opts: {
   title: string;
@@ -16,7 +16,7 @@ export function pageMeta(opts: {
       title: opts.title,
       description: opts.description,
       url,
-      siteName: site.legalName,
+      siteName: publicBrand,
       type: "website" as const,
       locale: "en_US",
     },

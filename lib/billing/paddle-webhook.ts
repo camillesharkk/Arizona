@@ -14,6 +14,7 @@ import {
   type PaddleWebhookConfig,
 } from "./paddle.ts";
 import { adoptPaddleCreatingBinding } from "./paddle-reconcile.ts";
+import { validCheckoutAttemptId } from "../analytics.ts";
 import { reportPaddleFulfillment } from "../analytics-server.ts";
 
 export type PaddleWebhookResult = {
@@ -90,6 +91,8 @@ function readCustom(data: PaddleTxnLike) {
     user_id: String(raw.user_id || "").trim(),
     quote_id: String(raw.quote_id || "").trim(),
     product_code: String(raw.product_code || "").trim(),
+    source_state: typeof raw.source_state === "string" ? raw.source_state : undefined,
+    checkout_attempt_id: validCheckoutAttemptId(raw.checkout_attempt_id) ? raw.checkout_attempt_id : undefined,
   };
 }
 
@@ -357,6 +360,9 @@ export async function handlePaddleWebhook(opts: {
       userId: quote.userId,
       duplicate: Boolean(result.duplicate),
       orderConfirmed: true,
+      productCode: custom.product_code,
+      sourceState: custom.source_state,
+      checkoutAttemptId: custom.checkout_attempt_id,
       entitlementId: result.order.entitlementId,
       transactionId,
       orderId: result.order.id,
@@ -378,6 +384,9 @@ export async function handlePaddleWebhook(opts: {
       duplicate: false,
       orderConfirmed: false,
       entitlementFailed: true,
+      productCode: custom.product_code,
+      sourceState: custom.source_state,
+      checkoutAttemptId: custom.checkout_attempt_id,
       transactionId,
     });
     return fail(503, "entitlement_failed", { orderId: transactionId, quoteId: quote.id });

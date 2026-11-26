@@ -26,7 +26,7 @@ export function StateArticlePage({ article }: { article: StateArticle }) {
       headline: article.h1,
       description: article.description,
       path: article.path,
-      datePublished: article.updated,
+      datePublished: article.published ?? article.updated,
       dateModified: article.updated,
     }),
   ];
@@ -50,7 +50,10 @@ export function StateArticlePage({ article }: { article: StateArticle }) {
           targetMode={article.ledeCta.targetMode}
         />
       </p>
-      <p className="notice">Published {article.updated}. Arizona Notary Exam Practice. {article.checked}</p>
+      <p className="notice">
+        Published {article.published ?? article.updated}.
+        {article.published ? ` Updated ${article.updated}.` : ""} Notary Exam Prep. {article.checked}
+      </p>
       {article.sections.map((section) => (
         <section className="card" key={section.heading} style={{ marginTop: 18 }}>
           <h2>{section.heading}</h2>

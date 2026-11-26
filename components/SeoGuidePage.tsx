@@ -9,7 +9,7 @@ import { expandedGuides } from "@/lib/seo-expansion";
 import { paths } from "@/lib/paths";
 import { seoGuideById } from "@/lib/seo-guides";
 import { ArticleStudyActions } from '@/components/ArticleStudyActions';
-import { ArticleView } from '@/components/ArticleLink';
+import { ArticleLink, ArticleView } from '@/components/ArticleLink';
 import { supplementalArticles } from '@/data/seo-matrix-articles';
 
 const MODIFIED = "2026-11-07";
@@ -17,6 +17,8 @@ const MODIFIED = "2026-11-07";
 export function SeoGuidePage({ id }: { id: string }) {
   const guide = seoGuideById(id);
   const cta = guide.ctas?.[0];
+  const articleId = `az-${guide.id}`;
+  const modified = guide.modified ?? MODIFIED;
   const showFaqSchema = guide.index !== false && Boolean(guide.faqs?.length);
   const published = expandedGuides.some((item) => item.id === guide.id) ? "2026-10-13" : "2026-09-29";
   const showKicker = guide.kicker.trim().toLowerCase() !== guide.h1.trim().toLowerCase() && !guide.h1.startsWith(guide.kicker);
@@ -28,7 +30,7 @@ export function SeoGuidePage({ id }: { id: string }) {
   ];
   return (
     <main className="wrap hero">
-      <ArticleView articleId={`az-${guide.id}`} articleState="AZ" />
+      <ArticleView articleId={articleId} articleState="AZ" />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -38,7 +40,7 @@ export function SeoGuidePage({ id }: { id: string }) {
               description: guide.description,
               path: guide.path,
               datePublished: published,
-              dateModified: MODIFIED,
+              dateModified: modified,
             }),
             ...(showFaqSchema && guide.faqs ? [faqJson(guide.faqs)] : []),
           ],
@@ -48,7 +50,7 @@ export function SeoGuidePage({ id }: { id: string }) {
       {showKicker ? <p className="kicker">{guide.kicker}</p> : null}
       <h1>{guide.h1}</h1>
       <p className="lede">{guide.lede}</p>
-      <p className="notice">Published {published}. Updated {MODIFIED}. {siteByline()}</p>
+      <p className="notice">Published {published}. Updated {modified}. {siteByline()}</p>
       {guide.checked === officialExamChecked ? (
         <p className="notice">
           Question count, time, and the retry rule are kept on the <Link href={paths.examGuide}>Arizona exam guide</Link>.
@@ -58,9 +60,14 @@ export function SeoGuidePage({ id }: { id: string }) {
       ) : null}
       {cta ? (
         <p>
-          <Link className="btn btn-primary" href={cta.href}>
-            <MemberCopy member={memberActionLabel(cta.label)}>{cta.label}</MemberCopy>
-          </Link>
+          {cta.targetMode ? (
+            <ArticleLink className="btn btn-primary" articleId={articleId} articleState="AZ"
+              href={cta.href} label={cta.label} placement="lede" targetMode={cta.targetMode} />
+          ) : (
+            <Link className="btn btn-primary" href={cta.href}>
+              <MemberCopy member={memberActionLabel(cta.label)}>{cta.label}</MemberCopy>
+            </Link>
+          )}
         </p>
       ) : null}
       {guide.sections.map((section) => (
@@ -83,7 +90,12 @@ export function SeoGuidePage({ id }: { id: string }) {
           ) : null}
           {section.href ? (
             <p>
-              <Link href={section.href}>{section.hrefLabel || "Continue"}</Link>
+              {section.targetMode ? (
+                <ArticleLink articleId={articleId} articleState="AZ"
+                  href={section.href} label={section.hrefLabel || "Continue"} placement="section" targetMode={section.targetMode} />
+              ) : (
+                <Link href={section.href}>{section.hrefLabel || "Continue"}</Link>
+              )}
             </p>
           ) : null}
         </section>
@@ -96,7 +108,7 @@ export function SeoGuidePage({ id }: { id: string }) {
           <p>{item.a}</p>
         </details>
       ))}
-      <ArticleStudyActions state="AZ" articleId={`az-${guide.id}`} />
+      <ArticleStudyActions state="AZ" articleId={articleId} />
       <section className="card" style={{ marginTop: 24 }}>
         <h2>Related reading</h2>
         <ul>
@@ -113,5 +125,5 @@ export function SeoGuidePage({ id }: { id: string }) {
 }
 
 function siteByline() {
-  return "Written by Arizona Notary Exam Practice.";
+  return "Written by Notary Exam Prep.";
 }

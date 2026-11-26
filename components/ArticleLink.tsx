@@ -13,8 +13,7 @@ type Entry = { articleId: string; articleState: StateCode };
 export function ArticleView({ articleId, articleState }: Entry) {
   useEffect(() => {
     const entry = { article_id: articleId, article_state: articleState, entry_placement: "page", target_mode: "read" };
-    rememberArticleEntry(entry);
-    trackAnalyticsEvent("article_view", entry);
+    trackAnalyticsEvent("article_view", { ...entry, state: articleState, content_id: articleId });
   }, [articleId, articleState]);
   return null;
 }
@@ -35,7 +34,7 @@ export function ArticleLink({
       onClick={() => {
         const entry = { article_id: articleId, article_state: articleState, entry_placement: placement, target_mode: targetMode };
         rememberArticleEntry(entry);
-        trackAnalyticsEvent("article_cta", entry);
+        trackAnalyticsEvent("article_cta", { ...entry, state: articleState, content_id: articleId, entry_point: placement, mode: targetMode });
       }}
     >
       <MemberCopy member={memberActionLabel(label)}>{label}</MemberCopy>
