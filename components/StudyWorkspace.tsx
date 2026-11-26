@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { AccountMenu, accountTier, type HeaderUser } from "@/components/AccountMenu";
 import { StateMenu } from "@/components/StateMenu";
@@ -82,6 +82,9 @@ export function StudyWorkspace(props: Props) {
   const params = useSearchParams();
   const [collapsed, setCollapsed] = useState(props.initialCollapsed);
   const [open, setOpen] = useState(false);
+  useLayoutEffect(() => {
+    setCollapsed(document.cookie.split("; ").includes("np_sidebar=1"));
+  }, []);
   const drawer = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const drawerId = useId();

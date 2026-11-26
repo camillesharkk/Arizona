@@ -61,6 +61,13 @@ try {
       await collapse.click();
       await panel.getByRole("button", { name: "Expand sidebar" }).waitFor();
       assert.ok(await panel.evaluate(el => el.offsetWidth) < wide);
+      if (width === 1440) {
+        await panel.getByRole("link", { name: "Notary Exam Prep" }).click();
+        await expectPath(page, "/");
+        await page.goBack();
+        await expectPath(page, "/new-york/practice/");
+        await panel.getByRole("button", { name: "Expand sidebar" }).waitFor();
+      }
       await page.reload();
       await panel.getByRole("button", { name: "Expand sidebar" }).click();
       assert.equal(await panel.evaluate(el => el.offsetWidth), wide);
