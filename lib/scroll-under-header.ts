@@ -4,10 +4,8 @@ export function scrollUnderHeader(el: Element | null) {
   const mobile = Boolean(mobileBar?.getClientRects().length);
   const header = mobile ? mobileBar : document.querySelector(".site-header");
   const offset = header?.getBoundingClientRect().bottom ?? 0;
-  const stem = el.getBoundingClientRect().top;
-  const card = mobile && el.matches(".quiz-stem") ? el.closest(".card") : null;
-  const cardTop = card?.getBoundingClientRect().top ?? stem;
-  const top = (stem - cardTop < 150 ? cardTop : stem) + window.scrollY - offset - 12;
+  const anchor = mobile && el.matches(".quiz-stem") ? el.closest(".card") ?? el : el;
+  const top = anchor.getBoundingClientRect().top + window.scrollY - offset - 12;
   window.scrollTo(0, Math.max(0, top));
 }
 

@@ -112,7 +112,7 @@ export function StateMenu({ pathname, current, indianaPreview = false, workspace
                 if (LIVE_STATES.includes(state.code as LiveState)) writeStateCookie(state.code as LiveState);
               }}
             >
-              <span>{stateLabel(state)}{workspace && state.code !== current && pathState(pathname) && stateHref(pathname, state.code, favorites) === state.homePath && <small>State overview</small>}</span>
+              <span>{stateLabel(state)}{workspace && state.code !== current && stateHref(pathname, state.code, favorites) === state.homePath && <small>State overview</small>}</span>
               {state.code === current ? <span aria-hidden="true">✓</span> : null}
             </Link>
           ))}

@@ -147,7 +147,7 @@ export function StudyWorkspace(props: Props) {
           <Link className="study-brand" href="/" title="Notary Exam Prep" aria-label="Notary Exam Prep">{brand}<span className="study-label">Notary Exam Prep</span></Link>
           {mobile && <button type="button" className="study-icon-button" aria-label="Close navigation" onClick={close} data-drawer-close><Icon name="close" /></button>}
         </div>
-        <StateMenu pathname={pathname} current={state} indianaPreview={indianaPreview} workspace favorites={favorites} />
+        <StateMenu key={mobile ? String(open) : "desktop"} pathname={pathname} current={state} indianaPreview={indianaPreview} workspace favorites={favorites} />
       </div>
       <nav className="study-menu-list" aria-label="Study navigation" onClick={mobile ? event => {
         const anchor = (event.target as Element).closest("a[href]");
