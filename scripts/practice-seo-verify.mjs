@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 import { testLoader } from "./pack-test-utils.mjs";
 
 const load = testLoader();
@@ -20,7 +21,8 @@ for (const state of ["NY", "OH", "NC"]) {
     const question = prepPacks[state].questions().find(row => row.question_id === sample.question_id);
     assert.ok(question?.is_free);
     assert.equal(question.state, state);
-    assert.ok(Object.values(sample.optionFeedback).every(value => value.trim()));
+    assert.ok(["A", "B", "C", "D"].filter(letter => letter !== sample.correct).every(letter => sample.optionFeedback[letter]?.trim()));
+    assert.ok(prepPacks[state].topics.some(topic => sample.guideHref === `${prepPacks[state].paths.study}#${topic.id}`));
     assert.ok(resolveAnswerEvidence(sample).href?.startsWith("https://"));
     const review = ledger.get(sample.question_id);
     assert.match(review.status, /^verified_/);
@@ -47,3 +49,31 @@ for (const focusArea of ["acknowledgments", "identification"]) {
   assert.ok(result.questions.every(question => question.topic === focusArea && question.state === "AZ" && question.is_free));
 }
 console.log("Reviewed public NY/OH/NC revisions, official references, AZ topic draws, and state-specific full practice analytics passed.");
+
+if (process.env.PRACTICE_SEO_BASE) {
+  const base = process.env.PRACTICE_SEO_BASE.replace(/\/$/, "");
+  const dist = join(process.env.NEXT_DIST_DIR || ".next", "static");
+  const bundles = readdirSync(dist, { recursive: true }).filter(file => file.endsWith(".js"))
+    .map(file => readFileSync(join(dist, file), "utf8"));
+  assert.ok(bundles.length);
+  const ohio = load("data/full-state-server.ts").serverStateQuestions("OH");
+  for (const [state, bank] of [["NY", prepPacks.NY.questions()], ["OH", ohio]]) {
+    const approved = publicPracticeSampleVersions[state];
+    const protectedStems = bank.filter(question => !Object.hasOwn(approved, question.question_id));
+    assert.ok(protectedStems.length > 0);
+    for (const question of protectedStems) {
+      assert.ok(!bundles.some(bundle => bundle.includes(question.question_text)),
+        `${question.question_id} is present in a client chunk`);
+    }
+    for (const headers of [{}, { RSC: "1" }]) {
+      const response = await fetch(base + prepPacks[state].paths.practice, { headers });
+      assert.equal(response.status, 200);
+      const markup = await response.text();
+      assert.ok(!markup.includes("previous_versions"));
+      for (const question of protectedStems) {
+        assert.ok(!markup.includes(question.question_text), `${question.question_id} is present in the practice response`);
+      }
+    }
+    console.log(`${state}: inspected HTML, RSC and ${bundles.length} client chunks for ${protectedStems.length} non-sample questions.`);
+  }
+}

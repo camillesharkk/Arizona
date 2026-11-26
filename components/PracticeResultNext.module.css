@@ -1,0 +1,33 @@
+.panel {
+  margin-block-start: 1rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: linear-gradient(120deg, rgb(255 255 255 / 83%), rgb(255 255 255 / 74%)),
+    url("/practice-result-glass.webp") center / cover, #f5f7fc;
+  color: #172a45;
+  border: 1px solid #dce4f1;
+  border-radius: 1rem;
+  box-shadow: inset 1px 1px 0 #fff, 0 8px 22px rgb(42 74 111 / 9%);
+}
+
+.panel h3 { margin-block-start: 0; }
+.panel p { margin-block: 0.5rem; }
+.panel a:not(:global(.btn)) { color: #173f71; text-decoration: underline; text-underline-offset: 0.15em; }
+.panel a:focus-visible { outline: 3px solid #234b80; outline-offset: 3px; }
+.panel a { min-inline-size: 24px; min-block-size: 24px; }
+
+.topics { margin-block: 0.75rem; }
+.topics > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  padding-block: 0.5rem;
+  border-block-end: 1px solid #dce4f1;
+}
+.topics dt { font-weight: 600; }
+.topics dd { margin: 0; }
+.links { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .panel a { transition: none; }
+}

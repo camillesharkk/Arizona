@@ -16346,7 +16346,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.sos.state.tx.us/statdoc/notary-public.shtml",
-            "label": "Open official source",
+            "label": "Open Texas SOS application instructions",
             "placement": "section",
             "targetMode": "official"
           }
@@ -16356,7 +16356,7 @@ export const fullStateArticles: Partial<Record<FreeStateCode, StateArticle[]>> =
           "body": "Official source checked November 14, 2026.",
           "link": {
             "href": "https://www.sos.state.tx.us/statdoc/guides/TraditionalNotaryApplication.pdf",
-            "label": "Open official source",
+            "label": "Open the official traditional-notary portal guide",
             "placement": "section",
             "targetMode": "official"
           }

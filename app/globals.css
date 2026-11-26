@@ -24,6 +24,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+body:has([data-notary-white-canvas]) { background-color: #fff; }
+
 .state-picker-page { text-align: left; }
 .state-picker-page h1 { text-align: center; }
 .state-picker-page > .home-lead { text-align: left; max-width: none; margin-left: 0; margin-right: 0; }

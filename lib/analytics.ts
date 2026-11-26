@@ -487,7 +487,7 @@ export function resetAnalyticsDedupe(store: Map<string, number> = recentEvents) 
 }
 
 function dedupeKey(name: string, params: Record<string, string | number | boolean>) {
-  return [name, params.page_path, params.mode, params.product_code, params.entry_point, params.transaction_id, params.article_id, params.entry_placement].join("|");
+  return [name, params.page_path, params.mode, params.product_code, params.entry_point, params.transaction_id, params.article_id, params.entry_placement, params.attempt_ref].join("|");
 }
 
 const ARTICLE_ENTRY_KEY = "np_article_entry";

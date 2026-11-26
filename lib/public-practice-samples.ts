@@ -19,6 +19,7 @@ export function publicPracticeSamples(state: keyof typeof publicPracticeSampleVe
     const q = bank.get(id);
     if (!q || q.state !== state || !q.is_free || q.version !== version || !isActiveQuestion(q) ||
       !q.last_verified_at || !q.option_feedback || !q.study_topic || !resolveAnswerEvidence(q).href) return [];
+    const topic = pack.topics.find(topic => topic.id === q.study_topic);
 
     return [{
       question_id: q.question_id,
@@ -31,6 +32,7 @@ export function publicPracticeSamples(state: keyof typeof publicPracticeSampleVe
       source_reference: q.source_reference,
       last_verified_at: q.last_verified_at,
       moreHref: `${pack.paths.practice}?mode=practice&area=${encodeURIComponent(q.study_topic)}`,
+      guideHref: topic ? `${pack.paths.study}#${encodeURIComponent(topic.id)}` : undefined,
       cardsHref: `${pack.paths.studyCards}?topic=${encodeURIComponent(q.study_topic)}`,
     }];
   });

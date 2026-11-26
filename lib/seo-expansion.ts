@@ -1,5 +1,5 @@
 import type { SeoGuide } from "@/lib/seo-guides";
-import { officialExamChecked } from "@/data/exam-config";
+import { officialExam, officialExamChecked } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
 
 export const expandedGuides: SeoGuide[] = [
@@ -377,8 +377,9 @@ export const expandedGuides: SeoGuide[] = [
     "description": "After a failed Arizona notary exam, the SOS notice allows three attempts, then a 30-day wait. Confirm the live booking rule before you schedule again.",
     "kicker": "Retake",
     "h1": "Arizona Notary Exam Retake Rules: What to Do Next",
-    "lede": "The current SOS notice says the exam can be taken three times; after the third failure, you must wait 30 days to reschedule. The notice also lists a $35 charge for each proctored examination. Verify current instructions before booking again.",
-    checked: officialExamChecked,
+    "lede": `The Arizona Secretary of State allows ${officialExam.attemptsBeforeWait} attempts. After the third unsuccessful attempt, you must wait ${officialExam.waitDaysAfterLimit} days to reschedule. The notice lists a $${officialExam.examFeeUsd} fee for each proctored exam.`,
+    modified: "2026-11-27",
+    checked: "Arizona Secretary of State exam notice checked November 27, 2026.",
     "sections": [
       {
         "heading": "Check the booking rule before another attempt",
@@ -387,15 +388,17 @@ export const expandedGuides: SeoGuide[] = [
       },
       {
         "heading": "Repair the cause of a miss",
-        "body": "Separate rule gaps, confusing acts and pacing problems. For a rule gap, read the manual chapter and write a one-sentence explanation. For pacing, rehearse a timed set. If a score report gives only a total, do not invent a topic breakdown; use independent practice to diagnose gaps.",
-        "href": "/arizona-notary-study-guide/",
-        "hrefLabel": "Review the chapters"
+        "body": "Use Quick 10 to identify one or two rules to revisit. Read the corresponding chapter and explain both the correct answer and why the other choices do not fit. Use the practice results to plan your review, especially if your official score report did not break down the topics.",
+        "href": paths.study,
+        "hrefLabel": "Review the Arizona Study Guide",
+        targetMode: "guide"
       },
       {
-        "heading": "Avoid memorizing the same answers",
-        "body": "Re-answer a missed question only after explaining its source. Another scenario shows whether you learned the rule or remembered the letter. Start with Quick 10, then reread the chapter for the topic you miss.",
-        "href": "/arizona-notary-practice-test/?mode=quick",
-        "hrefLabel": "Start with Quick 10"
+        "heading": "Apply the rules to a fresh scenario",
+        "body": "Try a different question on a topic you missed before repeating a full set. If your main problem was finding the right rule under time pressure, rehearse a manual lookup and note where you got stuck.",
+        "href": "/arizona/guides/open-book-manual-lookup-drills/",
+        "hrefLabel": "Try Arizona manual lookup drills",
+        targetMode: "guide"
       }
     ],
     "related": [
@@ -414,8 +417,9 @@ export const expandedGuides: SeoGuide[] = [
     ],
     "ctas": [
       {
-        "href": "/arizona-notary-practice-test/?mode=quick",
-        "label": "Try 10 free questions"
+        "href": `${paths.practice}?mode=quick`,
+        "label": "Try 10 free questions",
+        targetMode: "quick"
       }
     ]
   },

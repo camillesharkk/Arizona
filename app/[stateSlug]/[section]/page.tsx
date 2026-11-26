@@ -20,6 +20,7 @@ import { publicPracticeSamples } from '@/lib/public-practice-samples';
 import Link from 'next/link';
 
 const sections = ['practice', 'study-guide', 'become-a-notary', 'exam-guide', 'resources', 'laws', 'wrong-answers', 'daily-study', 'questions', 'study-cards', 'pricing', 'passing-score'];
+const ohioEducation = 'https://www.ohiosos.gov/notary/become-a-notary-in-ohio/education-and-testing';
 export const dynamicParams = false;
 export function generateStaticParams() {
   return freeStateCatalog.flatMap(([code, , stateSlug]) => sections.filter(section => section !== 'pricing' || freeStateFeatures[code]?.purchase !== false).map(section => ({ stateSlug, section })));
@@ -36,8 +37,8 @@ export async function generateMetadata({ params }: { params: Promise<{ stateSlug
     index: releasedFreeStates.includes('OH') && process.env.VERCEL_ENV !== 'preview',
   });
   if (state[0] === 'OH' && section === 'questions') return pageMeta({
-    title: 'Ohio Notary Practice Questions with Answers',
-    description: 'Review free Ohio notary scenarios with answers and official sources, then browse Ohio practice questions by topic.',
+    title: 'Ohio Notary Questions & Answers | Original Examples',
+    description: 'Read original Ohio notary scenarios with answers, explanations and official Ohio Revised Code references. Review acknowledgments, jurats and prohibited acts.',
     path: '/ohio/questions/',
     index: releasedFreeStates.includes('OH') && process.env.VERCEL_ENV !== 'preview',
   });
@@ -75,33 +76,30 @@ export default async function Page({ params, searchParams }: {
   }
   if (section === 'questions') {
     const query = await searchParams;
-    return <main className="wrap hero">
-      <h1>{code === 'OH' ? 'Ohio Notary Practice Questions with Answers' : `${state[1]} Practice Questions`}</h1>
-      {code === 'OH' && <>
-        <p>Work through Ohio scenarios on signer identification, certificates and other notarial duties. The samples include the rule, reasoning and official source.</p>
-        <p><Link className="btn btn-primary" href={`${site.practice}?mode=quick`}>Start Free Ohio Quick 10</Link></p>
-        <nav aria-label="Ohio question topics">
-          <ul>{pack.topics.map(topic => <li key={topic.id}><Link href={`${site.questions}?topic=${encodeURIComponent(topic.id)}#question-bank`}>{topic.label}</Link></li>)}</ul>
-        </nav>
-        <PracticeAfterword
-          during="Start with a worked example, then use the topic filter in the question bank or try a free Quick 10."
-          samples={publicPracticeSamples("OH")}
-          links={[{ href: site.practice, label: "Ohio practice test" }, { href: site.study, label: "Ohio study guide" }]}
-        />
-      </>}
+    if (code === 'OH') return <main className="wrap hero" data-public-practice data-notary-white-canvas>
+      <h1>Ohio Notary Questions and Answers</h1>
+      <p>Review original Ohio scenarios with answers, explanations and official references. Use the question bank to answer on your own, or <a href="#sample-questions">read the worked examples</a>.</p>
+      <p><Link className="btn btn-primary" href={`${site.practice}?mode=quick`}>Start Free Ohio Quick 10</Link></p>
+      <nav aria-label="Ohio question topics"><ul>{pack.topics.map(topic => <li key={topic.id}><Link href={`${site.questions}?topic=${encodeURIComponent(topic.id)}#question-bank`}>{topic.label}</Link></li>)}</ul></nav>
       <div id="question-bank"><QuestionsClient key={`${code}:${query.topic || "all"}`} stateCode={code} topic={query.topic} /></div>
+      <PracticeAfterword
+        publicLanding
+        samples={publicPracticeSamples('OH')}
+        links={[{ href: site.study, label: 'Ohio study guide' }, { href: site.practice, label: 'Ohio practice' }]}
+      />
     </main>;
+    return <main className="wrap hero"><h1>{state[1]} Practice Questions</h1><div id="question-bank"><QuestionsClient key={`${code}:${query.topic || "all"}`} stateCode={code} topic={query.topic} /></div></main>;
   }
-  if (section === 'practice' && code === 'OH' && full) return <main className="wrap hero">
+  if (section === 'practice' && code === 'OH' && full) return <main className="wrap hero" data-notary-white-canvas>
     <h1>Ohio Notary Practice Test</h1>
-    <p>Start with a free Quick 10 or choose a topic to get explanations as you go. The Ohio bank has {counts.free} free questions out of {counts.published}. This site’s Comprehensive Practice uses {pack.fullCount} questions without a time limit.</p>
-    <p>Use these original scenarios to prepare for Ohio’s <a href="https://www.ohiosos.gov/notary/become-a-notary-in-ohio/education-and-testing">approved education and testing</a>. <Link href={`${site.questions}#sample-questions`}>See the free samples</Link> or <Link href={site.become}>check the Ohio application steps</Link>.</p>
+    <p>Start with a free Quick 10, practice one topic, or choose Comprehensive Practice.</p>
     <Suspense fallback={<p role="status">Loading practice…</p>}><PracticeLaunch key={code} stateCode={code} /></Suspense>
-    <PracticeAfterword
-      during="Quick 10 and topic practice explain answers as you go. Comprehensive Practice shows explanations after you submit. This independent practice does not count toward Ohio’s state-approved course or applicable assessment."
-      samples={[]}
-      links={[{ href: site.questions, label: "Ohio questions with answers" }, { href: site.study, label: "Ohio study guide" }, { href: site.studyCards, label: "Ohio study cards" }, { href: site.mistakes, label: "Review wrong answers" }]}
-    />
+    <section className="card">
+      <h2>What to expect</h2>
+      <p>Quick 10 and topic practice draw from {counts.free} free questions out of {counts.published} published questions and give feedback as you answer. Comprehensive Practice uses {pack.fullCount} questions, with explanations after you submit and {pack.fullMinutes ? `a ${pack.fullMinutes}-minute limit` : 'no time limit'}.</p>
+      <p>Ohio’s initial non-attorney commission requires education and a test through an approved provider. For training, testing and separate renewal or remote-online requirements, see the <a href={ohioEducation}>Ohio Secretary of State’s education and testing page</a>, checked November 27, 2026.</p>
+      <p><Link href={`${site.questions}#sample-questions`}>Read Ohio sample questions and explanations</Link>{' · '}<Link href={site.become}>Ohio application steps</Link></p>
+    </section>
   </main>;
   if (section === 'practice') return <main className="wrap hero"><h1>{state[1]} Notary Practice</h1>
     <p><MemberCopy member={<>Quick 10 gives ten original questions with explanations and official sources.</>}>Quick 10 gives ten free original questions with explanations and official sources.</MemberCopy></p>

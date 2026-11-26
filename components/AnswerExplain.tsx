@@ -26,7 +26,7 @@ export function AnswerExplain({
         <ExplanationBody explanation={explanation} wrongNote={wrongNote} />
         {optionFeedback && <div>
           <h4>Why the other choices are incorrect</h4>
-          <ul>{Object.entries(optionFeedback).map(([letter, feedback]) => (
+          <ul className="answer-option-notes">{Object.entries(optionFeedback).map(([letter, feedback]) => (
             <li key={letter}><strong>{letter}.</strong> {feedback}</li>
           ))}</ul>
         </div>}

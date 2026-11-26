@@ -1,4 +1,4 @@
-import type { Question, Source } from '../lib/types';
+import type { Question } from '../lib/types';
 import { freeStateContent } from './free-state-content.ts';
 import type { FreeStateCode } from '../lib/free-state-catalog';
 
@@ -16,10 +16,3 @@ export function freeStateQuestions(code: FreeStateCode): Question[] {
     version: 1, is_free: true, status: 'published',
   }));
 }
-
-export const freeStateSources: Record<string, Source> = Object.fromEntries(
-  Object.values(freeStateContent).flatMap(content => content.sources.map(source => [source.id, {
-    source_id: source.id, source_type: 'SOS', title: source.title, reference: source.reference,
-    url: source.url, last_verified_at: source.checkedAt, last_checked_at: source.checkedAt,
-  } satisfies Source])),
-);
