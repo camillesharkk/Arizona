@@ -6,6 +6,9 @@ import { communityDiscussionPath } from "@/lib/community-links";
 import type { CommunityInsightActivity, CommunityPost } from "@/lib/community-store";
 import { stateByCode } from "@/lib/states";
 import { CommunityLike, CommunityShare } from "./CommunityPostForms";
+import { publicSourceUrl, sourceDate, sourceLinkLabel } from "@/lib/community-source";
+import type { filterCommunitySources } from "@/lib/community-source-filter";
+import { CommunitySourceControls, CommunitySourcePagination } from "./CommunitySourceControls";
 
 function thumbnailFor(insight: CommunityInsight) {
   const topic = insight.keywords.join(" ").toLowerCase();
@@ -57,13 +60,14 @@ function CommunityIntro() {
   );
 }
 
-export function CommunityInsightFeed({ insights, activity, memberPosts, signedIn, showHighlights, announcements }: {
+export function CommunityInsightFeed({ insights, activity, memberPosts, signedIn, showHighlights, announcements, sources }: {
   insights: readonly CommunityInsight[];
   activity: CommunityInsightActivity[] | null;
   memberPosts: CommunityPost[];
   signedIn: boolean;
   showHighlights: boolean;
   announcements?: ReactNode;
+  sources?: ReturnType<typeof filterCommunitySources>;
 }) {
   const metrics = new Map(activity?.map((item) => [item.id, item] as const));
   const reviewed = insights.map((insight) => ({ insight, activity: metrics.get(insight.id), image: thumbnailFor(insight) }))
@@ -115,27 +119,28 @@ export function CommunityInsightFeed({ insights, activity, memberPosts, signedIn
           </ul>
         </section>
       ) : <CommunityIntro />}
-      {(reviewed.length > 0 || announcements) && <section className="community-editorial home-section" id="community-insights" aria-labelledby="community-editorial-heading">
-        <h2 id="community-editorial-heading">{showHighlights ? `${reviewed.length} reviewed public posts` : "Reviewed public post"}</h2>
+      {(sources || reviewed.length > 0 || announcements) && <section className="community-editorial home-section" id="community-insights" aria-labelledby="community-editorial-heading">
+        <h2 id="community-editorial-heading">External discussions</h2>
+        {sources && <CommunitySourceControls sources={sources} />}
         <div className="community-editorial-list">
-          {announcements}
           {reviewed.map(({ insight, activity, image }) => (
             <article className="card community-insight-post" key={insight.id} id={`insight-${insight.id}`} aria-labelledby={`title-${insight.id}`}>
               <div className="community-insight-image"><Thumbnail name={image} /></div>
               <div className="community-insight-content">
-                <p className="community-meta">{stateByCode(insight.state)?.name ?? insight.state} · {insight.platform}</p>
+                <p className="community-meta">{stateByCode(insight.state)?.name ?? insight.state} · {insight.platform} · {insight.source?.type === "comment" ? "Public comment" : "Public post"}</p>
                 <h3 id={`title-${insight.id}`}>{insight.title}</h3>
-                <p>{insight.summary}</p>
-                <p className="community-meta"><span className="visually-hidden">Topics:</span> {insight.keywords.join(" · ")}</p>
+                <p><strong>Summary</strong> · {insight.summary}</p>
+                <p className="community-meta"><span className="visually-hidden">Topics:</span> {insight.topic ?? insight.keywords.join(" · ")}</p>
                 <div className="community-source-links">
-                  <a className="btn btn-ghost card-action" href={insight.postUrl} target="_blank" rel="noopener noreferrer">Original {insight.platform} post <span aria-hidden="true">↗</span></a>
-                  <a className="btn btn-ghost card-action" href={insight.officialUrl} target="_blank" rel="noopener noreferrer">Official reference <span aria-hidden="true">↗</span></a>
+                  {publicSourceUrl(insight.platform, insight.postUrl) && <a className="btn btn-ghost card-action" href={insight.postUrl} target="_blank" rel="noopener noreferrer">{sourceLinkLabel(insight.platform, insight.source)} <span aria-hidden="true">↗</span></a>}
+                  {insight.officialUrl && <a className="btn btn-ghost card-action" href={insight.officialUrl} target="_blank" rel="noopener noreferrer">Official reference <span aria-hidden="true">↗</span></a>}
+                  <span className="community-meta">{sourceDate(insight.source) ? <time dateTime={sourceDate(insight.source)!}>{sourceDate(insight.source)}</time> : "Date unavailable"}</span>
                   <span className="community-meta">Last checked <time dateTime={insight.checkedAt}>{insight.checkedAt}</time></span>
                 </div>
               </div>
               <div className="community-insight-actions">
                 <Link className="btn btn-ghost" href={insight.studyHref}>{insight.studyLabel} <span aria-hidden="true">→</span></Link>
-                <div className="community-reactions">
+                <div className="community-reactions" aria-label="On-site discussion activity">
                   {signedIn && activity && <CommunityLike id={insight.id} target={insight.title} insight liked={activity.liked} likes={activity.likes} />}
                   {!signedIn && activity && <span className="community-meta">{activity.likes} {activity.likes === 1 ? "like" : "likes"}</span>}
                   <Link className="btn btn-ghost" href={communityDiscussionPath(insight.id)}>
@@ -148,7 +153,10 @@ export function CommunityInsightFeed({ insights, activity, memberPosts, signedIn
             </article>
           ))}
         </div>
+        {sources && <CommunitySourcePagination sources={sources} />}
+        <p className="community-meta">Summaries of public discussions. View sources for context.</p>
       </section>}
+      {announcements && <section className="community-editorial-list" aria-label="Site announcements">{announcements}</section>}
     </>
   );
 }

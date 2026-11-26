@@ -2,18 +2,23 @@ import { caCommunityInsights } from "./community-insights-ca";
 import { nyCommunityInsights } from "./community-insights-ny";
 import { statesCommunityInsights } from "./community-insights-states";
 
+import externalRecords from "./community-external-sources.json";
+import { parseExternalSources, type ExternalSource, type SourcePlatform } from "../lib/community-source";
+
 export type CommunityInsight = {
   id: string;
   state: string;
   title: string;
   summary: string;
-  platform: "Reddit" | "LinkedIn";
+  platform: SourcePlatform;
   postUrl: string;
   checkedAt: string;
   updatedAt: string;
   studyHref: string;
   studyLabel: string;
-  officialUrl: string;
+  officialUrl: string | null;
+  topic?: string;
+  source?: ExternalSource;
   keywords: readonly string[];
 };
 
@@ -102,11 +107,16 @@ const earlierInsights = [
   },
 ] as const satisfies readonly CommunityInsight[];
 
-export const communityInsights: readonly CommunityInsight[] = [
+export const legacyCommunityInsights: readonly CommunityInsight[] = [
   ...earlierInsights,
   ...caCommunityInsights,
   ...nyCommunityInsights,
   ...statesCommunityInsights,
+];
+
+export const communityInsights: readonly CommunityInsight[] = [
+  ...parseExternalSources(externalRecords).filter(({ status }) => status === "published"),
+  ...legacyCommunityInsights,
 ];
 
 export const communityInsightsUpdatedAt = communityInsights
@@ -119,4 +129,7 @@ for (const insight of [...communityInsights].sort((a, b) => b.updatedAt.localeCo
   if (!newestByState.has(insight.state)) newestByState.set(insight.state, insight);
 }
 
-export const homepageCommunityInsights = [...newestByState.values()].slice(0, 3);
+export const homepageCommunityInsights = ["AZ", "CA", "NY"].flatMap(state => {
+  const insight = newestByState.get(state);
+  return insight ? [insight] : [];
+});

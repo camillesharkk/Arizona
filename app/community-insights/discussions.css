@@ -424,3 +424,24 @@
 
 .community-home { background: var(--bg); }
 .community-home .community-spotlight h1 { font-family: var(--serif); font-weight: 400; }
+
+#community-insights { scroll-margin-block-start: 5rem; }
+
+.community-source-filters,
+.community-source-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: .5rem .85rem;
+  margin-block: 1rem;
+}
+
+.community-source-filters .field {
+  flex: 1 1 9rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.community-source-filters select { width: 100%; }
+.community-source-filters > a { min-height: 44px; align-content: center; }
+.community-source-pagination { align-items: center; }
