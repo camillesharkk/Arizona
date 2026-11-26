@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
 
 const meta = pageMeta({
-  title: "Contact Arizona Notary Prep",
+  title: "Contact Notary Exam Prep",
   description: "Send a message about practice tests, your account, or the study platform.",
   path: paths.contact,
 });
@@ -15,7 +15,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
   return (
     <main className="wrap hero">
       <p className="kicker">Support</p>
-      <h1>Contact Arizona Notary Prep</h1>
+      <h1>Contact Notary Exam Prep</h1>
       {examRefund && (
         <section className="card">
           <h2>Lifetime Pro exam guarantee request</h2>

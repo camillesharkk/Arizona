@@ -530,12 +530,16 @@ export function ExamRunner({
     if (startReported.current || !questions.length) return;
     startReported.current = true;
     poolLocked.current = true;
-    setStartedAt((current) => current ?? Date.now());
+    const started = Date.now();
+    if (!examSaveId.current) examSaveId.current = crypto.randomUUID();
+    persistSitting({ examId: examSaveId.current, startedAt: started });
+    setStartedAt((current) => current ?? started);
     const plan = isPro ? "pro" : "free";
     const start = examStartParams({ mode, practice, questionCount: questions.length, plan, state: stateCode, topic: Boolean(focusArea), entryPoint });
-    trackAnalyticsEvent("exam_start", start);
-    if (start.mode === "quick10") trackEvent("quick10_start");
-    if (start.mode === "full45" && (stateCode === "AZ" || stateCode === "CA")) trackEvent("full45_start", { plan });
+    const attempt_id = examSaveId.current;
+    trackAnalyticsEvent("exam_start", { ...start, attempt_id });
+    if (start.mode === "quick10") trackEvent("quick10_start", { state: stateCode, attempt_id });
+    if (start.mode === "full45") trackEvent("full45_start", { plan, state: stateCode, attempt_id });
   }
 
   useEffect(() => {
@@ -875,9 +879,10 @@ export function ExamRunner({
     if (!completeReported.current) {
       completeReported.current = true;
       const elapsed = startedAt == null ? undefined : Math.max(0, Math.round((Date.now() - startedAt) / 1000));
+      persistSitting({ examId: examSaveId.current, done: true, scored: localSaved.current });
       trackAnalyticsEvent(
         "exam_complete",
-        examCompleteParams({
+        { ...examCompleteParams({
           mode,
           practice,
           questionCount: live.length,
@@ -889,7 +894,7 @@ export function ExamRunner({
           entryPoint,
           plan: isPro ? "pro" : "free",
           durationSeconds: elapsed,
-        })
+        }), attempt_id: examSaveId.current }
       );
     }
   }

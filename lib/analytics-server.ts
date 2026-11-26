@@ -5,6 +5,8 @@
  * Webhook and checkout events are best-effort: a PostHog failure must not change Paddle fulfillment.
  * GA4 has no Measurement Protocol secret here, so server events are delivered to PostHog only.
  */
+import { isLifetimeProProduct } from "./pro-products.ts";
+import { stateByCode } from "./states.ts";
 import { AZ_PRO_PRODUCT_CODE } from "./pricing/catalog.ts";
 import { posthogQueryHost } from "./operations/config.ts";
 import {
@@ -76,15 +78,19 @@ export async function reportPaddleFulfillment(input: {
   transactionId?: string;
   orderId?: string;
   amountCents?: number;
+  productCode?: string;
+  sourceState?: string;
+  checkoutAttemptId?: string;
 }) {
   const events = fulfillmentAnalyticsEvents(input);
   await Promise.all(events.map((name) =>
     trackServerAnalyticsEvent(name, input.userId, {
-      product_code: AZ_PRO_PRODUCT_CODE,
-      plan: "pro",
-      state: ANALYTICS_STATE,
+      product_code: input.productCode ?? AZ_PRO_PRODUCT_CODE,
+      plan: isLifetimeProProduct(input.productCode ?? "") ? "lifetime" : "pro",
+      state: stateByCode(input.sourceState ?? "")?.code ?? ANALYTICS_STATE,
       site: ANALYTICS_SITE,
       transaction_id: input.transactionId,
+      checkout_attempt_id: input.checkoutAttemptId,
       order_id: input.orderId,
       value: typeof input.amountCents === "number" ? input.amountCents / 100 : undefined,
       currency: "USD",

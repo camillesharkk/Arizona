@@ -19,6 +19,7 @@ import { getLifetimeCheckoutAvailability } from "@/lib/billing/lifetime-availabi
 const postSchema = z.object({
   quoteId: z.string().uuid(),
   sourceState: z.enum(LIVE_STATES).optional(),
+  checkoutAttemptId: z.string().uuid().optional(),
 });
 
 export async function POST(req: Request) {
@@ -53,6 +54,7 @@ export async function POST(req: Request) {
       quote,
       config: cfg.config,
       sourceState: body.data.sourceState,
+      checkoutAttemptId: body.data.checkoutAttemptId,
     });
     if (!paddle.ok) return NextResponse.json({ error: paddle.error }, { status: paddle.status });
     return NextResponse.json({

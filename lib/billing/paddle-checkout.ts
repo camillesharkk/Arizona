@@ -27,6 +27,7 @@ export async function ensurePaddleCheckout(opts: {
   now?: Date;
   sdk?: PaddleTransactionsClient;
   sourceState?: StateCode;
+  checkoutAttemptId?: string;
   resumeDepth?: number;
 }): Promise<
   | { ok: true; transactionId: string; quoteId: string; finalPriceCents: number; checkoutUrl: string | null; paymentPending?: boolean }
@@ -132,6 +133,7 @@ export async function ensurePaddleCheckout(opts: {
     quoteId: quote.id,
     productCode: quote.productCode,
     sourceState: opts.sourceState,
+    checkoutAttemptId: opts.checkoutAttemptId,
   });
 
   const created = await createPaddleTransaction(opts.config, payload, sdk);

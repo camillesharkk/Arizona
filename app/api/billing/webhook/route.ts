@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { applyBillingEvent, parsePaddleLike, verifyMorSignature } from "@/lib/billing";
 import { handleLemonWebhook } from "@/lib/billing/lemon-webhook";
 import { getLemonConfig, isLemonProvider, verifyLemonWebhookSignature } from "@/lib/billing/lemonsqueezy";
@@ -80,16 +80,31 @@ export async function POST(req: Request) {
         await refundArizonaOrder(opts.userId, opts.provider, opts.providerOrderId);
       },
     });
+    const reports: Parameters<typeof reportPaddleFulfillment>[0][] = [];
+    const collect: typeof reportPaddleFulfillment = async (report) => { reports.push(report); };
+    const reportAfterCommit = (committed: boolean) => after(async () => {
+      await Promise.allSettled(reports.filter(report => committed || !report.orderConfirmed).map(async report => {
+        if (!report.duplicate && report.orderConfirmed && report.transactionId) {
+          const row = await (await getStore()).getEntitlementByProviderOrder(PADDLE_PROVIDER, report.transactionId).catch(() => null);
+          if (!row || row.id !== report.entitlementId || row.userId !== report.userId || row.status !== "active") {
+            paddleLog("entitlement_readback_missing", { orderId: report.transactionId });
+            report.entitlementId = null;
+          } else {
+            paddleLog("entitlement_readback_confirmed", { orderId: report.transactionId });
+          }
+        }
+        await reportPaddleFulfillment(report);
+      }));
+    });
     const scope = paddleWebhookWriteScope(event, cfg.config);
     let result: PaddleWebhookResult;
     if (scope && /^postgres(?:ql)?:\/\//.test(process.env.DATABASE_URL || "")) {
       const { getPgSql, withPaddlePaymentTransaction } = await import("@/lib/store/pg-store");
       const { createPgCommerceRepo } = await import("@/lib/commerce/pg-repo");
-      const reports: Parameters<typeof reportPaddleFulfillment>[0][] = [];
       let rejected: PaddleWebhookResult | undefined;
       try {
         result = await withPaddlePaymentTransaction(scope.transactionId, scope.userId, async () => {
-          const outcome = await run(createPgCommerceRepo(getPgSql()), async (report) => { reports.push(report); });
+          const outcome = await run(createPgCommerceRepo(getPgSql()), collect);
           if (outcome.status >= 400) {
             rejected = outcome;
             throw new Error("paddle_write_rejected");
@@ -97,15 +112,15 @@ export async function POST(req: Request) {
           return outcome;
         });
       } catch {
-        await Promise.allSettled(reports.filter(report => !report.orderConfirmed).map(reportPaddleFulfillment));
+        reportAfterCommit(false);
         if (rejected) return NextResponse.json(rejected.body, { status: rejected.status });
         paddleLog("paddle_write_failed", { event: event.eventType, orderId: scope.transactionId });
         return NextResponse.json({ error: "Payment update unavailable" }, { status: 503 });
       }
-      await Promise.allSettled(reports.map(reportPaddleFulfillment));
     } else {
-      result = await run(await getCommerceRepo());
+      result = await run(await getCommerceRepo(), collect);
     }
+    reportAfterCommit(result.status === 200);
     if (result.status === 200 && result.recordNotificationId) {
       try {
         const store = await getStore();

@@ -7,6 +7,7 @@ import { isActiveQuestion } from "@/lib/question-status";
 // An entry approves only this reviewed revision for public display, never a replacement.
 export const publicPracticeSampleVersions = {
   NY: { "ny-051": 1, "ny-005": 1, "ny-008": 1, "ny-010": 1, "ny-011": 1 },
+  NC: { "nc-001": 1, "nc-033": 1, "nc-069": 1 },
   OH: { "oh-001": 1, "oh-003": 1, "oh-004": 1, "oh-005": 1, "oh-007": 1, "oh-009": 1 },
 };
 
@@ -32,6 +33,7 @@ export function publicPracticeSamples(state: keyof typeof publicPracticeSampleVe
       last_verified_at: q.last_verified_at,
       moreHref: `${pack.paths.practice}?mode=practice&area=${encodeURIComponent(q.study_topic)}`,
       guideHref: topic ? `${pack.paths.study}#${encodeURIComponent(topic.id)}` : undefined,
+      cardsHref: `${pack.paths.studyCards}?topic=${encodeURIComponent(q.study_topic)}`,
     }];
   });
 }

@@ -125,5 +125,5 @@ export function SeoGuidePage({ id }: { id: string }) {
 }
 
 function siteByline() {
-  return "Written by Arizona Notary Exam Practice.";
+  return "Written by Notary Exam Prep.";
 }

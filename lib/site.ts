@@ -12,6 +12,8 @@ export function canonicalUrl(path = "/") {
   return `https://arizonanotaryprep.com${normalized}`;
 }
 
+export const publicBrand = "Notary Exam Prep";
+
 export const site = {
   name: "Arizona Exam",
   legalName: "Arizona Notary Exam Practice",

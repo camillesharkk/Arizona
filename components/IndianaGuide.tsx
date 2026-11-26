@@ -12,6 +12,7 @@ export function IndianaGuide({ resources = false, study = false, children }: { r
   <h1>{study ? "Indiana Notary Study Guide" : resources ? "Indiana official resources" : "How to Become a Notary in Indiana"}</h1>
   <p>For first-time traditional notary applicants. Independent exam practice on this site does not replace the state course, exam or application.</p>
   <p className="notice">Guide review November 13, 2026. The Applicant Hub and Learner Hub steps follow the <a href={faq}>Secretary of State’s May 4, 2026 FAQ</a>, rechecked November 27, 2026.</p>
+  {applicationGuide && <nav aria-label="Indiana application steps"><ol><li><a href="#prepare">Prepare materials</a></li><li><a href="#apply">Apply and pay</a></li><li><a href="#course-exam">Take the state course and exam</a></li><li><a href="#appointment">Confirm your commission</a></li></ol></nav>}
   <section className="card" id="prepare"><h2>1. Prepare your materials</h2>
    <p>Check that you are at least 18, a U.S. citizen or permanent legal resident, and an Indiana resident or primarily employed in Indiana. Review statutory disqualifications before applying. <a href={portal}>Official requirements</a>{" · "}<a href="https://iga.in.gov/laws/2026/ic/titles/33#33-42-12-1">IC 33-42-12-1</a>{" · "}<a href={update}>SOS eligibility overview</a></p>
    <ul>

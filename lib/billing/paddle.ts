@@ -36,6 +36,7 @@ export type PaddleCustomData = {
   quote_id: string;
   product_code: string;
   source_state?: StateCode;
+  checkout_attempt_id?: string;
 };
 
 function missingNamed(env: PaddleEnvMap, keys: string[]) {
@@ -266,12 +267,14 @@ export function buildPaddleTransactionPayload(opts: {
   quoteId: string;
   productCode: string;
   sourceState?: StateCode;
+  checkoutAttemptId?: string;
 }): CreateTransactionRequestBody {
   const customData: PaddleCustomData = {
     user_id: opts.userId,
     quote_id: opts.quoteId,
     product_code: opts.productCode,
     ...(opts.sourceState ? { source_state: opts.sourceState } : {}),
+    ...(opts.checkoutAttemptId ? { checkout_attempt_id: opts.checkoutAttemptId } : {}),
   };
   return {
     items: [

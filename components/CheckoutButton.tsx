@@ -22,7 +22,7 @@ import { STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
 import { EXAM_GUARANTEE_CENTS, LIFETIME_ACCESS_CENTS, LIFETIME_TOTAL_CENTS } from "@/lib/pricing/lifetime";
 import { LIFETIME_PRO_PRODUCT_CODE } from "@/lib/pro-products";
 import { formatUsd } from "@/lib/pricing/money";
-import { pauseClarityRecording, pendingAnalyticsCheckout, PRO_ITEM_ID, rememberPendingCheckout, trackAnalyticsEvent, trackBeginCheckout, type CheckoutProductCode } from "@/lib/analytics";
+import { pauseClarityRecording, pendingAnalyticsCheckout, rememberCheckoutAttempt, shouldSendProductAnalytics, type CheckoutAttempt, PRO_ITEM_ID, rememberPendingCheckout, trackAnalyticsEvent, trackBeginCheckout, type CheckoutProductCode } from "@/lib/analytics";
 import { paddleCheckoutFallback, paddleSuccessUrl } from "@/lib/billing/paddle-public";
 
 type Breakdown = {
@@ -174,7 +174,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
     const cfg = paddleBrowserConfig();
     if (!cfg.ok) return { ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" };
     pauseClarityRecording();
-    const paddle = await loadBrowserPaddle();
+    const paddle = await loadBrowserPaddle().catch(() => undefined);
     if (!paddle) return { ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" };
     if (lifetime) {
       stopLifetimeWatch.current();
@@ -187,7 +187,7 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
         } else if (event.name === "checkout.closed") {
           setCheckoutNote("Checkout closed. You can continue the same checkout.");
           stopLifetimeWatch.current();
-        } else if (event.name === "checkout.error" || event.name === "checkout.failed") {
+        } else if (event.name === "checkout.error" || event.name === "checkout.payment.failed" || event.name === "checkout.payment.error") {
           setCheckoutNote("Checkout reported a payment error. You can retry the same checkout.");
         }
       });
@@ -204,9 +204,10 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
       };
       const stop = watchPaddleCheckout((event) => {
         if (event.transactionId && event.transactionId !== transactionId) return;
-        if (event.name === "checkout.loaded") finish({ ok: true });
-        else if (event.name === "checkout.error" || event.name === "checkout.failed") {
-          finish({ ok: false, error: "CHECKOUT_OPEN_FAILED" });
+        if (event.name === "checkout.loaded" && event.transactionId === transactionId) finish({ ok: true });
+        else if (event.name === "checkout.closed" && event.transactionId === transactionId) finish({ ok: true });
+        else if (event.name === "checkout.error") {
+          finish({ ok: false, error: event.transactionId ? "CHECKOUT_REPORTED_ERROR" : "CHECKOUT_OPEN_FAILED" });
         }
       });
       timer = window.setTimeout(() => finish({ ok: false, error: "CHECKOUT_OPEN_FAILED" }), 8000);
@@ -226,7 +227,8 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
 
   async function finishPaddle(
     data: { transactionId?: string; checkoutUrl?: string | null; url?: string; error?: string; productCode?: string; finalPriceCents?: number; paymentPending?: boolean },
-    breakdown: { finalPriceCents?: number; newcomerApplied?: boolean; referralApplied?: boolean; creditApplied?: boolean } | null
+    breakdown: { finalPriceCents?: number; newcomerApplied?: boolean; referralApplied?: boolean; creditApplied?: boolean } | null,
+    attempt: CheckoutAttempt
   ) {
     if (data.error === "lifetime_already_owned") {
       await load(false);
@@ -248,6 +250,9 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
         window.location.assign(paddleSuccessUrl(window.location.origin, true, data.transactionId));
         return;
       }
+      const amount = data.finalPriceCents ?? breakdown?.finalPriceCents;
+      const boundAttempt = { ...attempt, value: amount == null ? attempt.value : amount / 100 };
+      rememberCheckoutAttempt(data.transactionId, boundAttempt);
       trackBeginCheckout(breakdown, data.transactionId, productCode);
       if (lifetime) setHasPendingLifetime(true);
       const fallback = paddleCheckoutFallback(data.checkoutUrl, data.transactionId, window.location.host, lifetime);
@@ -255,13 +260,18 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
         window.location.assign(fallback);
         return;
       }
-      const overlay = await openPaddleOverlay(data.transactionId).catch(() => ({ ok: false as const }));
+      const overlay = await openPaddleOverlay(data.transactionId).catch(() => ({ ok: false as const, error: "PADDLE_CLIENT_UNAVAILABLE" }));
       if (overlay.ok) return;
+      if (overlay.error !== "CHECKOUT_REPORTED_ERROR") trackAnalyticsEvent(
+        overlay.error === "PADDLE_CLIENT_UNAVAILABLE" ? "checkout_init_failed" : "checkout_load_failed",
+        { ...boundAttempt, transaction_id: data.transactionId },
+      );
       if (lifetime) stopLifetimeWatch.current();
       setErr("Checkout couldn't be opened. Please try again.");
       return;
     }
     if (lifetime || !data.url) {
+      trackAnalyticsEvent("checkout_init_failed", attempt);
       setErr(
         data.error === "checkout_in_progress"
           ? "Checkout is already starting. Please try again to continue."
@@ -277,7 +287,15 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
     event.preventDefault();
     if (!policy || submitting.current || signedIn !== true || ownsLifetime || !checkoutAvailable || checkoutClosed || (lifetime && !preview)) return;
     submitting.current = true;
-    trackAnalyticsEvent("checkout_click", { product_code: productCode, plan: "free", entry_point: "pricing" });
+    const attempt: CheckoutAttempt = {
+      checkout_attempt_id: crypto.randomUUID(),
+      product_code: productCode,
+      plan: lifetime ? "lifetime" : "pro",
+      state: sourceState,
+      value: (preview?.breakdown.finalPriceCents ?? (lifetime ? LIFETIME_TOTAL_CENTS : STANDARD_PRICE_CENTS)) / 100,
+      currency: "USD",
+    };
+    trackAnalyticsEvent("checkout_click", { ...attempt, entry_point: "pricing" });
     setBusy(true);
     setErr("");
     setPriceChanged(false);
@@ -290,18 +308,20 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
       const quote = await quoteRes.json();
       if (!quoteRes.ok) {
         if (quoteRes.status === 401) setSignedIn(false);
-        else await finishPaddle(quote, null);
+        else await finishPaddle(quote, null, attempt);
         return;
       }
       if (lifetime && quote.breakdown?.finalPriceCents !== LIFETIME_TOTAL_CENTS) throw new Error("Checkout price mismatch");
       const createCheckout = () => fetch("/api/billing/checkout/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quoteId: quote.quoteId, sourceState }),
+        body: JSON.stringify({ quoteId: quote.quoteId, sourceState,
+          checkoutAttemptId: shouldSendProductAnalytics() ? attempt.checkout_attempt_id : undefined }),
       });
       let res = await createCheckout();
       let data = await res.json();
       if (res.status === 409 && data.error === "promotion_checkout_in_progress") {
+        trackAnalyticsEvent("checkout_init_failed", attempt);
         setErr("A checkout with this one-time discount is already open. Continue the existing checkout or contact support.");
         return;
       }
@@ -310,8 +330,9 @@ export function CheckoutButton({ belowCta, ctaLabel, productCode = PRO_ITEM_ID, 
         data = await res.json();
       }
       if (res.status === 401) setSignedIn(false);
-      else await finishPaddle(data, quote.breakdown);
+      else await finishPaddle(data, quote.breakdown, attempt);
     } catch {
+      trackAnalyticsEvent("checkout_init_failed", attempt);
       setErr("Checkout couldn't be started. Please try again.");
     } finally {
       submitting.current = false;

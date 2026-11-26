@@ -351,10 +351,10 @@ export const expandedGuides: SeoGuide[] = [
       },
       {
         "heading": "Find the rule before you practice under time",
-        "body": "Work through a few manual lookups first. Then try a timed Arizona practice set and review explanations after submitting.",
-        "href": `${paths.practice}?mode=full`,
-        "hrefLabel": "Try timed Arizona practice",
-        targetMode: "full"
+        "body": "First, use the manual’s table of contents to locate the chapter on identifying signers. Next, search for “credible person” and read the conditions around that term. Finally, set a short timer, pick a signer-identification scenario, and find the rule before choosing an answer. Try a Quick 10 to rehearse the decision. The lookup drills explain how to use the public manual while studying.",
+        "href": `${paths.practice}?mode=quick`,
+        "hrefLabel": "Start Free Arizona Quick 10",
+        targetMode: "quick"
       }
     ],
     "related": [

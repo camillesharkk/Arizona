@@ -79,15 +79,16 @@ export default async function Page({ params, searchParams }: {
     if (code === 'OH') return <main className="wrap hero" data-public-practice data-notary-white-canvas>
       <h1>Ohio Notary Questions and Answers</h1>
       <p>Review original Ohio scenarios with answers, explanations and official references. Use the question bank to answer on your own, or <a href="#sample-questions">read the worked examples</a>.</p>
-      <p><Link className="btn btn-primary" href={site.practice}>Choose an Ohio practice mode</Link></p>
-      <QuestionsClient key={code} stateCode={code} topic={query.topic} />
+      <p><Link className="btn btn-primary" href={`${site.practice}?mode=quick`}>Start Free Ohio Quick 10</Link></p>
+      <nav aria-label="Ohio question topics"><ul>{pack.topics.map(topic => <li key={topic.id}><Link href={`${site.questions}?topic=${encodeURIComponent(topic.id)}#question-bank`}>{topic.label}</Link></li>)}</ul></nav>
+      <div id="question-bank"><QuestionsClient key={`${code}:${query.topic || "all"}`} stateCode={code} topic={query.topic} /></div>
       <PracticeAfterword
         publicLanding
         samples={publicPracticeSamples('OH')}
         links={[{ href: site.study, label: 'Ohio study guide' }, { href: site.practice, label: 'Ohio practice' }]}
       />
     </main>;
-    return <main className="wrap hero"><h1>{state[1]} Practice Questions</h1><QuestionsClient key={code} stateCode={code} topic={query.topic} /></main>;
+    return <main className="wrap hero"><h1>{state[1]} Practice Questions</h1><div id="question-bank"><QuestionsClient key={`${code}:${query.topic || "all"}`} stateCode={code} topic={query.topic} /></div></main>;
   }
   if (section === 'practice' && code === 'OH' && full) return <main className="wrap hero" data-notary-white-canvas>
     <h1>Ohio Notary Practice Test</h1>

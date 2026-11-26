@@ -6,7 +6,7 @@ import { LIFETIME_PRO_PRODUCT_CODE } from "./pro-products.ts";
 export const GA_MEASUREMENT_ID_ENV = "NEXT_PUBLIC_GA_MEASUREMENT_ID";
 export const GA_SCRIPT_ORIGIN = "https://www.googletagmanager.com/gtag/js";
 export const PRO_ITEM_ID = "az_exam_pro_60d";
-export const PRO_ITEM_NAME = "Arizona Notary Exam Prep Pro — 60-Day Access";
+export const PRO_ITEM_NAME = "Notary Exam Prep Pro — 60-Day Access";
 export type CheckoutProductCode = typeof PRO_ITEM_ID | typeof LIFETIME_PRO_PRODUCT_CODE;
 export const ANALYTICS_STATE = "AZ";
 export const ANALYTICS_SITE = "arizona_notary_prep";
@@ -636,6 +636,37 @@ export function rememberPendingCheckout(transactionId: string, productCode: Chec
     }
   } catch { /* payment must not depend on storage */ }
   notifyCheckoutChange();
+}
+
+export function validCheckoutAttemptId(value: unknown): value is string {
+  return typeof value === "string" && /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(value);
+}
+
+export type CheckoutAttempt = {
+  checkout_attempt_id: string;
+  product_code: CheckoutProductCode;
+  plan: "lifetime" | "pro";
+  state?: string;
+  value?: number;
+  currency: "USD";
+};
+
+let activeCheckout: { transactionId: string; attempt: CheckoutAttempt } | null = null;
+
+export function rememberCheckoutAttempt(transactionId: string, attempt: CheckoutAttempt) {
+  activeCheckout = { transactionId, attempt };
+  if (!shouldSendProductAnalytics()) return;
+  try {
+    window.sessionStorage.setItem("az_checkout_attempt", JSON.stringify(activeCheckout));
+  } catch { /* The live callback can still use the in-page attempt. */ }
+}
+
+export function checkoutAttemptFor(transactionId: string): CheckoutAttempt | undefined {
+  if (activeCheckout?.transactionId === transactionId) return activeCheckout.attempt;
+  try {
+    const saved = JSON.parse(window.sessionStorage.getItem("az_checkout_attempt") || "null");
+    return saved?.transactionId === transactionId ? saved.attempt : undefined;
+  } catch { return undefined; }
 }
 
 export function trackBeginCheckout(b: Parameters<typeof checkoutStartParams>[0], transactionId?: string, productCode: CheckoutProductCode = PRO_ITEM_ID) {

@@ -52,7 +52,7 @@ export function StateArticlePage({ article }: { article: StateArticle }) {
       </p>
       <p className="notice">
         Published {article.published ?? article.updated}.
-        {article.published ? ` Updated ${article.updated}.` : ""} Arizona Notary Exam Practice. {article.checked}
+        {article.published ? ` Updated ${article.updated}.` : ""} Notary Exam Prep. {article.checked}
       </p>
       {article.sections.map((section) => (
         <section className="card" key={section.heading} style={{ marginTop: 18 }}>

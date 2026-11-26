@@ -325,3 +325,15 @@ test('PostHog account identification retains the current state after login', asy
   await current.syncAnalyticsIdentity({ id: '11111111-1111-4111-8111-111111111111', plan: 'pro' });
   assert.equal(identified[1].properties.state, 'TX');
 });
+
+test("Paddle callback stages distinguish loading, close, payment failure and completion", async () => {
+  const { paddleCheckoutStage } = await import("../lib/billing/paddle-public.ts");
+  assert.equal(paddleCheckoutStage("checkout.loaded", false, false), "checkout_open");
+  assert.equal(paddleCheckoutStage("checkout.closed", true, false), "checkout_closed");
+  assert.equal(paddleCheckoutStage("checkout.closed", true, true), null);
+  assert.equal(paddleCheckoutStage("checkout.error", false, false), "checkout_load_failed");
+  assert.equal(paddleCheckoutStage("checkout.error", true, false), "checkout_error");
+  assert.equal(paddleCheckoutStage("checkout.payment.failed", true, false), "checkout_payment_failed");
+  assert.equal(paddleCheckoutStage("checkout.payment.error", true, false), "checkout_payment_failed");
+  assert.equal(paddleCheckoutStage("checkout.completed", true, false), null);
+});

@@ -40,7 +40,7 @@ assert.equal(legacy.status, 308);
 assert.equal(new URL(legacy.headers.get("location"), base).pathname, paths.az);
 assert.equal(new URL(legacy.headers.get("location"), base).searchParams.get("mode"), "quick");
 
-verifyMetadata(indiana, paths.in, "How to Become a Notary in Indiana");
+verifyMetadata(indiana, paths.in, "How to Become a Notary in Indiana | Application, Course &amp; Exam");
 const examStep = indiana.match(/id="course-exam">[\s\S]+?<\/section>/)?.[0];
 assert.match(examStep, /href="\/indiana\/practice\/\?mode=quick"/);
 assert.match(indiana, /id="apply">[\s\S]+?href="https:\/\/apphub\.notary\.sos\.in\.gov\/"[\s\S]+?id="course-exam"[\s\S]+?id="appointment"/);
