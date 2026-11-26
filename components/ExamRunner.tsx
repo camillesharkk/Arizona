@@ -25,7 +25,7 @@ import { AnswerResult } from "@/components/AnswerResult";
 import { MessageDialog } from "@/components/MessageDialog";
 import { ExamNav, FlagIcon, LoadingNote, QuestionJump, RestartPracticeDialog } from "@/components/QuizChrome";
 import { paths } from "@/lib/paths";
-import { examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
+import { examAnalyticsMode, examCompleteParams, examStartParams, trackAnalyticsEvent, trackEvent } from "@/lib/analytics";
 import { SaveForReview } from "@/components/SaveForReview";
 import { settleSave, SubmitStatus } from "@/components/SubmitStatus";
 import { clearSitting, openSitting, readSitting, remainingSeconds, writeSitting, type Sitting, type SittingState } from "@/lib/sitting";
@@ -144,6 +144,7 @@ export function ExamRunner({
   const localSaved = useRef(false);
   const examSaveId = useRef<string | null>(null);
   const completeReported = useRef(false);
+  const viewedResult = useRef<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [unansweredToConfirm, setUnansweredToConfirm] = useState(0);
@@ -415,16 +416,28 @@ export function ExamRunner({
 
   useEffect(() => { if (stateCode === "IN" && done) scrollUnderHeaderAfterLayout(resultRef.current); }, [stateCode, done]);
 
+  const entryPoint = layout === "compact" ? "home_practice" : focusArea ? "topic_practice" : "practice";
+  useEffect(() => {
+    const resultId = examSaveId.current || restrictedResult?.id;
+    const questionCount = restrictedResult?.questionIds.length ?? questions.length;
+    if ((!done && !restrictedResult) || !questionCount || !resultId || viewedResult.current === resultId) return;
+    viewedResult.current = resultId;
+    trackAnalyticsEvent("result_view", examStartParams({
+      mode, practice, questionCount, plan: isPro ? "pro" : "free", state: stateCode,
+      topic: Boolean(focusArea), entryPoint,
+    }));
+  }, [done, entryPoint, focusArea, isPro, mode, practice, questions.length, restrictedResult, stateCode]);
+
   function reportExamStart() {
     if (startReported.current || !questions.length) return;
     startReported.current = true;
     poolLocked.current = true;
     setStartedAt((current) => current ?? Date.now());
     const plan = isPro ? "pro" : "free";
-    const start = examStartParams({ mode, practice, questionCount: questions.length, plan, state: stateCode });
+    const start = examStartParams({ mode, practice, questionCount: questions.length, plan, state: stateCode, topic: Boolean(focusArea), entryPoint });
     trackAnalyticsEvent("exam_start", start);
     if (start.mode === "quick10") trackEvent("quick10_start");
-    if (start.mode === "full45") trackEvent("full45_start", { plan });
+    if (start.mode === "full45" && (stateCode === "AZ" || stateCode === "CA")) trackEvent("full45_start", { plan });
   }
 
   useEffect(() => {
@@ -779,6 +792,8 @@ export function ExamRunner({
           score: pct,
           passed: topicPractice ? false : pct >= examConfig.passingScorePercent,
           state: stateCode,
+          topic: Boolean(focusArea),
+          entryPoint,
           plan: isPro ? "pro" : "free",
           durationSeconds: elapsed,
         })
@@ -847,11 +862,47 @@ export function ExamRunner({
       : `${site.practice}?mode=full${practiceFull ? "" : "&start=1"}`;
     const dailyHref = signedIn ? site.daily : `${site.login}?next=${encodeURIComponent(site.daily)}`;
     const mistakesHref = (mode === "full" || isFreeState(stateCode)) && examSaveId.current ? `${site.mistakes}?attempt=${examSaveId.current}` : site.mistakes;
+    const azMisses = stateCode === "AZ" ? results.filter(result =>
+      !result.correct && answers[result.question.question_id]
+    ) : [];
+    const azTopics = new Map<Question["topic"], number>();
+    for (const { question } of azMisses) azTopics.set(question.topic, (azTopics.get(question.topic) ?? 0) + 1);
+    const firstAzMiss = azMisses[0]?.question.question_id;
+    const azCanTakeFull = mode === "quick" && pct >= examConfig.passingScorePercent && !fullLocked && !isPro;
     return (
       <div className="grid">
         <div className="card result-summary" ref={resultRef}>
           <span className="kicker">Result</span>
-          {isFreeState(stateCode) ? (
+          {stateCode === "AZ" ? (
+            <>
+              <h2>{correct} of {questions.length} correct</h2>
+              <p className="lede">{pct}% on this Arizona practice set. {questions.length - Object.keys(answers).length} skipped.</p>
+              {azTopics.size > 0 && <>
+                <h3>Topics to revisit in this set</h3>
+                <ul>{[...azTopics].sort(([, a], [, b]) => b - a).slice(0, 2).map(([topic, missedCount]) => (
+                  <li key={topic}>{topicLabel(topic)} · {missedCount} missed</li>
+                ))}</ul>
+              </>}
+              <div className="result-next">
+                {firstAzMiss ? <a className="btn btn-primary" href={`#review-${firstAzMiss}`}>Review missed explanations</a>
+                  : azCanTakeFull ? <Link className="btn btn-primary" href={fullHref}>{fullResume ? "Resume Full 45" : "Start Full 45"}</Link>
+                  : mode === "quick" && !preset && layout === "page"
+                    ? <button className="btn btn-primary" type="button" disabled={restarting} onClick={() => void startNew()}>
+                      {restarting ? "Starting…" : "Try another Quick 10"}
+                    </button>
+                    : <a className="btn btn-primary" href={`${site.practice}?mode=quick&start=1`}>Try another Quick 10</a>}
+                {firstAzMiss && <WrongAnswersLink className="btn btn-ghost" label="Review wrong answers" href={mistakesHref} stateCode={stateCode} />}
+                <Link className="btn btn-ghost" href={dailyHref}>Open Daily Study</Link>
+              </div>
+              {submitError && <p className="form-error" role="alert">{submitError}</p>}
+              {isPro ? <p className="notice">Pro is active. Keep practicing or revisit a rule in the <Link href={site.study}>Arizona study guide</Link>.</p>
+                : fullLocked && <p className="notice">Your free Full 45 has been used. Quick 10 and Arizona topic practice are still free. Pro adds the full question bank and repeat Full 45 practice.{" "}
+                  <Link href={site.pricing} data-upgrade-source="exam_results"
+                    data-upgrade-mode={examAnalyticsMode(mode, practice, questions.length, Boolean(focusArea))}
+                    data-upgrade-question-count={questions.length}>View Pro plans</Link>
+                </p>}
+            </>
+          ) : isFreeState(stateCode) ? (
             <><h2>{correct} of {questions.length} correct</h2><FreeStateResultNext code={stateCode} attemptId={examSaveId.current || ""} /></>
           ) : stateCode === "NC" ? (
             <>
@@ -983,7 +1034,7 @@ export function ExamRunner({
               ) : null}
             </>
           )}
-          <h3>Topic accuracy</h3>
+          {stateCode !== "AZ" && <><h3>Topic accuracy</h3>
           {[...topicAcc.entries()].map(([id, v]) => (
             <p key={id}>
               {v.label}: {v.total ? Math.round((v.right / v.total) * 100) : 0}% ({v.total - v.right} missed)
@@ -1024,10 +1075,10 @@ export function ExamRunner({
               </Link>
             </div>
           )}
-          {mode === "quick" && (!onCa || !guided) && <p><Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link></p>}
+          {mode === "quick" && (!onCa || !guided) && <p><Link className="btn btn-ghost" href={paths.community}>Explore Community Insights</Link></p>}</>}
           <AccountInvite />
-          {isFreeState(stateCode) ? null : stateCode === "CT" ? <p className="notice"><MemberCopy member={<>Topic practice is available in the Connecticut question bank.</>}>Free learning uses the Connecticut free question pool.</MemberCopy></p> : onCa ? (
-            <p className="notice">This is study feedback for California. Forty items are scored. This raw count is not an official scaled score.</p>
+          {stateCode === "AZ" || isFreeState(stateCode) ? null : stateCode === "CT" ? <p className="notice"><MemberCopy member={<>Topic practice is available in the Connecticut question bank.</>}>Free learning uses the Connecticut free question pool.</MemberCopy></p> : onCa ? (
+            <p className="notice">{mode === "full" ? "This is study feedback for California. Forty items are scored. This raw count is not an official scaled score." : "This score describes your California practice set."}</p>
           ) : onHi ? (
             <p className="notice">This is study feedback for Hawaii. This score is this site's practice result, not an official exam result.</p>
           ) : stateCode === "IN" ? <p className="notice"><MemberCopy member={isPro ? "Indiana Pro is active for this account." : "Starter practice uses 60 Indiana questions. Pro opens all 203 questions across every available state for 60 days."}>{isPro ? "Indiana Pro is active for this account." : "Free practice uses 60 Indiana questions. Pro opens all 203 questions across every available state for 60 days."}</MemberCopy></p> : isPro ? (
@@ -1048,6 +1099,7 @@ export function ExamRunner({
             index={i}
             selected={answers[r.question.question_id]}
             reveal
+            reviewAnchor={stateCode === "AZ" ? `review-${r.question.question_id}` : undefined}
             isPro={isPro}
             lockPaid={false}
             extra={
@@ -1154,7 +1206,7 @@ export function ExamRunner({
           {restored ? " · Resumed" : ""}
         </span>
         <span className="row">
-          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{(onHi || stateCode === "CT" || stateCode === "NC" || stateCode === "IN") && mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
+          {timed ? <span className="badge">{formatTime(remain)}</span> : <span className="badge">{mode === "full" ? "No time limit" : "Practice mode — instant feedback"}</span>}
           <button className="btn btn-ghost" type="button" disabled={checking} onClick={() => setConfirmRestart(true)}>Start new</button>
         </span>
       </div>
@@ -1265,6 +1317,7 @@ export function QuestionBlock({
   onToggleExplain,
   tutor = false,
   reason,
+  reviewAnchor,
 }: {
   q: Question;
   index: number;
@@ -1287,6 +1340,7 @@ export function QuestionBlock({
   onToggleExplain?: () => void;
   tutor?: boolean;
   reason?: string;
+  reviewAnchor?: string;
 }) {
   const map = { A: q.option_a, B: q.option_b, C: q.option_c, D: q.option_d };
   const letters = (["A", "B", "C", "D"] as const).filter((letter) => map[letter]);
@@ -1311,7 +1365,7 @@ export function QuestionBlock({
       {q.state === "CT" ? <p><a className="btn btn-ghost card-action" href={ctSources.manual} target="_blank" rel="noopener noreferrer">Open Official Handbook</a></p> : null}
       {reason ? <p className="notice">Why this question? {reason}</p> : null}
       {q.scenario_text ? <p className="notice">{q.scenario_text}</p> : null}
-      <h3 className="quiz-heading quiz-stem" ref={headingRef} tabIndex={-1}>
+      <h3 className="quiz-heading quiz-stem" id={reviewAnchor} ref={headingRef} tabIndex={-1}>
         {marked ? <span className="flagged-note"><FlagIcon /> Flagged</span> : null}
         {index + 1}. {q.question_text}
       </h3>

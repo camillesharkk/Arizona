@@ -27,6 +27,7 @@ import vt from './seo-articles/vt.json';
 import wi from './seo-articles/wi.json';
 import wy from './seo-articles/wy.json';
 import { articlePaths, articleStudyActions } from '@/lib/article-study-actions';
+import { paths } from '@/lib/paths';
 import { prepStates } from '@/lib/states';
 import type { StateArticle } from '@/lib/state-articles';
 import type { StateCode } from '@/lib/types';
@@ -52,16 +53,20 @@ export const supplementalArticles = Object.fromEntries(Object.entries(drafts).ma
     h1: article.title,
     kicker: 'Preparation',
     lede: article.lede,
-    updated: '2026-11-17',
+    ...('updated' in article && typeof article.updated === 'string'
+      ? { published: '2026-11-17', updated: article.updated }
+      : { updated: '2026-11-17' }),
     checked: 'Official source review dates are listed with the references below.',
     ledeCta: { ...actions[0], placement: 'lede' },
     sections: [
       ...article.sections.map(section => ({
         heading: section.heading,
         body: section.body,
-        ...('study' in section && section.study ? { link: actions.find(action => action.targetMode === 'guide')! } : {}),
+        ...(state === 'AZ' && 'topic' in section && typeof section.topic === 'string' && 'topicLabel' in section && typeof section.topicLabel === 'string'
+          ? { link: { href: paths.topic(section.topic), label: section.topicLabel, placement: 'section' as const, targetMode: 'topic' as const } }
+          : 'study' in section && section.study ? { link: actions.find(action => action.targetMode === 'guide')! } : {}),
       })),
-      ...draft.sources.map(source => ({
+      ...[...draft.sources, ...('sources' in article && Array.isArray(article.sources) ? article.sources : [])].map(source => ({
         heading: source.label,
         body: `Official source last reviewed ${source.checked}. Use the linked instructions for the current requirements and the application route that applies to you.`,
         link: { href: source.url, label: source.label, placement: 'section' as const, targetMode: 'official' as const },

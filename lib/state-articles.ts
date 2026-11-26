@@ -19,6 +19,7 @@ export type StateArticle = {
   kicker: string;
   lede: string;
   checked: string;
+  published?: string;
   updated: string;
   ledeCta: ArticleLink;
   sections: { heading: string; body: string; points?: string[]; link?: ArticleLink }[];

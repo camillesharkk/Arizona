@@ -4,6 +4,7 @@ import { getLawChange, lawStatus } from "@/data/laws";
 import { getSource } from "@/data/sources";
 import { pageMeta } from "@/lib/seo";
 import { paths } from "@/lib/paths";
+import { ArticleLink, ArticleView } from "@/components/ArticleLink";
 
 export function generateStaticParams() {
   return [
@@ -36,8 +37,11 @@ export default async function LawDetailPage({ params }: { params: Promise<{ slug
   const c = getLawChange(slug);
   if (!c) notFound();
   const src = getSource(c.source_id);
+  const isThumbprintRule = c.slug === "sb1479-journal-thumbprint";
+  const articleId = `az-${c.slug}`;
   return (
     <main className="wrap hero">
+      {isThumbprintRule && <ArticleView articleId={articleId} articleState="AZ" />}
       <p className="kicker">{c.onIndex ? `Law detail · ${lawStatus(c)}` : "Study note"}</p>
       <h1>{c.title}</h1>
       {!c.onIndex ? (
@@ -66,9 +70,19 @@ export default async function LawDetailPage({ params }: { params: Promise<{ slug
         <p>
           Official: <a href={src.url}>{src.title}</a>
         </p>
-        <Link className="btn btn-primary" href="/arizona/questions/new-laws/">
-          Practice related questions
-        </Link>
+        {isThumbprintRule ? (
+          <>
+            <p>
+              <a href={getSource("ars_41_254").url}>Current A.R.S. § 41-254</a> ·{" "}
+              <a href={getSource("sos_new_notary").url}>Secretary of State effective-date notice</a>.
+              Checked <time dateTime="2026-11-27">November 27, 2026</time>.
+            </p>
+            <ArticleLink className="btn btn-primary" articleId={articleId} articleState="AZ"
+              href={paths.topic("new-laws")} label="Practice Arizona law updates" placement="end" targetMode="topic" />
+          </>
+        ) : (
+          <Link className="btn btn-primary" href={paths.topic("new-laws")}>Practice related questions</Link>
+        )}
       </div>
     </main>
   );

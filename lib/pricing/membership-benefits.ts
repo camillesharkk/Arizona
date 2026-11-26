@@ -18,8 +18,8 @@ export type BenefitValue = keyof typeof benefitSymbols | { text: string };
 export const membershipBenefits: { id: string; label: string; free: BenefitValue; timed: BenefitValue; permanent: BenefitValue }[] = [
   { id: "price", label: "One-time price", free: { text: "$0" }, timed: { text: standard }, permanent: { text: lifetime } },
   { id: "duration", label: "Access duration", free: "none", timed: { text: PRO_DURATION_DAYS + " days" }, permanent: { text: "No expiration" } },
-  { id: "bank", label: "Full question banks", free: "limited", timed: "full", permanent: "full" },
-  { id: "exams", label: "Practice exams", free: "limited", timed: "full", permanent: "full" },
+  { id: "bank", label: "Full question banks", free: { text: "Varies by state" }, timed: "full", permanent: "full" },
+  { id: "exams", label: "Full practice exams", free: { text: "One trial where offered" }, timed: "full", permanent: "full" },
   { id: "scores", label: "Scores & topic accuracy", free: "full", timed: "full", permanent: "full" },
   { id: "explanations", label: "Answer explanations & sources", free: "full", timed: "full", permanent: "full" },
   { id: "guides", label: "Study guides", free: "full", timed: "full", permanent: "full" },

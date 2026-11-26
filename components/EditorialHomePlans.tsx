@@ -29,7 +29,7 @@ export function EditorialHomePlans() {
           <p className="editorial-kicker"><span />Pro plans</p>
           <h2 id="plans-heading">More practice.<br /><span className="editorial-underline">A plan that fits.</span></h2>
         </div>
-        <p>Start free. Choose Pro when you want the full study toolkit, for {PRO_DURATION_DAYS} days or for the long run.</p>
+        <p>Start with free Quick 10 practice, explanations, and study guides. Choose Pro for repeat full practice where available and more study tools, for {PRO_DURATION_DAYS} days or for the long run.</p>
       </div>
       <div className="editorial-plan-grid">
         <article className="editorial-card editorial-plan">

@@ -20,6 +20,7 @@ export function StudyCardsClient({
   cardsHref = paths.studyCards,
   dailyHref = paths.daily,
   practiceBaseHref,
+  guideBaseHref,
   labelState,
 }: {
   cards: PublicStudyCard[];
@@ -29,6 +30,7 @@ export function StudyCardsClient({
   cardsHref?: string;
   dailyHref?: string;
   practiceBaseHref?: string;
+  guideBaseHref?: string;
   labelState?: "HI";
 }) {
   const labelFor = labelState === "HI" ? hiStudyLabel : undefined;
@@ -161,10 +163,11 @@ export function StudyCardsClient({
         <p>No cards in this topic.</p>
       )}
       {practiceHref ? (
-        <p style={{ marginTop: 12 }}>
+        <p className={guideBaseHref ? "row" : undefined} style={{ marginTop: 12 }}>
           <Link className="btn btn-primary" href={practiceHref}>
             Practice This Topic
           </Link>
+          {guideBaseHref && <Link className="btn btn-ghost" href={guideBaseHref + "#" + encodeURIComponent(topic)}>Read the Guide Chapter</Link>}
         </p>
       ) : null}
     </>

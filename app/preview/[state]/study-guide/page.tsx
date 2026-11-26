@@ -1,7 +1,8 @@
+import { ArticleLink } from "@/components/ArticleLink";
 import { MemberCopy } from "@/components/MemberCopy";
 import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
-import { prepPacks, type PrepCode } from "@/lib/prep-pack";
+import { prepPacks } from "@/lib/prep-pack";
 import { prepGuideTopics } from "@/data/prep-study-guide";
 import { StudyGuide } from "@/components/StudyGuide";
 import Link from "next/link";
@@ -25,7 +26,16 @@ export default async function Page({ params }: { params: Promise<{ state: string
     lede={<>Learn {pack.name} notary rules through chapter explanations, worked scenarios and key facts. Follow the official sources, mark your reading progress and practice each topic. <MemberCopy member="The core guide is included in your study tools.">The core guide is free and requires no login.</MemberCopy></>}
     introduction={<>
       <p>Use this guide alongside the <Link href={pack.paths.resources}>official state resources</Link> and <Link href={pack.paths.laws}>notary laws</Link>. The <Link href={pack.paths.examGuide}>exam guide</Link> covers preparation and admission. Chapter groups are this site's study outline.</p>
-      <p>{pack.fullDetail}</p>
+      {code === "NY" ? <>
+        <p className="notice">
+          This site's full practice uses {pack.fullCount} questions in {pack.fullMinutes} minutes. The <a href="https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule">New York Department of State exam bulletin</a> describes a multiple-choice exam with one hour after the instructions and results reported as pass or fail. It gives neither a question count nor a numeric passing score.
+        </p>
+        <section className="card">
+          <h2>Studying for a retake</h2>
+          <p>Start with <ArticleLink articleId="ny-study-guide" articleState="NY" href={pack.paths.practice + "?mode=quick"} label="Quick 10" placement="retake" targetMode="quick" /> to find topics that need another look. Reread the matching chapter, use the practice explanations to rule out each wrong option, and try a fresh scenario with the chapter’s <strong>Practice This Topic</strong> button.</p>
+          <p>Use the <Link href={pack.paths.studyCards + "?topic=appointment"}>appointment and notarial-act cards</Link> for terms such as acknowledgments and oaths, the <Link href={pack.paths.studyCards + "?topic=fees"}>fee cards</Link> for charges that are easy to confuse, or the <Link href={pack.paths.studyCards + "?topic=electronic"}>electronic notarization cards</Link> for identity and remote-appearance rules.</p>
+        </section>
+      </> : <p>{pack.fullDetail}</p>}
       {pack.practiceNotice && <p className="notice">{pack.practiceNotice.body}</p>}
     </>}
     sitePaths={pack.paths}

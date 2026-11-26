@@ -6,6 +6,15 @@ export function observeUpgradeLinks(root: Document = document) {
   const seen = new Set<string>();
   const source = (link: HTMLAnchorElement) => link.dataset.upgradeSource ||
     (link.closest("header") ? "header" : link.closest("footer") ? "footer" : "page_content");
+  const context = (link: HTMLAnchorElement) => {
+    const mode = link.dataset.upgradeMode;
+    const count = Number(link.dataset.upgradeQuestionCount);
+    return {
+      entry_point: source(link),
+      ...(mode && /^(?:quick10|full\d{1,2}|topic|practice)$/.test(mode) ? { mode } : {}),
+      ...(Number.isInteger(count) && count > 0 && count <= 80 ? { question_count: count } : {}),
+    };
+  };
   const isUpgrade = (link: HTMLAnchorElement) => {
     try {
       const url = new URL(link.href, window.location.href);
@@ -19,7 +28,7 @@ export function observeUpgradeLinks(root: Document = document) {
       const entryPoint = source(link);
       if (!seen.has(entryPoint)) {
         seen.add(entryPoint);
-        trackAnalyticsEvent("upgrade_view", { entry_point: entryPoint });
+        trackAnalyticsEvent("upgrade_view", context(link));
       }
       observer?.unobserve(link);
     }
@@ -37,7 +46,7 @@ export function observeUpgradeLinks(root: Document = document) {
     if (!link || !isUpgrade(link)) return;
     const entryPoint = source(link);
     rememberUpgradeSource(entryPoint);
-    trackAnalyticsEvent("upgrade_click", { entry_point: entryPoint });
+    trackAnalyticsEvent("upgrade_click", context(link));
   };
   scan();
   const mutations = new MutationObserver(scan);

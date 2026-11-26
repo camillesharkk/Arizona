@@ -5,6 +5,7 @@ import * as analytics from "../lib/analytics.ts";
 import { reconcilePurchases } from "./analytics-reconcile.ts";
 import { testLoader } from "./pack-test-utils.mjs";
 import { lifetimeReturnTransaction, paddleCheckoutFallback, paddleSuccessUrl } from "../lib/billing/paddle-public.ts";
+import { LIFETIME_PRO_PRODUCT_CODE } from "../lib/pro-products.ts";
 
 const originalEnv = { ...process.env };
 function storage() {
@@ -154,7 +155,7 @@ test("state-aware product views send once per destination through both transport
 });
 
 test("pricing recognition covers supported state routes and excludes unrelated routes", () => {
-  for (const route of ["/pricing", "/pricing/", "/rhode-island/pricing/", "/texas/pricing", "/california/pricing/"]) {
+  for (const route of ["/pricing", "/pricing/", "/lifetime/", "/rhode-island/pricing/", "/texas/pricing", "/california/pricing/"]) {
     assert.equal(analytics.isPricingPath(route), true, route);
   }
   for (const route of ["/not-a-state/pricing/", "/texas/pricing/details/", "/texas/practice/"]) {
@@ -178,22 +179,41 @@ test("explicit event attribution wins and cookie failures preserve path attribut
   }
 });
 
-test("pricing component emits once per route across repeated effects and state navigation", () => {
-  let pathname = "/rhode-island/pricing/";
-  const sent = { current: null as unknown };
-  const captured: string[] = [];
+test("route views survive state navigation without double-counting the runner start switch", () => {
+  let pathname = "/new-york/practice/";
+  let search = "mode=quick&start=1&attempt=local-attempt";
+  let index = 0;
+  const refs = [{ current: null }, { current: null }];
+  const captured: { name: string; params: Record<string, unknown> }[] = [];
+  const pageViews: string[] = [];
   const load = testLoader({
-    react: { useRef: () => sent, useEffect: (effect: () => void) => effect() },
-    "next/navigation": { usePathname: () => pathname },
-    "@/lib/analytics": { trackAnalyticsEvent: (name: string) => captured.push(name) },
+    react: { useRef: () => refs[index++], useEffect: (effect: () => void) => effect() },
+    "next/navigation": { usePathname: () => pathname, useSearchParams: () => new URLSearchParams(search) },
+    "@/lib/analytics": {
+      ...analytics,
+      trackPageView: (key: string) => pageViews.push(key),
+      trackAnalyticsEvent: (name: string, params: Record<string, unknown>) => captured.push({ name, params }),
+    },
   });
-  const { PricingAnalytics } = load("components/PricingAnalytics.tsx");
-  PricingAnalytics();
-  PricingAnalytics();
-  pathname = "/texas/pricing/";
-  PricingAnalytics();
-  PricingAnalytics();
-  assert.deepEqual(captured, ["pricing_view", "pricing_view"]);
+  const { AnalyticsPageViews } = load("components/AnalyticsPageViews.tsx");
+  const render = () => { index = 0; AnalyticsPageViews(); };
+  render();
+  search = "mode=quick&attempt=local-attempt";
+  render();
+  assert.equal(captured.length, 1);
+  assert.equal(captured[0]?.name, "practice_view");
+  assert.equal(captured[0]?.params.state, "NY");
+  assert.equal(captured[0]?.params.mode, "quick10");
+  assert.equal(captured[0]?.params.question_count, 10);
+  assert.deepEqual(pageViews, ["/new-york/practice/?mode=quick10"]);
+  pathname = "/california/pricing/";
+  search = "";
+  render();
+  render();
+  pathname = "/lifetime/";
+  render();
+  assert.deepEqual(captured.map((event) => event.name), ["practice_view", "pricing_view", "pricing_view"]);
+  assert.equal(captured[2]?.params.product_code, LIFETIME_PRO_PRODUCT_CODE);
 });
 
 test("a failed return can recover only its pending transaction, never an older paid order", () => {

@@ -41,6 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     paths.training,
     paths.become,
     paths.laws,
+    paths.law("sb1479-journal-thumbprint"),
     paths.flashcards,
     paths.resources,
     paths.pricing,
@@ -113,8 +114,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const indexed = [...new Set([...urls, ...seoGuides.filter((guide) => guide.index !== false).map((guide) => guide.path), ...articles.map((article) => article.path)])];
   const updated = new Map<string, string>([
     ...articles.map((article) => [article.path, article.updated] as const),
-    ...seoGuides.filter((guide) => guide.index !== false).map((guide) => [guide.path, "2026-11-07"] as const),
+    ...seoGuides.filter((guide) => guide.index !== false).map((guide) => [guide.path, guide.modified ?? "2026-11-07"] as const),
     [paths.flashcards, "2026-11-07"],
+    [paths.law("sb1479-journal-thumbprint"), "2026-11-27"],
     ...(communityInsightsUpdatedAt ? [[paths.community, communityInsightsUpdatedAt] as const] : []),
   ]);
   return indexed.map((path) => ({

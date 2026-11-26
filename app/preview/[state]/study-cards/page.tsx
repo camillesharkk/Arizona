@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
 import { StudyCardsClient } from "@/components/StudyCardsClient";
@@ -31,6 +32,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     <main className="wrap hero">
       <h1>{pack.name} study cards</h1>
       <p className="lede">{cards.length} independent cards. These are not copies of the question stems.</p>
+      {code === "NY" && <p>Review <Link href={pack.paths.studyCards + "?topic=appointment"}>notarial terms and acts</Link>, compare <Link href={pack.paths.studyCards + "?topic=fees"}>which fee applies</Link>, or work through <Link href={pack.paths.studyCards + "?topic=electronic"}>electronic notarization and identity rules</Link>. Then practice the same topic with new questions.</p>}
       <StudyCardsClient
         cards={cards}
         initialTopic={known ? topic : "all"}
@@ -38,6 +40,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
         cardsHref={pack.paths.studyCards}
         dailyHref={pack.paths.daily}
         practiceBaseHref={pack.paths.practice}
+        guideBaseHref={code === "NY" ? pack.paths.study : undefined}
       />
     </main>
   );

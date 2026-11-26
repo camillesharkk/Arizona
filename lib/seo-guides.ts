@@ -1,6 +1,7 @@
 import { expandedGuides } from "@/lib/seo-expansion";
 import { examConfig, officialExam, officialExamChecked } from "@/data/exam-config";
 import { paths } from "@/lib/paths";
+import type { ArticleLink } from "@/lib/state-articles";
 import { pageMeta } from "@/lib/seo";
 import { eligibleExamPool } from "@/lib/quiz";
 import { supplementalArticles } from '@/data/seo-matrix-articles';
@@ -15,6 +16,7 @@ export type GuideSection = {
   sourceId?: string;
   href?: string;
   hrefLabel?: string;
+  targetMode?: ArticleLink["targetMode"];
 };
 
 export type SeoGuide = {
@@ -28,8 +30,9 @@ export type SeoGuide = {
   /** False keeps a draft route out of the index until it has its own answer. */
   index?: boolean;
   checked?: string;
+  modified?: string;
   sections: GuideSection[];
-  ctas?: { href: string; label: string }[];
+  ctas?: { href: string; label: string; targetMode?: ArticleLink["targetMode"] }[];
   related: { href: string; label: string }[];
   faqs?: { q: string; a: string }[];
 };
