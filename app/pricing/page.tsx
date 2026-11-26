@@ -34,7 +34,7 @@ const faqs = [
 export default async function PricingPage() {
   const lifetimeAvailable = await getLifetimeCheckoutAvailability();
   return (
-    <main className="wrap hero">
+    <main className="wrap hero pricing-page">
       <PricingAnalytics />
       <JsonLd data={faqJson(faqs)} />
       <Breadcrumb items={[{ name: "Home", path: paths.home }, { name: "Pricing", path: paths.pricing }]} />

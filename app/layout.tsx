@@ -20,6 +20,7 @@ import { PaddleCheckoutResume } from "@/components/PaddleCheckoutResume";
 import { MemberCopyProvider } from "@/components/MemberCopy";
 import { EntryMotion } from "@/components/EntryMotion";
 import "./entry-motion.css";
+import "./editorial-theme.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const saved = parseStateCookie((await cookies()).get(STATE_COOKIE)?.value);

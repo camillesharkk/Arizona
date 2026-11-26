@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
     practiceHref: `${pack.paths.practice}?mode=practice&area=${encodeURIComponent(card.study)}`,
   }));
   return (
-    <main className="wrap hero">
+    <main className="wrap hero state-home">
       <HomeStudy cards={cards} stateCode={code} />
     </main>
   );

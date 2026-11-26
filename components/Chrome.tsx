@@ -219,13 +219,20 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
     <header className={`site-header${pathname === "/" ? " national-header" : !state && active(pathname, paths.community) ? " community-guest-header" : ""}`}>
       <div className="wrap header-inner">
         <div className="header-left">
-          <Link href={state ? nav.home : "/"} className="logo" aria-label={brandLabel}>
+          <Link href={!isNationalHome && state ? nav.home : "/"} className="logo" aria-label={isNationalHome ? "Notary Exam Prep" : brandLabel}>
             <BrandMark size={36} />
-            <span className="logo-label">{brandLabel}</span>
+            <span className="logo-label">{isNationalHome ? "Notary Exam Prep" : brandLabel}</span>
           </Link>
           {pathname !== "/" ? <StateMenu pathname={pathname} current={state} indianaPreview={indianaPreview} /> : null}
         </div>
-        {links.length ? <nav className="nav nav-desktop" aria-label="Primary">
+        {isNationalHome ? (
+          <nav className="editorial-national-nav" aria-label="Primary">
+            <a href="#state-selection">Practice</a>
+            <a href="#community">Community Insights</a>
+            <a href="#plans">Pro plans</a>
+            <a href="#faq">FAQ</a>
+          </nav>
+        ) : links.length ? <nav className="nav nav-desktop" aria-label="Primary">
           <div className="nav-scroll">
             {links.map((item) => item.label === "Wrong Answers" && state ? (
               <WrongAnswersLink key={item.href} href={item.href} stateCode={state} className={active(pathname, item.href) ? "active" : ""} />
@@ -239,7 +246,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
         </nav> : null}
         <div className="header-right">
           {isNationalHome ? moreMenu : null}
-          {isNationalHome ? <Link href={paths.contact} className="header-contact">Contact Us</Link> : null}
+          {isNationalHome ? <a className="editorial-state-link" href="#state-selection">Choose your state</a> : null}
           {authStatus === "loading" && (
             <span className="header-auth-placeholder" role="status" aria-label="Loading account">
               <span className="spinner" aria-hidden="true" />
@@ -250,7 +257,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
               Sign in
             </Link>
           )}
-          {state && !onHome && (
+          {!isNationalHome && state && !onHome && (
             <Link className="btn btn-primary header-cta" href={state === "IN" ? `${nav.practice}?mode=quick` : nav.practice}><MemberCopy member={<>
               Start Member Practice
             </>}>

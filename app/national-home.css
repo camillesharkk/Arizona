@@ -1,9 +1,9 @@
 .national-home {
-  --home-blue: #087cf0;
-  --home-blue-dark: #0066cc;
-  --home-ink: #142031;
-  --home-muted: #5e6a78;
-  --home-line: #e1e8ef;
+  --home-blue: var(--brand);
+  --home-blue-dark: var(--brand-dark);
+  --home-ink: var(--ink);
+  --home-muted: var(--muted);
+  --home-line: var(--line);
   --home-radius: 22px;
   color: var(--home-ink);
   font-family: var(--font);
@@ -106,7 +106,7 @@
 .home-state-field input {
   width: 100%;
   height: 56px;
-  border: 1px solid #bac8d7;
+  border: 1px solid var(--control-line);
   border-radius: 13px;
   padding: 0 48px 0 18px;
   font: inherit;
@@ -180,7 +180,7 @@
 }
 .home-state-list button:hover,
 .home-state-list button.is-active {
-  background: #edf5ff;
+  background: var(--brand-soft);
 }
 .home-state-list button[aria-selected="true"] {
   box-shadow: inset 3px 0 var(--home-blue);
@@ -366,7 +366,7 @@
   padding-bottom: 3px;
 }
 .home-carousel-controls button {
-  border: 1px solid #c6d5e4;
+  border: 1px solid var(--control-line);
   border-radius: 50%;
   background: #fff;
   width: 46px;
@@ -378,8 +378,8 @@
 }
 .home-carousel-controls button:is(:disabled, [aria-disabled="true"]) {
   color: #8c97a4;
-  background: #f5f7fa;
-  border-color: #e3e8ee;
+  background: var(--bg-2);
+  border-color: var(--line);
   cursor: default;
 }
 .home-community-track {
@@ -421,7 +421,7 @@
   display: inline-flex;
   align-self: start;
   color: var(--home-blue-dark);
-  background: #edf5ff;
+  background: var(--brand-soft);
   border-radius: 7px;
   font-size: 12px;
   font-weight: 600;
@@ -508,8 +508,8 @@
   font-size: 12px;
 }
 .home-trust {
-  background: #f3f7f8;
-  border: 1px solid #edf2f5;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
   padding: 42px 26px 28px;
   border-radius: 28px;
 }
@@ -530,7 +530,7 @@
   flex-direction: column;
   padding: 25px 22px 18px;
   background: #fff;
-  border: 1px solid #eaf0f3;
+  border: 1px solid var(--line);
   border-radius: 21px;
   box-shadow: 0 5px 18px #1b405407;
 }
@@ -561,8 +561,8 @@
   text-align: left;
 }
 .home-faq details {
-  background: #f7f9fb;
-  border: 1px solid #edf0f4;
+  background: var(--surface);
+  border: 1px solid var(--line);
   border-radius: 17px;
 }
 .home-faq summary {
@@ -626,7 +626,7 @@
   box-shadow: 0 5px 10px #1d5f990c;
 }
 .home-contact-button:hover {
-  background: #edf5ff;
+  background: var(--brand-soft);
 }
 @media (max-width: 900px) {
   .home-hero {

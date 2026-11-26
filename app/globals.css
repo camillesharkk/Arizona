@@ -1,13 +1,4 @@
 :root {
-  --bg: #ffffff;
-  --bg-2: #f0f5f8;
-  --ink: #334455;
-  --muted: #586b7a;
-  --line: #cddbe5;
-  --brand: #56758a;
-  --brand-hover: #4c697e;
-  --brand-dark: #34546b;
-  --brand-soft: #e6f0f7;
   --sage: #1f7a3a;
   --sage-soft: #e8f6ec;
   --danger: #c41e16;
@@ -15,27 +6,10 @@
   --warn: #9a4d00;
   --warn-soft: #fff4e5;
   --radius: 18px;
-  --glass-surface: #f3f7fa;
-  --glass-fill: var(--glass-surface);
-  --glass-edge: #e1eaf1;
-  --glass-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.94),
-    inset -1px -1px 0 rgb(164 188 206 / 0.16),
-    0 14px 30px rgb(77 112 141 / 0.11), 0 3px 8px rgb(95 124 148 / 0.04);
-  --glass-control: linear-gradient(135deg, #ffffff, #edf4f8);
-  --glass-button-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.3),
-    0 6px 14px rgb(66 99 125 / 0.18);
   --shadow: var(--glass-shadow);
-  --focus-color: #355d78;
   --focus: 0 0 0 3px var(--focus-color);
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --serif: var(--font);
-}
-
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-  :root {
-    --glass-fill: linear-gradient(135deg, rgb(255 255 255 / 0.86), rgb(229 240 248 / 0.65));
-  }
 }
 
 * { box-sizing: border-box; }
@@ -591,7 +565,7 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
   cursor: pointer; display: grid; place-items: center; line-height: 1;
 }
 .avatar-btn:hover { filter: brightness(1.05); }
-.avatar-btn:focus-visible { outline: 3px solid #234c78; outline-offset: 3px; }
+.avatar-btn:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 3px; }
 .avatar-btn:is(.avatar-pro, .avatar-lifetime) {
   border-color: transparent;
   background: transparent;
@@ -606,13 +580,13 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
 }
 .avatar-art { display: block; width: 30px; height: 17px; object-fit: contain; }
 .badge.account-tier-pro {
-  color: #233d67;
-  background: linear-gradient(140deg, #f9fcff, #e1edff 60%, #ebe5f6);
+  color: var(--brand-dark);
+  background: var(--brand-soft);
   box-shadow: inset 0 1px #fff;
 }
 .badge.account-tier-lifetime {
-  color: #f5faff;
-  background: linear-gradient(140deg, #385570, #15263e);
+  color: var(--surface);
+  background: var(--brand-dark);
   box-shadow: inset 0 1px rgb(209 232 255 / 45%);
 }
 @media (forced-colors: active) {
@@ -1341,14 +1315,14 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
   .daily-review-quiz { grid-row: 4; }
 }
 
-/* Common surfaces use the same light direction and cool tones as the homepage. */
+/* Shared card surfaces. */
 .card,
 .state-card,
 .price-summary-card,
 .flash-card {
   background: var(--glass-fill);
   border-color: var(--glass-edge);
-  border-radius: 26px;
+  border-radius: var(--radius);
   box-shadow: var(--glass-shadow);
 }
 
@@ -1356,7 +1330,7 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
   border-color: #f0c2bf;
 }
 
-/* Use actual backdrop blur only where content can scroll or sit underneath. */
+/* Shared navigation and overlay surfaces. */
 .site-header,
 .sticky-nav,
 .nav-drawer,
@@ -1369,27 +1343,13 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none; color
   box-shadow: var(--glass-shadow);
 }
 
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-  .site-header,
-  .sticky-nav,
-  .nav-drawer,
-  .more-panel,
-  .state-menu-panel,
-  .account-dropdown,
-  .message-dialog {
-    background: rgb(247 250 252 / 0.94);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-  }
-}
-
 .stat,
 .submit-status,
 .q-option:not(.selected, .correct, .wrong),
 .field :is(input:not([type="checkbox"], [type="radio"]), select, textarea),
 .state-search input {
   background: var(--glass-control);
-  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 rgb(164 188 206 / 0.14);
+  border-color: var(--control-line);
 }
 
 .btn-primary {

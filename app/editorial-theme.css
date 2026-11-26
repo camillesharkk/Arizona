@@ -1,0 +1,50 @@
+:root {
+  --bg: #f6f5ee;
+  --bg-2: #edf1e7;
+  --surface: #fffefa;
+  --ink: #173c36;
+  --muted: #5c6e63;
+  --line: #d9dfd4;
+  --control-line: #839789;
+  --brand: #205d4e;
+  --brand-hover: #194c40;
+  --brand-dark: #173c36;
+  --brand-soft: #e4ebdf;
+  --accent: #f4da79;
+  --glass-surface: var(--surface);
+  --glass-fill: var(--surface);
+  --glass-edge: var(--line);
+  --glass-control: var(--surface);
+  --glass-shadow: 0 6px 20px rgb(23 60 54 / .07);
+  --glass-button-shadow: 0 3px 8px rgb(23 60 54 / .14);
+  --focus-color: #205d4e;
+  --serif: Georgia, "Times New Roman", serif;
+  --marketing-width: 1440px;
+  --marketing-gutter: clamp(16px, 4vw, 60px);
+}
+
+.site-header {
+  background: var(--bg);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.site-header .logo { color: var(--ink); }
+.footer { background: var(--bg); }
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+:is(.home-canvas, .state-home, .pricing-page) h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+}
+
+.pricing-page .membership-plan h3,
+.pricing-page .membership-price {
+  font-family: var(--serif);
+}

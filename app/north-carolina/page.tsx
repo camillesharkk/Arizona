@@ -10,7 +10,7 @@ export const metadata = pageMeta({ title: "North Carolina Notary Prep", descript
 export default function Page() {
   const counts = ncQuestionCounts();
   return (
-    <main className="wrap hero">
+    <main className="wrap hero state-home">
       <h1>North Carolina Notary Prep</h1>
       <p className="lede">Prepare before class. Review the rules after class. Find a course and plan your first traditional notary application.</p>
       <div className="row">

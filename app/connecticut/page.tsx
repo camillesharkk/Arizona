@@ -8,7 +8,7 @@ export const metadata = pageMeta({ title: 'Connecticut Notary Prep', description
 export default function Page() {
   const counts = ctQuestionCounts();
   return (
-    <main className="wrap hero">
+    <main className="wrap hero state-home">
       <h1>Connecticut Notary Prep</h1>
       <p className="lede">Build confidence finding the rule, applying it to a workplace scenario and preparing your first application.</p>
       <div className="row">

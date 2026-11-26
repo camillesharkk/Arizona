@@ -73,6 +73,7 @@ export function StatePicker({
   const input = useRef<HTMLInputElement>(null);
   const list = useRef<HTMLUListElement>(null);
   const listId = useId();
+  const inputId = "state-selection";
   const [finding, setFinding] = useState(false);
   const [notice, setNotice] = useState<Notice>(null);
   const [detected, setDetected] = useState<PrepState | null>(null);
@@ -149,6 +150,7 @@ export function StatePicker({
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.nativeEvent.isComposing) return;
     if (event.key === "Escape") {
       setOpen(false);
       return;
@@ -266,19 +268,19 @@ export function StatePicker({
     <>
       <form className="home-state-form" onSubmit={start} data-home-enter>
         <div className="home-state-combobox" ref={container}>
-          <label className="home-state-label" htmlFor={listId + "-input"}>
+          <label className="home-state-label" htmlFor={inputId}>
             Choose your state
           </label>
           <div className="home-state-field">
             <input
               ref={input}
-              id={listId + "-input"}
+              id={inputId}
               type="text"
               role="combobox"
               autoComplete="off"
               spellCheck={false}
               value={query}
-              placeholder="Search or select your state"
+              placeholder="Search states"
               aria-expanded={open}
               aria-haspopup="listbox"
               aria-controls={listId}
@@ -371,9 +373,10 @@ export function StatePicker({
           </p>
         ) : null}
         <button className="home-primary" type="submit">
-          <MemberCopy member={selected ? stateEntry(selected).label : "Start Member Practice"}>{selected ? stateEntry(selected).label : "Start Free Practice"}</MemberCopy>
+          <MemberCopy member={selected ? stateEntry(selected).label : "Start practice"}>{selected ? stateEntry(selected).label : "Start free"}</MemberCopy>
           <span aria-hidden="true">→</span>
         </button>
+        <p className="picker-help">Select a state to find its practice tools.</p>
         <div className="home-location">
           <button type="button" onClick={locate} disabled={finding}>
             {finding ? "Finding your state…" : "Use My Location"}

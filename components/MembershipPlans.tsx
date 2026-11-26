@@ -1,42 +1,12 @@
 import { MemberCopy } from "@/components/MemberCopy";
-import Image from "next/image";
 import Link from "next/link";
-import { NEWCOMER_HOURS, NEWCOMER_PRICE_CENTS, STANDARD_PRICE_CENTS } from "@/lib/pricing/catalog";
-import { EXAM_GUARANTEE_CENTS, LIFETIME_ACCESS_CENTS, LIFETIME_TOTAL_CENTS } from "@/lib/pricing/lifetime";
+import { NEWCOMER_HOURS, NEWCOMER_PRICE_CENTS } from "@/lib/pricing/catalog";
+import { LIFETIME_ACCESS_CENTS } from "@/lib/pricing/lifetime";
 import { formatUsd } from "@/lib/pricing/money";
-import { AI_LIMIT_FREE, AI_LIMIT_PRO } from "@/lib/product";
+import { benefitSymbols as symbols, membershipBenefits, standard, lifetime, guarantee, type BenefitValue } from "@/lib/pricing/membership-benefits";
 import "./MembershipPlans.css";
 
-const standard = formatUsd(STANDARD_PRICE_CENTS);
-const lifetime = formatUsd(LIFETIME_TOTAL_CENTS);
-const guarantee = formatUsd(EXAM_GUARANTEE_CENTS);
 const access = formatUsd(LIFETIME_ACCESS_CENTS);
-
-const symbols = {
-  full: { icon: "✓", label: "Included" },
-  limited: { icon: "◐", label: "Limited" },
-  none: { icon: "×", label: "Not included" },
-} as const;
-
-type BenefitValue = keyof typeof symbols | { text: string };
-
-const benefits: [string, BenefitValue, BenefitValue, BenefitValue][] = [
-  ["One-time price", { text: "$0" }, { text: standard }, { text: lifetime }],
-  ["Pro access", "none", { text: "60 days" }, { text: "Lifetime" }],
-  ["Question bank", "limited", "full", "full"],
-  ["Practice exams", "limited", "full", "full"],
-  ["Scores & topic accuracy", "full", "full", "full"],
-  ["Answer explanations & sources", "full", "full", "full"],
-  ["Study guides", "full", "full", "full"],
-  ["Wrong answers & favorites", "limited", "full", "full"],
-  ["Daily Study & readiness", "limited", "full", "full"],
-  ["Flashcards", "limited", "full", "full"],
-  ["AI Tutor per day", { text: String(AI_LIMIT_FREE) }, { text: String(AI_LIMIT_PRO) }, { text: String(AI_LIMIT_PRO) }],
-  ["Cloud progress", "full", "full", "full"],
-  ["Weekly progress email", "none", "full", "full"],
-  ["Exam guarantee", "none", "none", { text: guarantee }],
-  ["Eligible account discount", "none", "full", "none"],
-];
 
 function BenefitCell({ value }: { value: BenefitValue }) {
   if (typeof value !== "string") return <td>{value.text}</td>;
@@ -56,15 +26,13 @@ export function MembershipPlans({ lifetimeAvailable }: { lifetimeAvailable: bool
         <h2 id="membership-plans-heading">Choose your Pro plan</h2>
         <div className="membership-plan-grid">
           <article className="card membership-plan">
-            <Image className="membership-art" src="/images/glass-demo/study-stack.png" alt="" width={96} height={88} sizes="96px" />
             <h3>60-Day Pro</h3>
             <p className="membership-price">{standard} <small>USD once</small></p>
             <p>Full Pro tools across available states for 60 days.</p>
             <p className="notice">{formatUsd(NEWCOMER_PRICE_CENTS)} for eligible new members within {NEWCOMER_HOURS} hours of verifying their email.</p>
             <a className="btn btn-primary" href="#pro-checkout">Continue to 60-Day Pro checkout</a>
           </article>
-          <article className="card membership-plan">
-            <Image className="membership-art" src="/images/glass-demo/study-stack.png" alt="" width={96} height={88} sizes="96px" />
+          <article className="card membership-plan membership-plan-lifetime">
             <h3>Lifetime Pro</h3>
             <p className="membership-price">{lifetime} <small>USD once</small></p>
             <p>{access} for lifetime access + {guarantee} for the official exam guarantee.</p>
@@ -92,7 +60,7 @@ export function MembershipPlans({ lifetimeAvailable }: { lifetimeAvailable: bool
               </tr>
             </thead>
             <tbody>
-              {benefits.map(([label, free, timed, permanent]) => (
+              {membershipBenefits.map(({ label, free, timed, permanent }) => (
                 <tr key={label}>
                   <th scope="row">{label}</th>
                   <BenefitCell value={free} />
