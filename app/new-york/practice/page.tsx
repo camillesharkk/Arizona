@@ -16,17 +16,17 @@ export const metadata = pageMeta({
 export default function Page() {
   const pack = prepPacks.NY;
   const counts = pack.counts();
-  const { practice, study, studyCards, mistakes } = pack.paths;
-  return <main className="wrap hero" data-public-practice>
+  const { study, studyCards, mistakes } = pack.paths;
+  return <main className="wrap hero" data-public-practice data-notary-white-canvas>
     <h1>New York Notary Practice Test</h1>
     <p>Start with Quick 10 for free and see the explanation after each answer. The New York bank has {counts.free} free questions out of {counts.published}. This site’s full practice uses {pack.fullCount} questions in {pack.fullMinutes} minutes.</p>
     <p>These original questions help you study for the NYS notary exam. <Link href={study}>Read the New York study guide</Link> or <a href="#sample-questions">see the free samples</a>.</p>
     <Suspense fallback={<p role="status" data-practice-loading>Loading practice…</p>}><PracticeLaunch stateCode="NY" /></Suspense>
     <PracticeAfterword
       publicLanding
-      during="Quick 10 gives immediate feedback. The full practice shows explanations after you submit. The New York Department of State publishes a one-hour, multiple-choice exam and reports pass or fail. It doesn’t give a question count or numeric passing score in its public exam instructions."
+      during={<>Full practice shows explanations after you submit. The state’s written exam is multiple choice and allows one hour after instructions. The <a href="https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule">New York Department of State bulletin</a>, updated November 24, 2026 and checked November 27, reports pass or fail and gives no question count or numeric passing score.</>}
       samples={publicPracticeSamples("NY")}
-      links={[{ href: practice, label: "Choose a New York practice mode" }, { href: study, label: "New York study guide" }, { href: studyCards, label: "New York study cards" }, { href: mistakes, label: "Review wrong answers" }]}
+      links={[{ href: study, label: "New York study guide" }, { href: studyCards, label: "New York study cards" }, { href: mistakes, label: "Review wrong answers" }]}
     />
   </main>;
 }

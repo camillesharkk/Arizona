@@ -7,7 +7,8 @@ const app = "https://apphub.notary.sos.in.gov/";
 const portal = "https://inbiz.in.gov/certification/notary";
 const update = "https://www.in.gov/sboa/files/SOS_Indiana-Notary-Public-Update_NEO_2024.pdf";
 export function IndianaGuide({ resources = false, study = false, children }: { resources?: boolean; study?: boolean; children?: ReactNode }) {
- return <main className="wrap hero">
+ const applicationGuide = !resources && !study;
+ return <main className="wrap hero" data-notary-white-canvas={applicationGuide || undefined}>
   <h1>{study ? "Indiana Notary Study Guide" : resources ? "Indiana official resources" : "How to Become a Notary in Indiana"}</h1>
   <p>For first-time traditional notary applicants. Independent exam practice on this site does not replace the state course, exam or application.</p>
   <p className="notice">Guide review November 13, 2026. The Applicant Hub and Learner Hub steps follow the <a href={faq}>Secretary of State’s May 4, 2026 FAQ</a>, rechecked November 27, 2026.</p>
@@ -30,6 +31,7 @@ export function IndianaGuide({ resources = false, study = false, children }: { r
    <p>After your application is submitted and approved, wait for the email saying your education course is ready. Use the top-right menu to open Learner Hub and start the assigned course. <a href={app}>Open the official notary system</a>{" · "}<a href={`${faq}#page=6`}>Official course and exam instructions</a></p>
    <p>The formal exam has 30 questions. You need at least 24 correct (80%). If you do not pass, wait 24 hours; the FAQ permits unlimited attempts and says an email arrives when the exam reopens. <a href={`${faq}#page=8`}>Official passing score</a>{" · "}<a href={`${faq}#page=6`}>Official retake policy</a></p>
    <p>Check the Enrolled Courses and Exams tabs in Learner Hub for completion status. The new-system FAQ does not instruct first-time applicants to separately upload exam scores. Follow any instructions shown in your official account; do not send this site's practice score as proof. <a href={`${faq}#page=7`}>Check course and exam status</a></p>
+   {applicationGuide && <p><Link className="btn btn-primary" href={`${inPaths.practice}?mode=quick`}>Try Indiana Quick 10 for free</Link></p>}
   </section>
   <section className="card" id="appointment"><h2>4. Check your appointment</h2>
    <p>Once the state has approved your commission, open Learner Hub → My Commission to view and download the active commission certificate. Course access or a practice result is not commission approval. <a href={`${faq}#page=8`}>Official certificate instructions</a>{" · "}<a href="https://search.notary.sos.in.gov/">Official commission search</a></p>
@@ -43,6 +45,6 @@ export function IndianaGuide({ resources = false, study = false, children }: { r
    <li><a href="https://www.in.gov/sboa/files/Grosser_SOS-Business-Services-Division_Notary.pdf">SOS notary presentation</a> — supporting traditional-notary instruction.</li>
   </ul><h3>Older instructions and scope</h3><p>Some older official material directs applicants to an INBiz dashboard, uses a 30-day criminal-report window, or describes an older certificate workflow. This guide uses the May 2026 system-specific FAQ for those steps and its six-month report window. The 2024 fee figure is labeled with its publication date. We could not independently read the current IGA law text or the guide download during this check, so no proposed 2026 bill is presented as enacted law.</p><p>For application-specific instructions or conflicting portal messages, contact <a href="mailto:INBiz@sos.in.gov">INBiz@sos.in.gov</a>.</p></section> : null}
   {children}
-  <div className="row"><Link className="btn btn-primary" href={`${inPaths.practice}?mode=quick`}><MemberCopy member={<>Start Member Practice</>}>Start Free Practice</MemberCopy></Link><Link className="btn btn-ghost" href={resources ? inPaths.become : inPaths.resources}>{resources ? "Application Checklist" : "Official Resources"}</Link></div>
+  <div className="row">{!applicationGuide && <Link className="btn btn-primary" href={`${inPaths.practice}?mode=quick`}><MemberCopy member={<>Start Member Practice</>}>Start Free Practice</MemberCopy></Link>}<Link className="btn btn-ghost" href={resources ? inPaths.become : inPaths.resources}>{resources ? "Application Checklist" : "Official Resources"}</Link></div>
  </main>;
 }

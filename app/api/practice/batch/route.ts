@@ -14,6 +14,11 @@ import { clientQuestions, drawPractice, questionByBankId, topicPage } from "@/li
 import { diagnosticCandidates, pickDiagnosticQuestions } from "@/lib/diagnostic";
 import { resolveQuestionVersion } from "@/lib/question-version";
 import { productionStateBlocked } from "@/lib/state-release";
+import { packFor } from "@/lib/prep-pack";
+import { resultOffer } from "@/lib/practice-result";
+import { eligibleExamPool } from "@/lib/quiz";
+import { caQuestionCounts } from "@/data/ca-questions";
+import { hiQuestionCounts } from "@/data/hi-questions";
 import { getSession } from "@/lib/session";
 import { getStore } from "@/lib/store";
 import type { Question, StateCode } from "@/lib/types";
@@ -34,6 +39,7 @@ const schema = z.object({
   deliveryToken: z.string().max(8000).optional(),
   token: z.string().max(8000).optional(),
   restoreExamId: z.string().uuid().optional(),
+  restoreQuickVersions: z.array(z.number().int().positive()).length(10).optional(),
   topic: z.string().max(80).optional(),
   difficulty: z.string().max(20).optional(),
   filter: z.string().max(40).optional(),
@@ -46,6 +52,26 @@ const schema = z.object({
 const newActor = { limit: 12, windowMs: 10 * 60_000 };
 const newIp = { limit: 150, windowMs: 10 * 60_000 };
 const resumeActor = { limit: 120, windowMs: 60_000 };
+
+const azPool = eligibleExamPool();
+const classicCounts = {
+  AZ: { published: azPool.length, free: azPool.filter(question => question.is_free).length },
+  CA: caQuestionCounts(),
+  HI: hiQuestionCounts(),
+};
+
+function practiceOffer(state: StateCode, isPro: boolean) {
+  const pack = packFor(state);
+  if (pack) return resultOffer({
+    purchaseEnabled: pack.available && pack.purchaseEnabled !== false && !pack.freeLaunch,
+    isPro,
+    counts: pack.counts(),
+  });
+  const counts = classicCounts[state as keyof typeof classicCounts];
+  return counts ? resultOffer({ purchaseEnabled: true, isPro, counts: {
+    ...counts, pro: counts.published - counts.free,
+  } }) : null;
+}
 
 function limited(result: { ok: boolean; retryAfter: number }, message: string) {
   if (result.ok) return null;
@@ -175,6 +201,12 @@ export async function POST(req: Request) {
       const stop = limited(cap, "This practice set is being restored too often. Your saved answers are still on this device. Retry shortly.");
       if (stop) return stop;
     }
+    if (!questions && body.data.mode === "quick" && body.data.restoreQuickVersions) {
+      const ids = body.data.questionIds || [];
+      questions = ids.length === 10 && new Set(ids).size === 10 && body.data.seed != null
+        ? loadIds(ids, body.data.state, isPro, body.data.restoreQuickVersions) : null;
+      if (!questions) return NextResponse.json({ error: "Feedback for this saved practice is unavailable." }, { status: 409, headers: privateHeaders });
+    }
     if (!questions && body.data.state === "IN" && body.data.mode === "full") {
       const store = await getStore();
       if (session) {
@@ -250,6 +282,7 @@ export async function POST(req: Request) {
       questions: clientQuestions(questions, seed, pv, revealed),
       revealed,
       pro: isPro,
+      resultOffer: practiceOffer(body.data.state, isPro),
       examId,
     }, { headers: privateHeaders });
   } catch (error) {

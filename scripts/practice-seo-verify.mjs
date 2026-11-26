@@ -16,13 +16,14 @@ const ledger = new Map(readFileSync("docs/question-bank-audit/evidence.jsonl", "
 for (const state of ["NY", "OH"]) {
   const samples = publicPracticeSamples(state);
   assert.equal(samples.length, Object.keys(publicPracticeSampleVersions[state]).length);
-  assert.ok(samples.length >= 5 && samples.length <= 10);
+  assert.equal(samples.length, state === "NY" ? 5 : 6);
   assert.equal(new Set(samples.map(row => row.moreHref)).size, samples.length);
   for (const sample of samples) {
     const question = prepPacks[state].questions().find(row => row.question_id === sample.question_id);
     assert.ok(question?.is_free);
     assert.equal(question.state, state);
-    assert.ok(Object.values(sample.optionFeedback).every(value => value.trim()));
+    assert.ok(["A", "B", "C", "D"].filter(letter => letter !== sample.correct).every(letter => sample.optionFeedback[letter]?.trim()));
+    assert.ok(prepPacks[state].topics.some(topic => sample.guideHref === `${prepPacks[state].paths.study}#${topic.id}`));
     assert.ok(resolveAnswerEvidence(sample).href?.startsWith("https://"));
     const review = ledger.get(sample.question_id);
     assert.match(review.status, /^verified_/);

@@ -13,7 +13,7 @@ const freeQuestions = practicePool.filter((question) => question.is_free);
 const publicSampleIds = ["az-001", "az-007", "az-012", "az-016", "az-024", "az-029"];
 
 export const metadata = pageMeta({
-  title: "Arizona Notary Practice Test | Free Quick 10 & Full 45",
+  title: `${examConfig.state} Notary Practice Test | Free Quick 10 & Full ${examConfig.questionCount}`,
   description: `Prepare for the Arizona notary exam with independent questions and explanations. Use ${freeQuestions.length} free questions for Quick 10 and topic practice, or try the timed Full ${examConfig.questionCount}.`,
   path: paths.practice,
 });
@@ -21,9 +21,9 @@ export const metadata = pageMeta({
 export default function PracticeTestPage() {
   const samples = publicSampleIds.flatMap(id => freeQuestions.filter(question => question.question_id === id));
   return (
-    <main className="wrap hero">
+    <main className="wrap hero" data-notary-white-canvas>
       <p className="kicker">Practice Test</p>
-      <h1>Arizona Notary Practice Test</h1>
+      <h1>{`${examConfig.state} Notary Practice Test`}</h1>
       <p>
         Try Quick 10 or practice one topic for feedback as you answer. Use Full {examConfig.questionCount} for a timed practice exam with a score and explanations after you submit.
       </p>
@@ -40,7 +40,7 @@ export default function PracticeTestPage() {
         <p>
           Full {examConfig.questionCount} gives you {examConfig.timeLimitMinutes} minutes. Our practice target is {examConfig.passingScorePercent}%.
           Each practice set uses independently written questions. After submitting, review the explanations for the questions you missed.{" "}
-          <a href={officialExam.noticeUrl}>Official Arizona exam requirements</a>
+          <a href={officialExam.noticeUrl}>Arizona Secretary of State exam notice</a>, checked November 27, 2026.
         </p>
       </section>
       <section aria-labelledby="sample-questions">

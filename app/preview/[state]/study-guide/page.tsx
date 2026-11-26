@@ -28,7 +28,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
       <p>Use this guide alongside the <Link href={pack.paths.resources}>official state resources</Link> and <Link href={pack.paths.laws}>notary laws</Link>. The <Link href={pack.paths.examGuide}>exam guide</Link> covers preparation and admission. Chapter groups are this site's study outline.</p>
       {code === "NY" ? <>
         <p className="notice">
-          This site's full practice uses {pack.fullCount} questions in {pack.fullMinutes} minutes. The <a href="https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule">New York Department of State exam bulletin</a> describes a multiple-choice exam with one hour after the instructions and results reported as pass or fail. It gives neither a question count nor a numeric passing score.
+          Compare <Link href={pack.paths.practice}>New York practice settings</Link> with the <a href="https://dos.ny.gov/july-december-2026-notary-written-exam-info-and-schedule">Department of State exam bulletin</a>.
         </p>
         <section className="card">
           <h2>Studying for a retake</h2>
