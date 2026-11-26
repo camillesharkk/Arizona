@@ -1,9 +1,5 @@
 "use client";
 
-import { fullStateReady } from "@/data/full-state-ready";
-
-import { freeStateFeatures, isFreeState } from "@/lib/free-state-catalog";
-import { stateByCode } from "@/lib/states";
 import { fetchAccount, invalidateAccountRead } from "@/lib/client-account";
 import { syncGuestProgress } from "@/lib/ca-sync";
 
@@ -17,12 +13,11 @@ import { hiPaths } from "@/lib/hi-site";
 import { packNavigationFor } from "@/lib/prep-navigation";
 import { useResolvedState } from "@/components/SavedState";
 import type { LiveCode } from "@/lib/site-state";
-import { MemberCopy, useSetMemberCopy } from "@/components/MemberCopy";
+import { useSetMemberCopy } from "@/components/MemberCopy";
 import { AccountMenu, accountTier, type HeaderUser } from "@/components/AccountMenu";
 import { SiteAnnouncementDialog } from "@/components/SiteAnnouncements";
-import { StateMenu } from "@/components/StateMenu";
-import { WrongAnswersLink } from "@/components/WrongAnswersLink";
 import { openQuestionUpdates } from "@/lib/open-question-updates";
+import { StudyWorkspace, usesStudyWorkspace } from "@/components/StudyWorkspace";
 
 type AuthStatus = "loading" | "signed-in" | "signed-out";
 
@@ -70,29 +65,7 @@ function navFor(state: LiveCode | null) {
   };
 }
 
-function primaryLinks(nav: ReturnType<typeof navFor>) {
-  return [
-    { href: nav.practice, label: "Practice" },
-    { href: nav.study, label: "Study Guide" },
-    { href: nav.mistakes, label: "Wrong Answers" },
-    { href: nav.daily, label: "Daily Study" },
-    { href: paths.community, label: "Community Insights" },
-  ];
-}
-
-function moreLinks(nav: ReturnType<typeof navFor>, state: LiveCode) {
-  return [
-    { href: nav.questions, label: "Questions" },
-    { href: nav.flashcards, label: "Study cards" },
-    { href: nav.examPrep, label: isFreeState(state) && freeStateFeatures[state]?.fullPractice === false ? "Requirements guide" : "Exam guide" },
-    { href: nav.become, label: "Become a Notary" },
-    { href: nav.laws, label: "Laws" },
-    { href: nav.resources, label: "Resources" },
-    ...(state === "AZ" ? [{ href: paths.courses, label: "Courses" }] : []),
-  ];
-}
-
-export function SiteHeader({ savedState, indianaPreview = false }: { savedState: LiveCode | null; indianaPreview?: boolean }) {
+export function SiteHeader({ savedState, indianaPreview = false, initialCollapsed = false }: { savedState: LiveCode | null; indianaPreview?: boolean; initialCollapsed?: boolean }) {
   const pathname = usePathname() || "";
   const state = useResolvedState(savedState);
   const nav = navFor(state);
@@ -172,13 +145,22 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
     window.location.href = state ? nav.home : "/";
   }
 
-  const onHome = Boolean(state) && (pathname === nav.home || pathname === `${nav.home.replace(/\/$/, "")}`);
   const signInHref = `${paths.login}?next=${encodeURIComponent(returnTo)}`;
-  const links = state ? primaryLinks(nav) : [];
-  const extra = state ? moreLinks(nav, state).filter(item => !isFreeState(state) || fullStateReady[state] || item.label !== "Study cards") : [];
   const isNationalHome = pathname === "/";
-  const brandLabel = isFreeState(state) ? stateByCode(state)?.name : state === "IN" ? "Indiana" : state === "NC" ? "North Carolina" : state === "CT" ? "Connecticut" : state === "CA" ? "California" : state === "HI" ? "Hawaii" : state === "NY" ? "New York" : state === "PA" ? "Pennsylvania" : state === "LA" ? "Louisiana" : state === "AZ" ? "Arizona Exam" : "Notary Exam Prep";
-  const moreInNav = links.length > 0 && !isNationalHome;
+  const announcement = announcementPath === pathname && (
+    <SiteAnnouncementDialog onClose={() => {
+      setAnnouncementPath(null);
+      moreButton.current?.focus();
+    }} />
+  );
+
+  if (usesStudyWorkspace(pathname)) return <>
+    <StudyWorkspace pathname={pathname} state={state} nav={nav} indianaPreview={indianaPreview}
+      initialCollapsed={initialCollapsed} brand={<BrandMark size={36} />} user={me}
+      loading={authStatus === "loading"} signInHref={signInHref} onLogout={logout}
+      onQuestionUpdates={openQuestionUpdates} onAnnouncements={() => setAnnouncementPath(pathname)} />
+    {announcement}
+  </>;
   const moreMenu = (
     <div className="more-menu">
       <button ref={moreButton} className="more-btn" type="button" aria-expanded={openMore}
@@ -186,14 +168,6 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
         {isNationalHome ? "What’s More" : "More"}
       </button>
       <ul id={morePanelId} className="more-panel" role="list" hidden={!openMore}>
-        {extra.map(item => (
-          <li key={item.href}>
-            <Link href={item.href} aria-current={active(pathname, item.href) ? "page" : undefined}
-              onClick={() => setOpenMore(false)}>
-              {item.label}
-            </Link>
-          </li>
-        ))}
         <li>
           <button type="button" aria-haspopup="dialog" onClick={() => {
             setOpenMore(false);
@@ -219,11 +193,10 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
     <header className={`site-header${pathname === "/" ? " national-header" : !state && active(pathname, paths.community) ? " community-guest-header" : ""}`}>
       <div className="wrap header-inner">
         <div className="header-left">
-          <Link href={!isNationalHome && state ? nav.home : "/"} className="logo" aria-label={isNationalHome ? "Notary Exam Prep" : brandLabel}>
+          <Link href="/" className="logo" aria-label="Notary Exam Prep">
             <BrandMark size={36} />
-            <span className="logo-label">{isNationalHome ? "Notary Exam Prep" : brandLabel}</span>
+            <span className="logo-label">Notary Exam Prep</span>
           </Link>
-          {pathname !== "/" ? <StateMenu pathname={pathname} current={state} indianaPreview={indianaPreview} /> : null}
         </div>
         {isNationalHome ? (
           <nav className="editorial-national-nav" aria-label="Primary">
@@ -232,18 +205,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
             <a href="#plans">Pro plans</a>
             <a href="#faq">FAQ</a>
           </nav>
-        ) : links.length ? <nav className="nav nav-desktop" aria-label="Primary">
-          <div className="nav-scroll">
-            {links.map((item) => item.label === "Wrong Answers" && state ? (
-              <WrongAnswersLink key={item.href} href={item.href} stateCode={state} className={active(pathname, item.href) ? "active" : ""} />
-            ) : (
-              <Link key={item.href} href={item.href} aria-current={active(pathname, item.href) ? "page" : undefined} className={active(pathname, item.href) ? "active" : ""}>
-                {item.label}
-              </Link>
-            ))}
-          </div>
-          {moreInNav ? moreMenu : null}
-        </nav> : null}
+        ) : null}
         <div className="header-right">
           {isNationalHome ? moreMenu : null}
           {isNationalHome ? <a className="editorial-state-link" href="#state-selection">Choose your state</a> : null}
@@ -257,15 +219,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
               Sign in
             </Link>
           )}
-          {!isNationalHome && state && !onHome && (
-            <Link className="btn btn-primary header-cta" href={state === "IN" ? `${nav.practice}?mode=quick` : nav.practice}><MemberCopy member={<>
-              Start Member Practice
-            </>}>
-              Start Free Test
-            </MemberCopy></Link>
-          )}
           {authStatus === "signed-in" && me && <AccountMenu me={me} onLogout={logout} stateCode={state} />}
-          {!isNationalHome && !moreInNav ? moreMenu : null}
         </div>
       </div>
     </header>
@@ -274,12 +228,7 @@ export function SiteHeader({ savedState, indianaPreview = false }: { savedState:
   return (
     <>
       {header}
-      {announcementPath === pathname && (
-        <SiteAnnouncementDialog onClose={() => {
-          setAnnouncementPath(null);
-          moreButton.current?.focus();
-        }} />
-      )}
+      {announcement}
     </>
   );
 }

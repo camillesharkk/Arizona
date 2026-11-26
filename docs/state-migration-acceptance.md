@@ -138,3 +138,13 @@ For a new state or new route:
 - Use `lib/pricing/membership-benefits.ts` for displayed plan comparisons and the existing catalog and checkout components for eligible quotes and fulfillment. Confirm the board state and plan links without a real charge.
 - Use checked-in editorial insights and the existing discussion route. Keep original third-party discussions, official references and on-site posts distinguishable.
 - Review the changed route and one existing state at 375 or 390px, 768px and 1440px. Check keyboard navigation, focus, contrast, status text and reduced motion. Capture desktop and mobile evidence separately from any production acceptance.
+
+## Sidebar workspace routing and acceptance
+
+The root header keeps the national marketing navigation at `/`. Other learner pages use the shared `StudyWorkspace`, including state landing pages, study tools, community, pricing, account and legal. Authentication routes and `/admin/*` use the compact standalone header. Keep URL and canonical ownership in the existing routes.
+
+- Practice, Study Guide, Question Bank, Study Cards, Daily Study and Wrong Answers use the current state path catalog. Favorites is the current state's Wrong Answers route with `?view=favorites`, which filters the same authenticated records. Progress links to the shared Dashboard. AI Tutor remains part of the existing question and answer tools where supported.
+- Exam Guide, Become a Notary, Laws & Rules and Resources use state paths. Courses appears for Arizona. Question Updates and What’s New open their existing dialogs. Coming-soon states use the national directory. If a state maps a tool to an existing fallback, use that destination and show the state overview label when switching there. Rhode Island and Texas do not show a state-specific Pro checkout.
+- The desktop rail scrolls its links independently and remembers its size in `np_sidebar`. At widths under 851px the same navigation data renders in a modal drawer. Verify Escape, backdrop, focus return, outside inertness, page-scroll lock and resize across the breakpoint.
+- Use `node scripts/study-workspace-browser-verify.mjs` with `WORKSPACE_VERIFY_BASE`, `WORKSPACE_VERIFY_PLAYWRIGHT` and optional `WORKSPACE_VERIFY_SHOTS`. For production smoke set `WORKSPACE_VERIFY_READ_ONLY=1`. Re-run guest import, state runner, account, pricing and source delivery checks against isolated local data before release.
+- Keep protected question draws and scoring in the server endpoints. State navigation drops the old sitting and topic query from the destination URL. Both states keep their independent existing browser and account records. Use the session runner's existing resume and restart flow.
