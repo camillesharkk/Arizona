@@ -18,7 +18,7 @@ export const metadata = pageMeta({
 export default async function LifetimePage() {
   const lifetimeAvailable = await getLifetimeCheckoutAvailability();
   return (
-    <main className="wrap hero">
+    <main className="wrap hero pricing-page">
       <h1>Lifetime Pro</h1>
       <p className="lede">
         {formatUsd(LIFETIME_TOTAL_CENTS)} USD standard · All available states · No expiration

@@ -8,7 +8,7 @@ import { fetchAccount } from "@/lib/client-account";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ExamRunner } from "@/components/ExamRunner";
 import { caPaths } from "@/lib/ca-site";
 import { topics } from "@/data/exam-config";
@@ -34,10 +34,11 @@ function dueNow(stat: QuestionStat) {
   return Boolean(stat.nextReviewAt) && Date.parse(stat.nextReviewAt as string) <= Date.now();
 }
 
-function notebookHref(base: string, topic: string, attempt: string) {
+function notebookHref(base: string, topic: string, attempt: string, favorites = false) {
   const params = new URLSearchParams();
   if (topic && topic !== "all") params.set("topic", topic);
   if (attempt) params.set("attempt", attempt);
+  if (favorites) params.set("view", "favorites");
   const query = params.toString();
   return query ? `${base}?${query}` : base;
 }
@@ -58,6 +59,8 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
     ? (onHi ? hiStudyTopics : caStudyTopics).map((item) => ({ id: item.id, short: item.label }))
     : topics.map((item) => ({ id: item.id, short: item.short }));
   const router = useRouter();
+  const search = useSearchParams();
+  const showFavorites = search.get("view") === "favorites";
   const [stats, setStats] = useState<QuestionStat[]>([]);
   const allowedTopics = new Set<string>(topicChoices.map((item) => item.id));
   const [topic, setTopic] = useState<string>(initialTopic && allowedTopics.has(initialTopic) ? initialTopic : "all");
@@ -67,7 +70,16 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const [syncMessage, setSyncMessage] = useState("");
-  const [source, setSource] = useState<"all" | "incorrect" | "saved">("all");
+  const [collection, setCollection] = useState<"all" | "incorrect" | "saved">("all");
+  const source = showFavorites ? "favorites" : collection;
+  function setSource(next: typeof source) {
+    if (next !== "favorites") setCollection(next);
+    if ((next === "favorites") === showFavorites) return;
+    const query = new URLSearchParams(search.toString());
+    if (next === "favorites") query.set("view", "favorites"); else query.delete("view");
+    const suffix = query.toString();
+    router.push(site.mistakes + (suffix ? "?" + suffix : ""), { scroll: false });
+  }
   const requestId = useRef(0);
   const pendingIds = useRef(new Set<string>());
   const [pending, setPending] = useState<Record<string, string>>({});
@@ -268,6 +280,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
     if (scopeIds && !scopeIds.includes(s.questionId)) return false;
     if (source === "incorrect") return s.wrongCount > 0;
     if (source === "saved") return savedInNotebook(s);
+    if (source === "favorites") return s.favorited;
     return true;
   });
   const due = filtered.filter(dueNow);
@@ -276,19 +289,19 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
     .filter((value): value is string => Boolean(value))
     .sort()[0];
   const phase = listPhase(loadError ? "error" : ready ? "ready" : "loading", filtered.length);
-  const returnTo = notebookHref(site.mistakes, topic, attemptId);
+  const returnTo = notebookHref(site.mistakes, topic, attemptId, showFavorites);
   const scopedCount = stats.filter((row) => !scopeIds || scopeIds.includes(row.questionId)).length;
 
   function selectTopic(id: string) {
     setTopic(id);
-    router.replace(notebookHref(site.mistakes, id, attemptId), { scroll: false });
+    router.replace(notebookHref(site.mistakes, id, attemptId, showFavorites), { scroll: false });
   }
 
   function viewAllRecords() {
     setScopeIds(null);
     setScopeSummary("");
     setScopeNote("");
-    router.replace(notebookHref(site.mistakes, topic, ""), { scroll: false });
+    router.replace(notebookHref(site.mistakes, topic, "", showFavorites), { scroll: false });
   }
 
   function requestAction(stat: QuestionStat, action: "mastered" | "favorite" | "remove" | "save", includeNotebook?: boolean) {
@@ -388,6 +401,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
     ? "No mistakes in this practice."
     : stats.length > 0
       ? "Nothing matches this filter."
+      : source === "favorites" ? "No favorites yet."
       : source === "saved"
         ? "No questions saved."
         : source === "incorrect"
@@ -422,6 +436,7 @@ export function CloudMistakes({ initialTopic, stateCode = "AZ", attemptId = "" }
         <button className={`chip ${source === "all" ? "on" : ""}`} type="button" onClick={() => setSource("all")}>All</button>
         <button className={`chip ${source === "incorrect" ? "on" : ""}`} type="button" onClick={() => setSource("incorrect")}>Incorrect</button>
         <button className={`chip ${source === "saved" ? "on" : ""}`} type="button" onClick={() => setSource("saved")}>Saved</button>
+        <button className={`chip ${source === "favorites" ? "on" : ""}`} type="button" aria-pressed={source === "favorites"} onClick={() => setSource("favorites")}>Favorites</button>
       </div>
       <div className="tool-row">
         <button className={`chip ${topic === "all" ? "on" : ""}`} type="button" onClick={() => selectTopic("all")}>

@@ -12,14 +12,6 @@
   align-items: flex-start;
   background: var(--glass-fill);
 }
-.membership-art {
-  position: absolute;
-  inset-block-start: 12px;
-  inset-inline-end: 12px;
-  object-fit: contain;
-  pointer-events: none;
-}
-.membership-plan h3, .membership-price { padding-inline-end: 86px; }
 .membership-plan .membership-price { font-size: clamp(1.7rem, 3vw, 2.35rem); font-weight: 750; margin: 0; }
 .membership-price small { font-size: .85rem; font-weight: 500; color: var(--muted); }
 .membership-plan .btn { margin-block-start: auto; }
@@ -46,7 +38,7 @@
 .membership-table th:first-child {
   inline-size: 42%;
   text-align: start;
-  background: #edf4f8;
+  background: var(--bg-2);
 }
 .membership-table tr:last-child td, .membership-table tbody tr:last-child th { border-block-end: 0; }
 .plan-benefit-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; }
@@ -65,7 +57,18 @@
 .membership-checkouts .lifetime-purchase-notes ul { margin-block: 0; padding-inline-start: 1.25rem; }
 .pricing-faq { margin-block-start: 12px; }
 @media (max-width: 680px) {
-  .membership-art { inline-size: 65px; block-size: 60px; }
-  .membership-plan h3, .membership-price { padding-inline-end: 55px; }
-  .membership-table { font-size: .8rem; }
+  .membership-table { font-size: .875rem; }
 }
+
+.membership-plan::after {
+  content: "";
+  position: absolute;
+  inset: 0 24px auto auto;
+  width: 20px;
+  height: 29px;
+  background: url("/images/editorial/bookmark.png") center / contain no-repeat;
+  pointer-events: none;
+}
+.membership-plan-lifetime.card { background: var(--brand-soft); }
+.membership-table :is(th, td):last-child { background: var(--brand-soft); }
+.membership-table thead th:last-child { box-shadow: inset 0 3px var(--brand); }

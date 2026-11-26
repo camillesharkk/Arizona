@@ -20,7 +20,7 @@ export function FreeStateHome({ code }: { code: FreeStateCode }) {
   const counts = pack.counts();
   const officialFirst = content.processKind !== 'Independent exam';
   const handbook = content.sources.find(source => /handbook|manual/i.test(source.title));
-  return <main className="wrap hero">
+  return <main className="wrap hero state-home">
     <h1>{content.name} Notary Prep</h1>
     <p className="lede">{content.summary}</p>
     <div className="tool-row">

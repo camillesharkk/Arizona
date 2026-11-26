@@ -2,7 +2,6 @@ import { CommunityDiscussions, type CommunitySearchParams } from "@/components/C
 import { paths } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
 import "../national-home.css";
-import "../home-glass-demo.css";
 import "./discussions.css";
 
 export const metadata = pageMeta({
@@ -17,7 +16,7 @@ export default async function CommunityInsightsPage({
   searchParams: Promise<CommunitySearchParams>;
 }) {
   return (
-    <main className="national-home glass-home-demo">
+    <main className="national-home community-home">
       <div className="home-container">
         <CommunityDiscussions params={await searchParams} />
       </div>

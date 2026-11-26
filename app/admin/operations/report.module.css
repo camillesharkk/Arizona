@@ -2,7 +2,7 @@
   max-width: 1080px;
   margin: 0 auto;
   padding: 20px 16px 64px;
-  color: #1d1d1f;
+  color: var(--ink);
 }
 .page h1 {
   margin: 0;
@@ -19,7 +19,7 @@
 .period,
 .fine {
   margin: 4px 0 0;
-  color: #6e6e73;
+  color: var(--muted);
   font-size: 0.82rem;
 }
 .chips {
@@ -36,7 +36,7 @@
 .card,
 .brief,
 .panel {
-  border: 1px solid #d2d2d7;
+  border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--glass-fill);
   padding: 12px;
@@ -46,7 +46,7 @@
 .fine,
 .source {
   display: block;
-  color: #6e6e73;
+  color: var(--muted);
   font-size: 0.78rem;
 }
 .card strong {
@@ -78,7 +78,7 @@
 }
 .current {
   font-weight: 650;
-  color: #1d1d1f;
+  color: var(--ink);
 }
 .bars {
   list-style: none;
@@ -120,7 +120,7 @@
   flex-wrap: wrap;
   gap: 8px 14px;
   margin-top: 6px;
-  color: #6e6e73;
+  color: var(--muted);
   font-size: 0.82rem;
 }
 .compare {
@@ -138,21 +138,21 @@
 }
 .metric {
   padding: 10px 0;
-  border-bottom: 1px solid #d2d2d7;
+  border-bottom: 1px solid var(--line);
 }
 .metric p {
   margin: 4px 0;
 }
 .warning {
-  color: #9a4d00;
+  color: var(--warn);
 }
 .page button {
   min-height: 36px;
   padding: 6px 12px;
-  border: 1px solid #d2d2d7;
+  border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--glass-fill);
-  color: #1d1d1f;
+  color: var(--ink);
   font: inherit;
   cursor: pointer;
 }

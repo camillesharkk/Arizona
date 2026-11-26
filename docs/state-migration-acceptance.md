@@ -126,3 +126,25 @@ Google 可信识别：`lib/googlebot.ts` 只接受反向 DNS 以 `.googlebot.com
 - CSP 保持 Report-Only。上报支持 Reporting-Endpoints 及旧浏览器的 report-uri。接收器最多读取 8,000 字节，仅记录已知指令及资源 origin 或资源类型，忽略路径、查询、片段、页面 URL 和脚本片段。正式强制前验证 GA4、Paddle、PostHog 和 Clarity 的实际请求。
 - GitHub API 确认仓库为 Public，源代码含完整题库及知识卡。仓库可见性单独处理，变更前核对 Vercel 对私有仓库的构建权限。历史公开版本和已下载的数据无法撤回。
 - Vercel → Arizona 项目 → Firewall。先新增 Log 规则，匹配 POST 和正则 ^/api/practice/(batch|feedback|archive)/?$。在 Firewall Observability 核对连续练习、快速切州和共享 IP 高峰后，按套餐支持的 IP 键和窗口配置限额。当前应用每 IP 每 10 分钟 150 次开场、800 次反馈可作观察参照。边缘阈值应覆盖正常共享网络峰值。公开页面、Next 静态资源、Paddle Webhook、Cron 与认证回调不匹配。若公开页另有机器人规则，在该规则核对 Vercel Verified Bots，并通过 Search Console 测试实际网址。应用练习接口不依赖 User-Agent 放行。
+
+## Shared editorial theme and route checks
+
+Use `app/editorial-theme.css` for the current warm-white surface, dark green ink and action colors, sage layers, bookmark accent, focus color, shadow, and marketing container width. Use the shared card, button, field, chip, menu, dialog, loading, and status patterns from `app/globals.css`. Use the system sans-serif for controls and reading text. Reserve the serif for display titles. Keep reading widths and route-specific tool layouts. State configuration controls routes, practice modes and capabilities. It does not define a separate color theme.
+
+For a new state or new route:
+
+- Use the shared root chrome, actual state entry, and existing permission gates. Verify Quick, Full, topic, results, sources, guide, saved review, Daily Study, and pricing only where the state supports them.
+- Preserve authored explanations, evidence links and recorded verification dates. Use the shared explanation sections and keyboard-visible states. Exercise loading, empty, success and retry states with an isolated account.
+- Use `lib/pricing/membership-benefits.ts` for displayed plan comparisons and the existing catalog and checkout components for eligible quotes and fulfillment. Confirm the board state and plan links without a real charge.
+- Use checked-in editorial insights and the existing discussion route. Keep original third-party discussions, official references and on-site posts distinguishable.
+- Review the changed route and one existing state at 375 or 390px, 768px and 1440px. Check keyboard navigation, focus, contrast, status text and reduced motion. Capture desktop and mobile evidence separately from any production acceptance.
+
+## Sidebar workspace routing and acceptance
+
+The root header keeps the national marketing navigation at `/`. Other learner pages use the shared `StudyWorkspace`, including state landing pages, study tools, community, pricing, account and legal. Authentication routes and `/admin/*` use the compact standalone header. Keep URL and canonical ownership in the existing routes.
+
+- Practice, Study Guide, Question Bank, Study Cards, Daily Study and Wrong Answers use the current state path catalog. Favorites is the current state's Wrong Answers route with `?view=favorites`, which filters the same authenticated records. Progress links to the shared Dashboard. AI Tutor remains part of the existing question and answer tools where supported.
+- Exam Guide, Become a Notary, Laws & Rules and Resources use state paths. Courses appears for Arizona. Question Updates and What’s New open their existing dialogs. Coming-soon states use the national directory. If a state maps a tool to an existing fallback, use that destination and show the state overview label when switching there. Rhode Island and Texas do not show a state-specific Pro checkout.
+- The desktop rail scrolls its links independently and remembers its size in `np_sidebar`. At widths under 851px the same navigation data renders in a modal drawer. Verify Escape, backdrop, focus return, outside inertness, page-scroll lock and resize across the breakpoint.
+- Use `node scripts/study-workspace-browser-verify.mjs` with `WORKSPACE_VERIFY_BASE`, `WORKSPACE_VERIFY_PLAYWRIGHT` and optional `WORKSPACE_VERIFY_SHOTS`. For production smoke set `WORKSPACE_VERIFY_READ_ONLY=1`. Re-run guest import, state runner, account, pricing and source delivery checks against isolated local data before release.
+- Keep protected question draws and scoring in the server endpoints. State navigation drops the old sitting and topic query from the destination URL. Both states keep their independent existing browser and account records. Use the session runner's existing resume and restart flow.

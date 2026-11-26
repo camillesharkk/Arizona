@@ -20,6 +20,8 @@ import { PaddleCheckoutResume } from "@/components/PaddleCheckoutResume";
 import { MemberCopyProvider } from "@/components/MemberCopy";
 import { EntryMotion } from "@/components/EntryMotion";
 import "./entry-motion.css";
+import "./editorial-theme.css";
+import "./study-workspace.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const saved = parseStateCookie((await cookies()).get(STATE_COOKIE)?.value);
@@ -58,7 +60,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const saved = parseStateCookie((await cookies()).get(STATE_COOKIE)?.value);
+  const requestCookies = await cookies();
+  const saved = parseStateCookie(requestCookies.get(STATE_COOKIE)?.value);
   const path = (await headers()).get("x-pathname") || "";
   const state = resolveState(path, saved);
   return (
@@ -75,11 +78,13 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <JsonLd data={defaultGraph()} />
         <SavedStateProvider value={saved}>
           <MemberCopyProvider>
-            <SiteHeader savedState={saved} indianaPreview={process.env.VERCEL_ENV !== "production" && process.env.STATE_PREVIEW === "1"} />
+            <SiteHeader savedState={saved} initialCollapsed={requestCookies.get("np_sidebar")?.value === "1"} indianaPreview={process.env.VERCEL_ENV !== "production" && process.env.STATE_PREVIEW === "1"} />
             <PaddleCheckoutResume successOrigin={siteUrl()} />
             <QuestionUpdates />
-            {children}
-            <SiteFooter savedState={saved} />
+            <div className="site-workspace">
+              {children}
+              <SiteFooter savedState={saved} />
+            </div>
           </MemberCopyProvider>
         </SavedStateProvider>
       </body>

@@ -1,8 +1,11 @@
 export function scrollUnderHeader(el: Element | null) {
   if (!el || typeof window === "undefined") return;
-  const header = document.querySelector(".site-header");
-  const offset = header ? header.getBoundingClientRect().bottom : 0;
-  const top = el.getBoundingClientRect().top + window.scrollY - offset - 12;
+  const mobileBar = document.querySelector(".study-topbar");
+  const mobile = Boolean(mobileBar?.getClientRects().length);
+  const header = mobile ? mobileBar : document.querySelector(".site-header");
+  const offset = header?.getBoundingClientRect().bottom ?? 0;
+  const anchor = mobile && el.matches(".quiz-stem") ? el.closest(".card") ?? el : el;
+  const top = anchor.getBoundingClientRect().top + window.scrollY - offset - 12;
   window.scrollTo(0, Math.max(0, top));
 }
 
