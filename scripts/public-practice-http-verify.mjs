@@ -7,6 +7,10 @@ const ohioRobots = process.argv.includes("--vercel-preview") ? "noindex, follow"
 
 async function read(path) {
   const response = await fetch(new URL(path, base), { redirect: "manual" });
+  if (path === "/preview/new-york/practice/" && !process.argv.includes("--vercel-preview")) {
+    assert.equal(response.status, 404, "Production blocks the internal preview route");
+    return "";
+  }
   assert.equal(response.status, 200, path);
   return (await response.text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
 }
@@ -64,7 +68,7 @@ for (const id of ["exam-day", "appointment", "fees", "journal", "electronic"]) {
   assert.ok(nyPractice.includes(`href="${paths.nyStudy}#${id}"`), id);
   assert.ok(nyStudy.includes(`id="${id}"`), id);
 }
-assert.deepEqual(Array.from(nyPreview.matchAll(/<meta name="robots" content="([^"]+)"/g), match => match[1]), ["noindex, nofollow"]);
+if (nyPreview) assert.deepEqual(Array.from(nyPreview.matchAll(/<meta name="robots" content="([^"]+)"/g), match => match[1]), ["noindex, nofollow"]);
 assert.doesNotMatch(nyPreview, /<strong>Answer:/);
 
 for (const path of [paths.az, paths.in, paths.ohQuestions, paths.ohPractice, paths.nyPractice]) {
