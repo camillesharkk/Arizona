@@ -13,6 +13,7 @@ import { communityInsights, communityInsightsUpdatedAt, homepageCommunityInsight
 import { publishedNyQuestions } from "@/data/ny-content";
 import { guarantee } from "@/lib/pricing/membership-benefits";
 import { PRO_DURATION_DAYS } from "@/lib/pricing/catalog";
+import { publicSourceUrl, sourceDate, sourceLinkLabel } from "@/lib/community-source";
 import "./national-home.css";
 import "./editorial-home.css";
 
@@ -48,11 +49,13 @@ function getSampleQuestion(): SampleQuestion {
 
 const insightsByState = new Map(homepageCommunityInsights.map(item => [item.state, item]));
 for (const item of [...communityInsights].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))) {
-  if (!insightsByState.has(item.state)) insightsByState.set(item.state, item);
+  if (item.state !== "General" && !insightsByState.has(item.state)) insightsByState.set(item.state, item);
 }
-const featuredInsights = [...insightsByState.values()].map(item => ({
+const featuredInsights = [...insightsByState.values()].slice(0, 6).map(item => ({
   id: item.id, state: item.state, title: item.title, summary: item.summary,
-  platform: item.platform, checkedAt: item.checkedAt, postUrl: item.postUrl,
+  platform: item.platform, checkedAt: item.checkedAt, postUrl: publicSourceUrl(item.platform, item.postUrl)?.href ?? "",
+  publishedAt: sourceDate(item.source) ?? null, sourceKind: item.source?.type === "comment" ? "public comment" : "public post",
+  sourceLabel: sourceLinkLabel(item.platform, item.source),
   officialUrl: item.officialUrl, studyHref: item.studyHref, studyLabel: item.studyLabel,
   stateName: stateByCode(item.state)?.name ?? item.state,
 }));

@@ -6,7 +6,7 @@ import type { CommunityInsight } from "@/data/community-insights";
 import { communityDiscussionPath } from "@/lib/community-links";
 import { paths } from "@/lib/paths";
 
-type Insight = Omit<CommunityInsight, "keywords" | "updatedAt"> & { stateName: string };
+type Insight = Omit<CommunityInsight, "keywords" | "updatedAt" | "source"> & { stateName: string; publishedAt: string | null; sourceKind: string; sourceLabel: string };
 
 export function EditorialHomeCommunity({ insights, updatedAt }: { insights: Insight[]; updatedAt?: string }) {
   const [state, setState] = useState("");
@@ -30,16 +30,16 @@ export function EditorialHomeCommunity({ insights, updatedAt }: { insights: Insi
       <div className="editorial-insight-grid">
         {visible.map((item, index) => (
           <article className={"editorial-card editorial-insight" + (index === 0 ? " editorial-dark" : "")} key={item.id}>
-            <p className="insight-meta">{item.stateName} · {item.platform} discussion</p>
+            <p className="insight-meta">{item.stateName} · {item.platform} {item.sourceKind}</p>
             <h3><Link href={communityDiscussionPath(item.id)}>{item.title}</Link></h3>
-            <p>{item.summary}</p>
+            <p><strong>Summary</strong> · {item.summary}</p>
             <div className="insight-links">
               <Link href={item.studyHref}>{item.studyLabel} →</Link>
               <Link href={communityDiscussionPath(item.id)}>Site discussion →</Link>
-              <a href={item.postUrl}>Original discussion ↗</a>
-              <a href={item.officialUrl}>Official reference ↗</a>
+              {item.postUrl && <a href={item.postUrl} target="_blank" rel="noopener noreferrer">{item.sourceLabel} ↗</a>}
+              {item.officialUrl && <a href={item.officialUrl}>Official reference ↗</a>}
             </div>
-            <small>Checked <time dateTime={item.checkedAt}>{item.checkedAt}</time></small>
+            <small>{item.publishedAt ? <time dateTime={item.publishedAt}>{item.publishedAt}</time> : "Date unavailable"} · Checked <time dateTime={item.checkedAt}>{item.checkedAt}</time></small>
           </article>
         ))}
       </div>

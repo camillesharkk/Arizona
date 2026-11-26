@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import Image from "next/image";
 import Link from "next/link";
 import { communityInsights } from "@/data/community-insights";
+import { filterCommunitySources } from "@/lib/community-source-filter";
 import { communityDiscussionPath } from "@/lib/community-links";
 import { communityStore, COMMUNITY_MAX_DEPTH, type CommunityInsightActivity, type CommunityPost } from "@/lib/community-store";
 import { paths } from "@/lib/paths";
@@ -119,7 +120,8 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
   const threadId = typeof params.discussion === "string" && idPattern.test(params.discussion) ? params.discussion : null;
   const page = typeof params.page === "string" && /^\d{1,4}$/.test(params.page) ? Math.max(0, Number(params.page) - 1) : 0;
   const overview = !insight && !threadId;
-  const insights = insight ? [insight] : overview ? communityInsights : [];
+  const sources = overview ? filterCommunitySources(communityInsights, params) : undefined;
+  const insights = insight ? [insight] : sources?.results ?? [];
   const heading = insight ? `Discussion: ${insight.title}` : "Community discussions";
   const session = await getSession();
   const accountScope = session ? createHash("sha256").update(session.id).digest("hex") : null;
@@ -185,7 +187,7 @@ export async function CommunityDiscussions({ params }: { params: CommunitySearch
 
   return (
     <>
-    <CommunityInsightFeed insights={insights} activity={activity} memberPosts={memberHighlights}
+    <CommunityInsightFeed insights={insights} sources={sources} activity={activity} memberPosts={memberHighlights}
       signedIn={context.signedIn} showHighlights={overview}
       announcements={announcements.length ? (
         <CommunityAnnouncementPager titles={announcements.map(post => post.title ?? "Team announcement")}>

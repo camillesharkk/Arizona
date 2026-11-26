@@ -164,9 +164,9 @@ export function HomeCommunity({
               <p>
                 Last checked <time dateTime={item.checkedAt}>{item.checkedAt}</time>
               </p>
-              <a href={item.officialUrl} target="_blank" rel="noopener noreferrer">
+              {item.officialUrl && <a href={item.officialUrl} target="_blank" rel="noopener noreferrer">
                 Official reference for this topic <span aria-hidden="true">↗</span>
-              </a>
+              </a>}
               <Link className="home-text-link" href={item.studyHref}>
                 {item.studyLabel} <span aria-hidden="true">→</span>
               </Link>
