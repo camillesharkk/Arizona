@@ -38,7 +38,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     paths.cram,
     paths.mistakesGuide,
     paths.courses,
-    paths.training,
     paths.become,
     paths.laws,
     paths.law("sb1479-journal-thumbprint"),
@@ -49,7 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     paths.terms,
     paths.refund,
     paths.disclaimer,
-    paths.contact,
+    "/lifetime/",
     paths.community,
     caPaths.home,
     caPaths.practice,
@@ -114,7 +113,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const indexed = [...new Set([...urls, ...seoGuides.filter((guide) => guide.index !== false).map((guide) => guide.path), ...articles.map((article) => article.path)])];
   const updated = new Map<string, string>([
     ...articles.map((article) => [article.path, article.updated] as const),
-    ...seoGuides.filter((guide) => guide.index !== false).map((guide) => [guide.path, guide.modified ?? "2026-11-07"] as const),
+    ...seoGuides.flatMap((guide) => guide.index !== false && guide.modified ? [[guide.path, guide.modified] as const] : []),
     [paths.flashcards, "2026-11-07"],
     [paths.law("sb1479-journal-thumbprint"), "2026-11-27"],
     ...(communityInsightsUpdatedAt ? [[paths.community, communityInsightsUpdatedAt] as const] : []),

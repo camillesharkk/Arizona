@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { prepPageEnabled } from "@/lib/state-release";
 import { notFound } from "next/navigation";
+import { PracticeAfterword } from "@/components/PracticeAfterword";
+import { publicPracticeSamples } from "@/lib/public-practice-samples";
 import { PracticeLaunch } from "@/components/PracticeLaunch";
 import { prepPacks, type PrepCode } from "@/lib/prep-pack";
 import { FREE_FULL_EXAMS } from "@/lib/product";
@@ -21,7 +23,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
   return (
     <main className="wrap hero">
       {!pack.available ? <p className="kicker">Practice preview</p> : null}
-      <h1>{code === "NC" ? "North Carolina Notary Practice Test" : `${pack.name} practice`}</h1>
+      <h1>{code === "NC" ? "North Carolina Notary Practice Questions" : `${pack.name} practice`}</h1>
       <p>
         <strong>{counts.published} published questions. {counts.free}<MemberCopy member={<> are in the starter set and </>}> are free and </MemberCopy>{counts.pro} are Pro.</strong> {code === "NC" ? "Use Quick 10 before class to check the basics. After class, review the rule behind each miss and practice that topic again." : pack.fullDetail}
       </p>
@@ -29,6 +31,11 @@ export default async function Page({ params }: { params: Promise<{ state: string
       <Suspense fallback={<p className="notice">Loading exam…</p>}>
         <PracticeLaunch stateCode={code} />
       </Suspense>
+      {code === "NC" && <PracticeAfterword
+        during="Quick 10 explains each answer as you go. Review misses by topic before or after your approved course."
+        samples={publicPracticeSamples("NC")}
+        links={[{ href: pack.paths.study, label: "North Carolina study guide" }, { href: pack.paths.resources, label: "Official North Carolina sources" }]}
+      />}
       {code === "PA" && <section className="card">
         <h2>Review your Pennsylvania practice</h2>
         <p>Start with Quick 10. Read the explanation after each answer and revisit the rules you missed. {FREE_FULL_EXAMS} full practice {FREE_FULL_EXAMS === 1 ? "sitting is" : "sittings are"} included per browser or account.</p>

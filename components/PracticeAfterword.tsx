@@ -41,7 +41,7 @@ export function PracticeAfterword({
         <h2>What happens during and after the test?</h2>
         <p>{during}</p>
       </section>}
-      <section aria-labelledby="sample-questions">
+      {samples.length > 0 && <section aria-labelledby="sample-questions">
         <h2 id="sample-questions">Sample questions with answers and explanations</h2>
         <p><MemberCopy member={<>These items are from the published starter set.</>}>These items are from the published free set.</MemberCopy></p>
         {samples.map((q, i) => (
@@ -57,7 +57,7 @@ export function PracticeAfterword({
             {q.guideHref && <Link className="btn btn-ghost card-action" href={q.guideHref}>Read the study guide chapter</Link>}
           </article>
         ))}
-      </section>
+      </section>}
       <p style={{ marginTop: 24 }}>
         {links.map((link, i) => (
           <span key={link.href}>

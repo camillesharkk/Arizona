@@ -29,9 +29,12 @@ for (const [state, questions] of Object.entries(bank)) {
   const wrong = await request('/api/mistakes/?state='+state);
   assert.ok(input.questions.slice(0,3).every(answer=>wrong.mistakes.some(stat=>stat.questionId===answer.questionId)));
   assert.ok(wrong.mistakes.every(stat=>stat.state===state));
+  const favorite = input.questions[0].questionId;
+  await request('/api/mistakes/', { questionId: favorite, favorited: true });
   await request('/api/progress/import/',input);
+  assert.ok((await request('/api/mistakes/?state='+state)).favorites.some(row => row.questionId === favorite));
   assert.equal(count((await request('/api/progress/')).stats),count(saved.stats));
-  console.log(`${state}: actual HTTP concurrent import, 10 retained answers, 3 mistakes, one history record and refreshed replay passed`);
+  console.log(`${state}: actual HTTP concurrent import, 10 retained answers, 3 mistakes, favorite retained, one history record and refreshed replay passed`);
 }
 assert.equal(JSON.stringify((await request('/api/auth/me/')).user),allowance,'Guest imports preserve full-exam allowances and Pro rights');
 assert.equal((await fetch(base+'/api/progress/import/',{method:'POST',headers:{'content-type':'application/json'},body:'{}'})).status,401);

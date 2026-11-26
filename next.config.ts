@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   // Isolate acceptance builds from a concurrently running development server.
   distDir: process.env.NEXT_DIST_DIR || ".next",
   reactStrictMode: true,
+  experimental: { globalNotFound: true },
   trailingSlash: true,
   // Keep metadata in the managed head across client-side state navigation.
   htmlLimitedBots: /.*/,
@@ -51,6 +52,8 @@ const nextConfig: NextConfig = {
         destination: "https://arizonanotaryprep.com/:path*",
         permanent: true,
       },
+      { source: "/arizona-notary-courses/", destination: "/courses/", permanent: true },
+      { source: "/arizona-notary-training/", destination: "/courses/", permanent: true },
       { source: "/arizona-notary-exam-practice-test", destination: "/arizona-notary-practice-test/", permanent: true },
       { source: "/arizona-notary-exam-practice-test/", destination: "/arizona-notary-practice-test/", permanent: true },
       { source: "/arizona-notary-exam-questions-and-answers", destination: "/arizona-notary-exam-questions/", permanent: true },

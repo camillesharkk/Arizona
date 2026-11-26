@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { MembershipPlans } from "@/components/MembershipPlans";
 import { MembershipCheckouts } from "@/components/MembershipCheckouts";
 import { pageMeta } from "@/lib/seo";
@@ -38,6 +39,7 @@ export default async function PricingPage() {
       <Breadcrumb items={[{ name: "Home", path: paths.home }, { name: "Pricing", path: paths.pricing }]} />
       <h1>Compare Notary Exam Prep Plans</h1>
       <p className="lede">Start with Quick 10, answer explanations, and study guides. In Arizona, short and topic practice draw from {pricingFreeCount} free questions, and Pro opens all {pricingPool.length}. In California, {california.free} of {california.published} questions are free. Paid plans add repeat full practice where available and a higher AI Tutor allowance.</p>
+      <p>See how a worked answer links to the official rule and its verification date in the <Link href={`${paths.practice}#sample-questions`}>Arizona sample questions</Link>. After a short practice set, review missed topics and choose what to study next in <Link href={paths.daily}>Daily Study</Link>.</p>
       <MembershipPlans lifetimeAvailable={lifetimeAvailable} />
       <MembershipCheckouts lifetimeAvailable={lifetimeAvailable} timedNotes={
         <div className="pricing-notes">

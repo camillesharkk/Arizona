@@ -253,7 +253,7 @@ export function PracticeLaunch({ stateCode = "AZ" }: { stateCode?: SittingState 
                 ) : (
                   <>
                     <button className="btn btn-primary" type="button" disabled={!gateReady || Boolean(pendingStart) || (id === "full" && !!pack && !pack.fullReady) || (id === "quick" && !!pack && !pack.quickReady)} onClick={() => requestStart(id)}>
-                      {!gateReady || pendingStart === id ? "Loading…" : (id === "full" && pack && !pack.fullReady) || (id === "quick" && pack && !pack.quickReady) ? "Not open yet" : "Start"}
+                      {!gateReady || pendingStart === id ? "Loading…" : (id === "full" && pack && !pack.fullReady) || (id === "quick" && pack && !pack.quickReady) ? "Not open yet" : id === "quick" && ["AZ", "NY", "OH", "NC"].includes(stateCode) ? <MemberCopy member={<>Start Quick 10</>}>Start Free Quick 10</MemberCopy> : "Start"}
                     </button>
                     {id === "full" && pack && !pack.fullReady ? <p className="notice">The published bank cannot fill this practice yet, so it stays closed.</p> : null}
                   </>

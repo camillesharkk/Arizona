@@ -323,7 +323,7 @@ else ok("分母为 0 时返回 N/A");
 
 function walk(dir: string, hit: string[]) {
   for (const name of readdirSync(dir)) {
-    if (name === "node_modules" || name === ".next" || name === ".tools" || name === ".worktrees") continue;
+    if (name === "node_modules" || (name === ".next" || name.startsWith(".next-") || name === process.env.NEXT_DIST_DIR) || name === ".tools" || name === ".worktrees") continue;
     const full = path.join(dir, name);
     const st = statSync(full);
     if (st.isDirectory()) walk(full, hit);
@@ -357,7 +357,7 @@ if (!claritySrc.includes("return null") || !claritySrc.includes("clarity-mask") 
   fail("Clarity mask or unload guard missing");
 } else if (!authSrc.includes("clarity-mask") || !checkoutSrc.includes("clarity-mask") || !passwordSrc.includes("clarity-mask")) {
   fail("sensitive fields are not marked for masking");
-} else if (!paddleSrc.includes('event?.name !== "checkout.loaded"') || paddleSrc.includes("console.")) {
+} else if (!paddleSrc.includes("paddleCheckoutStage(notice.name") || paddleSrc.includes("console.")) {
   fail("checkout_open is not tied to Paddle loaded, or Paddle data is logged");
 } else ok("敏感页面和字段有遮盖，checkout_open 来自 Paddle loaded");
 

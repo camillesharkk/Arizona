@@ -1,30 +1,32 @@
-import { canonicalUrl, site } from "@/lib/site";
+import { canonicalUrl, publicBrand } from "@/lib/site";
+import { availableStates } from "@/lib/states";
 
 export function JsonLd({ data }: { data: Record<string, unknown> | Record<string, unknown>[] }) {
   return (
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} />
   );
 }
 
-const origin = "https://arizonanotaryprep.com";
+const origin = canonicalUrl().slice(0, -1);
 
 export function defaultGraph() {
   const description =
-    "Independent notary exam practice for Arizona, California, and Hawaii. Not a government office, and not affiliated with the Arizona Secretary of State, the California Secretary of State, or the Hawaii Department of the Attorney General.";
+    "Independent notary practice and study guides for supported U.S. states.";
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Organization",
         "@id": `${origin}/#organization`,
-        name: site.legalName,
+        name: publicBrand,
         url: origin,
         description,
+        areaServed: availableStates().map(({ name }) => ({ "@type": "State", name })),
       },
       {
         "@type": "WebSite",
         "@id": `${origin}/#website`,
-        name: site.legalName,
+        name: publicBrand,
         url: origin,
         description,
         publisher: { "@id": `${origin}/#organization` },

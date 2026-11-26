@@ -3,8 +3,7 @@
 
 .study-sidebar,
 .study-drawer {
-  --sidebar-background: #e8ede1;
-  background: var(--sidebar-background);
+  background: var(--glass-fill);
   color: var(--ink);
 }
 
